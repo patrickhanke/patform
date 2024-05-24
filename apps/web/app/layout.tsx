@@ -38,7 +38,7 @@ const getData = async () => {
 
   console.log(projectId, 'projectId');
   
-  const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId } });
+  const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'LQETAMXFns' } });
 
   return data;
 }
