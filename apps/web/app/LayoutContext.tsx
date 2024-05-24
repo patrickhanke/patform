@@ -4,8 +4,8 @@ import React from 'react';
 const LayoutContext = ({children}: {children: React.ReactNode}) => {
 	return (
 		<ApolloAppProvider
-			appId={process.env.SASHIDO_APP_ID }
-			masterKey={process.env.SASHIDO_MASTER_KEY}
+			appId={process.env.SASHIDO_APP_ID as string }
+			masterKey={process.env.SASHIDO_MASTER_KEY as string}
 		
 		>
 			{children}

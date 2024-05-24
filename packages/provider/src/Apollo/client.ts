@@ -11,8 +11,8 @@ import {
 	NextSSRInMemoryCache,
 	SSRMultipartLink,
 } from '@apollo/experimental-nextjs-app-support/ssr';
+import { makeClientProps } from './types.js';
 
-import { makeClientProps } from './types';
 
 const makeClient: makeClientProps = (appId, masterKey) => {
 	const localToken = Cookies.get('hgs_token');

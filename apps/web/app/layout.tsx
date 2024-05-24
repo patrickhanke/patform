@@ -2,12 +2,11 @@ import { serverClient } from "@repo/provider";
 import LayoutContext from "./LayoutContext";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { gql } from "@apollo/client";
-import { env } from "process";
-import { on } from "events";
+import { gql, ApolloClient, OperationVariables } from "@apollo/client";
+import { cookies } from 'next/headers'
+
 
 const inter = Inter({ subsets: ["latin"] });
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 
 // export const metadata: Metadata = {
 //   title: "Create Turborepo",
@@ -15,43 +14,50 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 // };
 
 const query = gql` 
-query findProjects {
-  objects {
-    findProjects {
-      results {
-
-        objectId
-      }
+    query getProjects($id: ID!) {
+    objects {
+        getProjects(objectId: $id) {
+            objectId
+        }
     }
-  }
 }`
 
  
-type Repo = {
-  name: string
-  stargazers_count: number
+interface GetProjectsResponse {
+  objects: {
+      getProjects: {
+          objectId: string;
+      };
+  };
+}
+
+const getData = async () => {
+  const projectId = cookies().get('cms_project')?.value || '123';
+  console.log(process.env.SASHIDO_APP_ID);
+  const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
+
+  console.log(projectId, 'projectId');
+  
+  const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId } });
+
+  return data;
 }
  
-export const getServerSideProps = (async () => {
-  console.log(process.env.SASHIDO_APP_ID);
-  const client = serverClient(process.env.SASHIDO_APP_ID, process.env.SASHIDO_MASTER_KEY);
 
-  const { data } = await client.query({ query }, {onError: (error) => console.log(error)});
-  return { props: { data } }
-})
 
-export default function RootLayout({
-  data,
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }){
-  console.log(data);
-  
-
+  const data = await getData()
+  console.log(data, 'pageData');
   return (
-      <html lang="en">
+      <html lang="de">
         <body className={inter.className}>
+            <h3>
+                {data.objects.getProjects.objectId}
+            </h3>
           <LayoutContext>
             {children}
           </LayoutContext>

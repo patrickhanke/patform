@@ -1,10 +1,7 @@
-'use client';
-
 import Image from "next/image";
 import { Card } from "@repo/ui/card";
 import { Code } from "@repo/ui/code";
 import styles from "./page.module.css";
-import { gql, useQuery, useSuspenseQuery } from "@apollo/client";
 import { Button } from "@repo/ui/button";
 
 function Gradient({
@@ -54,21 +51,8 @@ const LINKS = [
   },
 ];
 
-const query = gql` 
-query findProjects {
-  objects {
-    findProjects {
-      results {
-
-        objectId
-      }
-    }
-  }
-}`
-
 export default function Page(): JSX.Element {
-  const {data} = useSuspenseQuery(query)
-  console.log(data);
+  
   
   return (
     <main className={styles.main}>
