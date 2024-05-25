@@ -25,7 +25,7 @@ const Breadcrumps = () => {
 			if (pathArrayElement) {
 				pathCopy.push({
 					label: findItemLabel(pathArrayElement, [{value: 'name', label: 'name'}]), 
-					value: pathCopy.length - 1 === 0 ?  pathCopy[pathCopy.length - 1].value + pathArrayElement : pathCopy[pathCopy.length - 1].value + `/${pathArrayElement}` 
+					value: pathCopy.length - 1 === 0 ?  pathCopy[pathCopy.length - 1]?.value + pathArrayElement : pathCopy[pathCopy.length - 1]?.value + `/${pathArrayElement}` 
 				});
 			}
 		});
