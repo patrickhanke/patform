@@ -1,0 +1,1 @@
+export {ObjectsOverview as default} from '@/content';

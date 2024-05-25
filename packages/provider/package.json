@@ -9,7 +9,10 @@
   "dependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "dotenv-cli": "^7.4.2"
+    "dotenv-cli": "^7.4.2",
+    "@apollo/experimental-nextjs-app-support": "^0.10.1",
+    "@apollo/client": "^3.10.4"
+
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

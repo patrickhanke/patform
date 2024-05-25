@@ -1,0 +1,1 @@
+export {StaffMember as default} from '@/content';

@@ -1,0 +1,109 @@
+$grey: #cdcdcd;
+$darkgrey: #999999;
+$lightgrey: #d2d2d2;
+$light: #f4f4f6;    
+$lightest: #fafafa;
+// $primary: #117776;
+// $primary_shaded: #0f6b6a;
+
+$dark: #333333;
+$white: #fff;
+
+$magenta: #9B3E82;
+$magenta_shaded: #8b3875;
+
+$blue: #40879c;
+$blue_shaded: #346777;
+$blue_light: #c6d9e0;
+
+$yellow: #F6E855;
+$yellow_shaded: #f4e436;
+$yellow_light: #fdfadd;
+
+// $green: #70B588;
+// $green_shaded: #5dab78;
+// $green_light: #e2f0e7;
+
+$red: #D75055;
+$red_shaded: #d2383e;
+$red_light: #f7dcdd;
+
+$violet: #6941c6;
+$violet_shaded: #5331a2;
+$violet_light: #e1d9f4;
+
+$green: #3F9A82;
+$green_shaded: #2d3d38;
+$green_light: #c8e2d9;
+
+$primary:  $green;
+$primary_shaded: $green_shaded;
+$primary_light: $green_light;
+
+$secondary: $blue;
+$secondary_shaded: $blue_shaded;
+$secondary_light: $blue_light;
+
+$tertiary:  $yellow;
+$tertiary_shaded: $yellow_shaded;
+$tertiary_light: $yellow_light;
+
+@mixin colorgroup($color: 'primary') {
+    @if $color == 'primary' {
+        background-color: $primary_light;
+        color: $primary
+    }
+    @if $color == 'secondary' {
+        background-color: $secondary_light;
+        color: $secondary;
+    }
+    @if $color == 'tertiary' {
+        background-color: $tertiary_light;
+        color: $tertiary;
+    }
+    @if $color == 'violet' {
+        background-color: $violet_light;
+        color: $violet;
+    }
+    @if $color == 'green' {
+        background-color: $green_light;
+        color: $green_shaded;
+    }
+    @if $color == 'yellow' {
+        background-color: $yellow_light;
+        color: $yellow_shaded;
+    }
+    @if $color == 'red' {
+        background-color: $red_light;
+        color: $red !important;
+    }
+    @if $color == 'dark' {
+        background-color: $light;
+        color: $dark;
+    }
+    @if $color == 'light' {
+        background-color: $light;
+        color: $dark;
+    }
+    @if $color == 'success' {
+        background-color: $green_light;
+        color: $green;
+    }
+    @if $color == 'warning' {
+        background-color: $yellow_light;
+        color: $yellow_shaded;
+    }
+    @if $color == 'danger' {
+        background-color: $red_light;
+        color: $red;
+    }
+    @if $color == 'info' {
+        background-color: $blue_light;
+        color: $blue_shaded;
+    }
+    @if $color == 'lightest' {
+        background-color: $lightest;
+        color: $grey;
+    }
+
+}

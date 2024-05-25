@@ -1,0 +1,191 @@
+@use 'breakpoints.scss';
+@use 'sizes.scss';
+@use 'colors.scss';
+
+@mixin flexbox ($direction: row, $align: center, $justify: space-between, $height: auto, $width: auto, $wrap: no-wrap, $gap: sizes.$sm,  $change_to_column: 'false') {
+    display: flex;
+    flex-direction: $direction;
+    align-items: $align;
+    justify-content: $justify;
+    gap: $gap;
+    height: $height;
+    width: $width;
+    flex-wrap: $wrap;
+    @if $change_to_column == 'true' {
+       @include breakpoints.mq('xs') {
+            flex-direction: row;
+       };
+       @include breakpoints.mq('md') {
+            flex-direction: column;
+       };
+    };
+};
+
+@mixin button_container {
+    @include flexbox($direction: row, $align: center, $justify: flex-end, $gap: sizes.$xs);
+};
+
+$shadow_regular: 1px 1px 2px -1px colors.$dark;
+
+$shadow_hover: 3px 3px 12px -6px colors.$dark;
+
+$shadow_large_regular: 3px 3px 9px -6px colors.$dark;
+$shadow_large_regular_hover: 4px 4px 12px -8px colors.$dark;
+
+@mixin icon_button_container($isactive: 'false') {
+    @include flexbox($direction: row, $align: center, $justify: center);
+    position: 'relative';
+    // background-color: colors.$grey;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: colors.$primary;
+    flex: 0 0 30px;
+    // border: none;
+    border: 1.5px solid colors.$primary;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    font-family: 'Montserrat';
+    font-weight: 500;
+    line-height: 1;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+    border-radius: 50%;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    &:hover{
+        background-color: colors.$primary;
+        color: white !important;
+    }
+    @if $isactive == 'true' {
+        background-color: colors.$primary;
+        color: white !important;
+
+    }
+}
+
+@mixin list_element {
+    padding: map-get($map: sizes.$padding, $key: 'sm' );
+    border-bottom: 1px solid colors.$darkgrey;
+    position: relative;
+    font-size: map-get($map: sizes.$font_size, $key: 'sm' )
+}
+
+@mixin elements_container {
+    border: 1px solid colors.$grey;
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
+    position: relative;
+    box-sizing: border-box;
+}
+
+@mixin label($size: 'md', $color: 'primary' ) {
+    background-color: transparent;
+    text-transform: uppercase;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    width: fit-content;
+
+    @if $size == 'sm' {
+        padding: map-get(sizes.$padding, 'xs');
+        font-size: map-get(sizes.$font_size, 'xs');
+    }
+    @if $size == 'md' {
+        padding: map-get(sizes.$padding, 'sm');
+        font-size: map-get(sizes.$font_size, 'sm');
+    }
+    @if $size == 'lg' {
+        padding: map-get(sizes.$padding, 'lg');
+        font-size: map-get(sizes.$font_size, 'lg');
+    }
+
+    @if $color == 'violet' {
+        color: colors.$violet_shaded;
+        background-color: colors.$violet_light;
+        border: 1px solid colors.$violet;
+    }
+    @if $color == 'green' {
+        color: colors.$green_shaded;
+        background-color: colors.$green_light;
+        border: 1px solid colors.$green;
+    }
+    @if $color == 'yellow' {
+        color: colors.$yellow_shaded;
+        background-color: colors.$yellow_light;
+        border: 1px solid colors.$yellow;
+    }
+    @if $color == 'red' {
+        color: colors.$red_shaded;
+        background-color: colors.$red_light;
+        border: 1px solid colors.$red;
+    }
+};
+
+.site_layout {
+    @include flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: 0);
+    position: relative;
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+.site_content {
+    height: fit-content;
+    flex: 1 0;  
+    overflow-y: auto;
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+}
+
+.number_input {
+    padding: map-get($map: sizes.$padding, $key: 'md');
+    border: .5px solid colors.$darkgrey;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    max-width: 60px;
+    &:focus {
+        border: .5px solid colors.$primary;
+    }
+    &:active {
+        border: .5px solid colors.$primary;
+    }
+}
+
+.text_input {
+    padding: map-get($map: sizes.$padding, $key: 'sm' );
+    border: 1px solid colors.$darkgrey;
+    transition: border .4s ease;
+    outline: 0;
+    font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    border: 1px solid colors.$lightgrey;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    position: relative;
+    box-sizing: border-box;
+    outline: none;
+    min-width: 300px;
+    width: 100%;
+    max-width: 420px;
+    &:focus {
+        padding: map-get($map: sizes.$padding, $key: 'sm' );
+        border-radius: 0;
+        border: 1px solid colors.$primary;
+    }
+
+    &:focus-visible {
+        padding: map-get($map: sizes.$padding, $key: 'sm' );
+        border-radius: 0;
+        border: 1px solid colors.$primary;
+    }
+
+    &:target {
+        padding: map-get($map: sizes.$padding, $key: 'sm' );
+        border-radius: 0;
+        border: 1px solid colors.$primary;
+    }
+}
+
+.text_input.error {
+    // background-color: #fce4e4;
+    border: 1px solid #cc0033;
+    outline: none;
+}
+
+
+

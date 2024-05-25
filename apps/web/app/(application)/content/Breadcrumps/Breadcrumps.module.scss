@@ -1,0 +1,31 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+@use '@repo/styles/buttons';
+
+
+.header_breadcrumps {
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: 4px);
+}
+
+.breadcrumps {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-variant: normal;
+    letter-spacing: 1px; 
+    margin: 0;
+    text-decoration: none;
+    line-height: 1;
+    font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    color: colors.$dark;
+    transition: text-decoration .2s ease, color .2s ease;
+    &:hover {
+        color: colors.$dark;
+        text-decoration: underline;
+    }
+
+}
+
+.breadcrumps:last-child{
+    font-weight: 500;
+} 
