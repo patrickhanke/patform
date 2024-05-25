@@ -32,8 +32,8 @@ interface GetProjectsResponse {
 }
 
 const getData = async () => {
-  const projectId = cookies().get('cms_project')?.value || '123';
-  console.log(process.env.SASHIDO_APP_ID);
+  const projectId = cookies().get('cms_project')?.value || 'LQETAMXFns';
+  console.log(process.env.SASHIDO_APP_ID, 'appId-layout');
   const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
 
   console.log(projectId, 'projectId');
