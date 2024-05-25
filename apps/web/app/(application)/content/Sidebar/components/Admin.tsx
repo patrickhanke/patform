@@ -1,16 +1,14 @@
 'use client';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import styles from '../Sidebar.module.scss';
-import { Icons, UserContext } from '@/provider';
 import Link from 'next/link';
 
 const Admin = () => {
-	const {user} = useContext(UserContext);
+	const user = 'user'
         
-	if (user && user.is_superuser) return (
+	if (user) return (
 		<div className={styles.admin_container}>
-			<Icons icon={'admin'} />
 			<Link className={styles.menu_item} href={'/admin'}>
 				Admin
 			</Link>
