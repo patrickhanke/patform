@@ -13,14 +13,7 @@ const Logout = () => {
 	const logoutUser = async () => {
 		Cookies.remove('hgs_token');
 		Cookies.remove('hgs_logged_in');
-		await axiosclient(
-			'',
-			process.env.SASHIDO_API_URL as string,
-			process.env.SASHIDO_APP_ID as string,
-			process.env.SASHIDO_REST_KEY as string,
-			process.env.SASHIDO_MASTER_KEY as string
-		
-		).post('logout');
+		await axiosclient().post('logout');
 		return router.push('/login');
 	};
 
