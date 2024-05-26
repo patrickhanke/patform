@@ -8,14 +8,14 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import { GiCheckMark } from 'react-icons/gi';
 import { RxCopy, RxExternalLink } from 'react-icons/rx';
 import { HiOutlineChartBarSquare } from 'react-icons/hi2';
-import { iconType } from '@/types';
 import { BsCardText } from 'react-icons/bs';
 import { GrGrid } from 'react-icons/gr';
 import { IoDocumentsOutline } from 'react-icons/io5';
 import { LiaCommentsSolid } from 'react-icons/lia';
 import { MdOutlinePassword } from 'react-icons/md';
+import { IconType } from '../types';
 
-const IconRenderHandler = ({icon}: {icon: iconType}) => {
+const IconRenderHandler = ({icon}: {icon: IconType}) => {
 	if (icon === 'delete') {
 		return <FaTrash />;
 	}
