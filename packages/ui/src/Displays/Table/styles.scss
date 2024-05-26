@@ -1,0 +1,73 @@
+@use '@repo/styles/layout';
+@use '@repo/styles/colors';
+@use '@repo/styles/sizes';
+
+.table_container {
+    width: 100%;
+    height: auto;
+    .header {
+        padding: map-get($map: sizes.$padding, $key: 'md' );
+    }
+    .sortable {
+        @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$md);
+        cursor: pointer;
+    }
+    
+    table {
+        // border: 1px solid colors.$lightgrey;
+        // border: 1px solid colors.$lightgrey;
+        // border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        border-spacing: 0px;
+    }
+    tbody {
+        // border-bottom: 1px solid colors.$lightgrey;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 500;
+        font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    }
+        
+    th {
+        font-family: Roboto, sans-serif;
+        font-size: map-get($map: sizes.$font_size, $key: 'md' );
+        font-weight: 600;
+        text-align: left;
+        border-bottom: 1px solid colors.$lightgrey;
+        // border-right: 1px solid colors.$lightgrey;
+        padding: map-get($map: sizes.$padding, $key: 'sm' );
+    }
+    th:last-child {
+        border-right: none;
+    }
+    tr {
+        font-family: 'Open Sans', sans-serif;
+        font-size: sizes.$sm;
+        td {
+            border-bottom: 1px solid colors.$lightgrey;
+        }
+    }
+    td {
+        padding: map-get($map: sizes.$padding, $key: 'sm' );
+        // border-bottom: 1px solid colors.$lightgrey;
+        // border-right: 1px solid colors.$lightgrey;
+    }
+    
+    td:last-child {
+        border-right: none;
+    }
+    tr:last-child {
+        td {
+            border-bottom: none;
+        }
+    }
+    tfoot {
+        color: colors.$lightgrey;
+    }
+    
+    tfoot th {
+        font-weight: normal;
+    }
+    
+}

@@ -4,6 +4,10 @@ module.exports = {
   ignorePatterns: ["apps/**", "packages/**"],
   extends: ["@repo/eslint-config/library.js", "turbo"],
   parser: "@typescript-eslint/parser",
+  rules: {
+		'global-require': 0,
+
+  },
   parserOptions: {
     project: true,
   },

@@ -3,86 +3,69 @@ import '@repo/styles/global';
 import '@repo/styles/typography';
 import '@repo/styles/buttons';
 import styles from './Layout.module.scss';
+import { serverClient } from "@repo/provider";
+import { gql, ApolloClient, OperationVariables } from "@apollo/client";
+
+const query = gql` 
+    query getProjects($id: ID!) {
+    objects {
+        getProjects(objectId: $id) {
+            objectId
+			content
+        }
+    }
+}`
 
 import LayoutContext from './LayoutContext';
 import Logo from './components/Logo';
 import './styles.scss';
 import Sidebar from './content/Sidebar';
+import { cookies } from 'next/headers'
+
 
 export const metadata = {
 	title: 'Hausmeister App',
 	description: 'PH'
 };
 
+interface GetProjectsResponse {
+	objects: {
+		getProjects: {
+			objectId: string;
+			content: object[]
+		};
+	};
+  };
 
-const menu_items = [
-	{
-		label: 'Dashboard',
-		value: '/',
-		icon: 'dashboard',
-		sub_menu: []
-	},{
-		label: 'Objekte',
-		value: '/objects',
-		icon: 'objects',
-		sub_menu: []
-	},{
-		label: 'Aufgaben',
-		value: '/tasks',
-		icon: 'tasks',
-		sub_menu: []
-	},{
-		label: 'Tickets',
-		value: '/tickets',
-		icon: 'tickets',
-		sub_menu: []
-	},{
-		label: 'Touren',
-		value: '/tours',
-		icon: 'tours',
-		sub_menu: [],
-		disabled: true
-	},{
-		label: 'Mitarbeiter',
-		value: '/staff',
-		icon: 'staff',
-		sub_menu: []
-	},{
-		label: 'Einstellungen',
-		value: '/settings',
-		icon: 'settings',
-		sub_menu: [{
-			label: 'Leistungsverzeichnisse',
-			value: '/services',
-			icon: 'services',
-			disabled: true
-		},{
-			label: 'Müll',
-			value: '/waste',
-			icon: 'waste',
-			disabled: true
-		},{
-			label: 'Nutzerverwaltung',
-			value: '/user_management',
-			icon: 'users'
-		}]
-	}
-];
+
+const getData = async () => {
+	const projectId = cookies().get('cms_project')?.value || 'LQETAMXFns';
+	console.log(process.env.SASHIDO_APP_ID);
+	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
+  
+	console.log(projectId, 'projectId');
+	
+	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'LQETAMXFns' } });
+  
+	return data;
+  }
 
 export default async function  RootLayout({
 	children
 }: {
 	children: React.ReactNode,
 }) {
+	const data = await getData()
+  console.log(data, 'pageData');
 	return (
 		<html lang="de">
 			<body>
 				<div className={styles.layout}>
 					<div className={styles.sidebar_container}>
 						<div className={styles.sidebar_header}>
-							<Logo />
+							<Logo  />
 						</div>
-						<Sidebar menuItems={menu_items} />
+						<Sidebar menuItems={data.objects.getProjects.content} />
 					</div >
 					<LayoutContext>
 						<div className={styles.main_content}>

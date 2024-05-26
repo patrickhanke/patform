@@ -1,0 +1,70 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/sizes';
+@use '@repo/styles/layout';
+
+.overlay_container {
+    background-color: rgba(0,0,0, 0.1);
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+.animate {
+    animation-duration: .4s;
+    animation-delay: 0s;
+    animation-name: modal-animate;
+    animation-fill-mode: forwards;
+  }
+
+@keyframes modal-animate{
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.modal_container {
+    @include layout.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: 0);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    max-height: 95%;
+    width: auto;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
+    min-width: 360px;
+    min-height: 180px;
+    max-width: 960px;
+    overflow: visible;
+    background-color: colors.$white;
+    z-index: 6;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'lg' );
+    border: 1px solid colors.$grey;
+};
+
+.modal_header {
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    border-bottom: 1px solid colors.$grey;
+}
+
+.modal_content {
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    // overflow-y: auto;
+    overflow: visible;
+    flex: 0 1;
+}
+
+.modal_footer {
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-end, $gap: sizes.$lg);
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    background-color: colors.$light;
+    border-top: 1px solid colors.$grey;
+}
+
