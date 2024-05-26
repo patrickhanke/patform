@@ -5,27 +5,11 @@ import '@repo/styles/buttons';
 import styles from './Layout.module.scss';
 import { serverClient } from "@repo/provider";
 import { gql, ApolloClient, OperationVariables } from "@apollo/client";
-
-const query = gql` 
-    query getProjects($id: ID!) {
-    objects {
-        getProjects(objectId: $id) {
-            objectId
-			content
-			logo {
-				name
-				url
-			}
-        }
-    }
-}`
-
 import LayoutContext from './LayoutContext';
 import Logo from './components/Logo';
 import './styles.scss';
 import Sidebar from './content/Sidebar';
 import { cookies } from 'next/headers'
-
 
 export const metadata = {
 	title: 'Hausmeister App',
@@ -34,7 +18,7 @@ export const metadata = {
 
 interface GetProjectsResponse {
 	objects: {
-		getProjects: {
+		getProject: {
 			objectId: string,
 			content: { label: string; value: string; icon: string; }[],
 			logo: {
@@ -43,17 +27,31 @@ interface GetProjectsResponse {
 			}
 		};
 	};
-  };
+};
 
+const query = gql` 
+    query getProjects($id: ID!) {
+    	objects {
+			getProject(objectId: $id) {
+				objectId
+				content
+				logo {
+					name
+					url
+				}
+			}
+		}
+	}
+`
 
 const getData = async () => {
-	const projectId = cookies().get('cms_project')?.value || 'LQETAMXFns';
+	const projectId = cookies().get('cms_project')?.value || 'lt4HonzqK3';
 	console.log(process.env.SASHIDO_APP_ID);
 	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
   
 	console.log(projectId, 'projectId');
 	
-	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'LQETAMXFns' } });
+	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'lt4HonzqK3' } });
   
 	return data;
   }
@@ -71,9 +69,9 @@ export default async function  RootLayout({
 				<div className={styles.layout}>
 					<div className={styles.sidebar_container}>
 						<div className={styles.sidebar_header}>
-							<Logo logo={data.objects.getProjects.logo}  />
+							<Logo logo={data.objects.getProject.logo}  />
 						</div>
-						<Sidebar menuItems={data.objects.getProjects.content} />
+						<Sidebar menuItems={data.objects.getProject.content} />
 					</div >
 					<LayoutContext>
 						<div className={styles.main_content}>

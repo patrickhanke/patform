@@ -1,14 +1,14 @@
 const { gql } =  require( '@apollo/client');
 
 const GET_FORM_DATA = gql`
-    query formData {
+    query formData($id: ContentPointer!) {
         objects {
-            findForms (where: {type: {_eq: "contact"}}) {
+            findData (where: {content: {_eq: $id}}) {
                 results {
                     objectId
+                    createdAt
                     data
                     type
-                    createdAt
                 }
             }
         }
