@@ -12,6 +12,10 @@ const query = gql`
         getProjects(objectId: $id) {
             objectId
 			content
+			logo {
+				name
+				url
+			}
         }
     }
 }`
@@ -31,8 +35,12 @@ export const metadata = {
 interface GetProjectsResponse {
 	objects: {
 		getProjects: {
-			objectId: string;
-			content: object[]
+			objectId: string,
+			content: { label: string; value: string; icon: string; }[],
+			logo: {
+				name: string, 
+				url: string
+			}
 		};
 	};
   };
@@ -63,7 +71,7 @@ export default async function  RootLayout({
 				<div className={styles.layout}>
 					<div className={styles.sidebar_container}>
 						<div className={styles.sidebar_header}>
-							<Logo  />
+							<Logo logo={data.objects.getProjects.logo}  />
 						</div>
 						<Sidebar menuItems={data.objects.getProjects.content} />
 					</div >

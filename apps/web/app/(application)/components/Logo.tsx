@@ -2,13 +2,13 @@
 
 import Image from 'next/image';
 import React from 'react';
-import logo from  '../images/logo_hgs_wide.png';
+import someLogo from  '../images/logo_hgs_wide.png';
 
-const Logo = () => {
+const Logo = ({logo} : {logo?: {name: string, url: string}}) => {
 	return (
 		<Image
-			src={logo}
-			// width={135}
+			src={logo ? logo.url : someLogo}
+			width={21}
 			height={21}
 			alt="Hausmeister App"
 		/>

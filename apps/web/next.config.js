@@ -9,4 +9,14 @@ module.exports = {
     SASHIDO_FILE_URL: process.env.SASHIDO_FILE_URL,
     SASHIDO_CLIENT_KEY: process.env.SASHIDO_CLIENT_KEY,
   },
+  images: {
+		remotePatterns:[
+			{ 
+				protocol: 'https',
+				hostname: 'uefbsna5l6ijyse42wipewpjwu804d.files-sashido.cloud',
+				port: '',
+				pathname: '/**'
+			}
+		]
+	}
 };
