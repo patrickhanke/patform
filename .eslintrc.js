@@ -6,7 +6,6 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   rules: {
 		'global-require': 0,
-
   },
   parserOptions: {
     project: true,

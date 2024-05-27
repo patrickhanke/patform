@@ -2,6 +2,18 @@
 @use '@repo/styles/colors';
 @use '@repo/styles/layout';
 
+
+.nav_container_underline {
+    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between);
+    width: 100%;
+    padding-bottom: 0;
+    position: relative;
+    box-sizing: border-box;
+    border-bottom: 1px solid colors.$grey;
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    padding-bottom: 0;
+};
+
 .site_navigation_container {
     @include layout.flexbox($direction: row, $align: flex-end, $justify: flex-start);
     width: auto;

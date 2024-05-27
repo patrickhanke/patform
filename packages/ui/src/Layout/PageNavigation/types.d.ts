@@ -6,7 +6,7 @@ export type SiteState = {
 }
 
 
-export type SiteNavigation = {
+export type PageNavigationProps = {
     siteStates,
     activeState: SiteState,
     onClick: Dispatch<SetStateAction<{ value: string; label: string; }>>

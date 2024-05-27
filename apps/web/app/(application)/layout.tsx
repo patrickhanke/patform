@@ -3,13 +3,13 @@ import '@repo/styles/global';
 import '@repo/styles/typography';
 import '@repo/styles/buttons';
 import styles from './Layout.module.scss';
-import { serverClient } from "@repo/provider";
-import { gql, ApolloClient, OperationVariables } from "@apollo/client";
+import { serverClient } from '@repo/provider';
+import { gql, ApolloClient, OperationVariables } from '@apollo/client';
 import LayoutContext from './LayoutContext';
 import Logo from './components/Logo';
 import './styles.scss';
 import Sidebar from './content/Sidebar';
-import { cookies } from 'next/headers'
+import { cookies } from 'next/headers';
 
 export const metadata = {
 	title: 'Hausmeister App',
@@ -42,27 +42,23 @@ const query = gql`
 			}
 		}
 	}
-`
+`;
 
 const getData = async () => {
 	const projectId = cookies().get('cms_project')?.value || 'lt4HonzqK3';
-	console.log(process.env.SASHIDO_APP_ID);
 	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
-  
-	console.log(projectId, 'projectId');
 	
 	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'lt4HonzqK3' } });
   
 	return data;
-  }
+};
 
 export default async function  RootLayout({
 	children
 }: {
 	children: React.ReactNode,
 }) {
-	const data = await getData()
-  console.log(data, 'pageData');
+	const data = await getData();
 	return (
 		<html lang="de">
 			<body>

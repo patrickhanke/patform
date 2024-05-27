@@ -1,13 +1,13 @@
-import { Page } from '@repo/ui'
-import { FormsOverview } from '@repo/modules'
-import React from 'react'
+import { Page } from '@repo/ui';
+import { FormsOverview } from '@repo/modules';
+import React from 'react';
 
 const page = () => {
-  return (
-    <Page title='Form'>
-        <FormsOverview />
-    </Page>
-  )
-}
+	return (
+		<Page title='Form'>
+			<FormsOverview />
+		</Page>
+	);
+};
 
-export default page 
+export default page; 
