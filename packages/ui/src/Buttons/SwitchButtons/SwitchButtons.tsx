@@ -3,10 +3,12 @@
 import './styles.scss';
 import { SwitchButtonsProps } from './types';
 
-const SwitchButtons = ({buttonStates, currentStates, changeHandler, underlineButtons = false}: SwitchButtonsProps) => {
+const SwitchButtons = ({buttonStates, currentStates, changeHandler, underlineButtons}: SwitchButtonsProps) => {
+	console.log(underlineButtons);
+	
+	
 	return (
 		<div className={'buttons_container'} data-underline_buttons={underlineButtons}>
-
 			{buttonStates.map((button, index) => 
 				<button
 					key={button.value}

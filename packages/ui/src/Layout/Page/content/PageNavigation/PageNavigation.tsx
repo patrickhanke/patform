@@ -10,6 +10,7 @@ const PageNavigation = ({siteStates = [], activeState, onClick}: PageNavigationP
 					buttonStates={siteStates}
 					currentStates={activeState}
 					changeHandler={value => onClick(value)}
+					underlineButtons={true}
 				/>
 			</div>
 		</div>

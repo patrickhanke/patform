@@ -3,3 +3,9 @@ export type Params = {
     form_id: string,
     code: string
 }
+
+export type SiteState = {
+    value: string,
+    label: string
+    disbaled?: boolean
+}

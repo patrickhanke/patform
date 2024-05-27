@@ -2,7 +2,6 @@
 @use '@repo/styles/colors';
 @use '@repo/styles/layout';
 
-
 .nav_container_underline {
     @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between);
     width: 100%;
@@ -19,11 +18,10 @@
     width: auto;
     position: relative;
     z-index: 4;
-    margin-top: sizes.$md;
     width: 100%;
     left: 0;
     height: 36px;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    padding-bottom: 0;
 }
 
 .navigation_element_container {
@@ -48,5 +46,4 @@
     background-color: colors.$primary;
     color: colors.$light;
     // border: .5px solid colors.$secondary;
-
 }

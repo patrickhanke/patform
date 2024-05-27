@@ -12,15 +12,16 @@ const SiteHeader = ({
 	hasSiteNavigation = false,
 	isSubHeader = false,
 	emptyContent=false
+
 }: SiteHeaderComponent) => {
 
 	return !isSubHeader ? 
-		<div className={"main_container"} data-hassitenav={hasSiteNavigation} >
-			<div className={"siteheader_container"}>
+		<div className={'main_container'} data-hassitenav={hasSiteNavigation} >
+			<div className={'siteheader_container'}>
 				<h1>
 					{title}
 				</h1>
-				<div className={"siteheader_right_container"}>
+				<div className={'siteheader_right_container'}>
 					<div className='vertical_line' />
 					<CalendarWeek />
 					<div className='vertical_line' />
@@ -29,23 +30,23 @@ const SiteHeader = ({
 			</div>
 		</div>
 		:
-		<div className={"siteheader_content_container"}>
+		<div className={'siteheader_content_container'}>
 			{siteHeaderContent || emptyContent && 
 				<div>
 					{siteHeaderContent}
 				</div> 
 			}
-			<div className={"siteheader_button_container"} >
+			<div className={'siteheader_button_container'} >
 				{isArray(siteHeaderButtons) && siteHeaderButtons?.length > 0 && siteHeaderButtons.map(button => (
 					<button
 						key={button.text}
 						data-color={button.color || 'primary'}
-						className={clsx('border_button', 'md', 'dark', "siteheader_createbutton")}
+						className={clsx('border_button', 'md', 'dark', 'siteheader_createbutton')}
 						onClick={() => button.onClick()}
 						disabled={button.disabled}
 					>
-						{button.is_add_button && <div className={"add_icon"}><Plus strokeWidth={1} size={12} /></div> }
-						{button.is_reset_button && <div className={"add_icon"}><RotateCcw strokeWidth={1} size={12} /></div> }
+						{button.is_add_button && <div className={'add_icon'}><Plus strokeWidth={1} size={12} /></div> }
+						{button.is_reset_button && <div className={'add_icon'}><RotateCcw strokeWidth={1} size={12} /></div> }
 						<span>{`${button.text}`}</span>
 					</button> 
 				))}

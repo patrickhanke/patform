@@ -1,6 +1,12 @@
+type ButtonState = {
+    value: string,
+    label: string,
+    disabled?: boolean
+};
+
 export type SwitchButtonsProps = {
-    buttonStates: Array<{value: string, label: string, disabled?: boolean} & any>,
-    currentStates: {value: string, label: string},
-    changeHandler: (T: {value: string, label: string, disabled?: boolean}) => void,
+    buttonStates: Array<ButtonState & any>,
+    currentStates: ButtonState,
+    changeHandler: (T: ButtonState) => void,
     underlineButtons?: boolean
-}
+};

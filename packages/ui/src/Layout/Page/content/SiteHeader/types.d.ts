@@ -1,3 +1,18 @@
+import { ApplicationTypes } from '@repo/types';
+import { Dispatch, SetStateAction } from 'react';
+
+export type SiteState = {
+    value: string,
+    label: string,
+    disabled?: boolean
+}
+
+export type PageNavigationProps = {
+    siteStates,
+    activeState: SiteState,
+    onClick: Dispatch<SetStateAction<ApplicationTypes.SiteState>>
+}
+
 export type SiteHeaderButton = {
     text: string,
     onClick: () => void,
@@ -11,15 +26,6 @@ export type SiteHeaderButtons = SiteHeaderButton[]
 
 type SiteHeaderContent =  React.JSX.Element;
 
-export type item = {
-    value: string
-    label: string,
-    disabled?: boolean
-}
-
-export type items = item[]
-
-
 export type SiteHeaderComponent = {
     title?: string, 
     siteHeaderButtons?: SiteHeaderButtons,
@@ -27,9 +33,6 @@ export type SiteHeaderComponent = {
     hasSiteNavigation?: boolean,
     isSubHeader?: boolean,
     emptyContent?: boolean,
-    navItems?: item[],
-    navCurrentItem?: item,
-    navOnClick?: (t: item) => void,
     refetch?: () => void
 }
 
