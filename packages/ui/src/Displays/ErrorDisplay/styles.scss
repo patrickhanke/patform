@@ -1,0 +1,16 @@
+@use '@repo/styles/sizes';
+@use '@repo/styles/colors';
+
+.error_container {
+    // min-height: 24px;
+    // margin-top: sizes.$xs;
+    // margin-bottom: sizes.$xs;
+    vertical-align: middle;
+}
+
+.error_message {
+    color: #cc0033;
+    font-size: map-get($map: sizes.$font_size, $key: 'xs' );
+	font-weight: 500;
+	font-family: Montserrat, sans-serif;
+}

@@ -1,5 +1,5 @@
 import { Filter } from '@repo/types';
-export type GalleryOverviewProps = {
+export type ImagesOverviewProps = {
     projectId: string;
 };
 

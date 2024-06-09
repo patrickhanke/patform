@@ -1,2 +1,2 @@
 export * from './FormModule';
-export * from './Gallery';
+export * from './Images';

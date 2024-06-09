@@ -1,10 +1,13 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import {Page, Table}  from '@repo/ui';
-import { GalleryOverviewProps } from './types';
+import {Modal, Page, Table}  from '@repo/ui';
+import { ImagesOverviewProps } from './types';
 import useGetImages from './hooks/useGetImages';
 import { PageState } from '@repo/types';
+import { UploadDropzone } from '@bytescale/upload-widget-react';
+import { ImageUploader } from '../ImageUploader';
+
 
 const pageStates: PageState[] = [
     {value: 'all', label: 'Alle'},
@@ -12,7 +15,8 @@ const pageStates: PageState[] = [
     {value: 'inactive', label: 'Inaktiv'},
 ]
 
-const GalleryOverview = ({projectId}: GalleryOverviewProps) => {
+const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
+    const [uploadImages, setUploadImages] = useState(false)
     const [activeState, setActiveState] = useState(pageStates[0])
     const [filters, setFilters] = useState([])
     const {images} = useGetImages({projectId, filters})
@@ -26,7 +30,7 @@ const GalleryOverview = ({projectId}: GalleryOverviewProps) => {
     <Page 
         title='Bilder'
         pageHeaderContent={<p>Text</p>}
-        pageHeaderButtons={[{text: 'Neues Bild', onClick: () => {}}]}
+        pageHeaderButtons={[{text: 'Bilder hochladen', onClick: () => setUploadImages(true)}]}
         hasPageNavigation={true}
         emptyContent={true}
         pageStates={pageStates}
@@ -35,11 +39,20 @@ const GalleryOverview = ({projectId}: GalleryOverviewProps) => {
     >
         <h1>Gallerie</h1>
         <Table 
-            columns={columns}
+            columns={images}
             data={[]}
             />
+            <Modal 
+                isOpen={uploadImages}
+                cancelButtonHandler={() => setUploadImages(false)}
+                confirmButtonHandler={() => setUploadImages(false)}
+                header='Upload Images'
+
+            >
+                <ImageUploader filename='123' />
+            </Modal>
     </Page>
   )
 }
 
-export default GalleryOverview
+export default ImagesOverview

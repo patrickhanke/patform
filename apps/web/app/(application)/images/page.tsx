@@ -1,1 +1,1 @@
-export {GalleryOverview as default} from '@repo/modules';
+export {ImagesOverview as default} from '@repo/modules';

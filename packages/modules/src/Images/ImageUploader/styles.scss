@@ -1,0 +1,77 @@
+@use '@repo/styles/buttons';
+@use '@repo/styles/layout';
+@use '@repo/styles/colors';
+@use '@repo/styles/sizes';
+
+.upload_container {
+    @include layout.flexbox($direction: column, $align: flex-star, $gap: 0 );
+    width: 100%;
+    height: fit-content;
+    position: relative;
+}
+
+
+.upload_zone {
+    min-height: 180px; 
+    .upload-widget__root {
+        .upload-widget {
+            .upload-widget__controls {
+                @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 10px);
+                .upload-widget__controls__button {
+                    @extend .full_button;
+                }
+            }
+            .btn {
+                @include buttons.full_button_mixin('md', 'primary');
+                line-height: 1;
+            }
+            .upload-widget__internal {
+                .upload-widget__internal__children {
+                    .upload-widget__main-screen{ 
+                        .upload-widget__controls{
+                            @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 10px);
+                            .upload-widget__controls__button {
+                                @extend .full_button;
+                            }
+                        }
+                    }
+                    label {
+                        color: colors.$white;
+                        // padding: map-get($map: sizes.$padding, $key: 'md' );
+                    }
+                    .upload-widget__image-editor{ 
+                        .upload-widget__controls--space {
+                            @include layout.button_container
+                        }
+                    }
+                }
+            }
+            // .upload-widget__internal__children {
+            //     .upload-widget__main-screen{ 
+            //         background-color: red;
+            //         .upload-widget__controls{
+            //             @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 10px);
+            //             .upload-widget__controls__button {
+            //                 @extend .full_button;
+            //             }
+            //         }
+            //     }
+            //     label {
+            //         color: colors.$white;
+            //         padding: map-get($map: sizes.$padding, $key: 'md' );
+            //     }
+            //     .upload-widget__image-editor{ 
+            //         .upload-widget__controls--space {
+            //             @include layout.button_container
+            //         }
+            //     }
+            // }
+        }
+    }
+   
+   
+}
+
+.image_uploader_display_container {
+    @include layout.flexbox($direction: column, $align: stretch);
+}

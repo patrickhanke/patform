@@ -18,3 +18,9 @@ export type Filter = {
     operator: FilterOperator,
     id: string
 }
+
+export type ErrorMessage = {
+    id: string,
+    key: string,
+    message: string
+}

@@ -9,6 +9,10 @@
   "scripts": {
     "lint": "eslint . --max-warnings 0"
   },
+  "dependencies": {
+    "@bytescale/upload-widget-react": "^4.19.0",
+    "@bytescale/sdk": "^3.39.0"
+  },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
