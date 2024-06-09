@@ -1,0 +1,1 @@
+export {GalleryOverview as default} from '@repo/modules';

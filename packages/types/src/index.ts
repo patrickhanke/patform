@@ -1,1 +1,2 @@
-export * as ApplicationTypes from './Application';
+export * from './Application';
+export * from './User';

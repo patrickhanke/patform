@@ -4,8 +4,17 @@ export type Params = {
     code: string
 }
 
-export type SiteState = {
+export type PageState = {
     value: string,
-    label: string
+    label: string,
     disbaled?: boolean
+}
+
+export type FilterOperator = '_eq' | '_ne' | '_lt' | '_lte' | '_gt' | '_gte' | '_in' | '_nin' 
+
+export type Filter = {
+    key: string,
+    value: string | Array<string | number>,
+    operator: FilterOperator,
+    id: string
 }

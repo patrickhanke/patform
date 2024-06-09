@@ -10,6 +10,7 @@ import Logo from './components/Logo';
 import './styles.scss';
 import Sidebar from './content/Sidebar';
 import { cookies } from 'next/headers';
+import SiteHeader from './content/SiteHeader';
 
 export const metadata = {
 	title: 'Hausmeister App',
@@ -72,6 +73,7 @@ export default async function  RootLayout({
 					<LayoutContext>
 						<div className={styles.main_content}>
 							<div className={styles.content_container}>
+								<SiteHeader title='Nocogirls' />
 								<div className={styles.content}>
 									{children}
 								</div>

@@ -1,4 +1,4 @@
-import SiteHeader from './content/SiteHeader';
+import {PageHeader} from './content/PageHeader';
 import { PageProps } from './types';
 import './styles.scss';
 import { PageNavigation } from './content/PageNavigation';
@@ -6,31 +6,30 @@ import { PageNavigation } from './content/PageNavigation';
 const Page = ({
 	title, 
 	children,
-	siteHeaderContent, 
-	siteHeaderButtons, 
-	siteStates = [], 
+	pageHeaderContent, 
+	pageHeaderButtons, 
+	pageStates = [], 
 	activeState, 
 	navOnClick,
 	refetch,
 	emptyContent=false
-
 }: PageProps) => {
 	return (
 		<>
-			<SiteHeader 
-				title={title} 
-				siteHeaderContent={siteHeaderContent} 
-				siteHeaderButtons={siteHeaderButtons}
-				emptyContent={emptyContent}
-				refetch={refetch}
-			/>
 			{navOnClick && activeState && (
 				<PageNavigation 
-					siteStates={siteStates}
+					siteStates={pageStates}
 					activeState={activeState}
 					onClick={navOnClick}
 				/>
 			)}
+			<PageHeader 
+				title={title} 
+				pageHeaderContent={pageHeaderContent} 
+				pageHeaderButtons={pageHeaderButtons}
+				emptyContent={emptyContent}
+				refetch={refetch}
+			/>
 			<div className='page-content'>
 				{children}
 			</div>

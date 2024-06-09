@@ -1,4 +1,11 @@
 import { PageState } from '@repo/types';
+import { Dispatch, SetStateAction } from 'react';
+
+export type PageNavigationProps = {
+    pageState: PageState[],
+    activeState: PageState,
+    onClick: Dispatch<SetStateAction<PageState>>
+}
 
 export type PageHeaderButton = {
     text: string,
@@ -13,17 +20,18 @@ export type PageHeaderButtons = PageHeaderButton[]
 
 type PageHeaderContent =  React.JSX.Element;
 
-
-export type PageProps = {
-    children: React.ReactNode,
+export type PageHeaderComponent = {
     title?: string, 
     pageHeaderButtons?: PageHeaderButtons,
     pageHeaderContent?: PageHeaderContent, 
-    hasPageNavigation?: boolean,
+    hasSiteNavigation?: boolean,
     isSubHeader?: boolean,
     emptyContent?: boolean,
-    pageStates?: PageState[],
-    activeState?: PageState,
-    navOnClick?: Dispatch<SetStateAction<PageState>>,
     refetch?: () => void
-};
+}
+
+export type PageNavigationComponent = {
+    items: PageHeaderComponent['navItems'],
+    currentItem: PageHeaderComponent['navCurrentItem'],
+    onClick: PageHeaderComponent['navOnClick']
+}
