@@ -1,12 +1,12 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { ImageDisplayProps } from './types';
 import { IconButton } from '@repo/ui';
 import deleteImage from './functions/deleteImage';
-import * as Bytescale from '@bytescale/sdk';
 import './styles.scss';
 import { Image } from '@repo/types';
+import getImageUrl from './functions/getImageUrl';
 
 const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 	const [showDelete, setShowDelete] = useState(false);
@@ -17,9 +17,7 @@ const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 		deleteImage({
 			accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
 			apiKey: process.env.BYTESCALE_SECRET_KEY as string,
-			querystring: {
-				filePath: image
-			}
+			filePath: image.filePath
           
 		}).then(
 			error => console.error(error)
@@ -30,23 +28,6 @@ const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 		setShowDelete(false);
 		setLoading(false);
 	};
-
-	const getImageUrl = useCallback(() =>{
-		const url = Bytescale.UrlBuilder.url({
-			accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
-			filePath: image,
-			options: {
-				transformation: 'image',
-				transformationParams: {
-					'w': 80,
-					'h': 45
-				}
-			}
-		});
-
-		return url;
-
-	}, [image]);
 
 	return (
 		<div className={'image_container'}>
@@ -63,9 +44,9 @@ const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 				:
 				<>
 					<div className="button_container">
-						<img src={getImageUrl()} alt={image} />
+						<img src={getImageUrl({filePath: image.filePath})} alt={image.name} />
 						<p>
-							{image}
+							{image.name}
 						</p>
 					</div>
 					<div>

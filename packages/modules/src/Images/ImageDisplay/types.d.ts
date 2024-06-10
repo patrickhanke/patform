@@ -1,6 +1,12 @@
-import { ApplicationTypes } from '@/types';
+import { Image } from "@repo/types"
 
 export type ImageDisplayProps = {
-    image: ApplicationTypes.Image,
-    deleteHandler?: (I: ApplicationTypes.Image) => void
+    image: Image,
+    deleteHandler?: (I: Image) => void
+}
+
+export type DeleteImageHandlerProps = {
+    accountId: string,
+    apiKey: string,
+    filePath: string
 }

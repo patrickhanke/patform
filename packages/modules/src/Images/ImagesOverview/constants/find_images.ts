@@ -8,7 +8,7 @@ export const find_images = gql`
                     objectId
                     name
                     description
-                    url
+                    filePath
                     person
                 }
             }

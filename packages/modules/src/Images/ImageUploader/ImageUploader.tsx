@@ -1,38 +1,33 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import './styles.scss';
-import {Image} from '@repo/types'
 import { ErrorDisplay } from '@repo/ui';
 import { UploadDropzone } from '@bytescale/upload-widget-react';
-import {ImageDisplay} from '../ImageDisplay';
+import {ImageDisplay, getImageUrl} from '../ImageDisplay';
+import { v4 as uuidv4 } from 'uuid';
+import { ImageUplaoderProps } from './types';
 
 const ImageUploader = ({
-	filename, 
-	previewImage,
+	previewImages,
 	onChange,
 	label,
 	path,
 	maxFileCount
-} : {
-	filename: string,
-	previewImage?: Image | Image[],
-	onChange: (F: Image[] ) => void,
-	label: string,
-	path: string,
-	maxFileCount?: number
-}) => {
+}: ImageUplaoderProps ) => {
 	console.log(process.env.BYTESCALE_PUBLIC_KEY);
+	console.log(path);
 	
 	const options  = useMemo(() => { 
 		
 		return ({
-			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string, // This is your API key.
+			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string, 
 			maxFileCount: maxFileCount || 10,
-			showFinishButton: true, // Note: You must use 'onUpdate' if you set 'showFinishButton: false' (default).
-			filename: filename,
+			showFinishButton: false, 
+			filename: `${path}_${uuidv4()}`,
+
 			path: {
 				fileNameFallback: `image_${new Date()}.jpg`,
 				fileNameVariablesEnabled: true,
-				folderPath: `/HGS/${path}`,
+				folderPath: `/CMS/${path}/images`,
 				folderPathVariablesEnabled: true
 			},
 			showRemoveButton: true,
@@ -52,21 +47,18 @@ const ImageUploader = ({
 		});
 	}, []);
 
-	const previewImages =  useMemo(() => {
-		if (previewImage) {
-			if (Array.isArray(previewImage)) {
-				return( 
-					<div className='image_uploader_display_container'>
-						{previewImage.map((image, index) => (
-							<ImageDisplay
-								key={index}
-								image={image}
-							/>
-						))}
-					</div>
-				);
-			}
-			return <ImageDisplay image={previewImage} />;
+	const renderPrevieImages =  useMemo(() => {
+		if (previewImages && Array.isArray(previewImages)) {
+			return( 
+				<div className='image_uploader_display_container'>
+					{previewImages.map((image, index) => (
+						<img
+							key={index}
+							src={getImageUrl({filePath: image})}
+						/>
+					))}
+				</div>
+			);
 		}
 	
 	}, []);
@@ -74,11 +66,11 @@ const ImageUploader = ({
 	return (
 		<div className={'upload_container'}>
 			<label htmlFor="logo">{label}</label>
-			{previewImage && previewImages }
+			{renderPrevieImages && renderPrevieImages }
 			<UploadDropzone
 				options={options}
-				onComplete={( uploadedFiles ) => onChange(uploadedFiles.map((file) => file.filePath)) as unknown as (F:  Image[] ) => void }
-				onUpdate={files => console.log({files})}
+				onUpdate={( files ) => onChange(files?.uploadedFiles.map((file) => file.filePath)) as unknown as (F:  string[] ) => void }
+				// onUpdate={files => console.log({files})}
 				width="100%"
 				height="fit-content"
 				className={'upload_zone'}

@@ -1,4 +1,4 @@
-import { Filter } from '@repo/types';
+import { Filter, Image } from '@repo/types';
 export type ImagesOverviewProps = {
     projectId: string;
 };
@@ -18,6 +18,13 @@ export type UseGetImagesHook = ({
     filters: FilterArray, 
 }) => ({
     loading: boolean,
-    images?: TicketTypes.Ticket[],
+    images?: Image[],
     refetch: () => void
 });
+
+export type DeleteModalProps = {
+    images: string[],
+    isOpen: boolean,
+    confirmButtonHandler: () => void,
+    header: 'Bilder löschen'
+}

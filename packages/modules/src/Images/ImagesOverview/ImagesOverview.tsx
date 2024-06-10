@@ -1,13 +1,15 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import {Modal, Page, Table}  from '@repo/ui';
-import { ImagesOverviewProps } from './types';
+import {ColumnDef, IconButton, Modal, Page, Table}  from '@repo/ui';
+import { DeleteModalProps, ImagesOverviewProps } from './types';
 import useGetImages from './hooks/useGetImages';
-import { PageState } from '@repo/types';
-import { UploadDropzone } from '@bytescale/upload-widget-react';
-import { ImageUploader } from '../ImageUploader';
-
+import { Image, PageState } from '@repo/types';
+import { ImageUploader, useImageDataHandler } from '../ImageUploader';
+import { getImageUrl } from '../ImageDisplay';
+import deleteImageHandler from '../ImageDisplay/functions/deleteImage';
+import deleteModalInitialValues from './constants/deleteModalInitialValues';
+import { useDataHandler } from '../../../../provider/src/data';
 
 const pageStates: PageState[] = [
     {value: 'all', label: 'Alle'},
@@ -17,14 +19,78 @@ const pageStates: PageState[] = [
 
 const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
     const [uploadImages, setUploadImages] = useState(false)
+    const [newImages, setNewImages] = useState<string[]>([]);
     const [activeState, setActiveState] = useState(pageStates[0])
     const [filters, setFilters] = useState([])
-    const {images} = useGetImages({projectId, filters})
+    const {images, refetch} = useGetImages({projectId, filters})
+    const {imageUploadHandler} = useImageDataHandler(refetch, refetch);
+    const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
+    const {deleteData} = useDataHandler();
+    
     const columns = useMemo(() => [
-        {}
-    ],[])
+		{
+			accessorFn: row => <img src={getImageUrl({filePath: row.filePath})} />,
+			header: () => <span>Vorschau</span>,
+			id: 'preview',
+			cell: info => info.getValue(),
+			footer: info => info.column.id
+		},
+		{
+			accessorKey: 'name',
+			header: () => <span>Name</span>,
+			id: 'name',
+			cell: info => info.getValue(),
+			footer: info => info.column.id
+		},
+		{
+            accessorFn: row => <a href={getImageUrl({filePath: row.filePath})} target='__blank' >{getImageUrl({filePath: row.filePath})} </a> ,
+			header: () => <span>Url</span>,
+			id: 'filePath',
+			cell: info => info.getValue(),
+			footer: info => info.column.id
+		},
+		{
+			accessorFn: row => 
+				<div className='button_container'>
+                    <IconButton
+                        icon='download'
+                        isBlank
+                        isLink
+                        link ={'row.file.url'}
+                    />
+                    <IconButton
+                        icon='delete'
+                        onClick={() => setDeleteModal({
+                            images: [row.filePath],
+                            isOpen: true,
+                            confirmButtonHandler: async () => {
+                                await deleteImageHandler({
+                                    accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
+                                    apiKey: process.env.BYTESCALE_SECRET_KEY as string,
+                                    filePath: row.filePath
+                                });
+                                await deleteData({
+                                    className: 'Image',
+                                    objectId: row.objectId,
+                                })
+                                refetch();
+                                setDeleteModal({...deleteModal, isOpen: false})
+                            },
+                            header: 'Bilder löschen'
+                        })}
+                    />
+                </div>,
+			header: () => <span>Download</span>,
+			id: 'download',
+			cell: info => info.getValue(),
+			footer: info => info.column.id
+		}
+	] as ColumnDef<Image>[] , []);
 
     console.log(images);
+
+    console.log(newImages);
+    
 
   return (
     <Page 
@@ -39,18 +105,35 @@ const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
     >
         <h1>Gallerie</h1>
         <Table 
-            columns={images}
-            data={[]}
+            columns={columns}
+            data={images || []}
+        />
+        <Modal 
+            isOpen={uploadImages}
+            cancelButtonHandler={() => setUploadImages(false)}
+            confirmButtonHandler={async () =>{ 
+                await imageUploadHandler(newImages)
+                setUploadImages(false)
+            }}
+            header='Upload Images'
+        >
+            <ImageUploader 
+                label='Uploader'  
+                path={process.env.BYTESCALE_IMAGE_FOLDER as string} 
+                onChange={images => setNewImages(images)} 
             />
-            <Modal 
-                isOpen={uploadImages}
-                cancelButtonHandler={() => setUploadImages(false)}
-                confirmButtonHandler={() => setUploadImages(false)}
-                header='Upload Images'
-
-            >
-                <ImageUploader filename='123' />
-            </Modal>
+        </Modal>
+        <Modal 
+            isOpen={deleteModal.isOpen}
+            cancelButtonHandler={() => setDeleteModal(deleteModalInitialValues)}
+            confirmButtonHandler={() => {
+                deleteModal.confirmButtonHandler()
+                setDeleteModal(deleteModalInitialValues)
+            }}
+            header={deleteModal.header}
+        >
+            <p>Sind sich Sicher,dass sie das Bild löschen möchten?</p>
+        </Modal>
     </Page>
   )
 }

@@ -1,4 +1,4 @@
-import { RowSelectionState, Updater } from '@tanstack/react-table';
+import { RowSelectionState, Updater, ColumnDef } from '@tanstack/react-table';
 
 export type TableTypes = {
     data: TData[],
@@ -9,3 +9,5 @@ export type TableTypes = {
     title?: string,
     theadSpan?: number
 }
+
+export type ColumnDef<TData> = ColumnDef<TData>;
