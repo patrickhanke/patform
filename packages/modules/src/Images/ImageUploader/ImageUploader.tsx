@@ -20,6 +20,8 @@ const ImageUploader = ({
 	path: string,
 	maxFileCount?: number
 }) => {
+	console.log(process.env.BYTESCALE_PUBLIC_KEY);
+	
 	const options  = useMemo(() => { 
 		
 		return ({
