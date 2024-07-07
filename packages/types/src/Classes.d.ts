@@ -12,3 +12,10 @@ export type Category = {
     name: string,
     type: string,
 }
+
+export type Person = {
+    objectId: string,
+    name: string,
+    createdAt: string,
+    portrait: string
+}

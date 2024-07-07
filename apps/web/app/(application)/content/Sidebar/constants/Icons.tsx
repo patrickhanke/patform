@@ -1,5 +1,5 @@
 import React from 'react';
-import { AiFillCopy, AiOutlineShoppingCart } from 'react-icons/ai';
+import { AiFillCopy, AiOutlineForm, AiOutlineShoppingCart } from 'react-icons/ai';
 import { BsFillBarChartFill, BsLayoutTextWindowReverse, BsPeople } from 'react-icons/bs';
 import { FaUsers } from 'react-icons/fa';
 import {GrProjects} from 'react-icons/gr';
@@ -12,7 +12,7 @@ import { BiMessageSquareError, BiSolidTrashAlt } from 'react-icons/bi';
 import { BsHousesFill } from 'react-icons/bs';
 import { FaShuttleVan } from 'react-icons/fa';
 import { GrTask } from 'react-icons/gr';
-
+import { ImImages } from "react-icons/im";
 
 const Icons = ({icon}: {icon: string}) => {
 	if (icon === 'projects') {
@@ -25,6 +25,9 @@ const Icons = ({icon}: {icon: string}) => {
 		return <IoSettingsOutline />;
 	}
 	if (icon === 'users') {
+		return <FaUsers />;
+	}
+	if (icon === 'persons') {
 		return <FaUsers />;
 	}
 	if (icon === 'project') {
@@ -80,6 +83,12 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'services') {
 		return <MdOutlineCleaningServices />;
+	}
+	if (icon === 'images') {
+		return <ImImages />;
+	}
+	if (icon === 'forms') {
+		return <AiOutlineForm />;
 	}
 
 	return null;

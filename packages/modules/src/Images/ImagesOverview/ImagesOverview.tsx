@@ -2,7 +2,6 @@
 
 import { useContext, useMemo, useState } from 'react';
 import {ColumnDef, IconButton, Modal, Page, Table}  from '@repo/ui';
-import { DeleteModalProps, ImagesOverviewProps } from './types';
 import useGetImages from './hooks/useGetImages';
 import { Image, PageState } from '@repo/types';
 import { ImageUploader, useImageDataHandler } from '../ImageUploader';
@@ -18,13 +17,13 @@ const pageStates: PageState[] = [
     {value: 'inactive', label: 'Inaktiv'},
 ]
 
-const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
+const ImagesOverview = () => {
     const {project} = useContext(AppContext)
     const [uploadImages, setUploadImages] = useState(false)
     const [newImages, setNewImages] = useState<string[]>([]);
     const [activeState, setActiveState] = useState(pageStates[0])
     const [filters, setFilters] = useState([])
-    const {images, refetch} = useGetImages({projectId, filters})
+    const {images, refetch} = useGetImages({projectId: project.objectId, filters})
     const {imageUploadHandler} = useImageDataHandler({projectId: project.objectId,afterCancelFunction: refetch, afterSaveFunction: refetch});
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
     const {deleteData} = useDataHandler();

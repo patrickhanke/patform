@@ -16,7 +16,6 @@ const paramsHandler = (projectId: string, filters: Filter[]) => {
 		}, {});
 	}
 	return {...filterObject};
-	return {...filterObject};
 };
 
 export default paramsHandler;

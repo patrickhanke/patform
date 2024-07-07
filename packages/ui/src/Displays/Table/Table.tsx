@@ -85,12 +85,8 @@ const Table = ({data, columns}: TableTypes) => {
 	// }, [table.getState().columnFilters[0]?.id]);
 	if (!data || data.length === 0) return null;
 
-	console.log(data);
-	
-
 	return (
 		<div className='content_element'>
-
 			<div className={clsx( 'table_container')}  >
 				{/* <div className={"header"}>
 					<h2>{title}</h2>

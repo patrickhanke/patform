@@ -1,7 +1,4 @@
 import { Filter, Image } from '@repo/types';
-export type ImagesOverviewProps = {
-    projectId: string;
-};
 
 export type UseGetImagesHookReturnValue = {
     loading: boolean,
