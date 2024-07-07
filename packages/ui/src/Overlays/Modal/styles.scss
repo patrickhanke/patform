@@ -57,7 +57,7 @@
 .modal_content {
     padding: map-get($map: sizes.$padding, $key: 'md' );
     // overflow-y: auto;
-    overflow: visible;
+    overflow: auto;
     flex: 0 1;
 }
 

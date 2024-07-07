@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import './styles.scss';
 import { ErrorDisplay } from '@repo/ui';
-import { UploadDropzone } from '@bytescale/upload-widget-react';
+import { UploadDropzone, UploadDropzoneConfig } from '@bytescale/upload-widget-react';
 import {ImageDisplay, getImageUrl} from '../ImageDisplay';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageUplaoderProps } from './types';
@@ -13,17 +13,12 @@ const ImageUploader = ({
 	path,
 	maxFileCount
 }: ImageUplaoderProps ) => {
-	console.log(process.env.BYTESCALE_PUBLIC_KEY);
-	console.log(path);
-	
-	const options  = useMemo(() => { 
-		
+	const options: UploadDropzoneConfig  = useMemo(() => { 
 		return ({
 			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string, 
 			maxFileCount: maxFileCount || 10,
 			showFinishButton: false, 
 			filename: `${path}_${uuidv4()}`,
-
 			path: {
 				fileNameFallback: `image_${new Date()}.jpg`,
 				fileNameVariablesEnabled: true,
@@ -31,6 +26,7 @@ const ImageUploader = ({
 				folderPathVariablesEnabled: true
 			},
 			showRemoveButton: true,
+
 			styles: {
 				buttons: {
 					padding: '10px',

@@ -1,3 +1,13 @@
+export type Project = {
+    name: string,
+    objectId: string,
+    content: { label: string; value: string; icon: string; }[],
+    logo: {
+        name: string, 
+        url: string
+    }
+}
+
 export type Params = {
     object_id: string,
     form_id: string,

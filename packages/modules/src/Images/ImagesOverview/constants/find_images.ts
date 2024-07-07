@@ -5,6 +5,7 @@ export const find_images = gql`
         objects {
             findImage(where: $params) {
                 results {
+                    createdAt
                     objectId
                     name
                     description

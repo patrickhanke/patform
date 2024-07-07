@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import {ColumnDef, IconButton, Modal, Page, Table}  from '@repo/ui';
 import { DeleteModalProps, ImagesOverviewProps } from './types';
 import useGetImages from './hooks/useGetImages';
@@ -9,7 +9,8 @@ import { ImageUploader, useImageDataHandler } from '../ImageUploader';
 import { getImageUrl } from '../ImageDisplay';
 import deleteImageHandler from '../ImageDisplay/functions/deleteImage';
 import deleteModalInitialValues from './constants/deleteModalInitialValues';
-import { useDataHandler } from '../../../../provider/src/data';
+import { AppContext, getDateStringsFromIso, useDataHandler } from '@repo/provider';
+import EditImage from '../EditImage';
 
 const pageStates: PageState[] = [
     {value: 'all', label: 'Alle'},
@@ -18,15 +19,17 @@ const pageStates: PageState[] = [
 ]
 
 const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
+    const {project} = useContext(AppContext)
     const [uploadImages, setUploadImages] = useState(false)
     const [newImages, setNewImages] = useState<string[]>([]);
     const [activeState, setActiveState] = useState(pageStates[0])
     const [filters, setFilters] = useState([])
     const {images, refetch} = useGetImages({projectId, filters})
-    const {imageUploadHandler} = useImageDataHandler(refetch, refetch);
+    const {imageUploadHandler} = useImageDataHandler({projectId: project.objectId,afterCancelFunction: refetch, afterSaveFunction: refetch});
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
     const {deleteData} = useDataHandler();
-    
+    const [editImage, setEditImage] = useState({open: false, image: '', newImage: undefined as unknown as Image | undefined})
+
     const columns = useMemo(() => [
 		{
 			accessorFn: row => <img src={getImageUrl({filePath: row.filePath})} />,
@@ -36,10 +39,17 @@ const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
 			footer: info => info.column.id
 		},
 		{
-			accessorKey: 'name',
+			accessorKey: 'createdAt',
+			header: () => <span>Erstellt</span>,
+			id: 'erstellt',
+            cell: info => getDateStringsFromIso(info.getValue() as string).datumUhrzeit,
+			footer: info => info.column.id
+		},
+		{
+            accessorKey: 'name',
 			header: () => <span>Name</span>,
 			id: 'name',
-			cell: info => info.getValue(),
+            cell: info => info.getValue(),
 			footer: info => info.column.id
 		},
 		{
@@ -52,6 +62,10 @@ const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
 		{
 			accessorFn: row => 
 				<div className='button_container'>
+                    <IconButton
+                        icon='edit'
+                        onClick={() => setEditImage({open: true, image: row.objectId, newImage: undefined})}
+                    />
                     <IconButton
                         icon='download'
                         isBlank
@@ -80,18 +94,16 @@ const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
                         })}
                     />
                 </div>,
-			header: () => <span>Download</span>,
-			id: 'download',
+			header: () => <span>Bearbeiten</span>,
+			id: 'edit',
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		}
 	] as ColumnDef<Image>[] , []);
 
-    console.log(images);
 
-    console.log(newImages);
+    console.log(editImage);
     
-
   return (
     <Page 
         title='Bilder'
@@ -103,13 +115,13 @@ const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
         activeState={activeState}
         navOnClick={setActiveState}
     >
-        <h1>Gallerie</h1>
         <Table 
             columns={columns}
             data={images || []}
         />
         <Modal 
             isOpen={uploadImages}
+            buttonDisabled={[newImages.length === 0, false]}
             cancelButtonHandler={() => setUploadImages(false)}
             confirmButtonHandler={async () =>{ 
                 await imageUploadHandler(newImages)
@@ -120,7 +132,9 @@ const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
             <ImageUploader 
                 label='Uploader'  
                 path={process.env.BYTESCALE_IMAGE_FOLDER as string} 
-                onChange={images => setNewImages(images)} 
+                onChange={images => {
+                    setNewImages(images)
+                }} 
             />
         </Modal>
         <Modal 
@@ -132,7 +146,26 @@ const ImagesOverview = ({projectId}: ImagesOverviewProps) => {
             }}
             header={deleteModal.header}
         >
-            <p>Sind sich Sicher,dass sie das Bild löschen möchten?</p>
+            <p>Sind sich Sicher, dass sie das Bild löschen möchten?</p>
+        </Modal>
+        <Modal 
+            isOpen={editImage.open}
+            cancelButtonHandler={() => setEditImage({open: false, image: '', newImage: undefined})}
+            confirmButtonHandler={() => {
+                setEditImage({open: false, image: '', newImage: undefined})
+            }}
+            header='Bild bearbeiten'
+        >
+            <EditImage 
+            projectId={project.objectId} 
+            image={editImage.image} 
+            onChange={image => {
+                setEditImage({
+                    ...editImage,
+                    newImage: image
+                })
+            }}
+            />
         </Modal>
     </Page>
   )

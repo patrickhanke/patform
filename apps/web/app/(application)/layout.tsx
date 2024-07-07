@@ -11,22 +11,17 @@ import './styles.scss';
 import Sidebar from './content/Sidebar';
 import { cookies } from 'next/headers';
 import SiteHeader from './content/SiteHeader';
+import { Project } from '@repo/types';
 
 export const metadata = {
-	title: 'Hausmeister App',
+	title: 'CMS Nocogirls',
 	description: 'PH'
 };
 
 interface GetProjectsResponse {
 	objects: {
-		getProject: {
-			objectId: string,
-			content: { label: string; value: string; icon: string; }[],
-			logo: {
-				name: string, 
-				url: string
-			}
-		};
+		getProject: Project;
+		
 	};
 };
 
@@ -34,6 +29,7 @@ const query = gql`
     query getProjects($id: ID!) {
     	objects {
 			getProject(objectId: $id) {
+				name
 				objectId
 				content
 				logo {
@@ -46,10 +42,10 @@ const query = gql`
 `;
 
 const getData = async () => {
-	const projectId = cookies().get('cms_project')?.value || 'lt4HonzqK3';
+	const projectId = cookies().get('cms_project')?.value || 'H7eK6Fv3cn';
 	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
 	
-	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'lt4HonzqK3' } });
+	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'H7eK6Fv3cn' } });
   
 	return data;
 };
@@ -60,6 +56,9 @@ export default async function  RootLayout({
 	children: React.ReactNode,
 }) {
 	const data = await getData();
+	console.log(data);
+
+	
 	return (
 		<html lang="de">
 			<body>
@@ -70,10 +69,10 @@ export default async function  RootLayout({
 						</div>
 						<Sidebar menuItems={data.objects.getProject.content} />
 					</div >
-					<LayoutContext>
+					<LayoutContext project={data.objects.getProject}>
 						<div className={styles.main_content}>
 							<div className={styles.content_container}>
-								<SiteHeader title='Nocogirls' />
+								<SiteHeader title={data.objects.getProject.name} />
 								<div className={styles.content}>
 									{children}
 								</div>

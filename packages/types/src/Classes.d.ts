@@ -4,4 +4,11 @@ export type Image = {
     filePath: string,
     description: string, 
     persons: string[],
+    tags: Category['objectId'][]
+}
+
+export type Category = {
+    objectId: string,
+    name: string,
+    type: string,
 }

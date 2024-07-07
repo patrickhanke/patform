@@ -1,28 +1,46 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDotEnv": [".env"],
-  "globalEnv": [ 
+  "globalEnv": [
     "SASHIDO_API_URL",
     "SASHIDO_APP_ID",
     "SASHIDO_REST_KEY",
     "SASHIDO_MASTER_KEY",
     "SASHIDO_FILE_URL",
-    "SASHIDO_CLIENT_KEY"
+    "SASHIDO_CLIENT_KEY",
+    "BYTESCALE_ACCOUNT_ID",
+    "BYTESCALE_PUBLIC_KEY",
+    "BYTESCALE_SECRET_KEY"
   ],
-  "pipeline": {
+  "globalDependencies": [
+    ".env"
+  ],
+  "tasks": {
     "build": {
-      "dotEnv": [".env"],
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"],
-      "outputMode": "full"
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env"
+      ],
+      "outputLogs": "full"
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": [
+        "^lint"
+      ]
     },
     "dev": {
-      "dotEnv": [".env"],
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env"
+      ]
     }
   }
 }

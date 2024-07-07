@@ -1,29 +1,29 @@
 import { useDataHandler } from "@repo/provider";
 import { Image } from "@repo/types";
 import deleteImageHandler from "../../ImageDisplay/functions/deleteImage";
-import { UseImageDataHandler } from "../types";
+import { UseImageDataHandlerProps } from "../types";
 
-const useImageDataHandler: UseImageDataHandler = (afterSaveFunction, afterCancelFunction) => {
+const useImageDataHandler = ({projectId, afterSaveFunction, afterCancelFunction}: UseImageDataHandlerProps) => {
     const { createData } = useDataHandler();
     
-    const imageUploadHandler = (images: string[]) => {
+    const imageUploadHandler = async (images: string[]) => {
         const uploadArray = images.map(async (image) => {
             await createData({
                 className: 'Image', 
                 updateObject: { 
+                    project: {__type: 'Pointer', className: 'Project', objectId: projectId},
                     name: 'Neues Bild',
-                    filePath: image 
+                    filePath: image,
+
                 }
             });
         });
 
-        return  Promise.all(uploadArray)
+        await Promise.all(uploadArray)
 
-        // if (afterSaveFunction) {
-        //     afterSaveFunction();
-        // }
-
-        // return null;
+        if (afterSaveFunction) {
+            afterSaveFunction();
+        }
     };
 
     const imageUploadCancelHandler = async (images: string[]) => {

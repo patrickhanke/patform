@@ -1,10 +1,8 @@
-export type UseImageDataHandler = (
-    afterSaveFunction?: Function, 
-    afterCancelFunction?: Function
-) => ({
-    imageUploadHandler: (images: string[]) => Promise<void[]>,
-    imageUploadCancelHandler: (images: string[]) => Promise<void[]>
-})
+export type UseImageDataHandlerProps = {
+	projectId: string,
+	afterSaveFunction?: Function,
+	afterCancelFunction?: Function
+}
 
 export type ImageUplaoderProps = {
 	previewImages?: string[],

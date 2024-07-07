@@ -1,0 +1,16 @@
+@use '@repo/styles/sizes';
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+
+.edit_image_container {
+    @include layout.flexbox($direction: column, $align: flex-start, $gap: '12px' );
+    height: 100%;
+};
+
+.image_preview {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    overflow: hidden
+};
+
