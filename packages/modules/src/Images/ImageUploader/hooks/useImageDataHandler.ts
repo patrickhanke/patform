@@ -6,7 +6,7 @@ import { UseImageDataHandler } from "../types";
 const useImageDataHandler: UseImageDataHandler = (afterSaveFunction, afterCancelFunction) => {
     const { createData } = useDataHandler();
     
-    const imageUploadHandler = async (images: string[]) => {
+    const imageUploadHandler = (images: string[]) => {
         const uploadArray = images.map(async (image) => {
             await createData({
                 className: 'Image', 
@@ -17,13 +17,13 @@ const useImageDataHandler: UseImageDataHandler = (afterSaveFunction, afterCancel
             });
         });
 
-        await Promise.all(uploadArray)
+        return  Promise.all(uploadArray)
 
-        if (afterSaveFunction) {
-            afterSaveFunction();
-        }
+        // if (afterSaveFunction) {
+        //     afterSaveFunction();
+        // }
 
-        return null;
+        // return null;
     };
 
     const imageUploadCancelHandler = async (images: string[]) => {
