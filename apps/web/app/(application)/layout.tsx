@@ -43,6 +43,8 @@ const query = gql`
 
 const getData = async () => {
 	const projectId = cookies().get('cms_project')?.value || 'H7eK6Fv3cn';
+	console.log('projectId', projectId);
+	
 	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
 	
 	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'H7eK6Fv3cn' } });

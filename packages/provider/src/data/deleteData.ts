@@ -21,7 +21,6 @@ const deleteData = async ({
 		})
 		.catch(error => {
 			console.log(error);
-			
 		});
 };
 
