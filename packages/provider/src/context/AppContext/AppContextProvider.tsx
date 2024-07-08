@@ -13,6 +13,9 @@ const AppContextProvider = ({project, children} : {project: Project,children: Re
 		project
 	}), [pageTitle]);
 	
+	console.log(project);
+	
+
 	return (
 		<AppContext.Provider
 			value={appContextObject}

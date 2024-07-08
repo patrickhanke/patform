@@ -24,22 +24,17 @@
 
 .slidein_container {
     @include layout.flexbox($direction: column, $align: stretch, $gap: sizes.$xs);
-    width: 0;
-    top: 0;
-    right: -60px;
-    height: 100vh;
+    top: 6vh;
+    height: 88vh;
     z-index: 4;
+    width: fit-content;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
     position: fixed;
     box-sizing: border-box;
     overflow: visible;
     background-color: colors.$white;
     padding: 0;
-    visibility: hidden;
-    transition-property: visibility;
-    // transition-delay: 1s;
-    transition: width .4s ease, visibility .5s ease;
-    
+    border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
 }
 
 .is_open[data-size='small'] {
@@ -63,7 +58,7 @@
 }
 
 .slidein_header {
-    @include layout.flexbox($align: center, $justify: flex-start);
+    @include layout.flexbox($align: center, $justify: space-between, $gap: sizes.$xs);
     width: 100%;
     box-sizing: border-box;
     height: 36px;
@@ -71,11 +66,37 @@
     padding: map-get(sizes.$padding, 'sm');
 }
 
-.slidein_content {
+.slidein_main_content {
+    @include layout.flexbox($direction: row, $align: stretch, $gap: sizes.$xs);
     flex: 1 1;
     position: relative;
     box-sizing: border-box;
-    width: 100%;
+    width: fit-content;
     height: calc(100% - 42px);
     overflow:  visible;
 }
+
+.slidein_content {
+    width: 360px;
+    order:2;
+    padding: map-get(sizes.$padding, 'sm');
+}
+
+.slidein_secondary_content {
+    order: 1;
+}
+
+.slidein_secondary_content[data-open='true'] {
+    padding: map-get(sizes.$padding, 'sm');
+    border-right: 1px solid colors.$grey;
+};
+
+.slidein_footer {
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-end, $gap: sizes.$xs);
+    flex: 0 0 36px;
+    width: 100%;
+    border-top: 1px solid colors.$grey;
+    // background-color: colors.$light;
+    position: relative;
+    padding: map-get(sizes.$padding, 'sm');
+};

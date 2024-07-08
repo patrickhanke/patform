@@ -11,7 +11,7 @@ import './styles.scss';
 import Sidebar from './content/Sidebar';
 import { cookies } from 'next/headers';
 import SiteHeader from './content/SiteHeader';
-import { Project } from '@repo/types';
+import { Module, Project } from '@repo/types';
 
 export const metadata = {
 	title: 'CMS Nocogirls',
@@ -35,6 +35,16 @@ const query = gql`
 				logo {
 					name
 					url
+				}
+				modules {
+					results {
+						objectId
+						name
+						path
+						icon
+						settings
+						fields
+					}
 				}
 			}
 		}
@@ -67,7 +77,11 @@ export default async function  RootLayout({
 						<div className={styles.sidebar_header}>
 							<Logo logo={data.objects.getProject.logo}  />
 						</div>
-						<Sidebar menuItems={data.objects.getProject.content} />
+						<Sidebar menuItems={data.objects.getProject.modules.results.map((module: Module) => ({
+							label: module.name,
+							icon: module.icon,
+							value: module.path
+						}) )} />
 					</div >
 					<LayoutContext project={data.objects.getProject}>
 						<div className={styles.main_content}>

@@ -1,11 +1,12 @@
 'use client';
 
-import { useContext, useMemo, useState } from 'react';
-import {ColumnDef, IconButton, Modal, Page, Table}  from '@repo/ui';
+import React, { Component, useContext, useMemo, useState } from 'react';
+import {ColumnDef, IconButton, Modal, Page, SlideIn, Table, useSlideInStore}  from '@repo/ui';
 import { PageState, Person } from '@repo/types';
 import { AppContext, getDateStringsFromIso, getImageUrl, useDataHandler } from '@repo/provider';
 import useFindPerson from './hooks/useFindPerson';
 import deleteModalInitialValues from './constants/deleteModalInitialValues';
+import EditPerson from './content/EditPerson';
 
 const pageStates: PageState[] = [
     {value: 'all', label: 'Alle'},
@@ -22,8 +23,8 @@ const PersonsOverview = () => {
     const {persons, refetch} = useFindPerson({projectId: project.objectId, filters})
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
     const {deleteData} = useDataHandler();
-    const [editImage, setEditImage] = useState({open: false, person: '', newImage: undefined as unknown as Person | undefined})
-
+    const [editPerson, setEditPerson] = useState({open: false, person: '', newImage: undefined as unknown as Person | undefined})
+    const {setContent} = useSlideInStore()
     const columns = useMemo(() => [
 		{
 			accessorFn: row => {row.portrait ? <img src={getImageUrl({filePath: row.portrait})} /> : '-'},
@@ -49,10 +50,7 @@ const PersonsOverview = () => {
 		{
 			accessorFn: row => 
 				<div className='button_container'>
-                    <IconButton
-                        icon='edit'
-                        onClick={() => setEditImage({open: true, person: row.objectId, newImage: undefined})}
-                    />
+                    <EditPerson personId={row.objectId} />
                     <IconButton
                         icon='download'
                         isBlank
@@ -126,20 +124,21 @@ const PersonsOverview = () => {
         >
             <p>Sind sich Sicher, dass sie die Person löschen möchten?</p>
         </Modal>
-        <Modal 
-            isOpen={editImage.open}
-            cancelButtonHandler={() => setEditImage({open: false, person: '', newImage: undefined})}
-            confirmButtonHandler={() => {
-                setEditImage({open: false, person: '', newImage: undefined})
-            }}
+        <SlideIn 
+            isOpen={editPerson.open}
+            close={() => setEditPerson({open: false, person: '', newImage: undefined})}
+            // confirmButtonHandler={() => {
+            //     setEditPerson({open: false, person: '', newImage: undefined})
+            // }}
             header='Person bearbeiten'
+            secondaryContent={<p>Secondary Content</p>}
         >
             <div>
                 <p>
                     Person bearbeiten
                 </p>
             </div>
-        </Modal>
+        </SlideIn>
     </Page>
   )
 }

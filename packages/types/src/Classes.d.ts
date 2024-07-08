@@ -1,3 +1,17 @@
+export type Project = {
+    name: string,
+    objectId: string,
+    content: { label: string; value: string; icon: string; }[],
+    logo: {
+        name: string, 
+        url: string
+    },
+    modules: {
+        results: Module[]
+        
+    }
+}
+
 export type Image = {
     objectId: string,
     name: string,
@@ -25,6 +39,7 @@ export type Module = {
     name: string,
     title: string,
     path: string,
+    icon: string,
     settings: object,
     fields: object[]
 }

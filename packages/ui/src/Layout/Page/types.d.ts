@@ -25,5 +25,9 @@ export type PageProps = {
     pageStates?: PageState[],
     activeState?: PageState,
     navOnClick?: Dispatch<SetStateAction<PageState>>,
-    refetch?: () => void
+    refetch?: () => void,
+    slideInHeader?: string,
+	slideInContent?: React.FC,
+	slideInIsOpen?: boolean,
+	setSlideInIsOpen?: () => false
 };

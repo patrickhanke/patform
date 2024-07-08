@@ -5,11 +5,6 @@ import makeClient from './client';
 import { ApolloAppProviderProps } from './types';
 
 function ApolloAppProvider({ children , appId, masterKey }: ApolloAppProviderProps) {
-
-	console.log(appId);
-	console.log(masterKey);
-	
-	
 	return (
 		<ApolloNextAppProvider makeClient={() => makeClient(appId, masterKey)}>
 			{children}
