@@ -13,8 +13,10 @@ const SlideIn = ({
 	preventClickOutside=false, 
 	children,
 	isOpen,
-	close,
-	secondaryContent= null
+	cancel,
+	confirm,
+	secondaryContent= null,
+	disabled = [false, false]
 }: SlideInComponent) => {
 
 	const ref = useRef(null);
@@ -61,8 +63,8 @@ const SlideIn = ({
 						</div>
 						<div className='slidein_footer'>
 							<div className="button_container">
-								<button>Abbrechen</button>
-								<button>speichern</button>
+								<button className='full_button md light' disabled={disabled[0]} onClick={() => cancel()}>Abbrechen</button>
+								<button className='full_button md green' disabled={disabled[1]} onClick={() => confirm()}>Speichern</button>
 							</div>
 						</div>
 					</motion.div>

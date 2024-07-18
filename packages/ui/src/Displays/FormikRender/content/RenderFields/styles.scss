@@ -1,0 +1,81 @@
+@use '@repo/styles/colors';
+
+.toggle_content {
+    display: flex; 
+    flex-direction: column;
+    flex: 0 1 50%; 
+}
+
+.toggle_content[data-labelBefore ='true'] {
+    flex-direction: row;
+    position: relative; 
+	width: 50px;
+	height: 28px;
+	border-radius: 15px;
+	overflow: hidden;
+	cursor: pointer
+}
+
+.toggle_container {
+    transform: scale(.8);
+    border: 2px solid colors.$primary 
+
+}
+
+.toggle_container[data-disabled='true'] {
+    border: 2px solid colors.$grey 
+}
+
+.toggle_container_background {
+    position: relative;
+	width: 100%;
+	height: 100%;
+    opacity: 0; 
+	transition: opacity 0.4s ease;
+    background-color: colors.$primary;
+}
+
+.toggle_container_background[data-disabled='true'] {
+    background-color: colors.$grey; 
+}
+
+.toggle_container_background[data-toggleState='true'] {
+    opacity: 1; 
+}
+
+.toggle_container_circle {
+    border-radius: 50%;
+	width: 17px;
+	height: 17px;
+	top: 3px;
+	left: 4px;
+	position: absolute;
+    background-color: colors.$primary;
+	transition: transform 0.4s ease, background-color 0.4s ease;
+    transform: translateX(0);
+}
+
+.toggle_container_circle[data-disabled='true'] {
+    background-color: colors.$grey;
+}
+
+.toggle_container_circle[data-toggleState='true'] {
+    background-color: colors.$white;
+    transform: translateX(22)
+}
+
+.error_message {
+	color: red;
+	font-weight: 600;
+	font-size: 14px;
+	font-family: Montserrat, sans-serif;
+};
+
+.warning_message {
+	color: orange;
+	font-weight: 600;
+	font-size: 14px;
+	font-family: Montserrat, sans-serif;
+};
+
+

@@ -1,0 +1,31 @@
+@use '@repo/styles/sizes';
+
+.form_container {
+    overflow: auto;
+	height: 100%;
+	width: auto;
+	max-width: 900px;
+	padding-left: sizes.$sm;
+	.form {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+	}
+	.ck {
+		width: inherit;
+		font-family: Open Sans;
+		font-size:map-get($map: sizes.$font-size, $key: 'md' );;
+		font-weight: 500;
+    	padding: 3px 6px;
+    	border: 1px solid #dddddd;
+		height: auto;
+		outline: 0px;
+		transition: border 0.4s ease;
+	}
+}
+
+.form_container[divideform='true'] {
+    .form { 
+        flex-direction: row;
+    }
+}

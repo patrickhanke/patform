@@ -25,6 +25,10 @@ const PersonsOverview = () => {
     const {deleteData} = useDataHandler();
     const [editPerson, setEditPerson] = useState({open: false, person: '', newImage: undefined as unknown as Person | undefined})
     const {setContent} = useSlideInStore()
+
+    console.log(project);
+    
+
     const columns = useMemo(() => [
 		{
 			accessorFn: row => {row.portrait ? <img src={getImageUrl({filePath: row.portrait})} /> : '-'},
@@ -85,7 +89,7 @@ const PersonsOverview = () => {
     
   return (
     <Page 
-        title='Personsn'
+        title='Persons'
         pageHeaderContent={<p>Personen</p>}
         pageHeaderButtons={[{text: 'Neue Person erstellen', onClick: () => setCreatePerson(true)}]}
         hasPageNavigation={true}
@@ -124,21 +128,7 @@ const PersonsOverview = () => {
         >
             <p>Sind sich Sicher, dass sie die Person löschen möchten?</p>
         </Modal>
-        <SlideIn 
-            isOpen={editPerson.open}
-            close={() => setEditPerson({open: false, person: '', newImage: undefined})}
-            // confirmButtonHandler={() => {
-            //     setEditPerson({open: false, person: '', newImage: undefined})
-            // }}
-            header='Person bearbeiten'
-            secondaryContent={<p>Secondary Content</p>}
-        >
-            <div>
-                <p>
-                    Person bearbeiten
-                </p>
-            </div>
-        </SlideIn>
+       
     </Page>
   )
 }

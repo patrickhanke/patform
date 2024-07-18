@@ -28,6 +28,7 @@ export type Category = {
 }
 
 export type Person = {
+    data: {[key: string]: any},
     objectId: string,
     name: string,
     createdAt: string,

@@ -4,11 +4,11 @@ const get_person = gql`
     query getPerson($id: ID!) {
         objects {
             getPerson(objectId: $id) {
-                results {
-                    createdAt
-                    objectId
-                    name
-                }
+                createdAt
+                objectId
+                name
+                age
+                description
             }
         }
     }

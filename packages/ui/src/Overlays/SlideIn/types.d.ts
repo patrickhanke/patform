@@ -2,10 +2,12 @@ export type SlideInComponent = {
     children: React.ReactNode,
     header: string,
     isOpen: boolean,
-    close: () => void,
+    cancel: () => void,
+    confirm: () => void,
 	size?: 'small' | 'medium' | 'large',
 	preventClickOutside?: boolean,
-    secondaryContent?: React.ReactNode | null
+    secondaryContent?: React.ReactNode | null,
+    disabled?: [boolean, boolean]
 }
 
 export type SlideInStoreProps = {

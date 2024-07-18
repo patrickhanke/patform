@@ -1,42 +1,58 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 import { useQuery } from '@apollo/client'
-import get_person from '../constants/get_person'
 import { IconButton, SlideIn } from '@repo/ui'
 import { Person } from '@repo/types'
+import { AppContext, generateGraphQLQuery, useDataHandler } from '@repo/provider'
+import { Form } from '@repo/ui'
 
 const EditPerson = ({personId}: {personId: string}) => {
-    const { data, loading, error } = useQuery(get_person, {
-        variables: { id: personId }
-    })
+    const {updateData}  = useDataHandler()
+    const {currentModule} = useContext(AppContext) 
+    const [data, setData] = useState(null as unknown as Person['data'])
     const [isOpen, setIsOpen] = useState(false)
-    const [someContent, setSomeContent] = useState(null as unknown as React.ReactNode | null)
-    const [person, setPerson] = useState(null as unknown as Person)
+    const { loading } = useQuery(generateGraphQLQuery('getPerson', ['objectId', 'name', 'portrait', 'data', 'blupp'] ), {
+        variables: { id: personId },
+        onCompleted: data => {  
+            setData(data.object.getPerson)
+        },
+        skip: !isOpen
+    })
+    const [disabled, setDisabled] = useState([false, false])
+   
+    console.log(currentModule);
 
-    const someContentHandler = useCallback(() => {
-        if (someContent === null) {
-            return setSomeContent(<p>Some Content</p> as React.ReactNode)
-        }else {
-            setSomeContent(null)
-        }
-    },[someContent])
+    const dataHandler = useCallback(async () => {
+        setDisabled([true, true])
+        await updateData({
+            objectId: personId,
+            className: 'Person',
+            updateObject: {
+                ...data
+            }
 
+        })
+        setDisabled([false, false])
+        setIsOpen(false)
+
+    }, [data])
+
+    console.log(data);
+    
+   
   return (
     <>
         <IconButton
             icon='edit'
             onClick={() => setIsOpen(true)}
+            disabled={loading}
         />
         <SlideIn 
             isOpen={isOpen} 
             header='Person bearbeiten' 
-            close={() => setIsOpen(false)} 
-            secondaryContent={someContent} 
+            cancel={() => setIsOpen(false)} 
+            confirm={() => dataHandler()}
             >
-                <div onClick={() => someContentHandler()}>
-                    <h1>Edit Person</h1>
-                    <p>{data?.objects.getPerson.name}</p>
-                
-                </div>
+                {currentModule.fields && <Form fields={currentModule.fields} data={data} formSubmitHandler={values => setData(values)} />}
         </SlideIn>
     </>
   )
