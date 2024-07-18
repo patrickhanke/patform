@@ -3,7 +3,7 @@ import { generateGraphQLQuery, paramsHandler } from '@repo/provider'
 import { useQuery } from '@apollo/client'
 import { Loader } from '@repo/ui'
 import './styles.scss';
-import AppModuleEditFields from './components/AppModuleEditFields';
+import AppModuleEditFields from './content/AppModuleEditFields';
 
 const AppModule = ({id}: {id: string}) => {
     const {data, loading} = useQuery(generateGraphQLQuery(
@@ -22,7 +22,7 @@ const AppModule = ({id}: {id: string}) => {
     return (
         <div className='app_module_container'>
             <h3>{module.name}</h3>
-            <AppModuleEditFields fields={module.fields} />
+            <AppModuleEditFields moduleId={id} initialFields={module.fields} />
         </div>
     )
 }

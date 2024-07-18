@@ -1,0 +1,35 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/sizes';
+@use '@repo/styles/layout';
+
+
+.create_button {
+    border: 2px dotted colors.$primary;
+    color: colors.$primary;
+    padding: map-get($map: sizes.$padding, $key: 'sm' );
+    width: 100%;
+    background-color: transparent;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
+    font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    font-family: 'Montserrat';
+    font-weight: 500;
+    position: relative;
+    &:hover{
+        background-color: colors.$primary;
+        color: white;
+        border: 2px solid colors.$primary;
+    }
+}
+
+.create_button[data-size="medium"] {
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    font-size: map-get($map: sizes.$font_size, $key: 'lg' );
+}
+
+.create_button_content {
+    @include layout.flexbox($direction: row, $align: center, $justify: center, $gap: sizes.$md);
+    width: 100%;
+    height: 100%;
+    position: relative;
+}

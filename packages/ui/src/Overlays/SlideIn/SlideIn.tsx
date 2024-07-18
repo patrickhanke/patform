@@ -16,6 +16,7 @@ const SlideIn = ({
 	cancel,
 	confirm,
 	secondaryContent= null,
+	showSecondaryContent = false,
 	disabled = [false, false]
 }: SlideInComponent) => {
 
@@ -51,10 +52,10 @@ const SlideIn = ({
 							</div>
 							
 							<motion.div
-								animate={ { width: !!secondaryContent ? 360 : 0 }}
+								animate={ { width: showSecondaryContent ? 360 : 0 }}
 								transition={{ duration: .3, ease: 'easeOut' }}
 								className={'slidein_secondary_content'}
-								data-open={!!secondaryContent ? true : false}
+								data-open={showSecondaryContent ? true : false}
 								
 							>
 								{secondaryContent}

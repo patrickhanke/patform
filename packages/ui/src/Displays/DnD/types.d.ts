@@ -1,21 +1,10 @@
-export type DnDItem = {
-    id: string,
-    label: string,
-    id: string,
-    position?: number,
-    name?: string
-    required?: boolean,
-    is_page?:boolean
-}
-
-export type DnDItems =  Array<DnDItem>
-
-
-export type DnD_Type = {
-    items: DnDItemss,
+export interface DnDProps<T> {
+    items: T;
     ItemComponent: React.FC<({item: DnDItem, id: DnDItem.id})>,
     objectClass: string,
-    componentStyles?: (item: DnDItem) => object | null
+    componentStyles?: (item: DnDItem) => object | null,
+    subField?: {id: string, field: string}
+
 }
 
 export type Sortable_Type = {

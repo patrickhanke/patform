@@ -7,7 +7,8 @@ export type SlideInComponent = {
 	size?: 'small' | 'medium' | 'large',
 	preventClickOutside?: boolean,
     secondaryContent?: React.ReactNode | null,
-    disabled?: [boolean, boolean]
+    disabled?: [boolean, boolean],
+    showSecondaryContent?: boolean
 }
 
 export type SlideInStoreProps = {

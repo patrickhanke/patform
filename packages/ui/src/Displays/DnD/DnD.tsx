@@ -4,7 +4,7 @@ import {useState, useEffect, useCallback} from 'react';
 import { DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import Sortable from './components/Sortable';
-import { DnD_Type, DnDItem, DnDItems } from './types';
+import { DnDProps } from './types';
 import SortableOverlay from './components/SortableOverlay';
 import { useDataHandler } from '@repo/provider';
 
@@ -14,9 +14,9 @@ const item = {
 	id: ''
 };
 
-const DnD = ({items, ItemComponent, componentStyles, objectClass}: DnD_Type) => {
-	const [listItems, setListItems] = useState(items as DnDItems);
-	const [activeItem, setActiveItem] = useState(item as DnDItem);
+const DnD = <T extends any[]>({items, ItemComponent, componentStyles, objectClass, subField}: DnDProps<T>) => {
+	const [listItems, setListItems] = useState([] as unknown as typeof items);
+	const [activeItem, setActiveItem] = useState(item as typeof items[number]);
 	const {updateData} = useDataHandler();
 
 	const sensors = useSensors(
@@ -27,24 +27,34 @@ const DnD = ({items, ItemComponent, componentStyles, objectClass}: DnD_Type) => 
 	);
 		
 	useEffect(() => {
-		if (items.length > 0) {
+		if (items.length > 0 && items.length !== listItems.length) {
 			setListItems(items);
+		}
+	}, [items]);
+
+	const afterSortFunction = useCallback(async (newItems: typeof items) =>{ 
+		if (subField?.id && subField?.field) {
+			 await updateData({
+				className: objectClass,
+				objectId: subField.id,
+				updateObject: {
+					[subField.field]: items.map((item, index) => ({...item, position: index + 1}))
+				}
+			});
+		} else {
+			const newQuestions = newItems.map((item, index) =>  updateData({
+				className: objectClass,
+				objectId: item.id,
+				updateObject: {
+					position: index + 1
+				}
+			}));
+			await Promise.all(newQuestions);
 		}
 	}, []);
 
-	const afterSortFunction = useCallback(async (items: DnDItem[]) =>{ 
-		const newQuestions = items.map((item, index) =>  updateData({
-			className: objectClass,
-			objectId: item.id,
-			updateObject: {
-				position: index + 1
-			}
-		}));
-		await Promise.all(newQuestions);
-	}, []);
 
-
-	const onChange = useCallback((itemArray: DnDItems) => {
+	const onChange = useCallback((itemArray: typeof items) => {
 		setListItems(itemArray);
 		afterSortFunction(itemArray);
 	}, []);
@@ -54,14 +64,14 @@ const DnD = ({items, ItemComponent, componentStyles, objectClass}: DnD_Type) => 
 			collisionDetection={closestCenter}
 			sensors={sensors}
 			onDragStart={({ active }) => {
-				setActiveItem(active as unknown as DnDItem);
+				setActiveItem(active as unknown as typeof items[number]);
 			}}
 			onDragEnd={({ active, over }) => {
 				if (active.id !== over?.id) {
 					const activeIndex = listItems.findIndex(({ id }) => id === active.id);
 					const overIndex = listItems.findIndex(({ id }) => id === over?.id);
 
-					onChange(arrayMove(listItems, activeIndex, overIndex));
+					onChange(arrayMove(listItems, activeIndex, overIndex) as typeof items);
 					// afterSortFunction(arrayMove(listItems, activeIndex, overIndex))
 				}
 				// setActiveItem(item);

@@ -1,8 +1,8 @@
 'use client';
 
 import { useContext } from 'react'
-import { AppContext, generateGraphQLQuery, paramsHandler, sortModuleByPosition } from '@repo/provider'
-import { DnDDisplay, DnDItem, Page } from '@repo/ui'
+import { AppContext, generateGraphQLQuery, paramsHandler } from '@repo/provider'
+import { DnDDisplay, Page, sortItemsByPosition } from '@repo/ui'
 import { Module } from '@repo/types'
 import { useQuery } from '@apollo/client'
 import AppModule from './content/AppModule';
@@ -20,16 +20,23 @@ const AppModules = () => {
         variables: paramsHandler({filters: [{key: 'project', value: project.objectId as string, operator: '_eq', id: 'projectId'}]} )
     })
 
+    if (loading) return null;
+
+    const modules = data?.objects.findModule.results
+
+    console.log(modules);
+    
+
   return (
     <Page 
-        title='Persons'
-        pageHeaderContent={<p>Personen</p>}
+        title='Module'
+        pageHeaderContent={<p>Module</p>}
         pageHeaderButtons={[{text: 'Neue Person erstellen', onClick: () => console.log(true)}]}
         hasPageNavigation={true}
         emptyContent={true}
     >
         <DnDDisplay
-            items={sortModuleByPosition(data?.objects.findModule.results).map((module: Module) => ({...module, id: module.objectId})) || []}
+            items={sortItemsByPosition(modules).map((module: Module) => ({...module, id: module.objectId})) || []}
             ItemComponent={({item}) => (<AppModule id={item.id} />)}
             objectClass='Module'
             
