@@ -42,5 +42,6 @@ export type Module = {
     path: string,
     icon: string,
     settings: object,
-    fields: object[]
+    fields: object[],
+    position: number
 }

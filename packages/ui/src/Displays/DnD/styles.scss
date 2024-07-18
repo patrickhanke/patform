@@ -1,0 +1,34 @@
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+@use '@repo/styles/colors';
+
+.drag_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$xs);
+    padding: map-get($map: sizes.$padding, $key: 'sm' );
+    margin-top: sizes.$xs;
+    margin-bottom: sizes.$xs;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box ;
+}
+
+.drag_container[is_dragging = "true"] {
+    box-shadow: 6px 6px 2px rgba(0,0,0,0.6)
+} 
+
+.drag_handle {
+    width: 12px;
+    touch-action: none;
+    cursor: var(--cursor, grab);
+    border: none;
+    outline: none;
+    appearance: none;
+    background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+  }
+
+  .drag_content {
+    width: calc(100% - 12px);
+    position: relative;
+  }

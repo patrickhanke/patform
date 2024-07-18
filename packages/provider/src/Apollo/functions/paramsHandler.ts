@@ -1,9 +1,9 @@
 import { Filter, FilterOperator } from '@repo/types';
+import { ParamsHandlerType } from '../types';
 
 type FilterObject = { [key: string]: { [ key in FilterOperator ]: any }}
 
-const paramsHandler = (projectId: string, filters: Filter[]) => {
-
+const paramsHandler : ParamsHandlerType = ({projectId, filters}) => {
 	let filterObject: FilterObject = {};
 	if (projectId) {
 		filterObject.project = {_eq: projectId} as { [ key in FilterOperator ]: any };
@@ -15,6 +15,7 @@ const paramsHandler = (projectId: string, filters: Filter[]) => {
 			return acc;
 		}, {});
 	}
+
 	return {...filterObject};
 };
 

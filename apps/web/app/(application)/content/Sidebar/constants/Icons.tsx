@@ -5,14 +5,14 @@ import { FaUsers } from 'react-icons/fa';
 import {GrProjects} from 'react-icons/gr';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
-import { MdOutlineCleaningServices, MdOutlineContactPage } from 'react-icons/md';
+import { MdOutlineCleaningServices, MdOutlineContactPage, MdViewModule } from 'react-icons/md';
 import {RiAdminLine, RiListSettingsLine} from 'react-icons/ri';
 import { CgProfile } from 'react-icons/cg';
 import { BiMessageSquareError, BiSolidTrashAlt } from 'react-icons/bi';
 import { BsHousesFill } from 'react-icons/bs';
 import { FaShuttleVan } from 'react-icons/fa';
 import { GrTask } from 'react-icons/gr';
-import { ImImages } from "react-icons/im";
+import { ImImages } from 'react-icons/im';
 
 const Icons = ({icon}: {icon: string}) => {
 	if (icon === 'projects') {
@@ -89,6 +89,9 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'forms') {
 		return <AiOutlineForm />;
+	}
+	if (icon === 'modules') {
+		return <MdViewModule />;
 	}
 
 	return null;

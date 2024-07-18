@@ -5,7 +5,7 @@ import { paramsHandler } from '@repo/provider';
 
 const useGetImages: UseGetImagesHook = ({projectId, filters} ) => {
 	const {loading, data, refetch} = useQuery(find_images, {
-		variables: {params: paramsHandler(projectId, filters)},
+		variables: {params: paramsHandler({projectId, filters})},
 		notifyOnNetworkStatusChange: true
 	});
 

@@ -5,7 +5,7 @@ import { UseFindPersonsHook } from '../types';
 
 const useFindPerson: UseFindPersonsHook = ({projectId, filters} ) => {
 	const {loading, data, refetch} = useQuery(find_persons, {
-		variables: {params: paramsHandler(projectId, filters)},
+		variables: {params: paramsHandler({projectId, filters})},
 		notifyOnNetworkStatusChange: true
 	});
 

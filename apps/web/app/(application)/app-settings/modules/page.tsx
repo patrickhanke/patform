@@ -1,0 +1,1 @@
+export {AppModules as default} from '@repo/modules';
