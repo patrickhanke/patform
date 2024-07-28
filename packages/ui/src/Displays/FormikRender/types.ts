@@ -1,16 +1,24 @@
-export type FieldsType = Array<{
-    name: string, 
-    initialValue: any, 
-    validation: any, 
-    id: string, 
-    placeholder: string, 
-    type: string, 
-    label: string, 
-    options: Array<{value: string, label: string}>,
-    dataType: string
-}>
-
 export type IntFormikRender = {
-    fields: FieldsType,
+    fields: Field[],
+    data: FormDataElement,
     formSubmitHandler: (t: object) => void,
 }
+
+export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select'
+
+export type Field = {
+    id: string
+    name: string;
+    type: string;
+    label: string;
+    position: number;
+    required: boolean;
+    placeholder?: string;
+    options?: {
+        number_start_value?: number;
+        number_end_value?: number;
+    };
+
+}
+
+export type FormDataElement = {[key: string]: any}

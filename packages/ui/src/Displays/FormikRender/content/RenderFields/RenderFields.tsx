@@ -5,46 +5,37 @@ import getSelectValue from './functions/getSelectValue';
 import { RenderFieldsType } from './types';
 import './styles.scss';
 import { Select } from '../../../../Inputs';
+import { Field } from '../../types';
+import Input from './components/Input';
+import TextArea from './components/TextArea';
 
 const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue}: RenderFieldsType) => 
 	<>
-		{fields.map(field => 
+		{fields.map((field: Field) => 
 			<React.Fragment key={field.name}>
 				{(field.type === 'input' || field.type === 'url' || field.type === 'number' || field.type === 'password')  &&
-			<div>
-				<label htmlFor={field.name}>{field.label || field.name} </label>
-				<input 
-					id={field.id}
-					name={field.name}
-					type={field.type}
-					onChange={handleChange}
-					defaultValue={values[field.name] || ''}
-					onBlur={e => handleBlur(e.target.value)}
-					placeholder={field.placeholder}
-					key={field.name}
-				/>
-				{getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 
-					<div className='error_message'>{getFieldMeta(field.name).error}</div>
-					: 
-					null
-				}
-			</div>
+					<Input 
+						name={field.name}
+						label={field.label}
+						id={field.id}
+						type={field.type}
+						handleChange={handleChange}
+						values={values}
+						handleBlur={handleBlur}
+						placeholder={field.placeholder}
+					/>
 				}
 				{field.type === 'textarea' &&
-			<div>
-				<label htmlFor={field.name}>{field.label || field.name} </label>
-				<textarea 
-					id={field.id}
-					name={field.name}
-					onChange={handleChange}
-					value={values[field.name] || ''}
-					onBlur={e => handleBlur(e)}
-					placeholder={field.placeholder}
-					key={field.name}
-					style={{minWidth: '240px', minHeight: '80px'}}
-				/>
-				
-			</div>
+					<TextArea 
+						name={field.name}
+						label={field.label}
+						id={field.id}
+						handleChange={handleChange}
+						values={values}
+						handleBlur={handleBlur}
+						placeholder={field.placeholder}
+					
+					/>
 				}
 				{(field.type === 'image') &&
 			<div>

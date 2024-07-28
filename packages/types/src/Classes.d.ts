@@ -1,3 +1,5 @@
+import { Field, FormDataElement } from '@repo/ui';
+
 export type Project = {
     name: string,
     objectId: string,
@@ -28,7 +30,7 @@ export type Category = {
 }
 
 export type Person = {
-    data: {[key: string]: any},
+    data: FormDataElement,
     objectId: string,
     name: string,
     createdAt: string,
@@ -42,6 +44,6 @@ export type Module = {
     path: string,
     icon: string,
     settings: object,
-    fields: object[],
+    fields: Field[],
     position: number
 }

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { IconButton, SlideIn } from '@repo/ui'
 import { Person } from '@repo/types'
@@ -10,10 +10,12 @@ const EditPerson = ({personId}: {personId: string}) => {
     const {currentModule} = useContext(AppContext) 
     const [data, setData] = useState(null as unknown as Person['data'])
     const [isOpen, setIsOpen] = useState(false)
-    const { loading } = useQuery(generateGraphQLQuery('getPerson', ['objectId', 'name', 'portrait', 'data', 'blupp'] ), {
+    const { loading, refetch } = useQuery(generateGraphQLQuery({type: 'get', objectName: 'Person', fields:  ['objectId', 'name', 'portrait', 'data']} ), {
         variables: { id: personId },
         onCompleted: data => {  
-            setData(data.object.getPerson)
+            console.log(data);
+            
+            setData(data.objects.getPerson.data)
         },
         skip: !isOpen
     })
@@ -27,7 +29,7 @@ const EditPerson = ({personId}: {personId: string}) => {
             objectId: personId,
             className: 'Person',
             updateObject: {
-                ...data
+                data
             }
 
         })
@@ -36,26 +38,32 @@ const EditPerson = ({personId}: {personId: string}) => {
 
     }, [data])
 
+    useEffect(() => {
+        if (isOpen) {
+            refetch()
+        }
+    }, [isOpen])
+
     console.log(data);
     
    
-  return (
-    <>
-        <IconButton
-            icon='edit'
-            onClick={() => setIsOpen(true)}
-            disabled={loading}
-        />
-        <SlideIn 
-            isOpen={isOpen} 
-            header='Person bearbeiten' 
-            cancel={() => setIsOpen(false)} 
-            confirm={() => dataHandler()}
-            >
-                {currentModule.fields && <Form fields={currentModule.fields} data={data} formSubmitHandler={values => setData(values)} />}
-        </SlideIn>
-    </>
-  )
+    return (
+        <>
+            <IconButton
+                icon='edit'
+                onClick={() => setIsOpen(true)}
+                disabled={loading}
+            />
+            <SlideIn 
+                isOpen={isOpen} 
+                header='Person bearbeiten' 
+                cancel={() => setIsOpen(false)} 
+                confirm={() => dataHandler()}
+                >
+                    {currentModule.fields && <Form fields={currentModule.fields} data={data} formSubmitHandler={values => setData(values)} />}
+            </SlideIn>
+        </>
+    )
 }
 
 export default EditPerson

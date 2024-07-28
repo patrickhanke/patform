@@ -6,7 +6,10 @@ const generateGraphQLQuery: generateGraphQLQueryProps = ({
 	objectName, 
 	fields
 }) => {
-	const fieldsString = fields.join('\n');
+	const fieldsString = fields?.join('\n');
+
+    console.log(fields);
+    
 
 	if (type === 'find' ) {
         
