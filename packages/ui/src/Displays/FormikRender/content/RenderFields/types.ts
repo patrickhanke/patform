@@ -1,10 +1,10 @@
 import { FormikHandlers, FormikHelpers, FormikValues } from 'formik';
-import { FieldsType } from '../../types';
+import { Field } from '../../types';
 
 export type RenderFieldsType = {
-    fields: FieldsType,
+    fields: Field[],
     getFieldMeta: FormikHandlers['getFieldMeta'],
-    handleChange: () => void,
+    handleChange: FormikHandlers['handleChange'],
     values: FormikValues,
     handleBlur: (t: any) => void,
     setFieldValue: FormikHelpers<{field: string, value: any, shouldValidate?: boolean}>['setFieldValue']

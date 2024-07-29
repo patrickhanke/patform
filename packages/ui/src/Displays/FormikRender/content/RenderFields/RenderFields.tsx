@@ -129,7 +129,7 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 					<Select 
 						onChange={value => setFieldValue(field.name, field.dataType === 'string' ?  value.value : value, true)}
 						value={getSelectValue(values, field)}
-						options={field.options}
+						options={field.select_options}
 						key={field.name}
 					/>
 				</label>

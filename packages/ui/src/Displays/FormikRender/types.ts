@@ -14,10 +14,18 @@ export type Field = {
     position: number;
     required: boolean;
     placeholder?: string;
+    initialValue?: any;
+    validation?: any;
+    dataType?: 'string'|'object'|'array';
     options?: {
         number_start_value?: number;
         number_end_value?: number;
     };
+    select_options?: {
+        label: string;
+        value: string;
+    }[];
+
 
 }
 
