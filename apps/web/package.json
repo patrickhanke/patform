@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
+    "@apollo/experimental-nextjs-app-support": "^0.10.1",
     "@repo/provider": "*",
     "@repo/ui": "*",
     "http-proxy-middleware": "^3.0.0",
