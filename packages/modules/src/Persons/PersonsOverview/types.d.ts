@@ -7,7 +7,7 @@ export type PersonsOverviewProps = {
 export type FilterArray = Filter[];
 
 export type UseFindPersonsHook = ({
-    projectId: string,
+    moduleId: string,
     filters: FilterArray, 
 }) => ({
     loading: boolean,

@@ -21,8 +21,6 @@ const EditPerson = ({personId}: {personId: string}) => {
     })
     const [disabled, setDisabled] = useState([false, false])
    
-    console.log(currentModule);
-
     const dataHandler = useCallback(async () => {
         setDisabled([true, true])
         await updateData({
@@ -44,9 +42,6 @@ const EditPerson = ({personId}: {personId: string}) => {
         }
     }, [isOpen])
 
-    console.log(data);
-    
-   
     return (
         <>
             <IconButton

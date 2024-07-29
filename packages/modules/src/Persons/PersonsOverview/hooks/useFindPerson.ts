@@ -3,9 +3,9 @@ import { paramsHandler } from '@repo/provider';
 import find_persons from '../constants/find_persons';
 import { UseFindPersonsHook } from '../types';
 
-const useFindPerson: UseFindPersonsHook = ({projectId, filters} ) => {
+const useFindPerson: UseFindPersonsHook = ({moduleId, filters} ) => {
 	const {loading, data, refetch} = useQuery(find_persons, {
-		variables: {params: paramsHandler({projectId, filters})},
+		variables: {params: paramsHandler({moduleId, filters})},
 		notifyOnNetworkStatusChange: true
 	});
 

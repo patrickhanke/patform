@@ -3,7 +3,7 @@ import { Field, IconButton, SlideIn } from '@repo/ui'
 import { AppContext, useDataHandler } from '@repo/provider'
 import { Form } from '@repo/ui'
 
-const CreatePerson = () => {
+const CreatePerson = ({refetch}: {refetch: () => void}) => {
     const {createData}  = useDataHandler()
     const {currentModule} = useContext(AppContext) 
     const [isOpen, setIsOpen] = useState(false)
@@ -73,6 +73,7 @@ const CreatePerson = () => {
         })
         setDisabled([false, false])
         setIsOpen(false)
+        refetch()
 
     }, [data])
 

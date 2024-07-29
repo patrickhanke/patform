@@ -11,3 +11,9 @@ export type TableTypes = {
 }
 
 export type ColumnDef<TData> = ColumnDef<TData>;
+
+export type TableColumnImageProps = {
+    url: string,
+    isEditable: true,
+    refetch: () => void
+}

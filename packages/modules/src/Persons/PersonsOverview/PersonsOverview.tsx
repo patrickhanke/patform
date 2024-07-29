@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useMemo, useState } from 'react';
-import { ColumnDef, IconButton, Modal, Page, Table }  from '@repo/ui';
+import { ColumnDef, IconButton, Modal, Page, Table, TableColumnImage }  from '@repo/ui';
 import { PageState, Person } from '@repo/types';
 import { AppContext, getDateStringsFromIso, getImageUrl, useDataHandler } from '@repo/provider';
 import useFindPerson from './hooks/useFindPerson';
@@ -16,16 +16,16 @@ const pageStates: PageState[] = [
 ]
 
 const PersonsOverview = () => {
-    const {project} = useContext(AppContext)
+    const {currentModule} = useContext(AppContext)
     const [activeState, setActiveState] = useState(pageStates[0])
     const [filters, setFilters] = useState([])
-    const {persons, refetch} = useFindPerson({projectId: project.objectId, filters})
+    const {persons, refetch} = useFindPerson({moduleId: currentModule.objectId, filters})
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
     const {deleteData} = useDataHandler();
 
     const columns = useMemo(() => [
 		{
-			accessorFn: row => {row.portrait ? <img src={getImageUrl({filePath: row.portrait})} /> : '-'},
+			accessorFn: row => <TableColumnImage url={row.portrait} />,
 			header: () => <span>Vorschau</span>,
 			id: 'portrait',
 			cell: info => info.getValue(),
@@ -78,10 +78,13 @@ const PersonsOverview = () => {
 		}
 	] as ColumnDef<Person>[] , [persons]);
 
+    console.log(persons);
+    
+
   return (
     <Page 
         title='Athleten'
-        pageHeaderContent={<CreatePerson />}
+        pageHeaderContent={<CreatePerson refetch={refetch} />}
         hasPageNavigation={true}
         emptyContent={true}
         pageStates={pageStates}

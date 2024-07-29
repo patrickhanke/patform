@@ -8,6 +8,8 @@ const find_persons = gql`
                     createdAt
                     objectId
                     name
+                    portrait
+                    data
                 }
             }
         }
