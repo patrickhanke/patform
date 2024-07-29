@@ -16,13 +16,6 @@ const Page = ({
 }: PageProps) => {
 	return (
 		<>
-			{navOnClick && activeState && (
-				<PageNavigation 
-					siteStates={pageStates}
-					activeState={activeState}
-					onClick={navOnClick}
-				/>
-			)}
 			<PageHeader 
 				title={title} 
 				pageHeaderContent={pageHeaderContent} 
@@ -30,6 +23,13 @@ const Page = ({
 				emptyContent={emptyContent}
 				refetch={refetch}
 			/>
+			{navOnClick && activeState && (
+				<PageNavigation 
+					siteStates={pageStates}
+					activeState={activeState}
+					onClick={navOnClick}
+				/>
+			)}
 			<div className='page-content'>
 				{children}
 			</div>

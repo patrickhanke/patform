@@ -9,12 +9,9 @@ import Logo from './components/Logo';
 import './styles.scss';
 import Sidebar from './content/Sidebar';
 import { cookies } from 'next/headers';
-import SiteHeader from './content/SiteHeader';
 import { Module, Project } from '@repo/types';
 import { HttpLink, InMemoryCache } from '@apollo/client';
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
-
-
 
 export const metadata = {
 	title: 'CMS Nocogirls',
@@ -114,7 +111,7 @@ export default async function  RootLayout({
 					<LayoutContext project={data.objects.getProject}>
 						<div className={styles.main_content}>
 							<div className={styles.content_container}>
-								<SiteHeader title={data.objects.getProject.name} />
+								{/* <SiteHeader title={data.objects.getProject.name} /> */}
 								<div className={styles.content}>
 									{children}
 								</div>

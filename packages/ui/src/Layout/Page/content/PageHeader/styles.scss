@@ -48,6 +48,7 @@
 
 .pageheader_content_container {
     @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: sizes.$md );
+    height: 42px;
     width: 100%;
     position: relative;
     box-sizing: border-box;

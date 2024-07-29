@@ -89,8 +89,8 @@ const PersonsOverview = () => {
     
   return (
     <Page 
-        title='Persons'
-        pageHeaderContent={<p>Personen</p>}
+        title='Athleten'
+        pageHeaderContent={<p>Athleten</p>}
         pageHeaderButtons={[{text: 'Neue Person erstellen', onClick: () => setCreatePerson(true)}]}
         hasPageNavigation={true}
         emptyContent={true}
@@ -109,7 +109,7 @@ const PersonsOverview = () => {
             confirmButtonHandler={async () =>{ 
                 setCreatePerson(false)
             }}
-            header='Upload Images'
+            header='Person erstellen'
         >
             <div>
                 <p>

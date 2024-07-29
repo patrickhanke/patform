@@ -8,7 +8,6 @@ import './styles.scss';
 import { IntFormikRender } from './types';
 
 const FormikRender  = ({fields, data, formSubmitHandler}: IntFormikRender) => {
-	console.log(data);
 	
 	return (
 		<Formik 
