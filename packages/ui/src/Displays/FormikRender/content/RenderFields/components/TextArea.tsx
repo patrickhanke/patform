@@ -26,7 +26,7 @@ const TextArea: React.FC<TextAreaProps> = ({
 				id={id}
 				name={name}
 				onChange={handleChange}
-				value={values[name] || ''}
+				defaultValue={values[name] || ''}
 				onBlur={e => handleBlur(e.target.value)}
 				placeholder={placeholder}
 				key={name}
