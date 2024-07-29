@@ -28,6 +28,11 @@
             .upload-widget__internal {
                 .upload-widget__internal__children {
                     .upload-widget__main-screen{ 
+                        .upload-widget__main-screen__file-list {
+                            .upload-widget__main-screen__file-list__inner {
+                                padding: map-get($map: sizes.$padding, $key: 'md' );
+                            }
+                        }
                         .upload-widget__controls{
                             @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 10px);
                             .upload-widget__controls__button {
@@ -70,6 +75,10 @@
     }
    
    
+}
+
+.single_image {
+    min-height: 180px;
 }
 
 .image_uploader_display_container {

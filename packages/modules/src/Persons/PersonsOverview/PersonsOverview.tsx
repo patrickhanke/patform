@@ -1,12 +1,13 @@
 'use client';
 
-import React, { Component, useContext, useMemo, useState } from 'react';
-import {ColumnDef, IconButton, Modal, Page, SlideIn, Table, useSlideInStore}  from '@repo/ui';
+import { useContext, useMemo, useState } from 'react';
+import { ColumnDef, IconButton, Modal, Page, Table }  from '@repo/ui';
 import { PageState, Person } from '@repo/types';
 import { AppContext, getDateStringsFromIso, getImageUrl, useDataHandler } from '@repo/provider';
 import useFindPerson from './hooks/useFindPerson';
 import deleteModalInitialValues from './constants/deleteModalInitialValues';
 import EditPerson from './content/EditPerson';
+import CreatePerson from './content/CreatePerson';
 
 const pageStates: PageState[] = [
     {value: 'all', label: 'Alle'},
@@ -16,18 +17,11 @@ const pageStates: PageState[] = [
 
 const PersonsOverview = () => {
     const {project} = useContext(AppContext)
-    const [createPerson, setCreatePerson] = useState(false)
-    const [newPerson, setNewPerson] = useState<string[]>([]);
     const [activeState, setActiveState] = useState(pageStates[0])
     const [filters, setFilters] = useState([])
     const {persons, refetch} = useFindPerson({projectId: project.objectId, filters})
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
     const {deleteData} = useDataHandler();
-    const [editPerson, setEditPerson] = useState({open: false, person: '', newImage: undefined as unknown as Person | undefined})
-    const {setContent} = useSlideInStore()
-
-    console.log(project);
-    
 
     const columns = useMemo(() => [
 		{
@@ -84,14 +78,10 @@ const PersonsOverview = () => {
 		}
 	] as ColumnDef<Person>[] , [persons]);
 
-
-    console.log(persons);
-    
   return (
     <Page 
         title='Athleten'
-        pageHeaderContent={<p>Athleten</p>}
-        pageHeaderButtons={[{text: 'Neue Person erstellen', onClick: () => setCreatePerson(true)}]}
+        pageHeaderContent={<CreatePerson />}
         hasPageNavigation={true}
         emptyContent={true}
         pageStates={pageStates}
@@ -102,21 +92,6 @@ const PersonsOverview = () => {
             columns={columns}
             data={persons || []}
         />
-        <Modal 
-            isOpen={createPerson}
-            buttonDisabled={[!!newPerson, false]}
-            cancelButtonHandler={() => setCreatePerson(false)}
-            confirmButtonHandler={async () =>{ 
-                setCreatePerson(false)
-            }}
-            header='Person erstellen'
-        >
-            <div>
-                <p>
-                    Personen erstellen
-                </p>
-            </div>
-        </Modal>
         <Modal 
             isOpen={deleteModal.isOpen}
             cancelButtonHandler={() => setDeleteModal(deleteModalInitialValues)}

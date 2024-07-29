@@ -8,6 +8,7 @@ import { Select } from '../../../../Inputs';
 import { Field } from '../../types';
 import Input from './components/Input';
 import TextArea from './components/TextArea';
+import ImageUpload from './components/ImageUpload';
 
 const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue}: RenderFieldsType) => 
 	<>
@@ -38,35 +39,19 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 					/>
 				}
 				{(field.type === 'image') &&
-			<div>
-				<FastField name={field.name}>
-					{({
-						field: fieldValues
-						// form: { touched, errors },  also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-						// meta
-					}: FastFieldProps) => (
-						<>
-							<label htmlFor={fieldValues.name}>{fieldValues.name} </label>
-							<input
-								type='upload' 
-								onChange={value => setFieldValue(fieldValues.name, value, true)}
-								value={fieldValues.value}
-								key={fieldValues.name}
-							/>
-							{!getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 
-								<div className={'warning_message'}>{getFieldMeta(field.name).error}</div>
-								 : 
-								null
-							}
-							{getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 
-								<div className={'error_message'}>{getFieldMeta(field.name).error}</div>
-								 : 
-								null
-							}
-						</>
-					)}
-				</FastField>
-			</div>
+					<div>
+						<FastField name={field.name}>
+							{({
+								field: fieldValues
+							}: FastFieldProps) => (
+								<ImageUpload 
+									fieldValues={fieldValues}
+									field={field}
+									setFieldValue={setFieldValue}
+								/>
+							)}
+						</FastField>
+					</div>
 				}
 				{(field.type === 'file') &&
 			<div>

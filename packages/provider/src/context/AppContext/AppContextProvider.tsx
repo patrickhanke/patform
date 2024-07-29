@@ -3,17 +3,16 @@
 import React, { useMemo, useState } from 'react';
 import AppContext from './AppContext';
 import { Module, Project } from '@repo/types';
-import { usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation';
 
 
 const AppContextProvider = ({project, children} : {project: Project,children: React.ReactNode}) => {
 	const [pageTitle, setPageTitle] = useState();
-	const pathname = usePathname() 
+	const pathname = usePathname(); 
 
 	const currentModule = useMemo(() => {
-		return project.modules.results.find(module => module.path === pathname) as Module
+		return project.modules.results.find(module => module.path === pathname) as Module;
 	}, [pathname, project]);
-
 
 	const appContextObject = useMemo(() => ({
 		pageTitle,
@@ -21,11 +20,6 @@ const AppContextProvider = ({project, children} : {project: Project,children: Re
 		project,
 		currentModule
 	}), [pageTitle, project, currentModule]);
-
-	
-	
-	console.log(pathname);
-	
 
 	return (
 		<AppContext.Provider

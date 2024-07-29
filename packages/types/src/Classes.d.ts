@@ -45,5 +45,6 @@ export type Module = {
     icon: string,
     settings: object,
     fields: Field[],
-    position: number
+    position: number,
+    project: Project
 }

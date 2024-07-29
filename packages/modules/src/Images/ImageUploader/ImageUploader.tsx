@@ -5,13 +5,15 @@ import { UploadDropzone, UploadDropzoneConfig } from '@bytescale/upload-widget-r
 import {ImageDisplay, getImageUrl} from '../ImageDisplay';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageUplaoderProps } from './types';
+import clsx from 'clsx';
 
 const ImageUploader = ({
 	previewImages,
 	onChange,
 	label,
 	path,
-	maxFileCount
+	maxFileCount,
+	returnType='array'
 }: ImageUplaoderProps ) => {
 	const options: UploadDropzoneConfig  = useMemo(() => { 
 		return ({
@@ -61,15 +63,22 @@ const ImageUploader = ({
 
 	return (
 		<div className={'upload_container'}>
-			<label htmlFor="logo">{label}</label>
+			{label && <label htmlFor="logo">{label}</label>}
 			{renderPrevieImages && renderPrevieImages }
 			<UploadDropzone
 				options={options}
-				onUpdate={( files ) => onChange(files?.uploadedFiles.map((file) => file.filePath)) as unknown as (F:  string[] ) => void }
+				onUpdate={( files ) => {
+					console.log(returnType);
+					
+					if (returnType === 'string' && files?.uploadedFiles.length > 0) {
+						return onChange(files?.uploadedFiles.map((file) => file.filePath)[0] as string) as unknown as (F:  string ) => void
+					}
+					return onChange(files?.uploadedFiles.map((file) => file.filePath)) as unknown as (F:  string[] ) => void 
+				}}
 				// onUpdate={files => console.log({files})}
 				width="100%"
 				height="fit-content"
-				className={'upload_zone'}
+				className={clsx('upload_zone', maxFileCount === 1 && 'single_image')}
 			/>
 			<ErrorDisplay id='uloader' errors={[]} />
 		</div>

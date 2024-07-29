@@ -21,7 +21,7 @@ export type PageHeaderButtons = PageHeaderButton[]
 type PageHeaderContent =  React.JSX.Element;
 
 export type PageHeaderComponent = {
-    title?: string, 
+    title: string, 
     pageHeaderButtons?: PageHeaderButtons,
     pageHeaderContent?: PageHeaderContent, 
     hasSiteNavigation?: boolean,

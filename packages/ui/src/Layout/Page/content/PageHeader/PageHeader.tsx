@@ -5,32 +5,36 @@ import clsx from 'clsx';
 import './styles.scss';
 
 const PageHeader = ({
+	title,
 	pageHeaderContent, 
 	pageHeaderButtons, 
 	emptyContent=false
 }: PageHeaderComponent) => {
 	return (
 		<div className={'pageheader_content_container'}>
+			<h2>{title}</h2>
 			{pageHeaderContent || emptyContent && 
 				<div>
 					{pageHeaderContent}
 				</div> 
 			}
-			<div className={'pageheader_button_container'} >
-				{isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0 && pageHeaderButtons.map(button => (
-					<button
-						key={button.text}
-						data-color={button.color || 'primary'}
-						className={clsx('border_button', 'md', 'dark', 'pageheader_createbutton')}
-						onClick={() => button.onClick()}
-						disabled={button.disabled}
-					>
-						{button.is_add_button && <div className={'add_icon'}><Plus strokeWidth={1} size={12} /></div> }
-						{button.is_reset_button && <div className={'add_icon'}><RotateCcw strokeWidth={1} size={12} /></div> }
-						<span>{`${button.text}`}</span>
-					</button> 
-				))}
-			</div>
+			{isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0 && 
+				<div className={'pageheader_button_container'} >
+					{pageHeaderButtons.map(button => (
+						<button
+							key={button.text}
+							data-color={button.color || 'primary'}
+							className={clsx('border_button', 'md', 'dark', 'pageheader_createbutton')}
+							onClick={() => button.onClick()}
+							disabled={button.disabled}
+						>
+							{button.is_add_button && <div className={'add_icon'}><Plus strokeWidth={1} size={12} /></div> }
+							{button.is_reset_button && <div className={'add_icon'}><RotateCcw strokeWidth={1} size={12} /></div> }
+							<span>{`${button.text}`}</span>
+						</button> 
+					))}
+				</div>
+			}
 		</div>
 	);
 };

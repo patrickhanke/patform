@@ -6,8 +6,9 @@ export type UseImageDataHandlerProps = {
 
 export type ImageUplaoderProps = {
 	previewImages?: string[],
-	onChange: (F: string[] ) => void,
-	label: string,
+	onChange: (F: string[] | string ) => void,
+	label?: string,
 	path: string,
-	maxFileCount?: number
+	maxFileCount?: number;
+	returnType?: 'array' | 'string'
 }
