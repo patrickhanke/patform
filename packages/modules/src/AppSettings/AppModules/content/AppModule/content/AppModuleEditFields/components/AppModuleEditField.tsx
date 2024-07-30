@@ -21,9 +21,6 @@ const AppModuleEditField = ({field, setFields}: AppModuleEditFieldProps) => {
         })
     }, [field, setFields])
 
-    console.log(field);
-    
-
     return (
         <div>
             <h3>{field.label}</h3>

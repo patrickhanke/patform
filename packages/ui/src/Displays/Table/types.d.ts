@@ -1,4 +1,5 @@
 import { RowSelectionState, Updater, ColumnDef } from '@tanstack/react-table';
+import { ModuleCategory } from '@repo/types';
 
 export type TableTypes = {
     data: TData[],
@@ -17,6 +18,11 @@ export type TableColumnImageProps = {
     isEditable?: true,
     onChange: (image: string) => void,
     maxFileCount?: number
+}
+
+export type TableColumnCategoryProps = {
+    category: ModuleCategory,
+    onChange: (category: string) => void,
 }
 
 export type TableColumnStringProps = {

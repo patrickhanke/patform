@@ -17,10 +17,9 @@ const StatelessToggle = ({ onChange, value, disabled = false, label }: Stateless
 				<input
 					type="checkbox"
 					checked={value}
-					onChange={dataHandler}
 					disabled={disabled}
 				/>
-				<span className='toggle-slider'></span>
+				<span onClick={() => dataHandler()} className='toggle-slider'></span>
 			</div>
 		</div>
 	);

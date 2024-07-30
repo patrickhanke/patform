@@ -1,16 +1,16 @@
-import React from 'react'
 import { generateGraphQLQuery, paramsHandler } from '@repo/provider'
 import { useQuery } from '@apollo/client'
 import { Loader } from '@repo/ui'
 import './styles.scss';
 import AppModuleEditFields from './content/AppModuleEditFields';
+import AppModuleEditCategories from './content/AppModuleEditCategories';
 
 const AppModule = ({id}: {id: string}) => {
     const {data, loading} = useQuery(generateGraphQLQuery(
         {
             type: 'get', 
             objectName: 'Module', 
-            fields: ['objectId', 'name', 'createdAt', 'icon', 'path', 'settings', 'fields', 'name', 'position']
+            fields: ['objectId', 'name', 'createdAt', 'icon', 'path', 'settings', 'fields', 'name', 'position', 'categories', 'connected_class']
         }
     ), {
         variables: {id}
@@ -21,7 +21,10 @@ const AppModule = ({id}: {id: string}) => {
 
     return (
         <div className='app_module_container'>
-            <h3>{module.name}</h3>
+            <div style={{width: '300px'}}>
+                <h3>{module.name}</h3>
+            </div>
+            <AppModuleEditCategories moduleId={id} initialCategories={module.categories} />
             <AppModuleEditFields moduleId={id} initialFields={module.fields} />
         </div>
     )

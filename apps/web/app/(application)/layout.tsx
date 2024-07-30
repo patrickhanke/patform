@@ -69,6 +69,8 @@ const query = gql`
 						icon
 						settings
 						fields
+						categories
+						connected_class
 					}
 				}
 			}

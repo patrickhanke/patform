@@ -14,7 +14,7 @@ const AppModules = () => {
         {
             type: 'find', 
             objectName: 'Module', 
-            fields: ['objectId', 'name', 'createdAt', 'icon', 'path', 'settings', 'fields', 'name', 'position']
+            fields: ['objectId', 'name', 'createdAt', 'icon']
         }
     ), {
         variables: paramsHandler({filters: [{key: 'project', value: project.objectId as string, operator: '_eq', id: 'projectId'}]} )
@@ -23,9 +23,6 @@ const AppModules = () => {
     if (loading) return null;
 
     const modules = data?.objects.findModule.results
-
-    console.log(modules);
-    
 
   return (
     <Page 

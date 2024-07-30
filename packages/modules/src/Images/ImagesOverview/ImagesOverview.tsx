@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useMemo, useState } from 'react';
-import {ColumnDef, IconButton, Modal, Page, Table}  from '@repo/ui';
+import {ColumnDef, IconButton, Modal, Page, Table, TableColumnCategory}  from '@repo/ui';
 import useGetImages from './hooks/useGetImages';
 import { Image, PageState } from '@repo/types';
 import { ImageUploader, useImageDataHandler } from '../ImageUploader';
@@ -18,18 +18,19 @@ const pageStates: PageState[] = [
 ]
 
 const ImagesOverview = () => {
-    const {project} = useContext(AppContext)
+    const {project, currentModule} = useContext(AppContext)
     const [uploadImages, setUploadImages] = useState(false)
     const [newImages, setNewImages] = useState<string[]>([]);
     const [activeState, setActiveState] = useState(pageStates[0])
     const [filters, setFilters] = useState([])
-    const {images, refetch} = useGetImages({projectId: project.objectId, filters})
+    const {images, refetch} = useGetImages({moduleId: currentModule.objectId, filters})
     const {imageUploadHandler} = useImageDataHandler({projectId: project.objectId,afterCancelFunction: refetch, afterSaveFunction: refetch});
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
     const {deleteData} = useDataHandler();
     const [editImage, setEditImage] = useState({open: false, image: '', newImage: undefined as unknown as Image | undefined})
 
-    const columns = useMemo(() => [
+    const columns = useMemo(() => {
+        const columnArray:ColumnDef<Image>[] = [
 		{
 			accessorFn: row => <img src={getImageUrl({filePath: row.filePath})} />,
 			header: () => <span>Vorschau</span>,
@@ -98,7 +99,19 @@ const ImagesOverview = () => {
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		}
-	] as ColumnDef<Image>[] , []);
+	] 
+    currentModule.categories.forEach(category => {
+        columnArray.push({
+            accessorFn: row => <TableColumnCategory category={category} />,
+            header: () => <span>{category.label}</span>,
+            id: category.id,
+            cell: info => info.getValue(),
+            footer: info => info.column.id
+        })
+    })
+
+    return columnArray;
+} , [currentModule]);
 
 
     console.log(editImage);

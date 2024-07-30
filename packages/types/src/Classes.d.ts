@@ -23,6 +23,16 @@ export type Image = {
     tags: Category['objectId'][]
 }
 
+export type ModuleCategory = {
+    id: string,
+    moduleId: string,
+    label: string,
+    key: string,
+    connected_class: string,
+    position: number,
+    is_multi: boolean
+}
+
 export type Category = {
     objectId: string,
     name: string,
@@ -46,5 +56,7 @@ export type Module = {
     settings: object,
     fields: Field[],
     position: number,
-    project: Project
+    project: Project,
+    connected_class: string,
+    categories: ModuleCategory[]
 }

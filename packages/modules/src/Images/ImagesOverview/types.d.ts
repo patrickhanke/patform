@@ -11,7 +11,7 @@ type FilterArray = Filter[];
 type GreetFunction = ({projectId: string, id: string, className: string, filters: FilterArray}) => void;
 
 export type UseGetImagesHook = ({
-    projectId: string,
+    moduleId: string,
     filters: FilterArray, 
 }) => ({
     loading: boolean,

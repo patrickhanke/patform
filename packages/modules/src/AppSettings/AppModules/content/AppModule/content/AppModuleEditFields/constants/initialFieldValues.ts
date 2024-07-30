@@ -2,7 +2,6 @@ import {v4} from 'uuid';
 import { FieldTypes } from '@repo/types';
 
 const initialFieldValues = {
-    
     name: 'neuesfeld' as string,
     type: 'input' as FieldTypes,
     label: 'Neues Feld',

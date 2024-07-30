@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { CreateButton, DnDDisplay, SlideIn, sortItemsByPosition } from '@repo/ui'
 import { useImmer } from "use-immer";
 import AppModuleField from './components/AppModuleField';
@@ -37,7 +37,7 @@ const AppModuleEditFields = ({moduleId, initialFields}: AppModuleEditFieldsProps
     
     return (
         <div>
-            <button onClick={() => setEditFields(true)}>
+            <button className='full_button sm green' onClick={() => setEditFields(true)}>
                 Felder bearbeiten
             </button>
             <SlideIn

@@ -3,9 +3,9 @@ import { useQuery } from '@apollo/client';
 import { find_images } from '../constants/find_images';
 import { paramsHandler } from '@repo/provider';
 
-const useGetImages: UseGetImagesHook = ({projectId, filters} ) => {
+const useGetImages: UseGetImagesHook = ({moduleId, filters} ) => {
 	const {loading, data, refetch} = useQuery(find_images, {
-		variables: {params: paramsHandler({projectId, filters})},
+		variables: {params: paramsHandler({moduleId, filters})},
 		notifyOnNetworkStatusChange: true
 	});
 
