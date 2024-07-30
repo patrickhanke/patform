@@ -1,9 +1,9 @@
 'use client';
 
 import { useContext, useMemo, useState } from 'react';
-import { ColumnDef, IconButton, Modal, Page, Table, TableColumnImage }  from '@repo/ui';
+import { ColumnDef, IconButton, Modal, Page, Table, TableColumnImage, TableColumnString }  from '@repo/ui';
 import { PageState, Person } from '@repo/types';
-import { AppContext, getDateStringsFromIso, getImageUrl, useDataHandler } from '@repo/provider';
+import { AppContext, getDateStringsFromIso, useDataHandler } from '@repo/provider';
 import useFindPerson from './hooks/useFindPerson';
 import deleteModalInitialValues from './constants/deleteModalInitialValues';
 import EditPerson from './content/EditPerson';
@@ -21,14 +21,47 @@ const PersonsOverview = () => {
     const [filters, setFilters] = useState([])
     const {persons, refetch} = useFindPerson({moduleId: currentModule.objectId, filters})
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
-    const {deleteData} = useDataHandler();
+    const {deleteData, updateData} = useDataHandler();
 
     const columns = useMemo(() => [
 		{
-			accessorFn: row => <TableColumnImage url={row.portrait} />,
+			accessorFn: row => 
+                <TableColumnImage 
+                    url={row.portrait}  
+                    isEditable={true}
+                    onChange={async (image: string) => {
+                        console.log(image);
+                        
+                        await updateData({
+                            className: 'Person',
+                            objectId: row.objectId,
+                            updateObject: {portrait: image}
+                        })
+                        refetch();
+                    }}
+                />,
 			header: () => <span>Vorschau</span>,
 			id: 'portrait',
 			cell: info => info.getValue(),
+			footer: info => info.column.id
+		},
+        {
+            accessorFn: row => 
+                <TableColumnString
+                    value={row.name}  
+                    isEditable={true}
+                    onChange={async (value: string) => {
+                        await updateData({
+                            className: 'Person',
+                            objectId: row.objectId,
+                            updateObject: {name: value}
+                        })
+                        refetch();
+                    }}
+                />,
+			header: () => <span>Name</span>,
+			id: 'name',
+            cell: info => info.getValue(),
 			footer: info => info.column.id
 		},
 		{
@@ -36,13 +69,6 @@ const PersonsOverview = () => {
 			header: () => <span>Erstellt</span>,
 			id: 'erstellt',
             cell: info => getDateStringsFromIso(info.getValue() as string).datumUhrzeit,
-			footer: info => info.column.id
-		},
-		{
-            accessorKey: 'name',
-			header: () => <span>Name</span>,
-			id: 'name',
-            cell: info => info.getValue(),
 			footer: info => info.column.id
 		},
 		{
@@ -106,7 +132,6 @@ const PersonsOverview = () => {
         >
             <p>Sind sich Sicher, dass sie die Person löschen möchten?</p>
         </Modal>
-       
     </Page>
   )
 }

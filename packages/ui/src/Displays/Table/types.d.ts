@@ -14,6 +14,13 @@ export type ColumnDef<TData> = ColumnDef<TData>;
 
 export type TableColumnImageProps = {
     url: string,
-    isEditable: true,
-    refetch: () => void
+    isEditable?: true,
+    onChange: (image: string) => void,
+    maxFileCount?: number
+}
+
+export type TableColumnStringProps = {
+    value: string,
+    isEditable?: true,
+    onChange: (image: string) => void
 }

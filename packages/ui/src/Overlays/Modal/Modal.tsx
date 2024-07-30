@@ -23,11 +23,11 @@ const Modal = ({
 				</div>
 				<div className={'modal_content'}>{children}</div>
 				<div className={'modal_footer'}>
-					<button className={clsx('full_button', 'md', 'dark')} onClick={() => confirmButtonHandler()} disabled={buttonDisabled[1]}>
-                        Bestätigen
-					</button>
 					<button className={clsx('full_button', 'md', 'light')} onClick={() => cancelButtonHandler()} disabled={buttonDisabled[0]}>
                         Abbrechen
+					</button>
+					<button className={clsx('full_button', 'md', 'dark')} onClick={() => confirmButtonHandler()} disabled={buttonDisabled[1]}>
+                        Bestätigen
 					</button>
 				</div>
 			</div>

@@ -71,3 +71,17 @@
     }
     
 }
+
+.table_columns_string_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
+    width: 180px;
+    input {
+        width: 120px;
+    }
+}
+
+.table_columns_image_placeholder {
+    width: 45px;
+    height: 34px;
+    background-color: colors.$lightgrey;
+}
