@@ -2,32 +2,26 @@
 
 import { useContext, useMemo, useState } from 'react';
 import { ColumnDef, IconButton, Modal, Page, Table, TableColumnImage, TableColumnString }  from '@repo/ui';
-import { PageState, Person } from '@repo/types';
+import { Category, PageState, Person } from '@repo/types';
 import { AppContext, getDateStringsFromIso, useDataHandler } from '@repo/provider';
-import useFindPerson from './hooks/useFindPerson';
 import deleteModalInitialValues from './constants/deleteModalInitialValues';
 import EditPerson from './content/EditPerson';
-import CreatePerson from './content/CreatePerson';
+import CreateCategory from './content/CreateCategory';
+import useFindCategory from './hooks/useFindCategory';
 
-const pageStates: PageState[] = [
-    {value: 'all', label: 'Alle'},
-    {value: 'active', label: 'Aktiv'},
-    {value: 'inactive', label: 'Inaktiv'},
-]
+const Categories = () => {
+  const {currentModule} = useContext(AppContext)
+  const pageStates  = useMemo(() =>( currentModule?.settings?.categories), [currentModule])
+  const [activeState, setActiveState] = useState(pageStates[0])
+  const {categories, refetch} = useFindCategory({moduleId: currentModule.objectId, filters: activeState.value ?  [{key: 'type', value: activeState.value, operator: '_eq', id: activeState.id}] : []}) 
+  const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
+  const {deleteData, updateData} = useDataHandler();
 
-const PersonsOverview = () => {
-    const {currentModule} = useContext(AppContext)
-    const [activeState, setActiveState] = useState(pageStates[0])
-    const [filters, setFilters] = useState([])
-    const {persons, refetch} = useFindPerson({moduleId: currentModule.objectId, filters})
-    const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
-    const {deleteData, updateData} = useDataHandler();
-
-    const columns = useMemo(() => [
+  const columns = useMemo(() => [
 		{
 			accessorFn: row => 
                 <TableColumnImage 
-                    url={row.portrait}  
+                    url={row.image}  
                     isEditable={true}
                     onChange={async (image: string) => {
                         console.log(image);
@@ -102,15 +96,12 @@ const PersonsOverview = () => {
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		}
-	] as ColumnDef<Person>[] , [persons]);
-
-    console.log(persons);
-    
+	] as ColumnDef<Category>[] , [categories]);
 
   return (
     <Page 
         title={currentModule.name}
-        pageHeaderContent={<CreatePerson refetch={refetch} />}
+        pageHeaderContent={<CreateCategory refetch={refetch} typeValue={activeState.value} />}
         hasPageNavigation={true}
         emptyContent={true}
         pageStates={pageStates}
@@ -119,7 +110,7 @@ const PersonsOverview = () => {
     >
         <Table 
             columns={columns}
-            data={persons || []}
+            data={categories || []}
         />
         <Modal 
             isOpen={deleteModal.isOpen}
@@ -136,4 +127,4 @@ const PersonsOverview = () => {
   )
 }
 
-export default PersonsOverview
+export default Categories

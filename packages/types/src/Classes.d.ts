@@ -51,14 +51,25 @@ export type Person = {
 export type Module = {
     objectId: string,
     name: string,
-    title: string,
     path: string,
     icon: string,
-    settings: object,
     fields: Field[],
     position: number,
     project: Project,
     connected_class: string,
     categories: ModuleCategory[],
     settings: ModuleSettings
+}
+
+
+export type Category = {
+    objectId: string,
+    name: string,
+    image: string,
+    createdAt: string,
+    icon: string,
+    connected_class: string,
+    key: string,
+    moduleId: string,
+    description: string,
 }

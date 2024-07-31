@@ -8,7 +8,7 @@ import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
 import { MdOutlineCleaningServices, MdOutlineContactPage, MdViewModule } from 'react-icons/md';
 import {RiAdminLine, RiListSettingsLine} from 'react-icons/ri';
 import { CgProfile } from 'react-icons/cg';
-import { BiMessageSquareError, BiSolidTrashAlt } from 'react-icons/bi';
+import { BiLabel, BiMessageSquareError, BiSolidTrashAlt } from 'react-icons/bi';
 import { BsHousesFill } from 'react-icons/bs';
 import { FaShuttleVan } from 'react-icons/fa';
 import { GrTask } from 'react-icons/gr';
@@ -92,6 +92,9 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'modules') {
 		return <MdViewModule />;
+	}
+	if (icon === 'categories') {
+		return <BiLabel />;
 	}
 
 	return null;

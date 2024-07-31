@@ -1,9 +1,9 @@
 import { ModuleSettings } from '@repo/types';
-import { AppModuleEditSettingsCategoriesProps, AppModuleSettingsCategoryKeyValuePair } from '../types';
+import { AppModuleEditSettingsCategoriesProps } from '../types';
 import { CreateButton } from '@repo/ui';
 import { useCallback } from 'react';
 import { v4 } from 'uuid';
-import { set } from 'lodash';
+import { slugify } from '@repo/provider';
 
 const AppModuleEditSettingsCategories = ({categories, setSettings} : AppModuleEditSettingsCategoriesProps) => {
    
@@ -34,7 +34,7 @@ const AppModuleEditSettingsCategories = ({categories, setSettings} : AppModuleEd
                     <h3>{category.label}</h3>
                         <div>
                             <label>Label</label>
-                            <input type='text' defaultValue={category.label} onChange={(e) => changeHandler({...category,  label: e.target.value})} />
+                            <input type='text' defaultValue={category.label} onChange={(e) => changeHandler({...category,  label: e.target.value, value: slugify(e.target.value)})} />
                         </div>
                 </div>
                 )
