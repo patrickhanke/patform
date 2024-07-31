@@ -53,7 +53,6 @@ const AppModuleEditCategories = ({moduleId, initialCategories}: AppModuleEditCat
                 <CreateButton 
                     text='Kategorie hinzufügen'
                     size='medium'
-                
                     onClick={() => {
                         setCategories(draft => {
                             draft.push({

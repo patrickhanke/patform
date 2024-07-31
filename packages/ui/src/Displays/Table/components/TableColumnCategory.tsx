@@ -52,9 +52,8 @@ const TableColumnCategory = ({ category, className, objectId, categories }: Tabl
 		<>
 			<div className='button_container'>
 				<Select
+					value={ categories ? categories[category.moduleId as string] : null}
 					onChange={(options: SelectOption[]) => {
-						console.log(options);
-						
 						categoryChangeHandler(options.map((option: SelectOption) => option.value ));
 					}}
 					options={selectOptions}

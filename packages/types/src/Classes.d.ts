@@ -32,6 +32,10 @@ export type ModuleCategory = {
     is_multi: boolean
 }
 
+export type ModuleSettings = {
+    categories: [{id: string, label: string, value: string, position: number }]
+}
+
 export type Categories = {
     [key: string]: string[]
 }
@@ -55,5 +59,6 @@ export type Module = {
     position: number,
     project: Project,
     connected_class: string,
-    categories: ModuleCategory[]
+    categories: ModuleCategory[],
+    settings: ModuleSettings
 }

@@ -1,3 +1,5 @@
+import { flattenDeep, isArray } from 'lodash';
+
 export function slugify(string: string) {
 	const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
 	const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
@@ -12,3 +14,23 @@ export function slugify(string: string) {
 		.replace(/^-+/, '') // Trim - from start of text
 		.replace(/-+$/, ''); // Trim - from end of text
 }
+
+export const flattenObject = (object: object) =>  {
+	let returnValues = {};
+	Object.keys(object).forEach(key => {
+		if (isArray(object[key] as object[]) ) {
+			const flatenedArray = flattenDeep(object[key]);
+			flatenedArray.forEach((value) => {
+				if (typeof value === 'object') {
+					returnValues = {...returnValues, ...value};
+				}
+			});
+
+		} else if (typeof object[key] === 'object') {
+			returnValues = {...returnValues, ...object[key]};
+		}
+	});
+	return returnValues;
+};
+
+null

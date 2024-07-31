@@ -24,47 +24,18 @@ const AppModules = () => {
 
     const modules = data?.objects.findModule.results
 
-  return (
-    <Page 
-        title='Module'
-        pageHeaderContent={<p>Module</p>}
-        pageHeaderButtons={[{text: 'Neue Person erstellen', onClick: () => console.log(true)}]}
-        hasPageNavigation={true}
-        emptyContent={true}
-    >
-        <DnDDisplay
-            items={sortItemsByPosition(modules).map((module: Module) => ({...module, id: module.objectId})) || []}
-            ItemComponent={({item}) => (<AppModule id={item.id} />)}
-            objectClass='Module'
-            
-        />
-        {/* <Modal 
-            isOpen={createPerson}
-            buttonDisabled={[!!newPerson, false]}
-            cancelButtonHandler={() => setCreatePerson(false)}
-            confirmButtonHandler={async () =>{ 
-                setCreatePerson(false)
-            }}
-            header='Upload Images'
+    return (
+        <Page 
+            title='Module'
+            pageHeaderButtons={[{text: 'Neue Person erstellen', onClick: () => console.log(true)}]}
+            hasPageNavigation={true}
+            emptyContent={true}
         >
-            <div>
-                <p>
-                    Personen erstellen
-                </p>
-            </div>
-        </Modal>
-        <Modal 
-            isOpen={deleteModal.isOpen}
-            cancelButtonHandler={() => setDeleteModal(deleteModalInitialValues)}
-            confirmButtonHandler={() => {
-                deleteModal.confirmButtonHandler()
-                setDeleteModal(deleteModalInitialValues)
-            }}
-            header={deleteModal.header}
-        >
-            <p>Sind sich Sicher, dass sie die Person löschen möchten?</p>
-        </Modal> */}
-       
+            <DnDDisplay
+                items={sortItemsByPosition(modules).map((module: Module) => ({...module, id: module.objectId})) || []}
+                ItemComponent={({item}) => (<AppModule id={item.id} />)}
+                objectClass='Module'
+            />
     </Page>
   )
 }

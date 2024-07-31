@@ -4,9 +4,10 @@ import { Loader } from '@repo/ui'
 import './styles.scss';
 import AppModuleEditFields from './content/AppModuleEditFields';
 import AppModuleEditCategories from './content/AppModuleEditCategories';
+import AppModuleEditSettings from './content/AppModuleEditSettings';
 
 const AppModule = ({id}: {id: string}) => {
-    const {data, loading} = useQuery(generateGraphQLQuery(
+    const {data, loading, refetch} = useQuery(generateGraphQLQuery(
         {
             type: 'get', 
             objectName: 'Module', 
@@ -24,6 +25,7 @@ const AppModule = ({id}: {id: string}) => {
             <div style={{width: '300px'}}>
                 <h3>{module.name}</h3>
             </div>
+            {module.settings && <AppModuleEditSettings moduleId={id} initialSettings={module.settings} refetch={refetch} />}
             <AppModuleEditCategories moduleId={id} initialCategories={module.categories} />
             <AppModuleEditFields moduleId={id} initialFields={module.fields} />
         </div>
