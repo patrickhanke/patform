@@ -8,9 +8,8 @@ export const find_images = gql`
                     createdAt
                     objectId
                     name
-                    description
                     filePath
-                    person
+                    categories
                 }
             }
         }

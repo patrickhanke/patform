@@ -18,9 +18,8 @@ export type Image = {
     objectId: string,
     name: string,
     filePath: string,
-    description: string, 
-    persons: string[],
     tags: Category['objectId'][]
+    categories: Categories
 }
 
 export type ModuleCategory = {
@@ -33,10 +32,8 @@ export type ModuleCategory = {
     is_multi: boolean
 }
 
-export type Category = {
-    objectId: string,
-    name: string,
-    type: string,
+export type Categories = {
+    [key: string]: string[]
 }
 
 export type Person = {

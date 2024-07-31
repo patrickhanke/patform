@@ -22,7 +22,9 @@ export type TableColumnImageProps = {
 
 export type TableColumnCategoryProps = {
     category: ModuleCategory,
-    onChange: (category: string) => void,
+    objectId: string,
+    className: string,
+    categories: Categories
 }
 
 export type TableColumnStringProps = {

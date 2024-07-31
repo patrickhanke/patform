@@ -1,17 +1,29 @@
 'use client';
 
-import { generateGraphQLQuery } from '@repo/provider';
+import { generateGraphQLQuery, useDataHandler } from '@repo/provider';
 import { TableColumnCategoryProps } from '../types';
 import '../styles.scss';
-import {useMemo} from 'react';
+import {useCallback, useMemo} from 'react';
 import { useQuery } from '@apollo/client';
 import { Select } from '@repo/ui';
+import { SelectOption } from '@repo/types';
 
-const TableColumnCategory = ({ category, onChange }: TableColumnCategoryProps) => {
-	console.log(category);
+const TableColumnCategory = ({ category, className, objectId, categories }: TableColumnCategoryProps) => {
+	const {updateData} = useDataHandler();    
+	const categoryChangeHandler = useCallback(async (value: string[]) => {
+		const categoriesCopy = {...categories};
+		categoriesCopy[category.moduleId as string] = value;
+		await updateData({
+			objectId: objectId,
+			className,
+			updateObject: {
+				categories: categoriesCopy
+			}
+		});
+	} , [category]);
+
     
-    
-    const {data} = useQuery(generateGraphQLQuery(
+	const {data} = useQuery(generateGraphQLQuery(
 		{
 			type: 'find', 
 			objectName: category.connected_class, 
@@ -21,16 +33,14 @@ const TableColumnCategory = ({ category, onChange }: TableColumnCategoryProps) =
 		variables: {module: {_eq: category.moduleId}}
 	});
 
-    console.log(data);
 	const selectOptions = useMemo(() => {
 		const options: {value: string, label: string}[] = [];
 		if (data) {
-            
 			const dataFields = data.objects[`find${category.connected_class}`].results;	
-			dataFields.forEach((field: any) => {
+			dataFields.forEach((field: {objectId: string, [key: string]: string}) => {
 				options.push( {
 					value: field.objectId,
-					label: field[category.key]
+					label: field[category.key] as string
 				});
 			});
 		}
@@ -42,10 +52,14 @@ const TableColumnCategory = ({ category, onChange }: TableColumnCategoryProps) =
 		<>
 			<div className='button_container'>
 				<Select
-                    onChange={(value: any) => console.log(value)}
-                    options={selectOptions}
-                    isMulti={category.is_multi}
-                />
+					onChange={(options: SelectOption[]) => {
+						console.log(options);
+						
+						categoryChangeHandler(options.map((option: SelectOption) => option.value ));
+					}}
+					options={selectOptions}
+					isMulti={category.is_multi}
+				/>
 			</div>
 			
 		</>

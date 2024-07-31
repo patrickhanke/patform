@@ -25,4 +25,9 @@ export type ErrorMessage = {
     message: string
 }
 
+export type SelectOption = {
+    value: string,
+    label: string
+}
+
 

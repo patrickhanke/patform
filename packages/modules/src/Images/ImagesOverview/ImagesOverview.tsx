@@ -20,7 +20,7 @@ const pageStates: PageState[] = [
 const ImagesOverview = () => {
     const {project, currentModule} = useContext(AppContext)
     const [uploadImages, setUploadImages] = useState(false)
-    const [newImages, setNewImages] = useState<string[]>([]);
+    const [newImages, setNewImages] = useState<string[] | string>([]);
     const [activeState, setActiveState] = useState(pageStates[0])
     const [filters, setFilters] = useState([])
     const {images, refetch} = useGetImages({moduleId: currentModule.objectId, filters})
@@ -52,62 +52,64 @@ const ImagesOverview = () => {
             cell: info => info.getValue(),
 			footer: info => info.column.id
 		},
-		{
-            accessorFn: row => <a href={getImageUrl({filePath: row.filePath})} target='__blank' >{getImageUrl({filePath: row.filePath})} </a> ,
-			header: () => <span>Url</span>,
-			id: 'filePath',
-			cell: info => info.getValue(),
-			footer: info => info.column.id
-		},
-		{
-			accessorFn: row => 
-				<div className='button_container'>
-                    <IconButton
-                        icon='edit'
-                        onClick={() => setEditImage({open: true, image: row.objectId, newImage: undefined})}
-                    />
-                    <IconButton
-                        icon='download'
-                        isBlank
-                        isLink
-                        link ={'row.file.url'}
-                    />
-                    <IconButton
-                        icon='delete'
-                        onClick={() => setDeleteModal({
-                            images: [row.filePath],
-                            isOpen: true,
-                            confirmButtonHandler: async () => {
-                                await deleteImageHandler({
-                                    accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
-                                    apiKey: process.env.BYTESCALE_SECRET_KEY as string,
-                                    filePath: row.filePath
-                                });
-                                await deleteData({
-                                    className: 'Image',
-                                    objectId: row.objectId,
-                                })
-                                refetch();
-                                setDeleteModal({...deleteModal, isOpen: false})
-                            },
-                            header: 'Bilder löschen'
-                        })}
-                    />
-                </div>,
-			header: () => <span>Bearbeiten</span>,
-			id: 'edit',
-			cell: info => info.getValue(),
-			footer: info => info.column.id
-		}
+		// {
+        //     accessorFn: row => <a href={getImageUrl({filePath: row.filePath})} target='__blank' >{getImageUrl({filePath: row.filePath})} </a> ,
+		// 	header: () => <span>Url</span>,
+		// 	id: 'filePath',
+		// 	cell: info => info.getValue(),
+		// 	footer: info => info.column.id
+		// },
+		
 	] 
     currentModule.categories.forEach(category => {
         columnArray.push({
-            accessorFn: row => <TableColumnCategory category={category} />,
+            accessorFn: row => <TableColumnCategory category={category} categories={row.categories} className='Image' objectId={row.objectId}  />,
             header: () => <span>{category.label}</span>,
             id: category.id,
             cell: info => info.getValue(),
             footer: info => info.column.id
         })
+    })
+
+    columnArray.push({
+        accessorFn: row => 
+            <div className='button_container'>
+                <IconButton
+                    icon='edit'
+                    onClick={() => setEditImage({open: true, image: row.objectId, newImage: undefined})}
+                />
+                <IconButton
+                    icon='download'
+                    isBlank
+                    isLink
+                    link ={'row.file.url'}
+                />
+                <IconButton
+                    icon='delete'
+                    onClick={() => setDeleteModal({
+                        images: [row.filePath],
+                        isOpen: true,
+                        confirmButtonHandler: async () => {
+                            await deleteImageHandler({
+                                accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
+                                apiKey: process.env.BYTESCALE_SECRET_KEY as string,
+                                filePath: row.filePath
+                            });
+                            await deleteData({
+                                className: 'Image',
+                                objectId: row.objectId,
+                            })
+                            refetch();
+                            setDeleteModal({...deleteModal, isOpen: false})
+                        },
+                        header: 'Bilder löschen'
+                    })}
+                />
+            </div>,
+        header: () => <span>Bearbeiten</span>,
+        id: 'edit',
+        cell: info => info.getValue(),
+        footer: info => info.column.id
     })
 
     return columnArray;
@@ -119,7 +121,6 @@ const ImagesOverview = () => {
   return (
     <Page 
         title='Bilder'
-        pageHeaderContent={<p>Text</p>}
         pageHeaderButtons={[{text: 'Bilder hochladen', onClick: () => setUploadImages(true)}]}
         hasPageNavigation={true}
         emptyContent={true}
