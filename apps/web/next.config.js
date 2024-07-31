@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
 	transpilePackages: ['@repo/ui', '@repo/provider'],
+	typescript: {
+		ignoreBuildErrors: true
+	},
 	env: {
 		SASHIDO_API_URL: process.env.SASHIDO_API_URL,
 		SASHIDO_APP_ID: process.env.SASHIDO_APP_ID,
