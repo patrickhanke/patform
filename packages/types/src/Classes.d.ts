@@ -73,3 +73,13 @@ export type Category = {
     moduleId: string,
     description: string,
 }
+
+export type News = {
+    objectId: string,
+    title: string,
+    data: FormDataElement,
+    createdAt: string,
+    image: string,
+    text: string,
+    autor: string,
+}

@@ -32,3 +32,9 @@ export type TableColumnStringProps = {
     isEditable?: true,
     onChange: (image: string) => void
 }
+
+export type TableColumnTextfieldProps = {
+    value: string,
+    isEditable?: true,
+    onChange: (image: string) => void
+}

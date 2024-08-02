@@ -1,25 +1,25 @@
 'use client';
 
-import { TableColumnStringProps } from '../types';
+import { TableColumnTextfieldProps } from '../types';
 import {useState} from 'react';
 import { IconButton } from '../../../Buttons';
 import '../styles.scss';
 
-const TableColumnString = ({value, isEditable, onChange }: TableColumnStringProps) => {
+const TableColumnTextfield = ({value, isEditable, onChange }: TableColumnTextfieldProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [string, setString] = useState('');
-	console.log(value);
 
 	return (
 		<>
-			<div className='table_columns_string_container'>
+			<div className='table_column_textfield_container'>
 				{isOpen ? 
-					<input
-						type='text'
-						defaultValue={value}
-						onChange={e => setString(e.target.value)}
-						onBlur={() => setIsOpen(!isOpen)}
-					/> 
+					<div className='table_column_textfield_textarea_container'>
+						<textarea
+							defaultValue={value}
+							onChange={e => setString(e.target.value)}
+							onBlur={() => setIsOpen(!isOpen)}
+						/>
+					</div>
 					: 
 					value ? value : '-'
 				}
@@ -41,4 +41,4 @@ const TableColumnString = ({value, isEditable, onChange }: TableColumnStringProp
 	);
 };
 
-export default TableColumnString;
+export default TableColumnTextfield;

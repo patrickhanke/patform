@@ -7,6 +7,7 @@ import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
 import { MdOutlineCleaningServices, MdOutlineContactPage, MdViewModule } from 'react-icons/md';
 import {RiAdminLine, RiListSettingsLine} from 'react-icons/ri';
+import {PiNewspaper} from 'react-icons/pi';
 import { CgProfile } from 'react-icons/cg';
 import { BiLabel, BiMessageSquareError, BiSolidTrashAlt } from 'react-icons/bi';
 import { BsHousesFill } from 'react-icons/bs';
@@ -95,6 +96,9 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'categories') {
 		return <BiLabel />;
+	}
+	if (icon === 'news') {
+		return <PiNewspaper />;
 	}
 
 	return null;
