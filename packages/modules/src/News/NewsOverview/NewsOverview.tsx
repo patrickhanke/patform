@@ -15,6 +15,8 @@ const pageStates: PageState[] = [
     {value: 'inactive', label: 'Inaktiv'},
 ]
 
+
+
 const NewsOverview = () => {
     const {currentModule} = useContext(AppContext)
     const [activeState, setActiveState] = useState(pageStates[0])
@@ -22,7 +24,8 @@ const NewsOverview = () => {
     const {news, refetch} = useFindNews({moduleId: currentModule.objectId, filters})
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
     const {deleteData, updateData} = useDataHandler();
-
+    console.log(currentModule);
+    
     const columns = useMemo(() => [
 		{
 			accessorFn: row => 
@@ -93,7 +96,7 @@ const NewsOverview = () => {
 		{
 			accessorFn: row => 
 				<div className='button_container'>
-                    <EditNews newsId={row.objectId} />
+                    {currentModule.fields.length > 0 && <EditNews newsId={row.objectId} />}
                     <IconButton
                         icon='delete'
                         onClick={() => setDeleteModal({

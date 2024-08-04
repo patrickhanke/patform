@@ -7,8 +7,7 @@ import '../styles.scss';
 
 const TableColumnString = ({value, isEditable, onChange }: TableColumnStringProps) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [string, setString] = useState('');
-	console.log(value);
+	const [string, setString] = useState(value);
 
 	return (
 		<>
@@ -18,13 +17,12 @@ const TableColumnString = ({value, isEditable, onChange }: TableColumnStringProp
 						type='text'
 						defaultValue={value}
 						onChange={e => setString(e.target.value)}
-						onBlur={() => setIsOpen(!isOpen)}
 					/> 
 					: 
 					value ? value : '-'
 				}
 
-				{isEditable && isOpen ? 
+				{isEditable && !isOpen ? 
 					<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />
 					:
 					<IconButton

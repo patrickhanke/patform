@@ -13,7 +13,7 @@ const Modal = ({
 }: ModalComponent) => {
 	if (isOpen === true) return (
 		<Fragment key={header}>
-			<div className={clsx('overlay_container', 'animate')} />
+			<div className={clsx('modal_overlay_container', 'modal_animate')} />
         
 			<div className={clsx( 'modal_container', 'animate')}>
 				<div className={'modal_header'}>

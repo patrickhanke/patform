@@ -97,14 +97,9 @@
     }
 }
 .table_column_textfield_textarea_container {
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    background-color: colors.$white;
-    border: 1px solid colors.$lightgrey;
-    z-index: 3;
-    transform: translateY(100%) translateX(-50%);
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm');
-    box-shadow: layout.$shadow_regular;
-    width: fit-content;
+    width: 100%;
+    textarea {
+        width: 100%;
+        min-height: 120px;
+    }
 }
