@@ -6,7 +6,7 @@ import { IconButton } from '../../../Buttons';
 import '../styles.scss';
 import { Modal } from '../../../Overlays';
 
-const TableColumnTextfield = ({value, isEditable, onChange }: TableColumnTextfieldProps) => {
+const TableColumnTextfield = ({value, isEditable = false, onChange }: TableColumnTextfieldProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [string, setString] = useState(value);
 

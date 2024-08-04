@@ -5,7 +5,7 @@ import {useState} from 'react';
 import { IconButton } from '../../../Buttons';
 import '../styles.scss';
 
-const TableColumnString = ({value, isEditable, onChange }: TableColumnStringProps) => {
+const TableColumnString = ({value, isEditable = false, onChange }: TableColumnStringProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [string, setString] = useState(value);
 

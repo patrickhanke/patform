@@ -8,7 +8,7 @@ import { ImageUploader } from '@repo/modules';
 import { IconButton } from '../../../Buttons';
 import '../styles.scss';
 
-const TableColumnImage = ({ url, isEditable, onChange, maxFileCount }: TableColumnImageProps) => {
+const TableColumnImage = ({ url, isEditable = false, onChange, maxFileCount }: TableColumnImageProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState('');
 

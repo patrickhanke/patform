@@ -19,7 +19,7 @@ export type Image = {
     name: string,
     filePath: string,
     tags: Category['objectId'][]
-    categories: Categories
+    categories: ClassCategories
 }
 
 export type ModuleCategory = {
@@ -36,7 +36,7 @@ export type ModuleSettings = {
     categories: [{id: string, label: string, value: string, position: number }]
 }
 
-export type Categories = {
+export type ClassCategories = {
     [key: string]: string[]
 }
 
@@ -83,3 +83,4 @@ export type News = {
     text: string,
     autor: string,
 }
+
