@@ -9,6 +9,7 @@ const Page = ({
 	pageHeaderContent, 
 	pageHeaderButtons, 
 	pageStates = [], 
+	createClass,
 	activeState, 
 	navOnClick,
 	refetch,
@@ -21,6 +22,7 @@ const Page = ({
 				pageHeaderContent={pageHeaderContent} 
 				pageHeaderButtons={pageHeaderButtons}
 				emptyContent={emptyContent}
+				createClass={createClass}
 				refetch={refetch}
 			/>
 			{navOnClick && activeState && (

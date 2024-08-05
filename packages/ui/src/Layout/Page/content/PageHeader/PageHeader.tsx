@@ -3,20 +3,34 @@ import { Plus, RotateCcw } from 'lucide-react';
 import { isArray } from 'lodash';
 import clsx from 'clsx';
 import './styles.scss';
+import CreateClass from './content/CreateClass';
 
 const PageHeader = ({
 	title,
 	pageHeaderContent, 
 	pageHeaderButtons, 
-	emptyContent=false
+	emptyContent=false,
+	refetch,
+	createClass
 }: PageHeaderComponent) => {
 	return (
 		<div className={'pageheader_content_container'}>
 			<h2>{title}</h2>
 			{pageHeaderContent || emptyContent && 
+			<>
 				<div>
 					{pageHeaderContent}
 				</div> 
+				<div>{createClass?.className && ( 
+					<CreateClass
+						fields={createClass.fields}
+						text={createClass.text || 'Neues Objekt erstellen'}
+						className={createClass.className}
+						refetch={refetch}
+					/>
+				)}
+				</div>
+			</>
 			}
 			{isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0 && 
 				<div className={'pageheader_button_container'} >
