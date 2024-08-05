@@ -15,17 +15,20 @@ const TableColumnTextfield = ({value, isEditable = false, onChange }: TableColum
 			<div className='table_column_textfield_container'>
 				{value ? value : '-'}
 
-				{isEditable && !isOpen ? 
-					<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />
-					:
-					<IconButton
-						icon='check'
-						onClick={() => {
-							setIsOpen(!isOpen);
-							onChange(string);
-						}}
-					/>
-
+				{isEditable && 
+				<>
+					{!isOpen ? 
+						<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />
+						:
+						<IconButton
+							icon='check'
+							onClick={() => {
+								setIsOpen(!isOpen);
+								onChange(string);
+							}}
+						/>
+					}
+				</>
 				}
 			</div>
 			<Modal 

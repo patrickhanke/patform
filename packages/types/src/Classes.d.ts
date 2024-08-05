@@ -14,14 +14,6 @@ export type Project = {
     }
 }
 
-export type Image = {
-    objectId: string,
-    name: string,
-    filePath: string,
-    tags: Category['objectId'][]
-    categories: ClassCategories
-}
-
 export type ModuleCategory = {
     id: string,
     moduleId: string,
@@ -34,18 +26,6 @@ export type ModuleCategory = {
 
 export type ModuleSettings = {
     categories: [{id: string, label: string, value: string, position: number }]
-}
-
-export type ClassCategories = {
-    [key: string]: string[]
-}
-
-export type Person = {
-    data: FormDataElement,
-    objectId: string,
-    name: string,
-    createdAt: string,
-    portrait: string
 }
 
 export type Module = {
@@ -61,26 +41,44 @@ export type Module = {
     settings: ModuleSettings
 }
 
+export type ClassCategories = {
+    [key: string]: string[]
+}
 
-export type Category = {
+export type ClassProperties = {
     objectId: string,
+    createdAt: string,
+    data: FormDataElement,
+    module: Module,
+    categories: ClassCategories 
+}
+
+export type ImageClass = ClassProperties & {
+    name: string,
+    filePath: string,
+}
+
+export type PersonClass = ClassProperties & {
+    name: string,
+    portrait: string
+}
+
+export type CategoryClass = ClassProperties & {
     name: string,
     image: string,
-    createdAt: string,
     icon: string,
     connected_class: string,
     key: string,
-    moduleId: string,
     description: string,
 }
 
-export type News = {
-    objectId: string,
+export type NewsClass = ClassProperties & {
     title: string,
-    data: FormDataElement,
-    createdAt: string,
     image: string,
     text: string,
     autor: string,
 }
+
+export type Classes = ImageClass | NewsClass | PersonClass | CategoryClass
+
 

@@ -1,14 +1,17 @@
+'use client';
+
 import { useMemo } from 'react';
-import { CreateColumnHookProps, UseCreateColumnsHook } from '../types';
+import { CreateColumnHookProps, ColumnClasses } from '../types';
 import { ColumnDef } from '@tanstack/react-table';
-import TableColumnString from '../components/TableColumnString'; // Ensure this import is correct
+import TableColumnString from '../components/TableColumnString';
 import { useDataHandler } from '@repo/provider';
 import TableColumnImage from '../components/TableColumnImage';
 import TableColumnTextfield from '../components/TableColumnTextfield';
 import TableColumnCategory from '../components/TableColumnCategory';
+import TableColumnEditField from '../content/TableColumnEditField';
+import TableColumnDeleteField from '../content/TableColumnDeleteField/TableColumnDeleteField';
 
-
-const useCreateColumns: UseCreateColumnsHook = <T,>({ data, categories = [], fields = [], className, objectId, refetch }: CreateColumnHookProps<T>)  => {
+const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
@@ -24,18 +27,18 @@ const useCreateColumns: UseCreateColumnsHook = <T,>({ data, categories = [], fie
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: {title: value}
+									updateObject: {[columnElement.id]: value}
 								});
 								if (refetch) {
 									refetch();
 								}
 							}}
 						/>,
-					header: () => <span>Titel</span>,
-					id: 'title',
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
 					cell: info => info.getValue(),
 					footer: info => info.column.id
-				} as  ColumnDef<T>);
+				} as ColumnDef<T>);
 			}
 			if (columnElement.type === 'image' || columnElement.type === 'edit_image') {
 				columnArray.push({
@@ -47,15 +50,15 @@ const useCreateColumns: UseCreateColumnsHook = <T,>({ data, categories = [], fie
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: {title: value}
+									updateObject: {[columnElement.id]: value}
 								});
 								if (refetch) {
 									refetch();
 								}
 							}}
 						/>,
-					header: () => <span>Titel</span>,
-					id: 'title',
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
 					cell: info => info.getValue(),
 					footer: info => info.column.id
 				} as  ColumnDef<T>);
@@ -64,21 +67,21 @@ const useCreateColumns: UseCreateColumnsHook = <T,>({ data, categories = [], fie
 				columnArray.push({
 					accessorFn: row => 
 						<TableColumnTextfield
-							url={row[columnElement.id] as string}  
+							value={row[columnElement.id] as string}  
 							isEditable={columnElement.type === 'edit_textfield' ?  true : false}
 							onChange={async (value: string) => {
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: {title: value}
+									updateObject: {[columnElement.id]: value}
 								});
 								if (refetch) {
 									refetch();
 								}
 							}}
 						/>,
-					header: () => <span>Titel</span>,
-					id: 'title',
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
 					cell: info => info.getValue(),
 					footer: info => info.column.id
 				} as  ColumnDef<T>);
@@ -90,21 +93,30 @@ const useCreateColumns: UseCreateColumnsHook = <T,>({ data, categories = [], fie
 					<TableColumnCategory
 						category={category }  
 						className={className}
-						objectId={objectId}
+						objectId={row.objectId}
 						categories={row.categories}                        
-						
 					/>,
-				header: () => <span>Titel</span>,
-				id: 'title',
+				header: () => <span>{category.label}</span>,
+				id: category.id,
 				cell: info => info.getValue(),
 				footer: info => info.column.id
 			} as  ColumnDef<T>);
 		});
-
+		columnArray.push({
+			accessorFn: row => 
+				<div className='button_container'>
+					{fields.length > 0 && <TableColumnEditField objectId={row.objectId} className={className} />}
+					<TableColumnDeleteField objectId={row.objectId} className={className} refetch={refetch} />
+				</div>,
+			header: () => <span>Bearbeiten</span>,
+			id: 'edit',
+			cell: info => info.getValue(),
+			footer: info => info.column.id
+		});
 
         
 		return columnArray;
-	}, [data]);
+	}, [data, className]);
 
 	return columns;
 };

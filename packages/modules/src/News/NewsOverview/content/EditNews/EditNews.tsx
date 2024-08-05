@@ -1,14 +1,14 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { IconButton, SlideIn } from '@repo/ui'
-import { News } from '@repo/types'
+import { NewsClass } from '@repo/types'
 import { AppContext, generateGraphQLQuery, useDataHandler } from '@repo/provider'
 import { Form } from '@repo/ui'
 
 const EditNews = ({newsId}: {newsId: string}) => {
     const {updateData}  = useDataHandler()
     const {currentModule} = useContext(AppContext) 
-    const [data, setData] = useState(null as unknown as News['data'])
+    const [data, setData] = useState(null as unknown as NewsClass['data'])
     const [isOpen, setIsOpen] = useState(false)
     const { loading, refetch } = useQuery(generateGraphQLQuery({
         type: 'get', 

@@ -7,7 +7,7 @@ export type UseFindNewsHook = ({
     filters: FilterArray, 
 }) => ({
     loading: boolean,
-    news?: News[],
+    news?: NewsClass[],
     refetch: () => void
 });
 

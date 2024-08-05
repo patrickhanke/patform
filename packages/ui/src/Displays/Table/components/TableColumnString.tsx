@@ -22,17 +22,29 @@ const TableColumnString = ({value, isEditable = false, onChange }: TableColumnSt
 					value ? value : '-'
 				}
 
-				{isEditable && !isOpen ? 
-					<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />
-					:
-					<IconButton
-						icon='check'
-						onClick={() => {
-							setIsOpen(!isOpen);
-							onChange(string);
-						}}
-					/>
-
+				{isEditable &&  
+					<>
+						{!isOpen ? 
+							<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />
+							:
+							<div className='button_container'>
+								<IconButton
+									icon='cancel'
+									onClick={() => {
+										setIsOpen(!isOpen);
+										setString(value);
+									}}
+								/>
+								<IconButton
+									icon='check'
+									onClick={() => {
+										setIsOpen(!isOpen);
+										onChange(string);
+									}}
+								/>
+							</div>
+						}
+					</>
 				}
 			</div>
 		</>

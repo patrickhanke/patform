@@ -1,5 +1,7 @@
 import { RowSelectionState, Updater, ColumnDef } from '@tanstack/react-table';
-import { Categories, ClassCategories, ModuleCategory } from '@repo/types';
+import { ClassCategories, ModuleCategory, Module } from '@repo/types';
+import { CategoryClass, ImageClass, NewsClass, PersonClass } from '@repo/types'; 
+
 
 export type TableTypes = {
     data: TData[],
@@ -41,18 +43,20 @@ export type TableColumnTextfieldProps = {
 
 export type ColumnDataTypes = 'string' | 'edit_string' | 'image' | 'category' | 'textfield' | 'edit_image' | 'edit_textfield';
 
-export type ColumnData<T> = {
-    id: keyof T,
+export type ColumnData<Class> = {
+    id: keyof Class,
     label: string,
     type: ColumnDataTypes
 }
 
-export type CreateColumnHookProps<T> = {
-    data: Array<ColumnData<T>>;
+export type CreateColumnHookProps<Class> = {
+    data: Array<ColumnData<Class>>;
     categories: ModuleCategory[];
     className: string;
-    objectId: string;
+    fields?: Module['fields']
     refetch: () => void;
 };
 
-export type UseCreateColumnsHook = <T>(params: CreateColumnHookProps<T>) => ColumnDef<T>[];
+export type ColumnClasses = ImageClass | NewsClass | PersonClass | CategoryClass
+
+export type UseCreateColumnsHook<Class> = (params: CreateColumnHookProps<Class>) => ColumnDef<Class>[];
