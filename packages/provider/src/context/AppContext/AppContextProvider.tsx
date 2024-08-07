@@ -2,24 +2,16 @@
 
 import React, { useMemo, useState } from 'react';
 import AppContext from './AppContext';
-import { Module, Project } from '@repo/types';
-import { usePathname } from 'next/navigation';
+import { Project } from '@repo/types';
 
-
-const AppContextProvider = ({project, children} : {project: Project,children: React.ReactNode}) => {
+const AppContextProvider = ({projects, children} : {projects: Project[],children: React.ReactNode}) => {
 	const [pageTitle, setPageTitle] = useState();
-	const pathname = usePathname(); 
-
-	const currentModule = useMemo(() => {
-		return project.modules.results.find(module => module.path === pathname) as Module;
-	}, [pathname, project]);
 
 	const appContextObject = useMemo(() => ({
 		pageTitle,
 		setPageTitle,
-		project,
-		currentModule
-	}), [pageTitle, project, currentModule]);
+		projects
+	}), [pageTitle, projects]);
 
 	return (
 		<AppContext.Provider

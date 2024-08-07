@@ -1,6 +1,15 @@
 import { gql } from '@apollo/client';
 import { generateGraphQLQueryProps } from '../types';
 
+const stringreplace = (str: string, find: string, replace: string) => {
+	const letStringCopy = str;
+    
+	if (find === 'logo') {
+		letStringCopy.replace(new RegExp(find, 'g'), 'logo {name url}');
+	}
+	return letStringCopy;
+};
+
 const generateGraphQLQuery: generateGraphQLQueryProps = ({
 	type, 
 	objectName, 
@@ -9,7 +18,6 @@ const generateGraphQLQuery: generateGraphQLQueryProps = ({
 	const fieldsString = fields?.join('\n');
 
 	if (type === 'find' ) {
-        
 		return gql`
             query ${type}${objectName}($params: ${objectName}Constraints ) {
                 objects {

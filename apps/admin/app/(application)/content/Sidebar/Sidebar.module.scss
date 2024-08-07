@@ -1,0 +1,109 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+
+.sidebar_container {
+    @include layout.flexbox($direction: column, $align: stretch, $justify: space-between);
+    height: calc(100% - 42px);
+    width: 100%;
+    z-index: 4;
+    background-color: transparent;
+   
+    ul {
+        margin-top: sizes.$md;
+        list-style: none;
+        font-size: map-get(sizes.$font_size, 'md' );
+        font-weight: 600;
+        li[data-hassubmenu='true'] {
+            margin-bottom: sizes.$xs;
+        }
+    }
+    .menu_item_container {
+        color: colors.$dark;
+        padding: map-get($map: sizes.$padding, $key: 'xs' );
+        .menu_item {
+            border: none;
+            background-color: transparent;
+            font-weight: 500;
+            @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$xs );
+            color: colors.$dark;
+            padding: map-get(sizes.$padding , 'sm' );
+            border-radius: map-get(sizes.$border_radius , 'sm' );
+            text-decoration: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            font-size: map-get($map: sizes.$font_size, $key: 'sm' );
+            &:hover {
+                background-color: colors.$primary_light;
+                color: colors.$dark;
+            }
+        }
+        .menu_item[data-disabled="true"] {
+            color: colors.$lightgrey;
+            cursor: not-allowed;
+            &:hover {
+                background-color: transparent;
+                color: colors.$lightgrey;
+            }
+        }
+        .menu_item_active {
+            background-color: colors.$primary_light;
+            color: colors.$dark; 
+            &:hover {
+                background-color: colors.$primary_light;
+                color: colors.$dark; 
+
+            }
+        }
+    }
+
+}
+
+.dropicon {
+    position: absolute;
+    right: sizes.$sm;
+    top: 50%;
+    transform: translate(0, -50%) rotate(0);
+    height: 10px;
+    width: 10px;
+}
+
+.submenu_container {
+    height: 0;
+    transition: height .4s ease;
+    font-size: map-get(sizes.$font_size, 'md' );
+    overflow: hidden;
+    ul {
+        margin-top: 0;
+        list-style: none;
+        font-weight: 600;
+        padding-inline-start: sizes.$sm;
+        li {
+            font-size: map-get(sizes.$font_size, 'sm' );
+            margin-bottom: sizes.$xs;
+        }
+    }
+}
+
+.submenu_container[data-showsubmenu='true'] {
+    height: auto;
+}
+
+.admin_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$md);
+    background-color: colors.$yellow;
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    font-size: map-get(sizes.$font_size, 'sm' );
+    font-weight: 600;
+    color: colors.$dark;
+}
+
+.message_indicator_container {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 5;
+    transform: translateY(-50%);
+}

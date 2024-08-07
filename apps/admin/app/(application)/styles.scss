@@ -1,0 +1,105 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+@use '@repo/styles/buttons';
+
+.site_content {
+    height: 100%;
+    width: 100%;
+    flex: 1 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: map-get($map: sizes.$padding, $key: 'site' );
+}
+
+.content_element {
+    background-color: colors.$white;
+    box-shadow:rgba(0, 0, 0, 0.04) 0px 2px 2px 0px;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    border: .5px solid colors.$lightgrey;
+    padding: map-get($map: sizes.$padding, $key: 'sm' );
+}
+
+.content_element.no_padding {
+  padding: 0;
+}
+
+input:focus {
+  border: 1px solid colors.$primary;
+}
+
+label {
+    display: block;
+    margin-top: sizes.$md;
+    margin-bottom: sizes.$sm;
+    color: colors.$dark;
+    font-weight: 500;
+    font-size: map-get($map: sizes.$font_size, $key:'md' );
+    font-family: 'Roboto', sans-serif;
+    line-height:  1;
+    letter-spacing: 0.02rem;
+  }
+
+  label.no_margin {
+    margin: 0;
+  } 
+
+  label.error {
+    color: #cc0033;
+  }
+
+  .label {
+    display: block;
+    margin: 0; 
+    color: colors.$dark;
+    font-weight: 500;
+    font-size: map-get($map: sizes.$font_size, $key:'md' );
+    font-family: 'Roboto', sans-serif;
+    line-height:  1;
+    letter-spacing: 0.02rem;
+  }
+
+  .vertical_line {
+    border-left: 1px solid colors.$grey;
+    position: relative;
+    align-self: stretch;
+  }
+  
+  .vertical_line.use_height {
+    height: 100%;
+  }
+
+
+// State Element
+
+.state_element {
+    padding: map-get($map: sizes.$padding, $key: 'xs');
+    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    background-color: transparent;
+    border: 1px solid colors.$primary;
+    color: colors.$primary;
+};
+
+.state_element[data-state="created"] {
+    background-color: colors.$yellow_light;
+    border: 1px solid colors.$yellow;
+    color: colors.$yellow;
+};
+
+.state_element[data-state="completed"] {
+    background-color: colors.$green_light;
+    border: 1px solid colors.$green;
+    color: colors.$green;
+};
+
+.state_element[data-state="excecuted"] {
+    background-color: colors.$green_light;
+    border: 1px solid colors.$green;
+    color: colors.$green;
+};
+
+.state_element[data-state="assigned"] {
+    background-color: colors.$yellow_light;
+    border: 1px solid colors.$yellow;
+    color: colors.$yellow;
+};
