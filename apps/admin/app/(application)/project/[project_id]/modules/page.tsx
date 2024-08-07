@@ -1,0 +1,1 @@
+export {ProjectModules as default} from '../../../content';
