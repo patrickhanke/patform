@@ -8,7 +8,7 @@ const createClass: PageCreateClassObject = {
         name: 'title',
         type: 'input',
         label: 'Name',
-        validation: 'string_required'
+        validation: {required: 'Pflichtfeld', min_length: 5, max_length: 36}
     },
     {
         id: 'image',
@@ -27,7 +27,7 @@ const createClass: PageCreateClassObject = {
         name: 'text',
         type: 'textarea',
         label: 'Beschreibung',
-        validation: 'string_required'
+        validation: {required: 'Pflichtfeld', min_length: 30, max_length: 180}
 }]}
 
 export default createClass;

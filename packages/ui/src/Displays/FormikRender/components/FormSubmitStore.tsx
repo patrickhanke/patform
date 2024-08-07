@@ -1,11 +1,15 @@
 import { useFormikContext } from 'formik';
 import { isEqual } from 'lodash';
 import { useEffect } from 'react';
+import { FormSubmitStoreProps } from '../types';
 
-const FormSubmitStore = () => {
+const FormSubmitStore = ({formValidationHandler}: FormSubmitStoreProps) => {
 	const { submitForm, values, initialValues, isValid: formIsValid } = useFormikContext();
 	useEffect(() => {
 		const dataHasChanged = !isEqual(values, initialValues);
+		if (formValidationHandler) {
+			formValidationHandler(formIsValid);
+		}
 		if (dataHasChanged) {
 			submitForm();
 		}

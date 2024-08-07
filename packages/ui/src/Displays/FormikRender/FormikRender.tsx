@@ -7,15 +7,17 @@ import RenderFields from './content/RenderFields';
 import './styles.scss';
 import { IntFormikRender } from './types';
 import createYupSchema from './functions/createYupSchema';
+import getFieldsWithValidation from './functions/getFieldsWithValidation';
 
-const FormikRender  = ({fields, data, formSubmitHandler}: IntFormikRender) => {
-	console.log(Yup.object().shape(Object.fromEntries(fields.map(field => [field.name, createYupSchema(field.validation)])) ));
+const FormikRender  = ({fields, data, formSubmitHandler, formValidationHandler }: IntFormikRender) => {
 	
 	return (
 		<Formik 
 			initialValues={data ? data : Object.fromEntries(fields.map(field => [field.name, field.initialValue]))}
-			onSubmit={ values => formSubmitHandler(values)}
-			validationSchema={Yup.object().shape(Object.fromEntries(fields.map(field => [field.name, createYupSchema(field.validation)])) )}
+			onSubmit={ (values) => {
+				formSubmitHandler(values);
+			}}
+			validationSchema={Yup.object().shape(Object.fromEntries(getFieldsWithValidation(fields).map(field => [field.name, createYupSchema(field.type, field.validation)])) )}
 			validateOnMount
 			enableReinitialize
 		> 
@@ -29,7 +31,7 @@ const FormikRender  = ({fields, data, formSubmitHandler}: IntFormikRender) => {
 						setFieldValue={setFieldValue}
 						handleChange={handleChange}
 					/>
-					<FormSubmitStore />
+					<FormSubmitStore formValidationHandler={formValidationHandler} />
 				</form>
 			)}
 		</Formik>

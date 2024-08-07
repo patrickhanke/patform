@@ -1,17 +1,34 @@
+import * as Yup from 'yup';
+
 export type IntFormikRender = {
     fields: Field[],
     data: FormDataElement,
     formSubmitHandler: (t: object) => void,
+    formValidationHandler?: (t: boolean) => void
 }
 
-export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select'
+export type FormSubmitStoreProps = {
+    formValidationHandler?: (t: boolean) => void
+}
 
-export type ValidationTypes = 'string_required'
+export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select' | 'image'
+
+export type ValidationTypes = {
+    required?: string;
+    min_length?: number;
+    max_length?: number;
+    min_value?: number;
+    max_value?: number;
+    email?: boolean;
+    url?: boolean;
+    number?: boolean;
+    password?: boolean;
+}
 
 export type Field = {
     id: string
     name: string;
-    type: string;
+    type: FieldTypes;
     label: string;
     position: number;
     placeholder?: string;
@@ -30,5 +47,11 @@ export type Field = {
         value: string;
     }[];
 }
+
+export type FieldValidationArray = Array<Field & {validation: ValidationTypes}>
+
+export type getFieldsWithValidationFunction = (fields: Field[]) => FieldValidationArray
+
+export type CreateYupSchemaFunction = (type: Field['type'], validation: Field['validation']) => Yup.ISchema<any, any, any, any> | Yup.Reference<unknown>
 
 export type FormDataElement = {[key: string]: any}

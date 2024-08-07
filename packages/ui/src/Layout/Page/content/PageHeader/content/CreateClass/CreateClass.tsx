@@ -80,7 +80,8 @@ const CreateClass = ({fields, text, className, refetch}: CreateClassProps) => {
 					<Form
 						fields={classFields.constantFields} 
 						data={data} 
-						formSubmitHandler={values => {setData( values);}} 
+						formSubmitHandler={values => setData(values)}
+						formValidationHandler={isValid => setDisabled([false, !isValid])} 
 					/>
 				)}
 			</SlideIn>
