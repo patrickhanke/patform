@@ -1,14 +1,20 @@
 import * as Yup from 'yup';
+import { FormikValues } from 'formik';
+
+export type  handleFormData<V extends FormDataElement> = (data: V) => void
+
 
 export type IntFormikRender = {
     fields: Field[],
     data: FormDataElement,
-    formSubmitHandler: (t: object) => void,
-    formValidationHandler?: (t: boolean) => void
+    formSubmitHandler: (values: FormikValues) => void,
+    formValidationHandler?: (t: boolean) => void,
+    useWithDebounce?: boolean
 }
 
 export type FormSubmitStoreProps = {
-    formValidationHandler?: (t: boolean) => void
+    formValidationHandler?: (t: boolean) => void,
+    useWithDebounce?: boolean
 }
 
 export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select' | 'image'

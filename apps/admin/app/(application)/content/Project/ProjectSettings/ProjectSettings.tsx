@@ -4,10 +4,13 @@ import { useQuery } from '@apollo/client';
 import { Page } from '@repo/ui';
 import React from 'react';
 import get_project_settings from './constants/get_project_settings';
+import {Form} from '@repo/ui';
+import settings_fields from './constants/settings_fields';
+import { useDataHandler } from '@repo/provider';
 
 const Project = ({params}: {params: {project_id: string}}) => {
 	const {data, loading, error} = useQuery(get_project_settings,{variables: {id: params.project_id}});
-	
+	const {updateData} = useDataHandler();
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>Error...</p>;
 
@@ -21,6 +24,22 @@ const Project = ({params}: {params: {project_id: string}}) => {
 			<h2>
                 Projekt
 			</h2>
+			<Form 
+				fields={settings_fields}
+				data={project}
+				formSubmitHandler={(values) => {
+                    console.log(values);
+                    
+					updateData({
+						className: 'Project',
+						objectId: project.objectId,
+						updateObject: {
+							name: values.name
+						}
+					});
+				}}
+				useWithDebounce
+			/>
 		</Page>
 	);
 };

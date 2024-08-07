@@ -14,7 +14,8 @@ module.exports = {
 		BYTESCALE_ACCOUNT_ID: process.env.BYTESCALE_ACCOUNT_ID,
 		BYTESCALE_PUBLIC_KEY: process.env.BYTESCALE_PUBLIC_KEY,
 		BYTESCALE_SECRET_KEY: process.env.BYTESCALE_SECRET_KEY,
-		BYTESCALE_IMAGE_FOLDER: 'nocogirls'
+		BYTESCALE_IMAGE_FOLDER: 'nocogirls',
+		PROJECT_ID: 'H7eK6Fv3cn'
 	},
 	images: {
 		remotePatterns:[

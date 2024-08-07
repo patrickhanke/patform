@@ -104,7 +104,7 @@ export default async function  RootLayout({
 						<Sidebar menuItems={data.objects.findProject.results.map((project: Project) => ({
 							label: project.name,
 							image: project.logo ? <Logo logo={project.logo} /> : null,
-							value: `project/${project.objectId}`
+							value: `/project/${project.objectId}`
 						}) )}
 						/>
 					</div >

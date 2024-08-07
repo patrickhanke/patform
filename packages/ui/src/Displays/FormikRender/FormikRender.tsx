@@ -9,8 +9,13 @@ import { IntFormikRender } from './types';
 import createYupSchema from './functions/createYupSchema';
 import getFieldsWithValidation from './functions/getFieldsWithValidation';
 
-const FormikRender  = ({fields, data, formSubmitHandler, formValidationHandler }: IntFormikRender) => {
-	
+const FormikRender = ({
+	fields, 
+	data, 
+	formSubmitHandler, 
+	formValidationHandler, 
+	useWithDebounce 
+} : IntFormikRender ) => {
 	return (
 		<Formik 
 			initialValues={data ? data : Object.fromEntries(fields.map(field => [field.name, field.initialValue]))}
@@ -31,7 +36,10 @@ const FormikRender  = ({fields, data, formSubmitHandler, formValidationHandler }
 						setFieldValue={setFieldValue}
 						handleChange={handleChange}
 					/>
-					<FormSubmitStore formValidationHandler={formValidationHandler} />
+					<FormSubmitStore 
+						formValidationHandler={formValidationHandler} 
+						useWithDebounce={useWithDebounce} 
+					/>
 				</form>
 			)}
 		</Formik>

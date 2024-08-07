@@ -11,7 +11,7 @@ import { useQuery } from '@apollo/client';
 import find_user_messages from './constants/find_user_messages';
 
 const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
-	const token = Cookies.get('hgs_token');
+	const token = Cookies.get('patform_token');
 	// const [project, setProject] = useState('');
 	const {getItem, setItem} = useStorage();
 
@@ -39,7 +39,7 @@ const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
 			'password': password
 		})
 			.then(response => {
-				Cookies.set('hgs_token', response.data.sessionToken, {expires: 90});
+				Cookies.set('patform_token', response.data.sessionToken, {expires: 90});
 				setItem( 'user', response.data, 'session', 'object' );
 				setItem( 'project', response.data.project.objectId, 'session' );
 				router.push('/');

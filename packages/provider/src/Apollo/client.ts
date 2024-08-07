@@ -15,7 +15,7 @@ import { makeClientProps } from './types.js';
 
 
 const makeClient: makeClientProps = (appId, masterKey) => {
-	const localToken = Cookies.get('hgs_token');
+	const localToken = Cookies.get('patform_token');
 
 	const token = localToken || '';
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import styles from './Layout.module.scss';
 import '@repo/styles/global';
-import '@repo/styles/fonts';
 
 export const metadata = {
-	title: 'Saaman Testportal',
+	title: 'Patform Admin Login',
 	description: 'PH'
 };
 

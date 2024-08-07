@@ -11,8 +11,8 @@ const Logout = () => {
 	const router = useRouter();
 
 	const logoutUser = async () => {
-		Cookies.remove('hgs_token');
-		Cookies.remove('hgs_logged_in');
+		Cookies.remove('patform_token');
+		Cookies.remove('patform_logged_in');
 		await axiosclient().post('logout');
 		return router.push('/login');
 	};

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const axiosclient = (propToken?: string) => {
-	const localToken = Cookies.get('hgs_token');
+	const localToken = Cookies.get('patform_token');
 	const token = localToken || propToken;
 	console.log(process.env.SASHIDO_API_URL);
 	
@@ -25,7 +25,7 @@ const axiosclient = (propToken?: string) => {
 // 	restKey: string,
 // 	masterKey: string
 // ) => {
-// 	const localToken = Cookies.get('hgs_token');
+// 	const localToken = Cookies.get('patform_token');
 // 	const token = localToken || propToken;
 // 	return axios.create({
 // 		baseURL: baseURL,
