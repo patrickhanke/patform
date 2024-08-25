@@ -111,7 +111,6 @@ const PersonsOverview = () => {
     <Page 
         title={currentModule.name}
         pageHeaderContent={<CreatePerson refetch={refetch} />}
-        hasPageNavigation={true}
         emptyContent={true}
         pageStates={pageStates}
         activeState={activeState}

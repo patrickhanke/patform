@@ -81,4 +81,13 @@ export type NewsClass = ClassProperties & {
 
 export type Classes = ImageClass | NewsClass | PersonClass | CategoryClass
 
+export type Person ={
+    objectId: string,
+    name: string,
+    portrait?: string,
+    data: FormDataElement,
+    module: Module,
+    content: object
+}
+
 

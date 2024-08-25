@@ -1,5 +1,6 @@
-import { ApolloAppProvider, AppContextProvider } from '@repo/provider';
+import { ApolloAppProvider } from '@repo/provider';
 import { Project } from '@repo/types';
+import { AppContextProvider } from './provider';
 
 
 

@@ -16,7 +16,7 @@ export type TableTypes = {
 export type ColumnDef<TData> = ColumnDef<TData>;
 
 export type TableColumnImageProps = {
-    url: string,
+    url?: string,
     isEditable?: boolean,
     onChange: (image: string) => void,
     maxFileCount?: number

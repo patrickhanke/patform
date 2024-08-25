@@ -10,8 +10,8 @@ const LayoutContext = ({project, children}: {project: Project, children: React.R
 			masterKey={process.env.SASHIDO_MASTER_KEY as string}
 		>
 			<AppContextProvider project={project}>
-			{children}
-		</AppContextProvider>
+				{children}
+			</AppContextProvider>
 		</ApolloAppProvider>
 	);
 };
