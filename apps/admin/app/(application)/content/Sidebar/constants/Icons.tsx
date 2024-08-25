@@ -2,7 +2,7 @@ import React from 'react';
 import { AiFillCopy, AiOutlineForm, AiOutlineShoppingCart } from 'react-icons/ai';
 import { BsFillBarChartFill, BsLayoutTextWindowReverse, BsPeople } from 'react-icons/bs';
 import { FaUsers } from 'react-icons/fa';
-import {GrProjects} from 'react-icons/gr';
+import {GrPlayFill, GrProjects} from 'react-icons/gr';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
 import { MdOutlineCleaningServices, MdOutlineContactPage, MdViewModule } from 'react-icons/md';
@@ -99,6 +99,9 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'news') {
 		return <PiNewspaper />;
+	}
+	if (icon === 'playground') {
+		return <GrPlayFill />;
 	}
 
 	return null;

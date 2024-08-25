@@ -20,6 +20,11 @@ const project_sub_menu = [
 		label: 'Roles',
 		icon: 'settings',
 		disabled: true
+	},
+	{
+		value: '/playground',
+		label: 'Playground',
+		icon: 'playground'
 	}
 ];
 

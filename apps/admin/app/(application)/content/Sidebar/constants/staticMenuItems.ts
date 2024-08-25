@@ -28,6 +28,7 @@ const staticMenuItems = [
 				icon: 'settings',
 				disabled: true
 			}
+			
 		]
 	}
   

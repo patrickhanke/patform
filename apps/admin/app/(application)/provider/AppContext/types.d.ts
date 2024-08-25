@@ -5,5 +5,3 @@ export type ContextValues = {
     setPageTitle: Dispatch<SetStateAction<() => void>>,
     projects: Project[],
 }
-
-
