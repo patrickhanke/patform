@@ -1,9 +1,9 @@
 'use client';
 
 import { useContext, useMemo, useState } from 'react';
-import {ColumnDef, IconButton, Modal, Page, Table, TableColumnCategory}  from '@repo/ui';
+import {ColumnDef, IconButton, Modal, Page, RenderFilters, Table, TableColumnCategory}  from '@repo/ui';
 import useGetImages from './hooks/useGetImages';
-import { Image, PageState } from '@repo/types';
+import { Filter, Image, ModuleCategory, PageState } from '@repo/types';
 import { ImageUploader, useImageDataHandler } from '../ImageUploader';
 import { getImageUrl } from '../ImageDisplay';
 import deleteImageHandler from '../ImageDisplay/functions/deleteImage';
@@ -20,9 +20,9 @@ const pageStates: PageState[] = [
 const ImagesOverview = () => {
     const {project, currentModule} = useContext(AppContext)
     const [uploadImages, setUploadImages] = useState(false)
-    const [newImages, setNewImages] = useState<string[] | string>([]);
+    const [newImages, setNewImages] = useState<string[]>([]);
     const [activeState, setActiveState] = useState(pageStates[0])
-    const [filters, setFilters] = useState([])
+    const [filters, setFilters] = useState<Filter[]>([])
     const {images, refetch} = useGetImages({moduleId: currentModule.objectId, filters})
     const {imageUploadHandler} = useImageDataHandler({projectId: project.objectId,afterCancelFunction: refetch, afterSaveFunction: refetch});
     const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues)
@@ -61,7 +61,7 @@ const ImagesOverview = () => {
 		// },
 		
 	] 
-    currentModule.categories.forEach(category => {
+    currentModule.categories.forEach((category: ModuleCategory) => {
         columnArray.push({
             accessorFn: row => <TableColumnCategory category={category} categories={row.categories} className='Image' objectId={row.objectId}  />,
             header: () => <span>{category.label}</span>,
@@ -117,12 +117,21 @@ const ImagesOverview = () => {
 
 
     console.log(editImage);
+    console.log(filters);
+    
     
   return (
     <Page 
         title='Bilder'
         pageHeaderButtons={[{text: 'Bilder hochladen', onClick: () => setUploadImages(true)}]}
-        hasPageNavigation={true}
+        pageHeaderContent={
+            <RenderFilters 
+                categories={currentModule.categories} 
+                filters={filters} 
+                setFilters={setFilters} 
+                initialFilters={[]} 
+            />
+        }
         emptyContent={true}
         pageStates={pageStates}
         activeState={activeState}
@@ -146,7 +155,7 @@ const ImagesOverview = () => {
                 label='Uploader'  
                 path={process.env.BYTESCALE_IMAGE_FOLDER as string} 
                 onChange={images => {
-                    setNewImages(images)
+                    setNewImages(images as string[])
                 }} 
             />
         </Modal>

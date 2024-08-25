@@ -90,4 +90,15 @@ export type Person ={
     content: object
 }
 
+export type Image = {
+    objectId: string,
+    name: string,
+    tags: string[],
+    filePath: string,
+    data: FormDataElement,
+    module: Module,
+    content: object,
+    categories: ClassCategories
+}
+
 

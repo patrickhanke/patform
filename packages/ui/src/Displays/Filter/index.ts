@@ -1,0 +1,1 @@
+export {default as RenderFilters } from './RenderFilters';

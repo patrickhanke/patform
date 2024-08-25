@@ -21,7 +21,6 @@ const TableColumnCategory = ({ category, className, objectId, categories }: Tabl
 			}
 		});
 	} , [category]);
-
     
 	const {data} = useQuery(generateGraphQLQuery(
 		{
