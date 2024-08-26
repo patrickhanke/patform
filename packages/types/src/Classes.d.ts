@@ -41,9 +41,7 @@ export type Module = {
     settings: ModuleSettings
 }
 
-export type ClassCategories = {
-    [key: string]: string[]
-}
+export type ClassCategories = string[];
 
 export type ClassProperties = {
     objectId: string,

@@ -10,7 +10,6 @@ export type RenderFiltersProps = {
 
 export type FilterSelectProps = {
     category: ModuleCategory;
-    filter: Filter;
     filters: Filter[];
     setFilters: Dispatch<SetStateAction<Filter[]>>;
 }

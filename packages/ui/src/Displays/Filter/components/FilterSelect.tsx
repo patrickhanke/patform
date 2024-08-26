@@ -5,21 +5,24 @@ import filterChangeHandler from '../functions/filterChangeHandler';
 import { FilterSelectProps } from '../types';
 import {get} from 'lodash';
 
-const FilterSelect = ({category, filter, filters, setFilters}: FilterSelectProps) => {
-	const {data, loading} = useQuery(generateGraphQLQuery({type: 'find', objectName: category.connected_class,fields: ['name', 'objectId']}));
+const FilterSelect = ({category, filters, setFilters}: FilterSelectProps) => {
+	const {data, loading} = useQuery(generateGraphQLQuery({type: 'find', objectName: category.connected_class,fields: [category.key, 'objectId']}));
 	
 	if (loading) return <Loader width='180px' height='30px' />;
 	if (data) {
-        console.log(data);
-        
+		console.log(filters);
+		
+		const filter = filters.find(filter => filter.key === 'categories');
+		console.log(filter);
 		const options = get( data, `objects.find${category.connected_class}.results`, []).map((result: any) => ({label: result.name, value: result.objectId}));
+
 		return (
 			<Select 
 				label=''
 				width='180px'
 				options={options}
-				value={filters.find(filterValue => filterValue.key === filter.key)?.value || null }
-				onChange={(value) => setFilters(filterChangeHandler(filter.key, value.value, filter.operator, filters))}
+				value={filter?.value || null}
+				onChange={(value) => setFilters(filterChangeHandler('categories', value.value, '_in', filters))}
 				placeholder={category.label}
 				isClearable
 			/>

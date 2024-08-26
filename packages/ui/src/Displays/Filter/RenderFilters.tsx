@@ -2,27 +2,28 @@
 
 import { useEffect, useMemo } from 'react';
 import { RenderFiltersProps } from './types';
-import {Filter} from '@repo/types';
+import { CategoryClass, Filter, Category } from '@repo/types';
 import FilterSelect from './components/FilterSelect';
 import createFilterFromCategory from './functions/createFilterFromCategory';
 
-const RenderFilters = ({categories, filters, setFilters, initialFilters = []} : RenderFiltersProps) => {
+const RenderFilters = ({categories, filters = [], setFilters, initialFilters = []} : RenderFiltersProps) => {
 	// useEffect(() => {
 	// 	if (filters.length === 0) {
 	// 		const categoryFilters = categories.map((category) => createFilterFromCategory(category));
 	// 		setFilters([...categoryFilters, ...initialFilters]);
 	// 	}
 	// }, [categories]);
+	
     
 	const renderFilters = useMemo(() => {
 		const filterArray: JSX.Element[] = [];
-		filters.forEach((filter: Filter) => {
-			const category = categories.find((category) => category.id === filter.id);
+		categories.forEach((category: Category) => {
+			console.log(category);
+			
 			if (category) {
 				filterArray.push(
 					<FilterSelect
 						category={category}
-						filter={filter}
 						filters={filters}
 						setFilters={setFilters}
 					/>
@@ -35,6 +36,9 @@ const RenderFilters = ({categories, filters, setFilters, initialFilters = []} : 
 	return (
 		<div className='button_container'>
 			{renderFilters}
+			<button onClick={() => setFilters(initialFilters)}>
+				Filter zurücksetzen
+			</button>
 		</div>
 	);
 };

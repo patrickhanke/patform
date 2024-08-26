@@ -3,25 +3,15 @@
 import { generateGraphQLQuery, useDataHandler } from '@repo/provider';
 import { TableColumnCategoryProps } from '../types';
 import '../styles.scss';
-import {useCallback, useMemo} from 'react';
+import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { Select } from '@repo/ui';
 import { SelectOption } from '@repo/types';
+import { cloneDeep, pull, merge } from 'lodash';
 
-const TableColumnCategory = ({ category, className, objectId, categories }: TableColumnCategoryProps) => {
-	const {updateData} = useDataHandler();    
-	const categoryChangeHandler = useCallback(async (value: string[]) => {
-		const categoriesCopy = {...categories};
-		categoriesCopy[category.moduleId as string] = value;
-		await updateData({
-			objectId: objectId,
-			className,
-			updateObject: {
-				categories: categoriesCopy
-			}
-		});
-	} , [category]);
-    
+const TableColumnCategory = ({ category, className, objectId, categories = [], refetch }: TableColumnCategoryProps) => {
+	const {updateData} = useDataHandler();  
+	  
 	const {data} = useQuery(generateGraphQLQuery(
 		{
 			type: 'find', 
@@ -34,6 +24,7 @@ const TableColumnCategory = ({ category, className, objectId, categories }: Tabl
 
 	const selectOptions = useMemo(() => {
 		const options: {value: string, label: string}[] = [];
+		const values: string[] = [];
 		if (data) {
 			const dataFields = data.objects[`find${category.connected_class}`].results;	
 			dataFields.forEach((field: {objectId: string, [key: string]: string}) => {
@@ -44,18 +35,52 @@ const TableColumnCategory = ({ category, className, objectId, categories }: Tabl
 			});
 		}
 
-		return options;
+		if (options.length > 0) {
+			options.forEach((option) => {
+				if (categories.includes(option.value)) {
+					values.push(option.value);
+				}
+			});
+		}
+
+		return ({
+			options,
+			values
+		});
 	} , [category, data]);
+
+	const categoryChangeHandler = useCallback(async (value: string[]) => {
+		const categoriesCopy = cloneDeep(categories);
+
+		selectOptions.options.forEach((option) => {
+			if (categories.includes(option.value)) {
+				pull(categoriesCopy, option.value);
+			}
+		} );
+
+		const updateCategoriesArray = merge(categoriesCopy, value);
+		
+		categoriesCopy.concat(value);
+		await updateData({
+			objectId: objectId,
+			className,
+			updateObject: {
+				categories: updateCategoriesArray
+			}
+		});
+
+		refetch();
+	} , [category]);
 
 	return (
 		<>
 			<div className='button_container'>
 				<Select
-					value={ categories ? categories[category.moduleId as string] : null}
+					value={selectOptions.values}
 					onChange={(options: SelectOption[]) => {
 						categoryChangeHandler(options.map((option: SelectOption) => option.value ));
 					}}
-					options={selectOptions}
+					options={selectOptions.options}
 					isMulti={category.is_multi}
 				/>
 			</div>

@@ -63,7 +63,7 @@ const ImagesOverview = () => {
 	] 
     currentModule.categories.forEach((category: ModuleCategory) => {
         columnArray.push({
-            accessorFn: row => <TableColumnCategory category={category} categories={row.categories} className='Image' objectId={row.objectId}  />,
+            accessorFn: row => <TableColumnCategory category={category} categories={row.categories || []} className='Image' objectId={row.objectId} refetch={refetch} />,
             header: () => <span>{category.label}</span>,
             id: category.id,
             cell: info => info.getValue(),
@@ -113,10 +113,10 @@ const ImagesOverview = () => {
     })
 
     return columnArray;
-} , [currentModule]);
+} , [currentModule, images]);
 
 
-    console.log(editImage);
+    console.log({images});
     console.log(filters);
     
     

@@ -26,7 +26,8 @@ export type TableColumnCategoryProps = {
     category: ModuleCategory,
     objectId: string,
     className: string,
-    categories: ClassCategories
+    categories: ClassCategories,
+    refetch: () => void
 }
 
 export type TableColumnStringProps = {
