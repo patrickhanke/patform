@@ -12,23 +12,26 @@
     ul {
         margin-top: sizes.$md;
         list-style: none;
-        font-size: map-get(sizes.$font_size, 'md' );
         font-weight: 600;
         li[data-hassubmenu='true'] {
             margin-bottom: sizes.$xs;
+            font-size: map-get(sizes.$font_size, 'sm' );
+            a {
+                font-size: map-get(sizes.$font_size, 'sm' );
+            }
         }
     }
     .menu_item_container {
         color: colors.$dark;
-        padding: map-get($map: sizes.$padding, $key: 'sm' );
+        padding: map-get($map: sizes.$padding, $key: 'xs' );
         .menu_item {
             border: none;
             background-color: transparent;
             font-weight: 500;
             @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$xs );
             color: colors.$dark;
-            padding: map-get(sizes.$padding , 'sm' );
-            border-radius: map-get(sizes.$border_radius , 'sm' );
+            padding: map-get(sizes.$padding , 'xs' );
+            border-radius: map-get(sizes.$border_radius , 'xs' );
             text-decoration: none;
             cursor: pointer;
             width: 100%;
@@ -72,7 +75,7 @@
 .submenu_container {
     height: 0;
     transition: height .4s ease;
-    font-size: map-get(sizes.$font_size, 'md' );
+    font-size: map-get(sizes.$font_size, 'sm' );
     overflow: hidden;
     ul {
         margin-top: 0;
@@ -80,7 +83,6 @@
         font-weight: 600;
         padding-inline-start: sizes.$sm;
         li {
-            font-size: map-get(sizes.$font_size, 'sm' );
             margin-bottom: sizes.$xs;
         }
     }

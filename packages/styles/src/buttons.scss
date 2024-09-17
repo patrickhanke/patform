@@ -63,8 +63,12 @@
     cursor: pointer;
     transition: background-color .2s ease, color .2s ease;
     border: none;
-    font-weight: 500;
+    font-weight: 400;
     border-radius: sizes.$xxs;
+    display: inline;
+    line-break: none;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
     &:disabled {
         background-color: transparent !important;
         color: colors.$grey;
@@ -82,7 +86,7 @@
 };
 
 .full_button.md {
-    padding: map-get(sizes.$padding, 'md');
+    padding: map-get(sizes.$padding, 'sm');
     font-size: map-get(sizes.$font_size, 'md');
 };
 

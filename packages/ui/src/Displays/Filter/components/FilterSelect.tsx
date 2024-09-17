@@ -24,7 +24,7 @@ const FilterSelect = ({category, filters, setFilters}: FilterSelectProps) => {
 				value={filter?.value || null}
 				onChange={(value) => setFilters(filterChangeHandler('categories', value.value, '_in', filters))}
 				placeholder={category.label}
-				isClearable
+				isClearable={false}
 			/>
 		);
 	}

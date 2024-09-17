@@ -1,0 +1,36 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+
+.separator {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 1px;
+    background-color: colors.$dark;
+    width: 100%;
+}
+
+.separator.xs {
+    margin-top: sizes.$xs;
+    margin-bottom: sizes.$xs;
+}
+
+.separator.sm {
+    margin-top: sizes.$sm;
+    margin-bottom: sizes.$sm;
+}
+
+.separator.md {
+    margin-top: sizes.$md;
+    margin-bottom: sizes.$md;
+}
+
+.separator.lg {
+    margin-top: sizes.$lg;
+    margin-bottom: sizes.$lg;
+}
+
+.separator[data-no-line="true"] {
+    background-color: transparent;
+}

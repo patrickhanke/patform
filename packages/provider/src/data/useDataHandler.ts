@@ -46,7 +46,7 @@ const useDataHandler = () => {
 	}: {
         className: string, 
         objectId: string, 
-        updateObject: object, 
+        updateObject: any, 
         afterSaveHandler?: (objectId: string) => void,
         feedback?: string
     }) => {
@@ -116,7 +116,7 @@ const useDataHandler = () => {
 	}: {
         className: string, 
         query?: string, 
-        updateObject?: object, 
+        updateObject?: any, 
         afterSaveHandler?: (objectId: string) => void,
 		message?: {type: string, users: string[]}
         feedback?: string

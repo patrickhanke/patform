@@ -91,10 +91,11 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 			columnArray.push({
 				accessorFn: row => 
 					<TableColumnCategory
-						category={category }  
+						category={category}  
 						className={className}
 						objectId={row.objectId}
-						categories={row.categories}                        
+						categories={row.categories || []} 
+						refetch={refetch}                    
 					/>,
 				header: () => <span>{category.label}</span>,
 				id: category.id,

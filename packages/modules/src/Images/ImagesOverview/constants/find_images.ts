@@ -10,6 +10,8 @@ export const find_images = gql`
                     name
                     filePath
                     categories
+                    description
+                    data
                 }
             }
         }

@@ -9,7 +9,7 @@ const get_image = gql`
                 name
                 description
                 filePath
-                person
+                categories
             }
         }
     }

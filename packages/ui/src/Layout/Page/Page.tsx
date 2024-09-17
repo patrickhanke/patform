@@ -26,7 +26,7 @@ const Page = ({
 				refetch={refetch}
 			/>
 			{navOnClick && activeState && (
-				<PageNavigation 
+				<PageNavigation
 					siteStates={pageStates}
 					activeState={activeState}
 					onClick={navOnClick}

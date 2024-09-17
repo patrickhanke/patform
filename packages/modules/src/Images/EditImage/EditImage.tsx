@@ -6,11 +6,14 @@ import { useDebounceValue } from 'usehooks-ts';
 import { Category, Image } from '@repo/types';
 import './styles.scss';
 import find_categories from './constants/find_categories';
-import { useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
+import { AppContext } from '@repo/provider';
 
-const EditImage = ({projectId, image, onChange}: {projectId: string, image: string, onChange: (I: Image) => void}) => {
+const EditImage = ({image, onChange}: {image: string, onChange: (I: Image) => void}) => {
+    const {currentModule} = useContext(AppContext)
+    
     const [imageData, setImageData] = useDebounceValue(undefined as unknown as Image, 500);
-    const {data} = useQuery(get_image, {
+    useQuery(get_image, {
         variables: {id: image},
         onCompleted(data) {
             setImageData(data?.objects.getImage || undefined)
@@ -18,7 +21,7 @@ const EditImage = ({projectId, image, onChange}: {projectId: string, image: stri
     })
 
     const {data: categoyData} = useQuery(find_categories, {
-        variables: {project: projectId, type: 'image'}
+        variables: {module: currentModule.objectId, type: 'image'}
     })
 
     const selectOptions = useMemo(() => {
@@ -30,8 +33,6 @@ const EditImage = ({projectId, image, onChange}: {projectId: string, image: stri
     }, [categoyData])
 
     useEffect(() => {
-        console.log('effect');
-        
         onChange(imageData)
     }, [imageData])
 

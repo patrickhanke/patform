@@ -2,15 +2,15 @@ import { useCallback, useContext, useMemo, useState, useEffect } from 'react'
 import { Field, IconButton, SlideIn } from '@repo/ui'
 import { AppContext, useDataHandler } from '@repo/provider'
 import { Form } from '@repo/ui'
+import * as Yup from 'yup';
 
 const CreatePerson = ({refetch}: {refetch: () => void}) => {
     const {createData}  = useDataHandler()
     const {currentModule} = useContext(AppContext) 
     const [isOpen, setIsOpen] = useState(false)
     const [data, setData] = useState({} as {[key: string]: any})
-
    
-    const [disabled, setDisabled] = useState([false, false])
+    const [disabled, setDisabled] = useState<[boolean, boolean]>([false, false])
    
     const personFields = useMemo(() => {
         const constantFields: Field[] = [{
@@ -19,7 +19,7 @@ const CreatePerson = ({refetch}: {refetch: () => void}) => {
             name: 'name',
             type: 'input',
             label: 'Name',
-            validation: 'string_required'
+            validation: Yup.string().required('Name ist ein Pflichtfeld'),
         },
         {
             id: 'portrait',
@@ -84,7 +84,7 @@ const CreatePerson = ({refetch}: {refetch: () => void}) => {
             <button
                 onClick={() => setIsOpen(true)}
                 disabled={false}
-                className='button md primary'
+                className='full_button md primary'
             >
                 Person erstellen
             </button>
@@ -93,6 +93,7 @@ const CreatePerson = ({refetch}: {refetch: () => void}) => {
                 header='Person erstellen' 
                 cancel={() => setIsOpen(false)} 
                 confirm={() => dataHandler()}
+                disabled={disabled}
                 >
                     {personFields.constantFields && data &&
                         <Form
