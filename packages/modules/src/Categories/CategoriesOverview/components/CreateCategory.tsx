@@ -8,6 +8,7 @@ const CreateCategory = ({ refetch, typeValue }: { refetch: () => void, typeValue
 	const { currentModule } = useContext(AppContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [data, setData] = useState({} as { [key: string]: any });
+	const [disabled, setDisabled] = useState<[boolean, boolean]>([false, false]);	
 
 	const categoryFields = useMemo(() => {
 		const constantFields: Field[] = [
@@ -16,22 +17,25 @@ const CreateCategory = ({ refetch, typeValue }: { refetch: () => void, typeValue
 				position: 1,
 				name: 'name',
 				type: 'input',
-				label: 'Name'
-				// validation: 'string_required'
+				label: 'Name',
+				validation: {
+					required: 'Pflichtfeld',
+					min_length: 6
+				}
 			},
 			{
 				id: 'description',
 				position: 2,
 				name: 'description',
 				type: 'textarea',
-				label: 'Description'
+				label: 'Beschreibung'
 			},
 			{
 				id: 'image',
 				position: 3,
 				name: 'image',
 				type: 'image',
-				label: 'Description'
+				label: 'Bild'
 			}
 		];
 		return constantFields;
@@ -50,6 +54,9 @@ const CreateCategory = ({ refetch, typeValue }: { refetch: () => void, typeValue
 		setIsOpen(false);
 	}, [data, createData, refetch, typeValue]);
 
+console.log(disabled);
+
+
 	return (
 		<div>
 			<button className='full_button primary md'  onClick={() => setIsOpen(true)}>Kategorie erstellen</button>
@@ -58,11 +65,20 @@ const CreateCategory = ({ refetch, typeValue }: { refetch: () => void, typeValue
 				isOpen={isOpen}
 				cancel={() => setIsOpen(false)}
 				confirm={handleSubmit}
+				disabled={disabled}
 			>
 				<Form
 					fields={categoryFields}
 					data={data}
 					formSubmitHandler={values => setData(values)}
+					formValidationHandler={value => {
+						console.log(value);
+						
+						const disabledCopy = [...disabled];
+						if (disabledCopy[1] !== !value) {
+							setDisabled([false, !value]);
+						}
+					}}
 				/>
 			</SlideIn>
 		</div>

@@ -41,7 +41,6 @@
     right: 0;
     width: 420px !important;
     visibility: visible;
-   
 }
 
 .is_open[data-size='medium'] {
@@ -54,7 +53,6 @@
     right: 0;
     width: 90% !important;
     visibility: visible;
-   
 }
 
 .slidein_header {
@@ -64,16 +62,16 @@
     height: 36px;
     border-bottom: 1px solid colors.$grey;
     padding: map-get(sizes.$padding, 'sm');
+    position: relative;
 }
 
 .slidein_main_content {
     @include layout.flexbox($direction: row, $align: stretch, $gap: sizes.$xs);
-    flex: 1 1;
+    flex: 1;
     position: relative;
     box-sizing: border-box;
     width: fit-content;
-    height: calc(100% - 42px);
-    overflow:  visible;
+    overflow: auto;
 }
 
 .slidein_content {

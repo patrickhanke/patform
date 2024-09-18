@@ -108,7 +108,7 @@ export default async function  RootLayout({
 							label: module.name,
 							icon: module.icon,
 							value: module.path
-						}) )} />
+						}))} />
 					</div >
 					<LayoutContext project={data.objects.getProject}>
 						<div className={styles.main_content}>

@@ -8,8 +8,8 @@ const FormSubmitStore = ({formValidationHandler, useWithDebounce = false}: FormS
 	const { submitForm, values, initialValues, isValid: formIsValid } = useFormikContext();
 	const [formValues, setFormValues] = useDebounceValue(initialValues, 2000);
 	
-		console.log(formValues);
-		console.log(initialValues);
+	console.log(formValues);
+	console.log(initialValues);
 		
 	
 	useEffect(() => {

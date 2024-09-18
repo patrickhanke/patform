@@ -18,7 +18,8 @@ const Categories = () => {
 	const columns = useCreateColumns<CategoryClass>({
 		data:[
 			{id: 'image', type: 'edit_image', label: 'Bild'},
-			{id: 'name', type: 'edit_string', label: 'Name'}
+			{id: 'name', type: 'edit_string', label: 'Name'},
+			{id: 'description', type: 'edit_textfield', label: 'Beschreibung'}
 		],
 		fields: currentModule.fields,
 		className: 'News',

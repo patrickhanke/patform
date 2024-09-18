@@ -5,7 +5,7 @@ import { FaUsers } from 'react-icons/fa';
 import {GrProjects} from 'react-icons/gr';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
-import { MdOutlineCleaningServices, MdOutlineContactPage, MdViewModule } from 'react-icons/md';
+import { MdOutlineCleaningServices, MdOutlineContactPage, MdOutlineEvent, MdViewModule } from 'react-icons/md';
 import {RiAdminLine, RiListSettingsLine} from 'react-icons/ri';
 import {PiNewspaper} from 'react-icons/pi';
 import { CgProfile } from 'react-icons/cg';
@@ -99,6 +99,9 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'news') {
 		return <PiNewspaper />;
+	}
+	if (icon === 'events') {
+		return <MdOutlineEvent />;
 	}
 
 	return null;

@@ -5,6 +5,8 @@ export type Category = {
     type: string,
     name: string,
     data: object,
+    start_time: string,
+    end_time: string,
     module: Module,
     image: string
 }
@@ -84,6 +86,16 @@ export type NewsClass = ClassProperties & {
     image: string,
     text: string,
     autor: string,
+    date: string
+}
+
+export type EventClass = {
+    name: string,
+    date: string,
+    location: string,
+    description: string,
+    image: string,
+    data: FormDataElement,
 }
 
 export type Classes = ImageClass | NewsClass | PersonClass | CategoryClass
