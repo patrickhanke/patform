@@ -11,16 +11,27 @@ import '../styles.scss';
 const TableColumnImage = ({ url, isEditable = false, onChange, maxFileCount }: TableColumnImageProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState('');
-
+	
 	return (
 		<>
 			<div className='button_container'>
 				{url ?
-					<img src={getImageUrl({filePath: url})} /> : <div className='table_columns_image_placeholder' />
+					<img src={getImageUrl({filePath: url, width: 60})} /> : <div className='table_columns_image_placeholder' />
 				}
-				{isEditable &&
-					<IconButton icon='edit' onClick={() => setIsOpen(true)} />
-				}
+				<div className='table_vertical_container'>
+					{isEditable &&
+						<IconButton icon='edit' onClick={() => setIsOpen(true)} />
+					}
+					{url && (
+						<IconButton
+							onClick={() => null}
+							icon='download'
+							isLink
+							isBlank
+							link={getImageUrl({filePath: url})}
+						/>
+					)}
+				</div>
 			</div>
 			<Modal 
 				isOpen={isOpen}

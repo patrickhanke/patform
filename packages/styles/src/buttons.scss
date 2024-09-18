@@ -9,7 +9,6 @@
     transition: background-color .2s ease, color .2s ease;
     border: none;
     font-weight: 500;
-    border-radius: sizes.$xxs;
     &:disabled {
         background-color: transparent !important;
         color: colors.$grey;
@@ -24,8 +23,8 @@
         font-size: map-get(sizes.$font_size, 'sm');
     }
     @if($size == 'md') {
-        padding: map-get(sizes.$padding, 'md');
-        font-size: map-get(sizes.$font_size, 'md');
+        padding: map-get(sizes.$padding, 'sm');
+        font-size: map-get(sizes.$font_size, 'sm');
     }
     @if($size == 'lg') {
         padding: map-get(sizes.$padding, 'lg');
@@ -64,7 +63,6 @@
     transition: background-color .2s ease, color .2s ease;
     border: none;
     font-weight: 400;
-    border-radius: sizes.$xxs;
     display: inline;
     line-break: none;
     white-space: nowrap;
@@ -87,7 +85,7 @@
 
 .full_button.md {
     padding: map-get(sizes.$padding, 'sm');
-    font-size: map-get(sizes.$font_size, 'md');
+    font-size: map-get(sizes.$font_size, 'sm');
 };
 
 .full_button.lg {
@@ -146,7 +144,6 @@
     border: none;
     font-weight: 500;
     background-color: transparent;
-    border-radius: sizes.$xxs;
     &:disabled {
         background-color: colors.$light !important;
         border: 1px solid colors.$grey;
@@ -232,7 +229,7 @@
 
 
 .button_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$sm );
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$xs );
 }
 
 

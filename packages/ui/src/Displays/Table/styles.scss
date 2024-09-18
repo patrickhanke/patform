@@ -81,8 +81,8 @@
 }
 
 .table_columns_image_placeholder {
-    width: 45px;
-    height: 34px;
+    width: 60px;
+    height: 40px;
     background-color: colors.$lightgrey;
 }
 
@@ -102,4 +102,8 @@
         width: 100%;
         min-height: 120px;
     }
+}
+
+.table_vertical_container {
+    @include layout.flexbox($direction: column, $align: center, $justify: center, $gap: sizes.$xs);
 }

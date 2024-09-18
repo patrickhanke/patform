@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import './styles.scss';
 import { ErrorDisplay } from '@repo/ui';
 import { UploadDropzone, UploadDropzoneConfig } from '@bytescale/upload-widget-react';
-import {ImageDisplay, getImageUrl} from '../ImageDisplay';
+import { getImageUrl } from '../ImageDisplay';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageUplaoderProps } from './types';
 import clsx from 'clsx';
@@ -68,12 +68,10 @@ const ImageUploader = ({
 			<UploadDropzone
 				options={options}
 				onUpdate={( files ) => {
-					console.log(returnType);
-					
 					if (returnType === 'string' && files?.uploadedFiles.length > 0) {
-						return onChange(files?.uploadedFiles.map((file) => file.filePath)[0] as string) as unknown as (F:  string ) => void
+						return onChange(files?.uploadedFiles.map((file) => file.filePath)[0] as string) as unknown as (F:  string ) => void;
 					}
-					return onChange(files?.uploadedFiles.map((file) => file.filePath)) as unknown as (F:  string[] ) => void 
+					return onChange(files?.uploadedFiles.map((file) => file.filePath)) as unknown as (F:  string[] ) => void; 
 				}}
 				// onUpdate={files => console.log({files})}
 				width="100%"

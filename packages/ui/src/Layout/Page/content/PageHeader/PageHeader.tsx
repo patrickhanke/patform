@@ -38,7 +38,7 @@ const PageHeader = ({
 						<button
 							key={button.text}
 							data-color={button.color || 'primary'}
-							className={clsx('border_button', 'md', 'dark', 'pageheader_createbutton')}
+							className={clsx('full_button', 'md', 'primary', 'pageheader_createbutton')}
 							onClick={() => button.onClick()}
 							disabled={button.disabled}
 						>

@@ -1,10 +1,10 @@
-import { Filter, News } from '@repo/types';
+import { Filter, NewsClass } from '@repo/types';
 
 export type FilterArray = Filter[];
 
 export type UseFindNewsHook = ({
-    moduleId: string,
-    filters: FilterArray, 
+	moduleId: string,
+	filters: FilterArray 
 }) => ({
     loading: boolean,
     news?: NewsClass[],
@@ -15,4 +15,4 @@ export type DeleteModalProps = {
     isOpen: boolean,
     confirmButtonHandler: () => void,
     header: string
-}
+};

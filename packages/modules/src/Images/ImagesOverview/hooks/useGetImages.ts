@@ -14,9 +14,9 @@ const useGetImages: UseGetImagesHook = ({moduleId, filters} ) => {
 		loading, 
 		images: data ? data.objects.findImage.results : undefined,
 		refetch
-	}), [data, loading, refetch])
+	}), [data, loading, refetch]);
 	
-	return returnObject
+	return returnObject;
 };
 
 export default useGetImages;

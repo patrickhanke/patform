@@ -8,9 +8,14 @@ module.exports = {
         "eslint:recommended",
         "prettier",
         require.resolve("@vercel/style-guide/eslint/next"),
-        "turbo",
+        require.resolve('@vercel/style-guide/eslint/node'),
+        require.resolve('@vercel/style-guide/eslint/typescript'),
+        require.resolve('@vercel/style-guide/eslint/browser'),
+        require.resolve('@vercel/style-guide/eslint/react'),
+        require.resolve('@vercel/style-guide/eslint/next'),
         "plugin:react/recommended",
-        'plugin:@typescript-eslint/recommended'
+        'plugin:@typescript-eslint/recommended',
+        'turbo',
     ],
     globals: {
         React: true,
@@ -23,13 +28,10 @@ module.exports = {
     plugins: ["only-warn", "react", '@typescript-eslint'],
     settings: {
         "import/resolver": {
-        typescript: {
-            project,
+            typescript: {
+                project,
+            },
         },
-        },
-    },
-    ecmaFeatures: {
-        "jsx": true
     },
     ignorePatterns: [
         // Ignore dotfiles
