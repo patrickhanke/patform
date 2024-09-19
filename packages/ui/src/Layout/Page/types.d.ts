@@ -1,5 +1,6 @@
 import { PageState } from '@repo/types';
 import { Field } from '@repo/ui';
+import { CreateClassProps } from '../../Displays/CreateClass/types';
 
 export type PageHeaderButton = {
     text: string,
@@ -14,11 +15,7 @@ export type PageHeaderButtons = PageHeaderButton[]
 
 type PageHeaderContent =  React.JSX.Element;
 
-export type PageCreateClassObject = {
-    className: string,
-    text: string,
-    fields: Field[], 
-}
+export type PageCreateClassObject = CreateClassProps;
 
 export type PageProps = {
     title?: string, 

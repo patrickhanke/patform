@@ -1,0 +1,49 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+  }
+  
+  .autocomplete-container input,
+  .autocomplete-control {
+    box-sizing: border-box;
+  }
+  
+  .autocomplete-control {
+    margin: sizes.$md;
+    background: #fff;
+    width: auto;
+    max-width: 420px;
+  }
+  
+  .autocomplete-container {
+    width: 100%;
+  }
+  
+  .autocomplete-container input {
+    width: 100%;
+    min-width: 240px;
+    max-width: 300px;
+    height: auto;
+    padding: map-get($map: sizes.$padding, $key: 'sm' );
+    font-size: map-get($map: sizes.$font_size, $key: 'md');
+  }
+  
+  .autocomplete-container .custom-list {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .autocomplete-container .custom-list-item {
+    padding: 8px;
+  }
+  
+  .autocomplete-container .custom-list-item:hover {
+    background: lightgrey;
+    cursor: pointer;
+  }

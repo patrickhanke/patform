@@ -1,3 +1,5 @@
+import { Field } from '../../../ui/src/Displays';
+
 export function slugify(string: string) {
 	const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
 	const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
@@ -37,3 +39,12 @@ export function shadeColor(color: string, percent: number) {
 
 	return '#'+RR+GG+BB;
 }
+
+export const getInitialData = (fields: Field[]) => {
+	const dataFields = fields.reduce((acc: {[key: string]: Field['initialValue']}, field) => { 
+		acc[field.name.slice(field.name.lastIndexOf('.') + 1) as keyof Field] = field.initialValue;
+		return acc;
+	});
+
+	return dataFields;
+};

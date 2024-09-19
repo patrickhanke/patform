@@ -1,4 +1,4 @@
-import { Field, FormDataElement } from '@repo/ui';
+import { Field, FormDataElement, MapPlace } from '@repo/ui';
 
 export type Category = {
     objectId: string,
@@ -89,16 +89,34 @@ export type NewsClass = ClassProperties & {
     date: string
 }
 
+export type EventLocation = {
+    type: 'address' | 'map' | 'online',
+    address?: string,
+    map?: MapPlace | null,	
+    online?: string
+}
+
+export type EventDate = {
+    label: string,
+    start: string,
+    end: string,
+    location: EventLocation,
+    full_day: boolean,
+    id: string
+}
+
 export type EventClass = {
-    name: string,
-    date: string,
+    objectId: string,
+    title: string,
+    dates: EventDate[],
     location: string,
     description: string,
     image: string,
     data: FormDataElement,
+    categories: ClassCategories 
 }
 
-export type Classes = ImageClass | NewsClass | PersonClass | CategoryClass
+export type Classes = ImageClass | NewsClass | PersonClass | CategoryClass | EventClass
 
 export type Person ={
     objectId: string,

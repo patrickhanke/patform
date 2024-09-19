@@ -10,12 +10,13 @@ import TableColumnTextfield from '../components/TableColumnTextfield';
 import TableColumnCategory from '../components/TableColumnCategory';
 import TableColumnEditField from '../content/TableColumnEditField';
 import TableColumnDeleteField from '../content/TableColumnDeleteField/TableColumnDeleteField';
+import TableColumnDatesField from '../content/TableColumnDatesField';
+import { EventDate } from '@repo/types';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
-        
 		data.forEach(columnElement => {
 			if (columnElement.type === 'string' || columnElement.type === 'edit_string') {
 				columnArray.push({
@@ -70,6 +71,28 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 							value={row[columnElement.id] as string}  
 							isEditable={columnElement.type === 'edit_textfield' ?  true : false}
 							onChange={async (value: string) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: value}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'edit_dates') {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnDatesField
+							initialDates={row[columnElement.id] as EventDate[]}  
+							onChange={async (value: EventDate[]) => {
 								await updateData({
 									className: className,
 									objectId: row.objectId,

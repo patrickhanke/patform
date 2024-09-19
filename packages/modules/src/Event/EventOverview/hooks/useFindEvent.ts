@@ -6,7 +6,7 @@ const useFindEvent: UseFindEventHook = ({moduleId, filters} ) => {
 	const {loading, data, refetch} = useQuery(generateGraphQLQuery({
 		type: 'find', 
 		objectName:  'Event',  
-		fields: ['objectId', 'name', 'date', 'createdAt', 'location', 'description', 'image'] 
+		fields: ['objectId', 'title', 'dates', 'createdAt', 'location', 'description', 'image'] 
 	}), {
 		variables: {params: paramsHandler({moduleId, filters})},
 		notifyOnNetworkStatusChange: true
@@ -14,7 +14,7 @@ const useFindEvent: UseFindEventHook = ({moduleId, filters} ) => {
 
 	return ({
 		loading, 
-		news: data ? data.objects.findNews.results : undefined,
+		news: data ? data.objects.findEvent.results : undefined,
 		refetch
 	});
 };

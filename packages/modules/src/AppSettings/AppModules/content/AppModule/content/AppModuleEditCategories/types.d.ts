@@ -1,5 +1,5 @@
-import { ImmerHook, Updater, useImmer } from 'use-immer';
-import { ModuleCategory } from "@repo/types";
+import { Updater } from 'use-immer';
+import { ModuleCategory } from '@repo/types';
 
 export type AppModuleEditCategorysProps = {
     initialCategories: ModuleCategory[];

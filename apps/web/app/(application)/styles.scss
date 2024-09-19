@@ -31,10 +31,10 @@ input:focus {
 label {
     display: block;
     margin-top: sizes.$md;
-    margin-bottom: sizes.$sm;
+    margin-bottom: sizes.$xs;
     color: colors.$dark;
     font-weight: 500;
-    font-size: map-get($map: sizes.$font_size, $key:'md' );
+    font-size: map-get($map: sizes.$font_size, $key: 'sm' );
     font-family: 'Roboto', sans-serif;
     line-height:  1;
     letter-spacing: 0.02rem;

@@ -15,7 +15,8 @@
     "@dnd-kit/sortable": "^8.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@tanstack/match-sorter-utils": "^8.15.1",
-    "@tanstack/react-table": "^8.15.3"
+    "@tanstack/react-table": "^8.15.3",
+    "@vis.gl/react-google-maps": "^1.2.0"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

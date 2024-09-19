@@ -1,49 +1,20 @@
 'use client';
 
-import { useCallback, useContext, useMemo, useState, useEffect } from 'react';
-import { Field, SlideIn } from '@repo/ui';
+import { useCallback, useContext, useState } from 'react';
+import { SlideIn } from '@repo/ui';
 import { AppContext, useDataHandler } from '@repo/provider';
 import { Form } from '@repo/ui';
 import { CreateClassProps } from './types';
+import { Classes } from '@repo/types';
 
-const CreateClass = ({fields, text, className, refetch}: CreateClassProps) => {
+const CreateClass = <T extends Classes>({initialData, fields, text, className, refetch}: CreateClassProps<T>) => {
 	const {createData}  = useDataHandler();
 	const {currentModule} = useContext(AppContext); 
 	const [isOpen, setIsOpen] = useState(false);
-	const [data, setData] = useState({} as {[key: string]: any});
+	const [data, setData] = useState<CreateClassProps<T>['initialData']>(initialData);
 
 	const [disabled, setDisabled] = useState<[boolean, boolean]>([false, false]);
    
-	const classFields = useMemo(() => {
-		const constantFields: Field[] = [...fields];
-
-		if (currentModule.fields) {
-			currentModule.fields.forEach(field => {
-				if (field.name) {
-					constantFields.push({...field, path: '/data'});
-				}
-			});
-		}
-		const initialData = {
-			title: '',
-			image: '',
-			text: '',
-			autor: '',
-			data: currentModule.fields.reduce((acc: {[key: string]: string}, field) => { 
-				acc[field.name.slice(field.name.lastIndexOf('.') + 1) as keyof Field] = field.initialValue;
-				return acc;
-			} , {})
-		};
-
-		return {constantFields, initialData};
-	}, [currentModule.fields]);
-
-	useEffect(() => {
-		if (classFields.initialData && !data) {
-			setData(classFields.initialData);
-		}
-	}, [classFields.initialData]);
-
 	const dataHandler = useCallback(async () => {
 		setDisabled([true, true]);
 		await createData({
@@ -71,14 +42,14 @@ const CreateClass = ({fields, text, className, refetch}: CreateClassProps) => {
 			</button>
 			<SlideIn 
 				isOpen={isOpen} 
-				header='News erstellen' 
+				header={text} 
 				cancel={() => setIsOpen(false)} 
 				confirm={() => dataHandler()}
 				disabled={disabled}
 			>
-				{classFields.constantFields &&  data && (
+				{fields && (
 					<Form
-						fields={classFields.constantFields} 
+						fields={fields} 
 						data={data} 
 						formSubmitHandler={values => setData(values)}
 						formValidationHandler={isValid => setDisabled([false, !isValid])} 

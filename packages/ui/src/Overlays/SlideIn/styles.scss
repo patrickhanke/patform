@@ -71,17 +71,20 @@
     position: relative;
     box-sizing: border-box;
     width: fit-content;
-    overflow: auto;
+    overflow: hidden;
+    height: 100%;
 }
 
 .slidein_content {
     width: 360px;
     order:2;
     padding: map-get(sizes.$padding, 'sm');
+    overflow: auto;
 }
 
 .slidein_secondary_content {
     order: 1;
+    overflow: auto;
 }
 
 .slidein_secondary_content[data-open='true'] {

@@ -1,5 +1,6 @@
 import { PageCreateClassObject } from '@repo/ui';
 const createEvent: PageCreateClassObject = {
+	initialData: undefined,
 	className: 'Event',
 	text: 'Neues Event erstellen',
 	fields: [{
@@ -27,7 +28,11 @@ const createEvent: PageCreateClassObject = {
 		name: 'text',
 		type: 'textarea',
 		label: 'Beschreibung',
-		validation: {required: 'Pflichtfeld', min_length: 30, max_length: 180}
+		validation: {
+			required: 'Pflichtfeld', 
+			min_length: 30, 
+			max_length: 180
+		}
 	}]};
 
 export default createEvent;

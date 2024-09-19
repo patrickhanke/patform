@@ -21,14 +21,16 @@ const PageHeader = ({
 				<div>
 					{pageHeaderContent}
 				</div> 
-				<div>{createClass?.className && ( 
-					<CreateClass
-						fields={createClass.fields}
-						text={createClass.text || 'Neues Objekt erstellen'}
-						className={createClass.className}
-						refetch={refetch}
-					/>
-				)}
+				<div>
+					{createClass?.className && ( 
+						<CreateClass
+							initialData={createClass.initialData}
+							fields={createClass.fields}
+							text={createClass.text || 'Neues Objekt erstellen'}
+							className={createClass.className}
+							refetch={refetch}
+						/>
+					)}
 				</div>
 			</>
 			}
