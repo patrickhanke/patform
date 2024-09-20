@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { RenderFiltersProps } from './types';
 import { ModuleCategory } from '@repo/types';
 import FilterSelect from './components/FilterSelect';
+import './styles.scss';
 
 const RenderFilters = ({categories, filters = [], setFilters, initialFilters = []} : RenderFiltersProps) => {
   
@@ -24,11 +25,13 @@ const RenderFilters = ({categories, filters = [], setFilters, initialFilters = [
 	}, [filters, setFilters, categories]);
 
 	return (
-		<div className='button_container'>
-			{renderFilters}
-			<button className='full_button primary md' onClick={() => setFilters(initialFilters)}>
-				<span>Filter zurücksetzen</span>
-			</button>
+		<div className='filter_container'>
+			<div className='button_container'>{renderFilters}</div>
+			<div>
+				<button className='full_button primary md' onClick={() => setFilters(initialFilters)}>
+					<span>Filter zurücksetzen</span>
+				</button>
+			</div>
 		</div>
 	);
 };

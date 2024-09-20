@@ -7,7 +7,7 @@ import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { Select } from '@repo/ui';
 import { SelectOption } from '@repo/types';
-import { cloneDeep, pull, merge } from 'lodash';
+import { cloneDeep, pull, isArray } from 'lodash';
 
 const TableColumnCategory = ({ category, className, objectId, categories = [], refetch }: TableColumnCategoryProps) => {
 	const {updateData} = useDataHandler();  
@@ -16,7 +16,7 @@ const TableColumnCategory = ({ category, className, objectId, categories = [], r
 		{
 			type: 'find', 
 			objectName: category.connected_class, 
-			fields: ['objectId', category.key]
+			fields: ['objectId', 'label', category.key]
 		}
 	), {
 		variables: {module: {_eq: category.moduleId}}
@@ -30,7 +30,7 @@ const TableColumnCategory = ({ category, className, objectId, categories = [], r
 			dataFields.forEach((field: {objectId: string, [key: string]: string}) => {
 				options.push( {
 					value: field.objectId,
-					label: field[category.key] as string
+					label: field.label as string
 				});
 			});
 		}
@@ -47,20 +47,20 @@ const TableColumnCategory = ({ category, className, objectId, categories = [], r
 			options,
 			values
 		});
-	} , [category, data]);
+	} , [category, categories, data]);
 
 	const categoryChangeHandler = useCallback(async (value: string[]) => {
 		const categoriesCopy = cloneDeep(categories);
-
+		
 		selectOptions.options.forEach((option) => {
 			if (categories.includes(option.value)) {
+				
 				pull(categoriesCopy, option.value);
 			}
 		} );
 
-		const updateCategoriesArray = merge(categoriesCopy, value);
+		const updateCategoriesArray = categoriesCopy.concat(value);
 		
-		categoriesCopy.concat(value);
 		await updateData({
 			objectId: objectId,
 			className,
@@ -70,15 +70,21 @@ const TableColumnCategory = ({ category, className, objectId, categories = [], r
 		});
 
 		refetch();
-	} , [category]);
+	} , [category, categories, data]);
 
 	return (
 		<>
 			<div className='button_container'>
 				<Select
 					value={selectOptions.values}
-					onChange={(options: SelectOption[]) => {
-						categoryChangeHandler(options.map((option: SelectOption) => option.value ));
+					onChange={(options: SelectOption[] | SelectOption) => {
+						if (isArray(options)) {
+							categoryChangeHandler(options.map((option: SelectOption) => option.value ));
+							return;
+						} else {
+							categoryChangeHandler([options.value]);
+							return;
+						}
 					}}
 					options={selectOptions.options}
 					isMulti={category.is_multi}

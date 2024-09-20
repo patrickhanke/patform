@@ -12,6 +12,7 @@ import TableColumnEditField from '../content/TableColumnEditField';
 import TableColumnDeleteField from '../content/TableColumnDeleteField/TableColumnDeleteField';
 import TableColumnDatesField from '../content/TableColumnDatesField';
 import { EventDate } from '@repo/types';
+import TableColumnDate from '../components/TableColumnDate';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
@@ -102,6 +103,18 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 									refetch();
 								}
 							}}
+						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'date') {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnDate
+							date={row[columnElement.id] as string}  
 						/>,
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,

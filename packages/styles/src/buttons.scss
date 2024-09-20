@@ -229,7 +229,7 @@
 
 
 .button_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$xs );
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$xs );
 }
 
 

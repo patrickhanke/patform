@@ -42,7 +42,16 @@ export type TableColumnTextfieldProps = {
     onChange: (image: string) => void
 }
 
-export type ColumnDataTypes = 'string' | 'edit_string' | 'image' | 'category' | 'textfield' | 'edit_image' | 'edit_textfield' | 'edit_dates';
+export type ColumnDataTypes = 
+    'string' | 
+    'edit_string' | 
+    'image' | 
+    'category' | 
+    'textfield' | 
+    'edit_image' | 
+    'edit_textfield' | 
+    'edit_dates' |
+    'date';
 
 export type ColumnData<Class> = {
     id: keyof Class,

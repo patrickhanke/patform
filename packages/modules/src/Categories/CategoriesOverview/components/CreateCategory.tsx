@@ -2,8 +2,9 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { Field, SlideIn } from '@repo/ui';
 import { AppContext, useDataHandler } from '@repo/provider';
 import { Form } from '@repo/ui';
+import { CreateCategoryProps } from '../types';
 
-const CreateCategory = ({ refetch, typeValue }: { refetch: () => void, typeValue: string }) => {
+const CreateCategory = ({ refetch, typeValue, typeLabel }: CreateCategoryProps ) => {
 	const { createData } = useDataHandler();
 	const { currentModule } = useContext(AppContext);
 	const [isOpen, setIsOpen] = useState(false);
@@ -54,14 +55,11 @@ const CreateCategory = ({ refetch, typeValue }: { refetch: () => void, typeValue
 		setIsOpen(false);
 	}, [data, createData, refetch, typeValue]);
 
-console.log(disabled);
-
-
 	return (
 		<div>
-			<button className='full_button primary md'  onClick={() => setIsOpen(true)}>Kategorie erstellen</button>
+			<button className='full_button primary md'  onClick={() => setIsOpen(true)}>{`Eintrag zu ${typeLabel} hinzufügen`}</button>
 			<SlideIn 
-				header='Kategorie erstellen'
+				header='Eintrag hinzufügen'
 				isOpen={isOpen}
 				cancel={() => setIsOpen(false)}
 				confirm={handleSubmit}
@@ -72,8 +70,6 @@ console.log(disabled);
 					data={data}
 					formSubmitHandler={values => setData(values)}
 					formValidationHandler={value => {
-						console.log(value);
-						
 						const disabledCopy = [...disabled];
 						if (disabledCopy[1] !== !value) {
 							setDisabled([false, !value]);

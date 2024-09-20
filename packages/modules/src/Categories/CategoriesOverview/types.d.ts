@@ -7,8 +7,8 @@ export type PersonsOverviewProps = {
 export type FilterArray = Filter[];
 
 export type UseFindCategoryHook = ({
-    moduleId: string,
-    filters: FilterArray, 
+	moduleId: string,
+	filters: FilterArray 
 }) => ({
     loading: boolean,
     categories?: Person[],
@@ -19,4 +19,10 @@ export type DeleteModalProps = {
     isOpen: boolean,
     confirmButtonHandler: () => void,
     header: string
+}
+
+export type CreateCategoryProps = { 
+    refetch: () => void, 
+    typeValue: string ,
+    typeLabel: string
 }

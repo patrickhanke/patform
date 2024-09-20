@@ -1,0 +1,9 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+
+.filter_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
+    width: 100%;
+    overflow: auto;
+}

@@ -5,6 +5,8 @@
 .table_container {
     width: 100%;
     height: auto;
+    overflow: auto;
+    padding-bottom: sizes.$md;
     .header {
         padding: map-get($map: sizes.$padding, $key: 'md' );
     }
@@ -106,4 +108,12 @@
 
 .table_vertical_container {
     @include layout.flexbox($direction: column, $align: center, $justify: center, $gap: sizes.$xs);
+}
+
+.table_row_container_start {
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$xs);
+}
+
+.table_row_container_space {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$xs);
 }

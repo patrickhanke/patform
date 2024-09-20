@@ -20,7 +20,7 @@ const PersonsOverview = () => {
 			{id: 'name', type: 'edit_string', label: 'Name'}
 		],
 		fields: currentModule.fields,
-		className: 'Portrait',
+		className: 'Person',
 		refetch,
 		categories: currentModule?.categories
 	});

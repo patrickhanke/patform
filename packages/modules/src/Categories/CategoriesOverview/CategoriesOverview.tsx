@@ -22,7 +22,7 @@ const Categories = () => {
 			{id: 'description', type: 'edit_textfield', label: 'Beschreibung'}
 		],
 		fields: currentModule.fields,
-		className: 'News',
+		className: 'Category',
 		refetch,
 		categories: currentModule?.categories
 	});
@@ -30,7 +30,7 @@ const Categories = () => {
 	return (
 		<Page 
 			title={currentModule.name}
-			pageHeaderContent={<CreateCategory refetch={refetch} typeValue={activeState.value} />}
+			pageHeaderContent={<CreateCategory refetch={refetch} typeValue={activeState.value} typeLabel={activeState.label} />}
 			emptyContent={true}
 			pageStates={pageStates}
 			activeState={activeState}

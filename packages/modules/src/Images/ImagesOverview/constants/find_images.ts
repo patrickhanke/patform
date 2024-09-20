@@ -12,6 +12,7 @@ export const find_images = gql`
                     categories
                     description
                     data
+                    date
                 }
             }
         }
