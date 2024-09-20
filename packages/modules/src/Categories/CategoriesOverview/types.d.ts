@@ -23,6 +23,6 @@ export type DeleteModalProps = {
 
 export type CreateCategoryProps = { 
     refetch: () => void, 
-    typeValue: string ,
+    typeId: string ,
     typeLabel: string
 }

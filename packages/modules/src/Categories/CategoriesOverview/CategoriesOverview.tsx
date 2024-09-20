@@ -12,7 +12,7 @@ const Categories = () => {
 	const {currentModule} = useContext(AppContext);
 	const pageStates  = useMemo(() =>( currentModule?.settings?.categories), [currentModule]);
 	const [activeState, setActiveState] = useState(pageStates[0]);
-	const {categories, refetch} = useFindCategory({moduleId: currentModule.objectId, filters: activeState.value ?  [{key: 'type', value: activeState.value, operator: '_eq', id: activeState.id}] : []}); 
+	const {categories, refetch} = useFindCategory({moduleId: currentModule.objectId, filters: activeState.value ?  [{key: 'category_id', value: activeState.id, operator: '_eq', id: activeState.id}] : []}); 
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
 
 	const columns = useCreateColumns<CategoryClass>({
@@ -30,7 +30,7 @@ const Categories = () => {
 	return (
 		<Page 
 			title={currentModule.name}
-			pageHeaderContent={<CreateCategory refetch={refetch} typeValue={activeState.value} typeLabel={activeState.label} />}
+			pageHeaderContent={<CreateCategory refetch={refetch} typeId={activeState.id} typeLabel={activeState.label} />}
 			emptyContent={true}
 			pageStates={pageStates}
 			activeState={activeState}

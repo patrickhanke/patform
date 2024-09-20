@@ -1,0 +1,7 @@
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+@use '@repo/styles/colors';
+
+.app_module_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between);
+}

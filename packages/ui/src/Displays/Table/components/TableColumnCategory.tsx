@@ -44,7 +44,7 @@ const TableColumnCategory = ({ category, className, objectId, categories = [], r
 		}
 
 		return ({
-			options,
+			options: options.sort((a, b) => a.label?.localeCompare(b.label)),
 			values
 		});
 	} , [category, categories, data]);
@@ -54,7 +54,6 @@ const TableColumnCategory = ({ category, className, objectId, categories = [], r
 		
 		selectOptions.options.forEach((option) => {
 			if (categories.includes(option.value)) {
-				
 				pull(categoriesCopy, option.value);
 			}
 		} );
@@ -88,6 +87,7 @@ const TableColumnCategory = ({ category, className, objectId, categories = [], r
 					}}
 					options={selectOptions.options}
 					isMulti={category.is_multi}
+					menuPosition='fixed'
 				/>
 			</div>
 			

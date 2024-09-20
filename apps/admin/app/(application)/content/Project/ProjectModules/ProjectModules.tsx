@@ -1,26 +1,38 @@
 'use client';
 
+import { useContext } from 'react';
+import { AppContext, generateGraphQLQuery, paramsHandler } from '@repo/provider';
+import { DnDDisplay, Page, sortItemsByPosition } from '@repo/ui';
+import { Module } from '@repo/types';
 import { useQuery } from '@apollo/client';
-import { Page } from '@repo/ui';
-import React from 'react';
-import get_project_settings from './constants/get_project_modules';
+import AppModule from './content/AppModule';
 
-const ProjectModules = ({params}: {params: {project_id: string}}) => {
-	const {data, loading, error} = useQuery(get_project_settings,{variables: {id: params.project_id}});
-	
-	if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error...</p>;
+const ProjectModules = () => {
+	const {project} = useContext(AppContext);
 
-	const project = data.objects.getProject;
-    
+	const {data, loading} = useQuery(generateGraphQLQuery(
+		{
+			type: 'find', 
+			objectName: 'Module', 
+			fields: ['objectId', 'name', 'createdAt', 'icon']
+		}
+	), {
+		variables: paramsHandler({filters: [{key: 'project', value: project.objectId as string, operator: '_eq', id: 'projectId'}]} )
+	});
+
+	if (loading) return null;
+
+	const modules = data?.objects.findModule.results;
+
 	return (
 		<Page 
-			title={project.name}
-			emptyContent={true}
+			title='Module'
 		>
-			<h2>
-                Module
-			</h2>
+			<DnDDisplay
+				items={sortItemsByPosition(modules).map((module: Module) => ({...module, id: module.objectId})) || []}
+				ItemComponent={({item}) => (<AppModule id={item.id} />)}
+				objectClass='Module'
+			/>
 		</Page>
 	);
 };

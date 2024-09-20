@@ -4,7 +4,7 @@ import { AppContext, useDataHandler } from '@repo/provider';
 import { Form } from '@repo/ui';
 import { CreateCategoryProps } from '../types';
 
-const CreateCategory = ({ refetch, typeValue, typeLabel }: CreateCategoryProps ) => {
+const CreateCategory = ({ refetch, typeId, typeLabel }: CreateCategoryProps ) => {
 	const { createData } = useDataHandler();
 	const { currentModule } = useContext(AppContext);
 	const [isOpen, setIsOpen] = useState(false);
@@ -47,13 +47,13 @@ const CreateCategory = ({ refetch, typeValue, typeLabel }: CreateCategoryProps )
 			className: 'Category',
 			updateObject: {
 				...data,
-				type: typeValue,
+				category_id: typeId,
 				module: {__type: 'Pointer', className: 'Module', objectId: currentModule.objectId}
 			}
 		});
 		refetch();
 		setIsOpen(false);
-	}, [data, createData, refetch, typeValue]);
+	}, [data, createData, refetch, typeId]);
 
 	return (
 		<div>
