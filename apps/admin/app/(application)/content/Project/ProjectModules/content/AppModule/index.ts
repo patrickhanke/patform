@@ -1,1 +1,1 @@
-export {default} from './AppModule';
+export {default} from './ProjectModule';

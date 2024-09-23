@@ -5,7 +5,7 @@ import { Module, ModuleCategory } from '@repo/types';
 import { AppModuleEditCategoryProps } from '../types';
 import { useQuery } from '@apollo/client';
 
-const AppModuleEditCategory = ({category, setCategory}: AppModuleEditCategoryProps) => {
+const AppModuleEditCategory = ({category, setCategory, projectId}: AppModuleEditCategoryProps) => {
 	const {project} = useContext(AppContext);
 
 	const {data} = useQuery(generateGraphQLQuery(
@@ -15,7 +15,7 @@ const AppModuleEditCategory = ({category, setCategory}: AppModuleEditCategoryPro
 			fields: ['objectId', 'name', 'position', 'categories', 'connected_class']
 		}
 	), {
-		variables: paramsHandler({filters: [{key: 'project', value: project.objectId as string, operator: '_eq', id: 'projectId'}]} )
+		variables: paramsHandler({filters: [{key: 'project', value: projectId as string, operator: '_eq', id: 'projectId'}]} )
 	});
 
 	const changeHandler = useCallback(( value: {[key: string]: any}) => {

@@ -9,7 +9,7 @@ import { useDataHandler } from '@repo/provider';
 import AppModuleEditCategory from './components/AppModuleEditCategory';
 import { AppModuleEditCategorysProps } from './types';
 
-const AppModuleEditCategories = ({moduleId, initialCategories}: AppModuleEditCategorysProps) => {
+const AppModuleEditCategories = ({moduleId, initialCategories, projectId}: AppModuleEditCategorysProps) => {
 	const {updateData} = useDataHandler();
 	const [editCategories, setEditCategories] = React.useState(false);
 	const [loading, setLoading] = useState(false);
@@ -28,7 +28,6 @@ const AppModuleEditCategories = ({moduleId, initialCategories}: AppModuleEditCat
 
 		setEditCategories(false);
 		setLoading(false);
-
 	}, [categories]);
 
 	const findactiveCategory = useCallback((id: string) => {
@@ -46,7 +45,7 @@ const AppModuleEditCategories = ({moduleId, initialCategories}: AppModuleEditCat
 				isOpen={editCategories}
 				header='Felder bearbeiten'
 				showSecondaryContent={!!activeCategory}
-				secondaryContent={<AppModuleEditCategory category={findactiveCategory(activeCategory)} setCategory={setCategories} />}
+				secondaryContent={<AppModuleEditCategory category={findactiveCategory(activeCategory)} setCategory={setCategories} projectId={projectId} />}
 				disabled={[loading, loading]}
 			>
 				<div>

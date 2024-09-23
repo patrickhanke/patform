@@ -4,6 +4,7 @@ import { ModuleCategory } from '@repo/types';
 export type AppModuleEditCategorysProps = {
     initialCategories: ModuleCategory[];
     moduleId: string;
+    projectId: string;
 }
 
 export type AppModuleCategoryProps = {
@@ -14,4 +15,5 @@ export type AppModuleCategoryProps = {
 export type AppModuleEditCategoryProps = {
     category?: ModuleCategory;
     setCategory: Updater<Category[]>;
+    projectId: string;
 }

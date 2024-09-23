@@ -4,4 +4,5 @@ export type ContextValues = {
     pageTitle: sting,
     setPageTitle: Dispatch<SetStateAction<() => void>>,
     projects: Project[],
+    getCurrentProject: (projectId: string) => Project | undefined,
 }

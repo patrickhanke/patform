@@ -6,7 +6,7 @@ import AppModuleEditFields from './content/AppModuleEditFields';
 import AppModuleEditCategories from './content/AppModuleEditCategories';
 import AppModuleEditSettings from './content/AppModuleEditSettings';
 
-const AppModule = ({id}: {id: string}) => {
+const AppModule = ({id, projectId}: {id: string, projectId: string}) => {
 	const {data, loading, refetch} = useQuery(generateGraphQLQuery(
 		{
 			type: 'get', 
@@ -26,7 +26,7 @@ const AppModule = ({id}: {id: string}) => {
 				<h3>{module.name}</h3>
 			</div>
 			{module.settings && <AppModuleEditSettings moduleId={id} initialSettings={module.settings} refetch={refetch} />}
-			<AppModuleEditCategories moduleId={id} initialCategories={module.categories} />
+			<AppModuleEditCategories moduleId={id} initialCategories={module.categories} projectId={projectId} />
 			<AppModuleEditFields moduleId={id} initialFields={module.fields} />
 		</div>
 	);

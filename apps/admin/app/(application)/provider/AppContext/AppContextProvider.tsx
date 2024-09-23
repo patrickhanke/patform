@@ -10,7 +10,8 @@ const AppContextProvider = ({projects, children} : {projects: Project[],children
 	const appContextObject = useMemo(() => ({
 		pageTitle,
 		setPageTitle,
-		projects
+		projects,
+		getCurrentProject: (projectId: string) => projects.find(project => project.objectId === projectId)
 	}), [pageTitle, projects]);
 
 	return (

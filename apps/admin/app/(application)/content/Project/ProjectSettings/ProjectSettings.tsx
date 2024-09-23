@@ -18,18 +18,13 @@ const Project = ({params}: {params: {project_id: string}}) => {
     
 	return (
 		<Page 
-			title={project.name}
+			title={`${project.name} - Settings`}
 			emptyContent={true}
 		>
-			<h2>
-                Projekt
-			</h2>
 			<Form 
 				fields={settings_fields}
 				data={project}
 				formSubmitHandler={(values) => {
-                    console.log(values);
-                    
 					updateData({
 						className: 'Project',
 						objectId: project.objectId,
