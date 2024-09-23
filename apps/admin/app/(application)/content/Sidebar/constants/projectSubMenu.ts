@@ -13,7 +13,6 @@ const project_sub_menu = [
 		value: '/users',
 		label: 'Users',
 		icon: 'settings',
-		disabled: true
 	},
 	{
 		value: '/roles',

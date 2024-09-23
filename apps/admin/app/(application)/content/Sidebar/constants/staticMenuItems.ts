@@ -19,8 +19,7 @@ const staticMenuItems = [
 			{
 				value: '/users',
 				label: 'Users',
-				icon: 'settings',
-				disabled: true
+				icon: 'users',
 			},
 			{
 				value: '/roles',
