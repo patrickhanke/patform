@@ -1,7 +1,7 @@
 @use '@repo/styles/sizes';
 
 .form_container {
-    overflow: auto;
+    overflow: visible;
 	height: 100%;
 	width: auto;
 	max-width: 900px;

@@ -3,13 +3,13 @@ import { FormikValues } from 'formik';
 
 export type  handleFormData<V extends FormDataElement> = (data: V) => void
 
-
 export type IntFormikRender = {
     fields: Field[],
     data: FormDataElement,
     formSubmitHandler: (values: FormikValues) => void,
     formValidationHandler?: (t: boolean) => void,
-    useWithDebounce?: boolean
+    useWithDebounce?: boolean,
+    isHorizontal?: boolean
 }
 
 export type FormSubmitStoreProps = {
@@ -17,7 +17,7 @@ export type FormSubmitStoreProps = {
     useWithDebounce?: boolean
 }
 
-export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select' | 'image'
+export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select' | 'image' |'file' | 'color' | 'toggle'
 
 export type ValidationTypes = {
     required?: string;
@@ -36,7 +36,7 @@ export type Field = {
     name: string;
     type: FieldTypes;
     label: string;
-    position: number;
+    position?: number;
     placeholder?: string;
     initialValue?: any;
     validation?: ValidationTypes;

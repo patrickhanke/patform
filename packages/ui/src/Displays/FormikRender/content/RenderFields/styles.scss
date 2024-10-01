@@ -1,4 +1,6 @@
 @use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
 
 .toggle_content {
     display: flex; 
@@ -78,4 +80,47 @@
 	font-family: Montserrat, sans-serif;
 };
 
+.color_picker_picker {
+    position: relative;
+    input {
+        width: 120px !important;
+    }
+}
+  
+.color_picker_swatch {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.color_picker_popover {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: auto;
+    z-index: 3;
+    border-radius: 9px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: white;
+}
+
+.color_picker_popover[data-align_right = "true"] {
+    left: auto;
+    right: 0
+}
+
+.form_horizontal_container {
+	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
+
+}
+
+.form_divider {
+	width: 100%;
+	height: 1px;
+	background-color: colors.$grey;
+	margin: sizes.$md 0;
+}
 

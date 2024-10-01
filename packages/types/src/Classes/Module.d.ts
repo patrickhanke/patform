@@ -12,6 +12,7 @@ export type ModuleCategory = {
 }
 
 export type ModuleSettings = {
+    [key: string] : any,
     categories: [{id: string, label: string, value: string, position: number }]
 }
 

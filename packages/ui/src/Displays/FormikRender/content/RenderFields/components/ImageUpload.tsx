@@ -9,20 +9,19 @@ interface ImageUploadProps {
     };
     field: Field;
     setFieldValue: (name: string, value: any, shouldValidate?: boolean) => void;
+	isHorizontal?: boolean;
   }
   
-const ImageUpload: React.FC<ImageUploadProps> = ({ fieldValues, field, setFieldValue }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ fieldValues, field, setFieldValue, isHorizontal }) => {
     
 	return (
-		<>
-			<label htmlFor={fieldValues.name}>{field.label} </label>
+		
 			<ImageUploader 
 				onChange={value => setFieldValue(field.name, value)}
 				path={process.env.BYTESCALE_IMAGE_FOLDER as string}
 				returnType={field?.options?.return_type || 'array'}
 				maxFileCount={field?.options?.max_file_count || 10}
 			/>
-		</>
 	);
 };
 

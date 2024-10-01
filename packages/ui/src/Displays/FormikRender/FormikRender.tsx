@@ -14,12 +14,13 @@ const FormikRender = ({
 	data, 
 	formSubmitHandler, 
 	formValidationHandler, 
-	useWithDebounce 
+	useWithDebounce ,
+	isHorizontal = false
 } : IntFormikRender ) => {
 	return (
 		<Formik 
 			initialValues={data ? data : Object.fromEntries(fields.map(field => [field.name, field.initialValue]))}
-			onSubmit={ (values) => {
+			onSubmit={(values) => {
 				formSubmitHandler(values);
 			}}
 			validationSchema={Yup.object().shape(Object.fromEntries(getFieldsWithValidation(fields).map(field => [field.name, createYupSchema(field.type, field.validation)])) )}
@@ -35,6 +36,7 @@ const FormikRender = ({
 						values={values}
 						setFieldValue={setFieldValue}
 						handleChange={handleChange}
+						isHorizontal={isHorizontal}
 					/>
 					<FormSubmitStore 
 						formValidationHandler={formValidationHandler} 

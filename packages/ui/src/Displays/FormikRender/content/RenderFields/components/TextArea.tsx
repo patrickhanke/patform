@@ -8,6 +8,7 @@ interface TextAreaProps {
   values: { [key: string]: any };
   handleBlur: (value: string) => void;
   placeholder?: string;
+  isHorizontal?: boolean;
 }
 
 const TextArea: React.FC<TextAreaProps> = ({
@@ -17,10 +18,11 @@ const TextArea: React.FC<TextAreaProps> = ({
 	handleChange,
 	values,
 	handleBlur,
-	placeholder
+	placeholder,
+	isHorizontal
 }) => {
 	return (
-		<div>
+		<div className={isHorizontal ? 'form_horizontal_container' : ''}>
 			<label htmlFor={name}>{label || name} </label>
 			<textarea 
 				id={id}

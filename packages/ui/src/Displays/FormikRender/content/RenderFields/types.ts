@@ -7,7 +7,8 @@ export type RenderFieldsType = {
     handleChange: FormikHandlers['handleChange'],
     values: FormikValues,
     handleBlur: (t: any) => void,
-    setFieldValue: FormikHelpers<{field: string, value: any, shouldValidate?: boolean}>['setFieldValue']
+    setFieldValue: FormikHelpers<{field: string, value: any, shouldValidate?: boolean}>['setFieldValue'],
+    isHorizontal?: boolean
 }
 
 export type Editor = {

@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '@repo/provider';
 import { Page } from '@repo/ui';
 import pages_states from './constants/page_states';
 import WebsiteSettings from './content/WebsiteSettings';
 import { PageState } from '@repo/types';
+import WebsitePages from './content/WebsitePages';
 
 const Website = () => {
 	const {currentModule} = useContext(AppContext);
-	const [activeState, setActiveState] = useState<PageState>(pages_states[0] as PageState);
+	const [activeState, setActiveState] = useState<typeof pages_states[number]>(pages_states[0] as PageState);
 
 	return (
 		<Page 
@@ -21,7 +22,10 @@ const Website = () => {
 			navOnClick={setActiveState}
 		>
 			{activeState.value ==='settings' && 
-			<WebsiteSettings />
+				<WebsiteSettings settings={currentModule.settings} />
+			}
+			{activeState.value ==='pages' && 
+				<WebsitePages />
 			}
 			
 		</Page>

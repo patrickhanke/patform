@@ -5,3 +5,4 @@ export * from './AppSettings';
 export * from './Categories';
 export * from './News';
 export * from './Event';
+export * from './Website';

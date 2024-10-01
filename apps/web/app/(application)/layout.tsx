@@ -28,7 +28,6 @@ interface GetProjectsResponse {
 
 const getData = async () => {
 	const projectId = process.env.PROJECT_ID;
-	console.log('projectId', projectId);
 	
 	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
 	
@@ -43,6 +42,8 @@ export default async function  RootLayout({
 	children: React.ReactNode,
 }) {
 	const data = await getData();
+	console.log(data.objects.getProject.modules.results);
+	
 	
 	return (
 		<html lang="de">

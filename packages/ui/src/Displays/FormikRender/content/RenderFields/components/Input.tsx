@@ -9,6 +9,7 @@ interface InputProps {
   values: { [key: string]: any };
   handleBlur: (value: string) => void;
   placeholder?: string;
+  isHorizontal?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -19,10 +20,11 @@ const Input: React.FC<InputProps> = ({
 	handleChange,
 	values,
 	handleBlur,
-	placeholder
+	placeholder,
+	isHorizontal
 }) => {
 	return (
-		<div>
+		<div className={isHorizontal ? 'form_horizontal_container' :  ''} >
 			<label htmlFor={name}>{label || name}</label>
 			<input
 				id={id}

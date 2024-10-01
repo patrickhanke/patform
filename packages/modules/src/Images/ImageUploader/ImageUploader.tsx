@@ -28,7 +28,6 @@ const ImageUploader = ({
 				folderPathVariablesEnabled: true
 			},
 			showRemoveButton: true,
-
 			styles: {
 				buttons: {
 					padding: '10px',
