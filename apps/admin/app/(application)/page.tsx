@@ -1,8 +1,12 @@
 import React from 'react';
+import AdminPage from './UI/AdminPage/AdminPage';
 
 const Dashboard = () => {
 	return (
-		<div>Dashboard</div>
+		<AdminPage title='Dashboad'>
+			<h2>Dashboard</h2>
+			<p>Wähle ein Modul</p>
+		</AdminPage>
 	);
 };
 

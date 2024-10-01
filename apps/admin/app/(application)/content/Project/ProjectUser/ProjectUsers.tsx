@@ -1,22 +1,22 @@
 'use client';
 
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import find_users from './constants/find_users'
 import { useQuery } from '@apollo/client'
-import { Form, Page, Table, useCreateColumns } from '@repo/ui'
+import { Table, useCreateColumns } from '@repo/ui'
 import { AppContext } from '../../../provider'
-import users_fields from './constants/users_fields';
 import { ProjectUser } from './types';
+import createUser from './constants/create_user';
+import AdminPage from '../../../UI/AdminPage/AdminPage';
 
 const ProjectUsers = ({params}: {params: {project_id: string}}) => {
     const {getCurrentProject} = useContext(AppContext);
+	console.log(params.project_id);
+	
 
-    const {data, loading, error, refetch} = useQuery(find_users, {variables: {project: params.project_id}})
-    if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error...</p>;
-
-	const users = data?.objects.find_User.results;
-
+	const {data, loading, error, refetch} = useQuery(find_users, {variables: {project: params.project_id}})
+	
+	
 	const columns = useCreateColumns<ProjectUser>({
 		data:[
 			{id: 'portrait', type: 'edit_image', label: 'Bild'},
@@ -28,17 +28,22 @@ const ProjectUsers = ({params}: {params: {project_id: string}}) => {
 		refetch,
 		categories: []
 	});
-    
+    if (loading) return <p>Loading...</p>;
+	if (error) return <p>Error...</p>;
+
+	const users = data?.objects.find_User.results;
+
 	return (
-		<Page 
+		<AdminPage 
 			title={`${getCurrentProject(params.project_id)?.name} - Nutzer`}
 			emptyContent={true}
+			createClass={createUser(params.project_id)}
 		>
 			<Table
 				data={users}
 				columns={columns}
 			/>
-		</Page>
+		</AdminPage>
   )
 }
 

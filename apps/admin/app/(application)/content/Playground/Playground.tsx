@@ -2,12 +2,17 @@
 
 import React, { useContext } from 'react';
 import { AppContext } from '../../provider';
+import AdminPage from '../../UI/AdminPage/AdminPage';
 
-const Playground = () => {
-	const {projects} = useContext(AppContext);
-	console.log(projects);
+const Playground = ({params}: {params: {project_id: string}}) => {
+    const {getCurrentProject} = useContext(AppContext);
 	return (
-		<div>Playground</div>
+		<AdminPage 
+			title={`${getCurrentProject(params.project_id)?.name} - Playground`}
+			emptyContent={true}
+		>
+			<p>Playground</p>
+		</AdminPage>
 	);
 };
 

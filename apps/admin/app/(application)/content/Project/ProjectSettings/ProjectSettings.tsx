@@ -1,12 +1,12 @@
 'use client';
 
 import { useQuery } from '@apollo/client';
-import { Page } from '@repo/ui';
 import React from 'react';
 import get_project_settings from './constants/get_project_settings';
 import {Form} from '@repo/ui';
 import settings_fields from './constants/settings_fields';
 import { useDataHandler } from '@repo/provider';
+import AdminPage from '../../../UI/AdminPage/AdminPage';
 
 const Project = ({params}: {params: {project_id: string}}) => {
 	const {data, loading, error} = useQuery(get_project_settings,{variables: {id: params.project_id}});
@@ -17,7 +17,7 @@ const Project = ({params}: {params: {project_id: string}}) => {
 	const project = data.objects.getProject;
     
 	return (
-		<Page 
+		<AdminPage 
 			title={`${project.name} - Settings`}
 			emptyContent={true}
 		>
@@ -35,7 +35,7 @@ const Project = ({params}: {params: {project_id: string}}) => {
 				}}
 				useWithDebounce
 			/>
-		</Page>
+		</AdminPage>
 	);
 };
 

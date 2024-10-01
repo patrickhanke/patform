@@ -177,7 +177,7 @@ const useDataHandler = () => {
 			deleteData,
 			getData
 		});
-	}, [] );
+	}, []);
 
 	return returnFunctions;
 };

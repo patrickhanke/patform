@@ -1,12 +1,13 @@
 'use client';
 
 import { generateGraphQLQuery, paramsHandler } from '@repo/provider';
-import { DnDDisplay, Page, sortItemsByPosition } from '@repo/ui';
+import { DnDDisplay, sortItemsByPosition } from '@repo/ui';
 import { Module } from '@repo/types';
 import { useQuery } from '@apollo/client';
 import AppModule from './content/AppModule';
 import { useContext } from 'react';
 import { AppContext } from '../../../provider';
+import AdminPage from '../../../UI/AdminPage/AdminPage';
 
 const ProjectModules = ({params}: {params: {project_id: string}}) => {
 	const {getCurrentProject} = useContext(AppContext);
@@ -25,7 +26,7 @@ const ProjectModules = ({params}: {params: {project_id: string}}) => {
 	const modules = data?.objects.findModule.results;
 
 	return (
-		<Page 
+		<AdminPage 
 			title={`${getCurrentProject(params.project_id)?.name} - Module`}
 		>
 			<DnDDisplay
@@ -33,7 +34,7 @@ const ProjectModules = ({params}: {params: {project_id: string}}) => {
 				ItemComponent={({item}) => (<AppModule id={item.id} projectId={params.project_id} />)}
 				objectClass='Module'
 			/>
-		</Page>
+		</AdminPage>
 	);
 };
 

@@ -1,6 +1,11 @@
 import { PageState } from '@repo/types';
-import { Field } from '@repo/ui';
-import { CreateClassProps } from '../../Displays/CreateClass/types';
+export type CreateClassProps<T> = {
+    initialData: {[key: keyof T]: any };
+    fields: Field[];
+    text: string;
+    className: string;
+    refetch?: () => void;
+};
 
 export type PageHeaderButton = {
     text: string,

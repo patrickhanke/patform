@@ -2,6 +2,11 @@ import { MenuItemType } from '../types';
 
 const staticMenuItems = [
 	{
+		value: '/',
+		label: 'Dashboard',
+		icon: 'dashboard',
+	},
+	{
 		value: 'app-settings',
 		label: 'App Settings',
 		icon: 'settings',
