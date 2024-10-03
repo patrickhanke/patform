@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import { Field } from '../../types';
 
@@ -40,4 +42,12 @@ export type DatePickerType = {
 
 export type CustomInputType = {
     value: Date | null | undefined
+}
+
+export type ColorPickerProps = {
+    value: string,
+    onChange: (value: string) => void,
+    label: string,
+    isOverlay?: boolean,
+    isHorizontal?: boolean
 }

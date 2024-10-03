@@ -74,7 +74,7 @@ const ImageUploader = ({
 				}}
 				// onUpdate={files => console.log({files})}
 				width="100%"
-				height="fit-content"
+				height="auto"
 				className={clsx('upload_zone', maxFileCount === 1 && 'single_image')}
 			/>
 			<ErrorDisplay id='uloader' errors={[]} />

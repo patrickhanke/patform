@@ -5,3 +5,4 @@ export type * from './Person';
 export type * from './Image';
 export type * from './Module';
 export type * from './Event';
+export type * from './Website';

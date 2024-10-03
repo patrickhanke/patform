@@ -9,7 +9,7 @@ import { Field } from '../../types';
 import Input from './components/Input';
 import TextArea from './components/TextArea';
 import ColorPicker from './components/ColorPicker';
-import { ImageUploader } from '@repo/modules';
+import ImageUpload from './components/ImageUpload';
 
 const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue, isHorizontal}: RenderFieldsType) => 
 	<>
@@ -38,7 +38,6 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 						handleBlur={handleBlur}
 						placeholder={field.placeholder}
 						isHorizontal={isHorizontal}
-					
 					/>
 				}
 				{(field.type === 'image') &&
@@ -47,17 +46,12 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 							{({
 								field: fieldValues
 							}: FastFieldProps) => (
-								<div className={isHorizontal ? 'form_horizontal_container' : ''}>
-									<label htmlFor={fieldValues.name}>{field.label} </label>
-									<div style={{maxWidth: '480px', maxHeight: '180px'}}>
-										<ImageUploader
-											onChange={value => setFieldValue(field.name, value)}
-											path={process.env.BYTESCALE_IMAGE_FOLDER as string}
-											returnType={field?.options?.return_type || 'array'}
-											maxFileCount={field?.options?.max_file_count || 10}
-										/>
-									</div>
-								</div>
+								<ImageUpload
+									fieldValues={fieldValues}
+									field={field}
+									setFieldValue={setFieldValue}
+									isHorizontal={isHorizontal}
+								/>
 							)}
 						</FastField>
 					</div>
@@ -127,16 +121,14 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 					</div>
 				}
 				{(field.type === 'color') &&
-					<div className={isHorizontal ? 'form_horizontal_container' : ''}>
-						<label htmlFor={field.name}>{field.label || field.name} </label>
 						<ColorPicker 
 							onChange={value => setFieldValue(field.name, value, true)}
-							value={getSelectValue(values, field)}
+							value={values[field.name]}
 							key={field.name}
+							label={field.label}
 							isOverlay={true}
-							alignRight={isHorizontal}
+							isHorizontal={isHorizontal}
 						/>
-					</div>
 				}
 				{getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 
 					<div className={'error_message'}>{getFieldMeta(field.name).error}</div>

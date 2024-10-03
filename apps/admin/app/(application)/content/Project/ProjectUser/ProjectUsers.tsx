@@ -11,11 +11,8 @@ import AdminPage from '../../../UI/AdminPage/AdminPage';
 
 const ProjectUsers = ({params}: {params: {project_id: string}}) => {
     const {getCurrentProject} = useContext(AppContext);
-	console.log(params.project_id);
-	
 
 	const {data, loading, error, refetch} = useQuery(find_users, {variables: {project: params.project_id}})
-	
 	
 	const columns = useCreateColumns<ProjectUser>({
 		data:[

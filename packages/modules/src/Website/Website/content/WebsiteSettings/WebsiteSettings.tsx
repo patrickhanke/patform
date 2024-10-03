@@ -1,10 +1,12 @@
 import { Field, Form } from '@repo/ui';
 import { WebsiteSettingsProps } from './types';
 import { useMemo } from 'react';
+import { cloneDeep, set } from 'lodash';
+import { useDataHandler } from '@repo/provider';
+import { FormikValues } from 'formik';
 
-const WebsiteSettings = ({settings}: WebsiteSettingsProps ) => {
-	console.log(settings);
-    
+const WebsiteSettings = ({settings, moduleId}: WebsiteSettingsProps ) => {
+	const {updateData} = useDataHandler();  
 	const siteSettings = settings?.site_settings;
 	const fields: Field[] = useMemo(() => [
 		{
@@ -33,6 +35,10 @@ const WebsiteSettings = ({settings}: WebsiteSettingsProps ) => {
 			name: 'logo',
 			id: 'logo',
 			type: 'image',
+			options: {
+				return_type: 'string',
+				max_file_count: 1
+			},
 			value: siteSettings?.logo
 		},
 		{
@@ -40,16 +46,30 @@ const WebsiteSettings = ({settings}: WebsiteSettingsProps ) => {
 			name: 'logo_square',
 			id: 'logo_square',
 			type: 'image',
+			options: {	
+				return_type: 'string',
+				max_file_count: 1
+			},
 			value: siteSettings?.logo_square
 		}
 
 	], [siteSettings]);
 
-
-	const updateSettings = (data: any) => console.log(data);
+	const updateSettings = (data: FormikValues) => {
+		const settingsCopy = cloneDeep(settings);
+		set(settingsCopy, 'site_settings', data);
+		
+		updateData({
+			objectId: moduleId,
+			className: 'Module',
+			updateObject:{
+				settings: settingsCopy
+			}
+		});
+	};
 
 	return (
-		<div>
+		<div className='content_element'>
 			<Form
 				data={siteSettings}
 				fields={fields}
