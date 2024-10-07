@@ -16,10 +16,9 @@ const Website = () => {
 		{variables: {id: currentModule.objectId}});
 	const [activeState, setActiveState] = useState<typeof pages_states[number]>(pages_states[0] as PageState);
 
-
 	const createClass = useMemo(() => {
 		if (activeState.value === 'pages') {
-			return createPage(currentModule.objectId);
+			return createPage();
 		}
 		return null;
 	}, [activeState]);

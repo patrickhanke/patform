@@ -13,6 +13,7 @@ import TableColumnDeleteField from '../content/TableColumnDeleteField/TableColum
 import TableColumnDatesField from '../content/TableColumnDatesField';
 import { EventDate } from '@repo/types';
 import TableColumnDate from '../components/TableColumnDate';
+import TableColumnTexteditor from '../components/TableColumnTexteditor';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
@@ -71,6 +72,29 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 						<TableColumnTextfield
 							value={row[columnElement.id] as string}  
 							isEditable={columnElement.type === 'edit_textfield' ?  true : false}
+							onChange={async (value: string) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: value}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'edit_texteditor' || columnElement.type === 'texteditor') {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnTexteditor
+							value={row[columnElement.id] as string}  
+							isEditable={columnElement.type === 'edit_texteditor' ?  true : false}
 							onChange={async (value: string) => {
 								await updateData({
 									className: className,
@@ -150,7 +174,6 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		});
-
         
 		return columnArray;
 	}, [data, className]);

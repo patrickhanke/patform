@@ -5,7 +5,10 @@ import { Table, useCreateColumns } from '@repo/ui';
 import { PageClass } from '@repo/types';
 
 const WebsitePages = ({moduleId} : WebsitePagesProps) => {
-	const {data: pageData, refetch} = useQuery(generateGraphQLQuery({type: 'find', objectName: 'Webpage', fields: ['title', 'objectId', 'name', 'title', 'subtitle']}), {variables: {module: moduleId}});
+	const {data: pageData, refetch} = useQuery(
+		generateGraphQLQuery({type: 'find', objectName: 'Webpage', fields: ['title', 'objectId', 'name', 'title', 'subtitle']}), 
+		{variables: {where: {module: moduleId}}}
+	);
 
 	const columns = useCreateColumns<PageClass>({
 		data:[
@@ -21,7 +24,8 @@ const WebsitePages = ({moduleId} : WebsitePagesProps) => {
 
 	if (pageData) {
 		const pages = pageData?.objects.findWebpage.results;
-
+		console.log(pages);
+		
 		return (
 			<Table
 				data={pages}

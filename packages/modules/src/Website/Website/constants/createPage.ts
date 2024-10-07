@@ -1,13 +1,12 @@
 import { PageCreateClassObject } from '@repo/ui';
 
-const createPage: (moduleId: string) => PageCreateClassObject = (moduleId: string) => ({
-	className: 'Page',
+const createPage: () => PageCreateClassObject = () => ({
+	className: 'Webpage',
 	text: 'Neue Seite erstellen',
 	initialData: {
 		name: '',
-		email: '',
-		password: '',
-		project: {__type: 'Pointer', className: 'Module', objectId: moduleId}
+		title: '',
+		subtitle: ''
 	},
 	fields: [{
 		id: 'name',

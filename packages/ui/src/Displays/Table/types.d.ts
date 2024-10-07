@@ -51,6 +51,8 @@ export type ColumnDataTypes =
     'edit_image' | 
     'edit_textfield' | 
     'edit_dates' |
+    'edit_texteditor' |
+    'texteditor' |
     'date';
 
 export type ColumnData<Class> = {
