@@ -20,7 +20,7 @@ const WebsitePages = ({moduleId} : WebsitePagesProps) => {
 	});
 
 	if (pageData) {
-		const pages = pageData?.objects.findPage.results;
+		const pages = pageData?.objects.findWebpage.results;
 
 		return (
 			<Table

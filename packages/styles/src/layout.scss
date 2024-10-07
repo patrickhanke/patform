@@ -187,5 +187,7 @@ $shadow_large_regular_hover: 4px 4px 12px -8px colors.$dark;
     outline: none;
 }
 
-
+.vertical_container {
+    @include flexbox($direction: column, $align: flex-start, $justify: center, $gap: sizes.$xs);
+}
 

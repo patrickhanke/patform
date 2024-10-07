@@ -37,8 +37,6 @@ const Select = ({onChange, value, placeholder, options, isMulti = false, isDisab
 				className={'react_select_container'}
 				classNamePrefix="react-select"
 				styles={customStyles({width})}
-				
-				// menuPortalTarget={document.body}
 				menuPosition={menuPosition}
 			/>
 			<ErrorDisplay errors={errors} id={id} />
