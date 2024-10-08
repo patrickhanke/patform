@@ -6,3 +6,4 @@ export type * from './Image';
 export type * from './Module';
 export type * from './Event';
 export type * from './Website';
+export type * from './Location';

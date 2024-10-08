@@ -1,6 +1,7 @@
 import { RowSelectionState, Updater, ColumnDef } from '@tanstack/react-table';
 import { ClassCategories, ModuleCategory, Module, EventClass } from '@repo/types';
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from '@repo/types'; 
+import { MapPlace } from '../Map';
 
 
 export type TableTypes = {
@@ -42,6 +43,12 @@ export type TableColumnTextfieldProps = {
     onChange: (image: string) => void
 }
 
+export type TableColumnGeopointProps = {
+    value: MapPlace,
+    isEditable?: boolean,
+    onChange: (place: MapPlace) => void
+}
+
 export type ColumnDataTypes = 
     'string' | 
     'edit_string' | 
@@ -53,6 +60,8 @@ export type ColumnDataTypes =
     'edit_dates' |
     'edit_texteditor' |
     'texteditor' |
+    'geopoint' |
+    'edit_geopoint' |
     'date';
 
 export type ColumnData<Class> = {

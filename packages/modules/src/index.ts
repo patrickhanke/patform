@@ -6,3 +6,4 @@ export * from './Categories';
 export * from './News';
 export * from './Event';
 export * from './Website';
+export * from './Location';

@@ -7,7 +7,7 @@ export type UseFindEventHook = ({
 	filters: FilterArray 
 }) => ({
     loading: boolean,
-    news?: EventClass[],
+    events?: EventClass[],
     refetch: () => void
 });
 

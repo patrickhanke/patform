@@ -14,7 +14,7 @@ const useFindEvent: UseFindEventHook = ({moduleId, filters} ) => {
 
 	return ({
 		loading, 
-		news: data ? data.objects.findEvent.results : undefined,
+		events: data ? data.objects.findEvent.results : undefined,
 		refetch
 	});
 };

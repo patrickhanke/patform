@@ -11,14 +11,14 @@ import {
 } from '@vis.gl/react-google-maps';
 import './styles.scss';
 import PlaceAutocomplete from './components/PlaceAutocomplete';
-import { MapProps } from './types';
+import { LatLng, MapPlace, MapProps } from './types';
 import MapHandler from './components/MapHandler';
 
 const API_KEY ='AIzaSyAJgX9vOxmGb-w5JtU4z9xrlXJ0vKpQHP8';
 
 const Map = ({initialPlace, onChange, height}: MapProps) => {
 	const [selectedPlace, setSelectedPlace] =
-    useState<google.maps.places.PlaceResult | null>(initialPlace || null);
+    useState<MapPlace | null>(initialPlace || null);
 	const [markerRef, marker] = useAdvancedMarkerRef();
 
 	return (
@@ -29,7 +29,7 @@ const Map = ({initialPlace, onChange, height}: MapProps) => {
 			<MapComponent
 				mapId={'bf51a910020fa25a'}
 				defaultZoom={initialPlace ? 15 : 3}
-				defaultCenter={ initialPlace || { lat: 0, lng: 0 }}
+				defaultCenter={ initialPlace?.geometry?.location as unknown as  LatLng || { lat: 0, lng: 0 }}
 				gestureHandling={'greedy'}
 				disableDefaultUI={true}
 				style={{ height: height || 300, width: '100%' }}

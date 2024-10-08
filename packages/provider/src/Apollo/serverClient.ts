@@ -2,10 +2,6 @@ import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rs
 import { HttpLink, InMemoryCache, ApolloClient } from '@apollo/client';
 
 const serverClient = (appUrl: string, appId: string, masterKey: string) => {
-	console.log(appUrl, 'url');
-	console.log(appId, 'appId');
-	console.log(masterKey, 'masterKey');
-    
 	const { getClient } = registerApolloClient(() => {
         
 		return new ApolloClient({

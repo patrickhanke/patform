@@ -14,6 +14,8 @@ import TableColumnDatesField from '../content/TableColumnDatesField';
 import { EventDate } from '@repo/types';
 import TableColumnDate from '../components/TableColumnDate';
 import TableColumnTexteditor from '../components/TableColumnTexteditor';
+import TableColumnGeopoint from '../components/TableColumnGeopoint';
+import { MapPlace } from '../../Map';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
@@ -139,6 +141,29 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 					accessorFn: row => 
 						<TableColumnDate
 							date={row[columnElement.id] as string}  
+						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'geopoint' || columnElement.type === 'edit_geopoint') {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnGeopoint
+							value={row[columnElement.id]}  
+							isEditable={columnElement.type === 'edit_geopoint' ?  true : false}
+							onChange={async (value: MapPlace) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: value}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
 						/>,
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,

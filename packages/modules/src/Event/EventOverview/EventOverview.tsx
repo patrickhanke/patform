@@ -10,7 +10,7 @@ import useFindEvent from './hooks/useFindEvent';
 const EventOverview = () => {
 	const {currentModule} = useContext(AppContext);
 	const [filters] = useState([]);
-	const {news, refetch} = useFindEvent({moduleId: currentModule.objectId, filters});
+	const {events, refetch} = useFindEvent({moduleId: currentModule.objectId, filters});
 
 	const columns = useCreateColumns<EventClass>({
 		data:[
@@ -34,7 +34,7 @@ const EventOverview = () => {
 		>
 			<Table 
 				columns={columns}
-				data={news || []}
+				data={events || []}
 			/>
 		</Page>
 	);

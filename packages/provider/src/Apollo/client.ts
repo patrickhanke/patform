@@ -13,7 +13,6 @@ import {
 } from '@apollo/experimental-nextjs-app-support/ssr';
 import { makeClientProps } from './types.js';
 
-
 const makeClient: makeClientProps = (appId, masterKey) => {
 	const localToken = Cookies.get('patform_token');
 
