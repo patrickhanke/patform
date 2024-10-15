@@ -15,17 +15,16 @@ const ProjectModules = ({params}: {params: {project_id: string}}) => {
 	const {getCurrentProject} = useContext(AppContext);
 	const [createModule, setCreateModule] = useState(false);
 	const {createData} = useDataHandler();
-	const {data, loading, refetch} = useQuery(generateGraphQLQuery(
-		{
-			type: 'find', 
-			objectName: 'Module', 
-			fields: ['objectId', 'name', 'createdAt', 'icon', 'path']
-		}
-	), {
-		variables: {params: paramsHandler({filters: [{key: 'project', value: params.project_id, operator: '_eq', id: 'projectId'}]} )}
-	});
+		const {data, loading, refetch} = useQuery(generateGraphQLQuery(
+			{
+				type: 'find', 
+				objectName: 'Module', 
+				fields: ['objectId', 'name', 'createdAt', 'icon', 'path']
+			}
+		), {
+			variables: {params: paramsHandler({filters: [{key: 'project', value: params.project_id, operator: '_eq', id: 'projectId'}]} )}
+		});
 
-	console.log(paramsHandler({filters: [{key: 'project', value: params.project_id as string, operator: '_eq', id: 'projectId'}]} ));
 	const pageHeaderButtons = useMemo(() => [
 		{
 			text: 'Neues Modul',

@@ -4,7 +4,8 @@ export type ContextValues = {
     pageTitle: sting,
     setPageTitle: Dispatch<SetStateAction<() => void>>,
     project: Project,
-    currentModule: Module
+    currentModule: Module,
+    modules: Module[]
 }
 
 

@@ -70,7 +70,7 @@ const ImagesOverview = () => {
 			>
 				<ImageUploader 
 					label='Uploader'  
-					path={process.env.BYTESCALE_IMAGE_FOLDER as string} 
+					path={`${process.env.BYTESCALE_IMAGE_FOLDER}${currentModule.path}`} 
 					onChange={images => {
 						setNewImages(images as string[]);
 					}} 

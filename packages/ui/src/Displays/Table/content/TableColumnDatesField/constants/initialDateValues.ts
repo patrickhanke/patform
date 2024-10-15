@@ -5,7 +5,7 @@ const initialDateValues: EventDate = {
 	start: '',
 	end: '',
 	label: '',
-	location: {
+	place: {
 		type:'map',
 		address: '',
 		map: {},

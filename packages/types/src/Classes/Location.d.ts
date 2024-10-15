@@ -8,4 +8,5 @@ export type LocationClass = {
     geopoint: MapPlace;
     address: string;
     description: string;
+    label: string; 
 };

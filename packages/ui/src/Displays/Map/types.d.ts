@@ -1,7 +1,7 @@
 export type MapPlace = google.maps.places.PlaceResult
 
 export type MapProps = {
-    initialPlace: MapPlace;
+    initialPlace?: MapPlace | null;
     onChange: (map: google.maps.places.PlaceResult | null) => void;
     height?: number;
 };

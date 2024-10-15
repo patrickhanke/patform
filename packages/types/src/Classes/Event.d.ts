@@ -2,17 +2,18 @@ import { MapPlace } from '@repo/ui';
 import { ClassProperties } from './Classes';
 
 export type EventLocation = {
-    type: 'address' | 'map' | 'online',
+    type: 'address' | 'map' | 'online' | 'location',
     address?: string,
     map?: MapPlace | null,	
-    online?: string
+    online?: string,
+    location?: string
 }
 
 export type EventDate = {
     label: string,
     start: string,
     end: string,
-    location: EventLocation,
+    place: EventLocation,
     full_day: boolean,
     id: string
 }

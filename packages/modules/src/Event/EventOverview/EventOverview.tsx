@@ -14,7 +14,7 @@ const EventOverview = () => {
 
 	const columns = useCreateColumns<EventClass>({
 		data:[
-			{id: 'image', type: 'image', label: 'Bild'},
+			{id: 'image', type: 'edit_image', label: 'Bild'},
 			{id: 'title', type: 'edit_string', label: 'Titel'},
 			{id: 'description', type: 'edit_textfield', label: 'Text'},
 			{id: 'dates', type: 'edit_dates', label: 'Termine'}

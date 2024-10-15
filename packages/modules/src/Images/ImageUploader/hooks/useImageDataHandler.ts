@@ -1,53 +1,51 @@
-import { useDataHandler } from "@repo/provider";
-import { Image } from "@repo/types";
-import deleteImageHandler from "../../ImageDisplay/functions/deleteImage";
-import { UseImageDataHandlerProps } from "../types";
+import { useDataHandler } from '@repo/provider';
+import deleteImageHandler from '../../ImageDisplay/functions/deleteImage';
+import { UseImageDataHandlerProps } from '../types';
 
 const useImageDataHandler = ({projectId, afterSaveFunction, afterCancelFunction}: UseImageDataHandlerProps) => {
-    const { createData } = useDataHandler();
+	const { createData } = useDataHandler();
     
-    const imageUploadHandler = async (images: string[]) => {
-        const uploadArray = images.map(async (image) => {
-            await createData({
-                className: 'Image', 
-                updateObject: { 
-                    project: {__type: 'Pointer', className: 'Project', objectId: projectId},
-                    name: 'Neues Bild',
-                    filePath: image,
+	const imageUploadHandler = async (images: string[]) => {
+		const uploadArray = images.map(async (image) => {
+			await createData({
+				className: 'Image', 
+				updateObject: { 
+					project: {__type: 'Pointer', className: 'Project', objectId: projectId},
+					name: 'Neues Bild',
+					filePath: image
+				}
+			});
+		});
 
-                }
-            });
-        });
+		await Promise.all(uploadArray);
 
-        await Promise.all(uploadArray)
+		if (afterSaveFunction) {
+			afterSaveFunction();
+		}
+	};
 
-        if (afterSaveFunction) {
-            afterSaveFunction();
-        }
-    };
-
-    const imageUploadCancelHandler = async (images: string[]) => {
-        await Promise.all(images.map(async (image: string) => {
-            deleteImageHandler({
-                accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
-                apiKey: process.env.BYTESCALE_SECRET_KEY as string,
-                filePath: image
+	const imageUploadCancelHandler = async (images: string[]) => {
+		await Promise.all(images.map(async (image: string) => {
+			deleteImageHandler({
+				accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
+				apiKey: process.env.BYTESCALE_SECRET_KEY as string,
+				filePath: image
             
-            }).then(
-                error => console.error(error)
-            );
-        }));
+			}).then(
+				error => console.error(error)
+			);
+		}));
         
-        if (afterCancelFunction) {
-            afterCancelFunction();
-        }
-    };
+		if (afterCancelFunction) {
+			afterCancelFunction();
+		}
+	};
 
     
-    return {
-        imageUploadHandler,
-        imageUploadCancelHandler,
-    };
-    }
+	return {
+		imageUploadHandler,
+		imageUploadCancelHandler
+	};
+};
 
 export default useImageDataHandler;

@@ -14,7 +14,7 @@ const LocationOverview = () => {
     
 	const columns = useCreateColumns<LocationClass>({
 		data:[
-			{id: 'image', type: 'image', label: 'Bild'},
+			{id: 'image', type: 'edit_image', label: 'Bild'},
 			{id: 'name', type: 'edit_string', label: 'Name'},
 			{id: 'address', type: 'edit_textfield', label: 'Adresse'},
 			{id: 'description', type: 'edit_textfield', label: 'Beschreibung'},

@@ -1,14 +1,15 @@
 'use client';
 
-import { getImageUrl } from '@repo/provider';
+import { AppContext, getImageUrl } from '@repo/provider';
 import { TableColumnImageProps } from '../types';
 import { Modal } from '../../../Overlays';
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import { ImageUploader } from '@repo/modules';
 import { IconButton } from '../../../Buttons';
 import '../styles.scss';
 
 const TableColumnImage = ({ url, isEditable = false, onChange, maxFileCount }: TableColumnImageProps) => {
+	const {currentModule} = useContext(AppContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState('');
 	
@@ -46,7 +47,7 @@ const TableColumnImage = ({ url, isEditable = false, onChange, maxFileCount }: T
 				<ImageUploader 
 					label='Bild'
 					onChange={imgUrl => setImage(imgUrl as string)}
-					path=''
+					path={`${process.env.BYTESCALE_IMAGE_FOLDER}${currentModule.path}`}
 					returnType='string'
 					maxFileCount={maxFileCount}
 				/>

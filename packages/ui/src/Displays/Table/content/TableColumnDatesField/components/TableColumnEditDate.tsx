@@ -1,12 +1,35 @@
-import { useCallback } from 'react';
-import { Map, StatelessToggle, SwitchButtons } from '@repo/ui';
-import { EventDate } from '@repo/types';
+import { useCallback, useContext, useMemo } from 'react';
+import { Map, Select, StatelessToggle, SwitchButtons } from '@repo/ui';
+import { EventDate, LocationClass } from '@repo/types';
 import { TableColumnEditDateProps } from '../types';
 import locationButtonStates from '../constants/locationButtonStates';
 import { set, cloneDeep } from 'lodash';
+import { useQuery } from '@apollo/client';
+import { AppContext, generateGraphQLQuery, paramsHandler } from '@repo/provider';
 
 const TableColumnEditDate = ({date, setDates}: TableColumnEditDateProps) => {
-	const changeHandler = useCallback(( key: string, value: EventDate[keyof EventDate] | EventDate['location'][keyof EventDate['location']]) => {
+	const {modules} = useContext(AppContext);
+	const {data: locationData} = useQuery(generateGraphQLQuery(
+		{
+			type: 'find', 
+			objectName: 'Location', 
+			fields: ['objectId', 'label']
+		}
+	), {
+		variables: paramsHandler({filters: [{key: 'module', value: modules.find(module => module.path === '/location')?.objectId as string, operator: '_eq', id: 'moduleId'}]} )
+	});
+
+	console.log(modules);
+	console.log(locationData);
+
+	const locationOptions = useMemo(() => {
+		if (!locationData) return [];
+
+		return locationData?.objects.findLocation.results.map((location: LocationClass) => ({label: location.label, value: location.objectId}));
+	}, [locationData]);
+	
+	
+	const changeHandler = useCallback(( key: string, value: EventDate[keyof EventDate] | EventDate['place'][keyof EventDate['place']]) => {
 		if (date ) {
 			setDates((draft: EventDate[]) => {
 				const index: number = draft.findIndex(dateToFind => dateToFind.id === date.id);
@@ -47,18 +70,38 @@ const TableColumnEditDate = ({date, setDates}: TableColumnEditDateProps) => {
 				<label>Ort</label>
 				<SwitchButtons
 					buttonStates={locationButtonStates}
-					currentStates={locationButtonStates.find(button => button.value === date.location.type) as {label: string, value: string}}
-					changeHandler={(value) => changeHandler('location.type', value.value)}
+					currentStates={locationButtonStates.find(button => button.value === date.place.type) as {label: string, value: string}}
+					changeHandler={(value) => changeHandler('place.type', value.value)}
 				/>
 				<div className='table_columns_dates_location_container'>
-					{date.location.type === 'address' &&
-						<input type='text' defaultValue={date.location.address} onChange={(e) => changeHandler('location.address', e.target.value)} />
+					{date.place.type === 'address' &&
+						<div>
+							<label>Adresse</label>
+							<input type='textarea' defaultValue={date.place.address} onChange={(e) => changeHandler('place.address', e.target.value)} />
+						</div>
 					}
-					{date.location.type === 'online' &&
-						<input type='text' defaultValue={date.location.online} onChange={(e) => changeHandler('location.online', e.target.value)} />
+					{date.place.type === 'location' &&
+						<div>
+							<label>Ort auswählen</label>
+							<Select
+								width={300}
+								options={locationOptions}
+								value={locationOptions.find((location: {value: string, label: string}) => location.value === date.place.location)}
+								onChange={(loc) => changeHandler('place.location', loc.value)}
+							/>
+						</div>
 					}
-					{date.location.type === 'map' &&
-						<Map initialPlace={date.location.map} onChange={(place) => changeHandler('location.map', place)} />
+					{date.place.type === 'online' &&
+						<div>
+							<label>Link</label>
+							<input type='text' defaultValue={date.place.online} onChange={(e) => changeHandler('place.online', e.target.value)} />
+						</div>
+					}
+					{date.place.type === 'map' &&
+						<div>
+							<label>Ort auswählen</label>
+							<Map initialPlace={date.place.map} onChange={(place) => changeHandler('place.map', place)} />
+						</div>
 					}
 				</div>
 			</div>
