@@ -17,7 +17,7 @@ const AppModules = () => {
 			fields: ['objectId', 'name', 'createdAt', 'icon']
 		}
 	), {
-		variables: paramsHandler({filters: [{key: 'project', value: project.objectId as string, operator: '_eq', id: 'projectId'}]} )
+		variables: paramsHandler({filters: [{key: 'project', value: project?.objectId as string, operator: '_eq', id: 'projectId'}]} )
 	});
 
 	if (loading) return null;
@@ -29,7 +29,7 @@ const AppModules = () => {
 			title='Module'
 		>
 			<DnDDisplay
-				items={sortItemsByPosition(modules).map((module: Module) => ({...module, id: module.objectId})) || []}
+				items={sortItemsByPosition(modules).map((module: Module) => ({...module, id: module?.objectId})) || []}
 				ItemComponent={({item}) => (<AppModule id={item.id} />)}
 				objectClass='Module'
 			/>
