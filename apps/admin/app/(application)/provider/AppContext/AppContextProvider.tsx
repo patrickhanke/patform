@@ -11,7 +11,7 @@ const AppContextProvider = ({projects, children} : {projects: Project[],children
 		pageTitle,
 		setPageTitle,
 		projects,
-		getCurrentProject: (projectId: string) => projects.find(project => project.objectId === projectId)
+		getCurrentProject: (projectId: string) => projects.find(project => project?.objectId === projectId)
 	}), [pageTitle, projects]);
 
 	return (
