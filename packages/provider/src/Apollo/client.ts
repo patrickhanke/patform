@@ -7,11 +7,12 @@ import {
 } from '@apollo/client';
 
 import {
-	NextSSRApolloClient,
-	NextSSRInMemoryCache,
-	SSRMultipartLink,
-} from '@apollo/experimental-nextjs-app-support/ssr';
+	ApolloClient,
+	InMemoryCache,
+	SSRMultipartLink
+} from '@apollo/experimental-nextjs-app-support';
 import { makeClientProps } from './types.js';
+// import { InMemoryCache } from '@apollo/client-react-streaming';
 
 const makeClient: makeClientProps = (appId, masterKey) => {
 	const localToken = Cookies.get('patform_token');
@@ -28,8 +29,8 @@ const makeClient: makeClientProps = (appId, masterKey) => {
 		}
 	});
 
-	return new NextSSRApolloClient({
-		cache: new NextSSRInMemoryCache({
+	return new ApolloClient({
+		cache: new InMemoryCache({
 			typePolicies: {
 				ObjectsQuery: {
 					merge(existing, incoming, { mergeObjects }) {
@@ -51,6 +52,6 @@ const makeClient: makeClientProps = (appId, masterKey) => {
 			: 
 			httpLink
 	});
-}
+};
 
 export default makeClient;

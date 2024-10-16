@@ -1,6 +1,6 @@
 'use client';
 
-import { ApolloNextAppProvider } from '@apollo/experimental-nextjs-app-support/ssr';
+import { ApolloNextAppProvider } from '@apollo/experimental-nextjs-app-support';
 import makeClient from './client';
 import { ApolloAppProviderProps } from './types';
 

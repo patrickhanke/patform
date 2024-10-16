@@ -9,10 +9,8 @@ import Logo from './components/Logo';
 import './styles.scss';
 import Sidebar from './content/Sidebar';
 import { Module, Project } from '@repo/types';
-import { HttpLink, InMemoryCache } from '@apollo/client';
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
-import query from './constants/get_project';
-import serverClient from './constants/serverClient';
+// import serverClient from './constants/serverClient';
+import {get_initial_project, serverClient} from '@repo/provider';
 
 export const metadata = {
 	title: 'CMS Nocogirls',
@@ -22,7 +20,6 @@ export const metadata = {
 interface GetProjectsResponse {
 	objects: {
 		getProject: Project;
-		
 	};
 };
 
@@ -31,7 +28,7 @@ const getData = async () => {
 	
 	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
 	
-	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query, variables: { id: projectId ||'H7eK6Fv3cn' } });
+	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query: get_initial_project, variables: { id: projectId ||'H7eK6Fv3cn' } });
   
 	return data;
 };

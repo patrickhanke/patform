@@ -30,8 +30,6 @@
     "packages/*"
   ],
   "dependencies": {
-    "@apollo/client": "^3.11.8",
-    "@apollo/experimental-nextjs-app-support": "^0.11.3",
     "@bytescale/sdk": "^3.45.0",
     "@next/eslint-plugin-next": "^14.2.12",
     "@tanstack/match-sorter-utils": "^8.19.4",

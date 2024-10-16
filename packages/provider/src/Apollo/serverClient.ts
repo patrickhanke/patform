@@ -1,5 +1,8 @@
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
-import { HttpLink, InMemoryCache, ApolloClient } from '@apollo/client';
+'use server';
+
+import { ApolloClient, HttpLink } from '@apollo/client';
+// import { InMemoryCache } from '@apollo/client-react-streaming';
+import { registerApolloClient, InMemoryCache } from '@apollo/experimental-nextjs-app-support';
 
 const serverClient = (appUrl: string, appId: string, masterKey: string) => {
 	const { getClient } = registerApolloClient(() => {
@@ -17,9 +20,8 @@ const serverClient = (appUrl: string, appId: string, masterKey: string) => {
 			})
 		});
 	});
-
+	
 	return getClient();
-
 };
 
 export default serverClient;
