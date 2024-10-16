@@ -17,8 +17,9 @@ const AppModules = () => {
 			fields: ['objectId', 'name', 'createdAt', 'icon']
 		}
 	), {
-		variables: paramsHandler({filters: [{key: 'project', value: project?.objectId as string, operator: '_eq', id: 'projectId'}]} )
+		variables: {params: {project: {'_eq': project.objectId}}} 
 	});
+	
 
 	if (loading) return null;
 

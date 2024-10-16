@@ -9,11 +9,10 @@ import Logo from './components/Logo';
 import './styles.scss';
 import Sidebar from './content/Sidebar';
 import { Module, Project } from '@repo/types';
-// import serverClient from './constants/serverClient';
 import {get_initial_project, serverClient} from '@repo/provider';
 
 export const metadata = {
-	title: 'CMS Nocogirls',
+	title: 'TV Freiburg St. Georgen',
 	description: 'PH'
 };
 
@@ -25,8 +24,10 @@ interface GetProjectsResponse {
 
 const getData = async () => {
 	const projectId = process.env.PROJECT_ID;
+	console.log('projectId', projectId);
 	
-	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_API_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
+	
+	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_GQL_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
 	
 	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query: get_initial_project, variables: { id: projectId ||'H7eK6Fv3cn' } });
   

@@ -6,6 +6,7 @@ module.exports = {
 	},
 	env: {
 		SASHIDO_API_URL: process.env.SASHIDO_API_URL,
+		SASHIDO_GQL_URL: process.env.SASHIDO_GQL_URL,
 		SASHIDO_APP_ID: process.env.SASHIDO_APP_ID,
 		SASHIDO_REST_KEY: process.env.SASHIDO_REST_KEY,
 		SASHIDO_MASTER_KEY: process.env.SASHIDO_MASTER_KEY,

@@ -2,6 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": [
     "SASHIDO_API_URL",
+    "SASHIDO_GQL_URL",
     "SASHIDO_APP_ID",
     "SASHIDO_REST_KEY",
     "SASHIDO_MASTER_KEY",
