@@ -10,7 +10,7 @@ import './styles.scss';
 import Sidebar from './content/Sidebar';
 import { Project } from '@repo/types';
 import { HttpLink, InMemoryCache } from '@apollo/client';
-import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
+import { registerApolloClient } from '@apollo/experimental-nextjs-app-support';
 
 export const metadata = {
 	title: 'CMS Nocogirls',
