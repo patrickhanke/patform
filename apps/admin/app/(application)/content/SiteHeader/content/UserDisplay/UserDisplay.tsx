@@ -5,7 +5,7 @@ const UserDisplay = ({user}: {user: User }) => {
 	
 	return user && typeof user === 'object' ? 
 		<a
-			href={`/staff/${user.objectId}`}
+			href={`/staff/${user?.objectId}`}
 			role='button'
 			aria-hidden="true"
 			tabIndex={0}

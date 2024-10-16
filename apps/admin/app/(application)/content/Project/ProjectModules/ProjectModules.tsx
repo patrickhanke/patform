@@ -55,7 +55,7 @@ const ProjectModules = ({params}: {params: {project_id: string}}) => {
 			pageHeaderButtons={pageHeaderButtons}
 		>
 			<DnDDisplay
-				items={sortItemsByPosition(modules).map((module: Module) => ({...module, id: module.objectId})) || []}
+				items={sortItemsByPosition(modules).map((module: Module) => ({...module, id: module?.objectId})) || []}
 				ItemComponent={({item}) => (<AppModule id={item.id} projectId={params.project_id} />)}
 				objectClass='Module'
 			/>

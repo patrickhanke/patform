@@ -35,7 +35,7 @@ const AppModuleEditCategory = ({category, setCategory, projectId}: AppModuleEdit
 		if (data) {
 			data.objects.findModule.results.forEach((module: Module) => {
 				if (module.connected_class) {
-					selectOptions.push({label: module.name, value: module.objectId, connected_class: module.connected_class});
+					selectOptions.push({label: module.name, value: module?.objectId, connected_class: module.connected_class});
 				}
 			});
 		}

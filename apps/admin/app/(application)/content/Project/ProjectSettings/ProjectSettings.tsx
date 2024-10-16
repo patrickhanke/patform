@@ -14,7 +14,7 @@ const Project = ({params}: {params: {project_id: string}}) => {
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>Error...</p>;
 
-	const project = data.objects.getProject;
+	const project = data?.objects.getProject;
     
 	return (
 		<AdminPage 
@@ -27,7 +27,7 @@ const Project = ({params}: {params: {project_id: string}}) => {
 				formSubmitHandler={(values) => {
 					updateData({
 						className: 'Project',
-						objectId: project.objectId,
+						objectId: project?.objectId,
 						updateObject: {
 							name: values.name
 						}
