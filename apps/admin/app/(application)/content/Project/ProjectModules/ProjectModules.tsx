@@ -14,7 +14,7 @@ import CreateModule from './components/CreateModule';
 const ProjectModules = ({params}: {params: {project_id: string}}) => {
 	const {getCurrentProject} = useContext(AppContext);
 	const [createModule, setCreateModule] = useState(false);
-	const {createData} = useDataHandler();
+	const {createData, updateData} = useDataHandler();
 		const {data, loading, refetch} = useQuery(generateGraphQLQuery(
 			{
 				type: 'find', 
@@ -39,7 +39,16 @@ const ProjectModules = ({params}: {params: {project_id: string}}) => {
 				...module,
 				position: data?.objects.findModule.results.length + 1,
 				project: {__type: 'Pointer', className: 'Project', objectId: params.project_id}
-			}
+			},
+			afterSaveHandler: async (objectId) => {
+				await updateData({
+					className: 'Project',
+					objectId: params.project_id,
+					updateObject: {
+						modules: {__op: 'AddRelation', objects: [{__type: 'Relation', className: 'Module', objectId}]}
+					}
+				})
+			},
 		})
 		await refetch();
 		setCreateModule(false);
