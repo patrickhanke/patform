@@ -1,5 +1,8 @@
+import path from "path";
+
 export const module_option_fields = {
     '/website': {
+        path: '/website',
         name: 'Webseite',
         icon: 'website',
         settings: {
@@ -11,6 +14,7 @@ export const module_option_fields = {
         connected_class: 'Webpage',
     },
     '/events': {
+        path: '/events',
         name: 'Events',
         icon: 'events',
         settings: {
@@ -22,6 +26,7 @@ export const module_option_fields = {
         connected_class: 'Event',
     },
     '/news': {
+        path: '/news',
         name: 'News',
         icon: 'news',
         settings: {
@@ -33,6 +38,7 @@ export const module_option_fields = {
         connected_class: 'News',
     },
     '/categories': {
+        path: '/categories',
         name: 'Kategorien',
         icon: 'categories',
         settings: {
@@ -44,6 +50,7 @@ export const module_option_fields = {
         connected_class: 'Category',
     },
     '/persons': {
+        path: '/persons',
         name: 'Personen',
         icon: 'persons',
         settings: {
@@ -55,6 +62,7 @@ export const module_option_fields = {
         connected_class: 'Person',
     },
     '/images': {
+        path: '/images',
         name: 'Bilder',
         icon: 'images',
         settings: {
