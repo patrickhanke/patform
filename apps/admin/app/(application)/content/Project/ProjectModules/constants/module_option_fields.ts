@@ -1,5 +1,3 @@
-import path from "path";
-
 export const module_option_fields = {
     '/website': {
         path: '/website',
@@ -13,6 +11,18 @@ export const module_option_fields = {
         categories: [],
         connected_class: 'Webpage',
     },
+    '/articles': {
+        path: '/articles',
+        name: 'Beiträge',
+        icon: 'article',
+        settings: {
+            categories: [],
+          },
+        fields: [],
+        position: 2,
+        categories: [],
+        connected_class: 'Article',
+    },
     '/events': {
         path: '/events',
         name: 'Events',
@@ -21,7 +31,7 @@ export const module_option_fields = {
             categories: [],
           },
         fields: [],
-        position: 2,
+        position: 3,
         categories: [],
         connected_class: 'Event',
     },
@@ -33,7 +43,7 @@ export const module_option_fields = {
             categories: [],
           },
         fields: [],
-        position: 3,
+        position: 4,
         categories: [],
         connected_class: 'News',
     },
@@ -45,7 +55,7 @@ export const module_option_fields = {
             categories: [],
           },
         fields: [],
-        position: 4,
+        position: 5,
         categories: [],
         connected_class: 'Category',
     },
@@ -57,7 +67,7 @@ export const module_option_fields = {
             categories: [],
           },
         fields: [],
-        position: 5,
+        position: 6,
         categories: [],
         connected_class: 'Person',
     },
@@ -69,7 +79,7 @@ export const module_option_fields = {
             categories: [],
           },
         fields: [],
-        position: 6,
+        position: 7,
         categories: [],
         connected_class: 'Image',
     },

@@ -1,10 +1,12 @@
-import Module from '@repo/types'
+import {Module} from '@repo/types'
 import { Dispatch, SetStateAction } from 'react'
+import { module_option_fields } from './constants/module_option_fields'
 
 export type SelectModule = {
-    value: string, 
+    value: keyof typeof module_option_fields, 
     label: string,
-    fields: Module
+    fields: module_option_fields[keyof typeof module_option_fields],
+    disabled: boolean
 } 
 
 export type CreateModuleProps = {

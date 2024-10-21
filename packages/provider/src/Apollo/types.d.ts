@@ -1,5 +1,5 @@
 import { generateGraphQLQuery, paramsHandler } from '@repo/provider';
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloQueryResult, NormalizedCacheObject } from '@apollo/client';
 import { Filter } from '@repo/types';
 
 type type = 'find' | 'get';
@@ -29,3 +29,5 @@ export type ApolloAppProviderProps = {
 };
 
 export type makeClientProps = (appId: string, masterKey: string) => ApolloClient<NormalizedCacheObject>;
+
+export type ApolloRefetch = () => Promise<ApolloQueryResult<any>>

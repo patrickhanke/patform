@@ -7,3 +7,4 @@ export * from './News';
 export * from './Event';
 export * from './Website';
 export * from './Location';
+export * from './Articles';

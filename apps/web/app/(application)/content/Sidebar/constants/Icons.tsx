@@ -6,7 +6,7 @@ import { GrProjects } from 'react-icons/gr';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
 import { MdOutlineCleaningServices, MdOutlineContactPage, MdOutlineEvent, MdViewModule } from 'react-icons/md';
-import { RiAdminLine, RiListSettingsLine } from 'react-icons/ri';
+import { RiAdminLine, RiArticleLine, RiListSettingsLine } from 'react-icons/ri';
 import { PiNewspaper } from 'react-icons/pi';
 import { CgProfile, CgWebsite } from 'react-icons/cg';
 import { BiLabel, BiMessageSquareError, BiSolidTrashAlt } from 'react-icons/bi';
@@ -109,6 +109,9 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'location') {
 		return <CiLocationOn />;
+	}
+	if (icon === 'article') {
+		return <RiArticleLine />;
 	}
 
 	return null;
