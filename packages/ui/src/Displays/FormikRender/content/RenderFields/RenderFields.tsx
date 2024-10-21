@@ -10,8 +10,9 @@ import Input from './components/Input';
 import TextArea from './components/TextArea';
 import ColorPicker from './components/ColorPicker';
 import ImageUpload from './components/ImageUpload';
+import TextEditor from './components/TextEditor';
 
-const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue, isHorizontal}: RenderFieldsType) => 
+const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue, isHorizontal, setSecondaryContent}: RenderFieldsType) => 
 	<>
 		{fields.map((field: Field) => 
 			<React.Fragment key={field.name}>
@@ -129,6 +130,19 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 							isOverlay={true}
 							isHorizontal={isHorizontal}
 						/>
+				}
+				{field.type === 'texteditor' &&
+					<TextEditor
+						name={field.name}
+						label={field.label}
+						id={field.id}
+						onChange={value => setFieldValue(field.name, value, true)}
+						values={values}
+						handleBlur={handleBlur}
+						placeholder={field.placeholder}
+						isHorizontal={isHorizontal}
+						setSecondaryContent={setSecondaryContent}
+					/>
 				}
 				{getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 
 					<div className={'error_message'}>{getFieldMeta(field.name).error}</div>

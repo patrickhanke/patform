@@ -18,7 +18,7 @@ const ArticlesOverview = () => {
 		data:[
 			{id: 'image', type: 'edit_image', label: 'Bild'},
 			{id: 'title', type: 'edit_string', label: 'Titel'},
-			{id: 'text', type: 'edit_textfield', label: 'Text'}
+			{id: 'text', type: 'texteditor', label: 'Text'}
 			// {id: 'date', type: 'edit_date', label: 'Termine'}
 		],
 		fields: currentModule.fields,

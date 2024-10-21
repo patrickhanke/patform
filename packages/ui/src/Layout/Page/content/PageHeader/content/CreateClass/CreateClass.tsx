@@ -12,6 +12,7 @@ const CreateClass = <T extends Classes>({initialData, fields, text, className, r
 	const {currentModule} = useContext(AppContext); 
 	const [isOpen, setIsOpen] = useState(false);
 	const [data, setData] = useState<CreateClassProps<T>['initialData']>(initialData);
+	const [secondaryContent, setSecondaryContent] = useState<React.ReactNode | null>(null);
 
 	const [disabled, setDisabled] = useState<[boolean, boolean]>([false, false]);
    
@@ -31,6 +32,9 @@ const CreateClass = <T extends Classes>({initialData, fields, text, className, r
 		}
 	}, [data]);
 
+	console.log(secondaryContent);
+	
+
 	return (
 		<>
 			<button
@@ -46,6 +50,8 @@ const CreateClass = <T extends Classes>({initialData, fields, text, className, r
 				cancel={() => setIsOpen(false)} 
 				confirm={() => dataHandler()}
 				disabled={disabled}
+				secondaryContent={secondaryContent}
+				showSecondaryContent={secondaryContent ? true : false}
 			>
 				{fields && (
 					<Form
@@ -53,6 +59,7 @@ const CreateClass = <T extends Classes>({initialData, fields, text, className, r
 						data={data} 
 						formSubmitHandler={values => setData(values)}
 						formValidationHandler={isValid => setDisabled([false, !isValid])} 
+						setSecondaryContent={setSecondaryContent}
 					/>
 				)}
 			</SlideIn>

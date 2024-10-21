@@ -15,7 +15,8 @@ const FormikRender = ({
 	formSubmitHandler, 
 	formValidationHandler, 
 	useWithDebounce ,
-	isHorizontal = false
+	isHorizontal = false,
+	setSecondaryContent
 } : IntFormikRender ) => {
 	return (
 		<Formik 
@@ -37,6 +38,7 @@ const FormikRender = ({
 						setFieldValue={setFieldValue}
 						handleChange={handleChange}
 						isHorizontal={isHorizontal}
+						setSecondaryContent={setSecondaryContent}
 					/>
 					<FormSubmitStore 
 						formValidationHandler={formValidationHandler} 

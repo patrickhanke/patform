@@ -125,3 +125,12 @@
 	margin: sizes.$xs 0;
 }
 
+.text_editor_preview_text {
+    width: 100%;           /* Adjust the width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    height: 20px;
+}
+

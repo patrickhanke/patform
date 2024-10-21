@@ -27,12 +27,11 @@ const createArticle: PageCreateClassObject = {
 		id: 'text',
 		position: 3,
 		name: 'text',
-		type: 'editor',
-		label: 'Beschreibung',
+		type: 'texteditor',
+		label: 'Text',
+		placeholder: 'Text des Artikels',
 		validation: {
-			required: 'Pflichtfeld', 
-			min_length: 30, 
-			max_length: 180
+			required: 'Pflichtfeld'
 		}
 	}]};
 

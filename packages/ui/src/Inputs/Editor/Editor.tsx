@@ -113,7 +113,9 @@ function Editor({
 	});
 
 	useEffect(() => {
+		
 		if (content !== debouncedValue) {
+			console.log(debouncedValue);
 			onChange(debouncedValue);
 		}
 	}, [ debouncedValue]);

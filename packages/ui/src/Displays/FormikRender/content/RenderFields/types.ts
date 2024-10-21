@@ -2,6 +2,8 @@ import React from 'react';
 
 import { FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import { Field } from '../../types';
+import {Dispatch, SetStateAction} from 'react';
+
 
 export type RenderFieldsType = {
     fields: Field[],
@@ -10,7 +12,8 @@ export type RenderFieldsType = {
     values: FormikValues,
     handleBlur: (t: any) => void,
     setFieldValue: FormikHelpers<{field: string, value: any, shouldValidate?: boolean}>['setFieldValue'],
-    isHorizontal?: boolean
+    isHorizontal?: boolean,
+    setSecondaryContent?: Dispatch<SetStateAction<React.ReactNode | null>>
 }
 
 export type Editor = {

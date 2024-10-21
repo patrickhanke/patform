@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { FormikValues } from 'formik';
+import {Dispatch, SetStateAction} from 'react';
 
 export type  handleFormData<V extends FormDataElement> = (data: V) => void
 
@@ -9,7 +10,8 @@ export type IntFormikRender = {
     formSubmitHandler: (values: FormikValues) => void,
     formValidationHandler?: (t: boolean) => void,
     useWithDebounce?: boolean,
-    isHorizontal?: boolean
+    isHorizontal?: boolean,
+    setSecondaryContent?: Dispatch<SetStateAction<React.ReactNode | null>>
 }
 
 export type FormSubmitStoreProps = {
@@ -17,7 +19,7 @@ export type FormSubmitStoreProps = {
     useWithDebounce?: boolean
 }
 
-export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select' | 'image' |'file' | 'color' | 'toggle'
+export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select' | 'image' |'file' | 'color' | 'toggle' | 'texteditor'
 
 export type ValidationTypes = {
     required?: string;
