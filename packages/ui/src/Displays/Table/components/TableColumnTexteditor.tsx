@@ -6,14 +6,14 @@ import { IconButton } from '../../../Buttons';
 import '../styles.scss';
 import { Editor, Modal } from '@repo/ui';
 
-const TableColumnTexteditor = ({value, isEditable = false, onChange }: TableColumnTextfieldProps) => {
+const TableColumnTexteditor = ({value, isEditable = true, onChange }: TableColumnTextfieldProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [string, setString] = useState(value);
 
 	return (
 		<>
 			<div className='table_column_textfield_container'>
-				{value ? <div dangerouslySetInnerHTML={{__html: value}} /> : '-'}
+				{value ? <div style={{maxHeight: '48px', overflow: 'hidden',  transform: 'scale(0.8)'}} dangerouslySetInnerHTML={{__html: value}} /> : '-'}
 
 				{isEditable && 
 				<>
@@ -38,7 +38,7 @@ const TableColumnTexteditor = ({value, isEditable = false, onChange }: TableColu
 					onChange(string);
 					setIsOpen(false);
 				}}
-				header={'Beschreibung ändern'}
+				header={'Text'}
 				buttonDisabled={[ false, !string]}
 			>
 				<div className={'table_column_textfield_textarea_container'} >

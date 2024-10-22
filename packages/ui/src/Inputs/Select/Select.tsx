@@ -39,7 +39,7 @@ const Select = ({onChange, value, placeholder, options, isMulti = false, isDisab
 				styles={customStyles({width})}
 				// menuPosition={menuPosition}
 				menuPosition="fixed"  // This makes the menu position fixed
-      menuPlacement="auto"
+				menuPlacement="auto"	
 			/>
 			<ErrorDisplay errors={errors} id={id} />
 		</>

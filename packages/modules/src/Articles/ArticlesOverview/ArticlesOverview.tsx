@@ -22,8 +22,8 @@ const ArticlesOverview = () => {
 			{id: 'image', type: 'edit_image', label: 'Bild'},
 			{id: 'title', type: 'edit_string', label: 'Titel'},
 			{id: 'text', type: 'texteditor', label: 'Text'},
-			{id: 'state', type: 'edit_state', label: 'Status'}
-			// {id: 'date', type: 'edit_date', label: 'Termine'}
+			{id: 'state', type: 'edit_state', label: 'Status'},
+			{id: 'gallery', type: 'gallery', label: 'Galerie'}
 		],
 		fields: currentModule.fields,
 		className: 'Article',
@@ -31,7 +31,6 @@ const ArticlesOverview = () => {
 		categories: currentModule?.categories,
 		constants: {state}
 	});
-	console.log(articles);
 	
 	return (
 		<Page 

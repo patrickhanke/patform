@@ -18,11 +18,10 @@ import TableColumnGeopoint from '../components/TableColumnGeopoint';
 import { MapPlace } from '../../Map';
 import TableColumnEditState from '../components/TableColumnEditState';
 import {get} from 'lodash';
+import TableColumnGallery from '../components/TableColumnGallery';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch, constants }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
-	console.log(constants);
-	console.log(get(constants, 'state', undefined));
 	
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
@@ -96,12 +95,12 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 					footer: info => info.column.id
 				} as  ColumnDef<T>);
 			}
-			if (columnElement.type === 'edit_texteditor' || columnElement.type === 'texteditor') {
+			if (columnElement.type === 'texteditor') {
 				columnArray.push({
 					accessorFn: row => 
 						<TableColumnTexteditor
 							value={row[columnElement.id] as string}  
-							isEditable={columnElement.type === 'edit_texteditor' ?  true : false}
+							isEditable={true}
 							onChange={async (value: string) => {
 								await updateData({
 									className: className,
@@ -194,6 +193,28 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 								}
 							}}
 						/>: <p className='error_message'>Keinen korrekten Status übergeben</p>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'gallery' ) {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnGallery
+							value={row[columnElement.id]}  
+							onChange={async (value: string[]) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: value}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>,
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: info => info.getValue(),

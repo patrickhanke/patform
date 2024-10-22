@@ -1,6 +1,6 @@
 import { ClassState } from '@repo/types';
 
-const state: ClassState = [
+const state: ClassState[] = [
 	{
 		value: 'draft',
 		label: 'Entwurf',

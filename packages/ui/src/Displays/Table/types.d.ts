@@ -23,6 +23,12 @@ export type TableColumnImageProps = {
     maxFileCount?: number
 }
 
+export type TableColumnGalleryProps = {
+    value?: string[],
+    onChange: (images: string[]) => Promise<void>,
+    maxFileCount?: number
+}
+
 export type TableColumnCategoryProps = {
     category: ModuleCategory,
     objectId: string,
@@ -72,7 +78,8 @@ export type ColumnDataTypes =
     'date' |
     'edit_date' |
     'state' |
-    'edit_state'
+    'edit_state' |
+    'gallery'
 
 export type ColumnData<Class> = {
     id: keyof Class,
