@@ -37,7 +37,9 @@ const Select = ({onChange, value, placeholder, options, isMulti = false, isDisab
 				className={'react_select_container'}
 				classNamePrefix="react-select"
 				styles={customStyles({width})}
-				menuPosition={menuPosition}
+				// menuPosition={menuPosition}
+				menuPosition="fixed"  // This makes the menu position fixed
+      menuPlacement="auto"
 			/>
 			<ErrorDisplay errors={errors} id={id} />
 		</>

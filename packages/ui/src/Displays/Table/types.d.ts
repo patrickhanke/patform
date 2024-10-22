@@ -1,5 +1,5 @@
 import { RowSelectionState, Updater, ColumnDef } from '@tanstack/react-table';
-import { ClassCategories, ModuleCategory, Module, EventClass } from '@repo/types';
+import { ClassCategories, ModuleCategory, Module, EventClass, ClassState } from '@repo/types';
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from '@repo/types'; 
 import { MapPlace } from '../Map';
 
@@ -49,6 +49,13 @@ export type TableColumnGeopointProps = {
     onChange: (place: MapPlace) => void
 }
 
+export type TableColumnEditStateProps = {
+    value: string,
+    isEditable?: boolean,
+    onChange: (state: ClassState) => Promise<void>,
+    options: ClassState[]
+}
+
 export type ColumnDataTypes = 
     'string' | 
     'edit_string' | 
@@ -62,7 +69,10 @@ export type ColumnDataTypes =
     'texteditor' |
     'geopoint' |
     'edit_geopoint' |
-    'date';
+    'date' |
+    'edit_date' |
+    'state' |
+    'edit_state'
 
 export type ColumnData<Class> = {
     id: keyof Class,
@@ -76,6 +86,7 @@ export type CreateColumnHookProps<Class> = {
     className: string;
     fields?: Module['fields']
     refetch: () => void;
+    constants?: {[key: string]: any}
 };
 
 export type ColumnClasses = ImageClass | NewsClass | PersonClass | CategoryClass | EventClass

@@ -7,5 +7,5 @@ export type ArticleClass = ClassProperties & {
     text: string,
     gallery: string[],
     date: string,
-    state: ClassState
+    state: ClassState['value']
 }

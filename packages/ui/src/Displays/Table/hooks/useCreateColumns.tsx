@@ -11,14 +11,19 @@ import TableColumnCategory from '../components/TableColumnCategory';
 import TableColumnEditField from '../content/TableColumnEditField';
 import TableColumnDeleteField from '../content/TableColumnDeleteField/TableColumnDeleteField';
 import TableColumnDatesField from '../content/TableColumnDatesField';
-import { EventDate } from '@repo/types';
+import { ClassState, EventDate } from '@repo/types';
 import TableColumnDate from '../components/TableColumnDate';
 import TableColumnTexteditor from '../components/TableColumnTexteditor';
 import TableColumnGeopoint from '../components/TableColumnGeopoint';
 import { MapPlace } from '../../Map';
+import TableColumnEditState from '../components/TableColumnEditState';
+import {get} from 'lodash';
 
-const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch }: CreateColumnHookProps<T>)  => {
+const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch, constants }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
+	console.log(constants);
+	console.log(get(constants, 'state', undefined));
+	
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
 		data.forEach(columnElement => {
@@ -165,6 +170,30 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 								}
 							}}
 						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'state' ||  columnElement.type === 'edit_state' ) {
+				columnArray.push({
+					accessorFn: row => get(constants,  columnElement.id, undefined) ?
+						<TableColumnEditState
+							value={row[columnElement.id]}  
+							isEditable={columnElement.type === 'edit_state' ?  true : false}
+							options={get(constants,  columnElement.id, [])}
+							onChange={async (value: ClassState) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: value.value}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>: <p className='error_message'>Keinen korrekten Status übergeben</p>,
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: info => info.getValue(),

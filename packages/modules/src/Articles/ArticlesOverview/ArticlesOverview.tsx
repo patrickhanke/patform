@@ -8,6 +8,7 @@ import useFindArticles from './hooks/useFindArticles';
 import { ArticleClass, PersonClass } from '@repo/types';
 import createArticle from './constants/createArticle';
 import { useQuery } from '@apollo/client';
+import state from './constants/articleState';
 
 const ArticlesOverview = () => {
 	const {currentModule} = useContext(AppContext);
@@ -20,13 +21,15 @@ const ArticlesOverview = () => {
 		data:[
 			{id: 'image', type: 'edit_image', label: 'Bild'},
 			{id: 'title', type: 'edit_string', label: 'Titel'},
-			{id: 'text', type: 'texteditor', label: 'Text'}
+			{id: 'text', type: 'texteditor', label: 'Text'},
+			{id: 'state', type: 'edit_state', label: 'Status'}
 			// {id: 'date', type: 'edit_date', label: 'Termine'}
 		],
 		fields: currentModule.fields,
 		className: 'Article',
 		refetch,
-		categories: currentModule?.categories
+		categories: currentModule?.categories,
+		constants: {state}
 	});
 	console.log(articles);
 	
