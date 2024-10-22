@@ -27,7 +27,6 @@ const TextEditor: React.FC<TextEditorProps> = ({
 		<div className={isHorizontal ? 'form_horizontal_container' : ''}>
 			<label htmlFor={name}>{label || name} </label>
 			{!setSecondaryContent ? 
-			
 				<Editor
 					id={id}
 					content={values[name] || ''}
@@ -38,14 +37,13 @@ const TextEditor: React.FC<TextEditorProps> = ({
 				<div>
 					{ values[name] ? 
 						<div className='text_editor_preview_text' dangerouslySetInnerHTML={{__html: values[name]}} />
-						
 						: 
 						<p>
 							Kein Text
 						</p>
 					}
 					<button
-						className='full_button md primary'
+						className='full_button sm primary'
 						onClick={() => setSecondaryContent(
 							<Editor
 								id={id}
@@ -55,7 +53,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
 							/>
 						)}
 					>
-						Open Editor
+						Editor öffnen
 					</button>
 				</div>
 			}

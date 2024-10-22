@@ -16,6 +16,13 @@ export type Project = {
 
 export type ClassCategories = string[];
 
+export type ClassState = {
+    value: string,
+    label: string,
+    is_active: boolean
+    color: string
+}[]
+
 export type ClassProperties = {
     objectId: string,
     createdAt: string,

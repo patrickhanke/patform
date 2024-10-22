@@ -2,18 +2,20 @@
 
 import { useContext, useState } from 'react';
 import { Modal, Page, Table, useCreateColumns } from '@repo/ui';
-import { AppContext } from '@repo/provider';
+import { AppContext, generateGraphQLQuery } from '@repo/provider';
 import deleteModalInitialValues from './constants/deleteModalInitialValues';
 import useFindArticles from './hooks/useFindArticles';
-import { ArticleClass } from '@repo/types';
+import { ArticleClass, PersonClass } from '@repo/types';
 import createArticle from './constants/createArticle';
+import { useQuery } from '@apollo/client';
 
 const ArticlesOverview = () => {
 	const {currentModule} = useContext(AppContext);
 	const [filters] = useState([]);
 	const {articles, refetch} = useFindArticles({moduleId: currentModule.objectId, filters}); 
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
-	
+	const {data: personData} = useQuery(generateGraphQLQuery({type: 'find', objectName: 'Person', fields: ['objectId', 'label']}));
+
 	const columns = useCreateColumns<ArticleClass>({
 		data:[
 			{id: 'image', type: 'edit_image', label: 'Bild'},
@@ -26,12 +28,13 @@ const ArticlesOverview = () => {
 		refetch,
 		categories: currentModule?.categories
 	});
-    
+	console.log(articles);
+	
 	return (
 		<Page 
 			title={currentModule.name}
 			emptyContent={true}
-			createClass={createArticle}
+			createClass={createArticle(personData?.objects.findPerson.results.map((person: PersonClass) => ({value: person.objectId, label: person.label})) || [])}
 			refetch={refetch}
 		>
 			<Table 

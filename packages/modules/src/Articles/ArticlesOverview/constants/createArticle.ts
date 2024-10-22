@@ -1,15 +1,18 @@
-import { PageCreateClassObject } from '@repo/ui';
+import { CreateClassProps } from '@repo/ui';
+import { ArticleClass } from '@repo/types';
 
-const createArticle: PageCreateClassObject = {
-	initialData: undefined,
-	className: 'Bericht',
-	text: 'Neuen Bericht erstellen',
+const createArticle = (persons: {value: string, label: string}[] ): CreateClassProps<ArticleClass> => ({
+	initialData: {
+		state: 'draft'
+	},
+	className: 'Article',
+	text: 'Bericht erstellen',
 	fields: [{
 		id: 'title',
 		position: 1,
 		name: 'title',
 		type: 'input',
-		label: 'Name',
+		label: 'Titel',
 		validation: {required: 'Pflichtfeld', min_length: 5, max_length: 36}
 	},
 	{
@@ -21,6 +24,9 @@ const createArticle: PageCreateClassObject = {
 		options: {
 			return_type: 'string',
 			max_file_count: 1
+		},
+		validation: {
+			required: 'Pflichtfeld'
 		}
 	}, 
 	{
@@ -33,6 +39,19 @@ const createArticle: PageCreateClassObject = {
 		validation: {
 			required: 'Pflichtfeld'
 		}
-	}]};
+	}, 
+	{
+		id: 'author',
+		position: 4,
+		name: 'author',
+		type: 'pointer_select',
+		label: 'Autor',
+		placeholder: 'Autor*in',
+		options: {
+			pointer_class: 'Person' 
+		},
+		select_options: persons
+	} ]
+} );
 
 export default createArticle;

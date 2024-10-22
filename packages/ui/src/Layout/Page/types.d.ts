@@ -1,7 +1,9 @@
 import { PageState } from '@repo/types';
+import { Field } from '../../Displays';
+
 export type CreateClassProps<T> = {
-    initialData: {[key: keyof T]: any };
-    fields: Field[];
+    initialData?: {[key: keyof T]: any };
+    fields: Array<Field>;
     text: string;
     className: string;
     refetch?: () => void;

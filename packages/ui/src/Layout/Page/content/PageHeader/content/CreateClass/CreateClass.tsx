@@ -32,9 +32,6 @@ const CreateClass = <T extends Classes>({initialData, fields, text, className, r
 		}
 	}, [data]);
 
-	console.log(secondaryContent);
-	
-
 	return (
 		<>
 			<button

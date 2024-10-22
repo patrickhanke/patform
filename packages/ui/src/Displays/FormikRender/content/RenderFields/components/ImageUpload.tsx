@@ -1,6 +1,6 @@
 import React from 'react';
 import {getImageUrl, ImageUploader} from '@repo/modules';
-import { Field, Modal } from '@repo/ui';
+import { ImageField, Modal } from '@repo/ui';
 import {useState} from 'react';
 
 interface ImageUploadProps {
@@ -8,7 +8,7 @@ interface ImageUploadProps {
       name: string;
       value: string;
     };
-    field: Field;
+    field: ImageField;
     setFieldValue: (name: string, value: any, shouldValidate?: boolean) => void;
 	isHorizontal?: boolean;
   }

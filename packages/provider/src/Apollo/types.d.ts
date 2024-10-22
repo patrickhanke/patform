@@ -14,13 +14,14 @@ type QueryProps = {
 }
 
 type ParamsHandlerProps = {
-    projectId: string, 
-    filters: Filter[]
+    projectId?: string, 
+    moduleId?: string,
+    filters?: Filter[]
 }
 
 export type generateGraphQLQueryProps = (QueryProps) => ReturnType<typeof generateGraphQLQuery>;
 
-export type ParamsHandlerType = (ParamsHandlerProps) => ReturnType<typeof paramsHandler>;
+export type ParamsHandlerType = (T: ParamsHandlerProps) => ReturnType<typeof paramsHandler>;
 
 export type ApolloAppProviderProps = {
     appId: string;

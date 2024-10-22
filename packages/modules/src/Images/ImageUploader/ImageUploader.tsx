@@ -57,7 +57,6 @@ const ImageUploader = ({
 				</div>
 			);
 		}
-	
 	}, []);
 
 	return (

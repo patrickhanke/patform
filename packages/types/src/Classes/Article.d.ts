@@ -1,10 +1,11 @@
-export type ArticleClass = {
-    objectId: string, 
+import { ClassProperties, ClassState } from './Classes';
+
+export type ArticleClass = ClassProperties & {
     title: string,
     image: string,
     createdAt: string,
     text: string,
     gallery: string[],
-    state: string,
-    date: string
+    date: string,
+    state: ClassState
 }

@@ -11,6 +11,7 @@ import TextArea from './components/TextArea';
 import ColorPicker from './components/ColorPicker';
 import ImageUpload from './components/ImageUpload';
 import TextEditor from './components/TextEditor';
+import getPointerValue from './functions/getPointerValue';
 
 const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue, isHorizontal, setSecondaryContent}: RenderFieldsType) => 
 	<>
@@ -116,6 +117,17 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 						<Select 
 							onChange={value => setFieldValue(field.name, field.dataType === 'string' ?  value.value : value, true)}
 							value={getSelectValue(values, field)}
+							options={field.select_options}
+							key={field.name}
+						/>
+					</div>
+				}
+				{(field.type === 'pointer_select') &&
+					<div className={isHorizontal ? 'form_horizontal_container' : ''}>
+						<label htmlFor={field.name}>{field.label || field.name} </label>
+						<Select 
+							onChange={value => setFieldValue(field.name, {__type: 'Pointer', className: field?.options?.pointer_class, objectId: value.value }, true)}
+							value={getPointerValue(values[field.name], field.select_options || [])}
 							options={field.select_options}
 							key={field.name}
 						/>

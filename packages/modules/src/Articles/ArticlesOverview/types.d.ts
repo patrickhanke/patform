@@ -1,5 +1,5 @@
 import {Filter, ArticleClass} from '@repo/types';
-import { ApolloRefetch } from '@repo/provider';
+import { PageCreateClassObject } from '@repo/ui';
 
 type FilterArray = Filter[];
 
@@ -12,9 +12,7 @@ export type UseFindArticlesHook = ({
     refetch: () => void
 });
 
-export type CreateArticleProps =  {
-    refetch: ApolloRefetch
-}
+export type CreateArticle = (persons: {value: string, label: string}[]) => PageCreateClassObject
 
 
 export type DeleteModalProps = {
