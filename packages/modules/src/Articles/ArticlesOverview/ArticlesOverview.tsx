@@ -11,11 +11,11 @@ import { useQuery } from '@apollo/client';
 import state from './constants/articleState';
 
 const ArticlesOverview = () => {
-	const {currentModule} = useContext(AppContext);
+	const {currentModule, modules} = useContext(AppContext);
 	const [filters] = useState([]);
 	const {articles, refetch} = useFindArticles({moduleId: currentModule.objectId, filters}); 
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
-	const {data: personData} = useQuery(generateGraphQLQuery({type: 'find', objectName: 'Person', fields: ['objectId', 'label']}));
+	const {data: personData} = useQuery(generateGraphQLQuery({type: 'find', objectName: 'Person', fields: ['objectId', 'label']}), {variables: {params: {module: {_eq:  modules.find(module => module.name === 'Person')?.objectId}}}});
 
 	const columns = useCreateColumns<ArticleClass>({
 		data:[
@@ -23,7 +23,8 @@ const ArticlesOverview = () => {
 			{id: 'title', type: 'edit_string', label: 'Titel'},
 			{id: 'text', type: 'texteditor', label: 'Text'},
 			{id: 'state', type: 'edit_state', label: 'Status'},
-			{id: 'gallery', type: 'gallery', label: 'Galerie'}
+			{id: 'gallery', type: 'gallery', label: 'Galerie'},
+			{id: 'author', type: 'person', label: 'Autor'}
 		],
 		fields: currentModule.fields,
 		className: 'Article',

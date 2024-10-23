@@ -6,7 +6,7 @@ const useFindArticles: UseFindArticlesHook = ({moduleId, filters} ) => {
 	const {loading, data, refetch} = useQuery(generateGraphQLQuery({
 		type: 'find', 
 		objectName:  'Article',  
-		fields: ['objectId', 'title', 'image', 'createdAt', 'data', 'state', 'text', 'gallery', 'date', 'categories'] 
+		fields: ['objectId', 'title', 'image', 'createdAt', 'data', 'state', 'text', 'gallery', 'date', 'categories', 'author {objectId label portrait}'] 
 	}), {
 		variables: {params: paramsHandler({moduleId, filters})},
 		notifyOnNetworkStatusChange: true

@@ -4,3 +4,4 @@ export * from './FormikRender';
 export * from './DnD';
 export * from './Filter';
 export * from './Map';
+export * from './PersonDisplay';

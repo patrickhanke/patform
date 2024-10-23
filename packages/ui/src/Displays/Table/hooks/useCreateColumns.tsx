@@ -19,6 +19,7 @@ import { MapPlace } from '../../Map';
 import TableColumnEditState from '../components/TableColumnEditState';
 import {get} from 'lodash';
 import TableColumnGallery from '../components/TableColumnGallery';
+import TableColumnPerson from '../components/TableColumnPerson';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch, constants }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
@@ -205,6 +206,29 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 						<TableColumnGallery
 							value={row[columnElement.id]}  
 							onChange={async (value: string[]) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: value}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'person' || columnElement.type === 'edit_person') {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnPerson
+							isEditable={columnElement.type === 'edit_person' ?  true : false}
+							value={row[columnElement.id]}  
+							onChange={async (value: string) => {
 								await updateData({
 									className: className,
 									objectId: row.objectId,
