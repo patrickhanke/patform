@@ -2,18 +2,19 @@ import React from 'react';
 import { AiFillCopy, AiOutlineForm, AiOutlineShoppingCart } from 'react-icons/ai';
 import { BsFillBarChartFill, BsLayoutTextWindowReverse, BsPeople } from 'react-icons/bs';
 import { FaUsers } from 'react-icons/fa';
-import {GrProjects} from 'react-icons/gr';
+import { GrProjects } from 'react-icons/gr';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
 import { MdOutlineCleaningServices, MdOutlineContactPage, MdOutlineEvent, MdViewModule } from 'react-icons/md';
-import {RiAdminLine, RiListSettingsLine} from 'react-icons/ri';
-import {PiNewspaper} from 'react-icons/pi';
+import { RiAdminLine, RiArticleLine, RiListSettingsLine } from 'react-icons/ri';
+import { PiNewspaper } from 'react-icons/pi';
 import { CgProfile, CgWebsite } from 'react-icons/cg';
 import { BiLabel, BiMessageSquareError, BiSolidTrashAlt } from 'react-icons/bi';
 import { BsHousesFill } from 'react-icons/bs';
 import { FaShuttleVan } from 'react-icons/fa';
 import { GrTask } from 'react-icons/gr';
 import { ImImages } from 'react-icons/im';
+import { CiLocationOn } from 'react-icons/ci';
 
 const Icons = ({icon}: {icon: string}) => {
 	if (icon === 'projects') {
@@ -105,6 +106,12 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'website') {
 		return <CgWebsite />;
+	}
+	if (icon === 'location') {
+		return <CiLocationOn />;
+	}
+	if (icon === 'article') {
+		return <RiArticleLine />;
 	}
 
 	return null;

@@ -65,8 +65,7 @@ export type TableColumnEditStateProps = {
 export type TableColumnPersonProps = {
     value: PersonClass,
     isEditable?: boolean,
-    onChange: (person: PersonPointer) => Promise<void>,
-    options: PersonClass[]
+    onChange: (person: PersonOption) => Promise<void>,
 }
 
 export type ColumnDataTypes = 

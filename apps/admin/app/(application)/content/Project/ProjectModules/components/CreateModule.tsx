@@ -40,6 +40,7 @@ const CreateModule: React.FC<CreateModuleProps> = ({createModule, setCreateModul
                     Neues Modul erstellen
                 </p>
                 <Select
+                    id='module_select'
                     value={selectedModule}
                     onChange={(value) => setSelectedModule(value)}
                     options={modalSelectOptions}

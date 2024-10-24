@@ -12,7 +12,6 @@ const Select = ({onChange, value, placeholder, options, isMulti = false, isDisab
 		if (isArray(value)) {
 			return value.map((val: string) => options?.find(option => option.value === val) || null);
 		} else {
-
 			if (typeof value === 'object' && value !== null) {
 				return value;
 			} else if (typeof value === 'string') {
@@ -23,7 +22,7 @@ const Select = ({onChange, value, placeholder, options, isMulti = false, isDisab
 	};
 
 	return (
-		<>
+		<div style={{position: 'relative'}}>
 			{label && <label htmlFor={id}>{label}</label>}
 			<ReactSelect
 				id={id}
@@ -37,12 +36,12 @@ const Select = ({onChange, value, placeholder, options, isMulti = false, isDisab
 				className={'react_select_container'}
 				classNamePrefix="react-select"
 				styles={customStyles({width})}
-				// menuPosition={menuPosition}
-				menuPosition="fixed"  // This makes the menu position fixed
+				menuPortalTarget={document.body}
+				menuPosition="fixed"  
 				menuPlacement="auto"	
 			/>
 			<ErrorDisplay errors={errors} id={id} />
-		</>
+		</div>
 	);
 };
 

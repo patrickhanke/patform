@@ -28,7 +28,7 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 
 	menu: provided => ({ 
 		...provided, 
-		zIndex: 9999,
+		zIndex: 999,
 		fontFamily: 'Roboto',
 		fontWeight: 400,
 		fontSize: '12px'
@@ -57,7 +57,8 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 	input: provided => ({
 		...provided,
 		margin: 0
-	})	
+	})	,
+	menuPortal: base => ({ ...base, zIndex: 9999 })
 });
 
 export default customStyles;

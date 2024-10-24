@@ -24,7 +24,7 @@ const ArticlesOverview = () => {
 			{id: 'text', type: 'texteditor', label: 'Text'},
 			{id: 'state', type: 'edit_state', label: 'Status'},
 			{id: 'gallery', type: 'gallery', label: 'Galerie'},
-			{id: 'author', type: 'person', label: 'Autor'}
+			{id: 'author', type: 'edit_person', label: 'Autor'}
 		],
 		fields: currentModule.fields,
 		className: 'Article',

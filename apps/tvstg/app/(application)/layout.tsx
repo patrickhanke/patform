@@ -7,9 +7,9 @@ import { ApolloClient, OperationVariables } from '@apollo/client';
 import LayoutContext from './LayoutContext';
 import Logo from './components/Logo';
 import './styles.scss';
-import Sidebar from './content/Sidebar';
 import { Module, Project } from '@repo/types';
 import {get_initial_project, serverClient} from '@repo/provider';
+import { Sidebar } from '@repo/ui';
 
 export const metadata = {
 	title: 'TV Freiburg St. Georgen',
@@ -24,8 +24,6 @@ interface GetProjectsResponse {
 
 const getData = async () => {
 	const projectId = process.env.PROJECT_ID;
-	console.log('projectId', projectId);
-	
 	
 	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_GQL_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
 	
@@ -40,8 +38,6 @@ export default async function  RootLayout({
 	children: React.ReactNode,
 }) {
 	const data = await getData();
-	console.log(data.objects.getProject.modules.results);
-	
 	
 	return (
 		<html lang="de">
