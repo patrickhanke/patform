@@ -1,8 +1,8 @@
 import { TableColumnPersonProps } from '../types';
 import {PersonDisplay} from '@repo/ui';
 import { useContext, useMemo } from 'react';
-import ReactSelect from 'react-select';
-import { StylesConfig } from 'react-select';
+import ReactSelect, {components} from 'react-select';
+import { StylesConfig, SingleValue } from 'react-select';
 import { AppContext, generateGraphQLQuery } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import { PersonClass } from '@repo/types';
@@ -11,19 +11,30 @@ type PersonOption = { value: string, label: string, person: PersonClass }
 
 const TableColumnPerson = ({value, isEditable, onChange}: TableColumnPersonProps) => {
 	const {modules} = useContext(AppContext);
-	const {data: personData} = useQuery(generateGraphQLQuery({type: 'find', objectName: 'Person', fields: ['objectId', 'label']}), {variables: {params: {module: {_eq:  modules.find(module => module.path === '/persons')?.objectId}}}});
+	const {data: personData} = useQuery(generateGraphQLQuery({type: 'find', objectName: 'Person', fields: ['objectId', 'label', 'portrait']}), {variables: {params: {module: {_eq:  modules.find(module => module.path === '/persons')?.objectId}}}});
 
 	const customComponent = useMemo(() => {
 		return ({
 			Option: (props: any) => {
 				return (
-					<div>
+					<components.Option {...props}>
 						{props.data.person ?
 							<PersonDisplay person={props.data.person} />
 							:
 							props.data.label
 						}
-					</div>
+					</components.Option>
+				);
+			},
+			SingleValue: (props: any) => {
+				return (
+					<components.SingleValue {...props}>
+						{props.data.person ?
+							<PersonDisplay person={props.data.person} />
+							:
+							props.data.label
+						}
+					</components.SingleValue>
 				);
 			}
 		});
@@ -45,7 +56,7 @@ const TableColumnPerson = ({value, isEditable, onChange}: TableColumnPersonProps
 			{isEditable ? 
 				<ReactSelect
 					value={options.find(option => option.value === value.objectId)}
-					onChange={(inputValue) => onChange(inputValue as PersonOption) }
+					onChange={(inputValue) => onChange(inputValue.value as string) }
 					options={options}
 					isMulti={false}
 					// isDisabled={isDisabled}

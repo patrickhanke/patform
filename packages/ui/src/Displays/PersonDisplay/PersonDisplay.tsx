@@ -18,11 +18,13 @@ const PersonDisplay = ({person, onlyImage=false}: PersonDisplayProps) => {
 					/>
 				</div>
 				:
-				<div className={'display_person_no_image'} data-onlyimage={onlyImage}>
-					<div className={'display_person_no_image_background'} />
-					<div className={'display_person_no_image_character'} >{`${person.label}`}</div>
+				<div className={'display_person_no_image'} data-onlyimage={onlyImage} >
+					<div className={'display_person_no_image_placeholder'} />
 				</div>
 			}
+			<div>
+				{`${person.label}`}
+			</div>
 		</div>
 	);
 

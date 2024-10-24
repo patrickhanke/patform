@@ -232,7 +232,7 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: {[columnElement.id]: value}
+									updateObject: {[columnElement.id]: {__type: 'Pointer', className: 'Person', objectId: value}}
 								});
 								if (refetch) {
 									refetch();

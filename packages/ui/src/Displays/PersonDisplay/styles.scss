@@ -3,7 +3,7 @@
 @use '@repo/styles/sizes';
 @use '@repo/styles/buttons';
 
-.display_worker_container {
+.display_person_container {
     @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xxs);
     width: fit-content;
     font-family: Roboto, sans-serif;
@@ -14,20 +14,20 @@
     font-weight: 500;
 };
 
-.display_worker_container[data-isabsent="false"] {
+.display_person_container[data-isabsent="false"] {
     background-color: transparent;
     color: colors.$green_shaded;
 };  
 
-.display_worker_container[data-isabsent="true"] {
+.display_person_container[data-isabsent="true"] {
     opacity: 0.6;
 };  
 
-.display_worker_container[data-onlyimage="true"] {
+.display_person_container[data-onlyimage="true"] {
     padding: 0;
 };
 
-.display_worker_image_container {
+.display_person_image_container {
     height: 18px;
     width: 18px;
     position: relative;
@@ -35,17 +35,17 @@
     overflow: hidden;
 };
 
-.display_worker_image_container[data-onlyimage="true"] {
+.display_person_image_container[data-onlyimage="true"] {
     border: 2px solid #fff;
     width: 24px;
     height: 24px;
 };
 
-.display_worker_image_container[data-isabsent="true"] {
+.display_person_image_container[data-isabsent="true"] {
     border: 2px solid colors.$red_shaded;
 };
 
-.display_worker_delete_button {
+.display_person_delete_button {
     height: 21px;
     width: 21px;
     position: relative;
@@ -54,7 +54,7 @@
     background-color: colors.$grey;
 };
 
-.display_worker_no_image {
+.display_person_no_image {
     @include layout.flexbox($direction: row, $justify: center, $align: center);
     height: 18px;
     width: 18px;
@@ -63,19 +63,19 @@
     overflow: hidden;
 };
 
-.display_worker_no_image[data-onlyimage="true"] {
+.display_person_no_image[data-onlyimage="true"] {
     border: 2px solid #fff;
     width: 24px;
     height: 24px;
 };
 
-.display_worker_no_image_background {
+.display_person_no_image_placeholder {
     width: 100%;
     height: 100%;
     position: absolute;
 };
 
-.display_worker_no_image_character {
+.display_person_no_image_character {
     position: relative;
     font-size: map-get($map: sizes.$font_size, $key: 'xs');
 };
