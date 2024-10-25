@@ -1,6 +1,5 @@
 import { getImageUrl } from '@repo/provider';
 import './styles.scss';
-import { Loader } from '../../Overlays';
 import { PersonDisplayProps } from './types';
 
 const PersonDisplay = ({person, onlyImage=false}: PersonDisplayProps) => {
@@ -27,9 +26,6 @@ const PersonDisplay = ({person, onlyImage=false}: PersonDisplayProps) => {
 			</div>
 		</div>
 	);
-
-
-	return <Loader width={'120px'} height={'18px'} />;
 };
 
 export default PersonDisplay;

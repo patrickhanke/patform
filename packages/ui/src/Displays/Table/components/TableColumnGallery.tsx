@@ -16,7 +16,7 @@ const TableColumnGallery = ({ value = [], onChange, maxFileCount = 0 }: TableCol
 	return (
 		<>
 			<div className='button_container'>
-				<p>
+				<p style={{whiteSpace: 'no-wrap'}}>
 					{isArray(value) ? value?.length : '0'} Bilder
 				</p>
 				<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />

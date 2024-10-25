@@ -13,7 +13,7 @@ const TableColumnTexteditor = ({value, isEditable = true, onChange }: TableColum
 	return (
 		<>
 			<div className='table_column_textfield_container'>
-				{value ? <div style={{maxHeight: '48px', overflow: 'hidden',  transform: 'scale(0.8)'}} dangerouslySetInnerHTML={{__html: value}} /> : '-'}
+				{value ? <div style={{maxHeight: '42px', overflow: 'hidden'}} dangerouslySetInnerHTML={{__html: value}} /> : '-'}
 
 				{isEditable && 
 				<>

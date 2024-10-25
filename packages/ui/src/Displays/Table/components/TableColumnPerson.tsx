@@ -63,7 +63,7 @@ const TableColumnPerson = ({value, isEditable, onChange}: TableColumnPersonProps
 					// isClearable={isClearable}
 					className={'react_select_container'}
 					classNamePrefix="react-select"
-					styles={customStyles({width: 200})}
+					styles={customStyles({width: 180})}
 					menuPosition="fixed"
 					menuPlacement="auto"	
 					components={customComponent}
@@ -81,15 +81,17 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 	control: (provided: Record<string, unknown>, state: any) => ({
 		...provided,
 		minHeight: 0,
-		border: state.isFocused ? '1px solid #3F9A82' : '1px solid #99999',
+		// border: state.isFocused ? '1px solid #3F9A82' : '1px solid #99999',
 		outline: 'none',
 		boxShadow: 'none',
+		border: 'none',
 		// "&": {
 		//   border: "1px solid #cccccc",
 		//   boxShadow: "none"
 		// },
 		'&:hover': {
-			border: '1px solid #3F9A82'
+			// border: '1px solid #3F9A82',
+			border: 'none'
 		},
 		width
 	}),
