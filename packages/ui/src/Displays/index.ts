@@ -5,3 +5,4 @@ export * from './DnD';
 export * from './Filter';
 export * from './Map';
 export * from './PersonDisplay';
+export * from './InfoBox';

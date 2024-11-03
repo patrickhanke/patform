@@ -107,6 +107,7 @@ function Editor({
 		content,
 		extensions,
 		editable,
+		immediatelyRender: false,
 		onUpdate: ({ editor }) => {
 			setEditorHtmlContent(editor.getHTML());
 		}

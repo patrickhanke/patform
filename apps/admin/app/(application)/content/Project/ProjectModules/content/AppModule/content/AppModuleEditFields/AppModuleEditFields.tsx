@@ -4,7 +4,7 @@ import { useImmer } from "use-immer";
 import AppModuleField from './components/AppModuleField';
 import { AppModuleEditFieldsProps } from './types';
 import initialFieldValues from './constants/initialFieldValues';
-import { Field } from '@repo/types';
+import { Field } from '@repo/ui';
 import { v4 } from 'uuid';
 import { useDataHandler } from '@repo/provider';
 import AppModuleEditField from './components/AppModuleEditField';
@@ -53,11 +53,15 @@ const AppModuleEditFields = ({moduleId, initialFields}: AppModuleEditFieldsProps
                     <CreateButton 
                         text='Feld hinzufügen'
                         size='medium'
-                    
                         onClick={() => {
                             setFields(draft => {
                                 draft.push({
-                                    ...initialFieldValues, 
+                                    type: 'input',
+                                    label: 'Neues Feld',
+                                    name: '',
+                                    validation: {
+                                        required: ''
+                                    },
                                     position: draft.length + 1,
                                     id: v4() as string
                                 })

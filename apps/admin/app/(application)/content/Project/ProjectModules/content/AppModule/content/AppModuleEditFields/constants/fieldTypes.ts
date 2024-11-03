@@ -22,6 +22,10 @@ const fieldTypes = [
     {
         value: 'select',
         label: 'Select'
+    },
+    {
+        value: 'texteditor',
+        label: 'Texteditor'
     }
 ] as const;
 

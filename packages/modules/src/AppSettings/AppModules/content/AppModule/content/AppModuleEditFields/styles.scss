@@ -1,7 +1,0 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-
-.app_module_field_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
-    background-color: colors.$white;
-}

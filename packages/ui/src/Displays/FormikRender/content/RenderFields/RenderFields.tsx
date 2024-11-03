@@ -16,7 +16,7 @@ import getPointerValue from './functions/getPointerValue';
 const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue, isHorizontal, setSecondaryContent}: RenderFieldsType) => 
 	<>
 		{fields.map((field: Field) => 
-			<React.Fragment key={field.name}>
+			<React.Fragment key={field.id ? field.id : field.name}>
 				{(field.type === 'input' || field.type === 'url' || field.type === 'number' || field.type === 'password')  &&
 					<Input 
 						name={field.name}

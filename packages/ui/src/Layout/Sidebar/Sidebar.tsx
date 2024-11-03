@@ -1,15 +1,13 @@
-import React from 'react';
 import styles from './Sidebar.module.scss';
 import MenuItem from './components/MenuItem';
 import Logout from './components/Logout';
 import { MenuItemType } from './types';
-import staticMenuItems from './constants/staticMenuItems';
 
 const Sidebar = ({menuItems}: {menuItems: {label: string, value: string, icon: string}[]}) => {
 	return (
 		<div className={styles.sidebar_container}>
 			<ul className={styles.menu_item_container}>
-				{[...menuItems, ...staticMenuItems].map((menu_item: MenuItemType) => (
+				{[...menuItems].map((menu_item: MenuItemType) => (
 					<MenuItem
 						key={menu_item.value}
 						link={menu_item.value }

@@ -1,7 +1,6 @@
-import React from 'react';
 import { AiFillCopy, AiOutlineForm, AiOutlineShoppingCart } from 'react-icons/ai';
 import { BsFillBarChartFill, BsLayoutTextWindowReverse, BsPeople } from 'react-icons/bs';
-import { FaUsers } from 'react-icons/fa';
+import { FaUsers, FaUser } from 'react-icons/fa';
 import { GrProjects } from 'react-icons/gr';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
@@ -30,7 +29,7 @@ const Icons = ({icon}: {icon: string}) => {
 		return <FaUsers />;
 	}
 	if (icon === 'persons') {
-		return <FaUsers />;
+		return <FaUser />;
 	}
 	if (icon === 'project') {
 		return <RiListSettingsLine />;
@@ -112,6 +111,9 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'article') {
 		return <RiArticleLine />;
+	}
+	if (icon === 'group') {
+		return <FaUsers />;
 	}
 
 	return null;

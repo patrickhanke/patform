@@ -1,4 +1,4 @@
-import { Filter, Person } from '@repo/types';
+import { Filter, GroupClass } from '@repo/types';
 
 export type PersonsOverviewProps = {
     projectId: string;
@@ -6,12 +6,12 @@ export type PersonsOverviewProps = {
 
 export type FilterArray = Filter[];
 
-export type UseFindPersonsHook = ({
+export type UseFindGroupHook = ({
 	moduleId: string,
 	filters: FilterArray 
 }) => ({
     loading: boolean,
-    persons?: Person[],
+    groups?: GroupClass[],
     refetch: () => void
 });
 

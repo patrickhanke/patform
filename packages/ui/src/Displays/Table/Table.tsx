@@ -88,9 +88,6 @@ const Table = ({data, columns}: TableTypes) => {
 	return (
 		<div className='content_element'>
 			<div className={clsx( 'table_container')}  >
-				{/* <div className={"header"}>
-					<h2>{title}</h2>
-				</div> */}
 				<table>
 					<thead>
 						{table.getHeaderGroups().map(headerGroup => (

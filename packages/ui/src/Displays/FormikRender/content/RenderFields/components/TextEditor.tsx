@@ -44,6 +44,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
 					}
 					<button
 						className='full_button sm primary'
+						type='button'
 						onClick={() => setSecondaryContent(
 							<Editor
 								id={id}

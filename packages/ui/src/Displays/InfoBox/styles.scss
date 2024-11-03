@@ -1,0 +1,17 @@
+
+@use '@repo/styles/colors';
+@use '@repo/styles/sizes';
+
+.infobox_container {
+    font-family: 'Open Sans',;
+    padding: map-get($map: sizes.$padding, $key: 'sm' );
+    margin-top: sizes.$md;
+    font-size: map-get($map: sizes.$font_size, $key: 'sm' ) ; 
+    background-color: lightgreen;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+}
+
+.infobox_icon {
+    margin-right: sizes.$sm;
+    display: inline;
+}

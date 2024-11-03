@@ -8,3 +8,4 @@ export type * from './Event';
 export type * from './Website';
 export type * from './Location';
 export type * from './Article';
+export type * from './Group';

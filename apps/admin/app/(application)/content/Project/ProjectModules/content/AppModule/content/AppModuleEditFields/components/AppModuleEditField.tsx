@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { AppModuleEditFieldProps } from '../types'
 import { slugify } from '@repo/provider';
-import { Select, StatelessToggle, SwitchButtons } from '@repo/ui';
+import { InfoBox, Select, StatelessToggle } from '@repo/ui';
 import fieldTypes from '../constants/fieldTypes';
-import { Field } from '@repo/types';
+import { Field } from '@repo/ui';
 
 const AppModuleEditField = ({field, setFields}: AppModuleEditFieldProps) => {
 
@@ -11,9 +11,9 @@ const AppModuleEditField = ({field, setFields}: AppModuleEditFieldProps) => {
         return null
     }  
 
-    const changeHandler = useCallback((key: keyof Field, value: Field[keyof typeof field]) => {
+    const changeHandler = useCallback((key: keyof Field, value: Field[keyof Field]) => {
         setFields(draft => {
-            const index: number = draft.findIndex(fieldToFind => fieldToFind.id === field.id)
+            const index: number = draft.findIndex((fieldToFind: Field) => fieldToFind.id === field.id)
             let fieldCopy: typeof field = {...field}
             if (index !== -1) {
                 draft[index] = {...fieldCopy, [key]: value}
@@ -32,6 +32,11 @@ const AppModuleEditField = ({field, setFields}: AppModuleEditFieldProps) => {
                 </p>
             </div>
             <div>
+                <label>Name</label>
+                <input type='text' defaultValue={field.label} onChange={(e) => changeHandler('name', e.target.value)} />
+                <InfoBox text='Pfadname des Felds' />
+            </div>
+            <div>
                 <Select
                     label='Typ auswählen'
                     options={fieldTypes}
@@ -40,18 +45,29 @@ const AppModuleEditField = ({field, setFields}: AppModuleEditFieldProps) => {
                 />
             </div>
             <div>
-                <StatelessToggle
-                    label='Feld ist Pflichtfeld'
-                    value={field.required}
-                    onChange={(e) => changeHandler('required', e)}
+                <label>
+                    Pflichtfeld
+                </label>
+                <input 
+                    type='text' 
+                    defaultValue={field.validation?.required} 
+                    onChange={(e) => changeHandler('name', e.target.value)} 
                 />
             </div>
             {field.type === 'number' && (
                 <div>
                     <label>Startwert</label>
-                    <input type='number' defaultValue={field.options?.number_start_value} onChange={(e) => changeHandler('options', {number_start_value: parseInt(e.target.value), number_end_value: field.options?.number_end_value})} />
+                    <input 
+                        type='number' 
+                        defaultValue={field.options?.number_start_value} 
+                        onChange={(e) => changeHandler('options', {number_start_value: parseInt(e.target.value), number_end_value: field.options?.number_end_value})} 
+                    />
                     <label>Endwert</label>
-                    <input type='number' defaultValue={field.options?.number_end_value} onChange={(e) => changeHandler('options', {number_start_value: field.options?.number_start_value, number_end_value: parseInt(e.target.value)})} />
+                    <input 
+                        type='number' 
+                        defaultValue={field.options?.number_end_value} 
+                        onChange={(e) => changeHandler('options', {number_start_value: field.options?.number_start_value, number_end_value: parseInt(e.target.value)})} 
+                    />
                 </div>
 
             )}

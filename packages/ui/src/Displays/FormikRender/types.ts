@@ -40,6 +40,7 @@ export type BasicField = {
     position?: number;
     placeholder?: string;
     initialValue?: any;
+    options?: object;
     validation?: {
         required?: string;
     }
@@ -95,6 +96,10 @@ export type ToggleField =
 export type NumberField =
     BasicField & {
         type: 'number';
+        options: {
+            number_start_value: number;
+            number_end_value: number;
+        };
         validation: {
             required?: string;
             min_value?: number;

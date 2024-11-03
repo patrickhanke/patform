@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { IconButton, SlideIn } from '@repo/ui';
 import { AppContext, generateGraphQLQuery, useDataHandler } from '@repo/provider';
@@ -13,6 +13,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <Class extends Class
 	const {currentModule} = useContext(AppContext); 
 	const [data, setData] = useState(null as unknown as Class['data']);
 	const [isOpen, setIsOpen] = useState(false);
+	const [secondaryContent, setSecondaryContent] = useState<React.ReactNode>(null);
 	const { loading, refetch } = useQuery(generateGraphQLQuery({
 		type: 'get', 
 		objectName: className, 
@@ -47,6 +48,9 @@ const TableColumnEditField: TableColumnEditFieldComponent = <Class extends Class
 		}
 	}, [isOpen]);
 
+	console.log(secondaryContent);
+	
+
 	return (
 		<>
 			<IconButton
@@ -60,8 +64,17 @@ const TableColumnEditField: TableColumnEditFieldComponent = <Class extends Class
 				cancel={() => setIsOpen(false)} 
 				confirm={() => dataHandler()}
 				disabled={disabled}
+				showSecondaryContent={!!secondaryContent}
+				secondaryContent={secondaryContent}
 			>
-				{currentModule.fields && <Form fields={currentModule.fields} data={data} formSubmitHandler={values => setData(values)} />}
+				{currentModule.fields && (
+					<Form 
+						fields={currentModule.fields} 
+						data={data} 
+						formSubmitHandler={values => setData(values)} 
+						setSecondaryContent={setSecondaryContent}
+					/>
+				)}
 			</SlideIn>
 		</>
 	);

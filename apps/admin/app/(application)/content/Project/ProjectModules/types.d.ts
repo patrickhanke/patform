@@ -15,3 +15,14 @@ export type CreateModuleProps = {
     createModuleHandler: (T: SelectModule['fields']) => Promise<void> ,
     modules: Module[]
 }
+
+export type ModuleOptionsKeys = '/website' | '/persons' | '/website' | '/articles' | '/events' | '/news' | '/categories' | '/images' | '/training-group'
+
+export type ModuleOptionsField ={ 
+    [key in ModuleOptionsKeys]: Omit<Module, 'objectId' | 'project'>
+} 
+   
+
+export type ModuleOptionsFields = {
+    [key in ModuleOptionsKeys]: module_option_fields[key]
+}
