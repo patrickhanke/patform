@@ -7,6 +7,7 @@ import { AppContext, generateGraphQLQuery, useDataHandler } from '@repo/provider
 import { Form } from '@repo/ui';
 import { TableColumnEditFieldComponent, TableColumnEditFieldProps } from './types';
 import { Classes } from '@repo/types';
+import { get } from 'lodash';
 
 const TableColumnEditField: TableColumnEditFieldComponent = <Class extends Classes>({objectId, className}: TableColumnEditFieldProps) => {
 	const {updateData}  = useDataHandler();
@@ -20,8 +21,9 @@ const TableColumnEditField: TableColumnEditFieldComponent = <Class extends Class
 		fields: ['objectId', 'data'] 
 	} ), {
 		variables: { id: objectId },
-		onCompleted: data => {  
-			setData(data.objects.getNews.data);
+		onCompleted: response => {  
+			const newData = get( response, `objects.get${className}.data`, null);
+			setData(newData);
 		},
 		skip: !isOpen
 	});
@@ -47,9 +49,6 @@ const TableColumnEditField: TableColumnEditFieldComponent = <Class extends Class
 			refetch();
 		}
 	}, [isOpen]);
-
-	console.log(secondaryContent);
-	
 
 	return (
 		<>

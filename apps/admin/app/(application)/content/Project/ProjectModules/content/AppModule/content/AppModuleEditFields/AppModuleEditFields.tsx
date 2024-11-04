@@ -33,7 +33,7 @@ const AppModuleEditFields = ({moduleId, initialFields}: AppModuleEditFieldsProps
 
     const findActiveField = useCallback((id: string) => {
         return fields.find(field => field.id === id)
-    }, [fields])
+    }, [fields, editFields, activeField])
     
     return (
         <div>

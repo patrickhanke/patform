@@ -19,7 +19,7 @@ export type FormSubmitStoreProps = {
     useWithDebounce?: boolean
 }
 
-export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select' | 'image' |'file' | 'color' | 'toggle' | 'texteditor' | 'pointer_select'
+export type FieldTypes = 'input' | 'url' | 'number' | 'password' | 'textarea' | 'select' | 'image' |'file' | 'color' | 'toggle' | 'texteditor' | 'pointer_select' | 'persons_select'
 
 export type ValidationTypes = {
     required?: string;
@@ -147,6 +147,11 @@ export type PointerSelectField =
         }
     }
 
+export type PersonsSelectField =
+    BasicField & {
+        type: 'persons_select';
+    }
+
 export type ColorField =
     BasicField & {
         type: 'color';
@@ -156,7 +161,7 @@ export type ColorField =
     }
         
 
-export type Field = StringField | ToggleField | NumberField | ImageField | FileField | SelectField | PointerSelectField | ColorField
+export type Field = StringField | ToggleField | NumberField | ImageField | FileField | SelectField | PointerSelectField | ColorField | PersonsSelectField
 
 export type FieldValidationArray = Array<Field & {validation: ValidationTypes}>
 

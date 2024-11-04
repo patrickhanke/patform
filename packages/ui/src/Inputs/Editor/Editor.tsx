@@ -46,6 +46,8 @@ function Editor({
 }: EditorComponent) {
 	const [debouncedValue, setEditorHtmlContent] = useDebounceValue(content, 1000);
 	const editorRef = useRef(null);
+	console.log(content);
+	
 
 	useOnClickOutside(editorRef, onClickOutside );
 
@@ -107,7 +109,7 @@ function Editor({
 		content,
 		extensions,
 		editable,
-		immediatelyRender: false,
+		// immediatelyRender: false,
 		onUpdate: ({ editor }) => {
 			setEditorHtmlContent(editor.getHTML());
 		}

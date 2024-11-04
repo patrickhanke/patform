@@ -26,6 +26,14 @@ const fieldTypes = [
     {
         value: 'texteditor',
         label: 'Texteditor'
+    },
+    {
+        value: 'persons_select',
+        label: 'Personen wählen'
+    },
+    {
+        value: 'person_select',
+        label: 'Person wählen'
     }
 ] as const;
 

@@ -4,14 +4,14 @@ import { slugify } from '@repo/provider';
 import { InfoBox, Select, StatelessToggle } from '@repo/ui';
 import fieldTypes from '../constants/fieldTypes';
 import { Field } from '@repo/ui';
+import { useDebounceCallback } from 'usehooks-ts';
 
 const AppModuleEditField = ({field, setFields}: AppModuleEditFieldProps) => {
-
     if (!field) {
         return null
     }  
 
-    const changeHandler = useCallback((key: keyof Field, value: Field[keyof Field]) => {
+    const fieldChangeHandler = useCallback((key: keyof Field, value: Field[keyof Field]) => {
         setFields(draft => {
             const index: number = draft.findIndex((fieldToFind: Field) => fieldToFind.id === field.id)
             let fieldCopy: typeof field = {...field}
@@ -21,19 +21,18 @@ const AppModuleEditField = ({field, setFields}: AppModuleEditFieldProps) => {
         })
     }, [field, setFields])
 
+    const changeHandler = useDebounceCallback(fieldChangeHandler, 2000)
+
     return (
         <div>
             <h3>{field.label}</h3>
             <div>
                 <label>Label</label>
-                <input type='text' defaultValue={field.label} onChange={(e) => changeHandler('label', e.target.value)} />
-                <p>
-                    {slugify(field.label)}
-                </p>
+                <input key={field.label} type='text' defaultValue={field.label} onChange={(e) => changeHandler('label', e.target.value)} />
             </div>
             <div>
                 <label>Name</label>
-                <input type='text' defaultValue={field.label} onChange={(e) => changeHandler('name', e.target.value)} />
+                <input key={field.name} type='text' defaultValue={field.name} onChange={(e) => changeHandler('name', e.target.value)} />
                 <InfoBox text='Pfadname des Felds' />
             </div>
             <div>

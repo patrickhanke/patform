@@ -2,7 +2,7 @@ import { TableColumnPersonProps } from '../types';
 import {PersonDisplay} from '@repo/ui';
 import { useContext, useMemo } from 'react';
 import ReactSelect, {components} from 'react-select';
-import { StylesConfig, SingleValue } from 'react-select';
+import { StylesConfig } from 'react-select';
 import { AppContext, generateGraphQLQuery } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import { PersonClass } from '@repo/types';

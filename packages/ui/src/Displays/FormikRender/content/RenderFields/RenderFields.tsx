@@ -12,6 +12,7 @@ import ColorPicker from './components/ColorPicker';
 import ImageUpload from './components/ImageUpload';
 import TextEditor from './components/TextEditor';
 import getPointerValue from './functions/getPointerValue';
+import PersonSelect from './components/PersonSelect';
 
 const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue, isHorizontal, setSecondaryContent}: RenderFieldsType) => 
 	<>
@@ -154,6 +155,16 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 						placeholder={field.placeholder}
 						isHorizontal={isHorizontal}
 						setSecondaryContent={setSecondaryContent}
+					/>
+				}
+				{field.type === 'persons_select' &&
+					<PersonSelect
+						name={field.name}
+						label={field.label}
+						onChange={value => setFieldValue(field.name, value, true)}
+						values={values}
+						placeholder={field.placeholder}
+						isHorizontal={isHorizontal}
 					/>
 				}
 				{getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 

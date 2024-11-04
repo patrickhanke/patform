@@ -18,16 +18,16 @@ const GroupOverview = () => {
 		data:[
 			{id: 'image', type: 'edit_image', label: 'Portrait'},
 			{id: 'title', type: 'edit_string', label: 'Name'},
-			{id: 'description', type: 'edit_string', label: 'Beschreibung'},
 			{id: 'state', type: 'edit_string', label: 'Status'},
-			{id: 'contact', type: 'edit_string', label: 'Kontakt'},
-			{id: 'info', type: 'edit_string', label: 'Info'}
 		],
 		fields: currentModule.fields,
 		className: 'Group',
 		refetch,
 		categories: currentModule?.categories
 	});
+
+	console.log(currentModule);
+	
 
 	return (
 		<Page 
