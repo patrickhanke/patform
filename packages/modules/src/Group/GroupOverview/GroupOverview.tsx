@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import { Modal, Page, Table, useCreateColumns } from '@repo/ui';
+import { Page, Table, useCreateColumns } from '@repo/ui';
 import { AppContext } from '@repo/provider';
 import { GroupClass } from '@repo/types';
 import useFindGroup from './hooks/useFindGroup';
@@ -12,13 +12,12 @@ const GroupOverview = () => {
 
 	const [filters] = useState([]);
 	const {groups, refetch} = useFindGroup({moduleId: currentModule.objectId, filters});
-	const [deleteModal, setDeleteModal] = useState();
 
 	const columns = useCreateColumns<GroupClass>({
 		data:[
 			{id: 'image', type: 'edit_image', label: 'Portrait'},
 			{id: 'title', type: 'edit_string', label: 'Name'},
-			{id: 'state', type: 'edit_string', label: 'Status'},
+			{id: 'state', type: 'edit_string', label: 'Status'}
 		],
 		fields: currentModule.fields,
 		className: 'Group',
@@ -26,8 +25,6 @@ const GroupOverview = () => {
 		categories: currentModule?.categories
 	});
 
-	console.log(currentModule);
-	
 
 	return (
 		<Page 
@@ -40,17 +37,6 @@ const GroupOverview = () => {
 				columns={columns}
 				data={groups || []}
 			/>
-			{/* <Modal 
-				isOpen={deleteModal.isOpen}
-				cancelButtonHandler={() => setDeleteModal(deleteModalInitialValues)}
-				confirmButtonHandler={() => {
-					deleteModal.confirmButtonHandler();
-					setDeleteModal(deleteModalInitialValues);
-				}}
-				header={deleteModal.header}
-			>
-				<p>Sind sich Sicher, dass sie die Person löschen möchten?</p>
-			</Modal> */}
 		</Page>
 	);
 };
