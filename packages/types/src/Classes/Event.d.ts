@@ -18,6 +18,14 @@ export type EventDate = {
     id: string
 }
 
+export type EventTime = {
+    weekday: string,
+    start: string,
+    end: string,
+    place: EventLocation,
+    id: string
+}
+
 export type EventClass = ClassProperties & {
     title: string,
     dates: EventDate[],

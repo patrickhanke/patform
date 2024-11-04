@@ -6,7 +6,7 @@ const useFindGroup: UseFindGroupHook = ({moduleId, filters} ) => {
 	const {loading, data, refetch} = useQuery(generateGraphQLQuery({
 		type: 'find',
 		objectName: 'Group',
-		fields: ['objectId', 'label', 'description', 'title', 'image', 'contact', 'info', 'state', 'fields', 'data']
+		fields: ['objectId', 'label', 'times', 'title', 'image', 'state', 'fields', 'data']
 	}), {
 		variables: {params: paramsHandler({moduleId, filters})},
 		notifyOnNetworkStatusChange: true

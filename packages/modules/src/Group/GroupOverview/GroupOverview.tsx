@@ -17,6 +17,7 @@ const GroupOverview = () => {
 		data:[
 			{id: 'image', type: 'edit_image', label: 'Portrait'},
 			{id: 'title', type: 'edit_string', label: 'Name'},
+			{id: 'times', type: 'edit_times', label: 'Zeiten'},
 			{id: 'state', type: 'edit_string', label: 'Status'}
 		],
 		fields: currentModule.fields,
@@ -24,7 +25,6 @@ const GroupOverview = () => {
 		refetch,
 		categories: currentModule?.categories
 	});
-
 
 	return (
 		<Page 

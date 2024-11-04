@@ -11,7 +11,7 @@ import TableColumnCategory from '../components/TableColumnCategory';
 import TableColumnEditField from '../content/TableColumnEditField';
 import TableColumnDeleteField from '../content/TableColumnDeleteField/TableColumnDeleteField';
 import TableColumnDatesField from '../content/TableColumnDatesField';
-import { ClassState, EventDate } from '@repo/types';
+import { ClassState, EventDate, EventTime } from '@repo/types';
 import TableColumnDate from '../components/TableColumnDate';
 import TableColumnTexteditor from '../components/TableColumnTexteditor';
 import TableColumnGeopoint from '../components/TableColumnGeopoint';
@@ -20,6 +20,7 @@ import TableColumnEditState from '../components/TableColumnEditState';
 import {get} from 'lodash';
 import TableColumnGallery from '../components/TableColumnGallery';
 import TableColumnPerson from '../components/TableColumnPerson';
+import TableColumnTimesField from '../content/TableColumnTimesField';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch, constants }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
@@ -233,6 +234,28 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 									className: className,
 									objectId: row.objectId,
 									updateObject: {[columnElement.id]: {__type: 'Pointer', className: 'Person', objectId: value}}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'edit_times' ) {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnTimesField
+							initialTimes={row[columnElement.id] as EventTime[]}  
+							onChange={async (value: EventTime[]) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: value}
 								});
 								if (refetch) {
 									refetch();

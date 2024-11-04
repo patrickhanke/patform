@@ -87,7 +87,8 @@ export type ColumnDataTypes =
     'edit_state' |
     'gallery' |
     'person' |
-    'edit_person'
+    'edit_person' |
+    'edit_times'
 
 export type ColumnData<Class> = {
     id: keyof Class,

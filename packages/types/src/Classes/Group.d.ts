@@ -7,5 +7,6 @@ export type GroupClass = ClassProperties & {
     contact: string,
     info: string,
     description: string,
-    persons: string[]
+    persons: string[],
+    times: EventTime[]
 }
