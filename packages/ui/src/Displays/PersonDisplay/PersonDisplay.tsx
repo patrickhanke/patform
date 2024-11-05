@@ -3,8 +3,10 @@ import './styles.scss';
 import { PersonDisplayProps } from './types';
 
 const PersonDisplay = ({person, onlyImage=false}: PersonDisplayProps) => {
+	if (!person) {
+		return null;
+	}
 
-	// const worker  = workerData.objects.get_User;
 	return (
 		<div className={'display_person_container'} data-onlyimage={onlyImage} >
 			{person.portrait ? 

@@ -62,10 +62,18 @@ export type TableColumnEditStateProps = {
     options: ClassState[]
 }
 
+type PersonOption = { value: string, label: string, person: PersonClass };
+
 export type TableColumnPersonProps = {
     value: PersonClass,
     isEditable?: boolean,
-    onChange: (person: PersonOption) => Promise<void>,
+    onChange: (person: string) => Promise<void>,
+}
+
+export type TableColumnPersonsProps = {
+    value: string[],
+    isEditable?: boolean,
+    onChange: (person: string[]) => Promise<void>,
 }
 
 export type ColumnDataTypes = 
@@ -88,7 +96,8 @@ export type ColumnDataTypes =
     'gallery' |
     'person' |
     'edit_person' |
-    'edit_times'
+    'edit_persons' |
+    'edit_times' 
 
 export type ColumnData<Class> = {
     id: keyof Class,

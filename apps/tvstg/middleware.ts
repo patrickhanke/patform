@@ -35,6 +35,10 @@ export async function middleware(request: NextRequest) {
 	const headers = new Headers(httpHeaders);
 	let user: User | null = null as User | null;
 
+	if (!token && request.nextUrl.pathname !== '/login') {
+		return NextResponse.rewrite(new URL('/login', request.url));
+	}
+
 	if (token ) {
 		await fetch(`${process.env.SASHIDO_API_URL}users/me`,{ 
 			method: 'GET',
@@ -56,10 +60,6 @@ export async function middleware(request: NextRequest) {
 			});
 		}
 	const response = NextResponse.next();
-
-	if (!token && request.nextUrl.pathname !== '/login') {
-		return NextResponse.rewrite(new URL('/login', request.url));
-	}
 	
 	if (loggedIn) {
 		response.cookies.set('patform_logged_in', 'true');

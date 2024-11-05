@@ -1,0 +1,78 @@
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+@use '@repo/styles/buttons';
+
+.person_display_container {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xs);
+}
+
+.person_interface_container {
+    @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: sizes.$xs);
+}
+
+.display_person_container {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    width: 100%;
+    border: none;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color .2s ease;
+    padding-left: 0;
+}
+
+.display_person_container[data-isabsent="true"] {
+    cursor: default;
+}
+
+.display_person_container[data-isselected="true"] {
+    background-color: colors.$green_light;
+    color: green;
+    &:hover {
+        background-color: colors.$green;
+        // color: colors.$white;
+    }
+}
+
+.display_person_container[data-isselected="false"] {
+    background-color: colors.$lightest;
+    &:hover {
+        background-color: colors.$light;
+    }
+}
+
+.display_person_container {
+    &:disabled {
+        background-color: transparent;
+        color: colors.$grey;
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}
+
+.display_person_container_pers_data {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xs);
+    font-family: Roboto, sans-serif;
+    font-weight: 500;
+    width: 100%;
+}
+
+.display_person_image_container {
+    height: 24px;
+    width: 24px;
+    position: relative;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'xs' );
+    overflow: hidden;
+    background-color: colors.$grey;
+}
+
+.display_person_delete_button {
+    height: 18px;
+    width: 18px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: colors.$grey;
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { CreateColumnHookProps, ColumnClasses } from '../types';
+import { CreateColumnHookProps, ColumnClasses, PersonOption } from '../types';
 import { ColumnDef } from '@tanstack/react-table';
 import TableColumnString from '../components/TableColumnString';
 import { useDataHandler } from '@repo/provider';
@@ -21,6 +21,7 @@ import {get} from 'lodash';
 import TableColumnGallery from '../components/TableColumnGallery';
 import TableColumnPerson from '../components/TableColumnPerson';
 import TableColumnTimesField from '../content/TableColumnTimesField';
+import TableColumnPersons from '../components/TableColumnPersons';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch, constants }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
@@ -234,6 +235,31 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 									className: className,
 									objectId: row.objectId,
 									updateObject: {[columnElement.id]: {__type: 'Pointer', className: 'Person', objectId: value}}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'edit_persons') {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnPersons
+							isEditable={columnElement.type === 'edit_person' || columnElement.type === 'edit_persons' ?  true : false}
+							value={row[columnElement.id] || []}  
+							onChange={async (values: string[]) => {
+								console.log(values);
+								
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: values}
 								});
 								if (refetch) {
 									refetch();
