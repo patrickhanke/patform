@@ -1,9 +1,1 @@
-import React from 'react';
-
-const Dashboard = () => {
-	return (
-		<div>Dashboard</div>
-	);
-};
-
-export default Dashboard;
+export {Dashboard as default} from '@repo/modules'

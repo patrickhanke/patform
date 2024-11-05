@@ -8,3 +8,4 @@ export * from './Website';
 export * from './Location';
 export * from './Articles';
 export * from './Group';
+export * from './Dashboard';
