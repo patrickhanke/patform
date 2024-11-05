@@ -1,39 +1,53 @@
 'use client';
 
-import React, { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { PersonsInterfaceComponent } from './types';
-import { PersonClass } from '@repo/types';
+import { Filter, PersonClass } from '@repo/types';
 import './styles.scss';
 import { AppContext } from '@repo/provider';
 import useFindPerson from './hooks/useFindPerson';
 import DisplayPersonsInterface from './components/DisplayPersonInterface';
 import { IconButton, PersonDisplay, SlideIn } from '@repo/ui';
-import { cloneDeep, set } from 'lodash';
+import { cloneDeep } from 'lodash';
+import sortPersonsBySelected from './functions/sortPersonsBySelected';
 
 const PersonsInterface = ({persons, onChange, nextDate}: PersonsInterfaceComponent) => {
 	const {modules} = useContext(AppContext);
-	const {persons: personData} = useFindPerson({moduleId: modules.find(module => module.path === '/persons')?.objectId, filters: []});
+	const [filter, setFilter] = useState<Filter[]>([]);
+	const {persons: personData, filteredData} = useFindPerson({moduleId: modules.find(module => module.path === '/persons')?.objectId, filters: filter});
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedPersons, setSelectedPersons] = useState<string[]>(persons);
+	
 	const changeHandler = useCallback((type: 'add' | 'remove' , id: string) => {
-		const valueCopy = cloneDeep(persons);
+		const valueCopy = cloneDeep(selectedPersons);
 		if (type === 'add') {
 			setSelectedPersons([...valueCopy, id]);
 		} else {
 			setSelectedPersons(valueCopy.filter(personId => personId !== id));
 		}
+	}, [persons, selectedPersons]);
+
+	const displayPersons = useMemo(() => {
+		const dataToUse = filter.length > 0 && filteredData ? filteredData : personData;
+		const sortedPersons = sortPersonsBySelected(dataToUse, persons);
+		const sortedPersonsWithSelected =  sortedPersons.map(ps => ({...ps, isSelected: selectedPersons.includes(ps.objectId)}));
+		return sortedPersonsWithSelected;
+	}, [personData, persons, filteredData, filter]);
+
+	useEffect(() => {
+		setSelectedPersons(persons);
 	}, [persons]);
-    
+
 	return (
 		<div>
 			<div className='person_display_container'>
-				{persons.map(person => (
+				{persons.length < 5 ? persons.map(person => (
 					<PersonDisplay 
 						key={person} 
 						person={personData.find((ps: PersonClass) => ps.objectId === person)} 
-						onlyImage={true}
+						onlyImage={persons.length > 1}
 					/>
-				))}
+				)): <div>{persons.length} Personen</div>}
 				<IconButton 
 					icon='edit' 
 					onClick={() => setIsOpen(true)}
@@ -42,15 +56,36 @@ const PersonsInterface = ({persons, onChange, nextDate}: PersonsInterfaceCompone
 			
 			<SlideIn 
 				isOpen={isOpen} 
-				cancel={() => setIsOpen(false)} 
+				cancel={() => {
+					setFilter([]);
+					setIsOpen(false);
+				}} 
 				confirm={() => {
 					onChange(selectedPersons);
+					setFilter([]);
 					setIsOpen(false);
+
 				}}
 				header='Personen auswählen'
 			>
+				<div>
+					<input 
+						type='text' 
+						placeholder='Suche' 
+						onChange={(e) => {
+							const value = e.target.value;
+							if (value.length < 3) {
+								setFilter([]);
+								return;
+							};
+							// setSearchValue(value);
+							setFilter([{key: 'label',  value: value, operator: '_regex', id: 'label'}]);
+						}} 
+					/>
+
+				</div>
 				<div className='person_interface_container'>
-					{personData.map((person: PersonClass) => (
+					{displayPersons.map((person: PersonClass) => (
 						<DisplayPersonsInterface
 							key={person.objectId}
 							person={person}

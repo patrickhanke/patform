@@ -10,7 +10,7 @@ export type PageState = {
     disbaled?: boolean
 }
 
-export type FilterOperator = '_eq' | '_ne' | '_lt' | '_lte' | '_gt' | '_gte' | '_in' | '_nin' 
+export type FilterOperator = '_eq' | '_ne' | '_lt' | '_lte' | '_gt' | '_gte' | '_in' | '_nin' | '_regex' 
 
 export type Filter = {
     key: string,

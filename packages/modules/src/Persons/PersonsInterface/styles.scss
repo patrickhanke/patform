@@ -4,45 +4,41 @@
 @use '@repo/styles/buttons';
 
 .person_display_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xs);
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xxs);
 }
 
 .person_interface_container {
     @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: sizes.$xs);
 }
 
-.display_person_container {
+.display_person_interface_container {
     @include layout.flexbox($direction: row, $justify: space-between, $align: center);
     width: 100%;
     border: none;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    border-radius: map-get($map: sizes.$border_radius, $key: 'xs');
+    padding: map-get($map: sizes.$padding, $key: 'xs');
     cursor: pointer;
     background-color: transparent;
     transition: background-color .2s ease;
-    padding-left: 0;
 }
 
-.display_person_container[data-isabsent="true"] {
-    cursor: default;
-}
-
-.display_person_container[data-isselected="true"] {
-    background-color: colors.$green_light;
-    color: green;
+.display_person_interface_container[data-isselected="true"] {
+    background-color: colors.$primary_light;
+    color: colors.$dark;
     &:hover {
-        background-color: colors.$green;
+        background-color: colors.$primary_light;
         // color: colors.$white;
     }
 }
 
-.display_person_container[data-isselected="false"] {
+.display_person_interface_container[data-isselected="false"] {
     background-color: colors.$lightest;
     &:hover {
-        background-color: colors.$light;
+        background-color: colors.$primary_light;
     }
 }
 
-.display_person_container {
+.display_person_interface_container {
     &:disabled {
         background-color: transparent;
         color: colors.$grey;
@@ -52,23 +48,22 @@
     }
 }
 
-.display_person_container_pers_data {
+.display_person_interface_container_pers_data {
     @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xs);
-    font-family: Roboto, sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     width: 100%;
 }
 
-.display_person_image_container {
+.display_person_interface_image_container {
     height: 24px;
     width: 24px;
     position: relative;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'xs' );
+    border-radius: 50%;
     overflow: hidden;
     background-color: colors.$grey;
 }
 
-.display_person_delete_button {
+.display_person_interface_delete_button {
     height: 18px;
     width: 18px;
     position: relative;

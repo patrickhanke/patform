@@ -25,6 +25,9 @@ export async function middleware(request: NextRequest) {
 		loggedIn = false;
 	} 
 	console.log(token, 'token');
+	console.log(loggedIn, 'log');
+	console.log(process.env.SASHIDO_API_URL, 'url');
+
 	
 	const httpHeaders = {
 		'X-Parse-Session-Token': token || '',

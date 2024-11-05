@@ -6,7 +6,6 @@ const PersonDisplay = ({person, onlyImage=false}: PersonDisplayProps) => {
 	if (!person) {
 		return null;
 	}
-
 	return (
 		<div className={'display_person_container'} data-onlyimage={onlyImage} >
 			{person.portrait ? 
@@ -21,9 +20,13 @@ const PersonDisplay = ({person, onlyImage=false}: PersonDisplayProps) => {
 				:
 				<div className={'display_person_no_image'} data-onlyimage={onlyImage} >
 					<div className={'display_person_no_image_placeholder'} />
+					<div className='display_person_no_image_character' >
+						{person.label.split(' ').map(word => word[0]).join('')}
+					</div>
+
 				</div>
 			}
-			<div>
+			<div className='display_person_label' data-onlyimage={onlyImage}>
 				{`${person.label}`}
 			</div>
 		</div>

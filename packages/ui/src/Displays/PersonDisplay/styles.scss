@@ -78,5 +78,16 @@
 
 .display_person_no_image_character {
     position: relative;
-    font-size: map-get($map: sizes.$font_size, $key: 'xs');
+    z-index: 3;
+    font-size: map-get($map: sizes.$font_size, $key: 'xxs');
+};
+
+.display_person_label {
+    display: inline-block;
+    word-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.display_person_label[data-onlyimage="true"] {
+    display: none;
 };

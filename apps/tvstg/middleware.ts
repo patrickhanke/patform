@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 	
-	const token = request.cookies.get('patform_token')?.value as string;
+	const token = request.cookies.get('patform_token')?.value || '1234' as string;
 	const loggedInCookie = request.cookies.get('patform_logged_in')?.value || '';
 	let loggedIn = loggedInCookie ==='true'|| false;
 
@@ -25,7 +25,9 @@ export async function middleware(request: NextRequest) {
 		loggedIn = false;
 	} 
 	console.log(token, 'token');
-	
+	console.log(loggedIn, 'log');
+	console.log(request.nextUrl.pathname, 'pathname');
+
 	const httpHeaders = {
 		'X-Parse-Session-Token': token || '',
 		'X-Parse-Application-Id': process.env.SASHIDO_APP_ID || '',
@@ -36,7 +38,7 @@ export async function middleware(request: NextRequest) {
 	let user: User | null = null as User | null;
 
 	if (!token && request.nextUrl.pathname !== '/login') {
-		return NextResponse.rewrite(new URL('/login', request.url));
+		return NextResponse.redirect(new URL('/login', request.url));
 	}
 
 	if (token ) {

@@ -4,7 +4,7 @@ import '@repo/styles/global';
 import '@repo/styles/fonts';
 
 export const metadata = {
-	title: 'Saaman Testportal',
+	title: 'TV Freiburg St. Georgen',
 	description: 'PH'
 };
 

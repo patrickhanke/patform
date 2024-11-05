@@ -8,13 +8,24 @@ const useFindPerson: UseFindPersonsHook = ({moduleId, filters} ) => {
 		objectName: 'Person',
 		fields: ['objectId', 'label', 'portrait']
 	}), {
-		variables: {params: paramsHandler({moduleId, filters})},
+		variables: {params: paramsHandler({moduleId})},
 		notifyOnNetworkStatusChange: true,
 		skip: !moduleId
 	});
 
+	const {data: filteredData} = useQuery(generateGraphQLQuery({
+		type: 'find',
+		objectName: 'Person',
+		fields: ['objectId', 'label', 'portrait']
+	}), {
+		variables: {params: paramsHandler({moduleId, filters})},
+		notifyOnNetworkStatusChange: true,
+		skip: !moduleId || filters.length === 0
+	});
+
 	return ({
 		loading, 
+		filteredData: filteredData ? filteredData.objects.findPerson.results : [],
 		persons: data ? data.objects.findPerson.results : [],
 		refetch
 	});
