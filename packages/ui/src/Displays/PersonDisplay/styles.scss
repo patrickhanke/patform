@@ -36,13 +36,8 @@
 };
 
 .display_person_image_container[data-onlyimage="true"] {
-    border: 2px solid #fff;
     width: 24px;
     height: 24px;
-};
-
-.display_person_image_container[data-isabsent="true"] {
-    border: 2px solid colors.$red_shaded;
 };
 
 .display_person_delete_button {
@@ -64,7 +59,6 @@
 };
 
 .display_person_no_image[data-onlyimage="true"] {
-    border: 2px solid #fff;
     width: 24px;
     height: 24px;
 };

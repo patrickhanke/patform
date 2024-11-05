@@ -1,4 +1,4 @@
-import { CreateButton, IconButton, SlideIn } from '@repo/ui';
+import { CreateButton, SlideIn } from '@repo/ui';
 import { useCallback, useState } from 'react';
 import { EventTime } from '@repo/types';
 import { useImmer } from 'use-immer';
@@ -30,11 +30,10 @@ const TableColumnTimesField = ({initialTimes, onChange}: TableColumnTimesFieldPr
 
 	return (
 		<>
-			<div className="button_container">
-				<div>
+			<div>
+				<button type='button' className='edit_text' onClick={() => setEditDates(!editDates)}>
 					{times.map(time => <div key={`${time.weekday}_${time.start}`}>{`${getWeekday(time.weekday)?.short} - ${time.start}-${time.end}` }</div>)}
-				</div>
-				<IconButton icon='edit' onClick={() => setEditDates(!editDates)} />
+				</button>
 			</div>
 			<SlideIn
 				cancel={() => setEditDates(false)}

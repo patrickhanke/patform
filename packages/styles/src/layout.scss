@@ -192,3 +192,23 @@ $shadow_large_regular_hover: 4px 4px 12px -8px colors.$dark;
     position: relative;
 }
 
+.edit_text {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
+    font-size: map-get($map: sizes.$font_size, $key: 'sm' );
+    text-wrap: nowrap;
+    white-space: nowrap;
+    &:hover {
+        color: colors.$primary;
+    }
+}
+
+.horizontal_container {
+	@include flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
+    width: 100%;
+}
+

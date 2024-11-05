@@ -2,10 +2,9 @@
 
 import { AppContext, getImageUrl } from '@repo/provider';
 import { TableColumnImageProps } from '../types';
-import { Modal } from '../../../Overlays';
+import { Modal, IconButton } from '@repo/ui';
 import {useContext, useState} from 'react';
 import { ImageUploader } from '@repo/modules';
-import { IconButton } from '../../../Buttons';
 import '../styles.scss';
 
 const TableColumnImage = ({ url, isEditable = false, onChange, maxFileCount }: TableColumnImageProps) => {
@@ -15,10 +14,12 @@ const TableColumnImage = ({ url, isEditable = false, onChange, maxFileCount }: T
 	
 	return (
 		<>
-			<div className='button_container'>
-				{url ?
-					<img src={getImageUrl({filePath: url, width: 60})} /> : <div className='table_columns_image_placeholder' />
-				}
+			<div className='horizontal_container'>
+				<div className='table_columns_image_container'>
+					{url ?
+						<img src={getImageUrl({filePath: url, height: 30})} /> : <div className='table_columns_image_placeholder' />
+					}
+				</div>
 				<div className='table_vertical_container'>
 					{isEditable &&
 						<IconButton icon='edit' onClick={() => setIsOpen(true)} />

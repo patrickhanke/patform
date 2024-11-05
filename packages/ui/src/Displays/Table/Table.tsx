@@ -86,7 +86,7 @@ const Table = ({data, columns}: TableTypes) => {
 	if (!data || data.length === 0) return null;
 
 	return (
-		<div className='content_element'>
+		<div className='content_element no_padding'>
 			<div className={clsx( 'table_container')}  >
 				<table>
 					<thead>

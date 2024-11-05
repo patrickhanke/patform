@@ -2,34 +2,24 @@
 
 import { TableColumnTextfieldProps } from '../types';
 import {useState} from 'react';
-import { IconButton } from '../../../Buttons';
 import '../styles.scss';
 import { Editor, Modal } from '@repo/ui';
+import {convert} from 'html-to-text';
 
-const TableColumnTexteditor = ({value, isEditable = true, onChange }: TableColumnTextfieldProps) => {
+const TableColumnTexteditor = ({value, onChange }: TableColumnTextfieldProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [string, setString] = useState(value);
 
 	return (
 		<>
 			<div className='table_column_textfield_container'>
-				{value ? <div style={{maxHeight: '42px', overflow: 'hidden'}} dangerouslySetInnerHTML={{__html: value}} /> : '-'}
-
-				{isEditable && 
-				<>
-					{!isOpen ? 
-						<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />
-						:
-						<IconButton
-							icon='check'
-							onClick={() => {
-								setIsOpen(!isOpen);
-								onChange(string);
-							}}
-						/>
-					}
-				</>
-				}
+				<button 
+					className='edit_text'
+					type='button'
+					onClick={() => setIsOpen(!isOpen)}
+				> 
+					{value && value.length > 0 ? convert(value).trim().split(/\s+/).length : '-'} Wörter
+				</button>
 			</div>
 			<Modal 
 				isOpen={isOpen}

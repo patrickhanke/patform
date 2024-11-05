@@ -5,6 +5,12 @@
 
 .person_display_container {
     @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xxs);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    &:hover {
+        background-color: colors.$light;
+    }
 }
 
 .person_interface_container {

@@ -39,6 +39,20 @@ const getImageUrl = ({filePath, height, width}: {filePath: string, height?: numb
 		});
 	}
 
+	if (!width && height) {
+		url = Bytescale.UrlBuilder.url({
+			accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
+			filePath,
+			options: {
+				transformation: 'image',
+				transformationParams: {
+					h: height,
+					fit: height ? 'height' : 'max'
+				}
+			}
+		});
+	}
+
 	return url;
 
 };

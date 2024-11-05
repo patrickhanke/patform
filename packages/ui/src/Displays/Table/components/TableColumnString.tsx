@@ -19,14 +19,14 @@ const TableColumnString = ({value, isEditable = false, onChange }: TableColumnSt
 						onChange={e => setString(e.target.value)}
 					/> 
 					: 
-					value ? value : '-'
+					<button type='button' className='edit_text' onClick={() => setIsOpen(!isOpen)}>
+						{value ? value : '-'}
+					</button>
 				}
 
 				{isEditable &&  
 					<>
-						{!isOpen ? 
-							<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />
-							:
+						{isOpen &&
 							<div className='button_container'>
 								<IconButton
 									icon='cancel'

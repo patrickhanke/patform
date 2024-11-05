@@ -15,7 +15,7 @@
 }
 
 .icon_button_container[data-isdark="false"] {
-    border: 1px solid colors.$darkgrey;
+    border: none;
     color: colors.$darkgrey;
     background-color: transparent;
     &:hover {

@@ -2,7 +2,7 @@
 
 import { AppContext, getImageUrl } from '@repo/provider';
 import { TableColumnGalleryProps } from '../types';
-import { Modal, IconButton } from '@repo/ui';
+import { Modal } from '@repo/ui';
 import {useContext, useState} from 'react';
 import { ImageUploader } from '@repo/modules';
 import '../styles.scss';
@@ -15,11 +15,14 @@ const TableColumnGallery = ({ value = [], onChange, maxFileCount = 0 }: TableCol
 	
 	return (
 		<>
-			<div className='button_container'>
-				<p style={{whiteSpace: 'no-wrap'}}>
+			<div>
+				<button 
+					className='edit_text' 
+					type='button'
+					onClick={() => setIsOpen(!isOpen)}
+				>
 					{isArray(value) ? value?.length : '0'} Bilder
-				</p>
-				<IconButton icon='edit' onClick={() => setIsOpen(!isOpen)} />
+				</button>
 			</div>
 			<Modal 
 				isOpen={isOpen}

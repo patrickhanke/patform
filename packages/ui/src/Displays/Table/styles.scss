@@ -29,6 +29,7 @@
         font-family: 'Open Sans', sans-serif;
         font-weight: 500;
         font-size: map-get($map: sizes.$font_size, $key: 'md' );
+        border-bottom: 1px solid colors.$lightgrey;
     }
         
     th {
@@ -37,6 +38,7 @@
         font-weight: 600;
         text-align: left;
         border-bottom: 1px solid colors.$lightgrey;
+        background-color: colors.$light;
         // border-right: 1px solid colors.$lightgrey;
         padding: map-get($map: sizes.$padding, $key: 'sm' );
     }
@@ -52,8 +54,6 @@
     }
     td {
         padding: map-get($map: sizes.$padding, $key: 'sm' );
-        // border-bottom: 1px solid colors.$lightgrey;
-        // border-right: 1px solid colors.$lightgrey;
     }
     
     td:last-child {
@@ -76,28 +76,31 @@
 
 .table_columns_string_container {
     @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
-    width: 180px;
     input {
         width: 120px;
     }
+}
+
+.table_columns_image_container {
+    width: 54px;
+    height: 30px;
+    overflow: hidden;
+    border-radius: 3px;
 }
 
 .table_columns_image_placeholder {
-    width: 60px;
-    height: 40px;
+    width: fit-content;
+    height: 30px;
     background-color: colors.$lightgrey;
 }
 
-
-// componets
-
 .table_column_textfield_container {
     @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
-    width: 180px;
     input {
         width: 120px;
     }
 }
+
 .table_column_textfield_textarea_container {
     width: 100%;
     textarea {

@@ -30,9 +30,9 @@ const TableColumnDatesField = ({initialDates, onChange}: TableColumnDatesFieldPr
 	return (
 		<>
 			<div className="button_container">
-				<div>
+				<button className='edit_text'>
 					{dates.length} {dates.length === 1 ? 'Termin' : 'Termine'} 
-				</div>
+				</button>
 				<IconButton icon='edit' onClick={() => setEditDates(!editDates)} />
 			</div>
 			<SlideIn

@@ -10,6 +10,7 @@ import DisplayPersonsInterface from './components/DisplayPersonInterface';
 import { IconButton, PersonDisplay, SlideIn } from '@repo/ui';
 import { cloneDeep } from 'lodash';
 import sortPersonsBySelected from './functions/sortPersonsBySelected';
+import { type } from '../../../../provider/src/Apollo/index';
 
 const PersonsInterface = ({persons, onChange, nextDate}: PersonsInterfaceComponent) => {
 	const {modules} = useContext(AppContext);
@@ -40,7 +41,11 @@ const PersonsInterface = ({persons, onChange, nextDate}: PersonsInterfaceCompone
 
 	return (
 		<div>
-			<div className='person_display_container'>
+			<button 
+				type='button'
+				onClick={() => setIsOpen(true)}
+				className='person_display_container'
+			>
 				{persons.length < 5 ? persons.map(person => (
 					<PersonDisplay 
 						key={person} 
@@ -48,11 +53,7 @@ const PersonsInterface = ({persons, onChange, nextDate}: PersonsInterfaceCompone
 						onlyImage={persons.length > 1}
 					/>
 				)): <div>{persons.length} Personen</div>}
-				<IconButton 
-					icon='edit' 
-					onClick={() => setIsOpen(true)}
-				/>
-			</div>
+			</button>
 			
 			<SlideIn 
 				isOpen={isOpen} 
