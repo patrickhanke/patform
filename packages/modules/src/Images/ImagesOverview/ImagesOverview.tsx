@@ -52,6 +52,7 @@ const ImagesOverview = () => {
 				filters={filters} 
 				setFilters={setFilters} 
 				initialFilters={[]} 
+				fields={[]}
 			/>
 			<Separator size='xs' noLine />
 			<Table 
@@ -62,7 +63,7 @@ const ImagesOverview = () => {
 				isOpen={uploadImages}
 				buttonDisabled={[false, newImages.length === 0]}
 				cancelButtonHandler={() => setUploadImages(false)}
-				confirmButtonHandler={async () =>{ 
+				confirmButtonHandler={async () => { 
 					await imageUploadHandler(newImages);
 					setUploadImages(false);
 				}}

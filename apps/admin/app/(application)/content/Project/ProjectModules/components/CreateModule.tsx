@@ -14,7 +14,7 @@ const CreateModule: React.FC<CreateModuleProps> = ({createModule, setCreateModul
         value: moduleFieldKey,
         label: module_option_fields[moduleFieldKey].name,
         fields: module_option_fields[moduleFieldKey],
-        disabled: modules.find((module) => module.path === module_option_fields[moduleFieldKey].path) ? true : false
+        isDisabled: modules.find((module) => module.path === module_option_fields[moduleFieldKey].path) ? true : false
     })), []);
 
     const [loading, setLoading] = useState(false);

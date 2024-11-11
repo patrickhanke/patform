@@ -1,6 +1,6 @@
 import * as Bytescale from '@bytescale/sdk';
 
-const getImageUrl = ({filePath, height, width}: {filePath: string, height?: number, width?: number}) => {
+export const getImageUrl = ({filePath, height, width}: {filePath: string, height?: number, width?: number}) => {
 	let url = '';
 	if (!width && !height) {
 		url = Bytescale.UrlBuilder.url({
@@ -57,4 +57,10 @@ const getImageUrl = ({filePath, height, width}: {filePath: string, height?: numb
 
 };
 
-export default getImageUrl;
+export const getFileUrl = (filePath: string) => {
+	return Bytescale.UrlBuilder.url({
+		accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
+		filePath
+	});
+
+};

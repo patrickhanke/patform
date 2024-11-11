@@ -11,7 +11,7 @@ import { CgProfile, CgWebsite } from 'react-icons/cg';
 import { BiLabel, BiMessageSquareError, BiSolidTrashAlt } from 'react-icons/bi';
 import { BsHousesFill } from 'react-icons/bs';
 import { FaShuttleVan } from 'react-icons/fa';
-import { GrTask } from 'react-icons/gr';
+import { GrTask, GrDownload } from 'react-icons/gr';
 import { ImImages } from 'react-icons/im';
 import { CiLocationOn } from 'react-icons/ci';
 
@@ -114,6 +114,9 @@ const Icons = ({icon}: {icon: string}) => {
 	}
 	if (icon === 'group') {
 		return <FaUsers />;
+	}
+	if (icon === 'downloads') {
+		return <GrDownload />;
 	}
 
 	return null;

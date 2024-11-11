@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { module_option_fields } from './constants/module_option_fields'
 
 export type SelectModule = {
-    value: keyof typeof module_option_fields, 
+    value: typeof module_option_fields, 
     label: string,
     fields: module_option_fields[keyof typeof module_option_fields],
     disabled: boolean
@@ -16,7 +16,17 @@ export type CreateModuleProps = {
     modules: Module[]
 }
 
-export type ModuleOptionsKeys = '/website' | '/persons' | '/website' | '/articles' | '/events' | '/news' | '/categories' | '/images' | '/training-group'
+export type ModuleOptionsKeys = 
+    '/website' | 
+    '/persons' | 
+    '/website' | 
+    '/articles' | 
+    '/events' | 
+    '/news' | 
+    '/categories' | 
+    '/images' | 
+    '/training-group' |
+    '/downloads'
 
 export type ModuleOptionsField ={ 
     [key in ModuleOptionsKeys]: Omit<Module, 'objectId' | 'project'>

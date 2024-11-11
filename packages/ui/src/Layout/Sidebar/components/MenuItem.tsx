@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import styles from '../Sidebar.module.scss';
 import {IoMdArrowDropdown} from 'react-icons/io';
 import { MenuItemProps, MenuItemType } from '../types';
@@ -58,7 +58,6 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemP
 						<Icons icon={icon} />
 						{label}
 					</Link>
-					
 				}
 			</li>
 			<div className={styles.submenu_container} data-showsubmenu={showSubMenu}>

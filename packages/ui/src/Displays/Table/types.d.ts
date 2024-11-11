@@ -97,7 +97,9 @@ export type ColumnDataTypes =
     'person' |
     'edit_person' |
     'edit_persons' |
-    'edit_times' 
+    'edit_times' |
+    'file' |
+    'files'
 
 export type ColumnData<Class> = {
     id: keyof Class,

@@ -9,3 +9,4 @@ export * from './Location';
 export * from './Articles';
 export * from './Group';
 export * from './Dashboard';
+export * from './Downloads';

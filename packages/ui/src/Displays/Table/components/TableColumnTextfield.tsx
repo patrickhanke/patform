@@ -45,7 +45,6 @@ const TableColumnTextfield = ({value, isEditable = false, onChange }: TableColum
 					<textarea
 						defaultValue={value}
 						onChange={e => setString(e.target.value)}
-
 					/>
 				</div>
 			</Modal>

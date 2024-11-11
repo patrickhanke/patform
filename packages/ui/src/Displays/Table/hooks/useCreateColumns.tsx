@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { CreateColumnHookProps, ColumnClasses, PersonOption } from '../types';
+import { CreateColumnHookProps, ColumnClasses } from '../types';
 import { ColumnDef } from '@tanstack/react-table';
 import TableColumnString from '../components/TableColumnString';
 import { useDataHandler } from '@repo/provider';
@@ -22,6 +22,7 @@ import TableColumnGallery from '../components/TableColumnGallery';
 import TableColumnPerson from '../components/TableColumnPerson';
 import TableColumnTimesField from '../content/TableColumnTimesField';
 import TableColumnPersons from '../components/TableColumnPersons';
+import TableColumnFiles from '../components/TableColumnFiles';
 
 const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch, constants }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
@@ -287,6 +288,29 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 									refetch();
 								}
 							}}
+						/>,
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: info => info.getValue(),
+					footer: info => info.column.id
+				} as  ColumnDef<T>);
+			}
+			if (columnElement.type === 'file' || columnElement.type === 'files') {
+				columnArray.push({
+					accessorFn: row => 
+						<TableColumnFiles
+							url={row[columnElement.id] as string}  
+							onChange={async (value: string | string[]) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {[columnElement.id]: value}
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+							maxFileCount={columnElement.type === 'file' ? 1 : 10}
 						/>,
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,

@@ -4,7 +4,7 @@ import Toggle from './components/Toggle';
 import getSelectValue from './functions/getSelectValue';
 import { RenderFieldsType } from './types';
 import './styles.scss';
-import { Select } from '../../../../Inputs';
+import { FileUploader, Select } from '@repo/ui';
 import { Field } from '../../types';
 import Input from './components/Input';
 import TextArea from './components/TextArea';
@@ -63,29 +63,18 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 					<div>
 						<FastField name={field.name}>
 							{({
-								field: fieldValues
+								field: fieldValues 
 								// form: { touched, errors },  also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
 								// meta
 							}: FastFieldProps) => (
-								<div className={isHorizontal ? 'form_horizontal_container' : ''}>
-									<label htmlFor={fieldValues.name}>{fieldValues.name} </label>
-									<input 
-										type='upload'
-										onChange={value => setFieldValue(fieldValues.name, value, true)}
-										value={fieldValues.value}
-										key={fieldValues.name}
-									/>
-									{!fieldValues.value && !getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 
-										<div className={'warning_message'}>{getFieldMeta(field.name).error}</div>
-										: 
-										null
-									}
-									{getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 
-										<div className={'error_message'}>{getFieldMeta(field.name).error}</div>
-										: 
-										null
-									}
-								</div>
+								<FileUploader
+									type={field.type}
+									value={fieldValues}
+									returnType={field.type === 'file' ? 'string' : 'array'}
+									field={field}
+									onChange={newValues => setFieldValue(field.name, newValues, true)}
+									setSecondaryContent={setSecondaryContent}
+								/>
 							)}
 						</FastField>
 					</div>

@@ -100,7 +100,11 @@ export const module_option_fields: ModuleOptionsField = {
               type: "number",
               name: "data.start_age",
               validation: {},
-              position: 1
+              position: 1,
+              options: {
+                number_start_value: 1,
+                number_end_value: 100
+              }
             },
             {
               id: v4(),
@@ -108,10 +112,26 @@ export const module_option_fields: ModuleOptionsField = {
               type: "number",
               name: "data.end_age",
               validation: {},
-              position: 1
+              position: 1,
+              options: {
+                number_start_value: 1,
+                number_end_value: 100
+              }
             }
         ],
         position: 2, 
+        categories: [],
+        connected_class: 'Group',
+    },
+    '/downloads': {
+        path: '/downloads',
+        name: 'Downloads',
+        icon: 'downloads',
+        settings: {
+            categories: [],
+          },
+        fields: [],
+        position: 9, 
         categories: [],
         connected_class: 'Group',
     },
