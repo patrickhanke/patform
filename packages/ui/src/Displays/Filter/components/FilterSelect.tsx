@@ -9,6 +9,7 @@ const FilterSelect = ({category, filters, setFilters}: FilterSelectProps) => {
 	const {data, loading} = useQuery(generateGraphQLQuery({type: 'find', objectName: category.connected_class,fields: [category.key, 'label', 'objectId']}));
 	
 	if (loading) return <Loader width='180px' height='30px' />;
+	
 	if (data) {
 		const filter = filters.find(filter => filter.key === 'categories');
 		const options = get( data, `objects.find${category.connected_class}.results`, []).map((result: any) => ({label: result.label, value: result.objectId}));

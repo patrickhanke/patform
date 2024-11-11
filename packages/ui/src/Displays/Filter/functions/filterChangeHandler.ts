@@ -8,6 +8,7 @@ const filterChangeHandler = (
 	filters: Filter[],
 	id?: string) => {	
 	const filterIndex = filters.findIndex(filter => filter.key === key);
+	
 	if (filterIndex === -1) {
 		const filterCopy = [...filters];
 		filterCopy.push({
