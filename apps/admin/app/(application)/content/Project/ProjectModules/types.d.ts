@@ -26,7 +26,8 @@ export type ModuleOptionsKeys =
     '/categories' | 
     '/images' | 
     '/training-group' |
-    '/downloads'
+    '/downloads' |
+    '/forms'
 
 export type ModuleOptionsField ={ 
     [key in ModuleOptionsKeys]: Omit<Module, 'objectId' | 'project'>

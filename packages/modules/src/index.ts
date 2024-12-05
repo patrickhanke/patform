@@ -1,4 +1,4 @@
-export * from './FormModule';
+export * from './Form';
 export * from './Images';
 export * from './Persons';
 export * from './Categories';

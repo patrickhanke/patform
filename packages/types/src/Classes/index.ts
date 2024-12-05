@@ -10,3 +10,4 @@ export type * from './Location';
 export type * from './Article';
 export type * from './Group';
 export type * from './Download';
+export type * from './Form';

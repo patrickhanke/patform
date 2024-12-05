@@ -133,6 +133,18 @@ export const module_option_fields: ModuleOptionsField = {
         fields: [],
         position: 9, 
         categories: [],
-        connected_class: 'Group',
+        connected_class: 'Download',
+    },
+    '/forms': {
+        path: '/forms',
+        name: 'Formulare',
+        icon: 'forms',
+        settings: {
+            categories: [],
+          },
+        fields: [],
+        position: 10, 
+        categories: [],
+        connected_class: 'Form',
     },
 } 
