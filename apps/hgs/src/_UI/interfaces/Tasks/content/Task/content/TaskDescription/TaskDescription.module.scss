@@ -1,0 +1,34 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+@import '../../Task.module.scss';
+
+.description_container {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch);
+};
+
+.description_header {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+};
+
+ .description_content {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: flex-start);
+};
+
+.description_content_icon {
+    width: 24px;
+};
+
+.description_content_text {
+    flex: 1 1;
+    textarea {
+        width: 100% !important;
+        min-height: 60px;
+    }
+};
+
+.description_text {
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    background-color: colors.$light;
+};

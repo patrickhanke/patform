@@ -1,0 +1,285 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+@use '@styles/buttons';
+
+.question_container[data-labelbefore='false'] {
+	@include layout.flexbox($direction: column, $align: flex-start, $justify: space-between, $gap: 0);
+	padding: map-get($map: sizes.$padding, $key: 'md' );
+}
+
+.question_container[data-labelbefore='true'] {
+	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+	padding: map-get($map: sizes.$padding, $key: 'md' );
+	box-shadow: none;
+	// label {
+	// 	width: 80%;
+	// }
+}
+
+.question_container[data-isconditionalfield='true'] {
+	padding: map-get($map: sizes.$padding, $key: 'md' );
+	background-color: colors.$light;
+}
+
+.page_container {
+	@include layout.elements_container;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: colors.$light;
+	margin-top: sizes.$md;
+	margin-bottom: sizes.$md;
+}
+
+.fields_container {
+	@include layout.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: sizes.$md);
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.diagnostic_content {
+	padding-left: sizes.$md;
+	margin-left: sizes.$md;
+	border-left: 1px solid colors.$grey;
+	display: inline;
+	font-weight: 600;
+}
+
+.toggle_content {
+    display: flex; 
+    flex-direction: column;
+}
+
+.toggle_content[data-labelbefore ='true'] {
+    flex-direction: row;
+}
+
+.toggle_container {
+	box-sizing: content-box;
+    border: 2px solid colors.$primary;
+	position: relative; 
+	width: 40px; 
+	height: 20px; 
+	border-radius: 15px; 
+	overflow: hidden; 
+	cursor: pointer;
+}
+
+.toggle_container[data-disabled='true'] {
+    border: 2px solid colors.$grey 
+}
+
+.toggle_container_background {
+    position: relative;
+	width: 100%;
+	height: 100%;
+	transition: opacity 0.4s ease;
+    background-color: transparent;
+}
+
+.toggle_container_background[data-disabled='true'] {
+    background-color: colors.$grey; 
+}
+
+.toggle_container_background[data-togglestate='true'] {
+	background-color: colors.$primary;
+}
+
+.toggle_container_circle {
+    border-radius: 50%;
+	width: 16px;
+	height: 16px;
+	top: 2px;
+	left: 4px;
+	position: absolute;
+    background-color: colors.$primary;
+	transition: transform 0.4s ease, background-color 0.4s ease;
+    transform: translateX(0);
+}
+
+.toggle_container_circle[data-disabled='true'] {
+    background-color: colors.$grey;
+}
+
+.toggle_container_circle[data-togglestate='true'] {
+    background-color: colors.$white;
+    transform: translateX(18px)
+}
+
+.error_message {
+	color: colors.$red;
+	font-weight: 500;
+	font-size: sizes.$sm;
+	font-family: Montserrat, sans-serif;
+};
+
+.warning_message {
+	color: orange;
+	font-weight: 500;
+	font-size: sizes.$sm;
+	font-family: Montserrat, sans-serif;
+};
+
+.create_option_container {
+	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+	width: 100%;
+	margin-top: sizes.$xs;
+	margin-bottom: sizes.$xs;
+}
+
+.datepicker_content {
+    display: flex; 
+    flex-direction: column;
+}
+
+.datepicker_content[data-labelbefore ='true'] {
+    flex-direction: row;
+}
+
+.slider_container {
+	width: 100%;
+}
+
+.slider_container_bottom {
+	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+	width: 100%;
+	padding: map-get($map: sizes.$padding, $key: 'xs' );
+	box-sizing: border-box;
+	p {
+		text-transform: uppercase;
+		font-weight: 500;
+		font-size: map-get($map: sizes.$font-size, $key:  'xs');
+		color: colors.$darkgrey;
+	}
+}
+
+.select_and_scale_container {
+	@include layout.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: sizes.$sm);
+}
+
+.select_container {
+	@include layout.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: sizes.$sm);
+}
+
+.scale_container {
+	@include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$sm);
+}
+
+.scale_number {
+	@include layout.icon_button_container;
+}
+
+.scale_number[data-selected="true"] {
+	@include layout.icon_button_container($isactive: 'true')
+}
+
+.slider {
+	padding: 0 !important;
+}
+
+.editor_container {
+	position: relative;
+	width: 100%;
+	box-sizing: border-box;	
+}
+
+.checkbox_container {
+	@include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$sm);
+	cursor: pointer;
+	background-color: transparent;
+	border: none;
+	p {
+		margin-bottom: 0;
+		text-align: left;
+	}
+}
+
+.checkbox {
+	@include layout.icon_button_container;
+	svg {
+		visibility: hidden;
+	}
+}
+
+.checkbox[data-active='true'] {
+	@include layout.icon_button_container($isactive: 'true');
+	svg {
+		visibility: visible;
+	}
+}
+
+.select_toggle_content {
+	@include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$sm);
+	
+}
+
+.select_toggle_content[data-labelbefore ='true'] {
+    flex-direction: row;
+}
+
+.select_toggle_button {
+	font-family: Poppins;
+	font-weight: 500;	
+	letter-spacing: 1px;
+	font-size: map-get($map: sizes.$font_size, $key: 'md' );
+}
+
+.select_toggle_button[data-isactive="true"] {
+	background-color: colors.$primary;
+	color: colors.$white;
+
+}
+
+.files_interface_container{
+	@include layout.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: sizes.$md);
+	margin-bottom: sizes.$lg;
+	width: 100%;
+}
+
+.file_interface_element {
+	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+	position: relative;
+	padding: map-get($map: sizes.$padding, $key: 'sm' );
+	background-color: colors.$light;
+	border: .5px solid colors.$darkgrey;
+
+}
+
+.file_interface_element_buttoncontainer {
+	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+}
+
+.picker {
+    position: relative;
+}
+  
+.swatch {
+	position: relative;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.popover {
+    position: absolute;
+    top: calc(100% + 2px);
+    right: 0;
+    z-index: 3;
+    border-radius: 9px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    background-color: white;
+}
+
+.description_container {
+	width: 100%;
+	background-color: colors.$light;
+	padding: map-get($map: sizes.$padding, $key: 'sm' );
+	margin-top: sizes.$md;
+}
+
+
+
+

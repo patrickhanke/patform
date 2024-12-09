@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { generateGraphQLQueryProps } from '../types';
+import { GenerateGraphQLQueryFunction } from '../types';
 
 const stringreplace = (str: string, find?: string, replace?: string) => {
 	const letStringCopy = str;
@@ -9,7 +9,7 @@ const stringreplace = (str: string, find?: string, replace?: string) => {
 	return letStringCopy;
 };
 
-const generateGraphQLQuery: generateGraphQLQueryProps = ({
+const generateGraphQLQuery: GenerateGraphQLQueryFunction = ({
 	type, 
 	objectName, 
 	fields

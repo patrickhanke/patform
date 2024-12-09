@@ -1,0 +1,40 @@
+@use '@styles/layout';
+@use '@styles/colors';
+@use '@styles/sizes';
+
+.content_button {
+    cursor: pointer;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    &:hover  {
+        background-color: colors.$light;
+    }
+}
+.content_button[data-active="true"] {
+    background-color: colors.$light;
+}
+
+.time_display_content {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+}
+
+.record_time_display_list {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch);
+}
+
+.time_display_title {
+    width: 120px;
+   
+}
+
+.edit_time_form {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch);
+    input {
+        flex-basis: 90px;
+        flex-shrink: 1;
+        flex-grow: 0;
+        min-width: 48px !important;
+    }
+    textarea {
+        min-height: 48px;
+    }
+}

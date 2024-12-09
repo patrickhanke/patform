@@ -1,0 +1,9 @@
+@use '@styles/layout';
+@use '@styles/sizes';
+
+.create_worker_container {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch);
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    width: 100%;
+    height: 100%;
+}

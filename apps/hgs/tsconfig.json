@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@provider/*": ["./src/provider/*"],
+      "@settings/*": ["./src/settings/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@UI/*": ["./src/_UI/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/provider/hooks/useClickOutside.js", "server.js", "src/_UI/interfaces/TimeInput", "src/content/Settings/TimeSettings/content/Holidays/content/EditHoliday/EditHoliday.tsx"],
+  "exclude": ["node_modules", "/server.js"]
+}

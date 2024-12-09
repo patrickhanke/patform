@@ -1,0 +1,1 @@
+export {default as CommentInterface} from './CommentInterface';

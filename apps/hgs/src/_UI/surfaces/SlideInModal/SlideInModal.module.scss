@@ -1,0 +1,115 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+.overlay_container {
+    background-color: colors.$dark;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    visibility: hidden;
+    opacity: 0;
+    cursor: pointer;
+    transition: width .4s, visibility 1s, opacity 0.5s ease;
+}
+
+.overlay_container[data-isopen = 'true'] {
+    width: 100%;
+    visibility: visible;
+    opacity: 0.05;
+}
+
+.slidein_container {
+    @include layout.flexbox($direction: column, $align: stretch, $gap: 0);
+    top: 6vh;
+    height: 88vh;
+    z-index: 6;
+    width: fit-content;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
+    position: fixed;
+    box-sizing: border-box;
+    overflow: visible;
+    background-color: colors.$white;
+    padding: 0;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
+}
+
+.is_open[data-size='small'] {
+    right: 0;
+    width: 420px !important;
+    visibility: visible;
+}
+
+.is_open[data-size='medium'] {
+    right: 0;
+    width: 60% !important;
+    visibility: visible;
+}
+
+.is_open[data-size='large'] {
+    right: 0;
+    width: 90% !important;
+    visibility: visible;
+}
+
+.slidein_header {
+    @include layout.flexbox($align: center, $justify: space-between, $gap: sizes.$xs);
+    width: 100%;
+    box-sizing: border-box;
+    height: 36px;
+    border-bottom: 1px solid colors.$grey;
+    padding: map-get(sizes.$padding, 'sm');
+}
+
+.slidein_main_content {
+    @include layout.flexbox($direction: row, $align: stretch, $gap: sizes.$xs);
+    flex: 1;
+    position: relative;
+    box-sizing: border-box;
+    width: fit-content;
+    overflow:  hidden;
+    height: 100%;
+}
+
+.slidein_content {
+    @include layout.flexbox($direction: column, $align: stretch, $gap: sizes.$md);
+    width: 420px;
+    order: 2;
+    padding: map-get(sizes.$padding, 'sm');
+    overflow: auto;
+}
+
+.slidein_secondary_content {
+    order: 1;
+    position: relative;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.slidein_secondary_content[data-open='true'] {
+    padding: map-get(sizes.$padding, 'sm');
+    border-right: 1px solid colors.$grey;
+};
+
+.slidein_footer {
+    @include layout.flexbox($direction: row, $align: center, $justify: flex-end, $gap: sizes.$xs);
+    flex: 0 0 36px;
+    width: 100%;
+    border-top: 1px solid colors.$grey;
+    // background-color: colors.$light;
+    position: relative;
+    padding: map-get(sizes.$padding, 'sm');
+};
+
+.secondary_content_header {
+    @include layout.flexbox($align: center, $justify: space-between, $gap: sizes.$xs);
+    width: 100%;
+    box-sizing: border-box;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: sizes.$xl;
+}

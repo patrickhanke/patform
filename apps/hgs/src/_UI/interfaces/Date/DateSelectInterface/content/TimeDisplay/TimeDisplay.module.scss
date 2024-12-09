@@ -1,0 +1,45 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+.time_display_container {
+    @include layout.flexbox($direction: row, $wrap: no-wrap, $align: center, $justify: flex-start, $gap: sizes.$xxs);
+    cursor: pointer;
+    font-size: map-get($map: sizes.$font-size, $key: 'xs' );
+    background-color: transparent;;
+    padding: map-get($map: sizes.$padding, $key: 'sm' );
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    transition: background-color .2s ease;
+};
+
+.time_display_container:hover {
+    text-decoration: underline;
+    // color: white ;
+}
+
+.time_display_container[data-interval="true"] {
+    color: colors.$primary !important;
+    border: 1px solid colors.$primary;
+    &:hover {
+        background-color: colors.$primary_light;
+    }
+
+};
+
+.time_display_container[data-interval="false"] {
+    color: colors.$grey !important;
+    border: 1px solid colors.$grey;
+    &:hover {
+        background-color: colors.$lightgrey;
+    }
+
+};
+
+.no_interval {
+    color: colors.$white !important;
+
+};
+
+.interval {
+   color: colors.$white !important; 
+};

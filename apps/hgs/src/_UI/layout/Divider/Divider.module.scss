@@ -1,0 +1,88 @@
+@use '@styles/sizes';
+@use '@styles/colors';
+@use '@styles/layout';
+
+.divider {
+    position: relative;
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px solid colors.$grey;
+}
+
+.divider[data-size="none"] {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.divider[data-size="small"] {
+    margin-top: sizes.$xs;
+    margin-bottom: sizes.$xs;
+}
+
+.divider[data-size="medium"] {
+    margin-top: sizes.$sm;
+    margin-bottom: sizes.$sm;
+}
+
+.divider[data-size="large"] {
+    margin-top: sizes.$md;
+    margin-bottom: sizes.$md;
+}
+
+.divider[data-showline="false"] {
+    border-bottom: none;
+}
+
+.text_container {
+    @include colors.colorgroup('white');
+    background-color: colors.$lightest;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: map-get($map: sizes.$padding, $key: 'xs' );
+    display: inline-block;
+    z-index: 1;
+    font-size: sizes.$sm;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-family: Roboto, sans-serif;
+}
+
+.divider_block {
+    position: relative;
+    width: 100%;
+    height: 18px;
+    flex-basis: 18px;
+    background-color: colors.$light;
+    border-bottom: 1px solid colors.$grey;
+    padding: 6px 12px;
+}
+
+.divider_block[data-size="none"] {
+    height: 0;
+}
+
+.divider_block[data-size="small"] {
+    height: 12px;
+}
+
+.divider_block[data-size="medium"] {
+    height: 18px;
+}
+
+.divider_block[data-size="large"] {
+    height: 24px;
+}
+
+.divider[data-showline="false"] {
+    border-bottom: none;
+}
+
+.divider_block_text_container {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    height: 100%;
+    h4 : {
+        font-size: map-get($map: sizes.$font_size, $key: 'xs' );
+    }
+}

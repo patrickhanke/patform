@@ -1,0 +1,128 @@
+import { IconButton, ImageUploader, Select, TextInput } from '@/_UI';
+import { AppContext, useDataHandler } from '@/provider';
+import { ApplicationTypes } from '@/types';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useImmer } from 'use-immer';
+import styles from '../UserOverview.module.scss';
+import clsx from 'clsx';
+import { useQuery } from '@apollo/client';
+import { GET_USER_DISPLAY_DATA } from '@/queries';
+import SlideIn from '@/_UI/surfaces/SlideIn';
+
+const EditStaffMember = ({userId} : {userId: string}) => {
+	const [isOpen, setIsOpen] = useState(false);
+	
+	const {roles} = useContext(AppContext);
+	const {updateData} = useDataHandler();
+
+	const [errors, setErrors] = useState([] as unknown as ApplicationTypes.ErrorMessage[]);
+	const [staffMember, setStaffMember] =  useImmer({
+		first_name: '',
+		family_name: '',
+		email: '',
+		role: null,
+		portrait: undefined as unknown as ApplicationTypes.Image
+	}  );
+
+	const {refetch} = useQuery(GET_USER_DISPLAY_DATA, {
+		variables: {
+			id: userId
+		},
+		onCompleted(data) {
+			setStaffMember(draft => {
+				draft.first_name = data.objects.get_User.first_name;
+				draft.family_name = data.objects.get_User.family_name;
+				draft.email = data.objects.get_User.email;
+				draft.role = data.objects.get_User.role.objectId;
+				draft.portrait = data.objects.get_User.portrait;
+			});
+		}
+	});
+	
+	useEffect(() => {
+		const errorArray : ApplicationTypes.ErrorMessage[] = [];
+		
+		if (!staffMember.email) {
+			errorArray.push({message: 'Bitte eine E-Mail Adresse angeben', key: 'email', id: 'email'});
+		}
+
+		setErrors(errorArray);
+
+	}, [staffMember]);
+
+	const updateUser = useCallback(async () => {
+		await updateData({
+			className: '_User',
+			objectId: userId,
+			updateObject: {
+				email: staffMember.email,
+				role: {__type: 'Pointer', className: '_Role', objectId: staffMember.role},
+				portrait: staffMember.portrait
+			}
+		});
+		await refetch();
+		setIsOpen(false);
+	}, [staffMember]);
+
+	return (
+		<>
+			<IconButton icon='edit' onClick={() => setIsOpen(true)}  />
+			<SlideIn 
+				header='Nutzerdaten aktualisierten'
+				isOpen={isOpen}
+				setIsOpen={setIsOpen}
+				preventClickOutside
+			>
+				<div className={styles.slidein_container} >
+					<form>
+						{staffMember.email && 
+						<TextInput
+							label='E-Mail'
+							id={'email'}
+							type='email'
+							onChange={(value) => setStaffMember(draft => {
+								draft.email = value;
+							})} 
+							defaultValue={staffMember.email}
+							errors={errors}
+						/>
+						}
+						{staffMember.role && 
+							<Select
+								label='Rolle auswählen'
+								id='role'
+								errors={errors}
+								options={roles}
+								value={staffMember.role && roles && roles.find(roleToFind => roleToFind.value === staffMember.role) }
+								onChange={value => setStaffMember(draft => {
+									draft.role = value.value;
+								})}
+							/>
+						}
+						
+						<ImageUploader
+							filename={`${staffMember.first_name}_${staffMember.family_name}_${new Date()}_portrait.jpg`}
+							path='users'
+							label='Portrait'
+							onChange={images => setStaffMember(draft => {
+								draft.portrait = images[0];
+							})}
+							previewImage={staffMember.portrait}
+							maxFileCount={1}
+						/>
+					</form>
+					<div className='button_container'>
+						<button className={clsx('full_button', 'primary', 'md')} disabled={errors.length > 0} onClick={() => updateUser()}>
+							Daten aktualisieren
+						</button>
+						<button className={clsx('full_button', 'secondary', 'md')} onClick={() => setIsOpen(false)}>
+							Abbrechen
+						</button>
+					</div>
+				</div>
+			</SlideIn>
+		</>
+	);
+};
+
+export default EditStaffMember;

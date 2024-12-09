@@ -1,8 +1,9 @@
 import { PageCreateClassObject } from '@repo/ui';
+
 const createForm: PageCreateClassObject = {
 	initialData: undefined,
-	className: 'Event',
-	text: 'Neues Event erstellen',
+	className: 'Form',
+	text: 'Neues Formular erstellen',
 	fields: [{
 		id: 'name',
 		position: 1,

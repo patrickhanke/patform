@@ -1,0 +1,41 @@
+@use '@styles/sizes';
+
+.form_container {
+    overflow: visible;
+	width: auto;
+	.form {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		font-family: Poppins;
+	}
+	select: {
+		font-family: OpenSans;
+		font-size: map-get($map: sizes.$font-size, $key: 'md' );
+		font-weight: 500;
+    	padding: 3px 6px;
+    	border: 1px solid #dddddd;
+		height: auto;
+		outline: 0px;
+		transition: border 0.4s ease;
+		min-width: 300px;
+		width: 100%
+	}
+
+	.ck {
+		width: inherit;
+		font-family: Open Sans;
+		font-size:map-get($map: sizes.$font-size, $key: 'md' );;
+		font-weight: 500;
+    	padding: 3px 6px;
+		height: auto;
+		outline: 0px;
+		transition: border 0.4s ease;
+	}
+}
+
+.form_container[divideform='true'] {
+    .form { 
+        flex-direction: row;
+    }
+}

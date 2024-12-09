@@ -23,8 +23,9 @@ import TableColumnPerson from '../components/TableColumnPerson';
 import TableColumnTimesField from '../content/TableColumnTimesField';
 import TableColumnPersons from '../components/TableColumnPersons';
 import TableColumnFiles from '../components/TableColumnFiles';
+import { IconButton } from '../../../Buttons';
 
-const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch, constants }: CreateColumnHookProps<T>)  => {
+const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fields = [], className, refetch, constants, editLink }: CreateColumnHookProps<T>)  => {
 	const {updateData} = useDataHandler();
 	
 	const columns = useMemo(() => {
@@ -255,8 +256,6 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 							isEditable={columnElement.type === 'edit_person' || columnElement.type === 'edit_persons' ?  true : false}
 							value={row[columnElement.id] || []}  
 							onChange={async (values: string[]) => {
-								console.log(values);
-								
 								await updateData({
 									className: className,
 									objectId: row.objectId,
@@ -335,7 +334,21 @@ const useCreateColumns = <T extends ColumnClasses>({ data, categories = [], fiel
 				footer: info => info.column.id
 			} as  ColumnDef<T>);
 		});
-		columnArray.push({
+		if (typeof editLink === 'string') {
+			console.log('editLink', editLink);
+			
+			columnArray.push({
+				accessorFn: row => 
+					<div className='button_container'>
+						<IconButton isLink link={`/${editLink}/${row.objectId}`} icon='link' />
+						<TableColumnDeleteField objectId={row.objectId} className={className} refetch={refetch} />
+					</div>,
+				header: () => <span>Bearbeiten</span>,
+				id: 'edit',
+				cell: info => info.getValue(),
+				footer: info => info.column.id
+			});
+		} else columnArray.push({
 			accessorFn: row => 
 				<div className='button_container'>
 					{fields.length > 0 && <TableColumnEditField objectId={row.objectId} className={className} />}

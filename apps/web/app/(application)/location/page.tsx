@@ -1,1 +1,0 @@
-export {LocationOverview as default} from '@repo/modules';

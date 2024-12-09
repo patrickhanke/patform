@@ -1,0 +1,19 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+.date_display_container {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    position: relative;
+    width: fit-content;
+    font-family: Roboto, sans-serif;
+    font-size: .7rem;
+    font-weight: 500;
+}
+
+.date_element {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 4px);
+    color: colors.$secondary;
+}
+
+

@@ -1,3 +1,5 @@
+'use client';
+
 import { Page, Table, useCreateColumns } from '@repo/ui';
 import { useContext, useState } from 'react';
 import useFindForm from './hooks/useFindForm';
@@ -18,7 +20,8 @@ const FormsOverview = () => {
 		fields: currentModule.fields,
 		className: 'Field',
 		refetch,
-		categories: currentModule?.categories
+		categories: currentModule?.categories,
+		editLink: 'forms'
 	});
 
 	return (

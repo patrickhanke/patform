@@ -1,0 +1,20 @@
+@use '@styles/sizes';
+@use '@styles/colors';
+@use '@styles/layout';
+
+.image_container {
+    // @include layout.flexbox($direction: row, $align: center, $gap: sizes.$sm, $wrap: wrap );
+    // padding: map-get($map: sizes.$padding, $key: 'xs' );
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm, $wrap: wrap );
+    padding: map-get($map: sizes.$padding, $key: 'xs' );
+    background-color: colors.$light;
+    border: 1px solid colors.$grey;
+    width: auto;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    height: 72px;
+};
+
+.image_icons {
+    @include layout.flexbox($direction: column, $justify: center, $align: center, $gap: sizes.$md);
+}
+

@@ -1,1 +1,0 @@
-export {NewsOverview as default} from '@repo/modules';

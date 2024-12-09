@@ -1,0 +1,108 @@
+@use '@styles/colors';
+@use '@styles/sizes';
+@use '@styles/layout';
+@use '@styles/buttons';
+
+.add_button_container {
+    position: absolute;
+    top: 0;
+    left: 0; 
+    z-index: 3;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: inline-block;
+    background-color: colors.$primary;
+    color: colors.$white;
+    cursor: pointer;
+    transition: color .4s ease, background-color .4s ease, box-shadow .4s ease, transform .6s ease;
+};
+
+.add_button_container:hover {
+    background-color: colors.$primary;
+    color: colors.$white;
+}
+
+.add_button_icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    font-size: 36px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 1s ease;
+}
+
+
+.add_button_icon[data-isopen='true'] {
+   transform: translate(-50%, -50%) rotate(-225deg);
+}
+
+.add_button {
+    position: fixed;
+    bottom: 18px;
+    right: 30px;
+    height: 48px;
+    width: 48px;
+    border-radius: 24px;
+    padding: 0;
+    z-index: 2;
+    background-color: colors.$white;
+    box-shadow: layout.$shadow_large_regular;
+    transition: width .6s ease, box-shadow .4s ease;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.add_button:hover {
+    box-shadow: layout.$shadow_large_regular_hover;
+};
+
+// .items_container[data-isopen='true'] {
+//     padding: 6px 18px 6px 66px;
+// }
+
+.add_button[data-isopen='true'][data-iconslength='1'] {
+    width: 106px;
+};
+
+.add_button[data-isopen='true'][data-iconslength='2'] {
+    width: 142px;
+};
+
+.add_button[data-isopen='true'][data-iconslength='3'] {
+    width: 178px;
+};
+
+.icons_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$xs);
+    padding: 6px 18px 6px 58px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.icon {
+    @include layout.flexbox($direction: row, $align: center, $justify: center);
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    color: colors.$primary;
+    background-color: transparent;
+    transition: background-color 0.4s ease, color 0.4s ease, opacity 0.4s ease;
+}
+
+.icon:hover {
+    background-color: colors.$primary;
+    color: colors.$white;
+}
+
+.icon[data-isopen='true'] {
+    opacity: 1;
+}

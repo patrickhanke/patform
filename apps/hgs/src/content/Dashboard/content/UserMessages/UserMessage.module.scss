@@ -1,0 +1,65 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+.user_messages_container {
+    @include layout.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: sizes.$xs);
+}
+
+.siteheader_content {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+}
+
+.user_message_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
+    margin-top: sizes.$xs;
+    margin-bottom: sizes.$xs;
+}
+
+.content_container {
+    @include layout.flexbox($direction: row, $align: flex-start, $justify: flex-start, $gap: sizes.$md);
+}
+
+.user_message_content {
+    @include layout.flexbox($direction: column, $align: flex-start, $justify: center, $gap: sizes.$xxs);
+}
+
+.user_message_icon {
+    background-color: colors.$primary;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.time {
+    color: colors.$grey;
+    display: inline-block;
+    font-size: map-get($map: sizes.$font_size, $key: 'sm' );
+    margin-left: sizes.$sm;
+}
+
+.user_message_headline {
+    font-size: map-get(sizes.$font_size, 'md');
+    font-weight: 600;
+    color: colors.$dark;
+}
+
+.user_message_headline[data-is_read="true"] {
+    font-weight: 500;
+    color: colors.$darkgrey;
+}
+
+.user_message_text {
+    p{
+        font-size: map-get(sizes.$font_size, 'sm');
+        font-weight: 500;
+        color: colors.$dark;
+    }
+}
+
+.user_message_text[data-is_read="true"] {
+    p {
+        font-weight: 400;
+        color: colors.$grey;
+    }
+}

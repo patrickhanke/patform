@@ -6,11 +6,14 @@ const useFindForm: UserFindFormHook = ({moduleId, filters} ) => {
 	const {loading, data, refetch} = useQuery(generateGraphQLQuery({
 		type: 'find', 
 		objectName:  'Form',  
-		fields: ['objectId', 'title', 'dates', 'createdAt', 'location', 'description', 'image', 'categories'] 
+		fields: ['objectId', 'name', 'createdAt', 'description', 'categories'] 
 	}), {
 		variables: {params: paramsHandler({moduleId, filters})},
 		notifyOnNetworkStatusChange: true
 	});
+
+	console.log(data);
+	
 
 	return ({
 		loading, 

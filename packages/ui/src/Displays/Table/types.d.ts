@@ -113,7 +113,8 @@ export type CreateColumnHookProps<Class> = {
     className: string;
     fields?: Module['fields']
     refetch: () => void;
-    constants?: {[key: string]: any}
+    constants?: {[key: string]: any},
+    editLink?: string
 };
 
 export type ColumnClasses = ImageClass | NewsClass | PersonClass | CategoryClass | EventClass

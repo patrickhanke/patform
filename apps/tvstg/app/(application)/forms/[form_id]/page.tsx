@@ -1,1 +1,0 @@
-export {FormPage as default} from '@repo/modules';

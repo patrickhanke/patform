@@ -1,0 +1,1 @@
+export {default as WasteOverview} from './WasteOverview';

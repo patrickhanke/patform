@@ -1,0 +1,30 @@
+@use '@styles/colors';
+@use '@styles/layout';
+
+
+.progress_bar_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: 10px, $height: 100%);
+  }
+
+.progress_bar {
+    height: 6px;
+    width: 300px;
+    background-color: #e0e0de;
+    border-radius: 10px;
+    margin: 10px;
+  }
+
+.filler_styles {
+    height: 100%;
+    border-radius: inherit;
+    text-align: right;
+    background-color: colors.$primary;
+    transition: width .6s ease;
+  }
+
+
+.labelStyles {
+    padding: 5;
+    color: white;
+    font-weight: bold;
+  }

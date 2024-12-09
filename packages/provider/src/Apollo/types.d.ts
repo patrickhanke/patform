@@ -8,7 +8,7 @@ type fields = Array<string>;
 
 type QueryProps = {
     type: type, 
-	objectName: objectName, 
+	objectName: string, 
 	fields: fields,
 	constraints?: Filter[]
 }
@@ -19,7 +19,7 @@ type ParamsHandlerProps = {
     filters?: Filter[]
 }
 
-export type generateGraphQLQueryProps = (QueryProps) => ReturnType<typeof generateGraphQLQuery>;
+export type GenerateGraphQLQueryFunction = (T: QueryProps) => ReturnType<typeof generateGraphQLQuery>;
 
 export type ParamsHandlerType = (T: ParamsHandlerProps) => ReturnType<typeof paramsHandler>;
 

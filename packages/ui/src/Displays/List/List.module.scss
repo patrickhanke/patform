@@ -1,0 +1,35 @@
+@use '@styles/colors';
+@use '@styles/sizes';
+@use '@styles/layout';
+@use '@styles/buttons';
+
+.list_container {
+    @include layout.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: 0);
+    border: 1px solid colors.$darkgrey;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
+    overflow: hidden;
+}
+
+.list_header {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
+    background-color: colors.$light;
+    padding: map-get($map: sizes.$padding, $key: 'md');
+    border-bottom: 1px solid colors.$dark;
+    h3 {
+        font-weight: 600;
+        font-size: sizes.$sm
+    }
+}
+
+.list_element_container {
+    @include layout.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: 0);
+}
+
+.list_element {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
+    @include layout.list_element;
+}
+
+.list_element[data-islast='true'] {
+    border-bottom: none;
+}

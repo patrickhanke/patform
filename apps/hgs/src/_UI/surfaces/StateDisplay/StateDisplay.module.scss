@@ -1,0 +1,163 @@
+@use '@styles/colors';
+@use '@styles/sizes';
+@use '@styles/layout';
+
+.state_display_container {
+    position: relative;
+    font-family: Roboto, sans-serif;
+    padding: map-get($map: sizes.$padding, $key: 'xs');
+    width: fit-content;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm');
+    font-size: map-get($map: sizes.$font_size, $key: 'sm');
+    border: none;
+    text-wrap:  nowrap;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.state-select-interface__item {
+
+}
+
+@mixin state_display_container_styles {
+    background-color: transparent;
+    &:hover {
+        background-color: colors.$light;
+    }
+}
+
+.state_display_button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.state_display_container[data-showicon="true"] {
+    @include layout.flexbox($direction: row, $align: center, $justify: center, $gap: sizes.$xxs);
+}
+
+.state_display_container[data-color="primary"] {
+    @include colors.colorgroup('primary');
+    border: none;
+}
+
+.state_display_container[data-color="secondary"] {
+    @include colors.colorgroup('secondary');
+    border: none;
+}
+
+.state_display_container[data-color="tertiary"] {
+    @include colors.colorgroup('tertiary');
+    border: none;
+}
+
+.state_display_container[data-color="dark"] {
+    @include colors.colorgroup('dark');
+    border: none;
+}
+
+.state_display_container[data-color="light"] {
+    @include colors.colorgroup('light');
+    border: none;
+}
+
+.state_display_container[data-color="success"] {
+    @include colors.colorgroup('success');
+    border: none;
+}
+
+.state_display_container[data-color="warning"] {
+    @include colors.colorgroup('warning');
+    border: none;
+}
+
+.state_display_container[data-color="danger"] {
+    @include colors.colorgroup('danger');
+    border: none;
+}
+
+.state_display_container[data-color="info"] {
+    @include colors.colorgroup('info');
+    border: none;
+}
+
+.state_display_container[data-color="violet"] {
+    @include colors.colorgroup('violet');
+    border: none;
+}
+
+.state_display_container[data-color="green"] {
+    @include colors.colorgroup('green');
+    border: none;
+}
+
+.state_display_container[data-color="yellow"] {
+    @include colors.colorgroup('yellow');
+    border: none;
+}
+
+.state_display_container[data-color="red"] {
+    @include colors.colorgroup('red');
+    border: none;
+}
+
+.state_display_container[data-color="blue"] {
+    @include colors.colorgroup('blue');
+    border: none;
+}
+
+.state_display_container[data-color="grey"] {
+    @include colors.colorgroup('grey');
+    border: none;
+}
+
+.state_display_container[data-display_interface="true"] {
+    cursor: pointer;
+    @include state_display_container_styles;
+}
+
+.state_display_container[data-no_background="true"] {
+   background-color: transparent;
+   border: none;
+   padding: 0;
+}
+
+.state-select-interface {
+    position: absolute;
+    // bottom: -5px;
+    // left: 50%;
+    background-color: colors.$white;
+    border: 1px solid colors.$lightgrey;
+    z-index: 3;
+    // transform: translateY(100%) translateX(-50%);
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm');
+    box-shadow: layout.$shadow_regular;
+    width: fit-content;
+    &__list {
+        list-style: none;
+        // Styles for the list
+    }
+    
+    &__item {
+        @extend .state_display_container;
+        // padding: map-get($map: sizes.$padding, $key: 'xs');
+        width: 100%;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        color: colors.$dark;
+        padding-top: sizes.$xs;
+        padding-bottom: sizes.$xs;
+        &:hover {
+            background-color: colors.$light;
+        }
+    }
+
+    &__item[data-disabled="true"] {
+        cursor: not-allowed;
+        color: colors.$grey;
+    }
+}

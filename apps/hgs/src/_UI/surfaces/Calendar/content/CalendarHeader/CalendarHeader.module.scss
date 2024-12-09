@@ -1,0 +1,16 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+.calendar_container {
+    @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: 0, $wrap: wrap);
+}
+
+.calendar_header_container {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: stretch, $wrap: no-wrap);
+    width: 100%;
+    border-bottom: 1px solid colors.$grey;
+    padding-bottom: sizes.$sm;
+}
+
+

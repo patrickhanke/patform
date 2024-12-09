@@ -1,67 +1,33 @@
-import { useMemo } from "react";
-import GET_FORM_DATA from "./constants/GET_FORM_DATA";
-import ViewFormData from "./components/ViewFormData";
-import { Table } from "@repo/ui";
-import { ColumnDef } from '../../../../../../ui/src/Displays/Table/types';
-
-const { useQuery } = require( '@apollo/client');
+import { Table } from '@repo/ui';
+import { generateGraphQLQuery } from '@repo/provider';
+import { useQuery } from '@apollo/client';
+import useFormDataColumns from './hooks/useFormDataColumns';
 
 const FormData = ({formId}: {formId: string}) => {
-	const {data} = useQuery(GET_FORM_DATA, {
-        variables: {
-            id: formId
-        },
-        fetchPolicy: 'no-cache'
-    
-    });
+	const {data, refetch} = useQuery(generateGraphQLQuery({
+		type: 'find',
+		objectName: 'Data',
+		fields: ['objectId', 'createdAt', 'data']
+	}), {
+		variables: {reference: {_eq: formId} }
+	});
 
-
-    const formData = useMemo(() => {
-		const formDataArray: FormData[] = [];
-		if (data) {
-
-			data.objects.findData.results.forEach((fData: FormData) =>  {
-				formDataArray.push(fData);
-			});
-		}
-		return formDataArray;
-	}, [data]);
-
-	interface FormData {
-		position: number;
-		createdAt: string;
-		data: any;
+	const columns = useFormDataColumns({data: data?.objects.findData.results, refetch});
+	
+	if (!data) {
+		return null;
 	}
 
-	const columns: ColumnDef<FormData>[] = useMemo(() => [
-		{
-			accessorFn: (row, index) => row.position || index + 1 ,
-			header: () => <span>Position</span>,
-			id: 'position'
-		},
-		{
-			header: () => <span>Datum</span>,
-			id: 'createdAt',
-			accessorKey: 'createdAt'
-		} ,
-		{
-			accessorFn: (row) => <ViewFormData data={row.data} />,
-			header: () => <span>Ansehen</span>,
-			id: 'edit',
-			cell: info => info.getValue(),
-			footer: info => info.column.id
-		} 
-		
-	], []);
+	const formData= data.objects.findData.results;
 
-  return (
-    <div>
-        <Table
-			data={formData}
-			columns={columns}
-		/>
-    </div>
-  )
-}
+	return (
+		<div>
+			<Table
+				data={formData}
+				columns={columns}
+			/>
+		</div>
+	);
+};
 
-export default FormData
+export default FormData;
