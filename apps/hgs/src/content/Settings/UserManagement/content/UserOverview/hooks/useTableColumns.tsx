@@ -1,4 +1,4 @@
-import { StateDisplay, Toggle } from '@/_UI';
+import { StateDisplay, Toggle } from '@/content/_UI';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import EditStaffMember from '../components/EditStaffMember';

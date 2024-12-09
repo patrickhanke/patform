@@ -1,5 +1,5 @@
-import { Loader } from '@/_UI';
-import FormikRender from '@/_UI/FormikRender';
+import { Loader } from '@/content/_UI';
+import FormikRender from '@/content/_UI/FormikRender';
 import { getIsoFromDate } from '@/provider';
 import { GET_USER_SETTINGS } from '@/queries';
 import { fieldsType } from '@/types';

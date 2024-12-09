@@ -1,7 +1,7 @@
 import React from 'react';
 import { SurchargeDayEditProps } from '../types';
 import { weekdays } from '@/provider';
-import { Divider } from '@/_UI';
+import { Divider } from '@/content/_UI';
 import { Holiday, Weekdays } from '@/types';
 
 const SurchargeDayEdit: React.FC<SurchargeDayEditProps> = ({newSurcharge, holidays = [], surchargeChangeHandler}) => {

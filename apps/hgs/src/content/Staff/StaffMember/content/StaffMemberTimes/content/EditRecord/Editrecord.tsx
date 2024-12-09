@@ -1,7 +1,7 @@
-import { Divider, IconButton, InfoBox, Select, SlideInModal } from '@/_UI';
+import { Divider, IconButton, InfoBox, Select, SlideInModal } from '@/content/_UI';
 import React, { useCallback, useMemo, useState } from 'react';
 import { EditRecordProps } from './types';
-import FormikRender from '@/_UI/FormikRender';
+import FormikRender from '@/content/_UI/FormikRender';
 import { Holiday, RecordTimeSettings } from '@/types';
 import { createInitialTimes, generateGraphQLQuery, getHolidayDates, months, useDataHandler } from '@/provider';
 import { useQuery } from '@apollo/client';

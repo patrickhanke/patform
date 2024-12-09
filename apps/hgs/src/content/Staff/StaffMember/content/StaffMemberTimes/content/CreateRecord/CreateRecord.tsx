@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { CreateRecordProps } from './types';
-import { Divider, SlideInModal, SwitchButtons } from '@/_UI';
+import { Divider, SlideInModal, SwitchButtons } from '@/content/_UI';
 import { useQuery } from '@apollo/client';
 import { find_records_for_user } from '@/queries';
 import { ErrorMessage, Holiday, HolidayTemplate, Record, RecordTimeSettings } from '@/types';
 import styles from './CreateRecord.module.scss';
-import FormikRender from '@/_UI/FormikRender';
+import FormikRender from '@/content/_UI/FormikRender';
 import { createInitialTimes, generateGraphQLQuery, getHolidayDates, useDataHandler, UserContext } from '@/provider';
 import RecordSettings from './components/RecordSettings';
 import defaultRecord from './constants/defaultRecord';

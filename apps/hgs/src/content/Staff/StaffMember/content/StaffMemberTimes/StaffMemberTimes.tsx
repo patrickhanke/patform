@@ -2,7 +2,7 @@ import { find_record } from '@/queries';
 import { useQuery } from '@apollo/client';
 import React from 'react';
 import { StaffMemberTimesProps } from './types';
-import { Table } from '@/_UI';
+import { Table } from '@/content/_UI';
 import CreateRecord from './content/CreateRecord';
 import useRecordsTableColumns from './hooks/useRecordsTableColumns';
 

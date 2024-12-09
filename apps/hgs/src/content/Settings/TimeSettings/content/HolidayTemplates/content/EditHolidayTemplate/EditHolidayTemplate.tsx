@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Modal } from '@/_UI';
+import { IconButton, Modal } from '@/content/_UI';
 import { ErrorMessage} from '@/types';
 import { generateGraphQLQuery, useDataHandler } from '@/provider';
 import { useQuery } from '@apollo/client';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IconButton } from '@/_UI';
+import { IconButton } from '@/content/_UI';
 import { EditAbsenceProps } from '../types';
 import DeleteAbsence from './DeleteAbsence';
 import EditRecordAbsence from '../content/EditRecordAbsence';

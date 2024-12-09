@@ -1,6 +1,6 @@
 import React from 'react';
 import { SurchargeComponentProps } from './types';
-import { IconButton } from '@/_UI';
+import { IconButton } from '@/content/_UI';
 import { getDateString } from '@/provider';
 import clsx from 'clsx';
 import styles from './Surcharge.module.scss';

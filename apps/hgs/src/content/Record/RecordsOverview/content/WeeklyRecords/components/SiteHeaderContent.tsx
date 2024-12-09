@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { SiteHeaderContentComponent } from '../types';
 import styles from '../WeeklyRecords.module.scss';
 import { filterChangeHandler } from '@/provider';
-import { Select } from '@/_UI';
+import { Select } from '@/content/_UI';
 import { differenceInCalendarWeeks } from 'date-fns';
 
 const SiteHeaderContent = ({id, filters, setFilters, setSelectedWeek, selectedWeek}: SiteHeaderContentComponent) => {

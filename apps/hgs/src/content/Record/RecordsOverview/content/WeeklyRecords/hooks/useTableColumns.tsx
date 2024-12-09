@@ -1,4 +1,4 @@
-import { DisplayWorker } from '@/_UI';
+import { DisplayWorker } from '@/content/_UI';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { WeekObject } from '../types';

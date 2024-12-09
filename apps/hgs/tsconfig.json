@@ -24,9 +24,9 @@
       "@provider/*": ["./src/provider/*"],
       "@settings/*": ["./src/settings/*"],
       "@styles/*": ["./src/styles/*"],
-      "@UI/*": ["./src/_UI/*"]
+      "@UI/*": ["src/content/_UI/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/provider/hooks/useClickOutside.js", "server.js", "src/_UI/interfaces/TimeInput", "src/content/Settings/TimeSettings/content/Holidays/content/EditHoliday/EditHoliday.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/provider/hooks/useClickOutside.js", "server.js", "src/content/_UI/interfaces/TimeInput", "src/content/Settings/TimeSettings/content/Holidays/content/EditHoliday/EditHoliday.tsx"],
   "exclude": ["node_modules", "/server.js"]
 }

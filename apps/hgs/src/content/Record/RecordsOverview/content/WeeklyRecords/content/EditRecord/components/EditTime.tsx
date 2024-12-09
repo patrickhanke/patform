@@ -6,7 +6,7 @@ import styles from '../EditRecord.module.scss';
 import { useDebounceCallback } from 'usehooks-ts';
 import { cloneDeep } from 'lodash';
 import { SwitchButton as SwitchButtonType } from '@/types';
-import { Modal, Select } from '@/_UI';
+import { Modal, Select } from '@/content/_UI';
 
 const EditTime = ({day, timeChangeHandler, workingTimes, selectedWeek, deleteDay, userId} : EditTimeProps) => {
 	const {year} = useContext(AppContext);

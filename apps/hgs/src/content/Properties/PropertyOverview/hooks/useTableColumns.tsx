@@ -1,4 +1,4 @@
-import { DisplayWorker } from '@/_UI';
+import { DisplayWorker } from '@/content/_UI';
 import IconButton from '@/_UI/interfaces/IconButton';
 import { getDateLabel } from '@/provider';
 import { Property } from '@/types';

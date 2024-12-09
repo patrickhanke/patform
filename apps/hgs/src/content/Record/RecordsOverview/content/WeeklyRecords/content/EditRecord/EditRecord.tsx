@@ -1,4 +1,4 @@
-import { IconButton, SlideInModal } from '@/_UI';
+import { IconButton, SlideInModal } from '@/content/_UI';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { EditRecordProps, WorkingTime, WorkingTimes } from './types';
 import { DefaultDay, ErrorMessage } from '@/types';

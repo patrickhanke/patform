@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableData } from '../types';
-import { StateDisplay } from '@/_UI';
+import { StateDisplay } from '@/content/_UI';
 import { Absence } from '@/types';
 
 const ColumnType = ({type, absenceType} : {type: TableData['type'], absenceType?: Absence['type']}) => {

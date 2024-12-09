@@ -2,7 +2,7 @@ import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
 import { PropertyTypes } from '@/types';
 import styles from '../ProperyOverview.module.scss';
 import { useImmer } from 'use-immer';
-import { SlideInModal } from '@/_UI';
+import { SlideInModal } from '@/content/_UI';
 import initialData from '../constants/initialData';
 
 const CreatePropterty = ({objects = [], isOpen, setIsOpen, createObject}: {objects: PropertyTypes.Property[], setIsOpen: Dispatch<SetStateAction<boolean>>, createObject: (data: typeof initialData )=> void, isOpen: boolean}) => {

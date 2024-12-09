@@ -6,7 +6,7 @@ import { find_record } from '@/queries';
 import { useQuery } from '@apollo/client';
 import styles from './StaffRecord.module.scss';
 import useTableColumns from './hooks/useTableColumns';
-import { Table } from '@/_UI';
+import { Table } from '@/content/_UI';
 
 const StaffRecord = ({days, year, user} : StaffRecordProps) => {
 	const {data: recordData} = useQuery(find_record,{

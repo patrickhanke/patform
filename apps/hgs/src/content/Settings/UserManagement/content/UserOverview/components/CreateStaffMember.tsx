@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import styles from '../UserOverview.module.scss';
 import { useImmer } from 'use-immer';
 import { useQuery } from '@apollo/client';
-import { ImageUploader, Select, TextInput } from '@/_UI';
+import { ImageUploader, Select, TextInput } from '@/content/_UI';
 import { FIND_ALL_ROLES } from '@/queries';
 import ColorPicker from '@/_UI/interfaces/ColorPicker';
 import { generateColor } from '@/provider';

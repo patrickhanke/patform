@@ -1,8 +1,8 @@
 'use client';
 
-import { Tasks } from '@/_UI';
+import { Tasks } from '@/content/_UI';
 import SiteHeader from '@/_UI/surfaces/SiteHeader';
-import { TasksComponent } from '@/_UI';
+import { TasksComponent } from '@/content/_UI';
 import React, { Suspense, useState } from 'react';
 import site_states from './constants/site_states';
 

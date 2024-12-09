@@ -1,4 +1,4 @@
-import { DatePicker, Modal } from '@/_UI';
+import { DatePicker, Modal } from '@/content/_UI';
 import { useDataHandler } from '@/provider';
 import React, { useState } from 'react';
 import { ArchiveSurchargeProps } from '../types';

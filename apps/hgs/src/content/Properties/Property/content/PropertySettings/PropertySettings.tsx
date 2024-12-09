@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import Loader from '@/_UI/surfaces/Loader';
 import { GET_PROPERTY_SETTINGS } from '@/queries';
 
-const FormikRender = dynamic(() => import('@/_UI/FormikRender'), {
+const FormikRender = dynamic(() => import('@/content/_UI/FormikRender'), {
 	loading: () => <Loader width={'100%'} height='30px' />,
 	ssr: false
 }); 

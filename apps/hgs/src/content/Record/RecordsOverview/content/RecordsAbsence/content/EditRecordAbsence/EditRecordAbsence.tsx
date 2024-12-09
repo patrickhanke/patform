@@ -1,7 +1,7 @@
 import { useDataHandler, absence_state_options, createIntervalFromTimes, findDefaultTimeForDate, getSaldo, getDefaultTime, getDateString, UserContext, absence_type_options, generateGraphQLQuery, AppContext, useGetActiveRecord } from '@/provider';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import styles from './EditRecordsAbsence.module.scss';
-import { DatePicker, DisplayWorker, Select, SlideInModal, TextInput } from '@/_UI';
+import { DatePicker, DisplayWorker, Select, SlideInModal, TextInput } from '@/content/_UI';
 import { EditRecordAbsenceComponent } from './types';
 import { Day, ErrorMessage, StaffMember } from '@/types';
 import { FIND_ALL_STAFF, find_day } from '@/queries';

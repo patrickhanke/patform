@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { AbsenceWithRecordIs, UseRecordAbsenceColumnsProps } from '../types';
-import { DisplayWorker, StateDisplay } from '@/_UI';
+import { DisplayWorker, StateDisplay } from '@/content/_UI';
 import { getDateStringsFromIso } from '@/provider';
 import EditAbsence from '../components/EditAbsence';
 

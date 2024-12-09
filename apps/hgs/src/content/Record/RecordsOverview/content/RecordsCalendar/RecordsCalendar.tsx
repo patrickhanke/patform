@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { RecordsCalendarProps } from './types';
-import { Calendar, CalendarData } from '@/_UI';
+import { Calendar, CalendarData } from '@/content/_UI';
 import { eachDayOfInterval, formatISO9075 } from 'date-fns';
 import { get, set } from 'lodash';
 import { absence_type_options } from '@/provider';

@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { SiteHeaderContentProps } from '../types';
 import styles from '../RecordsStaffOverview.module.scss';
 import { months } from '@/provider';
-import { Select, SwitchButtons } from '@/_UI';
+import { Select, SwitchButtons } from '@/content/_UI';
 import { Loader } from 'lucide-react';
 
 const SiteHeaderContent = ({

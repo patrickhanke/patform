@@ -1,6 +1,6 @@
 'use client';
 
-import { Tickets } from '@/_UI';
+import { Tickets } from '@/content/_UI';
 import SiteHeader from '@/_UI/surfaces/SiteHeader';
 import React, { Suspense, useState } from 'react';
 import site_states from './constants/site_states';

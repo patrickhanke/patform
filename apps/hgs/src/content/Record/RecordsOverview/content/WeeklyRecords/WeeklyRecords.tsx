@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from 'react';
 import { WeeklyRecordProps, WeekObject } from './types';
 import { AppContext, getWeekDayKeys } from '@/provider';
-import { SiteHeader, Table } from '@/_UI';
+import { SiteHeader, Table } from '@/content/_UI';
 import useTableColumns from './hooks/useTableColumns';
 import SiteHeaderContent from './components/SiteHeaderContent';
 import { getWeek, hoursToMilliseconds } from 'date-fns';

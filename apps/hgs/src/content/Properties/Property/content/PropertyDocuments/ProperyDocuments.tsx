@@ -1,7 +1,7 @@
 import SiteHeader from '@/_UI/surfaces/SiteHeader';
 import React, { useCallback, useMemo, useState } from 'react';
 import useFindObjectsDocuments from './hooks/useFindObjectDocuments';
-import { FileDisplay, Select, Table } from '@/_UI';
+import { FileDisplay, Select, Table } from '@/content/_UI';
 import { ColumnDef } from '@tanstack/react-table';
 import { ApplicationTypes } from '@/types';
 import IconButton from '@/_UI/interfaces/IconButton';

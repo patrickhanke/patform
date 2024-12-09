@@ -3,7 +3,7 @@
 import SiteHeader from '@/_UI/surfaces/SiteHeader';
 import { useQuery } from '@apollo/client';
 import React from 'react';
-import { Table } from '@/_UI';
+import { Table } from '@/content/_UI';
 import useTableColumns from './hooks/useTableColumns';
 import { FIND_ALL_STAFF } from '@/queries';
 

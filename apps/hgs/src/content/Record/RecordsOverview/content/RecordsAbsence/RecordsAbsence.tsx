@@ -2,7 +2,7 @@ import SiteHeader from '@/_UI/surfaces/SiteHeader';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Absence, StaffMember } from '@/types';
 import { AppContext, generateGraphQLQuery } from '@/provider';
-import { Select, Table } from '@/_UI';
+import { Select, Table } from '@/content/_UI';
 import { RecordAbsenceProps } from './types';
 import styles from './RecordsAbsence.module.scss';
 import { useQuery } from '@apollo/client';

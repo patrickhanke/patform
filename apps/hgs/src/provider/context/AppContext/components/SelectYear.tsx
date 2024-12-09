@@ -1,4 +1,4 @@
-import { Icon } from '@/_UI';
+import { Icon } from '@/content/_UI';
 import React, { useMemo } from 'react';
 import { SelectYearProps, YearOptions } from '../types';
 import { StylesConfig } from 'react-select';

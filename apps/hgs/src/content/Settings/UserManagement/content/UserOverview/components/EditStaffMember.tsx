@@ -1,4 +1,4 @@
-import { IconButton, ImageUploader, Select, TextInput } from '@/_UI';
+import { IconButton, ImageUploader, Select, TextInput } from '@/content/_UI';
 import { AppContext, useDataHandler } from '@/provider';
 import { ApplicationTypes } from '@/types';
 import React, { useCallback, useContext, useEffect, useState } from 'react';

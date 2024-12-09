@@ -1,6 +1,6 @@
 'use client';
 
-import { SiteHeader } from '@/_UI';
+import { SiteHeader } from '@/content/_UI';
 import React, { useContext, useState } from 'react';
 import useGetRecords from './hooks/useGetRecords';
 import initialFilters from './constants/initialFilters';

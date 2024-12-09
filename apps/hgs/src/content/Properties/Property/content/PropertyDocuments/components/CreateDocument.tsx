@@ -3,7 +3,7 @@ import { UserContext } from '@/provider';
 import { ApplicationTypes, ProperyDocuments } from '@/types';
 import React, { useContext, useState } from 'react';
 import styles from '../ProperyDocument.module.scss';
-import { DocumentUploader, TextInput } from '@/_UI';
+import { DocumentUploader, TextInput } from '@/content/_UI';
 
 const CreateDocument = ({open, setOpen, createDocumentHandler}:  ProperyDocuments.CreateDocumentComponent ) => {
 	const {user} = useContext(UserContext);

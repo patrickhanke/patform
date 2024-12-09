@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../UserMessage.module.scss';
 import { DashboardTypes } from '@/types';
-import { Divider, IconButton } from '@/_UI';
+import { Divider, IconButton } from '@/content/_UI';
 
 const UserMessage = ({message, showDivider=false, deleteMessageHandler, setMessageToRead}: DashboardTypes.UserMessageProps) => {
 	return (

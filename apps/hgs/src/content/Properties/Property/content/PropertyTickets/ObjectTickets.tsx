@@ -1,4 +1,4 @@
-import { Tickets } from '@/_UI';
+import { Tickets } from '@/content/_UI';
 import React from 'react';
 
 const PropertyTickets = ({id}: {id: string}) => {

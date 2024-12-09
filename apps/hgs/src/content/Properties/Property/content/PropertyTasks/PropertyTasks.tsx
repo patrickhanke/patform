@@ -1,4 +1,4 @@
-import { Tasks } from '@/_UI';
+import { Tasks } from '@/content/_UI';
 import React from 'react';
 
 const PropertyTasks = ({objectId}: {objectId: string}) => {

@@ -1,4 +1,4 @@
-import { CreateButton, Divider } from '@/_UI';
+import { CreateButton, Divider } from '@/content/_UI';
 import { generateGraphQLQuery, paramsHandler, useDataHandler } from '@/provider';
 import { Surcharge as SurchargeType } from '@/types';
 import { useQuery } from '@apollo/client';

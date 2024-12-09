@@ -1,23 +1,26 @@
 'use client';
 
-import './styles.scss';
-import { SwitchButtonsProps } from './types';
+import React from 'react';
+import styles from './SwitchButtons.module.scss';
+import { SwitchButtons as SwitchButtonsComponent } from '@/types';
+import { Icons } from '@/provider';
 
-const SwitchButtons = ({buttonStates, currentStates, changeHandler, underlineButtons}: SwitchButtonsProps) => {
+const SwitchButtons = ({buttonStates, currentStates, changeHandler, underlineButtons = false}: SwitchButtonsComponent) => {
 	return (
-		<div className={'buttons_container'} data-underline_buttons={underlineButtons}>
+		<div className={styles.buttons_container} data-underline_buttons={underlineButtons}>
+
 			{buttonStates.map((button, index) => 
 				<button
 					key={button.value}
 					data-isfirst={index === 0}
 					data-islast={index + 1 === buttonStates.length }
-					data-isactive={currentStates?.value === button.value}
+					data-isactive={currentStates.value === button.value}
 					data-isdisabled={button.disabled === true}
 					disabled={button.disabled === true}
 					onClick={() => changeHandler(button)}
 					style={{whiteSpace: 'nowrap'}}
 				>
-					{button.label}
+					{button.is_icon ? <Icons icon={button.label} /> : button.label}
 				</button>
 			)}
 		</div>

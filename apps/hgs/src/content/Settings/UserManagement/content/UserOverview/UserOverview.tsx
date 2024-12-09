@@ -4,7 +4,7 @@ import SiteHeader from '@/_UI/surfaces/SiteHeader';
 import { UserContext, generateColor, useDataHandler } from '@/provider';
 import { useQuery } from '@apollo/client';
 import React, { useContext, useState } from 'react';
-import { Table } from '@/_UI';
+import { Table } from '@/content/_UI';
 import useTableColumns from './hooks/useTableColumns';
 import { FIND_ALL_USERS } from '@/queries';
 import SlideIn from '@/_UI/surfaces/SlideIn';

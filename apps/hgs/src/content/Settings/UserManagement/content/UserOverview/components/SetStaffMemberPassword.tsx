@@ -1,4 +1,4 @@
-import { IconButton, TextInput } from '@/_UI';
+import { IconButton, TextInput } from '@/content/_UI';
 import { useDataHandler } from '@/provider';
 import { ApplicationTypes } from '@/types';
 import clsx from 'clsx';

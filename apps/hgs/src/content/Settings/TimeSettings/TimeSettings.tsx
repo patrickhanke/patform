@@ -1,6 +1,6 @@
 'use client';
 
-import {SiteHeader} from '@/_UI';
+import {SiteHeader} from '@/content/_UI';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import site_states from './constants/site_states';
 import { generateGraphQLQuery, useDataHandler, UserContext } from '@/provider';

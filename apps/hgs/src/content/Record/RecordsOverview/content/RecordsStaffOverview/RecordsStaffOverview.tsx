@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { DayData, RecordsStaffOverviwProps, StaffOption, TableData } from './types';
 import SiteHeaderContent from './components/SiteHeaderContent';
-import { SiteHeader, Table } from '@/_UI';
+import { SiteHeader, Table } from '@/content/_UI';
 import { eachDayOfInterval, formatISO9075, isWeekend } from 'date-fns';
 import useTableColumns from './hooks/useTableColumns';
 import { Row } from '@tanstack/react-table';

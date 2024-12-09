@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Divider, SlideInModal } from '@/_UI';
+import { Divider, SlideInModal } from '@/content/_UI';
 import SurchargeDaySelect from './components/HolidayTemplateDaySelect';
 import { cloneDeep, set } from 'lodash';
 import { ErrorMessage, Holiday, HolidayTemplate } from '@/types';
