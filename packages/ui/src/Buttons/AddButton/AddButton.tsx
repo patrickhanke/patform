@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+'use client';
+
+import { FC, useState } from 'react';
 import styles from './AddButton.module.scss';
 import {VscAdd} from 'react-icons/vsc';
-import { AddButton as AddButtonTypes } from '@/types';
+import { AddButtonProps } from './types';
 
-const AddButton = ({items}:  AddButtonTypes) => {
+const AddButton: FC<AddButtonProps> = ({items}) => {
 	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<>

@@ -1,17 +1,26 @@
 import * as Yup from 'yup';
 import { FormikValues } from 'formik';
 import {Dispatch, SetStateAction} from 'react';
+import { Pointer } from '@repo/types';
+import { DatePickerTypes } from '@repo/ui';
 
 export type  handleFormData<V extends FormDataElement> = (data: V) => void
 
-export type IntFormikRender = {
+export type FormikRenderProps = {
     fields: Field[],
-    data: FormDataElement,
-    formSubmitHandler: (values: FormikValues) => void,
+    data?: FormDataElement,
+    formSubmitHandler?: (values: FormikValues) => void,
     formValidationHandler?: (t: boolean) => void,
     useWithDebounce?: boolean,
+    afterSaveFunction?: (T?: object, V?: any) => void,
+    enableReinitialize?: boolean,
+    valueReturnFunction?: (T?: object, V?: any) => void,
+    apiClass?: string,
+    id?: string,
     isHorizontal?: boolean,
     setSecondaryContent?: Dispatch<SetStateAction<React.ReactNode | null>>
+    highlightChanges?: boolean
+
 }
 
 export type FormSubmitStoreProps = {
@@ -41,6 +50,8 @@ export type BasicField = {
     placeholder?: string;
     initialValue?: any;
     options?: object;
+    disabled?: (values: FormikValues) => boolean | boolean,
+    width?: string | number,
     validation?: {
         required?: string;
     }
@@ -73,6 +84,9 @@ export type FieldType = {
 export type StringField = 
     BasicField & {
         type: 'input' | 'url' | 'password' | 'textarea' | 'texteditor';
+        dataType?: 'string';
+        value: string,
+        textAlign?: 'left' | 'center' | 'right',
         validation: {
             required?: string;
             min_length?: number;
@@ -88,6 +102,7 @@ export type StringField =
 export type ToggleField = 
     BasicField & {
         type: 'toggle';
+        value: boolean;
         validation: {
             required?: string;
         }
@@ -95,7 +110,10 @@ export type ToggleField =
 
 export type NumberField =
     BasicField & {
+        value: number;
         type: 'number';
+        dataType?: 'number';
+        textAlign?: 'left' | 'center' | 'right',
         options: {
             number_start_value: number;
             number_end_value: number;
@@ -112,6 +130,7 @@ export type NumberField =
 export type ImageField =
     BasicField & {
         type: 'image';
+        value: string;
         options: {
             return_type: 'array' | 'string';
             max_file_count: number
@@ -125,6 +144,8 @@ export type ImageField =
 export type FileField =
     BasicField & {
         type: 'file';
+        value: string | string[];
+        path: string;
         validation: {
             required?: string;
             max_file_count?: number;
@@ -134,6 +155,7 @@ export type FileField =
 export type SelectField =
     BasicField & {
         type: 'select';
+        value: string | object;
         dataType: 'string' | 'object';
         select_options: {label: string, value: string}[]
     }
@@ -141,6 +163,7 @@ export type SelectField =
 export type PointerSelectField =
     BasicField & {
         type: 'pointer_select';
+        value: Pointer<any>;
         select_options: {label: string, value: string}[]
         options : {
             pointer_class: string;
@@ -149,19 +172,40 @@ export type PointerSelectField =
 
 export type PersonsSelectField =
     BasicField & {
+        value: object;
         type: 'persons_select';
     }
 
 export type ColorField =
     BasicField & {
         type: 'color';
+        value: string;
+        validation: {
+            required?: string;
+        }
+    }
+        
+export type DateField =
+    BasicField & {
+        type: DatePickerTypes;
+        value: string;
         validation: {
             required?: string;
         }
     }
         
 
-export type Field = StringField | ToggleField | NumberField | ImageField | FileField | SelectField | PointerSelectField | ColorField | PersonsSelectField
+export type Field = 
+    StringField | 
+    ToggleField | 
+    NumberField | 
+    ImageField | 
+    FileField | 
+    SelectField | 
+    PointerSelectField | 
+    ColorField | 
+    PersonsSelectField | 
+    DateField
 
 export type FieldValidationArray = Array<Field & {validation: ValidationTypes}>
 

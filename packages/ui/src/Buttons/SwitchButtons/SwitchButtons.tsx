@@ -2,10 +2,10 @@
 
 import React from 'react';
 import styles from './SwitchButtons.module.scss';
-import { SwitchButtons as SwitchButtonsComponent } from '@/types';
-import { Icons } from '@/provider';
+import { Icons } from '@repo/provider';
+import { SwitchButtonProps } from './types';
 
-const SwitchButtons = ({buttonStates, currentStates, changeHandler, underlineButtons = false}: SwitchButtonsComponent) => {
+const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates, changeHandler, underlineButtons = false}) => {
 	return (
 		<div className={styles.buttons_container} data-underline_buttons={underlineButtons}>
 

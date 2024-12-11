@@ -11,6 +11,9 @@ const SiteHeader = ({
 }: SiteHeaderComponent) => {
 	const {pageTitle} = useContext(AppContext);
 	const {user} = useContext(UserContext);
+
+	console.log(user);
+	
 	
 	return (
 		<div className={styles.main_container} >

@@ -1,4 +1,4 @@
-export type SlideInComponent = {
+export type SlideInProps = {
     children: React.ReactNode,
     header: string,
     isOpen: boolean,
@@ -7,8 +7,10 @@ export type SlideInComponent = {
 	size?: 'small' | 'medium' | 'large',
 	preventClickOutside?: boolean,
     secondaryContent?: React.ReactNode | null,
+    showSecondaryContent?: boolean,
     disabled?: [boolean, boolean],
-    showSecondaryContent?: boolean
+    errors?: ErrorMessage[],
+    confirmText?: string
 }
 
 export type SlideInStoreProps = {

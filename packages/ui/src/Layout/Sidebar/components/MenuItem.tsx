@@ -40,7 +40,11 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemP
 		<>
 			<li data-hassubmenu={subMenu.length > 0}>
 				{subMenu.length > 0 || disabled ? 
-					<button data-disabled={disabled} onClick={() => setShowSubMenu(!showSubMenu)}  className={clsx(link === path ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)}>
+					<button 
+						data-disabled={disabled} 
+						onClick={() => setShowSubMenu(!showSubMenu)}  
+						className={clsx(link === path ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)}
+					>
 						<Icons icon={icon} />
 						{label}
 						{!disabled && 

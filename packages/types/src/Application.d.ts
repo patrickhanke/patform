@@ -14,7 +14,7 @@ export type FilterOperator = '_eq' | '_ne' | '_lt' | '_lte' | '_gt' | '_gte' | '
 
 export type Filter = {
     key: string,
-    value: string | Array<string | number>,
+    value: string | Array<string | number> | number,
     operator: FilterOperator,
     id: string
 }
@@ -30,4 +30,30 @@ export type SelectOption = {
     label: string
 }
 
+export type SiteState = {
+    value: string,
+    label: string
+}
+
+export type Document =  {
+    objectId: string, 
+    createdAt: string,
+    file: {
+        url,
+        name
+    },
+    created_by: UserTypes.User,
+    task: TaskTypes.Task,
+    object: PropertyTypes.Property,
+    name: string,
+    type: 'task' | 'object'
+}
+
+export type Pointer<T> = {
+    __type: 'Pointer',
+    className: T,
+    objectId: string
+} 
+
+export type Image = string // filePath to Image
 

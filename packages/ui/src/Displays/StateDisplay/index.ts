@@ -1,1 +1,1 @@
-export {default} from './StateDisplay';
+export {default as StateDisplay} from './StateDisplay';

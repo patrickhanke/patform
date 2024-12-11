@@ -1,10 +1,12 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react';
+import { ErrorMessage } from '@repo/types';
 
-export type ModalComponent = {
+export type ModalProps = {
     children: ReactNode,
     header: string,
     isOpen: boolean,
     cancelButtonHandler: ()=> void,
     confirmButtonHandler: () => void,
-    buttonDisabled?: boolean[]
+    buttonDisabled?: boolean[],
+    errors?: ErrorMessage[]
 }

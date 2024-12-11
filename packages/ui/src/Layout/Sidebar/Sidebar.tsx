@@ -16,7 +16,6 @@ const Sidebar = ({menuItems}: {menuItems: {label: string, value: string, icon: s
 						subMenu={menu_item.sub_menu}
 						disabled={menu_item.disabled}
 					/>
-						
 				))}
 			</ul>
 			<ul className={styles.menu_item_container}>

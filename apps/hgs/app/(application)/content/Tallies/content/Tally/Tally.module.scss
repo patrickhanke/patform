@@ -1,0 +1,99 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+@use '@styles/buttons';
+
+.tally_container {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    width: 100%;
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+};
+
+.tally_content_container {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: flex-start, $gap: sizes.$md, $change_to_column: true);
+    padding: map-get($map: sizes.$padding, $key: 'sm' )
+};
+
+.tally_workers_container {
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    border-top: 1px solid colors.$grey;
+    // background-color: colors.$lightest;
+};
+
+.tally_content_element {
+    @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch);
+    flex: 1 1 50%;
+    padding: map-get($map: sizes.$padding, $key: 'sm' )
+};
+
+.tally_subheadline {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xs);
+    width: 60px;
+    height: auto;
+};
+
+.tally_footer {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    border-top: 1px solid colors.$grey;
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    background-color: colors.$lightest;
+}
+
+.description_preview_container {
+    width: 360px;
+    position: relative;
+}
+
+.description_preview_header {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xs);
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: sizes.$xs;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.description_preview_content {
+    padding-left: 24px;
+}
+
+.last_entry_container {
+    width: 240px;
+}
+
+.tally_slidein_content {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: sizes.$sm);
+    height: 100%;
+}
+
+.tally_slidein_header {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: flex-end);
+    width: 100%;
+    flex: 0 0 40px;
+    border-bottom: 1px solid colors.$grey;
+    h2 {
+        margin-bottom: sizes.$xs;
+        cursor: pointer;
+    }
+}
+
+.tally_slidein_content_container {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: sizes.$md);
+    flex: 0 1 100%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: map-get(sizes.$padding, 'sm');
+
+};
+
+.tally_slidein_footer {
+    flex: 0 0 120px;
+    width: 100%;
+    border-top: 1px solid colors.$grey;
+    background-color: colors.$light;
+    position: relative;
+};

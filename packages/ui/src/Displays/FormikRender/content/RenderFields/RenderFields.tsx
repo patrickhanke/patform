@@ -1,46 +1,79 @@
-import React from 'react';
+import { FC } from 'react';
 import { FastField, FastFieldProps } from 'formik';
-import Toggle from './components/Toggle';
 import getSelectValue from './functions/getSelectValue';
 import { RenderFieldsType } from './types';
 import './styles.scss';
 import { FileUploader, Select } from '@repo/ui';
 import { Field } from '../../types';
-import Input from './components/Input';
-import TextArea from './components/TextArea';
 import ColorPicker from './components/ColorPicker';
 import ImageUpload from './components/ImageUpload';
 import TextEditor from './components/TextEditor';
 import getPointerValue from './functions/getPointerValue';
 import PersonSelect from './components/PersonSelect';
+import { get } from 'lodash';
+import SelectToggle from './components/SelectToggle';
+import DatePickerField from './components/DatePickerField';
 
-const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, setFieldValue, isHorizontal, setSecondaryContent}: RenderFieldsType) => 
+const fieldDisabledHandler = (field: Field, values: RenderFieldsType['values']) => {
+	if (field.disabled) {
+		if (typeof field.disabled === 'boolean') {
+			return field.disabled;
+		}
+		return field.disabled(values);
+	}
+	return false;
+};
+
+const RenderFields: FC<RenderFieldsType> = ({
+	fields, 
+	getFieldMeta, 
+	handleChange, 
+	values, 
+	handleBlur, 
+	setFieldValue, 
+	afterSaveFunction,
+	id,
+	apiClass,
+	isHorizontal, 
+	setSecondaryContent, 
+	highlightChanges
+}) => 
 	<>
 		{fields.map((field: Field) => 
-			<React.Fragment key={field.id ? field.id : field.name}>
-				{(field.type === 'input' || field.type === 'url' || field.type === 'number' || field.type === 'password')  &&
-					<Input 
-						name={field.name}
-						label={field.label}
-						id={field.id}
-						type={field.type}
-						handleChange={handleChange}
-						values={values}
-						handleBlur={handleBlur}
-						placeholder={field.placeholder}
-						isHorizontal={isHorizontal}
-					/>
+			<div key={field.id ? field.id : field.name} className={isHorizontal ? 'form_horizontal_container' : ''}>
+				<label htmlFor={field.name} className={highlightChanges && getFieldMeta(field.name).initialValue !== field.value ? 'highlight' : ''} >
+					{field.label || field.name} 
+					
+				</label>
+				{(field.type === 'input' || field.type === 'url' || field.type === 'password' || field.type === 'number')  &&
+					<>
+						<input 
+							name={field.name}
+							type={field.dataType === 'number' ? 'number' : field.type}
+							onChange={e => handleChange(e)}
+							value={get( values, field.name, '' )}
+							onBlur={e => handleBlur(e)}
+							placeholder={field.placeholder}
+							key={field.name}
+							min={field.type === 'number' ? field?.options?.number_start_value : undefined}
+							max={field.type === 'number' ? field?.options?.number_end_value : undefined}
+							disabled={fieldDisabledHandler(field, values)}
+							style={{
+								width: field?.width ? field.width : 'inherit',
+								textAlign: field?.textAlign ? field.textAlign : 'left'
+							}}
+						/>
+					</>
 				}
 				{field.type === 'textarea' &&
-					<TextArea 
+					<textarea 
 						name={field.name}
-						label={field.label}
-						id={field.id}
-						handleChange={handleChange}
-						values={values}
-						handleBlur={handleBlur}
+						onChange={e => handleChange(e)}
+						value={values[field.name] || ''}
+						onBlur={e => handleBlur(e)}
 						placeholder={field.placeholder}
-						isHorizontal={isHorizontal}
+						key={field.name}
+						style={{minWidth: '240px', minHeight: '80px'}}
 					/>
 				}
 				{(field.type === 'image') &&
@@ -60,78 +93,56 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 					</div>
 				}
 				{(field.type === 'file') &&
-					<div>
-						<FastField name={field.name}>
-							{({
-								field: fieldValues 
-								// form: { touched, errors },  also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-								// meta
-							}: FastFieldProps) => (
-								<FileUploader
-									type={field.type}
-									value={fieldValues}
-									returnType={field.type === 'file' ? 'string' : 'array'}
-									field={field}
-									onChange={newValues => setFieldValue(field.name, newValues, true)}
-									setSecondaryContent={setSecondaryContent}
-								/>
-							)}
-						</FastField>
-					</div>
+					<FileUploader
+						type={field.type}
+						value={values[field.name]}
+						returnType={field.type === 'file' ? 'string' : 'array'}
+						onChange={newValues => setFieldValue(field.name, newValues, true)}
+						setSecondaryContent={setSecondaryContent}
+						path={field.path || ''}
+					/>
 				}
 				{(field.type === 'toggle') &&
-					<div>
-						<FastField name={field.name}>
-							{({
-								field: fieldValues // { name, value, onChange, onBlur }
-								// form: { touched, errors },  also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-								// meta
-							}: FastFieldProps) => (
-								<div className={isHorizontal ? 'form_horizontal_container' : ''}>
-									<label htmlFor={fieldValues.name}>{fieldValues.name} </label>
-									<Toggle
-										toggleState={values[field.name]} 
-										toggleHandler={(value: boolean) => setFieldValue(field.name, value, true)}
-										disabled={false}
-										label={undefined}
-										labelBefore={false}
-									/>
-								</div>
-							)}
-						</FastField>
-					</div>
+					<FastField name={field.name}>
+						{({
+							field: fieldValues // { name, value, onChange, onBlur }
+							// form: { touched, errors },  also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
+							// meta
+						}: FastFieldProps) => (
+							<SelectToggle
+								value={fieldValues.value} 
+								valueChangeHandler={(value: boolean) => setFieldValue(field.name, value, true)}
+								disabled={fieldDisabledHandler(field, values)}
+								labelBefore={false}
+							/>
+						)}
+					</FastField>
 				}
 				{(field.type === 'select') &&
-					<div className={isHorizontal ? 'form_horizontal_container' : ''}>
-						<label htmlFor={field.name}>{field.label || field.name} </label>
-						<Select 
-							onChange={value => setFieldValue(field.name, field.dataType === 'string' ?  value.value : value, true)}
-							value={getSelectValue(values, field)}
-							options={field.select_options}
-							key={field.name}
-						/>
-					</div>
+					<Select 
+						onChange={value => setFieldValue(field.name, field.dataType === 'string' ?  value.value : value, true)}
+						value={getSelectValue(values, field)}
+						options={field.select_options}
+						key={field.name}
+					/>
 				}
 				{(field.type === 'pointer_select') &&
-					<div className={isHorizontal ? 'form_horizontal_container' : ''}>
-						<label htmlFor={field.name}>{field.label || field.name} </label>
-						<Select 
-							onChange={value => setFieldValue(field.name, {__type: 'Pointer', className: field?.options?.pointer_class, objectId: value.value }, true)}
-							value={getPointerValue(values[field.name], field.select_options || [])}
-							options={field.select_options}
-							key={field.name}
-						/>
-					</div>
+					<Select 
+						onChange={value => setFieldValue(field.name, {__type: 'Pointer', className: field?.options?.pointer_class, objectId: value.value }, true)}
+						value={getPointerValue(values[field.name], field.select_options || [])}
+						options={field.select_options}
+						key={field.name}
+					/>
 				}
 				{(field.type === 'color') &&
-						<ColorPicker 
-							onChange={value => setFieldValue(field.name, value, true)}
-							value={values[field.name]}
-							key={field.name}
-							label={field.label}
-							isOverlay={true}
-							isHorizontal={isHorizontal}
-						/>
+					<ColorPicker 
+						onChange={value => setFieldValue(field.name, value, true)}
+						value={values[field.name]}
+						key={field.name}
+						label={field.label}
+						isOverlay={true}
+						isHorizontal={isHorizontal}
+					/>
 				}
 				{field.type === 'texteditor' &&
 					<TextEditor
@@ -156,13 +167,29 @@ const RenderFields = ({fields, getFieldMeta, handleChange, values, handleBlur, s
 						isHorizontal={isHorizontal}
 					/>
 				}
+				{(
+					field.type === 'week' || 
+					field.type === 'date' || 
+					field.type === 'month' || 
+					field.type === 'time' || 
+					field.type === 'datetime-local' || 
+					field.type === 'datetime'
+				) &&
+					<>
+						<DatePickerField
+							onChange={(value: string) => setFieldValue(field.name, value, true)}
+							value={values[field.name]}
+							type={field.type}
+						/>
+					</>
+				}
 				{getFieldMeta(field.name).touched && getFieldMeta(field.name).error ? 
 					<div className={'error_message'}>{getFieldMeta(field.name).error}</div>
 					: 
 					null
 				}
 				{isHorizontal && <div className='form_divider' />}
-			</React.Fragment>
+			</div>
 		)}
 	</>;
 

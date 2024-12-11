@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import styles from './CalendarHeader.module.scss';
-import SwitchButtons from '@/_UI/surfaces/SwitchButtons';
 import { CalendarHeaderProps, IntervalSelectOptions, ViewState } from './types';
 import viewSettings from './constants/view_settings';
-import months from '@/content/Record/RecordsOverview/content/WeeklyRecords/constants/months';
-import { Select } from '@/_UI/interfaces';
+import { Select, SwitchButtons } from '@repo/ui';
+import {months} from '@repo/provider';
 
 const CalendarHeader = ({view, setView, intervalIndex, setIntervalIndex}: CalendarHeaderProps) => {
 

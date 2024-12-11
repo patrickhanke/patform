@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import useGetState from './hooks/useGetState';
 import { Options, StateDisplayComponent } from './types';
 import styles from './StateDisplay.module.scss';
-import Icon from '../Icon';
+import {Icon} from '@repo/ui';
 import ReactSelect, {components} from 'react-select';
 import customStyles from './constants/customStyles';
 

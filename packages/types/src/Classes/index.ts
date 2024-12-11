@@ -12,3 +12,4 @@ export type * from './Group';
 export type * from './Download';
 export type * from './Form';
 export type * from './Data';
+export type * from './Message';

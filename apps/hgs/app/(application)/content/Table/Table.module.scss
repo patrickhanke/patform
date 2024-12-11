@@ -1,0 +1,80 @@
+@use '@styles/layout';
+@use '@styles/colors';
+@use '@styles/sizes';
+
+.table_container {
+    width: 100%;
+    height: auto;
+    overflow-x: auto; 
+    white-space: nowrap; 
+    .header {
+        padding: map-get($map: sizes.$padding, $key: 'md' );
+    }
+    .sortable {
+        @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$md);
+        cursor: pointer;
+    }
+    
+    table {
+        // border: 1px solid colors.$lightgrey;
+        // border: 1px solid colors.$lightgrey;
+        // border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
+        position: relative;
+        box-sizing: border-box;
+        width: 100%;
+        border-spacing: 0px;
+    }
+    tbody {
+        // border-bottom: 1px solid colors.$lightgrey;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 500;
+        font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    }
+        
+    th {
+        font-family: Roboto, sans-serif;
+        font-size: map-get($map: sizes.$font_size, $key: 'md' );
+        font-weight: 600;
+        text-align: left;
+        border-bottom: 1px solid colors.$lightgrey;
+        background-color: colors.$lightest;
+        // border-right: 1px solid colors.$lightgrey;
+        padding: map-get($map: sizes.$padding, $key: 'xs' );
+    }
+    th:last-child {
+        border-right: none;
+    }
+    tr {
+        font-family: 'Open Sans', sans-serif;
+        font-size: map-get($map: sizes.$font_size, $key: 'sm' );
+        td {
+            border-bottom: 1px solid colors.$lightgrey;
+        }
+    }
+    td {
+        max-width: 200px; 
+        overflow: hidden; 
+        white-space: nowrap; 
+        text-overflow: ellipsis;
+        padding: map-get($map: sizes.$padding, $key: 'xs' );
+        // border-bottom: 1px solid colors.$lightgrey;
+        // border-right: 1px solid colors.$lightgrey;
+    }
+    
+    td:last-child {
+        border-right: none;
+    }
+    tr:last-child {
+        td {
+            border-bottom: none;
+        }
+    }
+    tfoot {
+        color: colors.$lightgrey;
+    }
+    
+    tfoot th {
+        font-weight: normal;
+    }
+    
+}

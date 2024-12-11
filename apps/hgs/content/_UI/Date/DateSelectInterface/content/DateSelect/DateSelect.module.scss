@@ -1,0 +1,57 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+.date_container {
+    @include layout.flexbox($direction: column, $wrap: wrap, $align: stretch, $justify: flex-start, $gap: 0);
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+}
+
+.date_select_container {
+    @include layout.flexbox($direction: row, $wrap: wrap, $align: flex-start, $justify: flex-start, $gap: 0);
+}
+
+.cw_component_container {
+    width: 24px;
+    height: 30px;
+    border: 1px solid colors.$secondary;
+    color: colors.$secondary;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.cw_component_container[data-isthisweek="true"] {
+    border: 2px solid colors.$red;
+    color: colors.$red;
+}
+
+.cw_component_container[data-is-selected="true"] {
+    color: white;
+    background-color: colors.$secondary;
+}
+
+.footer {
+    @include layout.flexbox($direction: column, $align: flex-start, $justify: flex-end);
+    height: 100%;
+    width: 100%;
+    padding: map-get(sizes.$padding, 'md');
+};
+
+.interval_info_container {
+    width: 100%;
+    height: auto;
+}
+
+.interval_info_container[data-is-active="true"] {
+    opacity: 0.5;
+}
+
+.interval_info_content {
+    @include layout.flexbox($direction: column, $wrap: wrap, $align: flex-start, $justify: flex-start, $gap: sizes.$xs);
+    width: 100%;
+}
+
+.interval_info_element {
+    padding: map-get(sizes.$padding, 'sm');
+    background-color: colors.$light;
+}

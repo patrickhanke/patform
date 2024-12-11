@@ -1,0 +1,34 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+@import '../../Task.module.scss';
+
+.team_assignment_container {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+};
+
+.team_assignment_workers_container {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $wrap: wrap, $gap: sizes.$xxs);
+};
+
+.edit_workers_button {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    border: 1px dotted colors.$primary;
+    color: colors.$primary;
+    background-color: transparent;
+    font-size: map-get($map: sizes.$font_size, $key: 'sm' );
+    cursor: pointer;
+    font-weight: 500;
+    padding: map-get($map: sizes.$padding, $key: 'xs');
+    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    &:hover {
+        background-color: colors.$primary;
+        color: colors.$white;
+    }
+};
+
+.button_workers_container{
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 0);
+    width: fit-content;
+};

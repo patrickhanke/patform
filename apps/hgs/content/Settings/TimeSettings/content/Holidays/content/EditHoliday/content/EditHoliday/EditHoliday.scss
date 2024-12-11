@@ -1,0 +1,33 @@
+@use '@styles/layout';
+@use '@styles/colors';
+@use '@styles/sizes';
+
+.create_surcharge_container {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: sizes.$xs);
+}
+
+.day_select_container {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    width: 100%;
+    border: none;
+    border-radius: map-get($map: sizes.$border_radius, $key: 'sm');
+    cursor: pointer;
+    transition: background-color .2s ease;
+    padding: map-get($map: sizes.$padding, $key: 'sm' )
+}
+
+.day_select_container[data-isselected="true"] {
+    background-color: colors.$green_light;
+    color: colors.$green_shaded;
+    &:hover {
+        background-color: colors.$green;
+        // color: colors.$white;
+    }
+}
+
+.day_select_container[data-isselected="false"] {
+    background-color: colors.$lightest;
+    &:hover {
+        background-color: colors.$light;
+    }
+}

@@ -1,0 +1,47 @@
+@use '@styles/colors';
+@use '@styles/layout';
+@use '@styles/sizes';
+
+.ticket_details_container {
+    @include layout.flexbox($direction: column, $wrap: wrap, $align: stretch, $justify: flex-start, $gap: 0);
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+}
+
+.ticket_slidein_content {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: flex-start, $gap: 0);
+    height: auto;
+}
+
+.ticket_slidein_header {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: flex-end);
+    width: 100%;
+    flex: 0 0 40px;
+    border-bottom: 1px solid colors.$grey;
+    h2 {
+        margin-bottom: sizes.$xs;
+        cursor: pointer;
+    }
+}
+
+.ticket_slidein_content_container {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: sizes.$md);
+    flex: 0 1 100%;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: map-get(sizes.$padding, 'sm');
+
+};
+
+.ticket_slidein_footer {
+    flex: 0 0 120px;
+    width: 100%;
+    border-top: 1px solid colors.$grey;
+    background-color: colors.$light;
+    position: relative;
+};
+
+.task_details_header {
+    padding-left: sizes.$sm;
+    padding-right: sizes.$sm;
+}

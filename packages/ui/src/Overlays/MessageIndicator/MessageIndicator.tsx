@@ -1,8 +1,7 @@
-import { MessageTypes } from '@/types';
-import React from 'react';
 import styles from './MessageIndicator.module.scss';
+import { Message } from '@repo/types';
 
-const MessageIndicator = ({messages = []}: {messages: MessageTypes.Message[]}) => {
+const MessageIndicator = ({messages = []}: {messages: Message[]}) => {
 	const newMessages = messages.filter(message => !message.is_read);
 
 	if (newMessages && newMessages.length > 0) return (

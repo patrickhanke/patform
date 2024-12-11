@@ -1,6 +1,8 @@
-import { ErrorDisplay } from '@/content/_UI';
-import { ApplicationTypes } from '@/types';
-import React, { useEffect, useRef } from 'react';
+'use client';
+
+import { ErrorDisplay } from '@repo/ui';
+import { useEffect, useRef } from 'react';
+import { ErrorMessage } from '@repo/types';
 
 const TextInput = ({
 	label, 
@@ -21,7 +23,7 @@ const TextInput = ({
     id: string, 
 	defaultValue?: string | number,
 	onChange: (e: string) => void, 
-	errors?: ApplicationTypes.ErrorMessage[],
+	errors?: ErrorMessage[],
 	isTextArea?: boolean,
 	width?: string,
 	onBlur?: () => void,

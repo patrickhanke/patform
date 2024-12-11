@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import mime from 'mime';
-import { ApplicationTypes } from '@/types';
 import styles from './FileDisplay.module.scss';
 import { GrDocumentPdf } from 'react-icons/gr';
+import { Document } from '@repo/types';
 
-const FileDisplay = ({document}: {document: ApplicationTypes.Document}) => {
+const FileDisplay = ({document}: {document: Document}) => {
 	console.log(mime.getType(document.file.name));
 	const renderFileIcon = useMemo(() => {  
 		const fileType = mime.getType(document.file.name);

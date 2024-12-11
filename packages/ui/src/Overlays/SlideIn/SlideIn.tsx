@@ -1,14 +1,14 @@
 'use client';
 
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import './styles.scss';
 
 import { useOnClickOutside } from 'usehooks-ts';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SlideInComponent } from './types';
-import { IconButton } from '../../Buttons';
+import { SlideInProps } from './types';
+import { ErrorDisplay, IconButton } from '@repo/ui';
 
-const SlideIn = ({
+const SlideIn: React.FC<SlideInProps> = ({
 	header, 
 	preventClickOutside=false, 
 	children,
@@ -17,8 +17,10 @@ const SlideIn = ({
 	confirm,
 	secondaryContent= null,
 	showSecondaryContent = false,
-	disabled = [false, false]
-}: SlideInComponent) => {
+	disabled = [false, false],
+	errors,
+	confirmText
+}) => {
 
 	const ref = useRef(null);
 	useOnClickOutside(ref, () => {
@@ -49,6 +51,7 @@ const SlideIn = ({
 						<div className="slidein_main_content">
 							<div className={'slidein_content'}>
 								{children}
+								<ErrorDisplay errors={errors} />
 							</div>
 							
 							<motion.div
@@ -65,7 +68,7 @@ const SlideIn = ({
 						<div className='slidein_footer'>
 							<div className="button_container">
 								<button className='full_button md light' disabled={disabled[0]} onClick={() => cancel()}>Abbrechen</button>
-								<button className='full_button md primary' disabled={disabled[1]} onClick={() => confirm()}>Speichern</button>
+								<button className='full_button md primary' disabled={disabled[1]} onClick={() => confirm()}>{confirmText ? confirmText : 'Speichern'}</button>
 							</div>
 						</div>
 					</motion.div>

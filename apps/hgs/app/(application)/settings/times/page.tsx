@@ -1,0 +1,1 @@
+export {TimeSettings as default} from '@/content';

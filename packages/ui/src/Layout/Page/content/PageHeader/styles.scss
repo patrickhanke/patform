@@ -10,15 +10,15 @@
     background-color: colors.$white;
 };
 
-.pageheader_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between);
-    width: 100%;
-    position: relative;
-    height: 42px;
-    box-sizing: border-box;
-    border-bottom: 1px solid colors.$grey;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
-};
+// .pageheader_container {
+//     @include layout.flexbox($direction: row, $align: center, $justify: space-between);
+//     width: 100%;
+//     position: relative;
+//     height: 42px;
+//     box-sizing: border-box;
+//     border-bottom: 1px solid colors.$grey;
+//     padding: map-get($map: sizes.$padding, $key: 'md' );
+// };
 
 .nav_container {
     @include layout.flexbox($direction: row, $align: center, $justify: space-between);
@@ -37,7 +37,7 @@
     padding-bottom: 0;
     position: relative;
     box-sizing: border-box;
-    border-bottom: 1px solid colors.$grey;
+    // border-bottom: 1px solid colors.$grey;
     padding: map-get($map: sizes.$padding, $key: 'md' );
     padding-bottom: 0;
 };
@@ -47,13 +47,14 @@
 }
 
 .pageheader_content_container {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: sizes.$md );
-    height: 42px;
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md );
+    height: auto;
     width: 100%;
     position: relative;
     box-sizing: border-box;
-    border-bottom: 1px solid colors.$grey;
     padding: map-get($map: sizes.$padding, $key: 'md' );
+    padding-top: 24px;
+    padding-bottom: 24px;
     background-color: colors.$white;
 }
 

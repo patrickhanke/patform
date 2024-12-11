@@ -1,0 +1,18 @@
+@use '@styles/sizes';
+@use '@styles/colors';
+@use '@styles/layout';
+
+.user_container {
+    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    cursor: pointer;
+    position: relative;
+};
+
+.user_image_container {
+    height: 24px;
+    width: 24px;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: colors.$grey;
+};

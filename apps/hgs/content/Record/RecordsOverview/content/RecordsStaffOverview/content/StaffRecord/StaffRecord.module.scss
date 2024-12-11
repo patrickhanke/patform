@@ -1,0 +1,17 @@
+@use '@styles/layout';
+@use '@styles/colors';
+@use '@styles/sizes';
+
+.staff_records_container {
+    @include layout.flexbox($direction: column, $justify: space-between, $align: flex-start, $gap: sizes.$sm);
+
+    .records_subheadline {
+        @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+        width: 120px;
+        color: colors.$grey;
+    }
+}
+
+.staff_siteheader_content {
+    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+}

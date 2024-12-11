@@ -1,0 +1,1 @@
+export {TicketsOverview as default} from '@/content';

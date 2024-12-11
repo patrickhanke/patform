@@ -11,7 +11,8 @@ export type TableTypes = {
     selectChangeHandler?: (R: Updater<RowSelectionState>) => void,
     enableRowSelection?: boolean,
     title?: string,
-    theadSpan?: number
+    theadSpan?: number,
+    rowStyles?: (row: TData[number]) => React.StyleHTMLAttributes
 }
 
 export type ColumnDef<TData> = ColumnDef<TData>;

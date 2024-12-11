@@ -1,16 +1,19 @@
 import { Fragment } from 'react/jsx-runtime';
 import './styles.scss';
-import { ModalComponent } from './types';
+import { ModalProps } from './types';
 import clsx from 'clsx';
+import { ErrorDisplay } from '@repo/ui';
+import React from 'react';
 
-const Modal = ({
+const Modal: React.FC<ModalProps> = ({
 	children, 
 	header, 
 	isOpen = false, 
 	cancelButtonHandler, 
 	confirmButtonHandler,
-	buttonDisabled = [false, false]
-}: ModalComponent) => {
+	buttonDisabled = [false, false],
+	errors = []
+}) => {
 	if (isOpen === true) return (
 		<Fragment key={header}>
 			<div className={clsx('modal_overlay_container', 'modal_animate')} />
@@ -21,7 +24,10 @@ const Modal = ({
 						{header}
 					</h3>
 				</div>
-				<div className={'modal_content'}>{children}</div>
+				<div className={'modal_content'}>
+					{children}
+					<ErrorDisplay errors={errors} />
+				</div>
 				<div className={'modal_footer'}>
 					<button className={clsx('full_button', 'md', 'light')} onClick={() => cancelButtonHandler()} disabled={buttonDisabled[0]}>
                         Abbrechen

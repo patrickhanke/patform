@@ -10,7 +10,7 @@ import CalendarHeader, { viewSettings } from './content/CalendarHeader';
 import { ViewState } from './content/CalendarHeader/types';
 
 const Calendar = ({data} : CalendarProps) => {
-	const [view, setView] = useState<ViewState>(viewSettings[0]);
+	const [view, setView] = useState<ViewState>(viewSettings[0] as typeof viewSettings[0]);
 	const [intervalIndex, setIntervalIndex] = useState(new Date().getMonth());
 	const year = 2024;
 	const interval = useCreateInterval({view});

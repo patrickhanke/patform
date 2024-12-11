@@ -44,7 +44,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 	return itemRank.passed;
 };
 
-const Table = ({data, columns}: TableTypes) => {
+const Table: React.FC<TableTypes> = ({data, columns, rowStyles}) => {
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [globalFilter, setGlobalFilter] = useState('');
 
@@ -125,7 +125,10 @@ const Table = ({data, columns}: TableTypes) => {
 					<tbody>
 						{table.getCoreRowModel().rows.map(row => {
 							return (
-								<tr key={row.id}>
+								<tr 
+									key={row.id}
+									style={rowStyles ?  rowStyles(row) : {}}
+								>
 									{row.getVisibleCells().map(cell => {
 										return (
 											<td key={cell.id}>
