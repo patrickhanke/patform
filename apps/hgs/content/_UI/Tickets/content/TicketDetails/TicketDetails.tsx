@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './TicketDetails.module.scss';
 import clsx from 'clsx';
-import { TicketDetailsProps } from '@/types';
+import { TicketDetailsProps } from '@types';
 import {Icon, ImageDisplay, Modal, SlideInRight} from '@repo/ui';
 
 const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProps) => {

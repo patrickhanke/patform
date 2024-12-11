@@ -1,4 +1,4 @@
-import { AbsenceStateOptions } from '@/types';
+import { AbsenceStateOptions } from '@types';
 
 const absence_state_options = [
 	{

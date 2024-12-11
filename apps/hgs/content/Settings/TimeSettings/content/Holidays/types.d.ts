@@ -1,4 +1,4 @@
-import { ProjectTypes } from '@/types';
+import { ProjectTypes } from '@types';
 
 export type HolidaysProps = {
     holidays: holiday[];

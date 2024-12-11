@@ -1,6 +1,6 @@
 'use client';
 
-import { ApolloAppProvider, AppContextProvider, UserContextProvider } from '@/provider';
+import { ApolloAppProvider, AppContextProvider, UserContextProvider } from '@provider';
 import React from 'react';
 
 const LayoutContext = ({children}: {children: React.ReactNode}) => {

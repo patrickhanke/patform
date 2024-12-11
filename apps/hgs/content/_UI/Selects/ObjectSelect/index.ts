@@ -1,1 +1,1 @@
-export {default} from './ObjectSelectWithState';
+export {default as ObjectSelectWithState} from './ObjectSelectWithState';

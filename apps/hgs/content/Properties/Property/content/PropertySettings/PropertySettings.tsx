@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useQuery } from '@apollo/client';
-import { fieldsType } from '@/types';
-import { GET_PROPERTY_SETTINGS } from '@/queries';
+import { fieldsType } from '@types';
+import { GET_PROPERTY_SETTINGS } from '@queries';
 import { Form, Loader } from '@repo/ui';
 
 const PropertySettings = ({objectId}: {objectId: string}) => {

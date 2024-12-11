@@ -1,5 +1,5 @@
 import { getDateStringsFromIso } from '@repo/provider';
-import { FIND_ALL_USERS } from '@/queries';
+import { FIND_ALL_USERS } from '@queries';
 import { Message, User } from '@repo/types';
 import { useQuery } from '@apollo/client';
 import { useMemo } from 'react';

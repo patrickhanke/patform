@@ -2,13 +2,13 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import UserContext from './UserContext';
-import { axiosclient, generateGraphQLQuery } from '@/provider';
+import { axiosclient, generateGraphQLQuery } from '@provider';
 import Cookies from 'js-cookie';
 import useStorage from './hooks/useStorage';
 import { useRouter } from 'next/navigation';
-import { FIND_USER_MESSAGES } from '@/queries';
+import { FIND_USER_MESSAGES } from '@queries';
 import { useQuery } from '@apollo/client';
-import { User } from '@/types';
+import { User } from '@types';
 
 const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
 	const token = Cookies.get('hgs_token');

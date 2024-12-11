@@ -2,11 +2,11 @@ import React, { useContext, useMemo } from 'react';
 import styles from './DisplayWorker.module.scss';
 import { GrClose } from 'react-icons/gr';
 import { useQuery } from '@apollo/client';
-import { find_record, GET_USER_DISPLAY_DATA } from '@/queries';
-import { AppContext, getDatesFromAbsences, getImageUrl } from '@/provider';
+import { find_record, GET_USER_DISPLAY_DATA } from '@queries';
+import { AppContext, getDatesFromAbsences, getImageUrl } from '@provider';
 import { getDayOfYear } from 'date-fns';
 import { DisplayWorkersProps } from './types';
-import { shadeColor } from '@provider/functions';
+import { shadeColor } from '@provider';
 import { Loader } from '@repo/ui';
 
 const DisplayWorker = ({workerId, removeWorker, nextDate, showAvailability = false, onlyImage=false}: DisplayWorkersProps) => {

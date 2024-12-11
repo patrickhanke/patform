@@ -1,4 +1,4 @@
-import { User } from '@/types';
+import { User } from '@types';
 import { IconButton } from '@repo/ui';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';

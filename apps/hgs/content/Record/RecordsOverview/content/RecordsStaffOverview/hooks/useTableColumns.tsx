@@ -1,12 +1,12 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { getDateString } from '@/provider';
+import { getDateString } from '@provider';
 import { TableData } from '../types';
 import ColumnType from '../components/ColumnType';
 import ColumnState from '../components/ColumnState';
 import ColumnWorkingTime from '../components/ColumnWorkingTime';
 import ColumnWorkingHours from '../components/ColumnWorkingHours';
-import { Day } from '@/types';
+import { Day } from '@types';
 
 const useTableColumns = () => { 
 	const columns: ColumnDef<TableData>[] = useMemo(() => [

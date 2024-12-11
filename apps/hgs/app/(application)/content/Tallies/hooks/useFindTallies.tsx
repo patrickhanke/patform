@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { FIND_ALL_TALLIES } from '@/queries';
+import { FIND_ALL_TALLIES } from '@queries';
 import { useFindTalliesHook } from '../types';
 
 const paramsHandler = (id: string, className: string) => {

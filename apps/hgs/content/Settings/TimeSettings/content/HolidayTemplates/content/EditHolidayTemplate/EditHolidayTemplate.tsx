@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Modal } from '@/content/_UI';
-import { ErrorMessage} from '@/types';
-import { generateGraphQLQuery, useDataHandler } from '@/provider';
+import { IconButton, Modal } from '@content';
+import { ErrorMessage} from '@types';
+import { generateGraphQLQuery, useDataHandler } from '@provider';
 import { useQuery } from '@apollo/client';
 import { EditHolidayTemplateProps } from './types';
 import EditHoliday from './content/EditHoliday';

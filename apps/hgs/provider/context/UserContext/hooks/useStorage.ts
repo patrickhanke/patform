@@ -1,6 +1,6 @@
 'use client';
 
-import { UserTypes } from '@/types';
+import { UserTypes } from '@types';
 import { useEffect, useState } from 'react';
 
 type StorageType = 'session' | 'local';

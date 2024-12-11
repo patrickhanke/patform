@@ -1,4 +1,4 @@
-import { Day, Surcharge } from '@/types';
+import { Day, Surcharge } from '@types';
 
 export type PeriodObject = {
     days: Day[],

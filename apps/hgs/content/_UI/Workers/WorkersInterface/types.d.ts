@@ -1,4 +1,4 @@
-import { WorkerTypes } from '@/types';
+import { WorkerTypes } from '@types';
 
 export type ChangeHandler = (type: 'add' | 'remove' , ID: string) => void
 

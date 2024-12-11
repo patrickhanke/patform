@@ -1,7 +1,7 @@
 'use client';
 
-import { Tasks } from '@/content/_UI';
-import { TasksComponent } from '@/content/_UI';
+import { Tasks } from '@content';
+import { TasksComponent } from '@content';
 import React, { Suspense, useState } from 'react';
 import site_states from './constants/site_states';
 import { SiteHeader } from '@repo/ui';

@@ -6,11 +6,15 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@provider/*": ["./src/provider/*"],
-      "@settings/*": ["./src/settings/*"],
-      "@styles/*": ["./src/styles/*"]
+      "@provider": ["./provider/index.ts"],
+      "@settings/*": ["./settings/*"],
+      "@styles/*": ["./styles/*"],
+      "@content": ["./content/index.ts"],
+      "@queries": ["./queries/index.ts"],
+      "@types": ["./types/index.ts"]
     }
   },
   "include": [

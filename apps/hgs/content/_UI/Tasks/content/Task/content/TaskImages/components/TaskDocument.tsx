@@ -1,7 +1,7 @@
-import { ApplicationTypes } from '@/types';
+import { ApplicationTypes } from '@types';
 import React from 'react';
 import styles from '../TaskDocuments.module.scss';
-import { FileDisplay, IconButton } from '@/content/_UI';
+import { FileDisplay, IconButton } from '@content';
 
 const TaskDocument = ({document}: {document: ApplicationTypes.Document}) => {
 	return (

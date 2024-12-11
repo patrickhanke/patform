@@ -1,4 +1,4 @@
-import { ApplicationTypes } from '@/types';
+import { ApplicationTypes } from '@types';
 
 export type ViewState = {
 	value: 'extended' | 'compact', 

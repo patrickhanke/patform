@@ -1,4 +1,4 @@
-import { DayTime, UserDisplayData, MakeOptional, User, StateColors, Absence } from '@/types';
+import { DayTime, UserDisplayData, MakeOptional, User, StateColors, Absence } from '@types';
 
 export type AbsenceStateOptions = [
 	{

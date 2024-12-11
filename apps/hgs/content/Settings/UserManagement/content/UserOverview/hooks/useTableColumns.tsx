@@ -1,9 +1,9 @@
-import { StateDisplay, Toggle } from '@/content/_UI';
+import { StateDisplay, Toggle } from '@content';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import EditStaffMember from '../components/EditStaffMember';
 import SetStaffMemberPassword from '../components/SetStaffMemberPassword';
-import { User } from '@/types';
+import { User } from '@types';
 
 const useTableColumns = () => { 
 	const columns = useMemo<ColumnDef<User>[]>(() => [

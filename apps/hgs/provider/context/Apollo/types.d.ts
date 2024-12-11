@@ -1,5 +1,5 @@
 import { DocumentNode } from '@apollo/client';
-import { Day, DefaultDay } from '@/types';
+import { Day, DefaultDay } from '@types';
 
 interface GetProjectsResponse {
 	objects: any

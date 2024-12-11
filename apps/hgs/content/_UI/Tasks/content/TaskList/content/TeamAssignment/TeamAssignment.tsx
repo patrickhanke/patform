@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './TeamAssignment.module.scss';
 import DisplayWorkers from './components/DisplayWorkers';
-import { TeamAssignmentsProps } from '@/types';
+import { TeamAssignmentsProps } from '@types';
 
 const TeamAssignments = ({taskId, taskState, refetchTask, showAsButton=false}: TeamAssignmentsProps) => {
 	return (

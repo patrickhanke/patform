@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import useSiteStates from './constants/siteStates';
-import { GET_PROPERTY } from '@/queries';
+import { GET_PROPERTY } from '@queries';
 import PropertyTasks from './content/PropertyTasks';
 import PropertySettings from './content/PropertySettings';
 import PropertyServices from './content/PropertyServices';
 import PropertyTallies from './content/PropertyTallies';
 import PropertyDocuments from './content/PropertyDocuments';
 import PropertyTickets from './content/PropertyTickets';
-import { Params } from '@/types';
+import { Params } from '@types';
 import { SiteHeader } from '@repo/ui';
 
 const Property = ({params} : {params: Params}) => {

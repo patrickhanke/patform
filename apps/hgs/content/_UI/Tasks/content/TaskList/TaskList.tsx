@@ -2,15 +2,14 @@
 
 import React, { useCallback, useState } from 'react';
 
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import { TaskListComponent } from './types';
 import useTableColumns from './hooks/useTableColumns';
-import deleteData from '@/provider/data/deleteData';
-import { Task } from '@/types';
+import { Task } from '@types';
 import { Modal, Table } from '@repo/ui';
 
 const TaskList = ({taskList, refetch} : TaskListComponent) => {
-	const {updateData} = useDataHandler();
+	const {updateData, deleteData} = useDataHandler();
 	const [deleteTaskModal, setDeleteTaskModal] = useState<undefined | Task>(undefined);
 	const [archiveModal, setArchiveModal] = useState<undefined | Task>(undefined);
 

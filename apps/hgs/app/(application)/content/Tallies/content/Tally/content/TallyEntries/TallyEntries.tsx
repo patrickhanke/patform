@@ -1,5 +1,5 @@
-import { useDataHandler } from '@/provider';
-import { TallyTypes, TaskTypes } from '@/types';
+import { useDataHandler } from '@provider';
+import { TallyTypes, TaskTypes } from '@types';
 import React, { useCallback } from 'react';
 import styles from './TallyEntries.module.scss';
 import CreateEntry from './components/CreateEntry';

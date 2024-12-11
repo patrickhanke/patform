@@ -2,10 +2,10 @@ import React, { useMemo } from 'react';
 import { RecordsCalendarProps } from './types';
 import { eachDayOfInterval, formatISO9075 } from 'date-fns';
 import { get, set } from 'lodash';
-import { absence_type_options } from '@/provider';
+import { absence_type_options } from '@provider';
 import { useQuery } from '@apollo/client';
-import { FIND_ALL_STAFF } from '@/queries';
-import { Absence, User } from '@/types';
+import { FIND_ALL_STAFF } from '@queries';
+import { Absence, User } from '@types';
 import { Calendar, CalendarData } from '@repo/ui';
 
 const RecordsCalendar = ({records}: RecordsCalendarProps) => {

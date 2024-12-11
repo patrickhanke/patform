@@ -8,12 +8,12 @@ import DisplayTaskState from './content/DisplayTaskState';
 
 import TaskTitle from './components/TaskTitle';
 import TaskNextDate from './content/TaskNextDate';
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import { useQuery } from '@apollo/client';
-import { GET_TASK } from '@/queries';
+import { GET_TASK } from '@queries';
 import DisplayPropery from './content/DisplayPropery';
 import TaskSlideIn from './content/TaskSlideIn';
-import { TaskComponent } from '@/types';
+import { TaskComponent } from '@types';
 import { Divider, IconButton, Modal } from '@repo/ui';
 
 const Task = ({task, deleteTask, showDivider, tasksRefetch} : TaskComponent) => {

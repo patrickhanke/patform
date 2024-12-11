@@ -1,7 +1,7 @@
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import React, { useCallback } from 'react';
 import styles from './TaskImages.module.scss';
-import { Image } from '@/types';
+import { Image } from '@types';
 import { ImageDisplay, ImageUploader } from '@repo/modules';
 
 const TaskImages = ({taskId, taskName, refetch, images}: {taskId: string, taskName: string, images: Image[], refetch: () => void}) => {

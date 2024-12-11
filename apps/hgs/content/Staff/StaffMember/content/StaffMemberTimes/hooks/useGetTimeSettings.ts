@@ -1,4 +1,4 @@
-import { UserContext } from '@/provider';
+import { UserContext } from '@provider';
 import  { useContext } from 'react';
 
 const useGetTimeSettings = () => {

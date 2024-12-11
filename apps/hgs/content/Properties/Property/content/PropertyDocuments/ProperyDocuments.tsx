@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import useFindObjectsDocuments from './hooks/useFindObjectDocuments';
 import { ColumnDef } from '@tanstack/react-table';
-import { getDateStringsFromIso, useDataHandler } from '@/provider';
+import { getDateStringsFromIso, useDataHandler } from '@provider';
 import CreateDocument from './components/CreateDocument';
 import { FileDisplay, IconButton, Select, SiteHeader, Table } from '@repo/ui';
-import { Document } from '@/types';
+import { Document } from '@types';
 
 const ProperyDocuments = ({id}: {id: string}) => {
 	const [type, setType] = useState({value: 'all', id: 'all', label: 'Alle'});

@@ -1,8 +1,8 @@
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import React, { useCallback } from 'react';
 import styles from './TaskImages.module.scss';
 import { ImageDisplay, ImageUploader } from '@/_UI/interfaces/Images';
-import { Image } from '@/types';
+import { Image } from '@types';
 
 const TaskImages = ({taskId, taskName, refetch, images}: {taskId: string, taskName: string, images: Image[], refetch: () => void}) => {
 	const {updateData} = useDataHandler();

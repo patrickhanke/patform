@@ -3,7 +3,7 @@ import styles from '../ProperyOverview.module.scss';
 import { useImmer } from 'use-immer';
 import initialData from '../constants/initialData';
 import { SlideIn } from '@repo/ui';
-import { Property } from '@/types';
+import { Property } from '@types';
 
 const CreatePropterty = ({objects = [], isOpen, setIsOpen, createObject}: {objects: Property[], setIsOpen: Dispatch<SetStateAction<boolean>>, createObject: (data: typeof initialData )=> void, isOpen: boolean}) => {
 	const [data, setData] = useImmer(initialData);

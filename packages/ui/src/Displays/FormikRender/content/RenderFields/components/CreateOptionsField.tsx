@@ -1,5 +1,5 @@
 import React from 'react';
-import { CreateOptions, optionType } from '@/types';
+import { CreateOptions, optionType } from '@types';
 import { v4 as uuidv4 } from 'uuid';
 import { get, isArray } from 'lodash';
 import styles from '../RenderFields.module.scss';

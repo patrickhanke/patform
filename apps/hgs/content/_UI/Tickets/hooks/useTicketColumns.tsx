@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Ticket } from '@/types';
+import { Ticket } from '@types';
 import { ColumnDef } from '@tanstack/react-table';
 import TicketDate from '../components/TicketDate';
 import TicketProperty from '../components/TicketProperty';

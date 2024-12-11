@@ -1,4 +1,4 @@
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import React, { useCallback, useState } from 'react';
 import styles from '../Task.module.scss';
 import { IconButton, TextInput } from '@repo/ui';

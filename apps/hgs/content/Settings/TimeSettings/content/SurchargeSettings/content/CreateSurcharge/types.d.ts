@@ -1,4 +1,4 @@
-import { Holiday, Surcharge } from '@/types';
+import { Holiday, Surcharge } from '@types';
 import { Dispatch, SetStateAction } from 'react';
 
 export type  CreateSurchargeProps = {

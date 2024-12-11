@@ -1,4 +1,4 @@
-import { ApolloRefetch, ApplicationTypes, Task } from '@/types';
+import { ApolloRefetch, ApplicationTypes, Task } from '@types';
 
 export type TicketsComponent = {
     id?: string,

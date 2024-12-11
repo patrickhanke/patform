@@ -1,4 +1,4 @@
-import { DateTypes } from '@/types';
+import { DateTypes } from '@types';
 
 const getDateFromIso = (isoDate: DateTypes.TDateISO) : Date => {
 	let dateTime = new Date();

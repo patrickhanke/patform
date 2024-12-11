@@ -1,6 +1,6 @@
-import { PropertyTypes } from '@/types';
+import { PropertyTypes } from '@types';
 import { ColumnDef } from '@tanstack/react-table';
-import { DateSelectInterface, Toggle, WorkerSelect } from '@/content/_UI';
+import { DateSelectInterface, Toggle, WorkerSelect } from '@content';
 import { useMemo } from 'react';
 
 const useTableColumns = () => { 

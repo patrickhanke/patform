@@ -1,4 +1,4 @@
-import { DatePicker } from '@/content/_UI';
+import { DatePicker } from '@content';
 import React from 'react';
 import { SurchargeTimeEditProps } from '../types';
 

@@ -1,6 +1,6 @@
 import styles from './UserDisplay.module.scss';
 import { useContext } from 'react';
-import { UserContext, getImageUrl } from '@/provider';
+import { UserContext, getImageUrl } from '@provider';
 import { MessageIndicator } from '@repo/ui';
 
 const UserDisplay = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DayData } from '../types';
-import { convertMillisecondsToString } from '@/provider';
+import { convertMillisecondsToString } from '@provider';
 import { isArray } from 'lodash';
 
 const ColumnWorkingHours = ({type, date} : {type: DayData['type'], date: DayData}) => {

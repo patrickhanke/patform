@@ -5,7 +5,7 @@ import styles from './SiteHeader.module.scss';
 import { SiteHeaderComponent } from './types';
 import { Plus, RotateCcw } from 'lucide-react';
 import { isArray } from 'lodash';
-import { AppContext } from '@/provider';
+import { AppContext } from '@provider';
 import SiteNavigation from './content/SiteNavigation';
 import clsx from 'clsx';
 import CalendarWeek from './components/CalendarWeek';

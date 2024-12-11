@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { Select } from '../../Selects';
-import { Property, StaffMember } from '@/types';
-import { FIND_ALL_PROPERTY, FIND_ALL_STAFF } from '@/queries';
+import { Property, StaffMember } from '@types';
+import { FIND_ALL_PROPERTY, FIND_ALL_STAFF } from '@queries';
 import { useQuery } from '@apollo/client';
 import { SiteHeaderContentComponent } from '../types';
 import styles from '../Tasks.module.scss';
-import { filterChangeHandler } from '@/provider';
+import { filterChangeHandler } from '@provider';
 import { TextInput } from '@repo/ui';
 
 const SiteHeaderContent = ({id, filters, setFilters}: SiteHeaderContentComponent) => {

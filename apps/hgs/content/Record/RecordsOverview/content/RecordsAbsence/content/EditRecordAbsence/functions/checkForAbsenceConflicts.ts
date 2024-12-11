@@ -1,4 +1,4 @@
-import { Absence } from '@/types';
+import { Absence } from '@types';
 import { eachDayOfInterval, formatISO9075 } from 'date-fns';
 import { cloneDeep } from 'lodash';
 

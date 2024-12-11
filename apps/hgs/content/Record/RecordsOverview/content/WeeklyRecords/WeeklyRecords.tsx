@@ -1,14 +1,14 @@
 import React, { useContext, useMemo, useState } from 'react';
 import { WeeklyRecordProps, WeekObject } from './types';
-import { AppContext, getWeekDayKeys } from '@/provider';
+import { AppContext, getWeekDayKeys } from '@provider';
 import useTableColumns from './hooks/useTableColumns';
 import SiteHeaderContent from './components/SiteHeaderContent';
 import { getWeek, hoursToMilliseconds } from 'date-fns';
 import initialFilters from './constants/initialFilters';
-import { Day, StaffMember } from '@/types';
+import { Day, StaffMember } from '@types';
 import { useQuery } from '@apollo/client';
-import find_day from '@/queries/day/find_day';
-import { FIND_ALL_STAFF } from '@/queries';
+import {find_day} from '@queries';
+import { FIND_ALL_STAFF } from '@queries';
 import { cloneDeep } from 'lodash';
 import { SiteHeader, Table } from '@repo/ui';
 

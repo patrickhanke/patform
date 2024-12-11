@@ -1,7 +1,7 @@
 import React from 'react';
 import { TableData } from '../types';
-import { StateDisplay } from '@/content/_UI';
-import { Absence } from '@/types';
+import { StateDisplay } from '@content';
+import { Absence } from '@types';
 
 const ColumnType = ({type, absenceType} : {type: TableData['type'], absenceType?: Absence['type']}) => {
 	if (type === 'absence' && absenceType) {

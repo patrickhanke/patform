@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import DateSelect from './content/DateSelect';
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import { useQuery } from '@apollo/client';
-import { GET_TASK_TIME } from '@/queries';
+import { GET_TASK_TIME } from '@queries';
 import modi_options from './content/DateSelect/constants/modi_options';
 import date_category_options from './content/DateSelect/constants/date_category_options';
 import { DateSelectInterfaceTaskProps } from './types';
 import { formatISO9075 } from 'date-fns';
-import { DateInterval, DateObjectWithNextDates, Task } from '@/types';
+import { DateInterval, DateObjectWithNextDates, Task } from '@types';
 import { SlideInRight } from '@repo/ui';
 
 const DateSelectInterfaceTask = ({taskId, showDateInterface, setShowDateInterface, tasksRefetch}: DateSelectInterfaceTaskProps) => {

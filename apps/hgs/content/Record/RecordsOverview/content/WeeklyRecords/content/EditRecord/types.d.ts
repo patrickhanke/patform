@@ -1,5 +1,5 @@
 import { WorkingTimes } from './types.d';
-import { ApolloRefetch, Day, DefaultDay } from '@/types';
+import { ApolloRefetch, Day, DefaultDay } from '@types';
 import { Dispatch, SetStateAction } from 'react';
 import { WeekObject } from '../../types';
 

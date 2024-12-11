@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import styles from '../EditRecord.module.scss';
-import { convertMillisecondsToString, getDateStringsFromIso, weekdays } from '@/provider';
+import { convertMillisecondsToString, getDateStringsFromIso, weekdays } from '@provider';
 import { RecordTimeDisplayProps } from '../types';
 import clsx from 'clsx';
 import { getDay } from 'date-fns';

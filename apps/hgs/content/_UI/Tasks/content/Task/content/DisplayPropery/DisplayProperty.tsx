@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './DisplayProperty.module.scss';
-import { Loader, StateDisplay } from '@/content/_UI';
+import { Loader, StateDisplay } from '@content';
 import { useQuery } from '@apollo/client';
-import { GET_TASK_PROPERTY } from '@/queries';
+import { GET_TASK_PROPERTY } from '@queries';
 
 const DisplayProperty = ({taskId}: {taskId: string}) => {
 	const {data} = useQuery(GET_TASK_PROPERTY, {

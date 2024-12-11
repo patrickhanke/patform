@@ -1,7 +1,7 @@
-import { DatePicker, InfoBox, SlideInModal, SwitchButtons } from '@/content/_UI';
+import { DatePicker, InfoBox, SlideInModal, SwitchButtons } from '@content';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateSurchargeProps } from './types';
-import { ErrorMessage, Surcharge } from '@/types';
+import { ErrorMessage, Surcharge } from '@types';
 import default_surcharge from './constants/default_surcharge';
 import surcharge_types from './constants/surcharge_types';
 import { cloneDeep, set } from 'lodash';

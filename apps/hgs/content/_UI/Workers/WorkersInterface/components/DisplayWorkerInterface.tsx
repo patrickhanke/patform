@@ -2,10 +2,10 @@ import React, { useContext, useMemo } from 'react';
 import styles from '../WorkersInterface.module.scss';
 import { DisplayWorkerInterfaceComponent } from '../types';
 import { useQuery } from '@apollo/client';
-import { find_record } from '@/queries';
-import { AppContext, getDatesFromAbsences, getImageUrl } from '@/provider';
+import { find_record } from '@queries';
+import { AppContext, getDatesFromAbsences, getImageUrl } from '@provider';
 import { getDayOfYear } from 'date-fns';
-import { Absence } from '@/types';
+import { Absence } from '@types';
 import { StateDisplay } from '@repo/ui';
 
 const 	DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAvailability=true} :DisplayWorkerInterfaceComponent ) => {

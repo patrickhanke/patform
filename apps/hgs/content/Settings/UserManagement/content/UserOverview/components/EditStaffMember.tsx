@@ -1,11 +1,11 @@
-import { AppContext, useDataHandler } from '@/provider';
+import { AppContext, useDataHandler } from '@provider';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
 import styles from '../UserOverview.module.scss';
 import clsx from 'clsx';
 import { useQuery } from '@apollo/client';
-import { GET_USER_DISPLAY_DATA } from '@/queries';
-import { ErrorMessage, Image } from '@/types';
+import { GET_USER_DISPLAY_DATA } from '@queries';
+import { ErrorMessage, Image } from '@types';
 import { IconButton, ImageUploader, Select, SlideInRight, TextInput } from '@repo/ui';
 
 const EditStaffMember = ({userId} : {userId: string}) => {

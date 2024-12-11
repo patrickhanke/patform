@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { CreateRecordProps } from './types';
 import { useQuery } from '@apollo/client';
-import { find_records_for_user } from '@/queries';
-import { ErrorMessage, Holiday, HolidayTemplate, Record, RecordTimeSettings } from '@/types';
+import { find_records_for_user } from '@queries';
+import { ErrorMessage, Holiday, HolidayTemplate, Record, RecordTimeSettings } from '@types';
 import styles from './CreateRecord.module.scss';
-import { createInitialTimes, generateGraphQLQuery, getHolidayDates, useDataHandler, UserContext } from '@/provider';
+import { createInitialTimes, generateGraphQLQuery, getHolidayDates, useDataHandler, UserContext } from '@provider';
 import RecordSettings from './components/RecordSettings';
 import defaultRecord from './constants/defaultRecord';
 import { cloneDeep } from 'lodash';

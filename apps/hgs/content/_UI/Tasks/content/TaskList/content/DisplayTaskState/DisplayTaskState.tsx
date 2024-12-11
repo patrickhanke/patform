@@ -1,8 +1,8 @@
-import { GET_TASK_STATE } from '@/queries';
+import { GET_TASK_STATE } from '@queries';
 import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import styles from './DisplayTaskState.module.scss';
-import { TaskState } from '@/types';
+import { TaskState } from '@types';
 import { Loader, StateDisplay } from '@repo/ui';
 
 const DisplayTaskState = ({taskId, taskState}: {taskId: string, taskState: TaskState}) => {

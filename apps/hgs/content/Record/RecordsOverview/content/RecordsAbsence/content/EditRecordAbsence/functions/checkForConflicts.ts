@@ -1,4 +1,4 @@
-import { Day } from '@/types';
+import { Day } from '@types';
 import { eachDayOfInterval, formatISO9075 } from 'date-fns';
 import { cloneDeep } from 'lodash';
 

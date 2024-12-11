@@ -1,4 +1,4 @@
-import { ApolloRefetch, Record } from '@/types';
+import { ApolloRefetch, Record } from '@types';
 
 export type GetRecordObject = {
   loading: boolean;

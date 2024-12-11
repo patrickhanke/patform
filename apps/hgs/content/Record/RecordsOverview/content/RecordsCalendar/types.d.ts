@@ -1,4 +1,4 @@
-import { AbsenceTypes, Record } from '@/types';
+import { AbsenceTypes, Record } from '@types';
 import { User } from '@/types/General/User';
 
 export type GetRecordObject = {

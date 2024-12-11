@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { EditRecordProps } from './types';
-import { Holiday, RecordTimeSettings } from '@/types';
-import { createInitialTimes, generateGraphQLQuery, getHolidayDates, months, useDataHandler } from '@/provider';
+import { Holiday, RecordTimeSettings } from '@types';
+import { createInitialTimes, generateGraphQLQuery, getHolidayDates, months, useDataHandler } from '@provider';
 import { useQuery } from '@apollo/client';
 import { formatISO9075 } from 'date-fns';
 import { Divider, Form, IconButton, InfoBox, Select, SlideIn } from '@repo/ui';

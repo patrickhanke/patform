@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
 import React, { useCallback } from 'react';
 import { DeleteAbsenceProps } from '../types';
-import { useDataHandler } from '@/provider';
-import { find_day } from '@/queries';
-import { Day } from '@/types';
+import { useDataHandler } from '@provider';
+import { find_day } from '@queries';
+import { Day } from '@types';
 import { Modal } from '@repo/ui';
 
 const DeleteAbsence = ({deleteAbsence, setDeleteAbsence, absence, refetch}: DeleteAbsenceProps) => {

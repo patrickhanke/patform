@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import {Select} from '../Select';
 import { useQuery } from '@apollo/client';
-import { ApplicationTypes, UserTypes } from '@/types';
-import { FIND_ALL_STAFF } from '@/queries';
+import { ApplicationTypes, UserTypes } from '@types';
+import { FIND_ALL_STAFF } from '@queries';
 
 type WorkerSelect = {
     value: string,

@@ -1,18 +1,16 @@
 'use client';
 
-import {DateSelectWithExternalState, TimeDisplay, WorkerSelectWithState} from '@/content/_UI';
-import { AppContext, UserContext, useDataHandler } from '@/provider';
+import {DateSelectWithExternalState, ObjectSelectWithState, TimeDisplay, WorkerSelectWithState} from '@content';
+import { AppContext, UserContext, useDataHandler } from '@provider';
 import clsx from 'clsx';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
 import styles from './CreateTask.module.scss';
-import {TicketSelectWithState} from '@/content/_UI';
-import { CreateTask as CreateTaskType, CreateTaskProps, DateObjectWithNextDates, ErrorMessage, CreateTaskUpdateObject, DateObject } from '@/types';
+import {TicketSelectWithState} from '@content';
+import { CreateTask as CreateTaskType, CreateTaskProps, DateObjectWithNextDates, ErrorMessage, CreateTaskUpdateObject, DateObject } from '@types';
 import initial_task from './constants/initial_task';
-import modi_options from '@/content/_UI/Date/DateSelectInterface/content/DateSelect/constants/modi_options';
-import date_category_options from '@/content/_UI/Date/DateSelectInterface/content/DateSelect/constants/date_category_options';
 import { Icon, SlideIn, TextInput } from '@repo/ui';
-import ObjectSelectWithState from '@/content/_UI/Selects/ObjectSelect';
+import { modi_options, date_category_options } from '@content';
 
 const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 	const {createData, updateData} = useDataHandler();

@@ -1,6 +1,6 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { Task } from '@/types';
+import { Task } from '@types';
 import TaskTitle from '../components/TaskTitle';
 import TaskNextDate from '../content/TaskNextDate';
 import DisplayProperty from '../content/DisplayPropery';

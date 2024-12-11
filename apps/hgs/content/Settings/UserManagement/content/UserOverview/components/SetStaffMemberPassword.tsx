@@ -1,9 +1,9 @@
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
 import styles from '../UserOverview.module.scss';
-import { ErrorMessage } from '@/types';
+import { ErrorMessage } from '@types';
 import { IconButton, SlideInRight, TextInput } from '@repo/ui';
 
 const SetStaffMemberPassword = ({userId}: {userId: string}) => {

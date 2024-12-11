@@ -1,6 +1,6 @@
-import { DisplayWorker } from '@/content/_UI';
-import { getDateLabel } from '@/provider';
-import { Property } from '@/types';
+import { DisplayWorker } from '@content';
+import { getDateLabel } from '@provider';
+import { Property } from '@types';
 import { IconButton } from '@repo/ui';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';

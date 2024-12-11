@@ -8,7 +8,6 @@ export * from './PersonDisplay';
 export * from './InfoBox';
 export * from './Icon';
 export * from './DateDisplay';
-export * from './StateDisplay';
 export * from './Calendar';
 export * from './ImageDisplay';
 export * from './FileDisplay';

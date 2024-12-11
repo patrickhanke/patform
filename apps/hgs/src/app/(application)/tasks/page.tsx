@@ -1,1 +1,0 @@
-export {TasksOverview as default} from '@/content';

@@ -3,12 +3,12 @@
 import React, { Suspense, useEffect, useMemo } from 'react';
 import useGetTickets from './hooks/useGetTickets';
 import styles from './Tickets.module.scss';
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import { TicketsComponent } from './types';
 import clsx from 'clsx';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SiteHeaderContent from './components/SiteHeaderContent';
-import { Filter } from '@/types';
+import { Filter } from '@types';
 import { useCallback } from 'react';
 import useTicketColumns from './hooks/useTicketColumns';
 import { SiteHeader, Table } from '@repo/ui';

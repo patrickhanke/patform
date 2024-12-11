@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import React from 'react';
 import useTableColumns from './hooks/useTableColumns';
-import { FIND_PROPERTY_SERVICES } from '@/queries';
+import { FIND_PROPERTY_SERVICES } from '@queries';
 import { Table } from '@repo/ui';
 
 const PropertyServices = ({objectId}: {objectId: string}) => {

@@ -1,4 +1,4 @@
-import { DateTypes } from '@/types';
+import { DateTypes } from '@types';
 import React from 'react';
 import { MdEventRepeat } from 'react-icons/md';
 import styles from './TimeDisplay.module.scss';

@@ -3,7 +3,7 @@ import React from 'react';
 import styles from '../Tickets.module.scss';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { findTaskRoute } from '@/provider';
+import { findTaskRoute } from '@provider';
 import { TicketTaskProps } from '../types';
 import { Icon } from '@repo/ui';
 import { CreateTask } from '../../Tasks';

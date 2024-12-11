@@ -1,9 +1,9 @@
 import TextInput from '@/_UI/interfaces/TextInput';
-import { UserContext } from '@/provider';
+import { UserContext } from '@provider';
 import React, { useContext, useState } from 'react';
 import styles from '../TallyEntries.module.scss';
 import clsx from 'clsx';
-import { TallyTypes } from '@/types';
+import { TallyTypes } from '@types';
 import { v4 as uuidv4 } from 'uuid';
 
 const CreateEntry = ({addEntryHandler}: {addEntryHandler: (newEntry: TallyTypes.Entry) => void}) => {

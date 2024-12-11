@@ -1,5 +1,5 @@
-import { getDateFromIso } from '@/provider';
-import { TallyTypes } from '@/types';
+import { getDateFromIso } from '@provider';
+import { TallyTypes } from '@types';
 import { isArray } from 'lodash';
 
 function getLastEntry(entries: TallyTypes.Entry[] | undefined): TallyTypes.Entry | undefined {

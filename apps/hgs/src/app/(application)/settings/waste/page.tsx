@@ -1,1 +1,0 @@
-export {WasteOverview as default} from '@/content';

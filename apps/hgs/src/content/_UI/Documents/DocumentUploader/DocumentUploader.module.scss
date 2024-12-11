@@ -1,8 +1,0 @@
-@use '@styles/buttons';
-@use '@styles/layout';
-
-.upload_container {
-    @include layout.flexbox($direction: column, $align: flex-star, $gap: 0 );
-    width: 100%;
-    height: auto;
-};

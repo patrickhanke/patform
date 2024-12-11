@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { EditRecordProps, WorkingTime, WorkingTimes } from './types';
-import { DefaultDay, ErrorMessage } from '@/types';
+import { DefaultDay, ErrorMessage } from '@types';
 import RecordTimeDisplay from './components/RecordTimeDisplay';
 import styles from './EditRecord.module.scss';
-import { AppContext, createTime, findDefaultTimeForDate, getWorktimeDuration, useDataHandler, useGetActiveRecord } from '@/provider';
+import { AppContext, createTime, findDefaultTimeForDate, getWorktimeDuration, useDataHandler, useGetActiveRecord } from '@provider';
 import EditTime from './components/EditTime';
 import { cloneDeep, pullAllBy, set } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';

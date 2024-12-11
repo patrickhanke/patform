@@ -1,9 +1,9 @@
-import { UserContext } from '@/provider';
+import { UserContext } from '@provider';
 import React, { useContext, useState } from 'react';
 import styles from '../TaskDocuments.module.scss';
 import clsx from 'clsx';
-import { DocumentUploader } from '@/content/_UI';
-import { Document } from '@/types';
+import { DocumentUploader } from '@content';
+import { Document } from '@types';
 import { TextInput } from '@repo/ui';
 
 const CreateDocument = ({addDocumentHandler, disabled = false}: {disabled: boolean, addDocumentHandler: (content: {user: string, file: Document['file'], name: string}) => void}) => {

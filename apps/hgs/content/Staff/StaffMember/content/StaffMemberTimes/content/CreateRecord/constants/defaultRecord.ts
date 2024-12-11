@@ -1,4 +1,4 @@
-import { Record } from '@/types';
+import { Record } from '@types';
 
 const defaultRecord: (year: number) => Partial<Record> = (year) => {
 	return ({

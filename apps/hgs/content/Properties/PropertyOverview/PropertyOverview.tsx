@@ -1,23 +1,21 @@
 'use client';
 
-import { UserContext, useDataHandler } from '@/provider';
+import { UserContext, useDataHandler } from '@provider';
 import React, { useCallback, useContext } from 'react';
 import useTableColumns from './hooks/useTableColumns';
-import { dynamicItem } from '@/provider/context/AppContext/types';
 import { useQuery } from '@apollo/client';
-import dynamic from 'next/dynamic';
-import { FIND_ALL_PROPERTY } from '@/queries';
+import { FIND_ALL_PROPERTY } from '@queries';
 import CreatePropterty from './components/CreateProperty';
 import initialData from './constants/initialData';
-import { Property } from '@/types';
-import { Loader, SiteHeader, Table } from '@repo/ui';
+import { Property } from '@types';
+import { SiteHeader, Table } from '@repo/ui';
 
 const PropertyOverview = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const {user, project} = useContext(UserContext);
 
 	const {data, refetch}  = useQuery(FIND_ALL_PROPERTY, {onCompleted(data) {
-		const breadcrumbArray: Array<dynamicItem> = [];
+		const breadcrumbArray: Array<{value: string, label: string}> = [];
 		data.objects.findProperty.results.forEach((object: Property) => breadcrumbArray.push({
 			value: `/${object.objectId}`,
 			label: object.name

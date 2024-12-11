@@ -1,6 +1,6 @@
 import {TaskSection} from '../types';
 import {formatISO9075, getWeek, getYear, lastDayOfYear} from 'date-fns';
-import { Task } from '@/types';
+import { Task } from '@types';
 
 const sortTasksForList = (array: Array<Task>) => {
 	const taskList: TaskSection = [];

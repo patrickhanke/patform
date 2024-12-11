@@ -1,8 +1,8 @@
-import { Loader } from '@/content/_UI';
-import { useDataHandler } from '@/provider';
-import { ApplicationTypes, TicketTypes } from '@/types';
+import { Loader } from '@content';
+import { useDataHandler } from '@provider';
+import { ApplicationTypes, TicketTypes } from '@types';
 import React from 'react';
-import { CommentInterface } from '@/content/_UI';
+import { CommentInterface } from '@content';
 
 const TicketComments = ({ticketId, comments, refetch}: TicketTypes.TicketCommentsProps) => {
 	const {updateData} = useDataHandler();

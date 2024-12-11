@@ -1,5 +1,5 @@
 import useDataHandler from './useDataHandler';
-import { MessageTypes } from '@/types';
+import { MessageTypes } from '@types';
 
 const useMessageHandler = () => {
 	const {createData} = useDataHandler();

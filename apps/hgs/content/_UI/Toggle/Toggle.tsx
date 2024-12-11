@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Toggle.module.scss';
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import { useQuery } from '@apollo/client';
 import { ToggleType } from './types';
 import useToggleParameters from './hooks/useToggleParameters';

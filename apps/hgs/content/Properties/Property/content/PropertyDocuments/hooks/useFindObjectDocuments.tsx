@@ -1,4 +1,4 @@
-import { FIND_PROPERY_DOCUMENTS } from '@/queries';
+import { FIND_PROPERY_DOCUMENTS } from '@queries';
 import { useQuery } from '@apollo/client';
 
 const paramsHandler = (id?: string, type?: string) => {

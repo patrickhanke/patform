@@ -1,11 +1,11 @@
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import React, { useCallback } from 'react';
 import CreateDocument from './components/CreateDocument';
 import styles from './TaskDocuments.module.scss';
 import { useQuery } from '@apollo/client';
 import TaskDocument from './components/TaskDocument';
-import { GET_TASK_PROPERTY } from '@/queries';
-import { Document } from '@/types';
+import { GET_TASK_PROPERTY } from '@queries';
+import { Document } from '@types';
 
 const TaskDocuments = ({taskId, refetch, documents}: {taskId: string, documents: Document[], refetch: () => void}) => {
 	const {createData} = useDataHandler();

@@ -1,4 +1,4 @@
-import { DateTypes } from '@/types';
+import { DateTypes } from '@types';
 
 export type Intervals = 'weekly' | 'biweekly' | 'monthly' | 'individual'
 export type IntervalOption = {

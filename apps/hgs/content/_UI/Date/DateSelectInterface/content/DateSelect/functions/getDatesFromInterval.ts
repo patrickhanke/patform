@@ -1,4 +1,4 @@
-import { DateTypes } from '@/types';
+import { DateTypes } from '@types';
 import { Day, eachMonthOfInterval, eachWeekOfInterval, formatISO9075, getDay, getYear, parse } from 'date-fns';
 
 const getDatesFromInterval = (dateObject: DateTypes.DateObjectWithNextDates) => {

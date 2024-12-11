@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import {Select} from '../Select';
 import { useQuery } from '@apollo/client';
-import { FIND_ALL_TICKETS } from '@/queries';
+import { FIND_ALL_TICKETS } from '@queries';
 import { SelectOption } from './types';
-import { Ticket } from '@/types';
+import { Ticket } from '@types';
 
 const TicketSelectWithState = ({selectedTicket, setSelectedTicket, label, disabled=false}: {selectedTicket?: SelectOption, setSelectedTicket: (W: SelectOption) => void, label?: string, disabled?: boolean }) => {
 	const {data: ticketData} = useQuery(FIND_ALL_TICKETS);

@@ -1,4 +1,4 @@
-import { TestTypes, GeneralTypes, TestContent } from '@/types';
+import { TestTypes, GeneralTypes, TestContent } from '@types';
 import { FilterElement } from './Filter.d';
 
 export type Filter = {

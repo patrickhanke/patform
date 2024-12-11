@@ -4,7 +4,7 @@ import React, { useCallback, useEffect } from 'react';
 import { DatePickerProps } from './types';
 import { useDebounceValue } from 'usehooks-ts';
 import { formatISO9075 } from 'date-fns';
-import { getDateFromWeek } from '@/provider';
+import { getDateFromWeek } from '@provider';
 import transformWeekValue from './functions/transformWeekValue';
 
 const DatePicker = ({defaultValue, onChange, type, label, id, disabled = false, width = 180, min, max} : DatePickerProps) => {

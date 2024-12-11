@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
-import { Absence, StaffMember } from '@/types';
-import { AppContext, generateGraphQLQuery } from '@/provider';
-import { Select } from '@/content/_UI';
+import { Absence, StaffMember } from '@types';
+import { AppContext, generateGraphQLQuery } from '@provider';
+import { Select } from '@content';
 import { RecordAbsenceProps } from './types';
 import styles from './RecordsAbsence.module.scss';
 import { useQuery } from '@apollo/client';
-import { FIND_ALL_STAFF } from '@/queries';
+import { FIND_ALL_STAFF } from '@queries';
 import useRecordAbsenceColumns from './hooks/useRecordAbsenceColumns';
 import EditRecordAbsence from './content/EditRecordAbsence';
 import { SiteHeader, Table } from '@repo/ui';

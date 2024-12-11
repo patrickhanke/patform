@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import DateSelect from './content/DateSelect';
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import TimeDisplay from './content/TimeDisplay';
 import { useQuery } from '@apollo/client';
-import { GET_SERVICE_TIME } from '@/queries';
+import { GET_SERVICE_TIME } from '@queries';
 import { date_select_options } from './constants/date_select_options';
-import { DateObject } from '@/types';
+import { DateObject } from '@types';
 import { SlideIn, SlideInRight } from '@repo/ui';
 
 const DateSelectInterface = ({objectId}: {objectId: string}) => {

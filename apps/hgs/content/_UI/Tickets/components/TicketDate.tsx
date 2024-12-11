@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../Tickets.module.scss';
-import { getDateStringsFromIso } from '@/provider';
+import { getDateStringsFromIso } from '@provider';
 import { Icon } from '@repo/ui';
 
 const TicketDate = ({ticketDate}: {ticketDate: string}) => {

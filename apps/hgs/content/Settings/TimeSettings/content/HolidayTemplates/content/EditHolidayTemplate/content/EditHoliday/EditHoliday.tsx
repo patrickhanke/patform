@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Divider, SlideInModal } from '@/content/_UI';
+import { Divider, SlideInModal } from '@content';
 import SurchargeDaySelect from './components/HolidayTemplateDaySelect';
 import { cloneDeep, set } from 'lodash';
-import { ErrorMessage, HolidayTemplate } from '@/types';
-import { useDataHandler } from '@/provider';
+import { ErrorMessage, HolidayTemplate } from '@types';
+import { useDataHandler } from '@provider';
 import { EditHolidayProps } from './types';
 
 const EditHoliday: React.FC<EditHolidayProps> = ({template, editTemplate, setEditTemplate, refetch, holidays}) => {

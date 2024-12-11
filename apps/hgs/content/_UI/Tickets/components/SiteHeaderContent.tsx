@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
 import { Select } from '../../Selects';
-import { PropertyTypes, TicketTypes } from '@/types';
-import { FIND_ALL_PROPERTY } from '@/queries';
+import { FIND_ALL_PROPERTY } from '@queries';
 import { useQuery } from '@apollo/client';
-import TextInput from '../../../../../../../packages/ui/src/Inputs/TextInput';
 import { SiteHeaderContentComponent } from '../types';
 import styles from '../Tickets.module.scss';
-import { filterChangeHandler, getDateStringsFromIso } from '@/provider';
+import { filterChangeHandler, getDateStringsFromIso } from '@provider';
+import { Property, Ticket } from '@types';
+import { TextInput } from '@repo/ui';
 
 const SiteHeaderContent = ({id, filters, setFilters, tickets}: SiteHeaderContentComponent) => {
 	const {data: objectData} = useQuery(FIND_ALL_PROPERTY, {
@@ -19,12 +19,12 @@ const SiteHeaderContent = ({id, filters, setFilters, tickets}: SiteHeaderContent
 
 
 		if (objectData) {
-			objectOptions =  objectData.objects.findProperty.results.map((property: PropertyTypes.Property) => ({value: property.objectId, label: property.name}));
+			objectOptions =  objectData.objects.findProperty.results.map((property: Property) => ({value: property.objectId, label: property.name}));
 		}
 
 
 		if (tickets && dateOptions.length === 0) {
-			tickets.forEach((ticket: TicketTypes.Ticket) =>{ 
+			tickets.forEach((ticket: Ticket) =>{ 
 				if (!dateOptions.find(option => option.label === getDateStringsFromIso(ticket.createdAt).datum)) dateOptions.push({value: ticket.createdAt, label: getDateStringsFromIso(ticket.createdAt).datum});
 			});
 		}

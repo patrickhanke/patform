@@ -1,6 +1,6 @@
-import { CommentInterface, Loader } from '@/content/_UI';
-import { useDataHandler } from '@/provider';
-import { ApplicationTypes } from '@/types';
+import { CommentInterface, Loader } from '@content';
+import { useDataHandler } from '@provider';
+import { ApplicationTypes } from '@types';
 import React from 'react';
 
 const TaskComments = ({taskId, comments, refetch}: {taskId: string, comments: ApplicationTypes.Comment[], refetch: () => void}) => {

@@ -1,4 +1,4 @@
-import { UserTypes } from '@/types';
+import { UserTypes } from '@types';
 
 export type dynamicItem = {
     value: string,

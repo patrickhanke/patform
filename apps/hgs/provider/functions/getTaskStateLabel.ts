@@ -1,4 +1,4 @@
-import { TaskTypes } from '@/types';
+import { TaskTypes } from '@types';
 
 const getTaskStateLabel = (state: TaskTypes.TaskState) => {
 	if (state === 'completed' ) {

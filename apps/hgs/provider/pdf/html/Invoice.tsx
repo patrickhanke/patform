@@ -1,4 +1,4 @@
-import { UserTypes } from '@/types';
+import { UserTypes } from '@types';
 import Header from './Header';
 import { useEffect } from 'react';
 import Head from 'next/head';

@@ -1,10 +1,10 @@
-import { FIND_ALL_STAFF } from '@/queries';
+import { FIND_ALL_STAFF } from '@queries';
 import { useQuery } from '@apollo/client';
 import React from 'react';
 import styles from './WorkersInterface.module.scss';
 import DisplayWorkerInterface from './components/DisplayWorkerInterface';
 import { WorkersInterfaceComponent } from './types';
-import { Worker } from '@/types';
+import { Worker } from '@types';
 import { SlideInRight } from '@repo/ui';
 
 const WorkersInterface = ({workers, onChange, nextDate}: WorkersInterfaceComponent) => {

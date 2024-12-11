@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../DateSelect.module.scss';
 import { IntervalInfoProps } from '../types';
-import { getDateString } from '@/provider';
+import { getDateString } from '@provider';
 
 const IntervalInfo = ({dates}: IntervalInfoProps) => {
 	return (

@@ -1,4 +1,4 @@
-import { weekdays } from '@/provider/constants';
+import { weekdays } from '@provider';
 import { CheckSurchargeCondition } from '../types';
 import { getISODay } from 'date-fns';
 

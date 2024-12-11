@@ -1,4 +1,4 @@
-import { CreateInitialTime, DefaultDay, Holiday, Record, TimeObject } from '@/types';
+import { CreateInitialTime, DefaultDay, Holiday, Record, TimeObject } from '@types';
 import { eachDayOfInterval, formatISO9075, hoursToMilliseconds, isWeekend, minutesToMilliseconds, isSunday, isFriday, isThursday, isWednesday, isMonday } from 'date-fns';
 import { isArray } from 'lodash';
 

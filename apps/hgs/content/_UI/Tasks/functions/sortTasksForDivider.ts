@@ -1,4 +1,4 @@
-import { Task } from '@/types';
+import { Task } from '@types';
 import { getDayOfYear } from 'date-fns';
 
 const sortTasksForDivider = ( array: Array<Task & {divider: boolean}>) => {

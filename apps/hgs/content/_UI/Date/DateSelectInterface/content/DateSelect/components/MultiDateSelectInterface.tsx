@@ -2,9 +2,8 @@ import React, { useCallback } from 'react';
 import { MultiDateSelectInterfaceProps } from '../types';
 import { formatISO9075 } from 'date-fns';
 import getUpcomingDates from '../functions/getUpcomingDates';
-import { DateObjectWithNextDates } from '@/types';
-import DatePicker from '@/content/_UI/Date/DatePicker';
-import { CreateButton } from '@repo/ui';
+import { DateObjectWithNextDates } from '@types';
+import { CreateButton, DatePicker } from '@repo/ui';
 
 const MultiDateSelectInterface = ({initialValue, category, onChange}: MultiDateSelectInterfaceProps) => {
 	const dateTransformHandler = useCallback((date: string, index?: number) => {

@@ -1,4 +1,4 @@
-import { WorkerTypes } from '@/types';
+import { WorkerTypes } from '@types';
 
 export type DisplayWorkersProps =  {
     workerId: WorkerTypes.Worker['objectId'], 

@@ -1,4 +1,4 @@
-import { Surcharge } from '@/types';
+import { Surcharge } from '@types';
 import { FindSurchargesForDay } from '../types';
 
 const findSurchargesForDay: FindSurchargesForDay = ({day, surcharges}) => {

@@ -1,4 +1,4 @@
-import { SlideInModal } from '@/content/_UI';
+import { SlideInModal } from '@content';
 import React from 'react';
 
 const EditUserTimes = () => {

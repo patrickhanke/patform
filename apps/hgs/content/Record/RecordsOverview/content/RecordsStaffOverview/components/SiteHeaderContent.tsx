@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { StaffMember } from '@/types';
-import { FIND_ALL_STAFF } from '@/queries';
+import { StaffMember } from '@types';
+import { FIND_ALL_STAFF } from '@queries';
 import { useQuery } from '@apollo/client';
 import { SiteHeaderContentProps } from '../types';
 import styles from '../RecordsStaffOverview.module.scss';
-import { months } from '@/provider';
-import { Select, SwitchButtons } from '@/content/_UI';
+import { months } from '@provider';
+import { Select, SwitchButtons } from '@content';
 import { Loader } from 'lucide-react';
 
 const SiteHeaderContent = ({

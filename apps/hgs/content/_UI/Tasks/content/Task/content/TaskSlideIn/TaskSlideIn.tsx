@@ -1,19 +1,19 @@
 import SlideIn from '@/_UI/surfaces/SlideIn';
 import React, { useMemo, useState } from 'react';
-import { StateDisplay, SwitchButtons } from '@/content/_UI';
+import { StateDisplay, SwitchButtons } from '@content';
 import TaskDescription from '../TaskDescription';
 import TaskComments from '../TaskComments';
 import IconButton from '@/_UI/interfaces/IconButton';
 import styles from './TaskSlideIn.module.scss';
 import { useQuery } from '@apollo/client';
-import { FIND_DOCUMENTS_FOR_TASK, GET_TASK_SLIDEIN_CONTENT } from '@/queries';
+import { FIND_DOCUMENTS_FOR_TASK, GET_TASK_SLIDEIN_CONTENT } from '@queries';
 import TaskDocuments from '../TaskDocuments';
 import TaskImages from '../TaskImages';
 import DisplayTaskState from '../DisplayTaskState';
 import TaskNextDate from '../TaskNextDate';
 import DisplayPropery from '../DisplayPropery';
 import TeamAssignment from '../TeamAssignment';
-import { findTicketRoute } from '@/provider';
+import { findTicketRoute } from '@provider';
 import { useRouter } from 'next/navigation';
 
 const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {

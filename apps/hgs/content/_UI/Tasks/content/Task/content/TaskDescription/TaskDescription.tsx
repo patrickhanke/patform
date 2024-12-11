@@ -1,6 +1,6 @@
-import { Loader, TextInput } from '@/content/_UI';
-import { useDataHandler } from '@/provider';
-import { GET_TASK_DESCRIPTION } from '@/queries';
+import { Loader, TextInput } from '@content';
+import { useDataHandler } from '@provider';
+import { GET_TASK_DESCRIPTION } from '@queries';
 import { useQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
 import styles from './TaskDescription.module.scss';

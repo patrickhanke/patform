@@ -1,4 +1,4 @@
-import { Holiday } from '@/types';
+import { Holiday } from '@types';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 

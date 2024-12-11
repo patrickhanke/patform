@@ -1,6 +1,6 @@
 import { IconTypes } from '../Icon';
 import { TypeSelection } from './types.d';
-import { TaskTypes, AbsenceTypes, UserTypes, TicketTypes, DayTime } from '@/types';
+import { TaskTypes, AbsenceTypes, UserTypes, TicketTypes, DayTime } from '@types';
 
 type Options<T> = 
     T extends 'Absence' ? typeof absence_state_options : 
@@ -28,6 +28,10 @@ export type CustomOptions = {
     disabled?: boolean
 }[];
 
+export type UseGetState = <T extends TypeSelection>(type: T, state: State<T>, roles: UserTypes.UserRole[]) => ({
+    stateObject: Options<T>[number],
+    options: Options<T>
+})
 
 export type StateDisplayComponent<T> = T extends 'state' ? {
     type: TypeSelection,

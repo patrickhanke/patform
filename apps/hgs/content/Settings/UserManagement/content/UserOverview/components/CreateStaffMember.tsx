@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import styles from '../UserOverview.module.scss';
 import { useImmer } from 'use-immer';
 import { useQuery } from '@apollo/client';
-import { FIND_ALL_ROLES } from '@/queries';
-import { generateColor } from '@/provider';
-import { CreateUser, ErrorMessage } from '@/types';
+import { FIND_ALL_ROLES } from '@queries';
+import { generateColor } from '@provider';
+import { CreateUser, ErrorMessage } from '@types';
 import { ImageUploader, Select, TextInput } from '@repo/ui';
 
 type RoleSelect= {

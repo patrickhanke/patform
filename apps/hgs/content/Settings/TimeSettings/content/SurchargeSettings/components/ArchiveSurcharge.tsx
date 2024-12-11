@@ -1,5 +1,5 @@
-import { DatePicker, Modal } from '@/content/_UI';
-import { useDataHandler } from '@/provider';
+import { DatePicker, Modal } from '@content';
+import { useDataHandler } from '@provider';
 import React, { useState } from 'react';
 import { ArchiveSurchargeProps } from '../types';
 import { formatISO9075 } from 'date-fns';

@@ -1,12 +1,12 @@
-import { AppContext, getDateFromWeek, getDateStringsFromIso, useGetActiveRecord, weekdays } from '@/provider';
+import { AppContext, getDateFromWeek, getDateStringsFromIso, useGetActiveRecord, weekdays } from '@provider';
 import { format, formatISO9075, getDay, millisecondsToMinutes, minutesToMilliseconds } from 'date-fns';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { EditTimeProps, WorkingTime } from '../types';
 import styles from '../EditRecord.module.scss';
 import { useDebounceCallback } from 'usehooks-ts';
 import { cloneDeep } from 'lodash';
-import { SwitchButton as SwitchButtonType } from '@/types';
-import { Select } from '@/content/_UI';
+import { SwitchButton as SwitchButtonType } from '@types';
+import { Select } from '@content';
 import { Modal } from '@repo/ui';
 
 const EditTime = ({day, timeChangeHandler, workingTimes, selectedWeek, deleteDay, userId} : EditTimeProps) => {

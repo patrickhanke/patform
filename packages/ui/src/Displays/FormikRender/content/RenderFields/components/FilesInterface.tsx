@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import styles from '../RenderFields.module.scss';
 import IconButton from '@/_UI/interfaces/IconButton';
-import { useDataHandler } from '@/provider';
+import { useDataHandler } from '@provider';
 import { FormComponents, FormikRenderTypes } from '@/types/_UI';
 import Modal from '@/_UI/interfaces/Modal';
 

@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Divider, SlideInModal } from '@/content/_UI';
+import { Divider, SlideInModal } from '@content';
 import SurchargeDaySelect from './components/HolidayTemplateDaySelect';
 import { cloneDeep, set } from 'lodash';
-import { ErrorMessage, Holiday, HolidayTemplate } from '@/types';
-import { generateGraphQLQuery, useDataHandler, UserContext } from '@/provider';
+import { ErrorMessage, Holiday, HolidayTemplate } from '@types';
+import { generateGraphQLQuery, useDataHandler, UserContext } from '@provider';
 import { useQuery } from '@apollo/client';
 import { EditHolidayProps } from './types';
 

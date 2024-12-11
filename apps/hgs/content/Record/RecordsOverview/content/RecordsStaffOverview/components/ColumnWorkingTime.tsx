@@ -1,6 +1,6 @@
 import React from 'react';
 import { DayData } from '../types';
-import { getDateString } from '@/provider';
+import { getDateString } from '@provider';
 import { isArray } from 'lodash';
 
 const ColumnWorkingTime = ({type, time} : {type: DayData['type'], time: DayData['time']}) => {

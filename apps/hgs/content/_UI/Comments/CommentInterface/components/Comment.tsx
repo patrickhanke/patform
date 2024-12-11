@@ -2,8 +2,8 @@ import React from 'react';
 import styles from '../CommentInterface.module.scss';
 import { DateDisplay } from '@repo/ui';
 import { GoComment } from 'react-icons/go';
-import { Comment as CommentType } from '@/types';
-import { DisplayWorker } from '@/content/_UI/Workers';
+import { Comment as CommentType } from '@types';
+import { DisplayWorker } from '@content';
 
 const Comment = ({comment} : {comment: CommentType}) => {
 	return (

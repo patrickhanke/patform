@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Message, Project, User } from '@/types';
+import { Message, Project, User } from '@types';
 
 interface ContextValues {
     user: User,

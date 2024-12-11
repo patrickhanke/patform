@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { MonthData, StaffRecordProps } from './types';
-import { convertMillisecondsToString, createDateIntervalForMonth, findDefaultTimeForDate, months } from '@/provider';
-import { Day } from '@/types';
-import { find_record } from '@/queries';
+import { convertMillisecondsToString, createDateIntervalForMonth, findDefaultTimeForDate, months } from '@provider';
+import { Day } from '@types';
+import { find_record } from '@queries';
 import { useQuery } from '@apollo/client';
 import styles from './StaffRecord.module.scss';
 import useTableColumns from './hooks/useTableColumns';

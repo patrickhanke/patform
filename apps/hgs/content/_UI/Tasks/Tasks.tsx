@@ -2,8 +2,8 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useGetTasks from './hooks/useGetTasks';
-import { Filter } from '@/types';
-import { useDataHandler } from '@/provider';
+import { Filter } from '@types';
+import { useDataHandler } from '@provider';
 import { SiteType, TasksComponent } from './types';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SiteHeaderContent from './components/SiteHeaderContent';

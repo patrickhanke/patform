@@ -1,4 +1,4 @@
-import { GET_SERVICE_ACTIVE, GET_STAFF_ISWORKER } from '@/queries';
+import { GET_SERVICE_ACTIVE, GET_STAFF_ISWORKER } from '@queries';
 import { ToggleType } from '../types';
 import { DocumentNode } from '@apollo/client';
 

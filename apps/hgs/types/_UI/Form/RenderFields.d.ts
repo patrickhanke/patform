@@ -1,5 +1,5 @@
 import { FormikErrors, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
-import { fieldType, fieldsType, formField } from '@/types';
+import { fieldType, fieldsType, formField } from '@types';
 import { TDateISODate } from '@/types/General';
 
 export type RenderFieldsType = {

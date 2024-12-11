@@ -1,5 +1,5 @@
-import { useDataHandler } from '@/provider';
-import { GET_TASK_DESCRIPTION } from '@/queries';
+import { useDataHandler } from '@provider';
+import { GET_TASK_DESCRIPTION } from '@queries';
 import { useQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
 import styles from './TaskDescription.module.scss';

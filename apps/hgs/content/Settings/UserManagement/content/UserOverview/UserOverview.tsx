@@ -1,15 +1,15 @@
 'use client';
 
-import { UserContext, generateColor, useDataHandler } from '@/provider';
+import { UserContext, generateColor, useDataHandler } from '@provider';
 import { useQuery } from '@apollo/client';
 import React, { useContext, useState } from 'react';
 import useTableColumns from './hooks/useTableColumns';
-import { FIND_ALL_USERS } from '@/queries';
+import { FIND_ALL_USERS } from '@queries';
 import CreateStaffMember from './components/CreateStaffMember';
 import { formatISO } from 'date-fns';
-import { CreateUser } from '@/types';
+import { CreateUser } from '@types';
 import { SiteHeader, SlideInRight } from '@repo/ui';
-import Table from '@/app/(application)/content/Table';
+import {Table} from '@repo/ui';
 
 const UserOverview = () => {
 	const [isOpen, setIsOpen] = useState(false);

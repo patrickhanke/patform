@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from 'react';
 import styles from './TaskNextDate.module.scss';
-import { DateSelectInterfaceTask, Loader, StateDisplay } from '@/content/_UI';
+import { DateSelectInterfaceTask, Loader, StateDisplay } from '@content';
 import { useQuery } from '@apollo/client';
-import { GET_TASK_TIME } from '@/queries';
-import { getDateString, useDataHandler } from '@/provider';
+import { GET_TASK_TIME } from '@queries';
+import { getDateString, useDataHandler } from '@provider';
 import Modal from '@/_UI/interfaces/Modal';
 import { formatISO9075 } from 'date-fns';
-import { Task } from '@/types';
+import { Task } from '@types';
 
 const TaskNextDate = ({taskId, tasksRefetch}: {taskId: string, tasksRefetch?: () => void}) => {
 	const [showModal, setShowModal] = React.useState(false);

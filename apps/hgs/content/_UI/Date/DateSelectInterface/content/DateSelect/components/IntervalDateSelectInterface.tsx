@@ -3,9 +3,8 @@ import { IntervalDateSelectInterfaceProps } from '../types';
 import getDatesFromInterval from '../functions/getDatesFromInterval';
 import week_interval_options from '../constants/week_interval_options';
 import month_interval_options from '../constants/month_interval_options';
-import { DateObject, DateObjectWithNextDates } from '@/types';
-import DatePicker from '@/content/_UI/Date/DatePicker';
-import { Select } from '@repo/ui';
+import { DateObject, DateObjectWithNextDates } from '@types';
+import { Select, DatePicker } from '@repo/ui';
 
 type keys = keyof DateObjectWithNextDates;
 

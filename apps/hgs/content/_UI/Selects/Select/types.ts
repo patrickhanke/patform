@@ -1,4 +1,4 @@
-import { ErrorMessage } from '@/types';
+import { ErrorMessage } from '@types';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, SingleValue } from 'react-select';
 
 type Option = { value: string | boolean | object, label: string} & any  | null

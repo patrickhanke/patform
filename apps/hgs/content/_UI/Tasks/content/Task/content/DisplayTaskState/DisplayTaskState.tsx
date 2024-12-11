@@ -1,9 +1,9 @@
-import { GET_TASK_STATE } from '@/queries';
+import { GET_TASK_STATE } from '@queries';
 import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import styles from './DisplayTaskState.module.scss';
-import {Loader, StateDisplay} from '@/content/_UI';
-import { TaskState } from '@/types';
+import {Loader, StateDisplay} from '@content';
+import { TaskState } from '@types';
 
 const DisplayTaskState = ({taskId, taskState}: {taskId: string, taskState: TaskState}) => {
 	const [state, setState] = useState<TaskState >(taskState);

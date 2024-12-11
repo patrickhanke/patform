@@ -1,4 +1,4 @@
-import { ApolloRefetch, Holiday, HolidayTemplate } from '@/types';
+import { ApolloRefetch, Holiday, HolidayTemplate } from '@types';
 import React from 'react';
 
 export type CreateHolidayTemplateProps = {

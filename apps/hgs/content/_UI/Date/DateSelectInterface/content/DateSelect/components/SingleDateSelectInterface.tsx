@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { SingleDateSelectInterfaceProps } from '../types';
 import { formatISO9075 } from 'date-fns';
-import { DateObjectWithNextDates } from '@/types';
-import DatePicker from '@/content/_UI/Date/DatePicker';
+import { DateObjectWithNextDates } from '@types';
+import { DatePicker } from '@repo/ui';
 
 const SingleDateSelectInterface = ({initialValue, category, onChange}: SingleDateSelectInterfaceProps) => {
 	const dateTransformHandler = useCallback((date: string) => {

@@ -4,7 +4,7 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import axiosapi from './axios';
 import axiosclient from './axios';
-import { MessageTypes, MessageUpdateObject, User } from '@/types';
+import { MessageTypes, MessageUpdateObject, User } from '@types';
 import { UserContext } from '../context';
 import { useFeedbackStore } from './Feedback';
 

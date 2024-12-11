@@ -1,6 +1,6 @@
-import { Loader, Editor } from '@/content/_UI';
-import { useDataHandler } from '@/provider';
-import { GET_TALLY_DESCRIPTION } from '@/queries';
+import { Loader, Editor } from '@content';
+import { useDataHandler } from '@provider';
+import { GET_TALLY_DESCRIPTION } from '@queries';
 import { useQuery } from '@apollo/client';
 import React, { useState } from 'react';
 import { IoDocumentTextOutline } from 'react-icons/io5';

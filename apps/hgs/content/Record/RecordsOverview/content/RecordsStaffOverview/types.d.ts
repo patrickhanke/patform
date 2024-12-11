@@ -1,6 +1,6 @@
-import { months } from '@/provider';
-import { Day } from '@/types';
-import { UserDisplayData } from '@/types';
+import { months } from '@provider';
+import { Day } from '@types';
+import { UserDisplayData } from '@types';
 
 export type RecordsStaffOverviwProps = {
     year: number;

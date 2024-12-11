@@ -1,5 +1,5 @@
 import React from 'react';
-import { uploadFile } from '@/provider';
+import { uploadFile } from '@provider';
 import styles from './DocumentUploader.module.scss';
 import { ErrorDisplay } from '@repo/ui';
 

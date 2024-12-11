@@ -1,4 +1,4 @@
-import { axiosclient } from '@/provider/data';
+import { axiosclient } from '@provider';
 import { CreateTime } from '../types';
 
 const createTime: CreateTime = async (data) => 

@@ -1,10 +1,10 @@
-import { convertMillisecondsToString, getDateString } from '@/provider';
+import { convertMillisecondsToString, getDateString } from '@provider';
 import React, { useMemo } from 'react';
 import getRemainingVacation from '../functions/getRemainingVacation';
 import getRecordSaldo from '../functions/getRecordSaldo';
 import { RecordSettingsProps } from '../types';
 import styles from '../CreateRecord.module.scss';
-import { Divider, InfoBox } from '@/content/_UI';
+import { Divider, InfoBox } from '@content';
 
 const RecordSettings: React.FC<RecordSettingsProps> = ({record, days}) => {
 	const recordInfo = useMemo(() => {

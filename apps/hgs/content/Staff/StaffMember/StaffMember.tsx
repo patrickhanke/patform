@@ -1,14 +1,14 @@
 'use client';
 
-import { GET_USER } from '@/queries';
+import { GET_USER } from '@queries';
 import { useQuery } from '@apollo/client';
 import React, { useContext, useMemo, useState } from 'react';
 import useWorkerSiteStates from './hooks/useWorkerSiteStates';
 import UserSettings from './content/UserSettings';
 import StaffMemberOverview from './content/StaffMemberOverview';
-import { Params } from '@/types';
+import { Params } from '@types';
 import StaffMemberTimes from './content/StaffMemberTimes';
-import { UserContext } from '@/provider';
+import { UserContext } from '@provider';
 import { SiteState } from '@repo/types';
 import { SiteHeader } from '@repo/ui';
 

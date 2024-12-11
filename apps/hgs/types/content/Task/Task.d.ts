@@ -1,4 +1,4 @@
-import { DateObject, DateTypes, Document, UserTypes } from '@/types';
+import { DateObject, DateTypes, Document, UserTypes } from '@types';
 import { PropertyTypes } from '../Property';
 
 export type TaskState = 'completed' | 'executed' | 'created' | 'assigned' | 'archived'

@@ -1,4 +1,4 @@
-import { Absence, UserDisplayData } from '@/types';
+import { Absence, UserDisplayData } from '@types';
 
 const initialAbsence: Omit<Absence, 'user'> & {user?: UserDisplayData | undefined} = {
 	objectId: '',

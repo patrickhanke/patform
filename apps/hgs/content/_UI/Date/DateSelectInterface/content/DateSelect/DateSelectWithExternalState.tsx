@@ -2,9 +2,9 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import {Select} from '@/content/_UI';
+import {Select} from '@content';
 import { useImmer } from 'use-immer';
-import { DateObjectWithNextDates } from '@/types';
+import { DateObjectWithNextDates } from '@types';
 import modi_options from './constants/modi_options';
 import clsx from 'clsx';
 import DateCategories from './components/DateCategories';

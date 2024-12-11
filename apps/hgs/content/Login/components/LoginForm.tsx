@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { axiosclient } from '@/provider';
+import { axiosclient } from '@provider';
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import styles from '../Login.module.scss';
-import { User } from '@/types';
+import { User } from '@types';
 
 const LoginSchema = Yup.object().shape({
 	email: Yup.string().email('Ungültiges E-Mail Format').required('Eine E-Mail Adresse muss angegeben werden'),

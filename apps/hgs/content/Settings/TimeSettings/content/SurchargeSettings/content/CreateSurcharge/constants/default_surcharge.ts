@@ -1,4 +1,4 @@
-import { Surcharge } from '@/types';
+import { Surcharge } from '@types';
 
 const default_surcharge = () => ({
 	name: '',
