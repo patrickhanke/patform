@@ -1,4 +1,3 @@
-import { CreateButton, Divider } from '@content';
 import { generateGraphQLQuery, paramsHandler, useDataHandler } from '@provider';
 import { Surcharge as SurchargeType } from '@types';
 import { useQuery } from '@apollo/client';
@@ -8,6 +7,7 @@ import CreateSurcharge from './content/CreateSurcharge';
 import { cloneDeep } from 'lodash';
 import ArchiveSurcharge from './components/ArchiveSurcharge';
 import { SurchargeSettingsProps } from './types';
+import { CreateButton, Divider } from '@repo/ui';
 
 const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({projectId, holidays}) => {
 	const {updateData, createData} = useDataHandler();

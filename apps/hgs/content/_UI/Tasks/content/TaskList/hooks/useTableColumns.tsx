@@ -10,9 +10,6 @@ import TaskSlideIn from '../content/TaskSlideIn';
 import { UseTaskColumnsProps } from '../types';
 
 const useTableColumns = ({refetch, setArchiveModal, setDeleteTaskModal}: UseTaskColumnsProps) => { 
-	console.log('columns');
-	
-	
 	const columns: ColumnDef<Task>[] = useMemo(() => [
 		{
 			accessorFn: (task) => (

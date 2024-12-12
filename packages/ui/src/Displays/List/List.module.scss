@@ -1,7 +1,7 @@
-@use '@styles/colors';
-@use '@styles/sizes';
-@use '@styles/layout';
-@use '@styles/buttons';
+@use '@repo/styles/colors';
+@use '@repo/styles/sizes';
+@use '@repo/styles/layout';
+@use '@repo/styles/buttons';
 
 .list_container {
     @include layout.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: 0);

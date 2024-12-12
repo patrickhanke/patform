@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import {ErrorDisplay, Select} from '@content';
 import { useImmer } from 'use-immer';
 import modi_options from './constants/modi_options';
 import clsx from 'clsx';
@@ -16,6 +15,7 @@ import IntervalInfo from './components/IntervalInfo';
 import { formatISO9075 } from 'date-fns';
 import { isArray } from 'lodash';
 import { DateObjectWithNextDates, ErrorMessage } from '@types';
+import { ErrorDisplay, Select } from '@repo/ui';
 
 const DateSelect = ({initialValue, dataHandler, setShowSlideIn, loading} : DateSelectProps) => {
 	const initialDate = {

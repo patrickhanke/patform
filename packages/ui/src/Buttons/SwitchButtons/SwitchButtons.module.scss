@@ -1,7 +1,7 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+@use '@repo/styles/buttons';
 
 .buttons_container {
     @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: 0);

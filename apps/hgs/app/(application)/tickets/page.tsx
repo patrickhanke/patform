@@ -1,1 +1,1 @@
-export {TicketsOverview as default} from '@/content';
+export {TicketsOverview as default} from '@content';

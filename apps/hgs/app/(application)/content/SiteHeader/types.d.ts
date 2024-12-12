@@ -1,3 +1,4 @@
+import { ApolloRefetch } from '@types';
 import { Dispatch, SetStateAction } from 'react';
 
 export type SiteHeaderButton = {
@@ -23,15 +24,7 @@ export type SiteHeaderNavItem = SiteHeaderNavItem[]
 
 export type SiteHeaderComponent = {
     title?: string, 
-    siteHeaderButtons?: SiteHeaderButtons,
-    siteHeaderContent?: SiteHeaderContent, 
-    hasSiteNavigation?: boolean,
-    isSubHeader?: boolean,
-    emptyContent?: boolean,
-    navItems?: SiteHeaderNavItem[],
-    navCurrentItem?: SiteHeaderNavItem,
-    navOnClick?: Dispatch<SetStateAction<item>>,
-    refetch?: () => void
+    refetch?: ApolloRefetch
 }
 
 export type SiteNavigationComponent = {

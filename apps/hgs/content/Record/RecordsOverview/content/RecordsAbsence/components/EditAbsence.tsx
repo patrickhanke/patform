@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { IconButton } from '@content';
 import { EditAbsenceProps } from '../types';
 import DeleteAbsence from './DeleteAbsence';
 import EditRecordAbsence from '../content/EditRecordAbsence';
+import { IconButton } from '@repo/ui';
 
 const EditAbsence = ({absence, refetch} : EditAbsenceProps)  => {
 	const [deleteAbsence, setDeleteAbsence] = useState(false);  

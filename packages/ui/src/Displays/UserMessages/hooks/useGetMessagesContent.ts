@@ -1,12 +1,12 @@
 import { getDateStringsFromIso } from '@repo/provider';
-import { FIND_ALL_USERS } from '@queries';
 import { Message, User } from '@repo/types';
 import { useQuery } from '@apollo/client';
 import { useMemo } from 'react';
 import { MessageContent } from '../types';
+import find_all_users from '../constants/find_all_users';
 
 const useGetMessagesContent = (messages: Message[]): MessageContent[] => {
-	const {data} = useQuery(FIND_ALL_USERS);
+	const {data} = useQuery(find_all_users);
 	
 	const messagesContent = useMemo(() => {
 		const message_content: MessageContent[] = [];

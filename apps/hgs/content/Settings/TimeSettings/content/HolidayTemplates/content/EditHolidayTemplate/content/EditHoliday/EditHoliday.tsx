@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Divider, SlideInModal } from '@content';
 import SurchargeDaySelect from './components/HolidayTemplateDaySelect';
 import { cloneDeep, set } from 'lodash';
 import { ErrorMessage, HolidayTemplate } from '@types';
 import { useDataHandler } from '@provider';
 import { EditHolidayProps } from './types';
+import { Divider, SlideIn } from '@repo/ui';
 
 const EditHoliday: React.FC<EditHolidayProps> = ({template, editTemplate, setEditTemplate, refetch, holidays}) => {
 	const [holidayTemplate, setHolidayTemplate] = useState<HolidayTemplate>(template);
@@ -58,7 +58,7 @@ const EditHoliday: React.FC<EditHolidayProps> = ({template, editTemplate, setEdi
 	}, [holidayTemplate]);
 
 	return (
-		<SlideInModal
+		<SlideIn
 			isOpen={editTemplate}
 			cancel={() => {
 				setEditTemplate(false);
@@ -99,7 +99,7 @@ const EditHoliday: React.FC<EditHolidayProps> = ({template, editTemplate, setEdi
 					}
 				</div>
 			</div>
-		</SlideInModal>
+		</SlideIn>
 	);
 };
 

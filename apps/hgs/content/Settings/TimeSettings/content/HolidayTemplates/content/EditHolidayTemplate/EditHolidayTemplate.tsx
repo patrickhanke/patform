@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { IconButton, Modal } from '@content';
 import { ErrorMessage} from '@types';
 import { generateGraphQLQuery, useDataHandler } from '@provider';
 import { useQuery } from '@apollo/client';
 import { EditHolidayTemplateProps } from './types';
 import EditHoliday from './content/EditHoliday';
+import { IconButton, Modal } from '@repo/ui';
 
 const EditHolidayTemplate: React.FC<EditHolidayTemplateProps> = ({template, refetch, holidays}) => {
 	

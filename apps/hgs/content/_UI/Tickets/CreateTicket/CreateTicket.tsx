@@ -1,6 +1,6 @@
 'use client';
 
-import { AppContext, UserContext, useDataHandler } from '@provider';
+import { AppContext, RoleUsers, UserContext, useDataHandler } from '@provider';
 import { CreateTicket as CreateTickeType, ErrorMessage, TicketUpdateObject, User } from '@types';
 import clsx from 'clsx';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
@@ -9,8 +9,7 @@ import styles from './CreateTicket.module.scss';
 import { Plus } from 'lucide-react';
 import initial_ticket from './constants/initial_ticket';
 import { ImageUploader, Modal } from '@repo/ui';
-import ObjectSelectWithState from '../../Selects/ObjectSelect';
-import { RoleUsers } from '@provider/context/AppContext/types';
+import { ObjectSelectWithState } from '@content';
 
 const CreateTicket = ({refetch}: { refetch?:() => void}  ) => {
 	const {createData} = useDataHandler();

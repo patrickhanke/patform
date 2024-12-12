@@ -1,10 +1,9 @@
 import { ColumnDef } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { AbsenceWithRecordIs, UseRecordAbsenceColumnsProps } from '../types';
-import { DisplayWorker } from '@content';
+import { DisplayWorker, StateDisplay } from '@content';
 import { getDateStringsFromIso } from '@provider';
 import EditAbsence from '../components/EditAbsence';
-import {StateDisplay} from '@repo/ui';
 
 const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 	const columns: ColumnDef<AbsenceWithRecordIs>[] = useMemo(() => [

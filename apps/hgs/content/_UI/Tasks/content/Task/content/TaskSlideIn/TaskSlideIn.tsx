@@ -1,9 +1,7 @@
-import SlideIn from '@/_UI/surfaces/SlideIn';
 import React, { useMemo, useState } from 'react';
-import { StateDisplay, SwitchButtons } from '@content';
+import { StateDisplay } from '@content';
 import TaskDescription from '../TaskDescription';
 import TaskComments from '../TaskComments';
-import IconButton from '@/_UI/interfaces/IconButton';
 import styles from './TaskSlideIn.module.scss';
 import { useQuery } from '@apollo/client';
 import { FIND_DOCUMENTS_FOR_TASK, GET_TASK_SLIDEIN_CONTENT } from '@queries';
@@ -15,6 +13,7 @@ import DisplayPropery from '../DisplayPropery';
 import TeamAssignment from '../TeamAssignment';
 import { findTicketRoute } from '@provider';
 import { useRouter } from 'next/navigation';
+import { IconButton, SlideInRight, SwitchButtons } from '@repo/ui';
 
 const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 	const [showDetails, setShowDetails] = useState(false);
@@ -29,7 +28,7 @@ const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 		notifyOnNetworkStatusChange: true
 	});
 
-	const buttonStates = useMemo(() => {
+	const buttonStates: {value: string, label: string}[]  = useMemo(() => {
 		const buttons: {value: string, label: string, disabled?: boolean}[] = [
 			{
 				value: 'comments',
@@ -48,7 +47,7 @@ const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 		return buttons;
 	}, [dataSlidein]);	
 
-	const [buttonState, setButtonState] = useState(buttonStates[0]);
+	const [buttonState, setButtonState] = useState<typeof buttonStates[number]>(buttonStates[0] as typeof buttonStates[number]);
 
 
 	return (
@@ -91,7 +90,7 @@ const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 					}} 
 				/>
 			</div>
-			<SlideIn
+			<SlideInRight
 				isOpen={showDetails}
 				setIsOpen={setShowDetails}
 				header={title}
@@ -177,7 +176,7 @@ const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 						{buttonState.value === 'comments' && dataSlidein && <TaskComments taskId={taskId} comments={dataSlidein.objects.getTask.comments} refetch={refetchSlideIn} />}
 					</div>
 				</div>
-			</SlideIn>
+			</SlideInRight>
 		</>
 	);
 };

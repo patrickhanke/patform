@@ -1,8 +1,9 @@
-import { DatePicker, Modal } from '@content';
+import { DatePicker } from '@content';
 import { useDataHandler } from '@provider';
 import React, { useState } from 'react';
 import { ArchiveSurchargeProps } from '../types';
 import { formatISO9075 } from 'date-fns';
+import { Modal } from '@repo/ui';
 
 const ArchiveSurcharge: React.FC<ArchiveSurchargeProps> = ({deleteSurcharge, setDeleteSurcharge, refetch}) => {
 	const {updateData} = useDataHandler();

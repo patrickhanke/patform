@@ -1,7 +1,7 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/colors';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+@use '@repo/styles/buttons';
 
 .question_container[data-labelbefore='false'] {
 	@include layout.flexbox($direction: column, $align: flex-start, $justify: space-between, $gap: 0);

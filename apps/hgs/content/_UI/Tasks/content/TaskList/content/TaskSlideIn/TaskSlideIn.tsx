@@ -12,8 +12,9 @@ import DisplayPropery from '../DisplayPropery';
 import TeamAssignment from '../TeamAssignment';
 import { findTicketRoute } from '@provider';
 import { useRouter } from 'next/navigation';
-import { IconButton, SlideIn, SlideInRight, StateDisplay, SwitchButtons } from '@repo/ui';
+import { IconButton, SlideInRight, SwitchButtons } from '@repo/ui';
 import buttonStates from './constants/buttonStates';
+import { StateDisplay } from 'content/_UI/StateDisplay';
 
 const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 	const [showDetails, setShowDetails] = useState(false);

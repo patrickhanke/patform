@@ -26,6 +26,10 @@
             }
         }
     }
+    .menu_content_container {
+        padding: map-get($map: sizes.$padding, $key: 'xs' );
+        border-bottom: 1px solid colors.$grey;
+    }
     .menu_item_container {
         color: colors.$dark;
         padding: map-get($map: sizes.$padding, $key: 'xs' );

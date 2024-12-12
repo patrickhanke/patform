@@ -1,10 +1,10 @@
 import React from 'react';
 import { SurchargeComponentProps } from './types';
-import { IconButton } from '@content';
 import { getDateString } from '@provider';
 import clsx from 'clsx';
 import styles from './Surcharge.module.scss';
 import surcharge_types from '../CreateSurcharge/constants/surcharge_types';
+import { IconButton } from '@repo/ui';
 
 const Surcharge: React.FC<SurchargeComponentProps> = ({surcharge, setEditSurcharge, setDeleteSurcharge}) => {
 	return (

@@ -4,7 +4,7 @@ import getRemainingVacation from '../functions/getRemainingVacation';
 import getRecordSaldo from '../functions/getRecordSaldo';
 import { RecordSettingsProps } from '../types';
 import styles from '../CreateRecord.module.scss';
-import { Divider, InfoBox } from '@content';
+import { Divider, InfoBox } from '@repo/ui';
 
 const RecordSettings: React.FC<RecordSettingsProps> = ({record, days}) => {
 	const recordInfo = useMemo(() => {

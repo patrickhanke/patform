@@ -1,17 +1,16 @@
 'use client';
 
-import {SiteHeader} from '@content';
 import React, { useCallback, useContext, useMemo, useState } from 'react';
 import site_states from './constants/site_states';
 import { generateGraphQLQuery, useDataHandler, UserContext } from '@provider';
 import SurchargeSettings from './content/SurchargeSettings';
-import { SiteHeaderButtons } from '@/_UI/surfaces/SiteHeader';
 import HolidayTemplates from './content/HolidayTemplates';
 import Holidays from './content/Holidays';
 import { useQuery } from '@apollo/client';
 import { Holiday } from '@types';
 import { cloneDeep, set } from 'lodash';
 import axios from 'axios';
+import { SiteHeader, SiteHeaderButtons } from '@repo/ui';
 
 const TimeSettings = () => {
 	const [siteState, setSiteState] = useState(site_states[0]);

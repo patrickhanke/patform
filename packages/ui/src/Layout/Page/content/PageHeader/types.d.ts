@@ -23,6 +23,9 @@ type PageHeaderContent =  React.JSX.Element;
 
 export type PageHeaderComponent = {
     title?: PageProps['title'], 
+    pageStates?: PageNavigationProps['pageState'],
+    pageState?: PageNavigationProps['activeState'],
+    setPageState?: PageNavigationProps['onClick'],
     pageHeaderContent?: PageProps['pageHeaderContent'], 
     pageHeaderButtons?: PageProps['pageHeaderButtons'],
     emptyContent?: PageProps['emptyContent'],

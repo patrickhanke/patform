@@ -4,11 +4,11 @@ import { GET_TASK_WORKERS } from '@queries';
 import { DisplayWorkersProps, Task, Worker } from '@types';
 import { useQuery } from '@apollo/client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import SlideIn from '@/_UI/surfaces/SlideIn';
 import { cloneDeep, pull } from 'lodash';
 
 import styles from '../TeamAssignment.module.scss';
 import { formatISO9075 } from 'date-fns';
+import { SlideInRight } from '@repo/ui';
 
 const DisplayWorkers = ({taskId, refetchTask, taskState, showAsButton=false, selectWorkers= false} : DisplayWorkersProps) => {
 	const [isOpen, setIsOpen] = useState(false);	
@@ -105,9 +105,9 @@ const DisplayWorkers = ({taskId, refetchTask, taskState, showAsButton=false, sel
 					+ Arbeiter ändern
 				</button>
 			}
-			<SlideIn isOpen={isOpen} setIsOpen={setIsOpen} header='Arbeiter auswählen'>
+			<SlideInRight isOpen={isOpen} setIsOpen={setIsOpen} header='Arbeiter auswählen'>
 				{workerComponent}
-			</SlideIn>
+			</SlideInRight>
 		</>
 		:
 		<>
@@ -132,9 +132,9 @@ const DisplayWorkers = ({taskId, refetchTask, taskState, showAsButton=false, sel
 							)}
 						</div>
 					</button>
-					<SlideIn isOpen={isOpen} setIsOpen={setIsOpen} header='Arbeiter auswählen'>
+					<SlideInRight isOpen={isOpen} setIsOpen={setIsOpen} header='Arbeiter auswählen'>
 						{workerComponent}
-					</SlideIn>
+					</SlideInRight>
 				</>
 				:
 				<div className={styles.button_workers_container}>

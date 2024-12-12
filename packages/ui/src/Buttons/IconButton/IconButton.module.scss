@@ -1,6 +1,6 @@
-@use '@styles/colors';
-@use '@styles/sizes';
-@use '@styles/layout';
+@use '@repo/styles/colors';
+@use '@repo/styles/sizes';
+@use '@repo/styles/layout';
 
 .icon_button_container {
     @include layout.flexbox($direction: row, $align: center, $justify: center, $gap: 0);

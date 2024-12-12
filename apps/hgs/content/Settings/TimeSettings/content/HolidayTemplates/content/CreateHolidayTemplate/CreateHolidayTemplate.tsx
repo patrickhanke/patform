@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Divider, SlideInModal } from '@content';
 import SurchargeDaySelect from './components/HolidayTemplateDaySelect';
 import { cloneDeep, set } from 'lodash';
 import { ErrorMessage, HolidayTemplate } from '@types';
 import default_holiday_template from './constants/default_holiday_template';
 import { useDataHandler, UserContext } from '@provider';
 import { CreateHolidayTemplateProps } from './types';
+import { Divider, SlideIn } from '@repo/ui';
 
 const CreateHolidayTemplate: React.FC<CreateHolidayTemplateProps> = ({templates = [], createTemplate, setCreateTemplate, refetch, holidays}) => {
 	const [holidayTemplate, setHolidayTemplate] = useState<HolidayTemplate>(default_holiday_template);
@@ -68,7 +68,7 @@ const CreateHolidayTemplate: React.FC<CreateHolidayTemplateProps> = ({templates 
 	}, [holidayTemplate]);
 
 	return (
-		<SlideInModal
+		<SlideIn
 			isOpen={createTemplate}
 			cancel={() => {
 				setCreateTemplate(false);
@@ -106,7 +106,7 @@ const CreateHolidayTemplate: React.FC<CreateHolidayTemplateProps> = ({templates 
 					}
 				</div>
 			</div>
-		</SlideInModal>
+		</SlideIn>
 	);
 };
 

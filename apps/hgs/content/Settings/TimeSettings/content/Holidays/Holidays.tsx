@@ -1,7 +1,7 @@
 import React from 'react';
 import { HolidaysProps } from './types';
-import { Table } from '@content';
 import useHolidayColumns from './hooks/useHolidayColumns';
+import { Table } from '@repo/ui';
 
 const Holidays: React.FC<HolidaysProps> = ({holidays}) => {
 	const columns = useHolidayColumns();

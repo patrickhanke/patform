@@ -1,1 +1,1 @@
-export {StaffOverview as default} from '@/content';
+export {StaffOverview as default} from '@content';

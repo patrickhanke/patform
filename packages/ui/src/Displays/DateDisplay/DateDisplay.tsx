@@ -1,7 +1,7 @@
 import React from 'react';
 import { DateDisplayComponent } from './types';
 import styles from './DateDisplay.module.scss';
-import { getDateStringsFromIso } from '@provider';
+import { getDateStringsFromIso } from '@repo/provider';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { CiClock2 } from 'react-icons/ci';
 

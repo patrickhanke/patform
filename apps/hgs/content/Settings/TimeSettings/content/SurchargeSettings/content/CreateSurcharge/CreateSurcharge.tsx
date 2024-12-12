@@ -1,4 +1,4 @@
-import { DatePicker, InfoBox, SlideInModal, SwitchButtons } from '@content';
+import { DatePicker } from '@content';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { CreateSurchargeProps } from './types';
 import { ErrorMessage, Surcharge } from '@types';
@@ -11,6 +11,7 @@ import SurchargeDaySelect from './components/SurchargeDaySelect';
 import SurchargeDayEdit from './components/SurchargeDayEdit';
 import SurchargeOvertimeEdit from './components/SurchargeOvertimeEdit';
 import { formatISO9075 } from 'date-fns';
+import { InfoBox, SlideIn, SwitchButtons } from '@repo/ui';
 
 const CreateSurcharge: React.FC<CreateSurchargeProps> = ({surcharge = null, createSurcharge, setCreateSurcharge, setEditSurcharge, updateSurchargeHandler, holidays}) => {
 	const [newSurcharge, setNewSurcharge] = useState<Surcharge>(surcharge?.objectId ? surcharge : default_surcharge());
@@ -75,7 +76,7 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({surcharge = null, crea
 	}, [newSurcharge, holidays]);
 
 	return (
-		<SlideInModal 
+		<SlideIn 
 			isOpen={createSurcharge || surcharge !== null} 
 			cancel={() => {
 				if (createSurcharge) {
@@ -134,7 +135,7 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({surcharge = null, crea
 				{newSurcharge.type === 'day' && <SurchargeDayEdit newSurcharge={newSurcharge} holidays={holidays} surchargeChangeHandler={surchargeChangeHandler}/>}
 				{newSurcharge.type === 'overtime' && <SurchargeOvertimeEdit newSurcharge={newSurcharge} surchargeChangeHandler={surchargeChangeHandler}/>}
 			</div>
-		</SlideInModal>
+		</SlideIn>
 	);
 };
 

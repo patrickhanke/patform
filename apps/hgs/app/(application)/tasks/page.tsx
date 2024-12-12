@@ -1,1 +1,1 @@
-export {TasksOverview as default} from '@/content';
+export {TasksOverview as default} from '@content';

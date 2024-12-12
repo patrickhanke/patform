@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Select from '../Selects/Select';
 import { interval_options } from './constants/interval_options';
 import { ServiceTimeComponent, ServiceTimeData, ServiceTimeDataValue } from './types';
+import { Select } from '@repo/ui';
 
 const ServiceTime = ({data, dataHandler}: ServiceTimeComponent) => {
 	const [serviceTimeState, setServiceTimeState] = useState(data);

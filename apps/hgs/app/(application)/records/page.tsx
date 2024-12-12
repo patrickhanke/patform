@@ -1,1 +1,1 @@
-export {Records as default} from '@/content';
+export {Records as default} from '@content';

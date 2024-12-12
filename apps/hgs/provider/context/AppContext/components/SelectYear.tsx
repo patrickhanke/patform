@@ -1,8 +1,8 @@
-import { Icon } from '@content';
 import React, { useMemo } from 'react';
 import { SelectYearProps, YearOptions } from '../types';
 import { StylesConfig } from 'react-select';
 import ReactSelect from 'react-select';
+import { Icon } from '@repo/ui';
 
 const customStyles = ({width}: {width: string | number}): StylesConfig<YearOptions[number]> => ({
 	control: provided => ({
@@ -79,7 +79,6 @@ const customStyles = ({width}: {width: string | number}): StylesConfig<YearOptio
 
 
 const SelectYear = ({year, setYear}: SelectYearProps) => {
-    
 	const yearOptions:YearOptions  =  useMemo(() => {
 		const options: YearOptions = [];
 		for (

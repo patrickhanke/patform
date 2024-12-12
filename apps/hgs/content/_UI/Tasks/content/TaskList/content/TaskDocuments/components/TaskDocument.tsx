@@ -1,9 +1,9 @@
-import { ApplicationTypes } from '@types';
 import React from 'react';
 import styles from '../TaskDocuments.module.scss';
-import { FileDisplay, IconButton } from '@content';
+import { Document } from '@types';
+import { FileDisplay, IconButton } from '@repo/ui';
 
-const TaskDocument = ({document}: {document: ApplicationTypes.Document}) => {
+const TaskDocument = ({document}: {document: Document}) => {
 	return (
 		<div className='content_element'>
 			<div className={styles.document_container}> 

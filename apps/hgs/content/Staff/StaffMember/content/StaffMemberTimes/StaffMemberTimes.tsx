@@ -2,9 +2,9 @@ import { find_record } from '@queries';
 import { useQuery } from '@apollo/client';
 import React from 'react';
 import { StaffMemberTimesProps } from './types';
-import { Table } from '@content';
 import CreateRecord from './content/CreateRecord';
 import useRecordsTableColumns from './hooks/useRecordsTableColumns';
+import { Table } from '@repo/ui';
 
 const StaffMemberTimes = ({userId, timeSettings, createRecord, setCreateRecord, projectId}: StaffMemberTimesProps) => {
 	const {data, loading, refetch} = useQuery(find_record, {
