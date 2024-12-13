@@ -30,6 +30,7 @@ export type SiteHeaderContentComponent = {
     id?: string,
     filters: ApplicationTypes.Filter[],
     setFilters: React.Dispatch<React.SetStateAction<ApplicationTypes.Filter[]>>,
+    initialFilters: () => ApplicationTypes.Filter[]
 }
 
 export type useInitialFiltersHook = {

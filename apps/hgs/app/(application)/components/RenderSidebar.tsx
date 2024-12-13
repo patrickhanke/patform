@@ -61,17 +61,13 @@ const menu_items = [
 ];
 
 const RenderSidebar = () => {
-    const {createTask, createTicket, setRefetchFunction, selectYear} = useContext(AppContext);
- 
   return (
-    <div className={styles.sidebar_container}>
-        <div className={styles.sidebar_header}>
-            <Logo />
-        </div>
-        <Sidebar menuItems={menu_items} >
-            <div>{createTask}</div>
-        </Sidebar>
-    </div >
+	<div className={styles.sidebar_container} id='sidebar'>
+		<div className={styles.sidebar_header}>
+			<Logo />
+		</div>
+		<Sidebar menuItems={menu_items} />
+	</div >
   )
 }
 

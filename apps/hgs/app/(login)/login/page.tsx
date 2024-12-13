@@ -1,1 +1,1 @@
-export {default} from '@/content/Login';
+export {Login as default} from '@content';

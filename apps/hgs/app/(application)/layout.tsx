@@ -33,10 +33,6 @@ export const metadata = {
 	description: 'PH'
 };
 
-
-
-
-
 export default async function  RootLayout({
 	children
 }: {

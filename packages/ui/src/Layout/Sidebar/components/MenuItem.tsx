@@ -8,6 +8,7 @@ import styles from '../Sidebar.module.scss';
 import {IoMdArrowDropdown} from 'react-icons/io';
 import { MenuItemProps, MenuItemType } from '../types';
 import Icons from '../constants/Icons';
+import '../styles.scss';
 
 const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemProps) => {
 	const [showSubMenu, setShowSubMenu] = useState(false);
@@ -25,7 +26,6 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemP
 
 	const subMenuHandler = (subMenuValue : string, pathname: string) => {
 		const sliceIndex = pathname.slice(1).search('/'); 
-
 		if (sliceIndex !== -1) {
 			const pathString = pathname.slice(sliceIndex + 1);
 			if (subMenuValue === pathString) {
@@ -38,7 +38,7 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemP
 
 	return (
 		<>
-			<li data-hassubmenu={subMenu.length > 0}>
+			<li data-hassubmenu={subMenu.length > 0} style={{marginBottom: subMenu.length > 0 && showSubMenu ? 0 : 4.8}}>
 				{subMenu.length > 0 || disabled ? 
 					<button 
 						data-disabled={disabled} 
@@ -46,11 +46,12 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemP
 						className={clsx(link === path ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)}
 					>
 						<Icons icon={icon} />
-						{label}
+						<div className='sidebar_label'>{label}</div>
 						{!disabled && 
-							<div className={styles.dropicon} data-showsubmenu={showSubMenu}>
+							<div className='sidebar_dropicon' data-showsubmenu={showSubMenu}>
 								<IoMdArrowDropdown />
-							</div>}
+							</div>
+						}
 					</button>
 					:
 					<Link
@@ -60,23 +61,23 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemP
 						href={link}
 					>
 						<Icons icon={icon} />
-						{label}
+						<div className={'sidebar_label'}>{label}</div>
 					</Link>
 				}
 			</li>
 			<div className={styles.submenu_container} data-showsubmenu={showSubMenu}>
-				<ul >
+				<ul>
 					{subMenu.length > 0 && subMenu.map((subMenuItem : MenuItemType['sub_menu'][number]) =>
 						<li key={subMenuItem.value}>
 							{!subMenuItem.disabled ? 
-								<Link  className={clsx(subMenuHandler(subMenuItem.value, pathname) ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)} href={`${link}${subMenuItem.value}`}>
+								<Link className={clsx(subMenuHandler(subMenuItem.value, pathname) ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)} href={`${link}${subMenuItem.value}`}>
 									<Icons icon={subMenuItem.icon} />
-									{subMenuItem.label}
+									<div className='sidebar_label'>{subMenuItem.label}</div>
 								</Link>
 								:	
 								<div data-disabled={subMenuItem.disabled} className={clsx(subMenuHandler(subMenuItem.value, pathname) ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)}>
 									<Icons icon={icon} />
-									{subMenuItem.label}
+									<div className='sidebar_label'>{subMenuItem.label}</div>
 								</div>
 							}
 						</li>

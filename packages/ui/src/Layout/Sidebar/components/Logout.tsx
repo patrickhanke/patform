@@ -19,7 +19,7 @@ const Logout = () => {
 
 	return (
 		<div onClick={() => logoutUser()}  className={styles.menu_item}>
-			<BiLogOut /> Logout
+			<BiLogOut /> <div className='sidebar_label'>Logout</div>
 		</div>
 	);
 };

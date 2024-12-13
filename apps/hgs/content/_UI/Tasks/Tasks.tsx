@@ -17,11 +17,8 @@ const Tasks = ({id, className}: TasksComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
 	const {loading: updateLoading} = useDataHandler();
 	const [siteState, setSiteState] = useState<typeof site_states[number]>(site_states[0] as typeof site_states[0]);
-
-
 	const searchParams = useSearchParams();
-	const router = useRouter();
-	const pathname = usePathname();
+
 
 	const {tasks, loading, refetch} = useGetTasks({id, className, filters, siteType: siteState.value as SiteType});
 
@@ -43,50 +40,32 @@ const Tasks = ({id, className}: TasksComponent) => {
 		return [{key: 'state', value: ['assigned', 'created', 'executed', 'completed'], operator: '_in', id: 'state'}];
 	}, [siteState, searchParams.get('ticket')]);
 
-	const siteHeaderButtons = useMemo(() => [{
-		type: 'button',
-		text: 'Filter zurücksetzen',
-		onClick: () => {
-			if (searchParams.get('task')) {
-				router.push(pathname);
-			}
-			setFilters(initialFilters());
-		},
-		color: 'secondary',
-		is_reset_button: true,
-		disabled: loading || updateLoading || filters.length === 0
-	}], [loading, updateLoading]);
+	
 
 	useEffect(() => {
 		setFilters(initialFilters());
 	}, [siteState]);
 
-	const siteHeaderContent = useMemo(() => (
-		<SiteHeaderContent
-			id={id}
-			filters={filters}
-			setFilters={setFilters}
-		/>
-	), [filters, siteState]);
-
 	return (
 		<Page 
 			title='Aufgaben'
-			pageHeaderContent={siteHeaderContent}
-			pageHeaderButtons={siteHeaderButtons}
 			refetch={refetch}
 			pageStates={site_states}
 			pageState={siteState}
 			setPageState={setSiteState}
-			
 		>
-			<div className='site_content'>
-				{sortTasksForList(tasks || []).map(taskList => (
-					<ContentElement key={taskList.title} title={taskList.title}>
-						<TaskList taskList={taskList.data} refetch={refetch} />
-					</ContentElement>
-				))}
-			</div>
+			<SiteHeaderContent
+				id={id}
+				filters={filters}
+				setFilters={setFilters}
+				initialFilters={initialFilters}
+
+			/>
+			{sortTasksForList(tasks || []).map(taskList => (
+				<ContentElement key={taskList.title} title={taskList.title}>
+					<TaskList taskList={taskList.data} refetch={refetch} />
+				</ContentElement>
+			))}
 		</Page>
 	);
 };

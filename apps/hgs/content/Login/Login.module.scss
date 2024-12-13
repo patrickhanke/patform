@@ -1,7 +1,7 @@
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/colors';
-@use '@styles/buttons';
+@use '@repo/styles/layout';
+@use '@repo/styles/sizes';
+@use '@repo/styles/colors';
+@use '@repo/styles/buttons';
 
 .login_container {
     @include layout.flexbox($direction: row, $align: stretch, $gap: 0 );
@@ -10,7 +10,7 @@
 }
 
 .logo_container {
-    position: absolute;
+    position: fixed;
     top: 30px;
     left: 30px;
 }
@@ -49,6 +49,12 @@
     position: relative;
 }
 
+.main_container {
+    @include layout.flexbox($direction: column, $align: center, $justify: center, $gap: 0 );
+    width: 100%;
+    height: 100%;
+}
+
 .switch_buttons_container {
     height: auto;
     width: 360px;
@@ -58,7 +64,7 @@
 }
 
 .form_container {
-    @include layout.flexbox($direction:column, $align: flex-start, $justify: flex-start, $gap: 12 );
+    @include layout.flexbox($direction:column, $align: center, $justify: center, $gap: 12 );
     flex: 1 1 50%;
     max-width: 300px;
     h2 {

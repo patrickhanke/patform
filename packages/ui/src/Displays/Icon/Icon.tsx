@@ -15,7 +15,6 @@ const Icon = ({size=18, strokeWidth=1, type}: IconProps) => {
 			{type === 'house' && <Home width={size} height={size} strokeWidth={strokeWidth} /> }
 			{type === 'arrow-down' && <ChevronDown width={size} height={size} strokeWidth={strokeWidth} /> }
 			{type === 'ticket' && <Tag width={size} height={size} strokeWidth={strokeWidth} /> }
-
 		</>
 	);
 };

@@ -2,16 +2,25 @@
 
 import Image from 'next/image';
 import React from 'react';
-import logo from  '../images/logo_hgs_wide.png';
+import logo from  '../images/app_logo.png';
+import styles from '../Layout.module.scss';
 
 const Logo = () => {
 	return (
-		<Image
-			src={logo}
-			// width={135}
-			height={21}
-			alt="Hausmeister App"
-		/>
+		<div className={styles.sidebar_header_content} >
+			<Image
+				src={logo}
+				// width={135}
+				style={{borderRadius: '6px'}}
+				height={21}
+				alt="Hausmeister App"
+			/>
+			<div className='sidebar_label'>
+				<h1>
+					HGS App
+				</h1>
+			</div>
+		</div>
 	);
 };
 

@@ -66,9 +66,9 @@ const LoginForm = () => {
 	return (
 		<div>
 			<form onSubmit={formik.handleSubmit} className={styles.form_container}>
-				<h2>
-					Login
-				</h2>
+				<h1>
+					Login HGS App
+				</h1>
 				<label htmlFor="email">E-Mail Adresse</label>
 				<input
 					id="email"
