@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Layout.module.scss';
-import '@styles/global.scss';
-import '@styles/fonts.scss';
+import '@repo/styles/typography';
+import '@repo/styles/global';
 
 export const metadata = {
 	title: 'HGS App',

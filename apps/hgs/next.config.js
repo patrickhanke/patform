@@ -13,7 +13,8 @@ const nextConfig = {
 		SASHIDO_CLIENT_KEY: 'Ie7BJ19MtDnEREkISIAnidh9hQrfdANk7p33VNFT',
 		BYTESCALE_ACCOUNT_ID: 'FW25c4N',
 		BYTESCALE_PUBLIC_KEY: 'public_FW25c4N3qgCzxTQoAXJY5CbtXHZf',
-		BYTESCALE_SECRET_KEY: 'secret_FW25c4NG3DufL64qbUVs4y91SAuX'
+		BYTESCALE_SECRET_KEY: 'secret_FW25c4NG3DufL64qbUVs4y91SAuX',
+		SESSION_TOKEN: 'hgs_token'
 	},
 	eslint: {
 		ignoreDuringBuilds: true

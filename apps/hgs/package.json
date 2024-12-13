@@ -14,6 +14,7 @@
     "@repo/provider": "1.0.0",
     "@repo/types": "1.0.0",
     "@repo/ui": "1.0.0",
+    "@repo/styles": "1.0.0",
     "@tanstack/match-sorter-utils": "^8.15.1",
     "@tanstack/react-table": "^8.15.3",
     "autoprefixer": "10.4.14",

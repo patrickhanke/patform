@@ -4,26 +4,30 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import UserContext from './UserContext';
 import { axiosclient } from '@repo/provider';
 import Cookies from 'js-cookie';
-import useStorage from './hooks/useStorage';
 import {User} from '@repo/types';
-import { useRouter } from 'next/navigation';
 import { useQuery } from '@apollo/client';
 import find_user_messages from './constants/find_user_messages';
+import { useSessionStorage } from 'usehooks-ts';
 
 const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
-	const token = Cookies.get('patform_token');
-	// const [project, setProject] = useState('');
-	const {getItem, setItem} = useStorage();
+	console.log(process.env.SESSION_TOKEN);
+	
+	const token = Cookies.get(process.env.SESSION_TOKEN);
+	const [project, setProject, removeProject] = useSessionStorage<string | undefined>('project', undefined, {initializeWithValue: true});
+	const [user, setUser, removeUser] = useSessionStorage<User | undefined>('user', undefined, {initializeWithValue: true});
+
+	console.log({project});
+	console.log({user});
+	console.log({token});
+	
 
 	const {data: messageData, refetch} = useQuery(find_user_messages, {
 		variables: {
-			params: {user: {_eq: getItem('user', 'session', 'object')?.objectId}}
+			params: {user: {_eq: user?.objectId}}
 		},
 		pollInterval: 10000,
-		skip: !getItem('user', 'session', 'object')
+		skip: !user
 	});
-
-	const router = useRouter();
 
 	const userMessages = useMemo(() => {
 		if (messageData) {
@@ -32,55 +36,33 @@ const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
 		return [];
 	}, [messageData]);
 
-	// get user
-	const loginUser = async ({username, password}: {username: string, password: string}) => {
-		await axiosclient().post('login', {
-			'username': username, 
-			'password': password
-		})
-			.then(response => {
-				Cookies.set('patform_token', response.data.sessionToken, {expires: 90});
-				setItem( 'user', response.data, 'session', 'object' );
-				setItem( 'project', response.data.project.objectId, 'session' );
-				router.push('/');
-			})
-		
-			.catch(error => {
-				if (error.message === 'Invalid username/password.') {
-					window.alert('Falsche E-Mail / Passwort Kombination');
-				} else {
-					window.alert('Das Einloggen ist leider fehlgeschlagen');
-				}
-			});
-	};
-
 	const changeProject = (id: string) => {
-		setItem( 'project', id, 'session' );
+		setProject( id );
 		window.location.reload();
 	};
 
 	const getUserData =  useCallback( async () => {
-		
+		console.log('effect');
 		axiosclient().get('/users/me')
 			.then(response => {
-				setItem( 'user', response.data, 'session' );
-				setItem( 'project', response.data.project.objectId, 'session' );
+				console.log(response.data);
+				setUser( response.data );
+				setProject(response.data.project.objectId);
 			})
 			.catch(error => console.error(error.message));
-	}, [getItem('user', 'session', 'object')]);
+	}, []);
 
 	const userContextObject = useMemo(() => ({
-		user: getItem('user', 'session', 'object') || {} as User, 
-		loginUser,
-		project: 'B2vfHKzxqE',
+		user: user as User, 
+		projectId: project || '',
 		changeProject,
 		getUserData,
 		userMessages,
 		refetchMessages: refetch
-	}), [token, getItem('user', 'session', 'object'), messageData]);
+	}), [token, user]);
 
 	useEffect(() => {
-		if (token && !getItem('user', 'session', 'object') ) {
+		if (token && !user) {
 			getUserData();
 		}
 	}, []);

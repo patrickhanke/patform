@@ -64,12 +64,9 @@
 }
 
 .form_container {
-    @include layout.flexbox($direction:column, $align: center, $justify: center, $gap: 12 );
+    @include layout.flexbox($direction:column, $align: center, $justify: center, $gap: 12px );
     flex: 1 1 50%;
-    max-width: 300px;
-    h2 {
-        margin-bottom: sizes.$xl;
-    }
+    // max-width: 300px;
     button {
         margin-top: sizes.$lg;
     }

@@ -8,7 +8,6 @@ import { SwitchButtonProps } from './types';
 const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates, changeHandler, underlineButtons = false}) => {
 	return (
 		<div className={styles.buttons_container} data-underline_buttons={underlineButtons}>
-
 			{buttonStates.map((button, index) => 
 				<button
 					key={button.value}

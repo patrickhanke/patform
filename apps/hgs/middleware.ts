@@ -18,13 +18,14 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 	
-	const token = request.cookies.get('hgs_token')?.value as string;
-	const loggedInCookie = request.cookies.get('hgs_logged_in')?.value || '';
+	const token = request.cookies.get(process.env.SESSION_TOKEN)?.value as string;
+	const loggedInCookie = request.cookies.get(`${process.env.SESSION_TOKEN}_logged_in`)?.value || '';
 	let loggedIn = loggedInCookie ==='true'|| false;
 
 	if (!token) {
 		loggedIn = false;
-	} 
+	}
+
 	const httpHeaders = {
 		'X-Parse-Session-Token': token || '',
 		'X-Parse-Application-Id': process.env.SASHIDO_APP_ID || '',
@@ -44,7 +45,6 @@ export async function middleware(request: NextRequest) {
 				console.log(token);
 				if (actualData.sessionToken === token) {
 					loggedIn = true;
-					
 				}		
 			})
 			.catch(error => {
@@ -58,9 +58,9 @@ export async function middleware(request: NextRequest) {
 	console.log({url: request.nextUrl.pathname});
 
 	if (!token && request.nextUrl.pathname !== '/login') {
-
 		return NextResponse.rewrite(new URL('/login', request.url));
 	}
+
 	if (loggedIn) {
 		response.cookies.set('hgs_logged_in', 'true');
 	}

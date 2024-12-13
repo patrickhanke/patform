@@ -45,7 +45,7 @@ const PageHeader = ({
 		<div className='pageheader_content' data-scroll={scrollState} >
 			<div className={'pageheader_content_container'} data-scroll={scrollState}>
 				<div>
-					<h1 >{title}</h1>
+					<h2 >{title}</h2>
 				</div>
 				{isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0 && 
 				<div className={'pageheader_button_container'} >

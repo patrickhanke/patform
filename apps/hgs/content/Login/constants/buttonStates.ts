@@ -10,8 +10,7 @@ const buttonStates = [
 	},
 	{
 		value: 'password',
-		label: 'Passwort vergessen',
-		disabled: true
+		label: 'Passwort vergessen'
 	}
 	
 ];

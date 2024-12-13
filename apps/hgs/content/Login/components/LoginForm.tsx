@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { axiosclient } from '@provider';
 import { useFormik } from 'formik';
-import Cookies from 'js-cookie';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import styles from '../Login.module.scss';
 import { User } from '@types';
+import { useLocalStorage } from 'usehooks-ts';
+import { loginUser } from '@repo/provider';
 
 const LoginSchema = Yup.object().shape({
 	email: Yup.string().email('Ungültiges E-Mail Format').required('Eine E-Mail Adresse muss angegeben werden'),
@@ -14,6 +15,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
+	const [value, setValue, removeValue] = useLocalStorage('project', 0);
 	const [disabled, setDisabled] = useState(false);
 	const router = useRouter();
 	const [error, setError] = useState('');
@@ -24,40 +26,31 @@ const LoginForm = () => {
 			email: '',
 			password: ''
 		},
-		onSubmit: async values => {
+		
+		onSubmit: async (values, actions) => {
 			setDisabled(true);
 			const user: User | null = await axiosclient().post('/functions/get-user-data', {
 				email: values.email
 			});
 
-			console.log(user);
-			console.log(values);
-			
-
 			if (!user) {
 				window.alert('Für diese E-Mail Adresse ist kein Nutzer hinterlegt');
+				setDisabled(false);
 				return [] as User[];
 			}
 
 			if (user) {
-				await axiosclient().post('login', {
-					'username': values.email, 
-					'password': values.password
-				})
-					.then(response => {
-						Cookies.set('hgs_token', response.data.sessionToken, {expires: 90});
-						setError('');
-					})
-					.catch(error => {
-						if (error.message === 'Invalid username/password.') {
-							setError('Falsche E-Mail / Passwort Kombination');
-							setDisabled(false);
-						} else {
-							setError('Das Einloggen ist leider fehlgeschlagen');
-							setDisabled(false);
-						}
-					});
-				router.push('/');
+				const login = await loginUser({email: values.email, password: values.password});
+				if (login) {
+					if (login.error) {
+						setError(login.message);
+						setDisabled(false);
+						return;
+					} else {
+						router.push('/');
+					}
+				}
+				setDisabled(false);
 			}
 			setDisabled(false);
 		}
@@ -66,9 +59,6 @@ const LoginForm = () => {
 	return (
 		<div>
 			<form onSubmit={formik.handleSubmit} className={styles.form_container}>
-				<h1>
-					Login HGS App
-				</h1>
 				<label htmlFor="email">E-Mail Adresse</label>
 				<input
 					id="email"

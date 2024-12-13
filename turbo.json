@@ -10,7 +10,8 @@
     "SASHIDO_CLIENT_KEY",
     "BYTESCALE_ACCOUNT_ID",
     "BYTESCALE_PUBLIC_KEY",
-    "BYTESCALE_SECRET_KEY"
+    "BYTESCALE_SECRET_KEY",
+    "SESSION_TOKEN"
   ],
   "globalDependencies": [
     ".env"

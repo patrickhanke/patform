@@ -5,8 +5,7 @@ import { Message, User } from '@repo/types';
 
 interface ContextValues {
     user: User,
-    loginUser: ({ username, password }: { username: string; password: string; }) => Promise<void>,
-    project: string,
+    projectId: string,
     changeProject: (id: string) => void,
     getUserData: () => void,
     userMessages: Message[],

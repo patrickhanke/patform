@@ -1,13 +1,13 @@
 import React from 'react';
-import '@styles/global.scss';
-import '@styles/fonts.scss';
+import '@repo/styles/global';
+import '@repo/styles/typography';
+import '@repo/styles/buttons';
+import './styles.scss';
 import styles from './Layout.module.scss';
 import clsx from 'clsx';
 
 import LayoutContext from './LayoutContext';
 import Logo from './components/Logo';
-import './styles.scss';
-import '@styles/buttons.scss';
 import { Sidebar } from '@repo/ui';
 import SiteHeader from './content/SiteHeader';
 import { AppContext } from '@provider';

@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { BiLogOut } from 'react-icons/bi';
 import styles  from '../Sidebar.module.scss';
 import Cookies from 'js-cookie';
@@ -11,8 +10,8 @@ const Logout = () => {
 	const router = useRouter();
 
 	const logoutUser = async () => {
-		Cookies.remove('patform_token');
-		Cookies.remove('patform_logged_in');
+		Cookies.remove(process.env.SESSION_TOKEN);
+		Cookies.remove(`${process.env.SESSION_TOKEN}_logged_in`);
 		await axiosclient().post('logout');
 		return router.push('/login');
 	};
