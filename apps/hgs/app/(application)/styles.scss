@@ -165,3 +165,7 @@ label {
 .info_container.margin_top {
   margin-top: sizes.$sm;
 } 
+
+.main_content_open {
+  width: calc(100% - 44px); 
+}

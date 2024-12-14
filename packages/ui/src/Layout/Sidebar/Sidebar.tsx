@@ -27,7 +27,10 @@ const Sidebar = ({menuItems, children}: {menuItems: {label: string, value: strin
 								sidebarDropicons.forEach(label => {
 									label.classList.toggle('sidebar_dropicon_open');
 								});
-				
+								const mainContent = document.getElementById('main_content');
+								if (mainContent) {
+									mainContent.classList.toggle('main_content_open');
+								}
 							}}
 						>
 							<BsArrowLeftRight />

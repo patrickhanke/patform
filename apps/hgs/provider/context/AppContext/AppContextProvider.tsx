@@ -2,12 +2,14 @@
 
 import React, { useMemo, useState } from 'react';
 import AppContext from './AppContext';
-import SelectYear from './components/SelectYear';
 import { useQuery } from '@apollo/client';
 import { FIND_ALL_ROLES } from '@queries';
 import { RoleUsers } from './types';
 import { UserRole } from '@repo/types';
 import { CreateTask, CreateTicket } from '@content';
+import dynamic from 'next/dynamic'
+ 
+const SelectYear = dynamic(() => import('./components/SelectYear'), { ssr: false })
 
 const AppContextProvider = ({children} : {children: React.ReactNode}) => {
 	const [refetchFunction, setRefetchFunction] = useState();

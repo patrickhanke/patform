@@ -110,7 +110,8 @@
 
 .main_content {
     @include layout.flexbox($direction: row, $align: stretch, $gap: 0);
-    width: auto;
+    position: relative;
+    width: calc(100% - 150px);
     flex: 1;
 }
 

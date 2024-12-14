@@ -8,13 +8,12 @@ import './styles.scss';
 import { PageNavigation } from '../PageNavigation';
 import CreateClass from './content/CreateClass';
 import { useEffect, useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
 import { useInView } from 'react-intersection-observer';
 
-const modalVariants = {
-	visible: { opacity: 1, top: 0,  transition: { when: 'beforeChildren' } },
-	hidden: { opacity: 0, top: -100,  transition: { when: 'afterChildren' } }
-};
+// const modalVariants = {
+// 	visible: { opacity: 1, top: 0,  transition: { when: 'beforeChildren' } },
+// 	hidden: { opacity: 0, top: -100,  transition: { when: 'afterChildren' } }
+// };
 
 const PageHeader = ({
 	title,
@@ -42,10 +41,14 @@ const PageHeader = ({
 	}, [inView]);
 
 	const headContent = useMemo(() => (
-		<div className='pageheader_content' data-scroll={scrollState} >
+		<div className='pageheader_content' >
 			<div className={'pageheader_content_container'} data-scroll={scrollState}>
 				<div>
-					<h2 >{title}</h2>
+					{scrollState ? 
+						<h3>{title}</h3>
+						:
+						<h2>{title}</h2>
+					}
 				</div>
 				{isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0 && 
 				<div className={'pageheader_button_container'} >
@@ -88,20 +91,22 @@ const PageHeader = ({
 					siteStates={pageStates}
 					activeState={pageState}
 					onClick={setPageState}
-				/>}
+				/>
+			}
 		</div>
 	), [scrollState]);
-
+	
 	return (
 		<>
-			<div ref={ref}>
+			<div ref={ref} style={{width: '100%', position: 'relative'}}>
 				{headContent}
 			</div>
-			<AnimatePresence>
+			{/* <AnimatePresence>
 				{scrollState && (
 					<motion.div
 						className='pageheader_scroll_container'
-						key='123'
+						key='pageheader'
+						id='pageheader'
 						// style={{position: 'fixed', backgroundColor: 'white', zIndex: 11}}
 						variants={modalVariants}
 						initial="hidden"
@@ -111,7 +116,7 @@ const PageHeader = ({
 						{headContent}
 					</motion.div>
 				)}
-			</AnimatePresence>
+			</AnimatePresence> */}
 		</>
 	
 	);

@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import styles from './SiteHeader.module.scss';
 import { SiteHeaderComponent } from './types';
 import { AppContext, UserContext } from '@repo/provider';
-import { UserDisplay } from './content/UserDisplay';
+import { UserDisplay } from '@repo/ui';
 
 const SiteHeader = ({
 	title 
