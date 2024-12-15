@@ -77,7 +77,7 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 				setFilters={setFilters}
 				initialFilters={initialFilters}
 			/>
-			<Divider size='medium' showLine={false} />
+			<Divider size='small' showLine={false} />
 				{pageState !== 'active' ? 
 					<TaskList 
 						taskList={tasks || []} 

@@ -1,31 +1,28 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
-import useGetState from './hooks/useGetState';
-import { Options, StateDisplayComponent } from './types';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { State, StateDisplayProps } from './types';
 import styles from './StateDisplay.module.scss';
 import {Icon} from '@repo/ui';
-import ReactSelect, {components} from 'react-select';
+import ReactSelect, {components, StylesConfig} from 'react-select';
 import customStyles from './constants/customStyles';
 
-const StateDisplay = <T extends 'state' | 'no-state'>({
-	type, 
+const StateDisplay: FC<StateDisplayProps> = ({
+	state,
+	stateOptions, 
 	label, 
-	state, 
 	color, 
 	icon, 
 	displayInterface=false, 
 	stateSelectHandler, 
 	noBackground=false, 
 	onClick, 
-	customOptions,
 	width
-}: StateDisplayComponent<T>) => {
-	const {stateObject, options} = useGetState({type, state});
+}) => {
 	const [doc, setDoc] = useState<HTMLElement | null>(null);
 
-	const handleStateSelect = (option: Options<typeof type>[number]) => {
-		if (stateSelectHandler) {
+	const handleStateSelect = (option: State | null) => {
+		if (stateSelectHandler && option) {
 			stateSelectHandler(option.value);
 		} 
 	};
@@ -102,7 +99,7 @@ const StateDisplay = <T extends 'state' | 'no-state'>({
 					<components.SingleValue {...props}>
 						<div
 							className={styles.state_display_container}
-							data-color={color ? color : stateObject.color}
+							data-color={color ? color : ''}
 							data-showicon={!!icon}
 							data-no_background={noBackground}
 						>
@@ -117,7 +114,7 @@ const StateDisplay = <T extends 'state' | 'no-state'>({
 					<components.SingleValue {...props}>
 						<div
 							className={styles.state_display_container}
-							data-color={color ? color : stateObject.color}
+							data-color={color ? color : ''}
 							data-showicon={!!icon}
 							data-no_background={noBackground}
 						>
@@ -130,22 +127,15 @@ const StateDisplay = <T extends 'state' | 'no-state'>({
 		});	
 	}, [label, state, icon, displayInterface]);
 
-	const selectValue = useMemo(() => {
-		if (customOptions) {
-			return customOptions.find(option => option.label === label);
-		}
-
-		return stateObject;
-	}, [stateObject]);
-
 	return (
-		<ReactSelect  
-			value={selectValue}
-			options={state ?  options : customOptions}
+		<ReactSelect<State, false>  
+			value={state}
+			options={stateOptions}
 			menuPortalTarget={doc}
-			styles={customStyles({width: width ? width : 'auto'})}
+			styles={customStyles({width: width ? width : 'auto'}) as StylesConfig<State, false>}
 			menuPosition="fixed"  
 			menuPlacement="auto"	
+			isMulti={false}
 			components={customComponent}
 			onChange={(inputValue) => handleStateSelect(inputValue)}
 			isDisabled={buttonDisabled}

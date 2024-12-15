@@ -41,9 +41,6 @@ const PageHeader = ({
 		}
 	}, [inView]);
 
-	console.log(pageState);
-	
-
 	const headContent = useMemo(() => (
 		<div className='pageheader_content' >
 			<div className={'pageheader_content_container'} data-scroll={scrollState}>
