@@ -12,7 +12,7 @@
     cursor: pointer;
     transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
     font-size: map-get($map: sizes.$font_size, $key: 'md' );
-    font-family: 'Montserrat';
+    font-family: 'Geist';
     font-weight: 500;
     position: relative;
     &:hover{

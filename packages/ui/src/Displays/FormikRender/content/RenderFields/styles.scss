@@ -69,7 +69,7 @@
 .error_message {
 	font-weight: 500;
 	font-size: 14px;
-	font-family: Montserrat, sans-serif;
+	font-family: Geist, sans-serif;
     color: #cc0033;
     display: inline-block;
     font-size: map-get($map: sizes.$font_size, $key: 'xs' );
@@ -80,7 +80,7 @@
 	color: orange;
 	font-weight: 500;
 	font-size: 14px;
-	font-family: Montserrat, sans-serif;
+	font-family: Geist, sans-serif;
     display: inline-block;
     font-size: map-get($map: sizes.$font_size, $key: 'xs' );
     line-height: 12px;
