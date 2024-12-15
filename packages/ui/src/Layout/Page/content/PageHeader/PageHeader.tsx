@@ -17,6 +17,7 @@ import { useInView } from 'react-intersection-observer';
 
 const PageHeader = ({
 	title,
+	description,
 	pageHeaderButtons,
 	pageStates = [], 
 	pageState, 
@@ -40,6 +41,9 @@ const PageHeader = ({
 		}
 	}, [inView]);
 
+	console.log(pageState);
+	
+
 	const headContent = useMemo(() => (
 		<div className='pageheader_content' >
 			<div className={'pageheader_content_container'} data-scroll={scrollState}>
@@ -49,6 +53,7 @@ const PageHeader = ({
 						:
 						<h2>{title}</h2>
 					}
+					{description && <p style={{marginTop: '18px'}}>{description}</p>}
 				</div>
 				{isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0 && 
 				<div className={'pageheader_button_container'} >
@@ -94,7 +99,7 @@ const PageHeader = ({
 				/>
 			}
 		</div>
-	), [scrollState]);
+	), [scrollState, pageState]);
 	
 	return (
 		<>

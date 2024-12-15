@@ -1,3 +1,5 @@
+'use cient';
+
 import styles from './UserDisplay.module.scss';
 import { Divider, MessageIndicator } from '@repo/ui';
 import { useContext } from 'react';

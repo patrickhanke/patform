@@ -74,6 +74,7 @@ p {
   margin: 0;
   font-size: map-get($map: sizes.$font-size, $key: 'md' );
   text-wrap: wrap;
+  font-size: .8rem;
  }
 a {
 font-family: 'Open Sans', sans-serif;

@@ -1,19 +1,19 @@
 const site_states = [
 	{
-		value: 'active',
-		label: 'Aktiv'
+		value: 'this_week',
+		label: 'Diese Woche'
 	}, 
 	{
-		value: 'executed',
-		label: 'Erledigt'
+		value: 'overdue',
+		label: 'Überfällig'
 	}, 
 	{
-		value: 'closed',
-		label: 'Geschlossen'
+		value: 'next_week',
+		label: 'Ab nächster Woche'
 	},
 	{
-		value: 'archived',
-		label: 'Archiviert'
+		value: 'no_date',
+		label: 'Kein Datum'
 	}
 ];
 

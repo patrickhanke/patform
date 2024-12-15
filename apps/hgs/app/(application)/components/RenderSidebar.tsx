@@ -20,7 +20,24 @@ const menu_items = [
 	},{
 		label: 'Aufgaben',
 		value: '/tasks',
-		icon: 'tasks'
+		icon: 'tasks',
+		sub_menu: [{
+			label: 'Aktiv',
+			value: '/active',
+			icon: 'services',
+		},{
+			label: 'Erledigt',
+			value: '/excecuted',
+			icon: 'waste',
+		},{
+			label: 'Geschlossen',
+			value: '/completed',
+			icon: 'users'
+		},{
+			label: 'Archiviert',
+			value: '/archived',
+			icon: 'calendar'
+		}]
 	},{
 		label: 'Tickets',
 		value: '/tickets',

@@ -12,7 +12,7 @@ import {get_initial_project, serverClient} from '@repo/provider';
 import { Sidebar } from '@repo/ui';
 
 export const metadata = {
-	title: 'TV Freiburg St. Georgen',
+	title: 'Patform App',
 	description: 'PH'
 };
 

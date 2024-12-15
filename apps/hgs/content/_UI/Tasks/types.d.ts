@@ -7,16 +7,20 @@ export type ViewState = {
 };
 
 export type TaskSection = {
-    title: string;
+    label: 'Ab nächster Woche' | 'Diese Woche' | 'Überfällig' | 'Keine Zeitangabe' ;
+    value: 'this_week' | 'next_week' | 'overdue' | 'no_date';
     date: string;
     data: DataTypes.Task[];
   }[];
 
 export type SiteType = 'active' | 'closed' | 'archived' | 'executed';
 
+export type TaskPageState = 'active' | 'archived' | 'completed' | 'executed';
+
 export type TasksComponent = {
     id?: string,
     className?: string,
+    pageState: TaskPageState
 }
 
 export type useGetTasksHook = {

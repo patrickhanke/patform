@@ -9,7 +9,7 @@ const PageNavigation = ({siteStates = [], activeState, onClick}: PageNavigationP
 				<SwitchButtons
 					buttonStates={siteStates}
 					currentStates={activeState}
-					changeHandler={value => onClick(value)}
+					changeHandler={(value: PageNavigationProps['activeState']) => onClick(value)}
 					underlineButtons={true}
 				/>
 			</div>

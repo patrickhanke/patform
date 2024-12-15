@@ -6,6 +6,7 @@ import './styles.scss';
 
 const Page = ({
 	title, 
+	description,
 	children,
 	pageHeaderButtons, 
 	pageStates = [], 
@@ -21,6 +22,7 @@ const Page = ({
 			<div className='page_header_container'>
 				<PageHeader
 					title={title}
+					description={description}
 					pageHeaderButtons={pageHeaderButtons}
 					pageStates={pageStates}
 					pageState={pageState}
