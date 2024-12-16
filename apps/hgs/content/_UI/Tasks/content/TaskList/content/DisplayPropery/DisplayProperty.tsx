@@ -2,8 +2,7 @@ import React from 'react';
 import styles from './DisplayProperty.module.scss';
 import { useQuery } from '@apollo/client';
 import { GET_TASK_PROPERTY } from '@queries';
-import { Loader } from '@repo/ui';
-import { StateDisplay } from '@content';
+import { Loader, StateDisplay } from '@repo/ui';
 
 const DisplayProperty = ({taskId}: {taskId: string}) => {
 	const {data} = useQuery(GET_TASK_PROPERTY, {
@@ -12,8 +11,8 @@ const DisplayProperty = ({taskId}: {taskId: string}) => {
 	
 	if (data) return (
 		<div className={styles.object_container} >
-			<StateDisplay<'no-state'>
-				type='Task'
+			<StateDisplay
+				type='label'
 				color='light'
 				label={data.objects.getTask.property?.name || 'Kein Objekt zugewiesen'}
 				icon='house'

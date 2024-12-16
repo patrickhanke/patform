@@ -1,6 +1,6 @@
 import { IconTypes } from '../Icon';
 import { TypeSelection } from './types.d';
-import { TaskTypes, AbsenceTypes, UserTypes, TicketTypes, DayTime } from '@types';
+import { UserTypes } from '@types';
 
 type Options<T> = 
     T extends 'Absence' ? typeof absence_state_options : 
@@ -31,19 +31,35 @@ export type State = {
     color?: string
 }
 
-export type StateDisplayProps = {
-    state: State,
-    stateOptions: State[]
-    label?: string,
+export type StateDisplayBasic = {
     color?: string,
     icon?: IconTypes,
     displayInterface?: boolean,
     stateSelectHandler?: (state: State['value']) => void,
     noBackground?: boolean,
     onClick?: () => void,
-    customOptions?: CustomOptions;
     width?: number | string
-} 
+}
+
+export type StateDisplayLabel = 
+    StateDisplayBasic & {
+        type: 'label',
+        state?: null,
+        stateOptions?: null,
+        label: string,
+        customOptions?: CustomOptions
+    }
+
+export type StateDisplayOptions = 
+    StateDisplayBasic & {
+        type: 'state',
+        label?: null,
+        state: State['value'],
+        stateOptions: State[],
+        customOptions?: null
+    } 
+
+export type StateDisplayProps = (StateDisplayOptions | StateDisplayLabel)
 
 export type UseGetState = (T: {state: State, states: State[]}) => {
     stateObject: State,

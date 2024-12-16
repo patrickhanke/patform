@@ -8,6 +8,7 @@ import ReactSelect, {components, StylesConfig} from 'react-select';
 import customStyles from './constants/customStyles';
 
 const StateDisplay: FC<StateDisplayProps> = ({
+	type,
 	state,
 	stateOptions, 
 	label, 
@@ -16,7 +17,8 @@ const StateDisplay: FC<StateDisplayProps> = ({
 	displayInterface=false, 
 	stateSelectHandler, 
 	noBackground=false, 
-	onClick, 
+	onClick,
+	customOptions, 
 	width
 }) => {
 	const [doc, setDoc] = useState<HTMLElement | null>(null);
@@ -127,10 +129,21 @@ const StateDisplay: FC<StateDisplayProps> = ({
 		});	
 	}, [label, state, icon, displayInterface]);
 
+	const selectValue = useMemo(() => {
+		if (customOptions) {
+			return customOptions.find(option => option.label === label);
+		}
+		if (stateOptions) {
+			return stateOptions.find(option => option.value === state);
+		}
+
+		return null;
+	}, []);
+
 	return (
 		<ReactSelect<State, false>  
-			value={state}
-			options={stateOptions}
+			value={selectValue}
+			options={type === 'state' ? stateOptions : customOptions}
 			menuPortalTarget={doc}
 			styles={customStyles({width: width ? width : 'auto'}) as StylesConfig<State, false>}
 			menuPosition="fixed"  

@@ -1,12 +1,12 @@
 import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import styles from './TaskNextDate.module.scss';
-import { DateSelectInterfaceTask, StateDisplay } from '@content';
+import { DateSelectInterfaceTask } from '@content';
 import { useQuery } from '@apollo/client';
 import { GET_TASK_TIME } from '@queries';
 import { getDateString, useDataHandler } from '@provider';
 import { formatISO9075 } from 'date-fns';
 import { Task } from '@types';
-import { Icon, Loader, Modal } from '@repo/ui';
+import { Icon, Loader, Modal, StateDisplay } from '@repo/ui';
 
 type TaskNextDateProps = {
 	taskId: string, 
@@ -138,7 +138,8 @@ const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal
 		return (
 			<>
 				<div className={styles.object_container} >
-					<StateDisplay<'no-state'>
+					<StateDisplay
+						type='label'
 						label={nextDate.value}
 						color={nextDate.color}
 						icon='calendar'

@@ -1,14 +1,14 @@
 'use cient';
 
 import styles from './UserDisplay.module.scss';
-import { Divider, MessageIndicator } from '@repo/ui';
+import { MessageIndicator } from '@repo/ui';
 import { useContext } from 'react';
 import { UserContext, getImageUrl } from '@repo/provider';
 
 const UserDisplay = () => {
 	const {user, userMessages} = useContext(UserContext);
-	
-	return user && typeof user === 'object' ? 
+	if (!user) return null;
+	return ( 
 		<div
 			// href={`/staff/${user.objectId}`}
 			// role='button'
@@ -29,8 +29,7 @@ const UserDisplay = () => {
 			<MessageIndicator messages={userMessages} />
 			{/* <h4 style={{fontSize: '12px', fontWeight: 600}}>{`${user.first_name} ${user.family_name}`}</h4> */}
 		</div>
-		: 
-		null;
+	);
 };
 
 export default UserDisplay;

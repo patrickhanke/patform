@@ -1,9 +1,10 @@
 import { ColumnDef } from '@tanstack/react-table';
 import React, { useMemo } from 'react';
 import { AbsenceWithRecordIs, UseRecordAbsenceColumnsProps } from '../types';
-import { DisplayWorker, StateDisplay } from '@content';
-import { getDateStringsFromIso } from '@provider';
+import { DisplayWorker } from '@content';
+import { absence_state_options, absence_type_options, getDateStringsFromIso } from '@provider';
 import EditAbsence from '../components/EditAbsence';
+import { StateDisplay } from '@repo/ui';
 
 const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 	const columns: ColumnDef<AbsenceWithRecordIs>[] = useMemo(() => [
@@ -24,8 +25,9 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 		{
 			accessorFn: row => (
 				<StateDisplay
-					type='AbsenceType'
+					type='state'
 					state={row.type}
+					stateOptions={absence_type_options}
 				/>
 			),
 			header: () => <span>Typ</span>,
@@ -36,8 +38,9 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 		{
 			accessorFn: row => (
 				<StateDisplay
-					type='Absence'
+					type='state'
 					state={row.state}
+					stateOptions={absence_state_options}
 					displayInterface={false}
 				/>
 			),

@@ -1,15 +1,17 @@
 import React from 'react';
 import { TableData } from '../types';
-import { StateDisplay } from '@content';
 import { Absence } from '@types';
+import { StateDisplay } from '@repo/ui';
+import { absence_type_options, daytime_state_options } from '@provider';
 
 const ColumnType = ({type, absenceType} : {type: TableData['type'], absenceType?: Absence['type']}) => {
 	if (type === 'absence' && absenceType) {
 		return (
 			<StateDisplay
 				state={absenceType}
-				type='AbsenceType'
+				type='state'
 				color='light'
+				stateOptions={absence_type_options}
 			/>
 		);
 	}
@@ -17,9 +19,9 @@ const ColumnType = ({type, absenceType} : {type: TableData['type'], absenceType?
 		return (
 			<StateDisplay
 				state={type}
-				type='DayTime'
+				type='state'
 				color='green'
-				label='Arbeitszeit'
+				stateOptions={daytime_state_options}
 			/>
 		);
 	}

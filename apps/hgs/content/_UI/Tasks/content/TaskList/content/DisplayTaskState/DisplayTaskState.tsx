@@ -3,8 +3,8 @@ import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import styles from './DisplayTaskState.module.scss';
 import { TaskState } from '@types';
-import { Loader} from '@repo/ui';
-import { StateDisplay } from 'content/_UI/StateDisplay';
+import { Loader, StateDisplay} from '@repo/ui';
+import { task_state_options } from '@provider';
 
 const DisplayTaskState = ({taskId, taskState}: {taskId: string, taskState: TaskState}) => {
 	const [state, setState] = useState<TaskState >(taskState);
@@ -26,9 +26,10 @@ const DisplayTaskState = ({taskId, taskState}: {taskId: string, taskState: TaskS
 	
 	if (state) return (
 		<div className={styles.task_state_container} >
-			<StateDisplay<'state'>
-				type='Task'
+			<StateDisplay
+				type='state'
 				state={state}
+				stateOptions={task_state_options}
 				icon='clock'
 			/>
 		</div>

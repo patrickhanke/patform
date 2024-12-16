@@ -1,7 +1,8 @@
 import React from 'react';
 import { TableData } from '../types';
-import { StateDisplay } from '@content';
 import { Absence, DayTime } from '@types';
+import { StateDisplay } from '@repo/ui';
+import { absence_state_options } from '@provider';
 
 const ColumnState = ({type, state} : {type: TableData['type'], state: Absence['state'] | DayTime['state'] | null }) => {
 
@@ -9,13 +10,15 @@ const ColumnState = ({type, state} : {type: TableData['type'], state: Absence['s
 		return (
 			<StateDisplay
 				state={state}
-				type='Absence'
+				type='state'
+				stateOptions={absence_state_options}
 			/>
 		);
 	}
 	if (type === 'work' && state ) {
 		return (
 			<StateDisplay
+				type='label'
 				label='Gebucht'
 				color='green'
 			/>

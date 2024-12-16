@@ -1,11 +1,14 @@
-import { StateDisplay, Toggle } from '@content';
 import { ColumnDef } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import EditStaffMember from '../components/EditStaffMember';
 import SetStaffMemberPassword from '../components/SetStaffMemberPassword';
 import { User } from '@types';
+import { StateDisplay, Toggle } from '@repo/ui';
+import { AppContext } from '@provider';
 
 const useTableColumns = () => { 
+	const {roles} = useContext(AppContext);
+
 	const columns = useMemo<ColumnDef<User>[]>(() => [
 		{
 			accessorFn: row => `${row.first_name} ${row.family_name}`,
@@ -15,7 +18,7 @@ const useTableColumns = () => {
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => <StateDisplay type='Role' state={row.role.type} />,
+			accessorFn: row => <StateDisplay type='state' state={row.role.type} stateOptions={roles}  />,
 			header: () => <span>Rolle</span>,
 			id: 'role',
 			cell: info => info.getValue(),
