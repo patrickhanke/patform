@@ -7,10 +7,6 @@
     width: 100%;
 }
 
-.pageheader_content[data-scroll="true"] {
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
-}
-
 .pageheader_content_container {
     @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md );
     height: auto;
@@ -28,51 +24,37 @@
     padding-top: 12px;
     padding-bottom: 12px;
     border-bottom: 1px solid colors.$grey;
-    h1 {
-        font-size: 16px;
-    }
+}
+
+.pageheader_scroll_content {
+    box-shadow: none;
+    width: 100%;
+    background-color: colors.$white;
+}
+
+.pageheader_scroll_content_container {
+    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md );
+    height: auto;
+    padding: map-get($map: sizes.$padding, $key: 'md' );
+    border-bottom: 1px solid colors.$grey;
+    height: 42px;
+}
+
+.pageheader_scroll_navigation_container {
+    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: sizes.$md );
+    // padding: map-get($map: sizes.$padding, $key: 'md' );
+    padding-bottom: 0;
+    padding-top: 0;
+    height: 38px;
+    border-bottom: 1px solid colors.$grey;
 }
 
 .pageheader_scroll_container {
     background-color: colors.$white;;
     position: fixed;
     top: 0;
-    right: 9px;
     z-index: 4;
-    width: calc(100% - 150px);
 }
-
-.main_container {
-    @include layout.flexbox($direction: column, $align: flex-end, $justify: space-between, $gap: 0);
-    width: 100%;
-    position: relative;
-    box-sizing: border-box;
-    background-color: colors.$white;
-};
-
-.nav_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between);
-    width: 100%;
-    position: relative;
-    box-sizing: border-box;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
-    background-color: colors.$light;
-    border: .6px solid colors.$grey;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
-};
-
-.nav_container_underline {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between);
-    width: 100%;
-    padding-bottom: 0;
-    position: relative;
-    box-sizing: border-box;
-    // border-bottom: 1px solid colors.$grey;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
-    padding-bottom: 0;
-};
-
-
 
 .pageheader_button_container {
     @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: sizes.$sm );

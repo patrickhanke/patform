@@ -12,7 +12,7 @@ export type MenuItemType = ReadOnly<{
   }>
 
 export type MenuItemProps = {
-    link: Me,
+    link: string,
     label: string,
     icon: string,
     subMenu: MenuItemType['sub_menu'],

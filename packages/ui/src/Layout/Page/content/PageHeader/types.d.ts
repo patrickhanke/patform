@@ -34,6 +34,32 @@ export type PageHeaderComponent = {
     createClass?: PageProps['createClass'],
 }
 
+export type PageHeaderRegularProps = {
+    title?: PageProps['title'], 
+    description: string,
+    inView: boolean,
+    pageStates?: PageNavigationProps['pageState'],
+    pageState?: PageNavigationProps['activeState'],
+    setPageState?: PageNavigationProps['onClick'],
+    pageHeaderContent?: PageProps['pageHeaderContent'], 
+    pageHeaderButtons?: PageProps['pageHeaderButtons'],
+    emptyContent?: PageProps['emptyContent'],
+    refetch?: PageProps['refetch'],
+    createClass?: PageProps['createClass'],
+}
+
+export type PageHeaderScrollProps = {
+    title: PageProps['title'], 
+    pageStates?: PageNavigationProps['pageState'],
+    pageState?: PageNavigationProps['activeState'],
+    setPageState?: PageNavigationProps['onClick'],
+    pageHeaderContent?: PageProps['pageHeaderContent'], 
+    pageHeaderButtons?: PageProps['pageHeaderButtons'],
+    emptyContent?: PageProps['emptyContent'],
+    refetch?: PageProps['refetch'],
+    createClass?: PageProps['createClass'],
+}
+
 export type PageNavigationComponent = {
     items: PageHeaderComponent['navItems'],
     currentItem: PageHeaderComponent['navCurrentItem'],

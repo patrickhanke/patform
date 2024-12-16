@@ -1,0 +1,27 @@
+@use '@repo/styles/sizes';
+@use '@repo/styles/colors';
+
+.scroll_top_container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 11;
+    background-color: colors.$dark;
+    border: 1px solid $grey;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 0 10px rgba($black, 0.1);
+    &:hover {
+        background-color: $grey;
+    }
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}

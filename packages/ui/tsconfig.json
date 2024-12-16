@@ -11,6 +11,6 @@
       "@repo/types/*": ["./packages/types/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "*.module.scss"],
   "exclude": ["node_modules", "dist"]
 }

@@ -1,19 +1,18 @@
 'use client';
 
 import { PageHeaderComponent } from './types';
-import { Plus, RotateCcw } from 'lucide-react';
-import { isArray } from 'lodash';
-import clsx from 'clsx';
 import './styles.scss';
-import { PageNavigation } from '../PageNavigation';
-import CreateClass from './content/CreateClass';
-import { useEffect, useMemo, useState } from 'react';
+import { useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useResizeObserver } from 'usehooks-ts';
+import {motion, AnimatePresence} from 'motion/react';
+import PageHeaderRegular from './components/PageHeaderRegular';
+import PageHeaderScroll from './components/PageHeaderScroll';
 
-// const modalVariants = {
-// 	visible: { opacity: 1, top: 0,  transition: { when: 'beforeChildren' } },
-// 	hidden: { opacity: 0, top: -100,  transition: { when: 'afterChildren' } }
-// };
+const modalVariants = {
+	visible: { opacity: 1, top: 0,  transition: { when: 'beforeChildren' } },
+	hidden: { opacity: 0, top: -100,  transition: { when: 'afterChildren' } }
+};
 
 const PageHeader = ({
 	title,
@@ -27,98 +26,61 @@ const PageHeader = ({
 	createClass,
 	refetch
 }: PageHeaderComponent) => {
-	const [scrollState, setScrollState] = useState(false);
+	const pageHeader = useRef(null);
 
 	const { ref, inView } = useInView({
 		threshold: 0
 	  });
 
-	useEffect(() => {
-		if (inView) {
-			setScrollState(false);
-		} else {
-			setScrollState(true);
-		}
-	}, [inView]);
+	  const { width = 0 } = useResizeObserver({
+		ref: pageHeader,
+		box: 'border-box'
+	  });
 
-	const headContent = useMemo(() => (
-		<div className='pageheader_content' >
-			<div className={'pageheader_content_container'} data-scroll={scrollState}>
-				<div>
-					{scrollState ? 
-						<h3>{title}</h3>
-						:
-						<h2>{title}</h2>
-					}
-					{description && <p style={{marginTop: '18px'}}>{description}</p>}
-				</div>
-				{isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0 && 
-				<div className={'pageheader_button_container'} >
-					{pageHeaderButtons.map(button => (
-						<button
-							key={button.text}
-							data-color={button.color || 'primary'}
-							className={clsx('full_button', 'md', 'primary', 'pageheader_createbutton')}
-							onClick={() => button.onClick()}
-							disabled={button.disabled}
-						>
-							{button.is_add_button && <div className={'add_icon'}><Plus strokeWidth={1} size={12} /></div> }
-							{button.is_reset_button && <div className={'add_icon'}><RotateCcw strokeWidth={1} size={12} /></div> }
-							<span>{`${button.text}`}</span>
-						</button> 
-					))}
-					{pageHeaderContent || emptyContent && 
-						<>
-							<div>
-								{pageHeaderContent}
-							</div> 
-							<div>
-								{createClass?.className && ( 
-									<CreateClass
-										initialData={createClass.initialData}
-										fields={createClass.fields}
-										text={createClass.text || 'Neues Objekt erstellen'}
-										className={createClass.className}
-										refetch={refetch}
-									/>
-								)}
-							</div>
-						</>
-					}
-				</div>
-				}
-			</div>
-			{pageStates.length > 0 && pageState && setPageState &&
-				<PageNavigation
-					siteStates={pageStates}
-					activeState={pageState}
-					onClick={setPageState}
-				/>
-			}
-		</div>
-	), [scrollState, pageState]);
-	
 	return (
 		<>
 			<div ref={ref} style={{width: '100%', position: 'relative'}}>
-				{headContent}
+				<PageHeaderRegular 
+					ref={pageHeader}
+					title={title}
+					inView={inView}
+					description={description}
+					pageHeaderButtons={pageHeaderButtons}
+					pageStates={pageStates}
+					pageState={pageState}
+					setPageState={setPageState}
+					pageHeaderContent={pageHeaderContent}
+					emptyContent={emptyContent}
+					createClass={createClass}
+					refetch={refetch}
+				/>
 			</div>
-			{/* <AnimatePresence>
-				{scrollState && (
+			<AnimatePresence>
+				{!inView && (
 					<motion.div
 						className='pageheader_scroll_container'
 						key='pageheader'
 						id='pageheader'
-						// style={{position: 'fixed', backgroundColor: 'white', zIndex: 11}}
+						style={{width}}
 						variants={modalVariants}
 						initial="hidden"
 						animate="visible"
 						exit="hidden"
 					>
-						{headContent}
+						<PageHeaderScroll
+							title={title}
+							pageHeaderButtons={pageHeaderButtons}
+							pageStates={pageStates}
+							pageState={pageState}
+							setPageState={setPageState}
+							pageHeaderContent={pageHeaderContent}
+							emptyContent={emptyContent}
+							createClass={createClass}
+							refetch={refetch}
+						/>
 					</motion.div>
 				)}
-			</AnimatePresence> */}
+			</AnimatePresence>
 		</>
 	
 	);
