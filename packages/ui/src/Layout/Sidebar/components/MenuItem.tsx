@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from '../Sidebar.module.scss';
 import {IoMdArrowDropdown} from 'react-icons/io';
 import { MenuItemProps, MenuItemType } from '../types';
@@ -13,17 +13,28 @@ import '../styles.scss';
 const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemProps) => {
 	const [showSubMenu, setShowSubMenu] = useState(false);
 	const pathname = usePathname();
-	
+
 	const path = useMemo(() => {
 		let pathString = pathname;
-		const sliceIndex = pathname.slice(1).search('/'); 
+		const sliceIndex = pathname.slice(1).search('/');
+		 
 		if (sliceIndex !== -1) {
 			pathString = pathname.slice(0, sliceIndex + 1);
 		}
-
+		
 		return pathString;
 	}, [pathname]);
 
+	useEffect(() => {
+		if (subMenu.length > 0) {
+			subMenu.forEach((subMenuItem: MenuItemType['sub_menu'][number]) => {
+				if (pathname.includes(subMenuItem.value)) {
+					setShowSubMenu(true);
+				}
+			});
+		}
+	}, [pathname, subMenu]);
+	
 	const subMenuHandler = (subMenuValue : string, pathname: string) => {
 		const sliceIndex = pathname.slice(1).search('/'); 
 		if (sliceIndex !== -1) {
