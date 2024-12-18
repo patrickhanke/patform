@@ -10,7 +10,7 @@ import { useQuery } from '@apollo/client';
 import {find_day} from '@queries';
 import { FIND_ALL_STAFF } from '@queries';
 import { cloneDeep } from 'lodash';
-import { SiteHeader, Table } from '@repo/ui';
+import { Table } from '@repo/ui';
 
 const WeeklyRecords = ({
 	records, 
@@ -107,22 +107,13 @@ const WeeklyRecords = ({
 	), [records, filters, selectedWeek]);
 	
 	return (
-		<>
-			<SiteHeader 
-				isSubHeader
-				siteHeaderContent={siteHeaderContent}
-				siteHeaderButtons={siteHeaderButtons}
+		<div className="content_element no_padding">
+			<Table
+				columns={columns}
+				data={weekData}
+				key={selectedWeek}
 			/>
-			<div className='site_content'>
-				<div className="content_element no_padding">
-					<Table
-						columns={columns}
-						data={weekData}
-						key={selectedWeek}
-					/>
-				</div>
-			</div>
-		</>
+		</div>
 	);
 };
 

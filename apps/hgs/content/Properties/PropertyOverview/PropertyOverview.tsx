@@ -8,7 +8,7 @@ import { FIND_ALL_PROPERTY } from '@queries';
 import CreatePropterty from './components/CreateProperty';
 import initialData from './constants/initialData';
 import { Property } from '@types';
-import { SiteHeader, Table } from '@repo/ui';
+import { Page, Table } from '@repo/ui';
 
 const PropertyOverview = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -49,10 +49,10 @@ const PropertyOverview = () => {
 	}];
 
 	return (
-		< >
-			<SiteHeader title='Objektübersicht' />
-			<SiteHeader isSubHeader siteHeaderButtons={siteHeaderButtons} />
-			{/* <List listObject={list} /> */}
+		<Page 
+			title='Objektübersicht'
+			pageHeaderButtons={siteHeaderButtons}
+		>
 			<div className='site_content'> 
 				<div className="content_element no_padding">
 					<Table columns={columns} data={data?.objects?.findProperty?.results || []} />
@@ -64,7 +64,7 @@ const PropertyOverview = () => {
 				setIsOpen={setIsOpen}
 				createObject={createObjectHandler}
 			/>
-		</>
+		</Page>
 	);
 };
 

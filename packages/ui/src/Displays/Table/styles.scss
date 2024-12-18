@@ -47,13 +47,13 @@
     }
     tr {
         font-family: 'Open Sans', sans-serif;
-        font-size: sizes.$sm;
         td {
             border-bottom: 1px solid colors.$lightgrey;
         }
     }
     td {
         padding: map-get($map: sizes.$padding, $key: 'sm' );
+        font-size: map-get($map: sizes.$font_size, $key: 'sm' );
     }
     
     td:last-child {

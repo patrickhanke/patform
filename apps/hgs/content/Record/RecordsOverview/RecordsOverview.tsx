@@ -11,7 +11,7 @@ import RecordsStaffOverview from './content/RecordsStaffOverview';
 import { AppContext } from '@provider';
 import { Filter } from '@types';
 import RecordsSettings from './content/RecordsSettings';
-import { SiteHeader } from '@repo/ui';
+import { Page } from '@repo/ui';
 
 const RecordsOverview = () => {
 	const {year} = useContext(AppContext);
@@ -24,15 +24,13 @@ const RecordsOverview = () => {
 	}
 
 	return (
-		<>
-			<SiteHeader
-				title='Zeiterfassung'
-				hasSiteNavigation
-				navItems={siteStates} 
-				navCurrentItem={siteState} 
-				navOnClick={setSiteState}
-			/>
-			
+		<Page 
+			title='Zeiterfassung'
+			description='Hier finden Sie alle erfassten Arbeitszeiten und Urlaube.'
+			pageState={siteState}	
+			pageStates={siteStates}
+			setPageState={setSiteState}	
+		>
 			{siteState.value === 'weeks' && ( 
 				<WeeklyRecords
 					records={records}
@@ -64,7 +62,7 @@ const RecordsOverview = () => {
 			{siteState.value === 'settings' && ( 
 				<RecordsSettings />
 			)}
-		</>
+		</Page>
 	);
 };
 

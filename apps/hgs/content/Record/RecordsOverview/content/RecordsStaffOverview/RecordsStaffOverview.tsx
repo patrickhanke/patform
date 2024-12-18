@@ -8,7 +8,7 @@ import site_states from './constants/site_states';
 import StaffRecord from './content/StaffRecord';
 import { months } from '@provider';
 import useGetDay from './hooks/useGetDay';
-import { SiteHeader, Table } from '@repo/ui';
+import { Table } from '@repo/ui';
 import { SiteState } from '@repo/types';
 
 const RecordsStaffOverview = ({year} : RecordsStaffOverviwProps) => {
@@ -87,9 +87,7 @@ const RecordsStaffOverview = ({year} : RecordsStaffOverviwProps) => {
 	}, [days, selectedMonth, year]);
 
 	return (
-		<>
-			<SiteHeader isSubHeader siteHeaderContent={siteHeaderContent} />
-			<div className='site_content'>
+			<div>
 				{selectedUser ? ( 
 					<>
 						{displayState.value === 'table' && (
@@ -112,7 +110,6 @@ const RecordsStaffOverview = ({year} : RecordsStaffOverviwProps) => {
 					</div>	
 				}
 			</div>
-		</>
 	);
 };
 

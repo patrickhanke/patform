@@ -62,9 +62,7 @@ const RecordsCalendar = ({records}: RecordsCalendarProps) => {
 	}, [records, absences, staffData]);
 
 	return (
-		<div className='site_content'>
-			<Calendar data={calendarData} />
-		</div>
+		<Calendar data={calendarData} />
 	);
 };
 

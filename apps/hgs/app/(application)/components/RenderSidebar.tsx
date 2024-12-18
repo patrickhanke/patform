@@ -68,6 +68,7 @@ const menu_items = [
 		label: 'Einstellungen',
 		value: '/settings',
 		icon: 'settings',
+		divider: 'Einstellungen',
 		sub_menu: [{
 			label: 'Leistungsverzeichnisse',
 			value: '/services',

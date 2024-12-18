@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/client';
 import { FIND_ALL_STAFF } from '@queries';
 import useRecordAbsenceColumns from './hooks/useRecordAbsenceColumns';
 import EditRecordAbsence from './content/EditRecordAbsence';
-import { SiteHeader, Table } from '@repo/ui';
+import { Table } from '@repo/ui';
 
 const RecordAbsence = ({records}: RecordAbsenceProps) => {
 	const {year} = useContext(AppContext);
@@ -81,12 +81,14 @@ const RecordAbsence = ({records}: RecordAbsenceProps) => {
 
 	return (
 		<> 
-			<SiteHeader siteHeaderButtons={siteHeaderButtons} isSubHeader siteHeaderContent={siteHeaderContent} />
-			<div className='site_content'>
+			<div>
 				{absenceData.length > 0 && (
-					<div className='content_element no_padding'>
-						<Table columns={columns} data={absenceData} />
-					</div>
+					<>
+						{siteHeaderContent}
+						<div className='content_element no_padding'>
+							<Table columns={columns} data={absenceData} />
+						</div>
+					</>
 				)}
 			</div>
 			{records && (

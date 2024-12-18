@@ -9,8 +9,9 @@ import {IoMdArrowDropdown} from 'react-icons/io';
 import { MenuItemProps, MenuItemType } from '../types';
 import Icons from '../constants/Icons';
 import '../styles.scss';
+import SidebarDivider from './SidebarDivider';
 
-const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemProps) => {
+const MenuItem = ({link, label, icon, subMenu = [], disabled = false, divider}: MenuItemProps) => {
 	const [showSubMenu, setShowSubMenu] = useState(false);
 	const pathname = usePathname();
 
@@ -49,6 +50,7 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false}: MenuItemP
 
 	return (
 		<>
+			{divider && <SidebarDivider text={divider} />}
 			<li data-hassubmenu={subMenu.length > 0} style={{marginBottom: subMenu.length > 0 && showSubMenu ? 0 : 4.8}}>
 				{subMenu.length > 0 || disabled ? 
 					<button 

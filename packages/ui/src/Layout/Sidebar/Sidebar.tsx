@@ -56,6 +56,7 @@ const Sidebar = ({menuItems, children}: {menuItems: {label: string, value: strin
 								icon={menu_item.icon}
 								subMenu={menu_item.sub_menu}
 								disabled={menu_item.disabled}
+								divider={menu_item.divider}
 							/>
 						))}
 					</ul>

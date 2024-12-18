@@ -122,3 +122,14 @@
     width: 40px;
 }
 
+.sidebar_divider_container {
+    @include layout.flexbox($direction: row, $align: flex-end, $justify: flex-start);
+    padding: map-get($map: sizes.$padding, $key: 'xs' );
+    border-bottom: 1px solid colors.$grey;
+    position: relative;
+    font-size: map-get(sizes.$font_size, 'xs' );
+    font-weight: 500;
+    color: colors.$dark;
+    margin-top: sizes.$md;
+    margin-bottom: sizes.$xs;
+}

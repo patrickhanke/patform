@@ -16,5 +16,6 @@ export type MenuItemProps = {
     label: string,
     icon: string,
     subMenu: MenuItemType['sub_menu'],
-    disabled?: boolean
+    disabled?: boolean,
+    divider?: string
   }
