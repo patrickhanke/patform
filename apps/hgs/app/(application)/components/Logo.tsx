@@ -15,11 +15,11 @@ const Logo = () => {
 				height={21}
 				alt="Hausmeister App"
 			/>
-			<div className='sidebar_label'>
+			{/* <div className='sidebar_label'> */}
 				<h1>
 					HGS App
 				</h1>
-			</div>
+			{/* </div> */}
 		</div>
 	);
 };

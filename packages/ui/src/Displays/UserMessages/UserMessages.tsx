@@ -86,11 +86,6 @@ const UserMessages = () => {
     
 	return (
 		<>
-			<SiteHeader 
-				isSubHeader
-				siteHeaderContent={siteHeaderContent}
-				// siteHeaderButtons={siteHeaderButtons}
-			/>
 			<div className={clsx('site_content',styles.user_messages_container)}>
 				{!messageContent.length && <div><p>Gegenwärtig keine neuen Nachrichten vorhanden</p></div>}
 				{sortArrayForDivider(messageContent, 'createdAt').map((message: MessageContent & {divider?:boolean}, index: number) => (

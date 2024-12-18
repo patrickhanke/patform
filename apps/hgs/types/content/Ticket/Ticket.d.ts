@@ -1,4 +1,3 @@
-import { Ticket } from './Ticket.d';
 import { ApplicationTypes, DateTypes, UserTypes } from '@/types/General';
 import { TaskTypes } from '../Task';
 import { PropertyTypes } from '../Property';

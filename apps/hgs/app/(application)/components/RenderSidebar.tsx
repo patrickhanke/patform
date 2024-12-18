@@ -41,7 +41,20 @@ const menu_items = [
 	},{
 		label: 'Tickets',
 		value: '/tickets',
-		icon: 'tickets'
+		icon: 'tickets',
+		sub_menu: [{
+			label: 'Offen',
+			value: '/open',
+			icon: 'services',
+		},{
+			label: 'In Bearbeitung',
+			value: '/in_progress',
+			icon: 'waste',
+		},{
+			label: 'Geschlossen',
+			value: '/closed',
+			icon: 'users'
+		}]
 	},{
 		label: 'Zeiterfassung',
 		value: '/records',

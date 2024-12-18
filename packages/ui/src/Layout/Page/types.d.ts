@@ -26,7 +26,7 @@ export type PageCreateClassObject = CreateClassProps;
 
 export type PageProps = {
     title?: string, 
-    description: string,
+    description?: string,
     children: React.ReactNode,
     pageHeaderButtons?: PageHeaderButtons,
     pageHeaderContent?: PageHeaderContent, 

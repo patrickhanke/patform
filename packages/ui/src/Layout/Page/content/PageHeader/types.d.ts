@@ -22,8 +22,8 @@ export type PageHeaderButtons = PageHeaderButton[]
 type PageHeaderContent =  React.JSX.Element;
 
 export type PageHeaderComponent = {
-    title?: PageProps['title'], 
-    description: string,
+    title: PageProps['title'], 
+    description?: string,
     pageStates?: PageNavigationProps['pageState'],
     pageState?: PageNavigationProps['activeState'],
     setPageState?: PageNavigationProps['onClick'],
@@ -36,7 +36,7 @@ export type PageHeaderComponent = {
 
 export type PageHeaderRegularProps = {
     title?: PageProps['title'], 
-    description: string,
+    description?: string,
     inView: boolean,
     pageStates?: PageNavigationProps['pageState'],
     pageState?: PageNavigationProps['activeState'],

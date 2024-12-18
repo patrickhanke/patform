@@ -11,9 +11,9 @@ import SiteHeaderContent from './components/SiteHeaderContent';
 import { Filter } from '@types';
 import { useCallback } from 'react';
 import useTicketColumns from './hooks/useTicketColumns';
-import { SiteHeader, Table } from '@repo/ui';
+import { Page, Table } from '@repo/ui';
 
-const Tickets = ({id, className, siteType='open'}: TicketsComponent) => {
+const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
 	const {loading: updateLoading} = useDataHandler();
 	const {tickets, loading, refetch} = useGetTickets({id, className, filters});
@@ -43,20 +43,20 @@ const Tickets = ({id, className, siteType='open'}: TicketsComponent) => {
 	const columns = useTicketColumns({refetch, archiveTicket, deleteTicket});
 
 	const initialFilters: () => Filter[] = useCallback(() => {
-		if (siteType === 'open') {
+		if (pageState === 'open') {
 			return([
 				{key: 'state', value: 'open', operator: '_in', id: 'state'}
 			]);
-		} else if (siteType === 'in_progress') {
+		} else if (pageState === 'in_progress') {
 			return([{key: 'state', value: 'in_progress', operator: '_eq', id: 'state'}]);
-		} else if (siteType === 'closed') {
+		} else if (pageState === 'closed') {
 			return([{key: 'state', value: 'closed', operator: '_eq', id: 'state'}]);
 		}
 		if (searchParams.get('ticket')) {
 			return([{key: 'objectId', value: searchParams.get('ticket') as string, operator: '_eq', id: 'objectId'}]);
 		}
 		return [];
-	}, [siteType, searchParams.get('ticket')]);
+	}, [pageState, searchParams.get('ticket')]);
 
 	const siteHeaderButtons = useMemo(() => [{
 		type: 'button',
@@ -72,9 +72,31 @@ const Tickets = ({id, className, siteType='open'}: TicketsComponent) => {
 		disabled: loading || updateLoading || filters.length === 0
 	}], [loading, updateLoading, filters]);
 
+	const siteContent = useMemo(() => {
+			let content =  {
+				title: 'Tickets',
+				description: ''
+			}
+			if (pageState === 'open') {
+				content.title =  'Aktive Tickets';
+				content.description = 'Hier finden Sie alle Tickets, die noch nicht erledigt sind.';
+			} else if (pageState === 'in_progress') {
+				content.title =  'Ausgeführte Tickets';
+				content.description = 'Hier finden Sie alle ausgeführten Tickets.';
+			} else if (pageState === 'closed') {
+				content.title =  'Erledigte Tickets';
+				content.description = 'Hier finden Sie alle erledigten Tickets.';
+			} else if (pageState === 'archived') {
+				content.title =  'Archivierte Tickets';
+				content.description = 'Hier finden Sie alle archivierten Tickets.';
+			}
+	
+			return content;
+		}, [pageState])
+
 	useEffect(() => {
 		setFilters(initialFilters());
-	}, [searchParams.get('ticket'), siteType]);
+	}, [searchParams.get('ticket'), pageState]);
 
 	const siteHeaderContent = useMemo(() => (
 		<Suspense fallback={<div>Loading...</div>}>
@@ -88,31 +110,19 @@ const Tickets = ({id, className, siteType='open'}: TicketsComponent) => {
 	), [filters, tickets]);
 
 	return (
-		<>
-			<SiteHeader 
-				isSubHeader
-				siteHeaderContent={siteHeaderContent}
-				siteHeaderButtons={siteHeaderButtons}
-				refetch={refetch}
-			/>
-			<div className={clsx('site_content', styles.ticket_overview)}>
-				<div className={clsx('content_element', 'no_padding', styles.tickets_container)}>
+		<Page 
+			title={siteContent.title}
+			description={siteContent.description}
+			refetch={refetch}
+		>
+			<div className={clsx(styles.ticket_overview)}>
+				{siteHeaderContent}
 					<Table
 						columns={columns}
 						data={tickets ? tickets : []}
 					/>
-					
-					{/* {tickets && sortArrayForDivider(tickets, 'createdAt').map((ticket, index) => 
-						<Ticket
-							key={ticket.objectId}
-							showDivider={index === 0 || ticket.divider ||  false}
-							ticketId={ticket.objectId}
-							refetchTickets={refetch}
-						/>
-					)} */}
-				</div>
 			</div>
-		</>
+		</Page>
 	);
 };
 

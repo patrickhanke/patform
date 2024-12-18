@@ -1,9 +1,9 @@
-import { ApolloRefetch, ApplicationTypes, Task } from '@types';
+import { ApolloRefetch, ApplicationTypes, Task, Ticket } from '@types';
 
 export type TicketsComponent = {
     id?: string,
     className?: string,
-    siteType: 'open' | 'closed' | 'in_progress',
+    pageState: Ticket['state'],
 }
 
 export type useGetTicketsHook = {
