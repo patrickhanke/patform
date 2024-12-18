@@ -10,16 +10,12 @@ import find_user_messages from './constants/find_user_messages';
 import { useSessionStorage } from 'usehooks-ts';
 
 const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
-	console.log(process.env.SESSION_TOKEN);
-	
-	const token = Cookies.get(process.env.SESSION_TOKEN);
+	const token = Cookies.get(process.env.SESSION_TOKEN as string);
 	const [project, setProject, removeProject] = useSessionStorage<string | undefined>('project', undefined, {initializeWithValue: true});
 	const [user, setUser, removeUser] = useSessionStorage<User | undefined>('user', undefined, {initializeWithValue: true});
 
 	console.log({project});
 	console.log({user});
-	console.log({token});
-	
 
 	const {data: messageData, refetch} = useQuery(find_user_messages, {
 		variables: {
@@ -42,10 +38,8 @@ const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
 	};
 
 	const getUserData =  useCallback( async () => {
-		console.log('effect');
 		axiosclient().get('/users/me')
 			.then(response => {
-				console.log(response.data);
 				setUser( response.data );
 				setProject(response.data.project.objectId);
 			})

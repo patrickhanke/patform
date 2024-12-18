@@ -8,6 +8,7 @@ import { useResizeObserver } from 'usehooks-ts';
 import {motion, AnimatePresence} from 'motion/react';
 import PageHeaderRegular from './components/PageHeaderRegular';
 import PageHeaderScroll from './components/PageHeaderScroll';
+import { ScrollTop } from '@repo/ui';
 
 const modalVariants = {
 	visible: { opacity: 1, top: 0,  transition: { when: 'beforeChildren' } },
@@ -81,6 +82,7 @@ const PageHeader = ({
 					</motion.div>
 				)}
 			</AnimatePresence>
+			<ScrollTop show={!inView} />
 		</>
 	
 	);
