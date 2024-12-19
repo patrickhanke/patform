@@ -44,7 +44,6 @@ const PageHeader = ({
 				<PageHeaderRegular 
 					ref={pageHeader}
 					title={title}
-					inView={inView}
 					description={description}
 					pageHeaderButtons={pageHeaderButtons}
 					pageStates={pageStates}

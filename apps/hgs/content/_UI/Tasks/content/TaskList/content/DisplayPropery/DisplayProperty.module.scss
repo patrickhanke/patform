@@ -1,12 +1,9 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 @import '../../Task.module.scss';
 
-
 .object_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
     font-weight: 500;
     font-size: .7rem;
     max-width: 180px;

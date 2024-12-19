@@ -1,9 +1,7 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-
+@use '@repo/styles/constants';
 
 .progress_bar_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: 10px, $height: 100%);
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: 10px, $height: 100%);
   }
 
 .progress_bar {
@@ -18,7 +16,7 @@
     height: 100%;
     border-radius: inherit;
     text-align: right;
-    background-color: colors.$primary;
+    background-color: constants.$primary;
     transition: width .6s ease;
   }
 

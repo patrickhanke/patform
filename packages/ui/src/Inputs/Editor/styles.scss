@@ -1,4 +1,4 @@
-@use '@repo/styles/colors';
+@use '@repo/styles/constants';
 
 .ProseMirror {
   background: #ffffff;
@@ -11,13 +11,13 @@
   z-index: 1;
   outline: none;
   &:active {
-    border: 1px solid colors.$primary;
+    border: 1px solid constants.$primary;
   }
   &:focus {
-    border: 1px solid colors.$primary;
+    border: 1px solid constants.$primary;
   }
   &:focus-visible {
-    border: 1px solid colors.$primary;
+    border: 1px solid constants.$primary;
   }
 
   > * + * {

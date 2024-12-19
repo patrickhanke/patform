@@ -23,7 +23,7 @@ const TaskTitle = ({ taskId, taskState, taskTitle, refetch}: {taskId: string, ta
 	if (taskState === 'completed' || taskState === 'archived') {
 		return (
 			<div className={styles.task_title_container}>
-				<p>{taskTitle}</p>
+				{taskTitle}
 			</div>
 		);
 	}	

@@ -1,22 +1,20 @@
-@use '@styles/layout';
-@use '@styles/colors';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 .task_overview {
-    @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch);
-    background-color: colors.$lightest;
+    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch);
+    background-color: constants.$lightest;
 }
 
 .tasks_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: 0);
+    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: 0);
     overflow: auto;
     .task_subheadline {
-        @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+        @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
         width: 120px;
-        color: colors.$grey;
+        color: constants.$grey;
     }
 }
 
 .siteheader_content {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
 }

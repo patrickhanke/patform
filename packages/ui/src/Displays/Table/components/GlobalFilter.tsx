@@ -7,7 +7,7 @@ const GlobalFilter = ({globalFilter, setFilter}) => {
 	const [value, setValue] = React.useState(globalFilter);
 
 	return (
-		<div css={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap:settings.sizes.medium }} >
+		<div css={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap:settings.constants.medium }} >
 			Suche: {' '}
 			<input 
 				value={value || ''}
@@ -17,8 +17,8 @@ const GlobalFilter = ({globalFilter, setFilter}) => {
 			  }}
 				css={{
 					padding: settings.padding.tiny,
-					color: settings.colors.dark,
-					border: `1px solid ${settings.colors.grey}`,
+					color: settings.constants.dark,
+					border: `1px solid ${settings.constants.grey}`,
 					height: 'auto',
 					width: '200px',
 					fontSize: settings.fontSize.medium,
@@ -26,7 +26,7 @@ const GlobalFilter = ({globalFilter, setFilter}) => {
 					outline: '0px',
 					transition: 'border 0.4s ease',
 					':focus-visible': {
-						border: `1px solid ${settings.colors.primary}`
+						border: `1px solid ${settings.constants.primary}`
 					}
 				}}
 

@@ -1,15 +1,12 @@
 import React from 'react';
 import '@repo/styles/global';
-import '@repo/styles/typography';
-import '@repo/styles/buttons';
-import styles from './Layout.module.scss';
+import '@repo/styles/layout';
 import { ApolloClient, OperationVariables } from '@apollo/client';
-import LayoutContext from './LayoutContext';
-import Logo from './components/Logo';
-import './styles.scss';
+import LayoutContext from './components/LayoutContext';
 import { Module, Project } from '@repo/types';
 import {get_initial_project, serverClient} from '@repo/provider';
-import { Sidebar } from '@repo/ui';
+import { SiteHeader } from '@repo/ui';
+import RenderSidebar from './components/RenderSidebar';
 
 export const metadata = {
 	title: 'Patform App',
@@ -42,22 +39,21 @@ export default async function  RootLayout({
 	return (
 		<html lang="de">
 			<body>
-				<div className={styles.layout}>
-					<div className={styles.sidebar_container}>
-						<div className={styles.sidebar_header}>
-							<Logo logo={data.objects.getProject.logo}  />
-						</div>
-						<Sidebar menuItems={data.objects.getProject.modules.results.map((module: Module) => ({
-							label: module.name,
-							icon: module.icon,
-							value: module.path
-						}))} />
-					</div >
+				<div className={'layout'}>
 					<LayoutContext project={data.objects.getProject}>
-						<div className={styles.main_content}>
-							<div className={styles.content_container}>
-								{/* <SiteHeader title={data.objects.getProject.name} /> */}
-								<div className={styles.content}>
+						<RenderSidebar 
+							logo={data.objects.getProject.logo}
+							menuItems={data.objects.getProject.modules.results.map((module: Module) => ({
+								label: module.name,
+								icon: module.icon,
+								value: module.path
+							}))} 
+						/>
+
+						<div className={'main_content'} id='main_content'>
+							<div className={'content_container'} id='page_content'>
+								<SiteHeader />
+								<div className={'content'} id='content'>
 									{children}
 								</div>
 							</div>

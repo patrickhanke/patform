@@ -1,12 +1,10 @@
-@use '@styles/layout';
-@use '@styles/colors';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 .surcharge_container {
-    background-color: colors.$lightest;
+    background-color: constants.$lightest;
 }
 
 .surcharge_content {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
 }
 

@@ -1,10 +1,9 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .loader_container {
     background-color: rgba($color: #000000, $alpha: 0.5);
     position: relative;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
     min-width: 120px;
     min-height: 18px;  
     
@@ -30,7 +29,7 @@
   }
   
   .spinner > div {
-    background-color: colors.$primary;
+    background-color: constants.$primary;
     height: 100%;
     width: 6px;
     margin: 0 2px;

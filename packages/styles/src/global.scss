@@ -1,6 +1,4 @@
-@use './sizes';
-@use './colors';
-@import './form';
+@use 'constants.scss' as *;
 
 :root {
     --foreground-rgb: 0, 0, 0;
@@ -36,7 +34,7 @@
 /* Works on Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: colors.$primary colors.$grey;
+  scrollbar-color: $grey $grey_tinted;
 }
 
 /* Works on Chrome, Edge, and Safari */
@@ -45,11 +43,11 @@
 }
 
 *::-webkit-scrollbar-track {
-  background: colors.$light;
+  background: $light;
   border-radius: 20px;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: colors.$grey;
+  background-color: $grey;
   border-radius: 20px;
 }

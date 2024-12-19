@@ -1,22 +1,19 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 .display_worker_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xxs);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xxs);
     width: fit-content;
     font-family: Roboto, sans-serif;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    border-radius: map-get($map: constants.$border_radius, $key: 'md');
     letter-spacing: 1px;
-    font-size: map-get($map: sizes.$font_size, $key: 'sm');
-    padding-right: sizes.$xs;
+    font-size: map-get($map: constants.$font_size, $key: 'sm');
+    padding-right: constants.$xs;
     font-weight: 500;
 };
 
 .display_worker_container[data-isabsent="false"] {
     background-color: transparent;
-    color: colors.$green_shaded;
+    color: constants.$green_shaded;
 };  
 
 .display_worker_container[data-isabsent="true"] {
@@ -42,7 +39,7 @@
 };
 
 .display_worker_image_container[data-isabsent="true"] {
-    border: 2px solid colors.$red_shaded;
+    border: 2px solid constants.$red_shaded;
 };
 
 .display_worker_delete_button {
@@ -51,11 +48,11 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 };
 
 .display_worker_no_image {
-    @include layout.flexbox($direction: row, $justify: center, $align: center);
+    @include constants.flexbox($direction: row, $justify: center, $align: center);
     height: 18px;
     width: 18px;
     position: relative;
@@ -77,5 +74,5 @@
 
 .display_worker_no_image_character {
     position: relative;
-    font-size: map-get($map: sizes.$font_size, $key: 'xs');
+    font-size: map-get($map: constants.$font_size, $key: 'xs');
 };

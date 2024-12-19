@@ -1,9 +1,7 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 // .feedback_container {
-//     @include layout.flexbox($direction: row, $align: center, $justify: center);
+//     @include constants.flexbox($direction: row, $align: center, $justify: center);
 //     position: fixed;
 //     bottom: 12px;
 //     left: 50%;
@@ -13,33 +11,33 @@
 //     z-index: 5;
 //     animation-name: example;
 //     animation-duration: 3s;
-//     color: colors.$white;
+//     color: constants.$white;
 //     display: none;
-//     padding: map-get($map: sizes.$padding, $key: 'sm' );
-//     border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
-//     box-shadow: layout.$shadow_hover;
+//     padding: map-get($map: constants.$padding, $key: 'sm' );
+//     border-radius: map-get($map: constants.$border_radius, $key: 'md' );
+//     box-shadow: constants.$shadow_hover;
 // }
 
 .feedback_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: flex-end);
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-end);
     font-family: Roboto;
     width: auto;
-    font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    font-size: map-get($map: constants.$font_size, $key: 'md' );
     animation-name: example;
     animation-duration: 3s;
-    color: colors.$dark;
+    color: constants.$dark;
 }
 
 .feedback_container[data-type='success'] {
-    color: colors.$green_shaded;
+    color: constants.$green_shaded;
 }
 
 .feedback_container[data-type='error'] {
-    color: colors.$red_shaded;
+    color: constants.$red_shaded;
 }
 
 .feedback_container[data-type='loading'] {
-    color: colors.$yellow_shaded;
+    color: constants.$yellow_shaded;
 }
 
 @keyframes example {

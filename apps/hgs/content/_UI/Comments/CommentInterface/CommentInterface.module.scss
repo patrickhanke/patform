@@ -1,10 +1,7 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 .comment_interface {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: 0);
+    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: 0);
     height: 100%;
 }
 
@@ -19,21 +16,21 @@
 }
 
 .comment_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch);
-    margin-top: sizes.$lg;
+    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch);
+    margin-top: constants.$lg;
     p {
         line-height: 1.4;
     }
 };
 
 .comment_header {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: flex-end);
-    padding-bottom: sizes.$xs;
-    border-bottom: 1px solid colors.$grey
+    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-end);
+    padding-bottom: constants.$xs;
+    border-bottom: 1px solid constants.$grey
 };
 
  .comment_content {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: flex-start);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-start);
 };
 
 .comment_content_icon {
@@ -41,16 +38,16 @@
 };
 
 .comment_content_text {
-    background-color: colors.$light;
-    padding: map-get($map: sizes.$padding, $key: 'sm' );
+    background-color: constants.$light;
+    padding: map-get($map: constants.$padding, $key: 'sm' );
     flex: 1 1 calc(100% - 24px);
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
 };
 
 .create_comment_container {
-    @include layout.flexbox($direction: column, $justify: center, $align: flex-start, $gap: sizes.$xs);
-    background-color: colors.$lightest;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    @include constants.flexbox($direction: column, $justify: center, $align: flex-start, $gap: constants.$xs);
+    background-color: constants.$lightest;
+    padding: map-get($map: constants.$padding, $key: 'md' );
     height: 100%;
 };
 

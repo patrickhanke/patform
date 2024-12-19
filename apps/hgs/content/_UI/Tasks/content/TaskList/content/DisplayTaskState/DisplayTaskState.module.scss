@@ -1,46 +1,43 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 @import '../../Task.module.scss';
 
-
 .task_state_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
     font-weight: 500;
     font-size: .7rem;
 }
 
 .task_state_element {
-    padding: map-get($map: sizes.$padding, $key: 'xs');
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    padding: map-get($map: constants.$padding, $key: 'xs');
+    border-radius: map-get($map: constants.$border_radius, $key: 'md');
     background-color: transparent;
-    border: 1px solid colors.$primary;
-    color: colors.$primary;
+    border: 1px solid constants.$primary;
+    color: constants.$primary;
 };
 
 .task_state_element[data-state="created"] {
-    background-color: colors.$yellow_light;
-    border: 1px solid colors.$yellow;
-    color: colors.$yellow;
+    background-color: constants.$yellow_light;
+    border: 1px solid constants.$yellow;
+    color: constants.$yellow;
 };
 
 .task_state_element[data-state="completed"] {
-    background-color: colors.$green_light;
-    border: 1px solid colors.$green;
-    color: colors.$green;
+    background-color: constants.$green_light;
+    border: 1px solid constants.$green;
+    color: constants.$green;
 };
 
 .task_state_element[data-state="excecuted"] {
-    background-color: colors.$green_light;
-    border: 1px solid colors.$green;
-    color: colors.$green;
+    background-color: constants.$green_light;
+    border: 1px solid constants.$green;
+    color: constants.$green;
 };
 
 .task_state_element[data-state="assigned"] {
-    background-color: colors.$yellow_light;
-    border: 1px solid colors.$yellow;
-    color: colors.$yellow;
+    background-color: constants.$yellow_light;
+    border: 1px solid constants.$yellow;
+    color: constants.$yellow;
 };
 
 

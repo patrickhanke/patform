@@ -1,24 +1,22 @@
-@use '@styles/sizes';
-@use '@styles/colors';
-@use '@styles/layout';
+@use '@repo/styles/constants';
 
 .overview_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: flex-start);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: flex-start);
     width: 100%;
 };
 
 .user_data_container {
-    @include layout.flexbox($direction: column, $justify: flex-start, $align: flex-start, $gap: sizes.$md);
+    @include constants.flexbox($direction: column, $justify: flex-start, $align: flex-start, $gap: constants.$md);
     width: 100%;
     flex: 1 1 50%;
 };
 
 .user_data_element {
-    @include layout.flexbox($direction: column, $justify: flex-start, $align: flex-start, $gap: sizes.$xs);
+    @include constants.flexbox($direction: column, $justify: flex-start, $align: flex-start, $gap: constants.$xs);
 };
 
 .user_portrait_container {
-    @include layout.flexbox($direction: column, $justify: center, $align: center);
+    @include constants.flexbox($direction: column, $justify: center, $align: center);
     flex: 1 1 50%;
 };
 
@@ -28,5 +26,5 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 };

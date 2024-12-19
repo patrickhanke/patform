@@ -1,47 +1,45 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 .ticket_details_container {
-    @include layout.flexbox($direction: column, $wrap: wrap, $align: stretch, $justify: flex-start, $gap: 0);
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    @include constants.flexbox($direction: column, $wrap: wrap, $align: stretch, $justify: flex-start, $gap: 0);
+    padding: map-get($map: constants.$padding, $key: 'md' );
 }
 
 .ticket_slidein_content {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: flex-start, $gap: 0);
+    @include constants.flexbox($direction: column, $justify: space-between, $align: flex-start, $gap: 0);
     height: auto;
 }
 
 .ticket_slidein_header {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: flex-end);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-end);
     width: 100%;
     flex: 0 0 40px;
-    border-bottom: 1px solid colors.$grey;
+    border-bottom: 1px solid constants.$grey;
     h2 {
-        margin-bottom: sizes.$xs;
+        margin-bottom: constants.$xs;
         cursor: pointer;
     }
 }
 
 .ticket_slidein_content_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: sizes.$md);
+    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: constants.$md);
     flex: 0 1 100%;
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: map-get(sizes.$padding, 'sm');
+    padding: map-get(constants.$padding, 'sm');
 
 };
 
 .ticket_slidein_footer {
     flex: 0 0 120px;
     width: 100%;
-    border-top: 1px solid colors.$grey;
-    background-color: colors.$light;
+    border-top: 1px solid constants.$grey;
+    background-color: constants.$light;
     position: relative;
 };
 
 .task_details_header {
-    padding-left: sizes.$sm;
-    padding-right: sizes.$sm;
+    padding-left: constants.$sm;
+    padding-right: constants.$sm;
 }

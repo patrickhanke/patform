@@ -1,46 +1,45 @@
-@use '@repo/styles/layout';
-@use '@repo/styles/colors';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .table_container {
     width: 100%;
     height: auto;
     overflow: auto;
-    padding-bottom: sizes.$md;
+    padding-bottom: constants.$md;
     .header {
-        padding: map-get($map: sizes.$padding, $key: 'md' );
+        padding: map-get($map: constants.$padding, $key: 'md' );
     }
     .sortable {
-        @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$md);
+        @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$md);
         cursor: pointer;
     }
     
     table {
-        // border: 1px solid colors.$lightgrey;
-        // border: 1px solid colors.$lightgrey;
-        // border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
+        // border: 1px solid constants.$grey_tinted;
+        // border: 1px solid constants.$grey_tinted;
+        // border-radius: map-get($map: constants.$border_radius, $key: 'md' );
         position: relative;
         box-sizing: border-box;
         width: 100%;
         border-spacing: 0px;
     }
     tbody {
-        // border-bottom: 1px solid colors.$lightgrey;
+        // border-bottom: 1px solid constants.$grey_tinted;
         font-family: 'Open Sans', sans-serif;
         font-weight: 500;
-        font-size: map-get($map: sizes.$font_size, $key: 'md' );
-        border-bottom: 1px solid colors.$lightgrey;
+        font-size: map-get($map: constants.$font_size, $key: 'sm' );
+        border-bottom: 1px solid constants.$grey_tinted;
     }
         
     th {
-        font-family: Roboto, sans-serif;
-        font-size: map-get($map: sizes.$font_size, $key: 'md' );
+        font-family: Geist;
+        font-size: map-get($map: constants.$font_size, $key: 'sm' );
         font-weight: 600;
         text-align: left;
-        border-bottom: 1px solid colors.$lightgrey;
-        background-color: colors.$light;
-        // border-right: 1px solid colors.$lightgrey;
-        padding: map-get($map: sizes.$padding, $key: 'sm' );
+        border-bottom: 1px solid constants.$grey_tinted;
+        background-color: constants.$light;
+        // border-right: 1px solid constants.$grey_tinted;
+        padding: map-get($map: constants.$padding, $key: 'sm' );
+        white-space: nowrap;
     }
     th:last-child {
         border-right: none;
@@ -48,12 +47,13 @@
     tr {
         font-family: 'Open Sans', sans-serif;
         td {
-            border-bottom: 1px solid colors.$lightgrey;
+            border-bottom: 1px solid constants.$grey_tinted;
         }
     }
     td {
-        padding: map-get($map: sizes.$padding, $key: 'sm' );
-        font-size: map-get($map: sizes.$font_size, $key: 'sm' );
+        font-family: Open-Sans;
+        padding: map-get($map: constants.$padding, $key: 'sm' );
+        font-size: map-get($map: constants.$font_size, $key: 'sm' );
     }
     
     td:last-child {
@@ -65,7 +65,7 @@
         }
     }
     tfoot {
-        color: colors.$lightgrey;
+        color: constants.$grey_tinted;
     }
     
     tfoot th {
@@ -75,7 +75,7 @@
 }
 
 .table_columns_string_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
     input {
         width: 120px;
     }
@@ -91,11 +91,11 @@
 .table_columns_image_placeholder {
     width: fit-content;
     height: 30px;
-    background-color: colors.$lightgrey;
+    background-color: constants.$grey_tinted;
 }
 
 .table_column_textfield_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
     input {
         width: 120px;
     }
@@ -110,13 +110,13 @@
 }
 
 .table_vertical_container {
-    @include layout.flexbox($direction: column, $align: center, $justify: center, $gap: sizes.$xs);
+    @include constants.flexbox($direction: column, $align: center, $justify: center, $gap: constants.$xs);
 }
 
 .table_row_container_start {
-    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$xs);
 }
 
 .table_row_container_space {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$xs);
 }

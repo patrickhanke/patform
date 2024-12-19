@@ -4,12 +4,13 @@
   "version": "1.0.0",
   "private": true,
   "exports": {
-    "./sizes": "./src/sizes.scss",
-    "./colors": "./src/colors.scss",
-    "./buttons": "./src/buttons.scss",
     "./layout": "./src/layout.scss",
     "./global": "./src/global.scss",
-    "./typography": "./src/typography.scss"
+    "./constants": "./src/constants.scss",
+    "./sizes": "./src/constants/sizes.scss",
+    "./colors": "./src/constants/colors.scss",
+    "./buttons": "./src/layout/buttons.scss",
+    "./typography": "./src/layout/typography.scss"
   },
   "dependencies": {
     "@repo/eslint-config": "0.0.0",

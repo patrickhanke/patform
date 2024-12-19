@@ -1,12 +1,11 @@
-@use '@styles/layout';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 .add_vacation_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: sizes.$xs);   
-    padding: map-get($map: sizes.$padding, $key: 'sm');
+    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: constants.$xs);   
+    padding: map-get($map: constants.$padding, $key: 'sm');
     height: 100%;    
 }
 
 .siteheader_content {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
 }

@@ -1,34 +1,32 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .separator {
     margin: 0;
     padding: 0;
     border: 0;
     height: 1px;
-    background-color: colors.$dark;
+    background-color: constants.$dark;
     width: 100%;
 }
 
 .separator.xs {
-    margin-top: sizes.$xs;
-    margin-bottom: sizes.$xs;
+    margin-top: constants.$xs;
+    margin-bottom: constants.$xs;
 }
 
 .separator.sm {
-    margin-top: sizes.$sm;
-    margin-bottom: sizes.$sm;
+    margin-top: constants.$sm;
+    margin-bottom: constants.$sm;
 }
 
 .separator.md {
-    margin-top: sizes.$md;
-    margin-bottom: sizes.$md;
+    margin-top: constants.$md;
+    margin-bottom: constants.$md;
 }
 
 .separator.lg {
-    margin-top: sizes.$lg;
-    margin-bottom: sizes.$lg;
+    margin-top: constants.$lg;
+    margin-bottom: constants.$lg;
 }
 
 .separator[data-no-line="true"] {

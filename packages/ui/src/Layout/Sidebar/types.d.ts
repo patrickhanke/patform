@@ -1,4 +1,7 @@
-export type MenuItemType = ReadOnly<{
+
+
+
+export type MenuItem = ReadOnly<{
     value: string,
     label: string,
     icon: string,

@@ -1,12 +1,10 @@
-@use '@repo/styles/sizes';
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
+@use '@repo/styles/constants';
 
 .divider {
     position: relative;
     width: 100%;
     height: 1px;
-    border-bottom: 1px solid colors.$grey;
+    border-bottom: 1px solid constants.$grey;
 }
 
 .divider[data-size="none"] {
@@ -15,18 +13,18 @@
 }
 
 .divider[data-size="small"] {
-    margin-top: sizes.$xs;
-    margin-bottom: sizes.$xs;
+    margin-top: constants.$xs;
+    margin-bottom: constants.$xs;
 }
 
 .divider[data-size="medium"] {
-    margin-top: sizes.$sm;
-    margin-bottom: sizes.$sm;
+    margin-top: constants.$sm;
+    margin-bottom: constants.$sm;
 }
 
 .divider[data-size="large"] {
-    margin-top: sizes.$md;
-    margin-bottom: sizes.$md;
+    margin-top: constants.$md;
+    margin-bottom: constants.$md;
 }
 
 .divider[data-showline="false"] {
@@ -34,16 +32,16 @@
 }
 
 .text_container {
-    @include colors.colorgroup('white');
-    background-color: colors.$lightest;
+    @include constants.colorgroup('white');
+    background-color: constants.$lightest;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    padding: map-get($map: sizes.$padding, $key: 'xs' );
+    padding: map-get($map: constants.$padding, $key: 'xs' );
     display: inline-block;
     z-index: 1;
-    font-size: sizes.$sm;
+    font-size: constants.$sm;
     font-weight: 500;
     letter-spacing: 1px;
     font-family: Roboto, sans-serif;
@@ -54,8 +52,8 @@
     width: 100%;
     height: 18px;
     flex-basis: 18px;
-    background-color: colors.$light;
-    border-bottom: 1px solid colors.$grey;
+    background-color: constants.$light;
+    border-bottom: 1px solid constants.$grey;
     padding: 6px 12px;
 }
 
@@ -80,9 +78,9 @@
 }
 
 .divider_block_text_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
     height: 100%;
     h4 : {
-        font-size: map-get($map: sizes.$font_size, $key: 'xs' );
+        font-size: map-get($map: constants.$font_size, $key: 'xs' );
     }
 }

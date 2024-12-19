@@ -1,65 +1,63 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .user_messages_container {
-    @include layout.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: sizes.$xs);
+    @include constants.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: constants.$xs);
 }
 
 .siteheader_content {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
 }
 
 .user_message_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md);
-    margin-top: sizes.$xs;
-    margin-bottom: sizes.$xs;
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
+    margin-top: constants.$xs;
+    margin-bottom: constants.$xs;
 }
 
 .content_container {
-    @include layout.flexbox($direction: row, $align: flex-start, $justify: flex-start, $gap: sizes.$md);
+    @include constants.flexbox($direction: row, $align: flex-start, $justify: flex-start, $gap: constants.$md);
 }
 
 .user_message_content {
-    @include layout.flexbox($direction: column, $align: flex-start, $justify: center, $gap: sizes.$xxs);
+    @include constants.flexbox($direction: column, $align: flex-start, $justify: center, $gap: constants.$xxs);
 }
 
 .user_message_icon {
-    background-color: colors.$primary;
+    background-color: constants.$primary;
     border-radius: 50%;
     width: 30px;
     height: 30px;
 }
 
 .time {
-    color: colors.$grey;
+    color: constants.$grey;
     display: inline-block;
-    font-size: map-get($map: sizes.$font_size, $key: 'sm' );
-    margin-left: sizes.$sm;
+    font-size: map-get($map: constants.$font_size, $key: 'sm' );
+    margin-left: constants.$sm;
 }
 
 .user_message_headline {
-    font-size: map-get(sizes.$font_size, 'md');
+    font-size: map-get(constants.$font_size, 'md');
     font-weight: 600;
-    color: colors.$dark;
+    color: constants.$dark;
 }
 
 .user_message_headline[data-is_read="true"] {
     font-weight: 500;
-    color: colors.$darkgrey;
+    color: constants.$grey_shaded;
 }
 
 .user_message_text {
     p{
-        font-size: map-get(sizes.$font_size, 'sm');
+        font-size: map-get(constants.$font_size, 'sm');
         font-weight: 500;
-        color: colors.$dark;
+        color: constants.$dark;
     }
 }
 
 .user_message_text[data-is_read="true"] {
     p {
         font-weight: 400;
-        color: colors.$grey;
+        color: constants.$grey;
     }
 }

@@ -1,12 +1,9 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 .content_element_container {
-    margin-bottom: sizes.$sm;
-    margin-top: sizes.$sm;
-    background-color: colors.$white;
+    margin-bottom: constants.$sm;
+    margin-top: constants.$sm;
+    background-color: constants.$white;
     overflow: hidden
 };
 
@@ -14,7 +11,7 @@
     position: relative;
     width: 100%;
     flex-basis: 18px;
-    background-color: colors.$light;
-    border-bottom: 1px solid colors.$grey;
+    background-color: constants.$light;
+    border-bottom: 1px solid constants.$grey;
     padding: 6px 12px;
 };

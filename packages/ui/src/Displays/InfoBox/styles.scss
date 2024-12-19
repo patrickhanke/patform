@@ -1,17 +1,16 @@
 
-@use '@repo/styles/colors';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .infobox_container {
     font-family: 'Open Sans',;
-    padding: map-get($map: sizes.$padding, $key: 'sm' );
-    margin-top: sizes.$md;
-    font-size: map-get($map: sizes.$font_size, $key: 'sm' ) ; 
+    padding: map-get($map: constants.$padding, $key: 'sm' );
+    margin-top: constants.$md;
+    font-size: map-get($map: constants.$font_size, $key: 'sm' ) ; 
     background-color: lightgreen;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
 }
 
 .infobox_icon {
-    margin-right: sizes.$sm;
+    margin-right: constants.$sm;
     display: inline;
 }

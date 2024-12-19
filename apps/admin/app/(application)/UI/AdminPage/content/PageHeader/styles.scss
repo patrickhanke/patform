@@ -1,44 +1,42 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .main_container {
-    @include layout.flexbox($direction: column, $align: flex-end, $justify: space-between, $gap: 0);
+    @include constants.flexbox($direction: column, $align: flex-end, $justify: space-between, $gap: 0);
     width: 100%;
     position: relative;
     box-sizing: border-box;
-    background-color: colors.$white;
+    background-color: constants.$white;
 };
 
 .pageheader_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between);
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between);
     width: 100%;
     position: relative;
     height: 42px;
     box-sizing: border-box;
-    border-bottom: 1px solid colors.$grey;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    border-bottom: 1px solid constants.$grey;
+    padding: map-get($map: constants.$padding, $key: 'md' );
 };
 
 .nav_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between);
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between);
     width: 100%;
     position: relative;
     box-sizing: border-box;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
-    background-color: colors.$light;
-    border: .6px solid colors.$grey;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'md' );
+    background-color: constants.$light;
+    border: .6px solid constants.$grey;
+    padding: map-get($map: constants.$padding, $key: 'md' );
 };
 
 .nav_container_underline {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between);
+    @include constants.flexbox($direction: row, $align: flex-end, $justify: space-between);
     width: 100%;
     padding-bottom: 0;
     position: relative;
     box-sizing: border-box;
-    border-bottom: 1px solid colors.$grey;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    border-bottom: 1px solid constants.$grey;
+    padding: map-get($map: constants.$padding, $key: 'md' );
     padding-bottom: 0;
 };
 
@@ -47,22 +45,22 @@
 }
 
 .pageheader_content_container {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: sizes.$md );
+    @include constants.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: constants.$md );
     height: 42px;
     width: 100%;
     position: relative;
     box-sizing: border-box;
-    border-bottom: 1px solid colors.$grey;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
-    background-color: colors.$white;
+    border-bottom: 1px solid constants.$grey;
+    padding: map-get($map: constants.$padding, $key: 'md' );
+    background-color: constants.$white;
 }
 
 .pageheader_button_container {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: sizes.$sm );
+    @include constants.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: constants.$sm );
 }
 
 .pageheader_createbutton {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$xs);
     white-space: nowrap;
 }
 
@@ -79,10 +77,10 @@
 }
 
 .pageheader_right_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: flex-end, $gap: sizes.$md );
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-end, $gap: constants.$md );
 }   
 
 .week_container {
-    @include layout.flexbox($align: center, $gap: sizes.$xs);
-    color: colors.$dark;
+    @include constants.flexbox($align: center, $gap: constants.$xs);
+    color: constants.$dark;
 }

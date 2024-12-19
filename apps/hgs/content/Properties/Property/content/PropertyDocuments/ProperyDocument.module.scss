@@ -1,11 +1,8 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 .create_document_container {
-    @include layout.flexbox($direction: column, $justify: center, $align: flex-start, $gap: sizes.$xs);
-    background-color: colors.$lightest;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    @include constants.flexbox($direction: column, $justify: center, $align: flex-start, $gap: constants.$xs);
+    background-color: constants.$lightest;
+    padding: map-get($map: constants.$padding, $key: 'md' );
     height: 100%;
 };

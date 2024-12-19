@@ -4,9 +4,8 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import styles from '../Sidebar.module.scss';
 import {IoMdArrowDropdown} from 'react-icons/io';
-import { MenuItemProps, MenuItemType } from '../types';
+import { MenuItemProps, MenuItem as MenuItemType } from '../types';
 import Icons from '../constants/Icons';
 import '../styles.scss';
 import SidebarDivider from './SidebarDivider';
@@ -56,7 +55,7 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false, divider}: 
 					<button 
 						data-disabled={disabled} 
 						onClick={() => setShowSubMenu(!showSubMenu)}  
-						className={clsx(link === path ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)}
+						className={clsx(link === path ? ['menu_item', 'menu_item_active'] : 'menu_item')}
 					>
 						<Icons icon={icon} />
 						<div className='sidebar_label'>{label}</div>
@@ -70,7 +69,7 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false, divider}: 
 					<Link
 						aria-disabled={disabled}
 						as={link}
-						className={clsx(link === path ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)}
+						className={clsx(link === path ? ['menu_item', 'menu_item_active'] : 'menu_item')}
 						href={link}
 					>
 						<Icons icon={icon} />
@@ -78,17 +77,17 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false, divider}: 
 					</Link>
 				}
 			</li>
-			<div className={styles.submenu_container} data-showsubmenu={showSubMenu}>
+			<div className={'submenu_container'} data-showsubmenu={showSubMenu}>
 				<ul>
 					{subMenu.length > 0 && subMenu.map((subMenuItem : MenuItemType['sub_menu'][number]) =>
 						<li key={subMenuItem.value}>
 							{!subMenuItem.disabled ? 
-								<Link className={clsx(subMenuHandler(subMenuItem.value, pathname) ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)} href={`${link}${subMenuItem.value}`}>
+								<Link className={clsx(subMenuHandler(subMenuItem.value, pathname) ? ['menu_item', 'menu_item_active'] : 'menu_item')} href={`${link}${subMenuItem.value}`}>
 									<Icons icon={subMenuItem.icon} />
 									<div className='sidebar_label'>{subMenuItem.label}</div>
 								</Link>
 								:	
-								<div data-disabled={subMenuItem.disabled} className={clsx(subMenuHandler(subMenuItem.value, pathname) ? [styles.menu_item, styles.menu_item_active] : styles.menu_item)}>
+								<div data-disabled={subMenuItem.disabled} className={clsx(subMenuHandler(subMenuItem.value, pathname) ? ['menu_item', 'menu_item_active'] : 'menu_item')}>
 									<Icons icon={icon} />
 									<div className='sidebar_label'>{subMenuItem.label}</div>
 								</div>

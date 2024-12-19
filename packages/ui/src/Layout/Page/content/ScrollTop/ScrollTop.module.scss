@@ -1,12 +1,11 @@
-@use '@repo/styles/sizes';
-@use '@repo/styles/colors';
+@use '@repo/styles/constants';
 
 .scroll_top_container {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 11;
-    background-color: colors.$dark;
+    background-color: constants.$dark;
     border: 1px solid $grey;
     border-radius: 50%;
     width: 40px;

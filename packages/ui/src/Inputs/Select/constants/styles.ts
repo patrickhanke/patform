@@ -29,21 +29,21 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 	menu: provided => ({ 
 		...provided, 
 		zIndex: 999,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		fontWeight: 400,
-		fontSize: '12px'
+		fontSize: '11px'
 	}),
 	singleValue: provided => ({
 		...provided,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		fontWeight: 400,
-		fontSize: '12px'
+		fontSize: '11px'
 	}),	
 	multiValueLabel: provided => ({
 		...provided,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		fontWeight: 400,
-		fontSize: '12px'
+		fontSize: '11px'
 	})	,
 	dropdownIndicator: provided => ({
 		...provided,
@@ -51,7 +51,7 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 	}),
 	placeholder: provided => ({ 
 		...provided,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		color: '#999999'
 	}),
 	input: provided => ({

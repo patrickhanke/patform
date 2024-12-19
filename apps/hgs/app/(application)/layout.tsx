@@ -1,12 +1,8 @@
 import React from 'react';
 import '@repo/styles/global';
-import '@repo/styles/typography';
-import '@repo/styles/buttons';
-import './styles.scss';
-import styles from './Layout.module.scss';
-import clsx from 'clsx';
+import '@repo/styles/layout';
 
-import LayoutContext from './LayoutContext';
+import LayoutContext from './components/LayoutContext';
 import SiteHeader from './content/SiteHeader';
 import RenderSidebar from './components/RenderSidebar';
 
@@ -23,13 +19,13 @@ export default async function  RootLayout({
 	return (
 		<html lang="de">
 			<body>
-				<div className={clsx(styles.layout)}>
+				<div className='layout'>
 					<LayoutContext>
 						<RenderSidebar />
-						<div className={styles.main_content} id='main_content'>
-							<div className={styles.content_container} id='page_content'>
+						<div className='main_content' id='main_content'>
+							<div className='content_container' id='page_content'>
 								<SiteHeader />
-								<div className={styles.content} id='content'>
+								<div className='content' id='content'>
 									{children}
 								</div>
 							</div>

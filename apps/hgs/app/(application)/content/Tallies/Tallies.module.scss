@@ -1,5 +1,5 @@
-@use '@styles/layout';
+@use '@repo/styles/constants';
 
 .tasks_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch);
+    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch);
 }

@@ -1,6 +1,4 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .pageheader_content {
     box-shadow: none;
@@ -8,60 +6,60 @@
 }
 
 .pageheader_content_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md );
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md );
     height: auto;
     width: 100%;
     position: relative;
     box-sizing: border-box;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    padding: map-get($map: constants.$padding, $key: 'md' );
     padding-top: 36px;
     padding-bottom: 36px;
-    background-color: colors.$white;
+    background-color: constants.$white;
     overflow: hidden;
 }
 
 .pageheader_content_container[data-scroll="true"] {
     padding-top: 12px;
     padding-bottom: 12px;
-    border-bottom: 1px solid colors.$grey;
+    border-bottom: 1px solid constants.$grey;
 }
 
 .pageheader_scroll_content {
     box-shadow: none;
     width: 100%;
-    background-color: colors.$white;
+    background-color: constants.$white;
 }
 
 .pageheader_scroll_content_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$md );
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md );
     height: auto;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
-    border-bottom: 1px solid colors.$grey;
+    padding: map-get($map: constants.$padding, $key: 'md' );
+    border-bottom: 1px solid constants.$grey;
     height: 42px;
 }
 
 .pageheader_scroll_navigation_container {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: sizes.$md );
-    // padding: map-get($map: sizes.$padding, $key: 'md' );
+    @include constants.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: constants.$md );
+    // padding: map-get($map: constants.$padding, $key: 'md' );
     padding-bottom: 0;
     padding-top: 0;
     height: 38px;
-    border-bottom: 1px solid colors.$grey;
+    border-bottom: 1px solid constants.$grey;
 }
 
 .pageheader_scroll_container {
-    background-color: colors.$white;;
+    background-color: constants.$white;;
     position: fixed;
     top: 0;
     z-index: 4;
 }
 
 .pageheader_button_container {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: sizes.$sm );
+    @include constants.flexbox($direction: row, $align: flex-end, $justify: space-between, $gap: constants.$sm );
 }
 
 .pageheader_createbutton {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$xs);
     white-space: nowrap;
 }
 
@@ -78,6 +76,6 @@
 }
 
 .week_container {
-    @include layout.flexbox($align: center, $gap: sizes.$xs);
-    color: colors.$dark;
+    @include constants.flexbox($align: center, $gap: constants.$xs);
+    color: constants.$dark;
 }

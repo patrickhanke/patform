@@ -1,8 +1,6 @@
 import { ApolloAppProvider, AppContextProvider } from '@repo/provider';
 import { Project } from '@repo/types';
 
-
-
 const LayoutContext = ({project, children}: {project: Project, children: React.ReactNode}) => {
 	return (
 		<ApolloAppProvider

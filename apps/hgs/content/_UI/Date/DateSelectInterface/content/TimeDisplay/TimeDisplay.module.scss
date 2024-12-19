@@ -1,14 +1,12 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 .time_display_container {
-    @include layout.flexbox($direction: row, $wrap: no-wrap, $align: center, $justify: flex-start, $gap: sizes.$xxs);
+    @include constants.flexbox($direction: row, $wrap: no-wrap, $align: center, $justify: flex-start, $gap: constants.$xxs);
     cursor: pointer;
-    font-size: map-get($map: sizes.$font-size, $key: 'xs' );
+    font-size: map-get($map: constants.$font-size, $key: 'xs' );
     background-color: transparent;;
-    padding: map-get($map: sizes.$padding, $key: 'sm' );
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    padding: map-get($map: constants.$padding, $key: 'sm' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
     transition: background-color .2s ease;
 };
 
@@ -18,28 +16,28 @@
 }
 
 .time_display_container[data-interval="true"] {
-    color: colors.$primary !important;
-    border: 1px solid colors.$primary;
+    color: constants.$primary !important;
+    border: 1px solid constants.$primary;
     &:hover {
-        background-color: colors.$primary_light;
+        background-color: constants.$primary_tinted;
     }
 
 };
 
 .time_display_container[data-interval="false"] {
-    color: colors.$grey !important;
-    border: 1px solid colors.$grey;
+    color: constants.$grey !important;
+    border: 1px solid constants.$grey;
     &:hover {
-        background-color: colors.$lightgrey;
+        background-color: constants.$grey_tinted;
     }
 
 };
 
 .no_interval {
-    color: colors.$white !important;
+    color: constants.$white !important;
 
 };
 
 .interval {
-   color: colors.$white !important; 
+   color: constants.$white !important; 
 };

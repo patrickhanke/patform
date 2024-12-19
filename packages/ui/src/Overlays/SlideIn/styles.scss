@@ -1,9 +1,7 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .overlay_container {
-    background-color: colors.$dark;
+    background-color: constants.$dark;
     position: fixed;
     height: 100vh;
     width: 100vw;
@@ -23,7 +21,7 @@
 }
 
 .slidein_container {
-    @include layout.flexbox($direction: column, $align: stretch, $gap: sizes.$xs);
+    @include constants.flexbox($direction: column, $align: stretch, $gap: constants.$xs);
     top: 6vh;
     height: 88vh;
     z-index: 4;
@@ -32,9 +30,9 @@
     position: fixed;
     box-sizing: border-box;
     overflow: visible;
-    background-color: colors.$white;
+    background-color: constants.$white;
     padding: 0;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'md' );
 }
 
 .is_open[data-size='small'] {
@@ -56,17 +54,17 @@
 }
 
 .slidein_header {
-    @include layout.flexbox($align: center, $justify: space-between, $gap: sizes.$xs);
+    @include constants.flexbox($align: center, $justify: space-between, $gap: constants.$xs);
     width: 100%;
     box-sizing: border-box;
     height: 36px;
-    border-bottom: 1px solid colors.$grey;
-    padding: map-get(sizes.$padding, 'sm');
+    border-bottom: 1px solid constants.$grey;
+    padding: map-get(constants.$padding, 'sm');
     position: relative;
 }
 
 .slidein_main_content {
-    @include layout.flexbox($direction: row, $align: stretch, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $align: stretch, $gap: constants.$xs);
     flex: 1;
     position: relative;
     box-sizing: border-box;
@@ -78,7 +76,7 @@
 .slidein_content {
     width: 360px;
     order:2;
-    padding: map-get(sizes.$padding, 'sm');
+    padding: map-get(constants.$padding, 'sm');
     overflow: auto;
 }
 
@@ -88,16 +86,16 @@
 }
 
 .slidein_secondary_content[data-open='true'] {
-    padding: map-get(sizes.$padding, 'sm');
-    border-right: 1px solid colors.$grey;
+    padding: map-get(constants.$padding, 'sm');
+    border-right: 1px solid constants.$grey;
 };
 
 .slidein_footer {
-    @include layout.flexbox($direction: row, $align: center, $justify: flex-end, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-end, $gap: constants.$xs);
     flex: 0 0 36px;
     width: 100%;
-    border-top: 1px solid colors.$grey;
-    // background-color: colors.$light;
+    border-top: 1px solid constants.$grey;
+    // background-color: constants.$light;
     position: relative;
-    padding: map-get(sizes.$padding, 'sm');
+    padding: map-get(constants.$padding, 'sm');
 };

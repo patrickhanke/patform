@@ -1,11 +1,8 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
-@use '@repo/styles/buttons';
+@use '@repo/styles/constants';
 
 .layout {
-    @include layout.flexbox($direction: row, $align: stretch, $justify: center, $gap: 0, $height: 100%);
-    background-color: colors.$white;
+    @include constants.flexbox($direction: row, $align: stretch, $justify: center, $gap: 0, $height: 100%);
+    background-color: constants.$white;
     height: 100vh;
     width: 100%;
     overflow: hidden;
@@ -13,13 +10,13 @@
 }
 
 .divider {
-    background-color: colors.$primary;
+    background-color: constants.$primary;
     height: 1px;
     width: 30px;
     position: relative;
     box-sizing: border-box;
-    margin-bottom: sizes.$xl;
-    margin-top: sizes.$xl;
+    margin-bottom: constants.$xl;
+    margin-top: constants.$xl;
 }
 
 

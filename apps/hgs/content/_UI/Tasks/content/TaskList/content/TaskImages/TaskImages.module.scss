@@ -1,31 +1,28 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 @import '../../Task.module.scss';
 
 .document_container {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
 };
 
 .document_title_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
 };
 
 .document_content {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: flex-start);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-start);
 };
 
 .create_document_container {
-    @include layout.flexbox($direction: column, $justify: center, $align: flex-start, $gap: sizes.$xs);
-    background-color: colors.$lightest;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    @include constants.flexbox($direction: column, $justify: center, $align: flex-start, $gap: constants.$xs);
+    background-color: constants.$lightest;
+    padding: map-get($map: constants.$padding, $key: 'md' );
     height: 100%;
 };
 
 .task_slidein_image_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: stretch, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: stretch, $gap: constants.$xs);
     width: 100%;
     overflow-x: auto;
 }

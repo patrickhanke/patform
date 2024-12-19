@@ -1,16 +1,13 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
-@use '@repo/styles/buttons';
+@use '@repo/styles/constants';
 
 .question_container[data-labelbefore='false'] {
-	@include layout.flexbox($direction: column, $align: flex-start, $justify: space-between, $gap: 0);
-	padding: map-get($map: sizes.$padding, $key: 'md' );
+	@include constants.flexbox($direction: column, $align: flex-start, $justify: space-between, $gap: 0);
+	padding: map-get($map: constants.$padding, $key: 'md' );
 }
 
 .question_container[data-labelbefore='true'] {
-	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
-	padding: map-get($map: sizes.$padding, $key: 'md' );
+	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
+	padding: map-get($map: constants.$padding, $key: 'md' );
 	box-shadow: none;
 	// label {
 	// 	width: 80%;
@@ -18,29 +15,29 @@
 }
 
 .question_container[data-isconditionalfield='true'] {
-	padding: map-get($map: sizes.$padding, $key: 'md' );
-	background-color: colors.$light;
+	padding: map-get($map: constants.$padding, $key: 'md' );
+	background-color: constants.$light;
 }
 
 .page_container {
-	@include layout.elements_container;
+	@include constants.elements_container;
 	width: 100%;
 	box-sizing: border-box;
-	background-color: colors.$light;
-	margin-top: sizes.$md;
-	margin-bottom: sizes.$md;
+	background-color: constants.$light;
+	margin-top: constants.$md;
+	margin-bottom: constants.$md;
 }
 
 .fields_container {
-	@include layout.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: sizes.$md);
+	@include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$md);
 	width: 100%;
 	box-sizing: border-box;
 }
 
 .diagnostic_content {
-	padding-left: sizes.$md;
-	margin-left: sizes.$md;
-	border-left: 1px solid colors.$grey;
+	padding-left: constants.$md;
+	margin-left: constants.$md;
+	border-left: 1px solid constants.$grey;
 	display: inline;
 	font-weight: 600;
 }
@@ -56,7 +53,7 @@
 
 .toggle_container {
 	box-sizing: content-box;
-    border: 2px solid colors.$primary;
+    border: 2px solid constants.$primary;
 	position: relative; 
 	width: 40px; 
 	height: 20px; 
@@ -66,7 +63,7 @@
 }
 
 .toggle_container[data-disabled='true'] {
-    border: 2px solid colors.$grey 
+    border: 2px solid constants.$grey 
 }
 
 .toggle_container_background {
@@ -78,11 +75,11 @@
 }
 
 .toggle_container_background[data-disabled='true'] {
-    background-color: colors.$grey; 
+    background-color: constants.$grey; 
 }
 
 .toggle_container_background[data-togglestate='true'] {
-	background-color: colors.$primary;
+	background-color: constants.$primary;
 }
 
 .toggle_container_circle {
@@ -92,39 +89,39 @@
 	top: 2px;
 	left: 4px;
 	position: absolute;
-    background-color: colors.$primary;
+    background-color: constants.$primary;
 	transition: transform 0.4s ease, background-color 0.4s ease;
     transform: translateX(0);
 }
 
 .toggle_container_circle[data-disabled='true'] {
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 }
 
 .toggle_container_circle[data-togglestate='true'] {
-    background-color: colors.$white;
+    background-color: constants.$white;
     transform: translateX(18px)
 }
 
 .error_message {
-	color: colors.$red;
+	color: constants.$red;
 	font-weight: 500;
-	font-size: sizes.$sm;
+	font-size: constants.$sm;
 	font-family: Geist, sans-serif;
 };
 
 .warning_message {
 	color: orange;
 	font-weight: 500;
-	font-size: sizes.$sm;
+	font-size: constants.$sm;
 	font-family: Geist, sans-serif;
 };
 
 .create_option_container {
-	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
 	width: 100%;
-	margin-top: sizes.$xs;
-	margin-bottom: sizes.$xs;
+	margin-top: constants.$xs;
+	margin-bottom: constants.$xs;
 }
 
 .datepicker_content {
@@ -141,36 +138,36 @@
 }
 
 .slider_container_bottom {
-	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
 	width: 100%;
-	padding: map-get($map: sizes.$padding, $key: 'xs' );
+	padding: map-get($map: constants.$padding, $key: 'xs' );
 	box-sizing: border-box;
 	p {
 		text-transform: uppercase;
 		font-weight: 500;
-		font-size: map-get($map: sizes.$font-size, $key:  'xs');
-		color: colors.$darkgrey;
+		font-size: map-get($map: constants.$font-size, $key:  'xs');
+		color: constants.$grey_shaded;
 	}
 }
 
 .select_and_scale_container {
-	@include layout.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: sizes.$sm);
+	@include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: constants.$sm);
 }
 
 .select_container {
-	@include layout.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: sizes.$sm);
+	@include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: constants.$sm);
 }
 
 .scale_container {
-	@include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$sm);
+	@include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$sm);
 }
 
 .scale_number {
-	@include layout.icon_button_container;
+	@include constants.icon_button_container;
 }
 
 .scale_number[data-selected="true"] {
-	@include layout.icon_button_container($isactive: 'true')
+	@include constants.icon_button_container($isactive: 'true')
 }
 
 .slider {
@@ -184,7 +181,7 @@
 }
 
 .checkbox_container {
-	@include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$sm);
+	@include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$sm);
 	cursor: pointer;
 	background-color: transparent;
 	border: none;
@@ -195,21 +192,21 @@
 }
 
 .checkbox {
-	@include layout.icon_button_container;
+	@include constants.icon_button_container;
 	svg {
 		visibility: hidden;
 	}
 }
 
 .checkbox[data-active='true'] {
-	@include layout.icon_button_container($isactive: 'true');
+	@include constants.icon_button_container($isactive: 'true');
 	svg {
 		visibility: visible;
 	}
 }
 
 .select_toggle_content {
-	@include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$sm);
+	@include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$sm);
 	
 }
 
@@ -221,32 +218,32 @@
 	font-family: Poppins;
 	font-weight: 500;	
 	letter-spacing: 1px;
-	font-size: map-get($map: sizes.$font_size, $key: 'md' );
+	font-size: map-get($map: constants.$font_size, $key: 'md' );
 }
 
 .select_toggle_button[data-isactive="true"] {
-	background-color: colors.$primary;
-	color: colors.$white;
+	background-color: constants.$primary;
+	color: constants.$white;
 
 }
 
 .files_interface_container{
-	@include layout.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: sizes.$md);
-	margin-bottom: sizes.$lg;
+	@include constants.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: constants.$md);
+	margin-bottom: constants.$lg;
 	width: 100%;
 }
 
 .file_interface_element {
-	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
 	position: relative;
-	padding: map-get($map: sizes.$padding, $key: 'sm' );
-	background-color: colors.$light;
-	border: .5px solid colors.$darkgrey;
+	padding: map-get($map: constants.$padding, $key: 'sm' );
+	background-color: constants.$light;
+	border: .5px solid constants.$grey_shaded;
 
 }
 
 .file_interface_element_buttoncontainer {
-	@include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: sizes.$sm);
+	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
 }
 
 .picker {
@@ -275,9 +272,9 @@
 
 .description_container {
 	width: 100%;
-	background-color: colors.$light;
-	padding: map-get($map: sizes.$padding, $key: 'sm' );
-	margin-top: sizes.$md;
+	background-color: constants.$light;
+	padding: map-get($map: constants.$padding, $key: 'sm' );
+	margin-top: constants.$md;
 }
 
 

@@ -1,0 +1,211 @@
+@use '@repo/styles/constants';
+
+.layout {
+    @include constants.flexbox($direction: row, $align: stretch, $gap: 0);
+    height: 100vh;
+    box-sizing: border-box;
+    position: relative;
+    div {
+        box-sizing: border-box;
+    }
+}
+
+.layout_sidebar_container {
+    position: relative;
+    width: 150px;
+    height: 100%;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-right: 1px solid constants.$grey; 
+    transition: width .4s ease;
+    overflow: hidden;
+}
+
+.header {
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between);
+    background-color: transparent;
+    width: 100%;
+    box-sizing: border-box;
+    height: 42px;
+    padding: map-get(constants.$padding, 'lg');
+    h1 {
+        color: constants.$primary;
+    }
+}
+
+.layout_sidebar_header {
+    @include constants.flexbox($direction: row, $align: center, $justify: center);
+    border-bottom: 1px solid constants.$grey;
+    background-color: transparent;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    height: 42px;
+    padding: map-get(constants.$padding, 'lg');
+}
+
+.sidebar_header_content {
+    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: 12px);
+    width: 100%;
+    height: 100%;
+    title {
+        color: constants.$primary;
+        font-size: map-get(constants.$font_size, 'md' );
+        font-weight: 500;
+        margin: 0;
+    }
+}
+
+.main_content {
+    @include constants.flexbox($direction: row, $align: stretch, $gap: 0);
+    position: relative;
+    width: calc(100% - 150px);
+    flex: 1;
+}
+
+.content_container {
+    width: 100%;
+    overflow: auto;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 100%;
+    height: auto;
+    position: relative;
+    box-sizing: border-box;
+    // background-color: constants.$lightest;
+}
+
+.feedback_container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.horizontal_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 9px;
+}
+
+.breadcrumps {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-variant: normal;
+    letter-spacing: 1px; 
+    margin: 0;
+    text-decoration: none;
+    line-height: 1;
+    font-size: map-get($map: constants.$font_size, $key: 'md');
+    color: constants.$dark;
+    transition: text-decoration .2s ease, color .2s ease;
+    &:hover {
+        color: constants.$dark;
+        text-decoration: underline;
+    }
+}
+
+.breadcrumps:last-child{
+    font-weight: 500;
+}
+
+.site_content {
+    height: 100%;
+    width: 100%;
+    flex: 1 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: map-get($map: constants.$padding, $key: 'site' );
+}
+
+.content_element {
+    background-color: constants.$white;
+    box-shadow:rgba(0, 0, 0, 0.04) 0px 2px 2px 0px;
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
+    border: .5px solid constants.$grey_tinted;
+    padding: map-get($map: constants.$padding, $key: 'sm' );
+}
+
+.content_element.no_padding {
+  padding: 0;
+}
+
+label {
+    display: block;
+    margin-top: constants.$md;
+    margin-bottom: constants.$xs;
+    color: constants.$dark;
+    font-weight: 500;
+    font-size: map-get($map: constants.$font_size, $key: 'sm' );
+    font-family: 'Roboto', sans-serif;
+    line-height:  1;
+    letter-spacing: 0.02rem;
+  }
+
+  label.no_margin {
+    margin: 0;
+  } 
+
+  label.error {
+    color: #cc0033;
+  }
+
+  .label {
+    display: block;
+    margin: 0; 
+    color: constants.$dark;
+    font-weight: 500;
+    font-size: map-get($map: constants.$font_size, $key:'md' );
+    font-family: 'Roboto', sans-serif;
+    line-height:  1;
+    letter-spacing: 0.02rem;
+  }
+
+  .vertical_line {
+    border-left: 1px solid constants.$grey;
+    position: relative;
+    align-self: stretch;
+  }
+  
+  .vertical_line.use_height {
+    height: 100%;
+  }
+
+
+// State Element
+
+.state_element {
+    padding: map-get($map: constants.$padding, $key: 'xs');
+    border-radius: map-get($map: constants.$border_radius, $key: 'md');
+    background-color: transparent;
+    border: 1px solid constants.$primary;
+    color: constants.$primary;
+};
+
+.state_element[data-state="created"] {
+    background-color: constants.$yellow_light;
+    border: 1px solid constants.$yellow;
+    color: constants.$yellow;
+};
+
+.state_element[data-state="completed"] {
+    background-color: constants.$green_light;
+    border: 1px solid constants.$green;
+    color: constants.$green;
+};
+
+.state_element[data-state="excecuted"] {
+    background-color: constants.$green_light;
+    border: 1px solid constants.$green;
+    color: constants.$green;
+};
+
+.state_element[data-state="assigned"] {
+    background-color: constants.$yellow_light;
+    border: 1px solid constants.$yellow;
+    color: constants.$yellow;
+};

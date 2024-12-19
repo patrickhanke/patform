@@ -1,22 +1,19 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
-@use '@repo/styles/buttons';
+@use '@repo/styles/constants';
 
 .display_person_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xxs);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xxs);
     width: fit-content;
     font-family: Roboto, sans-serif;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    border-radius: map-get($map: constants.$border_radius, $key: 'md');
     letter-spacing: 1px;
-    font-size: map-get($map: sizes.$font_size, $key: 'sm');
-    padding-right: sizes.$xs;
+    font-size: map-get($map: constants.$font_size, $key: 'sm');
+    padding-right: constants.$xs;
     font-weight: 500;
 };
 
 .display_person_container[data-isabsent="false"] {
     background-color: transparent;
-    color: colors.$green_shaded;
+    color: constants.$green_shaded;
 };  
 
 .display_person_container[data-isabsent="true"] {
@@ -46,11 +43,11 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 };
 
 .display_person_no_image {
-    @include layout.flexbox($direction: row, $justify: center, $align: center);
+    @include constants.flexbox($direction: row, $justify: center, $align: center);
     height: 18px;
     width: 18px;
     position: relative;
@@ -67,13 +64,13 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    background-color: colors.$light;
+    background-color: constants.$light;
 };
 
 .display_person_no_image_character {
     position: relative;
     z-index: 3;
-    font-size: map-get($map: sizes.$font_size, $key: 'xxs');
+    font-size: map-get($map: constants.$font_size, $key: 'xxs');
 };
 
 .display_person_label {

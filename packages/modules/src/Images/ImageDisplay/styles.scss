@@ -1,12 +1,10 @@
-@use '@repo/styles/sizes';
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
+@use '@repo/styles/constants';
 
 .image_container {
-    @include layout.flexbox($direction: row, $align: center, $gap: 0 );
-    padding: map-get($map: sizes.$padding, $key: 'sm' );
-    background-color: colors.$light;
-    border: 1px solid colors.$grey;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md' )
+    @include constants.flexbox($direction: row, $align: center, $gap: 0 );
+    padding: map-get($map: constants.$padding, $key: 'sm' );
+    background-color: constants.$light;
+    border: 1px solid constants.$grey;
+    border-radius: map-get($map: constants.$border_radius, $key: 'md' )
 };
 

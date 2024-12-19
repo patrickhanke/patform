@@ -1,11 +1,7 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
-
+@use '@repo/styles/constants';
 
 .header_breadcrumps {
-    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: 4px);
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: 4px);
 }
 
 .breadcrumps {
@@ -16,14 +12,13 @@
     margin: 0;
     text-decoration: none;
     line-height: 1;
-    font-size: map-get($map: sizes.$font_size, $key: 'md' );
-    color: colors.$dark;
+    font-size: map-get($map: constants.$font_size, $key: 'md' );
+    color: constants.$dark;
     transition: text-decoration .2s ease, color .2s ease;
     &:hover {
-        color: colors.$dark;
+        color: constants.$dark;
         text-decoration: underline;
     }
-
 }
 
 .breadcrumps:last-child{

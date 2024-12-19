@@ -1,33 +1,31 @@
-@use '@styles/layout';
-@use '@styles/colors';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 .create_surcharge_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: sizes.$xs);
+    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: constants.$xs);
 }
 
 .day_select_container {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
     width: 100%;
     border: none;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm');
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm');
     cursor: pointer;
     transition: background-color .2s ease;
-    padding: map-get($map: sizes.$padding, $key: 'sm' )
+    padding: map-get($map: constants.$padding, $key: 'sm' )
 }
 
 .day_select_container[data-isselected="true"] {
-    background-color: colors.$green_light;
-    color: colors.$green_shaded;
+    background-color: constants.$green_light;
+    color: constants.$green_shaded;
     &:hover {
-        background-color: colors.$green;
-        // color: colors.$white;
+        background-color: constants.$green;
+        // color: constants.$white;
     }
 }
 
 .day_select_container[data-isselected="false"] {
-    background-color: colors.$lightest;
+    background-color: constants.$lightest;
     &:hover {
-        background-color: colors.$light;
+        background-color: constants.$light;
     }
 }

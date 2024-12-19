@@ -1,16 +1,14 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/sizes';
-@use '@repo/styles/layout';
+@use '@repo/styles/constants';
 
 .state_display_container {
     position: relative;
     font-family: Roboto, sans-serif;
-    padding: map-get($map: sizes.$padding, $key: 'xs');
+    padding: map-get($map: constants.$padding, $key: 'xs');
     width: fit-content;
     font-weight: 500;
     letter-spacing: 1.2px;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm');
-    font-size: map-get($map: sizes.$font_size, $key: 'sm');
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm');
+    font-size: map-get($map: constants.$font_size, $key: 'sm');
     border: none;
     text-wrap:  nowrap;
     white-space: nowrap;
@@ -25,7 +23,7 @@
 @mixin state_display_container_styles {
     background-color: transparent;
     &:hover {
-        background-color: colors.$light;
+        background-color: constants.$light;
     }
 }
 
@@ -36,81 +34,81 @@
 }
 
 .state_display_container[data-showicon="true"] {
-    @include layout.flexbox($direction: row, $align: center, $justify: center, $gap: sizes.$xxs);
+    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: constants.$xxs);
 }
 
 .state_display_container[data-color="primary"] {
-    @include colors.colorgroup('primary');
+    @include constants.colorgroup('primary');
     border: none;
 }
 
 .state_display_container[data-color="secondary"] {
-    @include colors.colorgroup('secondary');
+    @include constants.colorgroup('secondary');
     border: none;
 }
 
 .state_display_container[data-color="tertiary"] {
-    @include colors.colorgroup('tertiary');
+    @include constants.colorgroup('tertiary');
     border: none;
 }
 
 .state_display_container[data-color="dark"] {
-    @include colors.colorgroup('dark');
+    @include constants.colorgroup('dark');
     border: none;
 }
 
 .state_display_container[data-color="light"] {
-    @include colors.colorgroup('light');
+    @include constants.colorgroup('light');
     border: none;
 }
 
 .state_display_container[data-color="success"] {
-    @include colors.colorgroup('success');
+    @include constants.colorgroup('success');
     border: none;
 }
 
 .state_display_container[data-color="warning"] {
-    @include colors.colorgroup('warning');
+    @include constants.colorgroup('warning');
     border: none;
 }
 
 .state_display_container[data-color="danger"] {
-    @include colors.colorgroup('danger');
+    @include constants.colorgroup('danger');
     border: none;
 }
 
 .state_display_container[data-color="info"] {
-    @include colors.colorgroup('info');
+    @include constants.colorgroup('info');
     border: none;
 }
 
 .state_display_container[data-color="violet"] {
-    @include colors.colorgroup('violet');
+    @include constants.colorgroup('violet');
     border: none;
 }
 
 .state_display_container[data-color="green"] {
-    @include colors.colorgroup('green');
+    @include constants.colorgroup('green');
     border: none;
 }
 
 .state_display_container[data-color="yellow"] {
-    @include colors.colorgroup('yellow');
+    @include constants.colorgroup('yellow');
     border: none;
 }
 
 .state_display_container[data-color="red"] {
-    @include colors.colorgroup('red');
+    @include constants.colorgroup('red');
     border: none;
 }
 
 .state_display_container[data-color="blue"] {
-    @include colors.colorgroup('blue');
+    @include constants.colorgroup('blue');
     border: none;
 }
 
 .state_display_container[data-color="grey"] {
-    @include colors.colorgroup('grey');
+    @include constants.colorgroup('grey');
     border: none;
 }
 
@@ -129,12 +127,12 @@
     position: absolute;
     // bottom: -5px;
     // left: 50%;
-    background-color: colors.$white;
-    border: 1px solid colors.$lightgrey;
+    background-color: constants.$white;
+    border: 1px solid constants.$grey_tinted;
     z-index: 3;
     // transform: translateY(100%) translateX(-50%);
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm');
-    box-shadow: layout.$shadow_regular;
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm');
+    box-shadow: constants.$shadow_regular;
     width: fit-content;
     &__list {
         list-style: none;
@@ -143,21 +141,21 @@
     
     &__item {
         @extend .state_display_container;
-        // padding: map-get($map: sizes.$padding, $key: 'xs');
+        // padding: map-get($map: constants.$padding, $key: 'xs');
         width: 100%;
         border: none;
         cursor: pointer;
         text-align: left;
-        color: colors.$dark;
-        padding-top: sizes.$xs;
-        padding-bottom: sizes.$xs;
+        color: constants.$dark;
+        padding-top: constants.$xs;
+        padding-bottom: constants.$xs;
         &:hover {
-            background-color: colors.$light;
+            background-color: constants.$light;
         }
     }
 
     &__item[data-disabled="true"] {
         cursor: not-allowed;
-        color: colors.$grey;
+        color: constants.$grey;
     }
 }

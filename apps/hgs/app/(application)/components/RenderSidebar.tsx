@@ -1,10 +1,8 @@
 'use client';
 
-import React, { useContext } from 'react'
+import React from 'react'
 import Logo from './Logo'
 import { Sidebar } from '@repo/ui'
-import { AppContext } from '@provider';
-import styles from '../Layout.module.scss'
 
 const menu_items = [
 	{
@@ -93,8 +91,8 @@ const menu_items = [
 
 const RenderSidebar = () => {
   return (
-	<div className={styles.sidebar_container} id='sidebar'>
-		<div className={styles.sidebar_header}>
+	<div className='layout_sidebar_container' id='sidebar'>
+		<div className='layout_sidebar_header'>
 			<Logo />
 		</div>
 		<Sidebar menuItems={menu_items} />

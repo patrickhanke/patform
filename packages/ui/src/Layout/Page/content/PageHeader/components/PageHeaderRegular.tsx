@@ -10,7 +10,6 @@ import '../styles.scss';
 const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(({
 	title,
 	description,
-	inView,
 	pageHeaderButtons,
 	pageHeaderContent,
 	emptyContent,
@@ -20,15 +19,12 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(({
 	pageState,
 	setPageState
 }, ref) => {
-
-	const scrollState = false; // Define scrollState
-
 	return (
 		<div ref={ref} className='pageheader_content'>
-			<div className={'pageheader_content_container'} data-scroll={scrollState}>
+			<div className={'pageheader_content_container'}>
 				<div>
 					<h2>{title}</h2>
-					{!inView && description && <p style={{ marginTop: '18px' }}>{description}</p>}
+					{description && <p style={{ marginTop: '18px' }}>{description}</p>}
 				</div>
 				{isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0 &&
                     <div className={'pageheader_button_container'}>

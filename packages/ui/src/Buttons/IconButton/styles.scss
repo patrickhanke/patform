@@ -1,41 +1,39 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/sizes';
-@use '@repo/styles/layout';
+@use '@repo/styles/constants';
 
 .icon_button_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: center, $gap: 0);
+    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: 0);
     cursor: pointer;
-    font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    font-size: map-get($map: constants.$font_size, $key: 'md' );
     position: relative;
     width: 21px;
     height: 21px;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'xs');
+    border-radius: map-get($map: constants.$border_radius, $key: 'xs');
     padding: 0;
     flex:  0 0 auto;
 }
 
 .icon_button_container[data-isdark="false"] {
     border: none;
-    color: colors.$darkgrey;
+    color: constants.$grey_shaded;
     background-color: transparent;
     &:hover {
-        color: colors.$dark;
-        border: 1px solid colors.$dark;
-        background-color: colors.$light;
+        color: constants.$dark;
+        border: 1px solid constants.$dark;
+        background-color: constants.$light;
     }
 }
 
 .icon_button_container[data-isdark="true"] {
-    border: 1px solid colors.$dark;
-    color: colors.$light;
-    background-color: colors.$dark;
+    border: 1px solid constants.$dark;
+    color: constants.$light;
+    background-color: constants.$dark;
    
 }
 
 .icon_button_container[data-haslabel="true"] {
-    @include layout.flexbox($direction: row, $align: center, $justify: center, $gap: sizes.$xxs);
+    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: constants.$xxs);
     cursor: pointer;
-    font-size: map-get($map: sizes.$font_size, $key: 'md' );
+    font-size: map-get($map: constants.$font_size, $key: 'md' );
     position: relative;
     padding: 0;
     border:none;
@@ -55,14 +53,14 @@
 
 
 .icon_button_container:disabled {
-    border: 1px solid colors.$lightgrey;
-    color: colors.$lightgrey;
+    border: 1px solid constants.$grey_tinted;
+    color: constants.$grey_tinted;
     background-color: transparent;
     cursor: default;
 }
 
 .icon_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: center);
+    @include constants.flexbox($direction: row, $align: center, $justify: center);
     position: 'relative';
     background-color: transparent;
     font-weight: 500;
@@ -74,8 +72,8 @@
 }
 
 // .icon_button_container:disabled {
-//     border: 1px solid colors.$lightgrey;
-//     color: colors.$lightgrey;
+//     border: 1px solid constants.$grey_tinted;
+//     color: constants.$grey_tinted;
 //     background-color: transparent;
 //     cursor: default;
 // }

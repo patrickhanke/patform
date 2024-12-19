@@ -1,14 +1,12 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .day_container {
-    @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: 0);
+    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: 0);
     width: 14.28%;
     height: 100px;
-    border-right: 1px solid colors.$grey;
-    // border-bottom: 1px solid colors.$grey;
-    background-color: colors.$lightest;
+    border-right: 1px solid constants.$grey;
+    // border-bottom: 1px solid constants.$grey;
+    background-color: constants.$lightest;
     position: relative;
     overflow: visible;
 }
@@ -18,38 +16,38 @@
 }
 
 .day_container:first-child {
-    border-left: 1px solid colors.$grey;
+    border-left: 1px solid constants.$grey;
 }
 
 .day_container[data-out_of_interval = "true"]  {
     background-color: transparent;
     p {
-        color: colors.$grey;
+        color: constants.$grey;
     }
 }
 
 .day_container[data-is_today = "true"] {
-    background-color: colors.$primary;
+    background-color: constants.$primary;
 }
 
 .day_label {
-    @include layout.flexbox($direction: column, $justify: center, $align: center, $gap: 0);
+    @include constants.flexbox($direction: column, $justify: center, $align: center, $gap: 0);
     position: absolute;
     top: 6px;
     right: 6px;
     width: 18px;
     height: 18px;
     padding: 3px;
-    background-color: colors.$light;
+    background-color: constants.$light;
     border-radius: 50%;
     p {
-        font-size: map-get($map: sizes.$font_size, $key: 'sm' );
+        font-size: map-get($map: constants.$font_size, $key: 'sm' );
         font-weight: 600;
     }
 }
 
 .data_container {
-    @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: 6);
+    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: 6);
     width: 100%;
     padding-top: 24px;
 }
@@ -61,7 +59,7 @@
     height: 15px;
     position: relative;
     p {
-        font-size: map-get($map: sizes.$font_size, $key: 'sm' );
+        font-size: map-get($map: constants.$font_size, $key: 'sm' );
         overflow: visible;
         text-overflow: ellipsis;
     }

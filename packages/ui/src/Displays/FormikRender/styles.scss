@@ -1,10 +1,10 @@
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .form_container {
     overflow: visible;
 	height: 100%;
 	width: auto;
-	padding-right: sizes.$sm;
+	padding-right: constants.$sm;
 	.form {
 		display: flex;
 		flex-direction: column;
@@ -13,7 +13,7 @@
 	.ck {
 		width: inherit;
 		font-family: Open Sans;
-		font-size:map-get($map: sizes.$font-size, $key: 'md' );;
+		font-size:map-get($map: constants.$font-size, $key: 'md' );;
 		font-weight: 500;
     	padding: 3px 6px;
     	border: 1px solid #dddddd;

@@ -1,53 +1,50 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
-@use '@repo/styles/buttons';
+@use '@repo/styles/constants';
 
 .person_display_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xxs);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xxs);
     border: none;
     background-color: transparent;
     cursor: pointer;
     &:hover {
-        background-color: colors.$light;
+        background-color: constants.$light;
     }
 }
 
 .person_interface_container {
-    @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: sizes.$xs);
+    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: constants.$xs);
 }
 
 .display_person_interface_container {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
     width: 100%;
     border: none;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'xs');
-    padding: map-get($map: sizes.$padding, $key: 'xs');
+    border-radius: map-get($map: constants.$border_radius, $key: 'xs');
+    padding: map-get($map: constants.$padding, $key: 'xs');
     cursor: pointer;
     background-color: transparent;
     transition: background-color .2s ease;
 }
 
 .display_person_interface_container[data-isselected="true"] {
-    background-color: colors.$primary_light;
-    color: colors.$dark;
+    background-color: constants.$primary_tinted;
+    color: constants.$dark;
     &:hover {
-        background-color: colors.$primary_light;
-        // color: colors.$white;
+        background-color: constants.$primary_tinted;
+        // color: constants.$white;
     }
 }
 
 .display_person_interface_container[data-isselected="false"] {
-    background-color: colors.$lightest;
+    background-color: constants.$lightest;
     &:hover {
-        background-color: colors.$primary_light;
+        background-color: constants.$primary_tinted;
     }
 }
 
 .display_person_interface_container {
     &:disabled {
         background-color: transparent;
-        color: colors.$grey;
+        color: constants.$grey;
         &:hover {
             background-color: transparent;
         }
@@ -55,7 +52,7 @@
 }
 
 .display_person_interface_container_pers_data {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xs);
     font-weight: 600;
     width: 100%;
 }
@@ -66,7 +63,7 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 }
 
 .display_person_interface_delete_button {
@@ -75,5 +72,5 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 }

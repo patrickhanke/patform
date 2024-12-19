@@ -1,10 +1,7 @@
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
-@use '@repo/styles/colors';
-@use '@repo/styles/buttons';
+@use '@repo/styles/constants';
 
 .login_container {
-    @include layout.flexbox($direction: row, $align: stretch, $gap: 0 );
+    @include constants.flexbox($direction: row, $align: stretch, $gap: 0 );
     width: 100vh;
     height: 100vh;
 }
@@ -20,37 +17,37 @@
     width: 60px;
     margin-top: 24px;
     margin-bottom: 24px;
-    background-color: colors.$white;
+    background-color: constants.$white;
 }
 
 .left_container {
-    @include layout.flexbox($direction: column, $align: flex-start, $justify: center, $gap: 0 );
+    @include constants.flexbox($direction: column, $align: flex-start, $justify: center, $gap: 0 );
     flex: 1 1 50%;
-    background-color: colors.$green;
-    color: colors.$white;
+    background-color: constants.$green;
+    color: constants.$white;
     height: 100%;
-    padding: map-get($map: sizes.$padding, $key: 'lg' );
-    border-right: 1px solid colors.$light;
+    padding: map-get($map: constants.$padding, $key: 'lg' );
+    border-right: 1px solid constants.$light;
     position: relative;
     box-sizing: border-box;
 }
 
 .left_content {
-    @include layout.flexbox($direction: column, $align: flex-start, $justify: center, $gap: 0 );
+    @include constants.flexbox($direction: column, $align: flex-start, $justify: center, $gap: 0 );
     max-width: 300px;
     margin-left: 60px;
 }
 
 .right_container {
-    @include layout.flexbox($direction: column, $align: center, $justify:center, $gap: 30px );
+    @include constants.flexbox($direction: column, $align: center, $justify:center, $gap: 30px );
     flex: 1 1 50%;
     height: 100%;
-    padding: map-get($map: sizes.$padding, $key: 'lg' );
+    padding: map-get($map: constants.$padding, $key: 'lg' );
     position: relative;
 }
 
 .main_container {
-    @include layout.flexbox($direction: column, $align: center, $justify: center, $gap: 0 );
+    @include constants.flexbox($direction: column, $align: center, $justify: center, $gap: 0 );
     width: 100%;
     height: 100%;
 }
@@ -60,20 +57,20 @@
     width: 360px;
     position: relative;
     margin-bottom: 72px;
-    padding: map-get($map: sizes.$padding, $key: 'lg' )
+    padding: map-get($map: constants.$padding, $key: 'lg' )
 }
 
 .form_container {
-    @include layout.flexbox($direction:column, $align: center, $justify: center, $gap: 12px );
+    @include constants.flexbox($direction:column, $align: center, $justify: center, $gap: 12px );
     flex: 1 1 50%;
     // max-width: 300px;
     button {
-        margin-top: sizes.$lg;
+        margin-top: constants.$lg;
     }
 }
 
 .footer {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0 );
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0 );
     padding: 30px 30px 10px 30px;
     position: absolute;
     bottom: 0;
@@ -81,6 +78,6 @@
     width: 100%;
     box-sizing: border-box;
     p {
-        color: colors.$light;
+        color: constants.$light;
     }
 }

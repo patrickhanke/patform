@@ -1,8 +1,5 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 .holiday_element_container {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center, $gap: sizes.$lg);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center, $gap: constants.$lg);
 }

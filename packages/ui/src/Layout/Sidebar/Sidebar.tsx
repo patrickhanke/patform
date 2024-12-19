@@ -1,23 +1,25 @@
-import styles from './Sidebar.module.scss';
+'use client';
+
 import MenuItem from './components/MenuItem';
 import Logout from './components/Logout';
-import { MenuItemType } from './types';
+import { MenuItem as MenuItemType } from './types';
 import { ReactNode } from 'react';
 import { BsArrowLeftRight } from 'react-icons/bs';
 import { Divider } from '../Divider';
+import './styles.scss';
 
-const Sidebar = ({menuItems, children}: {menuItems: {label: string, value: string, icon: string}[], children?: ReactNode}) => {
+const Sidebar = ({menuItems, children}: {menuItems: MenuItemType[], children?: ReactNode}) => {
 	return (
-		<div className={styles.sidebar_container}>
+		<div className='sidebar_container'>
 			<div>
-				<ul className={styles.menu_item_container}>
+				<ul className='menu_item_container'>
 					<li>
 						<div
-							className={styles.menu_item}
+							className='menu_item'
 							onClick={() => {
 								const sidebar = document.getElementById('sidebar');
 								if (sidebar) {
-									sidebar.classList.toggle(styles.sidebar_open);
+									sidebar.classList.toggle('sidebar_open');
 								}
 								const sidebarLabels = document.querySelectorAll('.sidebar_label');
 								sidebarLabels.forEach(label => {
@@ -43,11 +45,11 @@ const Sidebar = ({menuItems, children}: {menuItems: {label: string, value: strin
 				<Divider size='none' />
 				<div >
 					{children &&
-						<div className={styles.menu_content_container}>
+						<div className='menu_content_container'>
 							{children}
 						</div>
 					}
-					<ul className={styles.menu_item_container}>
+					<ul className='menu_item_container'>
 						{[...menuItems].map((menu_item: MenuItemType) => (
 							<MenuItem
 								key={menu_item.value}
@@ -62,7 +64,7 @@ const Sidebar = ({menuItems, children}: {menuItems: {label: string, value: strin
 					</ul>
 				</div>
 			</div>
-			<ul className={styles.menu_item_container}>
+			<ul className='menu_item_container'>
 				<li>
 					<Logout />
 				</li>

@@ -1,21 +1,18 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 .worker_interface_container {
-    @include layout.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: sizes.$xs);
-    padding: map-get($map: sizes.$padding, $key: 'sm' )
+    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: constants.$xs);
+    padding: map-get($map: constants.$padding, $key: 'sm' )
 }
 
 .display_worker_container {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
     width: 100%;
     border: none;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'md');
+    border-radius: map-get($map: constants.$border_radius, $key: 'md');
     cursor: pointer;
     transition: background-color .2s ease;
-    padding-right: sizes.$md;
+    padding-right: constants.$md;
     padding-left: 0;
 }
 
@@ -24,25 +21,25 @@
 }
 
 .display_worker_container[data-isselected="true"] {
-    background-color: colors.$green_light;
-    color: colors.$green_shaded;
+    background-color: constants.$green_light;
+    color: constants.$green_shaded;
     &:hover {
-        background-color: colors.$green;
-        // color: colors.$white;
+        background-color: constants.$green;
+        // color: constants.$white;
     }
 }
 
 .display_worker_container[data-isselected="false"] {
-    background-color: colors.$lightest;
+    background-color: constants.$lightest;
     &:hover {
-        background-color: colors.$light;
+        background-color: constants.$light;
     }
 }
 
 .display_worker_container {
     &:disabled {
         background-color: transparent;
-        color: colors.$grey;
+        color: constants.$grey;
         &:hover {
             background-color: transparent;
         }
@@ -50,7 +47,7 @@
 }
 
 .display_worker_container_pers_data {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: sizes.$xs);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xs);
     font-family: Roboto, sans-serif;
     font-weight: 500;
 }
@@ -61,7 +58,7 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 }
 
 .display_worker_delete_button {
@@ -70,5 +67,5 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 }

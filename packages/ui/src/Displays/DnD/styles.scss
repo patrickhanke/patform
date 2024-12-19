@@ -1,12 +1,10 @@
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
-@use '@repo/styles/colors';
+@use '@repo/styles/constants';
 
 .drag_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: flex-start, $gap: sizes.$xs);
-    padding: map-get($map: sizes.$padding, $key: 'sm' );
-    margin-top: sizes.$xs;
-    margin-bottom: sizes.$xs;
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$xs);
+    padding: map-get($map: constants.$padding, $key: 'sm' );
+    margin-top: constants.$xs;
+    margin-bottom: constants.$xs;
     width: 100%;
     position: relative;
     box-sizing: border-box ;

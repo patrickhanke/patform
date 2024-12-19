@@ -1,9 +1,7 @@
-@use '@repo/styles/sizes';
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
+@use '@repo/styles/constants';
 
 .user_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
     cursor: pointer;
     position: relative;
 };
@@ -14,5 +12,5 @@
     position: relative;
     border-radius: 50%;
     overflow: hidden;
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 };

@@ -1,9 +1,7 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .overlay_container {
-    background-color: colors.$dark;
+    background-color: constants.$dark;
     position: fixed;
     height: 100vh;
     width: 100vw;
@@ -23,7 +21,7 @@
 }
 
 .slidein_container {
-    @include layout.flexbox($direction: column, $align: stretch, $gap: sizes.$xs);
+    @include constants.flexbox($direction: column, $align: stretch, $gap: constants.$xs);
     width: 0;
     top: 0;
     right: -60px;
@@ -33,7 +31,7 @@
     position: fixed;
     box-sizing: border-box;
     overflow: visible;
-    background-color: colors.$white;
+    background-color: constants.$white;
     padding: 0;
     visibility: hidden;
     transition-property: visibility;
@@ -63,16 +61,16 @@
 }
 
 .slidein_header {
-    @include layout.flexbox($align: center, $justify: flex-start);
+    @include constants.flexbox($align: center, $justify: flex-start);
     width: 100%;
     box-sizing: border-box;
     height: 36px;
-    border-bottom: 1px solid colors.$grey;
-    padding: map-get(sizes.$padding, 'sm');
+    border-bottom: 1px solid constants.$grey;
+    padding: map-get(constants.$padding, 'sm');
 }
 
 .slidein_content {
-    @include layout.flexbox($direction: column, $align: stretch, $gap: sizes.$xs);
+    @include constants.flexbox($direction: column, $align: stretch, $gap: constants.$xs);
     flex: 1 1;
     position: relative;
     box-sizing: border-box;

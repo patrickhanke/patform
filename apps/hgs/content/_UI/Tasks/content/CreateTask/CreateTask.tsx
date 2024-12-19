@@ -113,7 +113,7 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 		<>
 			{button ? button({onClick: () => setIsOpen(true)}) :
 				<button 
-					className={clsx( 'full_button', 'green', 'md', styles.create_task_button) } 
+					className={clsx( 'full_button', 'primary', 'md', styles.create_task_button) } 
 					onClick={() => setIsOpen(true)}
 				>
 					<Icon type='plus' strokeWidth={1} size={12} />

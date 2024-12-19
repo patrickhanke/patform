@@ -1,6 +1,4 @@
-@use '@repo/styles/sizes';
-@use '@repo/styles/colors';
-
+@use '@repo/styles/constants';
 
 .page-content {
     height: 100%;
@@ -8,7 +6,7 @@
     flex: 1 0;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: map-get($map: sizes.$padding, $key: 'site' );
+    padding: map-get($map: constants.$padding, $key: 'site' );
 }
 
 .page_header_container {
@@ -20,5 +18,5 @@
     position: relative;
     height: auto;
     box-sizing: border-box;
-    border-bottom: 1px solid colors.$grey;
+    border-bottom: 1px solid constants.$grey;
 }

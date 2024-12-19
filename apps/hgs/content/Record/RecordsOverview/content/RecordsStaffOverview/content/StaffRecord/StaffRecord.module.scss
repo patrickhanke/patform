@@ -1,17 +1,15 @@
-@use '@styles/layout';
-@use '@styles/colors';
-@use '@styles/sizes';
+@use '@repo/styles/constants';
 
 .staff_records_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: flex-start, $gap: sizes.$sm);
+    @include constants.flexbox($direction: column, $justify: space-between, $align: flex-start, $gap: constants.$sm);
 
     .records_subheadline {
-        @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+        @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
         width: 120px;
-        color: colors.$grey;
+        color: constants.$grey;
     }
 }
 
 .staff_siteheader_content {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
 }

@@ -1,26 +1,23 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 @import '../../Tally.module.scss';
 
 .entry_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: sizes.$xs);
-    margin-top: sizes.$lg;
+    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: constants.$xs);
+    margin-top: constants.$lg;
     p {
         line-height: 1.4;
     }
 };
 
 .entry_header {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: flex-end);
-    padding-bottom: sizes.$xs;
-    border-bottom: 1px solid colors.$grey
+    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-end);
+    padding-bottom: constants.$xs;
+    border-bottom: 1px solid constants.$grey
 };
 
  .entry_content {
-    @include layout.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
 };
 
 .entry_content_icon {
@@ -29,13 +26,13 @@
 
 .entry_content_text {
     flex: 1 1 calc(100% - 24px);
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
 };
 
 .create_entry_container {
-    @include layout.flexbox($direction: column, $justify: center, $align: flex-start, $gap: sizes.$xs);
-    background-color: colors.$lightest;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    @include constants.flexbox($direction: column, $justify: center, $align: flex-start, $gap: constants.$xs);
+    background-color: constants.$lightest;
+    padding: map-get($map: constants.$padding, $key: 'md' );
     height: 100%;
 };
 

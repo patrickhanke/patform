@@ -1,20 +1,18 @@
-@use '@repo/styles/sizes';
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
+@use '@repo/styles/constants';
 
 .nav_container_underline {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: space-between);
+    @include constants.flexbox($direction: row, $align: flex-end, $justify: space-between);
     width: 100%;
     padding-bottom: 0;
     position: relative;
     box-sizing: border-box;
-    border-bottom: 1px solid colors.$grey;
-    padding: map-get($map: sizes.$padding, $key: 'md' );
+    border-bottom: 1px solid constants.$grey;
+    padding: map-get($map: constants.$padding, $key: 'md' );
     padding-bottom: 0;
 };
 
 .site_navigation_container {
-    @include layout.flexbox($direction: row, $align: flex-end, $justify: flex-start);
+    @include constants.flexbox($direction: row, $align: flex-end, $justify: flex-start);
     width: auto;
     position: relative;
     z-index: 4;
@@ -25,25 +23,25 @@
 }
 
 .navigation_element_container {
-    @include layout.flexbox($direction: column, $align: center, $justify: space-between, $gap: 0);
+    @include constants.flexbox($direction: column, $align: center, $justify: space-between, $gap: 0);
     background-color: transparent;
     cursor: pointer;
-    color: colors.$darkgrey;
+    color: constants.$grey_shaded;
     font-weight: 500;
     transition: border-bottom .2 ease, color .2 ease;
-    // border: .5px solid colors.$grey;
+    // border: .5px solid constants.$grey;
     border: none;
-    border-radius: map-get($map: sizes.$border_radius, $key: 'sm' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
     &:hover {
-        background-color: colors.$light;
+        background-color: constants.$light;
     }
     .title_container {
-        padding: map-get($map: sizes.$padding, $key: 'xs' )
+        padding: map-get($map: constants.$padding, $key: 'xs' )
     }
 }
 
 .navigation_element_container[data-isactive='true'] {
-    background-color: colors.$primary;
-    color: colors.$light;
-    // border: .5px solid colors.$secondary;
+    background-color: constants.$primary;
+    color: constants.$light;
+    // border: .5px solid constants.$secondary;
 }

@@ -1,6 +1,4 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 body {
     margin: 0;
@@ -13,7 +11,7 @@ body {
   }
   
   .autocomplete-control {
-    margin: sizes.$md;
+    margin: constants.$md;
     background: #fff;
     width: auto;
     max-width: 420px;
@@ -28,8 +26,8 @@ body {
     min-width: 240px;
     max-width: 300px;
     height: auto;
-    padding: map-get($map: sizes.$padding, $key: 'sm' );
-    font-size: map-get($map: sizes.$font_size, $key: 'md');
+    padding: map-get($map: constants.$padding, $key: 'sm' );
+    font-size: map-get($map: constants.$font_size, $key: 'md');
   }
   
   .autocomplete-container .custom-list {
@@ -44,6 +42,6 @@ body {
   }
   
   .autocomplete-container .custom-list-item:hover {
-    background: lightgrey;
+    background: grey_tinted;
     cursor: pointer;
   }

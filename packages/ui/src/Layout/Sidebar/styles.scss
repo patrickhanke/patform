@@ -1,6 +1,140 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
+
+.sidebar_container {
+    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between);
+    height: calc(100% - 42px);
+    width: 100%;
+    z-index: 4;
+    background-color: transparent;
+    overflow-x: hidden;
+    ul {
+        margin-top: constants.$md;
+        list-style: none;
+        font-weight: 500;
+        li {
+            font-family: Geist;
+            font-size:map-get(constants.$font_size, 'sm' );
+        }
+        li[data-hassubmenu='true'] {
+            font-family: Geist;
+            margin-bottom: constants.$xs;
+            font-size: map-get(constants.$font_size, 'sm' );
+            button {
+                font-size: map-get(constants.$font_size, 'sm' );
+            }
+            a {
+                font-size: map-get(constants.$font_size, 'sm' );
+            }
+        }
+    }
+    .menu_content_container {
+        padding: map-get($map: constants.$padding, $key: 'xs' );
+        border-bottom: 1px solid constants.$grey;
+    }
+    .menu_item_container {
+        padding: map-get($map: constants.$padding, $key: 'xs' );
+        margin: 0;
+        .menu_item {
+            border: none;
+            background-color: transparent;
+            font-weight: 500;
+            @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$xs );
+            color: constants.$dark_tinted;
+            padding: map-get(constants.$padding , 'xs' );
+            border-radius: map-get(constants.$border_radius , 'xs' );
+            text-decoration: none;
+            cursor: pointer;
+            width: 100%;
+            height: 24px;
+            box-sizing: border-box;
+            position: relative;
+            &:hover {
+                background-color: constants.$grey_tinted;
+                color: constants.$dark;
+            }
+        }
+        .menu_item[data-disabled="true"] {
+            color: constants.$grey_tinted;
+            cursor: not-allowed;
+            &:hover {
+                background-color: transparent;
+                color: constants.$grey_tinted;
+            }
+        }
+        .menu_item_active {
+            background-color: constants.$grey_tinted;
+            color: constants.$dark; 
+            &:hover {
+                background-color: constants.$grey_tinted;
+                color: constants.$dark; 
+
+            }
+        }
+    }
+}
+
+.submenu_container {
+    height: 0;
+    transition: height .4s ease;
+    font-size: map-get(constants.$font_size, 'xs' );
+    overflow: hidden;
+    ul {
+        margin-top: 0;
+        list-style: none;
+        font-weight: 500;
+        // background-color: constants.$lightest;
+        border-radius: map-get($map: constants.$border_radius, $key: 'xs' );
+        // padding-inline-start: constants.$sm;
+        li:first-child {
+            margin-top: 0;
+            padding-top: 3px;
+        }
+        li {
+            margin-bottom: constants.$xs;
+            font-size: map-get(constants.$font_size, 'xs' );
+            button {
+                font-size: map-get(constants.$font_size, 'xs' );
+            }
+        }
+    }
+};
+
+.submenu_container[data-showsubmenu='true'] {
+    height: auto;
+}
+
+.admin_container {
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$md);
+    background-color: constants.$yellow;
+    padding: map-get($map: constants.$padding, $key: 'md' );
+    font-size: map-get(constants.$font_size, 'xs' );
+    font-weight: 500;
+    color: constants.$dark;
+}
+
+.message_indicator_container {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 5;
+    transform: translateY(-50%);
+}
+
+.sidebar_open {
+    width: 40px;
+}
+
+.sidebar_divider_container {
+    @include constants.flexbox($direction: row, $align: flex-end, $justify: flex-start);
+    padding: map-get($map: constants.$padding, $key: 'xs' );
+    border-bottom: 1px solid constants.$grey;
+    position: relative;
+    font-size: map-get(constants.$font_size, 'xs' );
+    font-weight: 500;
+    color: constants.$dark;
+    margin-top: constants.$md;
+    margin-bottom: constants.$xs;
+}
 
 .sidebar_label {
     display: inline;
@@ -14,7 +148,7 @@
 
 .sidebar_dropicon {
     position: absolute;
-    right: sizes.$xs;
+    right: constants.$xs;
     top: 50%;
     transform: translate(0, -50%) rotate(0);
     height: 10px;
@@ -27,4 +161,4 @@
 
 .main_content_open {
     width: calc(100% - 44px); 
-  }
+}

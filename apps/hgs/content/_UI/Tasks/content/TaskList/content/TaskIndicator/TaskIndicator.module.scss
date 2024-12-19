@@ -1,32 +1,29 @@
-@use '@styles/colors';
-@use '@styles/layout';
-@use '@styles/sizes';
-@use '@styles/buttons';
+@use '@repo/styles/constants';
 
 .task_indicator_container {
-    @include layout.flexbox($direction: column, $justify: space-between, $align: center);
-    border-right: 1px solid colors.$grey;
-    // padding: map-get($map: sizes.$padding, $key: 'sm' );
+    @include constants.flexbox($direction: column, $justify: space-between, $align: center);
+    border-right: 1px solid constants.$grey;
+    // padding: map-get($map: constants.$padding, $key: 'sm' );
     width: 10px;
     height: 100%;
 };
 
 .task_indicator_container[data-state="completed"] {
-    background-color: colors.$green;
+    background-color: constants.$green;
 };
 
 .task_indicator_container[data-state="executed"] {
-    background-color: colors.$violet;
+    background-color: constants.$violet;
 };
 
 .task_indicator_container[data-state="created"] {
-    background-color: colors.$blue;
+    background-color: constants.$blue;
 };
 
 .task_indicator_container[data-state="assigned"] {
-    background-color: colors.$yellow;
+    background-color: constants.$yellow;
 };
 
 .task_indicator_container[data-state="archived"] {
-    background-color: colors.$grey;
+    background-color: constants.$grey;
 };

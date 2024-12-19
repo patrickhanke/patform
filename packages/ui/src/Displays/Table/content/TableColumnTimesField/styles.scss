@@ -1,21 +1,19 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .table_column_time_container {
-    @include layout.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
-    background-color: colors.$white;
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
+    background-color: constants.$white;
     width: 100%;
 }
 
 .table_columns_times_list {
-    @include layout.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: sizes.$md);
+    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$md);
     width: 100%;
-    margin-top: sizes.$md;
+    margin-top: constants.$md;
 }
 
 .table_columns_times_location_container {
-    @include layout.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: sizes.$md);
+    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$md);
     width: 100%;
-    margin-top: sizes.$md;
+    margin-top: constants.$md;
 }

@@ -1,9 +1,7 @@
-@use '@repo/styles/colors';
-@use '@repo/styles/layout';
-@use '@repo/styles/sizes';
+@use '@repo/styles/constants';
 
 .date_display_container {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center);
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
     position: relative;
     width: fit-content;
     font-family: Roboto, sans-serif;
@@ -12,8 +10,8 @@
 }
 
 .date_element {
-    @include layout.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 4px);
-    color: colors.$secondary;
+    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 4px);
+    color: constants.$secondary;
 }
 
 
