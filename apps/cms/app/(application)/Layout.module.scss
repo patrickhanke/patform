@@ -1,0 +1,146 @@
+@use '@repo/styles/constants';
+
+.layout {
+    @include flexbox($direction: row, $align: stretch, $gap: 0);
+    height: 100vh;
+    box-sizing: border-box;
+    position: relative;
+    div {
+        box-sizing: border-box;
+    }
+    input {
+        font-family: 'Open Sans', sans-serif;
+        font-size: map-get($map: constants.$font_size, $key: 'md');
+        font-weight: 500;
+        border: 1px solid constants.$darkgrey;
+        padding: map-get($map: constants.$padding, $key: 'sm');
+        outline: none;
+        transition: border .2s ease, box-shadow .2s ease;
+        letter-spacing: .6px;
+        box-sizing: border-box;
+        &:focus {
+            border: 1px solid constants.$secondary;
+            box-shadow: 0px 0px 1px 1px constants.$secondary_light;
+        }
+        &:active {
+            border: 1px solid constants.$secondary;
+            box-shadow: 0px 0px 1px 1px constants.$secondary_light;
+        }
+    }
+    textarea {
+        font-family: 'Open Sans', sans-serif;
+        font-size: map-get($map: constants.$font_size, $key: 'md');
+        box-sizing: border-box;
+        font-weight: 500;
+        border: 1px solid constants.$primary;
+        padding: map-get($map: constants.$padding, $key: 'sm');
+        outline: none;
+        transition: border .2s ease, box-shadow .2s ease;
+        letter-spacing: .6px;
+        box-sizing: border-box;
+        &:focus {
+            border: 1px solid constants.$secondary;
+            box-shadow: 0px 0px 1px 1px constants.$secondary_light;
+        }
+        &:active {
+            border: 1px solid constants.$secondary;
+            box-shadow: 0px 0px 1px 1px constants.$secondary_light;
+        }
+    }
+    
+}
+
+.sidebar_container {
+    position: relative;
+    flex: 0 0 180px;
+    height: 100%;
+    background-color: transparent;
+    box-sizing: border-box;
+    border-right: 1px solid constants.$grey; 
+}
+
+.header {
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between);
+    background-color: constants.$light;
+    width: 100%;
+    box-sizing: border-box;
+    height: 42px;
+    padding: map-get(constants.$padding, 'lg');
+    h1 {
+        color: constants.$primary;
+    }
+}
+
+.sidebar_header {
+    @include constants.flexbox($direction: row, $align: center, $justify: center);
+    border-bottom: 1px solid constants.$grey;
+    background-color: transparent;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    height: 42px;
+    padding: map-get(constants.$padding, 'lg');
+}
+
+.main_content {
+    @include constants.flexbox($direction: row, $align: stretch, $gap: 0);
+    width: calc(100% - 180px);
+}
+
+.content_container {
+    width: 100%;
+}
+
+.header_button_container {
+    flex:  0 0 180px;
+}
+
+.header_breadcrumps {
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: 4px);
+}
+
+.head-content {
+    width: 100%;
+    position: relative;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 100%;
+    height: calc(100% - 12px);
+    position: relative;
+    box-sizing: border-box;
+    // background-color: constants.$lightest;
+}
+
+.feedback_container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+.breadcrumps {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-variant: normal;
+    letter-spacing: 1px; 
+    margin: 0;
+    text-decoration: none;
+    line-height: 1;
+    font-size: map-get($map: constants.$font_size, $key: 'md');
+    color: constants.$dark;
+    transition: text-decoration .2s ease, color .2s ease;
+    &:hover {
+        color: constants.$dark;
+        text-decoration: underline;
+    }
+}
+
+.breadcrumps:last-child{
+    font-weight: 500;
+}
+
+
+
+

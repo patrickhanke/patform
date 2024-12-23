@@ -29,6 +29,14 @@ const Sidebar = ({menuItems, children}: {menuItems: MenuItemType[], children?: R
 								sidebarDropicons.forEach(label => {
 									label.classList.toggle('sidebar_dropicon_open');
 								});
+								const subMenuItems = document.querySelectorAll('#submenu_item');
+								subMenuItems.forEach(subMenuItem => {
+									subMenuItem.classList.toggle('submenu_item_open');
+									const isOpen = subMenuItem.getAttribute('data-isopen') === 'true';
+									subMenuItem.setAttribute('data-isopen', (!isOpen).toString());
+								
+								});
+								
 								const mainContent = document.getElementById('main_content');
 								if (mainContent) {
 									mainContent.classList.toggle('main_content_open');

@@ -80,7 +80,7 @@ const MenuItem = ({link, label, icon, subMenu = [], disabled = false, divider}: 
 			<div className={'submenu_container'} data-showsubmenu={showSubMenu}>
 				<ul>
 					{subMenu.length > 0 && subMenu.map((subMenuItem : MenuItemType['sub_menu'][number]) =>
-						<li key={subMenuItem.value}>
+						<li key={subMenuItem.value} className='submenu_item' id='submenu_item'>
 							{!subMenuItem.disabled ? 
 								<Link className={clsx(subMenuHandler(subMenuItem.value, pathname) ? ['menu_item', 'menu_item_active'] : 'menu_item')} href={`${link}${subMenuItem.value}`}>
 									<Icons icon={subMenuItem.icon} />

@@ -1,0 +1,22 @@
+@use '../constants.scss';
+
+.tag {
+    font-family: 'Open Sans', sans-serif;
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
+
+}
+
+.tag .sm {
+    padding: map-get($padding, 'lg');
+    font-size: map-get($font_size, 'lg');
+}
+
+.tag .md {
+    padding: map-get($padding, 'md');
+    font-size: map-get($font_size, 'md');
+}
+
+.tag .lg {
+    padding: map-get($padding, 'lg');
+    font-size: map-get($font_size, 'lg');
+}

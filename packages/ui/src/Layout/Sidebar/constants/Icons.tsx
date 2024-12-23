@@ -15,7 +15,7 @@ import { GrTask, GrDownload } from 'react-icons/gr';
 import { ImImages } from 'react-icons/im';
 import { CiLocationOn } from 'react-icons/ci';
 import { TfiClose, TfiList, TfiViewList } from 'react-icons/tfi';
-import { LuArchive } from 'react-icons/lu';
+import { LuArchive, LuMessageSquareText } from 'react-icons/lu';
 import { IoIosTimer } from 'react-icons/io';
 
 const Icons = ({icon, color}: {icon: string, color?: string}) => {
@@ -144,6 +144,9 @@ const Icons = ({icon, color}: {icon: string, color?: string}) => {
 	}
 	if (icon === 'minus'){
 		return <AiOutlineMinus color={color || 'inherit'} />;
+	}
+	if (icon === 'messages'){
+		return <LuMessageSquareText color={color || 'inherit'} />;
 	}
 
 	return null;

@@ -68,15 +68,9 @@ const menu_items = [
 		icon: 'settings',
 		divider: 'Einstellungen',
 		sub_menu: [{
-			label: 'Leistungsverzeichnisse',
-			value: '/services',
-			icon: 'services',
-			disabled: true
-		},{
-			label: 'Müll',
-			value: '/waste',
-			icon: 'waste',
-			disabled: true
+			label: 'Nachrichten',
+			value: '/messages',
+			icon: 'messages'
 		},{
 			label: 'Nutzerverwaltung',
 			value: '/user_management',
@@ -85,6 +79,11 @@ const menu_items = [
 			label: 'Zeiten und Zuschläge',
 			value: '/times',
 			icon: 'calendar'
+		},{
+			label: 'Leistungsverzeichnisse',
+			value: '/services',
+			icon: 'services',
+			disabled: true
 		}]
 	}
 ];

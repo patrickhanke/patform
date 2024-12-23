@@ -20,22 +20,20 @@ const SiteHeader = ({
 	}, [refetch]);
 	
 	return (
-		<div className={styles.main_container} >
-			<div className={styles.siteheader_container}>
-				<h1>
-					{title}
-				</h1>
-				<div className={styles.siteheader_right_container}>
-					{createTask}
-					<div className='vertical_line' />
-					{createTicket}
-					<div className='vertical_line' />
-					{selectYear}
-					<div className='vertical_line' />
-					<CalendarWeek />
-					<div className='vertical_line' />
-					<UserDisplay />
-				</div>
+		<div className={styles.siteheader_container}>
+			<h1>
+				{title}
+			</h1>
+			<div className={styles.siteheader_right_container}>
+				{createTask}
+				<div className='vertical_line' />
+				{createTicket}
+				<div className='vertical_line' />
+				{selectYear}
+				<div className='vertical_line' />
+				<CalendarWeek />
+				<div className='vertical_line' />
+				<UserDisplay />
 			</div>
 		</div>
 	)

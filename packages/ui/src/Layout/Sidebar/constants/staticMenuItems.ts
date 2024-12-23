@@ -1,4 +1,4 @@
-import { MenuItemType } from '../types';
+import { MenuItem } from '../types';
 
 const staticMenuItems = [
 	{
@@ -31,6 +31,6 @@ const staticMenuItems = [
 		]
 	}
   
-] as MenuItemType[];
+] as MenuItem[];
 
 export default staticMenuItems;
