@@ -1,6 +1,6 @@
 import React from 'react';
 import { HolidaysProps } from './types';
-import { generateGraphQLQuery } from '@provider';
+import { generateGraphQLQuery } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import useHolidayColumns from './hooks/useHolidayColumns';
 import CreateHolidayTemplate from './content/CreateHolidayTemplate';

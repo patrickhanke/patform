@@ -3,7 +3,7 @@
 .display_person_container {
     @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xxs);
     width: fit-content;
-    font-family: Roboto, sans-serif;
+    font-family: Geist, sans-serif;
     border-radius: map-get($map: constants.$border_radius, $key: 'md');
     letter-spacing: 1px;
     font-size: map-get($map: constants.$font_size, $key: 'sm');

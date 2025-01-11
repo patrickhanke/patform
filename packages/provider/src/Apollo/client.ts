@@ -15,7 +15,7 @@ import { makeClientProps } from './types.js';
 // import { InMemoryCache } from '@apollo/client-react-streaming';
 
 const makeClient: makeClientProps = (appId, masterKey) => {
-	const localToken = Cookies.get('patform_token');
+	const localToken = Cookies.get(process.env.SESSION_TOKEN as string);
 
 	const token = localToken || '';
 
@@ -24,8 +24,8 @@ const makeClient: makeClientProps = (appId, masterKey) => {
 		headers: {
 			'X-Parse-Application-Id': appId || '',
 			// 'X-Parse-REST-API-Key': process.env.SASHIDO_REST_KEY || '',
-			'X-Parse-Master-Key': masterKey || ''
-			// 'X-Parse-Session-Token': token
+			'X-Parse-Master-Key': masterKey || '',
+			'X-Parse-Session-Token': token
 		}
 	});
 

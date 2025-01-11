@@ -29,7 +29,9 @@ const FormikRender: FC<FormikRenderProps> = ({
 		<Formik 
 			initialValues={data ? data : Object.fromEntries(fields.map(field => [field.name, field.initialValue]))}
 			onSubmit={(values) => {
-				formSubmitHandler(values);
+				if (formSubmitHandler) {
+					formSubmitHandler(values);
+				}
 			}}
 			validationSchema={Yup.object().shape(Object.fromEntries(getFieldsWithValidation(fields).map(field => [field.name, createYupSchema(field.type, field.validation)])) )}
 			validateOnMount

@@ -1,5 +1,5 @@
-import { v4 } from 'uuid';
 import { ModuleOptionsField } from '../types';
+import { generateUuid } from '@repo/provider';
 
 export const module_option_fields: ModuleOptionsField = {
     '/website': {
@@ -95,7 +95,7 @@ export const module_option_fields: ModuleOptionsField = {
           },
         fields: [
             {
-              id: v4(),
+              id: generateUuid(),
               label: "Startalter",
               type: "number",
               name: "data.start_age",
@@ -107,7 +107,7 @@ export const module_option_fields: ModuleOptionsField = {
               }
             },
             {
-              id: v4(),
+              id: generateUuid(),
               label: "Endalter",
               type: "number",
               name: "data.end_age",

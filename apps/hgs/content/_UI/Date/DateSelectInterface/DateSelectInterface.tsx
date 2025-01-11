@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import DateSelect from './content/DateSelect';
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import TimeDisplay from './content/TimeDisplay';
 import { useQuery } from '@apollo/client';
 import { GET_SERVICE_TIME } from '@queries';

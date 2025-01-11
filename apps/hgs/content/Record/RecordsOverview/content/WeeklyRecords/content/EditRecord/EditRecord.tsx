@@ -3,11 +3,12 @@ import { EditRecordProps, WorkingTime, WorkingTimes } from './types';
 import { DefaultDay, ErrorMessage } from '@types';
 import RecordTimeDisplay from './components/RecordTimeDisplay';
 import styles from './EditRecord.module.scss';
-import { AppContext, createTime, findDefaultTimeForDate, getWorktimeDuration, useDataHandler, useGetActiveRecord } from '@provider';
+import { AppContext, createTime, findDefaultTimeForDate, getWorktimeDuration, useGetActiveRecord } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import EditTime from './components/EditTime';
 import { cloneDeep, pullAllBy, set } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 import { CreateButton, IconButton, SlideIn } from '@repo/ui';
+import { generateUuid } from '@repo/provider';
 
 const EditRecord = ({userId, selectedWeek, weekDays, refetch} : EditRecordProps) => {
 	const [slidein, setSlideIn] = useState(false);
@@ -132,7 +133,7 @@ const EditRecord = ({userId, selectedWeek, weekDays, refetch} : EditRecordProps)
 
 	const createNewDay = useCallback(() => {
 		const newDay: DefaultDay = {
-			id: uuidv4(),
+			id: generateUuid(),
 			date: '',
 			year: new Date().getFullYear(),
 			month: new Date().getMonth() + 1,

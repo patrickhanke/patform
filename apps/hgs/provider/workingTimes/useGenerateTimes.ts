@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { useContext } from 'react';
-import { generateGraphQLQuery, paramsHandler, UserContext } from '../context';
+import { generateGraphQLQuery, paramsHandler, UserContext } from '@repo/provider';
 import { useCallback } from 'react';
 import { GetWorkingTimes, PeriodObject } from './types';
 import findSurchargesForDay from './functions/findSurchargesForDay';
@@ -9,7 +9,7 @@ import checkSurchargeTimeCondition from './functions/checkSurchargeTimeCondition
 import checkSurchargeDayCondition from './functions/checkSurchargeDayCondition';
 
 const useGenerateTimes = () => {
-	const {project} = useContext(UserContext);
+	const {projectId} = useContext(UserContext);
 	const {data} = useQuery(generateGraphQLQuery(
 		{
 			type: 'find', 
@@ -17,7 +17,7 @@ const useGenerateTimes = () => {
 			fields: ['objectId', 'name', 'createdAt', 'active', 'type', 'time_value', 'day_value', 'work_value', 'value' , 'start_date', 'end_date']
 		}
 	), {
-		variables: {params: paramsHandler({filters: [{key: 'project', value: project.objectId, operator: '_eq', id: 'projectId'}]} )}
+		variables: {params: paramsHandler({filters: [{key: 'project', value: projectId, operator: '_eq', id: 'projectId'}]} )}
 	});
 	
 	const getWorkingTimes: GetWorkingTimes = useCallback(({days}) => {

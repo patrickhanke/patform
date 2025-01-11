@@ -3,7 +3,7 @@
 import React, { Suspense, useEffect, useMemo } from 'react';
 import useGetTickets from './hooks/useGetTickets';
 import styles from './Tickets.module.scss';
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import { TicketsComponent } from './types';
 import clsx from 'clsx';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -108,6 +108,18 @@ const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 			/>
 		</Suspense>
 	), [filters, tickets]);
+
+	if (id && className) {
+		return (
+			<div className={clsx(styles.ticket_overview)}>
+				{siteHeaderContent}
+				<Table
+					columns={columns}
+					data={tickets ? tickets : []}
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<Page 

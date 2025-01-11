@@ -1,10 +1,10 @@
 import React from 'react';
-import { Page } from '@repo/ui';
+import { Page, UserMessages } from '@repo/ui';
 
 const Dashboard = () => {
 	return (
 		<Page title='Dashboard'>
-			<h2> Übersicht </h2>
+			<UserMessages />
 		</Page>
 	);
 };

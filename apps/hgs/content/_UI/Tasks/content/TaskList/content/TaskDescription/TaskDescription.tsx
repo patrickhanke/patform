@@ -1,4 +1,4 @@
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import { GET_TASK_DESCRIPTION } from '@queries';
 import { useQuery } from '@apollo/client';
 import React, { useEffect } from 'react';

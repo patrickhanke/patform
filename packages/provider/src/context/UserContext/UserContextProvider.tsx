@@ -5,32 +5,12 @@ import UserContext from './UserContext';
 import { axiosclient } from '@repo/provider';
 import Cookies from 'js-cookie';
 import {User} from '@repo/types';
-import { useQuery } from '@apollo/client';
-import find_user_messages from './constants/find_user_messages';
 import { useSessionStorage } from 'usehooks-ts';
 
-const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
+const UserContextProvider = ({ children}: {children: React.ReactNode}) => {
 	const token = Cookies.get(process.env.SESSION_TOKEN as string);
-	const [project, setProject, removeProject] = useSessionStorage<string | undefined>('project', undefined, {initializeWithValue: true});
-	const [user, setUser, removeUser] = useSessionStorage<User | undefined>('user', undefined, {initializeWithValue: true});
-
-	console.log({project});
-	console.log({user});
-
-	const {data: messageData, refetch} = useQuery(find_user_messages, {
-		variables: {
-			params: {user: {_eq: user?.objectId}}
-		},
-		pollInterval: 10000,
-		skip: !user
-	});
-
-	const userMessages = useMemo(() => {
-		if (messageData) {
-			return messageData.objects.findMessage.results;
-		}
-		return [];
-	}, [messageData]);
+	const [project, setProject] = useSessionStorage<string | undefined>('project', undefined, {initializeWithValue: true});
+	const [user, setUser] = useSessionStorage<User | undefined>('user', undefined, {initializeWithValue: true});
 
 	const changeProject = (id: string) => {
 		setProject( id );
@@ -51,8 +31,6 @@ const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
 		projectId: project || '',
 		changeProject,
 		getUserData,
-		userMessages,
-		refetchMessages: refetch
 	}), [token, user]);
 
 	useEffect(() => {

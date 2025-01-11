@@ -2,7 +2,7 @@
 
 import React, { useCallback, useState } from 'react';
 
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import { TaskListComponent } from './types';
 import useTableColumns from './hooks/useTableColumns';
 import { Task } from '@types';

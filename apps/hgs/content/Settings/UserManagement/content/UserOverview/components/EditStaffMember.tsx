@@ -1,4 +1,5 @@
-import { AppContext, useDataHandler } from '@provider';
+import { AppContext } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
 import styles from '../UserOverview.module.scss';

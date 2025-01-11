@@ -8,7 +8,7 @@ import UserSettings from './content/UserSettings';
 import StaffMemberOverview from './content/StaffMemberOverview';
 import { Params } from '@types';
 import StaffMemberTimes from './content/StaffMemberTimes';
-import { UserContext } from '@provider';
+import { UserContext } from '@repo/provider';
 import { SiteState } from '@repo/types';
 import { SiteHeader } from '@repo/ui';
 
@@ -23,14 +23,14 @@ const StaffMember = ({params} : {params: Params}) => {
 	const siteStates = useWorkerSiteStates();
 	const [siteState, setSiteState] = useState<SiteState>(siteStates[0] as SiteState);
 	const [createRecord, setCreateRecord] = useState(false);
-	const {project} = useContext(UserContext);
+	const {projectId} = useContext(UserContext);
 
 	const siteHeaderButtons = useMemo(() => siteState.value === 'times' ? [{
 		text: 'Neue Zeiterfassung anlegen',
 		onClick: () => setCreateRecord(true)
 	}] : [], [siteState]);
 
-	if (loading ||  !project) {
+	if (loading ||  !projectId) {
 		return <p>Lädt...</p>;
 	}
 	const user = data.objects.get_User;
@@ -58,7 +58,7 @@ const StaffMember = ({params} : {params: Params}) => {
 					timeSettings={user.time_settings}
 					createRecord={createRecord}
 					setCreateRecord={setCreateRecord}
-					projectId={project.objectId}
+					projectId={projectId}
 				/>
 			}
 		</>

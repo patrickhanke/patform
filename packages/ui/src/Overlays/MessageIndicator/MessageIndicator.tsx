@@ -1,11 +1,19 @@
+'use client';
+
 import styles from './MessageIndicator.module.scss';
-import { Message } from '@repo/types';
+import { NotificationContext } from '@repo/provider';
+import { useContext, useEffect } from 'react';
 
-const MessageIndicator = ({messages = []}: {messages: Message[]}) => {
-	const newMessages = messages.filter(message => !message.is_read);
+const MessageIndicator = () => {
+	const {unreadNotifications} = useContext(NotificationContext);
+	// useEffect(() => {
+	// 	console.log(unreadNotifications);
+		
+	// 	// This effect will run whenever unreadNotifications changes
+	// }, [unreadNotifications]);
 
-	if (newMessages && newMessages.length > 0) return (
-		<div className={styles.message_indicator}>{newMessages.length}</div>
+	if (unreadNotifications && unreadNotifications.length > 0) return (
+		<div className={styles.message_indicator}>{unreadNotifications.length}</div>
 	);
 
 	return null;

@@ -1,6 +1,6 @@
 'use client';
 
-import { UserContext } from '@provider';
+import { UserContext } from '@repo/provider';
 import React, { useContext, useState } from 'react';
 import styles from '../CommentInterface.module.scss';
 import clsx from 'clsx';

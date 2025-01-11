@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { axiosclient } from '@provider';
+import { axiosclient } from '@repo/provider';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
 import styles from '../Login.module.scss';
 import { User } from '@types';
-import { useLocalStorage } from 'usehooks-ts';
 import { loginUser } from '@repo/provider';
 
 const LoginSchema = Yup.object().shape({
@@ -15,9 +13,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
-	const [value, setValue, removeValue] = useLocalStorage('project', 0);
 	const [disabled, setDisabled] = useState(false);
-	const router = useRouter();
 	const [error, setError] = useState('');
 
 	const formik = useFormik({
@@ -29,9 +25,11 @@ const LoginForm = () => {
 		
 		onSubmit: async (values, actions) => {
 			setDisabled(true);
-			const user: User | null = await axiosclient().post('/functions/get-user-data', {
+			const userData = await axiosclient().post('/functions/get-user-data', {
 				email: values.email
 			});
+
+			const user: User & {has_access: boolean} | undefined = userData?.data?.result ;
 
 			if (!user) {
 				window.alert('Für diese E-Mail Adresse ist kein Nutzer hinterlegt');
@@ -40,15 +38,24 @@ const LoginForm = () => {
 			}
 
 			if (user) {
-				const login = await loginUser({email: values.email, password: values.password});
-				if (login) {
-					if (login.error) {
-						setError(login.message);
-						setDisabled(false);
-						return;
-					} else {
-						router.push('/');
+				console.log(user);
+				console.log(user.has_access);
+				
+				if (user.has_access === true) {
+					const login = await loginUser({email: values.email, password: values.password});
+					console.log(login);
+					
+					if (login) {
+						if (login.error) {
+							setError(login.message);
+							setDisabled(false);
+							return;
+						} else {
+							window.location.pathname = '/';
+						}
 					}
+				} else {
+					setError('Kein Zugriff auf die App');
 				}
 				setDisabled(false);
 			}

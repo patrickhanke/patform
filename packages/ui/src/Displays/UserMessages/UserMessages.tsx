@@ -1,100 +1,51 @@
 'use client';
 
 // import { UserContext, sortArrayForDivider, useDataHandler } from '@provider';
-import React, { useCallback, useContext, useMemo, useState } from 'react';
-import UserMessage from './components/UserMessage';
-import useGetMessagesContent from './hooks/useGetMessagesContent';
+import { useContext, useEffect } from 'react';
 import styles from './UserMessage.module.scss';
 import clsx from 'clsx';
-import { sortArrayForDivider, UserContext } from '@repo/provider';
-import { useDataHandler } from '@repo/provider';
-import { MessageContent } from './types';
-import { SiteHeader } from '@repo/ui';
+import { NotificationContext } from '@repo/provider';
+import { Notification } from '@repo/types';
+import RenderNotification from './components/RenderNotification';
 
 const UserMessages = () => {
-	const {userMessages, refetchMessages} = useContext(UserContext);
-	const {deleteData, updateData} = useDataHandler();
-	const [loading, setLoading] = useState(false);
-	const messageContent = useGetMessagesContent(userMessages);
-	console.log(userMessages);
+	const {notifications, setNotificationsToRead, deleteNotification} = useContext(NotificationContext);
 
-	const setMessageToRead = async (objectId: string) => {
-		await updateData({
-			className: 'Message',
-			objectId,
-			updateObject: {
-				is_read: true
-			}
-		});
-		refetchMessages();
-	};
+	useEffect(() => {
+		const handleVisibilityChange = () => {
+			if (document.visibilityState === 'visible') {
+				console.log('Visible');
+				setNotificationsToRead();
+			} 
+		};
 
-	const deleteMessageHandler = async (objectId: string) => {
-		await deleteData({
-			className: 'Message',
-			objectId
-		});
-		refetchMessages();
-	};
+		document.addEventListener('visibilitychange', handleVisibilityChange);
 
-	const setAllMessagesToRead = useCallback(async () => {
-		setLoading(true);
-		const messagesToUpdate = userMessages.filter(message => !message.is_read);
+		return () => {
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+		};
+	}, []);
 
-		await Promise.all(messagesToUpdate.map(messageToUpdate => updateData({
-			className: 'Message',
-			objectId: messageToUpdate.objectId,
-			updateObject: {
-				is_read: true
-			}
-		})));
-		refetchMessages();
-		setLoading(false);
-	}, [userMessages]);
+	console.log(notifications);
 
-	const deleteAllMessages = useCallback(async () => {
-		setLoading(true);
-
-		await Promise.all(userMessages.map(messageToUpdate => deleteData({
-			className: 'Message',
-			objectId: messageToUpdate.objectId
-		})));
-		refetchMessages();
-		setLoading(false);
-	}, [userMessages]);
-
-	const siteHeaderContent = useMemo(() => {
-		return (
-			<div className={styles.siteheader_content}>
-				<button 
-					className='border_button md dark'
-					onClick={() => setAllMessagesToRead()}
-					disabled={loading}
-				>
-					Alle Nachrichten als gelesen markieren
-				</button>
-				<button 
-					className='border_button md dark'
-					onClick={() => deleteAllMessages()}
-					disabled={loading}
-				>
-					Alle Nachrichten löschen
-				</button>
-			</div>
-		);
-	}, [loading]);
-    
+	if (!notifications || notifications.length === 0) {
+		return <div><p>Gegenwärtig keine neuen Nachrichten vorhanden</p></div>;
+	}
+	
 	return (
 		<>
-			<div className={clsx('site_content',styles.user_messages_container)}>
-				{!messageContent.length && <div><p>Gegenwärtig keine neuen Nachrichten vorhanden</p></div>}
-				{sortArrayForDivider(messageContent, 'createdAt').map((message: MessageContent & {divider?:boolean}, index: number) => (
-					<UserMessage
-						key={message.objectId}
-						message={message}
-						deleteMessageHandler={deleteMessageHandler}
-						setMessageToRead={setMessageToRead}
-						showDivider={ index === 0 || message.divider ||  false}
+			<h3>Nachrichten</h3>
+			<div className={clsx('content_element', 'no_padding', styles.user_messages_container)}>
+				{notifications && notifications.map((notification: Notification & {divider?:boolean}) => (
+					<RenderNotification 
+						key={notification.id} 
+						title={notification.title} 
+						body={notification.body} 
+						timestamp={notification.timestamp} 
+						read={notification.read}
+						image={notification.image}
+						id={notification.id}
+						deleteNotification={deleteNotification}
 					/>
 				))}
 			</div>

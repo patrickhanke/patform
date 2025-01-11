@@ -1,7 +1,7 @@
 import { User } from '@types';
-import { IconButton } from '@repo/ui';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import StaffMemberSettings from '../content/StaffMemberSettings';
 
 const useTableColumns = () => { 
 	const columns: ColumnDef<User>[] = useMemo(() => [
@@ -20,7 +20,7 @@ const useTableColumns = () => {
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => <IconButton icon='link' isLink link ={`/staff/${row.objectId}`} /> ,
+			accessorFn: row => <StaffMemberSettings userId={row.objectId} /> ,
 			header: () => <span>Bearbeiten</span>,
 			id: 'edit',
 			cell: info => info.getValue(),

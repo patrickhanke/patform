@@ -20,7 +20,7 @@
 
 .feedback_container {
     @include constants.flexbox($direction: row, $align: center, $justify: flex-end);
-    font-family: Roboto;
+    font-family: Geist;
     width: auto;
     font-size: map-get($map: constants.$font_size, $key: 'md' );
     animation-name: example;

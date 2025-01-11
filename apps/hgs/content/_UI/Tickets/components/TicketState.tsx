@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import styles from '../Tickets.module.scss';
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import { TicketStateProps } from '../types';
 import { StateDisplay } from '@repo/ui';
 

@@ -4,4 +4,4 @@ export * from './getImageUrl';
 export {findModuleFields} from './moduleHandlers';
 export *  from './utilityFunctions';
 export * from './sortArrayForDivider';
-export * from './loginUser';
+export * from './indexedDb';

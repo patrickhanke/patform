@@ -94,29 +94,29 @@
 
     @if $color == 'violet' {
         color: $violet_shaded;
-        background-color: $violet_light;
+        background-color: $violet_tinted;
         border: 1px solid $violet;
     }
     @if $color == 'green' {
         color: $green_shaded;
-        background-color: $green_light;
+        background-color: $green_tinted;
         border: 1px solid $green;
     }
     @if $color == 'yellow' {
         color: $yellow_shaded;
-        background-color: $yellow_light;
+        background-color: $yellow_tinted;
         border: 1px solid $yellow;
     }
     @if $color == 'red' {
         color: $red_shaded;
-        background-color: $red_light;
+        background-color: $red_tinted;
         border: 1px solid $red;
     }
 };
 
 @mixin full_button_mixin($size: 'sm', $color: 'primary') {
     @include flexbox($direction: row, $align: center, $justify: center, $gap: $xxs);
-    font-family: Roboto, sans-serif;
+    font-family: Geist, sans-serif;
     cursor: pointer;
     transition: background-color .2s ease, color .2s ease;
     border: none;

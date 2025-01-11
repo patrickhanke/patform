@@ -5,10 +5,11 @@ import '@repo/styles/layout';
 import LayoutContext from './components/LayoutContext';
 import SiteHeader from './content/SiteHeader';
 import RenderSidebar from './components/RenderSidebar';
+import Head from 'next/head';
 
 export const metadata = {
-	title: 'Hausmeister App',
-	description: 'PH'
+	title: 'patflow',
+	description: 'PH',
 };
 
 export default async function  RootLayout({
@@ -18,6 +19,10 @@ export default async function  RootLayout({
 }) {
 	return (
 		<html lang="de">
+			 <Head>
+				<link rel="icon" href="/favicon.ico" />
+				<title>patflow</title>
+			</Head>
 			<body>
 				<div className='layout'>
 					<LayoutContext>

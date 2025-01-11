@@ -101,9 +101,9 @@ export type StringField =
 
 export type ToggleField = 
     BasicField & {
-        type: 'toggle';
+        type: 'toggle' | 'select_toggle';
         value: boolean;
-        validation: {
+        validation?: {
             required?: string;
         }
     }

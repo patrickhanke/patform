@@ -4,7 +4,8 @@ import { useQuery } from '@apollo/client';
 import { find_records_for_user } from '@queries';
 import { ErrorMessage, Holiday, HolidayTemplate, Record, RecordTimeSettings } from '@types';
 import styles from './CreateRecord.module.scss';
-import { createInitialTimes, generateGraphQLQuery, getHolidayDates, useDataHandler, UserContext } from '@provider';
+import { createInitialTimes, getHolidayDates } from '@provider';
+import { generateGraphQLQuery, useDataHandler } from '@repo/provider';
 import RecordSettings from './components/RecordSettings';
 import defaultRecord from './constants/defaultRecord';
 import { cloneDeep } from 'lodash';
@@ -17,7 +18,6 @@ const CreateRecord = ({ createRecord, setCreateRecord, userId, timeSettings, ref
 	const [activeRecord, setActiveRecord] = useState<Record | null>(null);
 	const [nextRecord, setNextRecord] = useState<Partial<Record>>(defaultRecord(year));
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
-	const {project} = useContext(UserContext);
 	const {data, loading} = useQuery(find_records_for_user, {
 		variables: {user: userId}
 	});
@@ -249,7 +249,7 @@ const CreateRecord = ({ createRecord, setCreateRecord, userId, timeSettings, ref
 		setDisabled([false, false]);
 		setCreateRecord(false);
 		refetch();
-	}, [year, adobt, activeRecord, nextRecord, userId, project, holidayData]);
+	}, [year, adobt, activeRecord, nextRecord, userId, projectId, holidayData]);
 
 	
 

@@ -188,7 +188,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 					: 
 					null
 				}
-				{isHorizontal && <div className='form_divider' />}
+				{/* {isHorizontal && <div className='form_divider' />} */}
 			</div>
 		)}
 	</>;

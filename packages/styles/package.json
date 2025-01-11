@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@repo/eslint-config": "0.0.0",
-    "@repo/typescript-config": "0.0.0",
+    "@repo/typescript-config": "1.0.0",
     "dotenv-cli": "^7.4.2"
   },
   "scripts": {

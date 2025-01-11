@@ -1,23 +1,23 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Divider, SlideInModal } from '@content';
+import { Divider, SlideIn } from '@repo/ui';
 import SurchargeDaySelect from './components/HolidayTemplateDaySelect';
 import { cloneDeep, set } from 'lodash';
 import { ErrorMessage, Holiday, HolidayTemplate } from '@types';
-import { generateGraphQLQuery, useDataHandler, UserContext } from '@provider';
+import { generateGraphQLQuery, useDataHandler, UserContext } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import { EditHolidayProps } from './types';
 
 const EditHoliday: React.FC<EditHolidayProps> = ({template, editTemplate, setEditTemplate, refetch}) => {
 	const [holidayTemplate, setHolidayTemplate] = useState<HolidayTemplate>(template);
 	const [holidays, setHolidays] = useState<Holiday[]>([]);
-	const {project} = useContext(UserContext);
+	const {projectId} = useContext(UserContext);
 	const [loading, setLoading] = useState(false);
 	const {updateData} = useDataHandler();
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 
 	const { data } = useQuery(
 		generateGraphQLQuery({type: 'get', objectName: 'Project', fields: ['objectId', 'time_settings']}),
-		{variables: {id: project.objectId}}
+		{variables: {id: projectId}}
 	);
 
 	useEffect(() => {
@@ -72,7 +72,7 @@ const EditHoliday: React.FC<EditHolidayProps> = ({template, editTemplate, setEdi
 	}, [holidayTemplate]);
 
 	return (
-		<SlideInModal
+		<SlideIn
 			isOpen={editTemplate}
 			cancel={() => {
 				setEditTemplate(false);
@@ -113,7 +113,7 @@ const EditHoliday: React.FC<EditHolidayProps> = ({template, editTemplate, setEdi
 					}
 				</div>
 			</div>
-		</SlideInModal>
+		</SlideIn>
 	);
 };
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './SwitchButtons.module.scss';
-import { Icons } from '@repo/provider';
+import { Icons } from '@repo/ui';
 import { SwitchButtonProps } from './types';
 
 const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates, changeHandler, underlineButtons = false}) => {

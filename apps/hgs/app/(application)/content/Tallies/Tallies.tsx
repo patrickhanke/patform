@@ -3,7 +3,7 @@ import useFindTallies from './hooks/useFindTallies';
 import { TalliesComponent } from './types';
 import styles from './Tallies.module.scss';
 import Tally from './content/Tally';
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import clsx from 'clsx';
 import { SiteHeader } from '@repo/ui';
 

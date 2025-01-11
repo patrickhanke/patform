@@ -1,4 +1,4 @@
-import { getDateFromIso } from '@provider';
+import { getDateFromIso } from '@repo/provider';
 import { TallyTypes } from '@types';
 import { isArray } from 'lodash';
 

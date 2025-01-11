@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { axiosclient } from '@provider';
+import { axiosclient } from '@repo/provider';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';

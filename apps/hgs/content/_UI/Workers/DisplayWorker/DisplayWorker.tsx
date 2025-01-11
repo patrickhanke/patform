@@ -6,7 +6,7 @@ import { find_record, GET_USER_DISPLAY_DATA } from '@queries';
 import { AppContext, getDatesFromAbsences, getImageUrl } from '@provider';
 import { getDayOfYear } from 'date-fns';
 import { DisplayWorkersProps } from './types';
-import { shadeColor } from '@provider';
+import { shadeColor } from '@repo/provider';
 import { Loader } from '@repo/ui';
 
 const DisplayWorker = ({workerId, removeWorker, nextDate, showAvailability = false, onlyImage=false}: DisplayWorkersProps) => {

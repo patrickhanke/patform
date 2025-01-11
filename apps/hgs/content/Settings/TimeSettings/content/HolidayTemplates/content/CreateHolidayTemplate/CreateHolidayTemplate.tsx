@@ -3,13 +3,13 @@ import SurchargeDaySelect from './components/HolidayTemplateDaySelect';
 import { cloneDeep, set } from 'lodash';
 import { ErrorMessage, HolidayTemplate } from '@types';
 import default_holiday_template from './constants/default_holiday_template';
-import { useDataHandler, UserContext } from '@provider';
+import { useDataHandler, UserContext } from '@repo/provider';
 import { CreateHolidayTemplateProps } from './types';
 import { Divider, SlideIn } from '@repo/ui';
 
 const CreateHolidayTemplate: React.FC<CreateHolidayTemplateProps> = ({templates = [], createTemplate, setCreateTemplate, refetch, holidays}) => {
 	const [holidayTemplate, setHolidayTemplate] = useState<HolidayTemplate>(default_holiday_template);
-	const {project} = useContext(UserContext);
+	const {projectId} = useContext(UserContext);
 	const [loading, setLoading] = useState(false);
 	const {createData} = useDataHandler();
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
@@ -57,7 +57,7 @@ const CreateHolidayTemplate: React.FC<CreateHolidayTemplateProps> = ({templates 
 				name: holidayTemplate.name,
 				type: 'holiday',
 				holidays: holidayTemplate.holidays,
-				project: {__type: 'Pointer', className: 'Project', objectId: project.objectId}
+				project: {__type: 'Pointer', className: 'Project', objectId: projectId}
 			}
 		});
 		await refetch();

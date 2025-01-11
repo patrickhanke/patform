@@ -1,4 +1,4 @@
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';

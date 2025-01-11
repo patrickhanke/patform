@@ -1,4 +1,5 @@
 import { MessageTypes } from '@/types/General';
+import { Notification } from '@repo/types';
 
 export type MessageContent = {
     objectId: MessageTypes.Message['objectId']
@@ -16,9 +17,5 @@ export type UserMessagesProps = {
     refetchMessages: () => void
 }
 
-export type UserMessageProps = {
-    message: MessageContent,
-    showDivider?: boolean,
-    deleteMessageHandler: (objectId: string) => void,
-    setMessageToRead: (objectId: string) => void
-}
+export type RenderNotificationProps = Notification & {deleteNotification: (id: number | string) => void}
+

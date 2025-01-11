@@ -4,7 +4,7 @@ import styles from '../UserOverview.module.scss';
 import { useImmer } from 'use-immer';
 import { useQuery } from '@apollo/client';
 import { FIND_ALL_ROLES } from '@queries';
-import { generateColor } from '@provider';
+import { generateColor } from '@repo/provider';
 import { CreateUser, ErrorMessage } from '@types';
 import { ImageUploader, Select, TextInput } from '@repo/ui';
 

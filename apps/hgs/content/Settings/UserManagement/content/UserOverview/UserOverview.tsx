@@ -1,6 +1,6 @@
 'use client';
 
-import { UserContext, generateColor, useDataHandler } from '@provider';
+import { UserContext, generateColor, useDataHandler } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import React, { useContext, useState } from 'react';
 import useTableColumns from './hooks/useTableColumns';
@@ -15,7 +15,7 @@ const UserOverview = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const {createData, updateData, loading: dataLoading} = useDataHandler();
 	const columns = useTableColumns();
-	const {project} = useContext(UserContext);
+	const {projectId} = useContext(UserContext);
 
 	const {data, refetch}  = useQuery(FIND_ALL_USERS,{
 		notifyOnNetworkStatusChange: true
@@ -29,7 +29,7 @@ const UserOverview = () => {
 				family_name: worker.family_name,
 				first_name: worker.first_name,
 				role: {__type: 'Pointer', className: '_Role', objectId: worker.role },
-				project: {__type: 'Pointer', className: 'Project', objectId: project.objectId },
+				project: {__type: 'Pointer', className: 'Project', objectId: projectId },
 				email: worker.email,
 				number: number,
 				password: worker.password,
@@ -63,7 +63,7 @@ const UserOverview = () => {
 
 	return (
 		<>
-			<SiteHeader isSubHeader emptyContent siteHeaderButtons={siteHeaderButtons} />
+			<SiteHeader  />
 			<div className='site_content'> 
 				<div className='content_element no_padding'>
 					<Table columns={columns} data={data?.objects?.find_User?.results || []} />

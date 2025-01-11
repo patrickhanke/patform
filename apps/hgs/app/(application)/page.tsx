@@ -1,1 +1,1 @@
-export {Dashboard as default} from '@content';
+export {Dashboard as default} from '@repo/modules';

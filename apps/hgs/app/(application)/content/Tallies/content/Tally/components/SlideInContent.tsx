@@ -4,7 +4,7 @@ import styles from '../Tally.module.scss';
 import { useQuery } from '@apollo/client';
 import { GET_TALLY_DESCRIPTION, GET_TALLY_ENTRIES } from '@queries';
 import getLastEntry from '../functions/getLastEntry';
-import { getDateStringsFromIso } from '@provider';
+import { getDateStringsFromIso } from '@repo/provider';
 import TallyEntries from '../content/TallyEntries';
 import { IoDocumentTextOutline } from 'react-icons/io5';
 import { PiClockCountdown } from 'react-icons/pi';

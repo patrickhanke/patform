@@ -1,5 +1,5 @@
 import { CommentInterface } from '@content';
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import { Comment } from '@types';
 import { Loader } from '@repo/ui';
 import React from 'react';

@@ -1,4 +1,4 @@
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import React, { useCallback } from 'react';
 import styles from './TaskImages.module.scss';
 import { Image } from '@types';

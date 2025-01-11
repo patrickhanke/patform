@@ -1,6 +1,6 @@
 'use client';
 
-import { UserContext, useDataHandler } from '@provider';
+import { UserContext, useDataHandler } from '@repo/provider';
 import React, { useCallback, useContext } from 'react';
 import useTableColumns from './hooks/useTableColumns';
 import { useQuery } from '@apollo/client';
@@ -12,7 +12,7 @@ import { Page, Table } from '@repo/ui';
 
 const PropertyOverview = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
-	const {user, project} = useContext(UserContext);
+	const {user, projectId} = useContext(UserContext);
 
 	const {data, refetch}  = useQuery(FIND_ALL_PROPERTY, {onCompleted(data) {
 		const breadcrumbArray: Array<{value: string, label: string}> = [];
@@ -32,7 +32,7 @@ const PropertyOverview = () => {
 			updateObject: {
 				name: data.name,
 				settings: {'key': false},
-				project: {__type: 'Pointer', className: 'Project', objectId: project.objectId},
+				project: {__type: 'Pointer', className: 'Project', objectId: projectId},
 				created_by: {__type: 'Pointer', className: '_User', objectId: user.objectId}
 			},
 			afterSaveHandler: () => refetch
@@ -40,7 +40,7 @@ const PropertyOverview = () => {
 
 		setIsOpen(false);
 		refetch();
-	}, [user, project]);
+	}, [user, projectId]);
 
 	const siteHeaderButtons = [{
 		text: 'Neues Objekt erstellen',
@@ -53,10 +53,8 @@ const PropertyOverview = () => {
 			title='Objektübersicht'
 			pageHeaderButtons={siteHeaderButtons}
 		>
-			<div className='site_content'> 
-				<div className="content_element no_padding">
-					<Table columns={columns} data={data?.objects?.findProperty?.results || []} />
-				</div>
+			<div className="content_element no_padding">
+				<Table columns={columns} data={data?.objects?.findProperty?.results || []} />
 			</div>
 			<CreatePropterty
 				objects={data?.objects?.findProperty?.results || []}

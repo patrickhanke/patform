@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import useFindObjectsDocuments from './hooks/useFindObjectDocuments';
 import { ColumnDef } from '@tanstack/react-table';
-import { getDateStringsFromIso, useDataHandler } from '@provider';
+import { getDateStringsFromIso, useDataHandler } from '@repo/provider';
 import CreateDocument from './components/CreateDocument';
 import { FileDisplay, IconButton, Select, SiteHeader, Table } from '@repo/ui';
 import { Document } from '@types';
@@ -89,12 +89,10 @@ const ProperyDocuments = ({id}: {id: string}) => {
    
 	return (
 		<>
-			<SiteHeader isSubHeader siteHeaderContent={siteHeaderContent} />
 			<div className='site_content'>
 				{data && <Table data={data} columns={columns} />}
 			</div>
 			<CreateDocument open={createDocument} setOpen={setCreateDocument} createDocumentHandler={addDocumentHandler} />
-    
 		</>
 	);
 };

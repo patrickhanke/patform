@@ -1,4 +1,3 @@
-export * from './data';
 export * from './constants';
 export * from './functions';
 export * from './context';

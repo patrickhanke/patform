@@ -1,16 +1,17 @@
 'use client';
 
 import {DateSelectWithExternalState, ObjectSelectWithState, TimeDisplay, WorkerSelectWithState} from '@content';
-import { AppContext, UserContext, useDataHandler } from '@provider';
+import { AppContext } from '@provider';
 import clsx from 'clsx';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
 import styles from './CreateTask.module.scss';
 import {TicketSelectWithState} from '@content';
-import { CreateTask as CreateTaskType, CreateTaskProps, DateObjectWithNextDates, ErrorMessage, CreateTaskUpdateObject, DateObject } from '@types';
+import { CreateTask as CreateTaskType, CreateTaskProps, DateObjectWithNextDates, ErrorMessage, CreateTaskUpdateObject } from '@types';
 import initial_task from './constants/initial_task';
 import { Icon, SlideIn, TextInput } from '@repo/ui';
 import { modi_options, date_category_options } from '@content';
+import { useDataHandler, UserContext } from '@repo/provider';
 
 const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 	const {createData, updateData} = useDataHandler();
@@ -18,7 +19,6 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 	const {roleUsers} = useContext(AppContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [showDate, setShowDate] = useState(false);
 
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
 	const [task, setTask ] =  useImmer<CreateTaskType>(initial_task);
@@ -87,7 +87,7 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 		await createData({
 			className: 'Task',
 			updateObject,
-			afterSaveHandler(objectId) {
+			async afterSaveHandler(objectId) {
 				if (task.ticket) {
 					updateData({
 						className: 'Ticket',
@@ -98,12 +98,15 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 					});
 				}
 			},
-			message: {type: 'task_created', users: roleUsers.admin as string[]}
+		})
+		.catch((error) => {
+			console.log(error);
+			setLoading(false);
 		});
+
 		if (refetch) {
 			refetch();
 		}
-		setShowDate(false);
 		setIsOpen(false);
 		setTask(initial_task);
 		setLoading(false);
@@ -127,13 +130,12 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 				header='Aufgabe erstellen'
 				disabled={[false, (errors.length > 0 || loading)]}
 				errors={errors}
-				secondaryContent={showDate ? 
+				showSecondaryContent={true}
+				secondaryContent={
 					<DateSelectWithExternalState
 						initialValue={date}
 						dataHandler={setDate}
 					/>
-					: 
-					null
 				}
 			> 
 				<div className={clsx(styles.create_task_container, 'flexbox_column_with_gap')}>
@@ -189,7 +191,7 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 								<label>
 									Datum für die Aufgabe festlegen 
 								</label>
-								<TimeDisplay date={date} onClick={() => setShowDate(true)} />
+								<TimeDisplay date={date}  />
 							</div>
 						</div>
 					</div>

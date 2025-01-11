@@ -51,9 +51,7 @@
         }
     }
     td {
-        font-family: Open-Sans;
         padding: map-get($map: constants.$padding, $key: 'sm' );
-        font-size: map-get($map: constants.$font_size, $key: 'sm' );
     }
     
     td:last-child {

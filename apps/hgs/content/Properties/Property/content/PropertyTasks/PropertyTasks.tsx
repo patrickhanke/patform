@@ -1,9 +1,10 @@
-import { Tasks } from '@content';
+import { TaskList, Tasks } from '@content';
 import React from 'react';
 
 const PropertyTasks = ({objectId}: {objectId: string}) => {
+
 	return (
-		<Tasks id={objectId} className={'Property'} />
+		<Tasks pageState='active' id={objectId} className={'Property'} />
 	);
 };
 

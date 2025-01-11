@@ -11,7 +11,7 @@ import { useQuery } from '@apollo/client';
 import find_user_messages from './constants/find_user_messages';
 
 const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
-	const token = Cookies.get('patform_token');
+	const token = Cookies.get(process.env.SESSION_TOKEN as string);
 	// const [project, setProject] = useState('');
 	const {getItem, setItem} = useStorage();
 

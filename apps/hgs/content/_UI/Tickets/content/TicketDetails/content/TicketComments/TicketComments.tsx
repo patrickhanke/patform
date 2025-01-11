@@ -1,5 +1,5 @@
-import { Loader } from '@content';
-import { useDataHandler } from '@provider';
+import { Loader } from '@repo/ui';
+import { useDataHandler } from '@repo/provider';
 import { ApplicationTypes, TicketTypes } from '@types';
 import React from 'react';
 import { CommentInterface } from '@content';

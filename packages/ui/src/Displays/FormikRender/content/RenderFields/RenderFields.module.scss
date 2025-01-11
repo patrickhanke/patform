@@ -206,25 +206,35 @@
 }
 
 .select_toggle_content {
-	@include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$sm);
-	
-}
-
-.select_toggle_content[data-labelbefore ='true'] {
-    flex-direction: row;
+	@include constants.flexbox($direction: row, $align: stretch, $justify: flex-start, $gap: 0);
+	overflow: hidden;
+	border: 1px solid constants.$grey;	
+	border-radius: map-get($map: constants.$border-radius, $key: 'sm' )
 }
 
 .select_toggle_button {
-	font-family: Poppins;
 	font-weight: 500;	
 	letter-spacing: 1px;
 	font-size: map-get($map: constants.$font_size, $key: 'md' );
+	background-color: transparent;
+	border: none;
+	width: 40px;
+	cursor: pointer;
+}
+
+.select_toggle_button:disabled {
+	cursor: default;
 }
 
 .select_toggle_button[data-isactive="true"] {
-	background-color: constants.$primary;
-	color: constants.$white;
+	background-color: constants.$light;
+}
 
+.select_toggle_divider {
+	height: 18px;	
+	width: 
+	.6px;
+	background-color: constants.$grey_shaded;
 }
 
 .files_interface_container{

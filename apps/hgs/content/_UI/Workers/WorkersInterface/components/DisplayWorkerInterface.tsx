@@ -2,25 +2,29 @@ import React, { useContext, useMemo } from 'react';
 import styles from '../WorkersInterface.module.scss';
 import { DisplayWorkerInterfaceComponent } from '../types';
 import { useQuery } from '@apollo/client';
-import { find_record } from '@queries';
-import { AppContext, getDatesFromAbsences, getImageUrl } from '@provider';
+import { find_day, find_record } from '@queries';
+import { absence_state_options, AppContext, getDatesFromAbsences, getImageUrl } from '@provider';
 import { getDayOfYear } from 'date-fns';
-import { Absence } from '@types';
+import { Absence, Day } from '@types';
 import { StateDisplay } from '@repo/ui';
 
-const 	DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAvailability=true} :DisplayWorkerInterfaceComponent ) => {
+const DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAvailability=true} :DisplayWorkerInterfaceComponent ) => {
 	const {year} = useContext(AppContext);
-	const {data} = useQuery(find_record, {
-		variables: {params: {year: {_eq: year}, user: {_eq: worker.objectId}}},
+	const {data} = useQuery(find_day, {
+		variables: {params: {year: {_eq: year}, type: {_eq: 'absence'}, user: {_eq: worker.objectId}}},
 		skip: !showAvailability
 	});
+
+	console.log(nextDate);
+	
 	
 	const workerAbsence = useMemo(() => {
 		let isAbsent = false;
 		let type: Absence['type'] = 'other';
 		if (data && nextDate) {
-			const dates = getDatesFromAbsences(data.objects.findRecord.results).absenceObjects;
-			const dateObject = dates.find(date => date.day === getDayOfYear(new Date(nextDate)));
+			const dates: Day[] = data.objects.findDay.results;
+			console.log(dates)
+			const dateObject = dates.find(date => date.date === nextDate);
 			if (dateObject) {
 				isAbsent = true;
 				type = dateObject.type as Absence['type'];
@@ -28,6 +32,9 @@ const 	DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAv
 		}
 		return({isAbsent, type});
 	}, [data, showAvailability]);
+
+	console.log(workerAbsence)
+	console.log(data)
 
 	return (
 		<button
@@ -54,7 +61,11 @@ const 	DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAv
 			</div>
 			{workerAbsence.isAbsent && 
 				<div className={styles.display_worker_absence} >
-					<StateDisplay type='AbsenceType' state={workerAbsence.type}/> 
+					<StateDisplay 
+						type='state' 
+						stateOptions={absence_state_options}
+						state={workerAbsence.type}
+					/> 
 				</div>
 			}
 		</button>

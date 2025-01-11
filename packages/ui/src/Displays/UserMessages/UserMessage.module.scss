@@ -1,7 +1,7 @@
 @use '@repo/styles/constants';
 
 .user_messages_container {
-    @include constants.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: constants.$xs);
+    @include constants.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: 0);
 }
 
 .siteheader_content {
@@ -10,20 +10,28 @@
 
 .user_message_container {
     @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
-    margin-top: constants.$xs;
-    margin-bottom: constants.$xs;
+    border-bottom: 1px solid constants.$grey;
+    position: relative;
+    background-color: constants.$white;
+}
+
+.user_message_container[data-is_read="false"] {
+    background-color: constants.$light;
 }
 
 .content_container {
     @include constants.flexbox($direction: row, $align: flex-start, $justify: flex-start, $gap: constants.$md);
+    padding: map-get($map: constants.$padding, $key: 'md' );
+    width: 100%;
 }
 
 .user_message_content {
     @include constants.flexbox($direction: column, $align: flex-start, $justify: center, $gap: constants.$xxs);
+    flex: 1;
 }
 
 .user_message_icon {
-    background-color: constants.$primary;
+    background-color: constants.$grey;
     border-radius: 50%;
     width: 30px;
     height: 30px;
@@ -37,27 +45,15 @@
 }
 
 .user_message_headline {
-    font-size: map-get(constants.$font_size, 'md');
-    font-weight: 600;
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
+    width: 100%;
     color: constants.$dark;
 }
 
-.user_message_headline[data-is_read="true"] {
-    font-weight: 500;
-    color: constants.$grey_shaded;
+.user_message_headline[data-is_read="false"] {
+    font-weight: 700;
 }
 
 .user_message_text {
-    p{
-        font-size: map-get(constants.$font_size, 'sm');
-        font-weight: 500;
-        color: constants.$dark;
-    }
-}
-
-.user_message_text[data-is_read="true"] {
-    p {
-        font-weight: 400;
-        color: constants.$grey;
-    }
-}
+    max-width: 360px;
+};

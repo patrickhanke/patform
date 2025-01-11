@@ -1,7 +1,7 @@
 'use client';
 
 import { ApolloAppProvider, AppContextProvider } from '@provider';
-import {  UserContextProvider } from '@repo/provider';
+import {  UserContextProvider, NotificationContextProvider } from '@repo/provider';
 import React from 'react';
 
 const LayoutContext = ({children}: {children: React.ReactNode}) => {
@@ -9,9 +9,11 @@ const LayoutContext = ({children}: {children: React.ReactNode}) => {
 		<ApolloAppProvider>
 			<UserContextProvider>
 				<AppContextProvider>
-					<React.StrictMode>
-						{children}
-					</React.StrictMode>
+					<NotificationContextProvider>
+						<React.StrictMode>
+							{children}
+						</React.StrictMode>
+					</NotificationContextProvider>
 				</AppContextProvider>
 			</UserContextProvider>
 		</ApolloAppProvider>

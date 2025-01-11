@@ -35,7 +35,7 @@ const SlideIn: React.FC<SlideInProps> = ({
 				{isOpen && (
 					<motion.div
 						initial={{ right: -300}}
-						animate={{ right: 120 }}
+						animate={{ right: 60 }}
 						exit={{ right: -300 }}
 						ref={ref} 
 						transition={{ duration: .3, ease: 'easeOut' }}

@@ -1,4 +1,4 @@
-import { getIsoFromDate } from '@provider';
+import { getIsoFromDate } from '@repo/provider';
 import { GET_USER_SETTINGS } from '@queries';
 import { fieldsType } from '@types';
 import { useQuery } from '@apollo/client';

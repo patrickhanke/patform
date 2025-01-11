@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import useSiteStates from './constants/siteStates';
 import { GET_PROPERTY } from '@queries';
@@ -10,30 +10,53 @@ import PropertyServices from './content/PropertyServices';
 import PropertyTallies from './content/PropertyTallies';
 import PropertyDocuments from './content/PropertyDocuments';
 import PropertyTickets from './content/PropertyTickets';
-import { Params } from '@types';
-import { SiteHeader } from '@repo/ui';
+import { Params, Property as PropertyType } from '@types';
+import { Page } from '@repo/ui';
 
 const Property = ({params} : {params: Params}) => {
-	const {data} = useQuery (
+	const siteStates = useSiteStates();
+	const [siteState, setSiteState] = useState<typeof siteStates[number]>(siteStates[0] as typeof siteStates[number]);
+	const {data, refetch} = useQuery (
 		GET_PROPERTY, 
 		{
 			variables: {id: params.object_id}, 
 			fetchPolicy: 'no-cache'
 		}
 	);
-	const siteStates = useSiteStates();
-	const [siteState, setSiteState] = useState<typeof siteStates[number]>(siteStates[0] as typeof siteStates[number]);
+
+	const siteContent = useMemo(() => {
+		const content = {
+			description: 'Objektübersicht'
+		}
+		if (siteState.value === 'tasks') {
+			content.description = 'Aufgabenübersicht';
+		}
+		if (siteState.value === 'settings') {
+			content.description = 'Einstellungen';
+		}
+		if (siteState.value === 'services') {
+			content.description = 'Dienstleistungen';
+		}
+		if (siteState.value === 'tallies') {
+			content.description = 'Zähler';
+		}
+
+		return content;
+	}, [siteState]);
+
+	if (!data) return null;
+
+	const property: PropertyType = data.objects.getProperty;
 
 	return (
-		<>
-			<SiteHeader
-				title={data && data.objects.getProperty.name}
-				hasSiteNavigation
-				navItems={siteStates} 
-				navCurrentItem={siteState} 
-				navOnClick={setSiteState}
-			/>
-
+		<Page 
+			title={property.name}
+			description={siteContent.description}
+			refetch={refetch}
+			pageStates={siteStates}
+			pageState={siteState}
+			setPageState={setSiteState}
+		>
 			{siteState.value === 'tasks' && 
 				<PropertyTasks objectId={params.object_id}/>
 			}
@@ -52,7 +75,7 @@ const Property = ({params} : {params: Params}) => {
 			{siteState.value === 'tickets' && 
 				<PropertyTickets id={params.object_id} />
 			}
-		</>
+		</Page>
 	);
 
 };

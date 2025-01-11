@@ -1,15 +1,15 @@
-import TextInput from '@/_UI/interfaces/TextInput';
-import { UserContext } from '@provider';
+import {TextInput} from '@repo/ui';
+import { UserContext } from '@repo/provider';
 import React, { useContext, useState } from 'react';
 import styles from '../TaskDocuments.module.scss';
 import clsx from 'clsx';
-import { ApplicationTypes } from '@types';
+import { Application } from '@types';
 import { DocumentUploader } from '@content';
 
 const CreateDocument = ({addDocumentHandler, disabled = false}: {disabled: boolean, addDocumentHandler: (content: {user: string, file: ApplicationTypes.Document['file'], name: string}) => void}) => {
 	const {user} = useContext(UserContext);
 	const [name, setName] = useState('');
-	const [file, setFile] = useState(null as unknown as ApplicationTypes.Document['file']);
+	const [file, setFile] = useState(null as unknown as Application.Document['file']);
 
 	return ( 
 		<div className={styles.create_document_container}>

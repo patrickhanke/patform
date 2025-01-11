@@ -14,7 +14,16 @@ const nextConfig = {
 		BYTESCALE_ACCOUNT_ID: 'FW25c4N',
 		BYTESCALE_PUBLIC_KEY: 'public_FW25c4N3qgCzxTQoAXJY5CbtXHZf',
 		BYTESCALE_SECRET_KEY: 'secret_FW25c4NG3DufL64qbUVs4y91SAuX',
-		SESSION_TOKEN: 'hgs_token'
+		SESSION_TOKEN: 'patflow_session_token',
+		INSTALLATION_ID: 'patflow_installation_id',
+		FIREBASE_API_KEY: 'AIzaSyARUPJePB7XFzxliXn8QoBFT79lnJ4u8Ko',
+		FIREBASE_AUTH_DOMAIN: 'hgs-app-d35b1.firebaseapp.com',
+		FIREBASE_PROJECT_ID: 'hgs-app-d35b1',
+		FIREBASE_STORAGE_BUCKET: 'hgs-app-d35b1.firebasestorage.app',
+		FIREBASE_MESSAGING_SENDER_ID: '641842391250',
+		FIREBASE_APP_ID: '1:641842391250:web:af88774f5d9e0aac01250b',
+		FIREBASE_MEASUREMENT_ID: 'G-32QEKHD6FM',
+		GCMS_SENDER_ID: '641842391250'
 	},
 	eslint: {
 		ignoreDuringBuilds: true

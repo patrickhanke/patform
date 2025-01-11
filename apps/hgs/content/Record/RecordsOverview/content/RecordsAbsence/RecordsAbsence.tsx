@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Absence, StaffMember } from '@types';
-import { AppContext, generateGraphQLQuery } from '@provider';
+import { AppContext } from '@provider';
+import { generateGraphQLQuery } from '@repo/provider';
 import { Select } from '@content';
 import { RecordAbsenceProps } from './types';
 import styles from './RecordsAbsence.module.scss';

@@ -14,44 +14,45 @@ $light: #f4f4f6;
 $lightest: #fafafa;
 $white: #fff;
 
-$magenta: #9B3E82;
-$magenta_shaded: #8b3875;
+$magenta: #F5C6EA;
+$magenta_shaded: #721C65;
+$magenta_tinted: #F8D7F3;
 
-$blue: #40879c;
-$blue_shaded: #3a7789;
-$blue_light: #c6d9e0;
+$blue: #B3DAF9;
+$blue_shaded: #0D3A7F;
+$blue_tinted: #DDEFFD;
 
-$yellow: #F6E855;
-$yellow_shaded: #f4e436;
-$yellow_light: #fdfadd;
+$yellow: #FFEEBA;
+$yellow_shaded: #856404;
+$yellow_tinted: #FFF3CD;
 
 // $green: #70B588;
 // $green_shaded: #5dab78;
-// $green_light: #e2f0e7;
+// $green_tinted: #e2f0e7;
 
-$red: #D75055;
-$red_shaded: #d2383e;
-$red_light: #f7dcdd;
+$red: #F5C6CB;
+$red_shaded: #721C24;
+$red_tinted: #F8D7DA;
 
-$violet: #6941c6;
-$violet_shaded: #5331a2;
-$violet_light: #e1d9f4;
+$violet: #D1C4E9;
+$violet_shaded: #512DA8;
+$violet_tinted: #EDE7F6;
 
-$green: #3F9A82;
-$green_shaded: #357765;
-$green_light: #c8e2d9;
+$green: #C3E6CB;
+$green_shaded: #155724;
+$green_tinted: #D4EDDA;
 
 $primary:  $dark;
-$primary_shaded:$dark_shaded;
+$primary_shaded: $dark_shaded;
 $primary_tinted: $dark_tinted;
 
 $secondary: $blue;
 $secondary_shaded: $blue_shaded;
-$secondary_light: $blue_light;
+$secondary_light: $blue_tinted;
 
 $tertiary:  $yellow;
 $tertiary_shaded: $yellow_shaded;
-$tertiary_light: $yellow_light;
+$tertiary_light: $yellow_tinted;
 
 @mixin colorgroup($color: 'primary') {
     @if $color == 'primary' {
@@ -67,20 +68,20 @@ $tertiary_light: $yellow_light;
         color: $tertiary;
     }
     @if $color == 'violet' {
-        background-color: $violet_light;
-        color: $violet;
+        background-color: $violet_tinted;
+        color: $violet_shaded;
     }
     @if $color == 'green' {
-        background-color: $green_light;
+        background-color: $green_tinted;
         color: $green_shaded;
     }
     @if $color == 'yellow' {
-        background-color: $yellow_light;
+        background-color: $yellow_tinted;
         color: $yellow_shaded;
     }
     @if $color == 'red' {
-        background-color: $red_light;
-        color: $red !important;
+        background-color: $red_tinted;
+        color: $red_shaded !important;
     }
     @if $color == 'dark' {
         background-color: $light;
@@ -91,19 +92,19 @@ $tertiary_light: $yellow_light;
         color: $dark;
     }
     @if $color == 'success' {
-        background-color: $green_light;
-        color: $green;
+        background-color: $green_tinted;
+        color: $green_shaded;
     }
     @if $color == 'warning' {
-        background-color: $yellow_light;
+        background-color: $yellow_tinted;
         color: $yellow_shaded;
     }
     @if $color == 'danger' {
-        background-color: $red_light;
-        color: $red;
+        background-color: $red_tinted;
+        color: $red_shaded;
     }
     @if $color == 'info' {
-        background-color: $blue_light;
+        background-color: $blue_tinted;
         color: $blue_shaded;
     }
     @if $color == 'lightest' {

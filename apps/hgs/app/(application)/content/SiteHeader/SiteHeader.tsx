@@ -6,6 +6,7 @@ import { SiteHeaderComponent } from './types';
 import { AppContext } from '@provider';
 import CalendarWeek from './components/CalendarWeek';
 import { UserDisplay } from '@repo/ui';
+import { NotificationContext } from '@repo/provider';
 
 const SiteHeader = ({
 	title, 

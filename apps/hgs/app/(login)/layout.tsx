@@ -4,8 +4,8 @@ import '@repo/styles/typography';
 import '@repo/styles/global';
 
 export const metadata = {
-	title: 'HGS App',
-	description: 'Aufgabenverwaltung für Hausmeister'
+	title: 'patflow',
+	description: 'Anwendung für die Verwaltung von Aufgaben und Arbeitszeiten'
 };
 
 export default async function  RootLayout({

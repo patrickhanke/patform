@@ -17,7 +17,7 @@ const removeTypenameLink = removeTypenameFromVariables();
 
 
 function makeClient() {
-	const localToken = Cookies.get('hgs_token');
+	const localToken = Cookies.get(process.env.SESSION_TOKEN as string);
 
 	const token = localToken || '';
 

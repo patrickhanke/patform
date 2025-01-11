@@ -1,4 +1,5 @@
 import { Field } from '../../../ui/src/Displays';
+import { v4 as uuidv4 } from 'uuid';
 
 export function slugify(string: string) {
 	const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
@@ -48,3 +49,13 @@ export const getInitialData = (fields: Field[]) => {
 
 	return dataFields;
 };
+
+export const generateColor = () => {
+	const newColor =
+        '#' +
+        Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+
+	return newColor;
+};
+
+export const generateUuid: () => string = () => uuidv4() ;

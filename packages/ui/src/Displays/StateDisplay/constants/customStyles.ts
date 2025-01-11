@@ -25,7 +25,7 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 	}),
 	option: (provided) => ({
 		...provided,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		fontWeight: 400,
 		fontSize: '10px'
 	}),
@@ -33,19 +33,19 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 	menu: provided => ({ 
 		...provided, 
 		zIndex: 999,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		fontWeight: 400,
 		fontSize: '12px'
 	}),
 	singleValue: provided => ({
 		...provided,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		fontWeight: 400,
 		fontSize: '12px'
 	}),	
 	multiValueLabel: provided => ({
 		...provided,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		fontWeight: 400,
 		fontSize: '12px'
 	})	,
@@ -65,7 +65,7 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 	}),
 	placeholder: provided => ({ 
 		...provided,
-		fontFamily: 'Roboto',
+		fontFamily: 'Geist',
 		color: '#999999'
 	}),
 	input: provided => ({

@@ -1,5 +1,5 @@
 import TextInput from '@/_UI/interfaces/TextInput';
-import { UserContext } from '@provider';
+import { UserContext } from '@repo/provider';
 import React, { useContext, useState } from 'react';
 import styles from '../TallyEntries.module.scss';
 import clsx from 'clsx';

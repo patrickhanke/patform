@@ -8,8 +8,9 @@ const get_task_workers  = gql`
                 assigned_staff
                 dates
                 time
+                title
             }
-        }
+        }   
     }
 `;
 

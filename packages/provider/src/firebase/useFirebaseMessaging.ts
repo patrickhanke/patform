@@ -1,0 +1,68 @@
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
+import { onMessage } from 'firebase/messaging';
+import messaging from './initializeFirebase';
+import requestPermission from './requestPermission';
+import getFcmToken from './getFcmToken';
+import { saveNotification } from '../functions';
+
+const useFirebaseMessaging = () => {
+	const [permission, setPermission] = useState<'granted' | 'denied' | 'error' | undefined>();
+	const [token, setToken] = useState<string | null>(null);
+
+	const getPermission = useCallback(async () => {
+		const pm = await requestPermission();
+		setPermission(pm);
+	}, []);
+
+	const getToken = useCallback(async () => {
+		const currentToken = await getFcmToken(messaging);
+       
+		if (currentToken) {
+			setToken(currentToken);
+		}
+	}, [messaging]);
+    
+	useEffect(() => {
+		if (!messaging) return console.error('Firebase Messaging not initialized');
+		navigator.serviceWorker
+			.register('/firebase-messaging-sw.js')
+			.then((registration) => {
+				console.log('Service Worker registered with scope:', registration.scope);
+			})
+			.catch((error) => {
+				console.error('Service Worker registration failed:', error);
+			});
+		if (!permission ) {
+			getPermission();
+		}
+
+		if (!token) {
+			getToken();
+		}
+
+		if (permission === 'granted' && token) {
+			const unsubscribe = onMessage(messaging, (payload) => {
+				if (payload.notification) {
+					saveNotification({
+						title: payload.notification.title as string,
+						body: payload.notification.body as string,
+						timestamp: new Date().toISOString(),
+						read: false,
+						id: payload.messageId,
+						image: payload.notification.image as string,
+						data: payload.data
+					});
+				}
+			});
+			return () => {
+				unsubscribe(); // Unsubscribe from the onMessage event on cleanup
+			};
+		}
+	}, [permission, messaging, token]);
+
+	return ({permission, token});
+};
+
+export default useFirebaseMessaging;

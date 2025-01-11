@@ -18,7 +18,7 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 	
-	const token = request.cookies.get(process.env.SESSION_TOKEN)?.value as string;
+	const token = process.env.SESSION_TOKEN ? request.cookies.get(process.env.SESSION_TOKEN)?.value : '';
 	const loggedInCookie = request.cookies.get(`${process.env.SESSION_TOKEN}_logged_in`)?.value || '';
 	let loggedIn = loggedInCookie ==='true'|| false;
 
@@ -61,9 +61,6 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.rewrite(new URL('/login', request.url));
 	}
 
-	if (loggedIn) {
-		response.cookies.set('hgs_logged_in', 'true');
-	}
 	return response;
 }
 

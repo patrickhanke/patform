@@ -89,14 +89,14 @@ const menu_items = [
 ];
 
 const RenderSidebar = () => {
-  return (
-	<div className='layout_sidebar_container' id='sidebar'>
-		<div className='layout_sidebar_header'>
-			<Logo />
-		</div>
-		<Sidebar menuItems={menu_items} />
-	</div >
-  )
+	return (
+		<div className='layout_sidebar_container' id='sidebar'>
+			<div className='layout_sidebar_header'>
+				<Logo />
+			</div>
+			<Sidebar menuItems={menu_items} />
+		</div >
+	)
 }
 
 export default RenderSidebar

@@ -1,6 +1,6 @@
 import React from 'react';
 import { SurchargeComponentProps } from './types';
-import { getDateString } from '@provider';
+import { getDateString } from '@repo/provider';
 import clsx from 'clsx';
 import styles from './Surcharge.module.scss';
 import surcharge_types from '../CreateSurcharge/constants/surcharge_types';

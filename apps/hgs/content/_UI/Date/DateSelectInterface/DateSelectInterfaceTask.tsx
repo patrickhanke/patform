@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import DateSelect from './content/DateSelect';
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import { GET_TASK_TIME } from '@queries';
 import modi_options from './content/DateSelect/constants/modi_options';

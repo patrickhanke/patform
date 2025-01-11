@@ -6,7 +6,12 @@ import { useContext } from 'react';
 import { UserContext, getImageUrl } from '@repo/provider';
 
 const UserDisplay = () => {
-	const {user, userMessages} = useContext(UserContext);
+	const {user} = useContext(UserContext);
+	
+
+	if (!user) {
+		return null;
+	}
 
 	return ( 
 		<div className={styles.user_container}>
@@ -20,7 +25,7 @@ const UserDisplay = () => {
 				/>
 				}
 			</div>
-			<MessageIndicator messages={userMessages} />
+			<MessageIndicator />
 			{/* <h4 style={{fontSize: '12px', fontWeight: 600}}>{`${user.first_name} ${user.family_name}`}</h4> */}
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { generateGraphQLQuery, paramsHandler, useDataHandler } from '@provider';
+import { generateGraphQLQuery, paramsHandler, useDataHandler } from '@repo/provider';
 import { Surcharge as SurchargeType } from '@types';
 import { useQuery } from '@apollo/client';
 import React, { useCallback, useState } from 'react';

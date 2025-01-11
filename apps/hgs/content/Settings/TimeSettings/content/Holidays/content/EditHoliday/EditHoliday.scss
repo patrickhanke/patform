@@ -15,7 +15,7 @@
 }
 
 .day_select_container[data-isselected="true"] {
-    background-color: constants.$green_light;
+    background-color: constants.$green_tinted;
     color: constants.$green_shaded;
     &:hover {
         background-color: constants.$green;

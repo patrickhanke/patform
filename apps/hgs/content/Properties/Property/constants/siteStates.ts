@@ -10,11 +10,13 @@ const useSiteStates = () => {
 			}, 
 			{
 				value: 'services',
-				label: 'Leistungsverzeichnis'
+				label: 'Leistungsverzeichnis',
+				disabled: true
 			},
 			{
 				value: 'tallies',
-				label: 'Zähler'
+				label: 'Zähler',
+				disabled: true
 			}, 
 			{
 				value: 'tickets',

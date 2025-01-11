@@ -1,5 +1,5 @@
-import { Loader, Editor } from '@content';
-import { useDataHandler } from '@provider';
+import { Loader, Editor } from '@repo/ui';
+import { useDataHandler } from '@repo/provider';
 import { GET_TALLY_DESCRIPTION } from '@queries';
 import { useQuery } from '@apollo/client';
 import React, { useState } from 'react';

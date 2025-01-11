@@ -1,4 +1,4 @@
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import React, { useCallback } from 'react';
 import CreateDocument from './components/CreateDocument';
 import styles from './TaskDocuments.module.scss';

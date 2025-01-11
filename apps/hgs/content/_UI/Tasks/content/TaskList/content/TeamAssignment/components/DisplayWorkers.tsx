@@ -1,5 +1,5 @@
 import { DisplayWorker, WorkersInterface } from '@content';
-import { useDataHandler } from '@provider';
+import { useDataHandler } from '@repo/provider';
 import { GET_TASK_WORKERS } from '@queries';
 import { DisplayWorkersProps, Task, Worker } from '@types';
 import { useQuery } from '@apollo/client';
@@ -58,7 +58,6 @@ const DisplayWorkers = ({taskId, refetchTask, taskState, showAsButton=false, sel
 		
 		if (type === 'remove') {
 			const newWorkerArray = pull(workerArray, id);
-			
 			await updateData({
 				className: 'Task',
 				objectId: taskId,

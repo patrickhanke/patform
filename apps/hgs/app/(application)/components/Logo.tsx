@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React from 'react';
-import logo from  '../images/app_logo.png';
+import logo from  '../images/logo_3_font.png';
 
 const Logo = () => {
 	return (
@@ -10,13 +10,13 @@ const Logo = () => {
 			<Image
 				src={logo}
 				// width={135}
-				style={{borderRadius: '6px'}}
+				style={{borderRadius: '0px'}}
 				height={21}
 				alt="Hausmeister App"
 			/>
 			<div className='sidebar_label'>
 				<h1>
-					HGS App
+					patflow
 				</h1>
 			</div>
 		</div>

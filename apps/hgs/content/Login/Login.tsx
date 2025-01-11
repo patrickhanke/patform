@@ -5,7 +5,7 @@ import styles from './Login.module.scss';
 import Image from 'next/image';
 import LoginForm from './components/LoginForm';
 import buttonStates from './constants/buttonStates';
-import logo from  './images/app_logo.png';
+import logo from  './images/patflow.png';
 import PasswordForm from './components/PasswordForm';
 import { Divider, SwitchButtons } from '@repo/ui';
 
@@ -20,7 +20,7 @@ const Login = () => {
 						src={logo}
 						// width={134}
 						height={50}
-						alt="Hausmeisterapp"
+						alt="patflow"
 					/>
 				</div>
 

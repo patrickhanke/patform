@@ -22,6 +22,7 @@
     overflow: hidden;
     margin: 0;
     box-sizing: border-box;
+    font-size: map-get($map: $font-size, $key: 'md' );
   }
 
   ul {
@@ -50,4 +51,8 @@
 *::-webkit-scrollbar-thumb {
   background-color: $grey;
   border-radius: 20px;
+}
+
+button {
+  white-space: nowrap;
 }
