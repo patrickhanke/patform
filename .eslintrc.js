@@ -6,8 +6,9 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   rules: {
 		'global-require': 0,
+    'no-restricted-globals': ['error', 'navigator', 'window', 'document']
   },
   parserOptions: {
-    project: true,
-  },
+    project: true
+  }
 };
