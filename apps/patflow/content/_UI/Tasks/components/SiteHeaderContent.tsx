@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { Property, StaffMember } from '@types';
 import { FIND_ALL_PROPERTY, FIND_ALL_STAFF } from '@queries';
 import { useQuery } from '@apollo/client';
@@ -94,16 +94,18 @@ const SiteHeaderContent = ({id, filters, setFilters, initialFilters}: SiteHeader
 					/>
 				}
 			</div>
-			<button 
-			className='full_button md secondary'
-			onClick={() => {
-				if (searchParams.get('task')) {
-					router.push(pathname);
-				}
-				setFilters(initialFilters());
-			}}>
-				Filter zurücksetzen
-			</button>
+			<Suspense>
+				<button
+				className='full_button md secondary'
+				onClick={() => {
+					if (searchParams.get('task')) {
+						router.push(pathname);
+					}
+					setFilters(initialFilters());
+				}}>
+					Filter zurücksetzen
+				</button>
+			</Suspense>
 		</div>
 	);
 };
