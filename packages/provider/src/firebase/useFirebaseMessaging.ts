@@ -26,7 +26,7 @@ const useFirebaseMessaging = () => {
     
 	useEffect(() => {
 		if (!messaging) return console.error('Firebase Messaging not initialized');
-		if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
+		if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
 			navigator.serviceWorker
 				.register('/firebase-messaging-sw.js')
 				.then((registration) => {

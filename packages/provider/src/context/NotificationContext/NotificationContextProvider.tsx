@@ -1,10 +1,14 @@
 'use client';
 
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { deleteNotification, getNotifications, useFirebaseMessaging, UserContext } from '@repo/provider';
+import { deleteNotification, getNotifications, UserContext } from '@repo/provider';
 import { setNotificationsToRead as snr, Notification } from '@repo/provider';
 import NotificationContext from './NotificationContext';
 import useInstallations from './hooks/useInstallations';
+
+import dynamic from 'next/dynamic';
+
+const useFirebaseMessaging = dynamic(() => import('../../firebase/useFirebaseMessaging').then(mod => mod.default), { ssr: false });
  
 const NotificationContextProvider = ({children} : {children: React.ReactNode}) => {
 	const {user} = useContext(UserContext);
