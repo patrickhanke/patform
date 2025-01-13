@@ -1,7 +1,12 @@
 import {Tickets} from '@content';
+import { Suspense } from 'react';
 
 const TicketsPage = () => {
-    return <Tickets pageState='open' />;
+    return (
+        <Suspense>
+            <Tickets pageState='open' />
+        </Suspense>
+    );
 };
 
 export default TicketsPage

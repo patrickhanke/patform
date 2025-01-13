@@ -1,7 +1,12 @@
 import {Tickets} from '@content';
+import { Suspense } from 'react';
 
 const TicketsPage = () => {
-    return <Tickets pageState='in_progress' />;
+    return (
+        <Suspense>
+            <Tickets pageState='in_progress' />
+        </Suspense>
+    );
 };
 
 export default TicketsPage

@@ -20,8 +20,12 @@ const UserContextProvider = ({ children}: {children: React.ReactNode}) => {
 	const getUserData =  useCallback( async () => {
 		axiosclient().get('/users/me')
 			.then(response => {
-				setUser( response.data );
-				setProject(response.data.project.objectId);
+				if (response.data) {
+					setUser( response.data );
+				}
+				if (response.data.project) {
+					setProject(response.data.project.objectId);
+				};
 			})
 			.catch(error => console.error(error.message));
 	}, []);
@@ -30,7 +34,7 @@ const UserContextProvider = ({ children}: {children: React.ReactNode}) => {
 		user: user as User, 
 		projectId: project || '',
 		changeProject,
-		getUserData,
+		getUserData
 	}), [token, user]);
 
 	useEffect(() => {

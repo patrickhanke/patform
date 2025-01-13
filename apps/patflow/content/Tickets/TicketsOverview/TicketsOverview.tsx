@@ -9,7 +9,7 @@ const TicketsOverview = () => {
 	const [siteState, setSiteState] = useState<typeof site_states[0]>(site_states[0]);
 
 	return (
-		<>
+		<Suspense>
 			<SiteHeader
 				title='Tickets'
 				navItems={site_states} 
@@ -20,7 +20,7 @@ const TicketsOverview = () => {
 			<Suspense>
 				<Tickets siteType={siteState.value as 'open' | 'in_progress' | 'closed'}  />
 			</Suspense>
-		</>
+		</Suspense>
 	);
 };
 

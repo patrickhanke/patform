@@ -2,7 +2,7 @@
 
 import { GET_USER } from '@queries';
 import { useQuery } from '@apollo/client';
-import React, { useContext, useMemo, useState } from 'react';
+import React, { Suspense, useContext, useMemo, useState } from 'react';
 import useWorkerSiteStates from './hooks/useWorkerSiteStates';
 import UserSettings from './content/UserSettings';
 import StaffMemberOverview from './content/StaffMemberOverview';
@@ -36,7 +36,7 @@ const StaffMember = ({params} : {params: Params}) => {
 	const user = data.objects.get_User;
 
 	return (
-		<>
+		<Suspense>
 			<SiteHeader
 				title={data && `${data.objects.get_User.first_name} ${data.objects.get_User.family_name}`}
 				hasSiteNavigation
@@ -61,7 +61,7 @@ const StaffMember = ({params} : {params: Params}) => {
 					projectId={projectId}
 				/>
 			}
-		</>
+		</Suspense>
 	);
 };
 
