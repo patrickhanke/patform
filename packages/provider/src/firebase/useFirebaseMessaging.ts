@@ -26,14 +26,22 @@ const useFirebaseMessaging = () => {
     
 	useEffect(() => {
 		if (!messaging) return console.error('Firebase Messaging not initialized');
-		navigator.serviceWorker
-			.register('/firebase-messaging-sw.js')
-			.then((registration) => {
-				console.log('Service Worker registered with scope:', registration.scope);
-			})
-			.catch((error) => {
-				console.error('Service Worker registration failed:', error);
-			});
+		if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
+			navigator.serviceWorker
+				.register('/firebase-messaging-sw.js')
+				.then((registration) => {
+					customLog('Service Worker registered with scope:', registration.scope);
+				})
+				.catch((error) => {
+					customLog('Service Worker registration failed:', error);
+				});
+		}
+		
+		const customLog = (...args: any[]) => {
+			if (process.env.NODE_ENV !== 'production') {
+				console.log(...args);
+			}
+		};
 		if (!permission ) {
 			getPermission();
 		}
