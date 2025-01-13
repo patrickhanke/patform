@@ -14,12 +14,12 @@ import {Table} from '@repo/ui';
 const UserOverview = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const {createData, updateData, loading: dataLoading} = useDataHandler();
-	const columns = useTableColumns();
 	const {projectId} = useContext(UserContext);
-
+	
 	const {data, refetch}  = useQuery(FIND_ALL_USERS,{
 		notifyOnNetworkStatusChange: true
 	});
+	const columns = useTableColumns({refetch});
 
 	const createWorkerHandler = async (worker: CreateUser, number: number) => {
 		await createData({

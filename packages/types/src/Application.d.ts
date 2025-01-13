@@ -1,3 +1,4 @@
+import { ApolloQueryResult } from '@apollo/client';
 export type Params = {
     object_id: string,
     form_id: string,
@@ -56,4 +57,7 @@ export type Pointer<T> = {
 } 
 
 export type Image = string // filePath to Image
+
+export type ApolloRefetch = () => Promise<ApolloQueryResult<any>>
+
 

@@ -2,12 +2,14 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useContext, useMemo } from 'react';
 import EditStaffMember from '../components/EditStaffMember';
 import SetStaffMemberPassword from '../components/SetStaffMemberPassword';
-import { User } from '@types';
-import { StateDisplay, Toggle } from '@repo/ui';
+import { ApolloRefetch, User } from '@repo/types';
+import { StateDisplay, StatelessToggle, Toggle } from '@repo/ui';
 import { AppContext } from '@provider';
+import { useDataHandler } from '@repo/provider';
 
-const useTableColumns = () => { 
+const useTableColumns = ({refetch}: {refetch: ApolloRefetch}) => { 
 	const {roles} = useContext(AppContext);
+	const {updateData} = useDataHandler();
 
 	const columns = useMemo<ColumnDef<User>[]>(() => [
 		{
@@ -25,7 +27,24 @@ const useTableColumns = () => {
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => <Toggle key={row.objectId} objectId={row.objectId} type='is_worker' />,
+			accessorFn: row => <StatelessToggle 
+				onChange={async () => {
+					await updateData({
+						className: '_User',
+						objectId: row.objectId,
+						updateObject: {
+							is_worker: !row.is_worker
+						}
+					});
+
+					await refetch();
+
+				}}
+				value={row.is_worker}
+
+
+			
+			/>,
 			header: () => <span>Arbeiter</span>,
 			id: 'worker',
 			cell: info => info.getValue(),
