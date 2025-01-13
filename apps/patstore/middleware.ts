@@ -1,5 +1,7 @@
+import { axiosclient } from '@repo/provider';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { User } from '@repo/types';
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -10,21 +12,22 @@ export async function middleware(request: NextRequest) {
 		pathname.startsWith('/_next') || // exclude Next.js internals
 		pathname.startsWith('/api') || //  exclude all API routes
 		pathname.startsWith('/static') || // exclude static files
-		pathname.startsWith('/survey') || // exclude static files
-		pathname.startsWith('/portal') || // exclude static files
-		pathname.startsWith('/pdf') || // exclude static files
 		PUBLIC_FILE.test(pathname) // exclude all files in the public folder
 	) {
 		return NextResponse.next();
 	}
 	
-	const token = request.cookies.get('patwork_token')?.value as string;
+	const token = request.cookies.get('patwork_token')?.value || '1234' as string;
 	const loggedInCookie = request.cookies.get('patwork_logged_in')?.value || '';
 	let loggedIn = loggedInCookie ==='true'|| false;
 
 	if (!token) {
 		loggedIn = false;
 	} 
+	console.log(token, 'token');
+	console.log(loggedIn, 'log');
+	console.log(request.nextUrl.pathname, 'pathname');
+
 	const httpHeaders = {
 		'X-Parse-Session-Token': token || '',
 		'X-Parse-Application-Id': process.env.SASHIDO_APP_ID || '',
@@ -32,32 +35,52 @@ export async function middleware(request: NextRequest) {
 	};
 
 	const headers = new Headers(httpHeaders);
+	let user: User | null = null as User | null;
 
-	if (token && !loggedIn ) {
+	if (!token && request.nextUrl.pathname !== '/login') {
+		return NextResponse.redirect(new URL('/login', request.url));
+	}
+
+	if (token ) {
 		await fetch(`${process.env.SASHIDO_API_URL}users/me`,{ 
 			method: 'GET',
 			headers
 		})
 			.then(response => response.json())
-			.then(actualData => {
-				if (actualData.sessionToken === token) {
+			.then((actualData: User & {sessionToken: string}) => {
+				console.log(actualData, 'actualData');
+				
+				if (actualData.sessionToken === token && !loggedIn) {
 					loggedIn = true;
-					
 				}		
+				user = actualData
 			})
 			.catch(() => {
+				console.log('error');
+				
 				loggedIn = false;
 			});
-	}
+		}
 	const response = NextResponse.next();
-
-	if (!token && request.nextUrl.pathname !== '/login') {
-
-		return NextResponse.rewrite(new URL('/login', request.url));
-	}
+	
 	if (loggedIn) {
 		response.cookies.set('patwork_logged_in', 'true');
 	}
+	
+	const projectId =  process.env.PROJECT_ID;
+	const pathArray: string[] = [];
+	await axiosclient().get(`classes/Module?where={"project":{"__type":"Pointer","className":"Project","objectId":"${projectId}"}}`).then((res) => {
+		res.data.results.forEach((module: any) => {
+			pathArray.push(module.path)
+		})
+	}).catch((err) => {
+		console.log(err.message)
+	})
+	
+	if (!pathArray.includes(request.nextUrl.pathname ) && user?.is_superuser === false) {
+		return NextResponse.redirect(new URL('/', request.url));
+	}
+
 	return response;
 }
 

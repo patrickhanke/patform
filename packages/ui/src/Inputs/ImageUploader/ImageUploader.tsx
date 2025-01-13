@@ -69,7 +69,7 @@ const ImageUploader = ({
 				// fileName: createFileName(filename).filename,
 				// fileNameFallback: createFileName(filename).fallback,
 				// fileNameVariablesEnabled: true,
-				folderPath: `/HGS/${path}`,
+				folderPath: `/patflow/${path}`,
 				folderPathVariablesEnabled: true
 			},
 			showRemoveButton: true,

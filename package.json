@@ -1,5 +1,5 @@
 {
-  "name": "patform",
+  "name": "patwork",
   "private": true,
   "scripts": {
     "build": "dotenv -- turbo build",

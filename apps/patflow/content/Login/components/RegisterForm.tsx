@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { axiosclient } from '@repo/provider';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
-import '../styles.scss';
+import styles from '../Login.module.scss';
+
 const SignupSchema = Yup.object().shape({
 	username: Yup.string()
 		.min(2, 'Name zu kurz')
@@ -47,7 +48,7 @@ const RegisterForm = () => {
 					setDisabled(false);
 				})
 				.then(() => {
-					setMessage('Sie haben sich erfolgreich bei der Patflow registriert. Bitte bestätigen Sie Ihre angegebene E-Mail Adresse bevor Sie sich einloggen.');
+					setMessage('Sie haben sich erfolgreich bei der Patflow App registriert. Bitte bestätigen Sie Ihre angegebene E-Mail Adresse bevor Sie sich einloggen.');
 					setDisabled(false);
 				});
 		}
@@ -59,7 +60,7 @@ const RegisterForm = () => {
 		</p>
 		:
 		<div>
-			<form onSubmit={formik.handleSubmit} className={'login_form_container'}>
+			<form onSubmit={formik.handleSubmit} className={styles.form_container}>
 				<h2>
 					Registrieren
 				</h2>

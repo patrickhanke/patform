@@ -48,7 +48,7 @@ const LoginForm = () => {
 					'password': values.password
 				})
 					.then(response => {
-						Cookies.set('patwork_token', response.data.sessionToken, {expires: 90});
+						Cookies.set('patstore_token', response.data.sessionToken, {expires: 90});
 						setError('');
 					})
 					.catch(error => {

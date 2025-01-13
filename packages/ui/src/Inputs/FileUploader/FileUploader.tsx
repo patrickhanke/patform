@@ -33,7 +33,7 @@ const FileUploader = ({
 			path: {
 				fileNameFallback: type === 'image' ?  `image_${new Date()}` :  `file_${new Date()}`,
 				fileNameVariablesEnabled: true,
-				folderPath: type === 'image' ? `/CMS/${path}/images` : `/CMS/${path}/files`,
+				folderPath: type === 'image' ? `/patstore/${path}/images` : `/patstore/${path}/files`,
 				folderPathVariablesEnabled: true
 			},
 			showRemoveButton: true,

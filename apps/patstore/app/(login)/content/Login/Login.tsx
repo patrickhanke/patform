@@ -15,15 +15,15 @@ const Login = () => {
 		<>
 			<div className={'login_left_container'}>
 				<div className={'login_left_content'}>
-					<h1>Patwork Admin</h1>
+					<h1>Patstore Admin</h1>
 					<div className={'login_divider'} />
 					<p>
-						Login Patwork CMS
+						Login Patstore CMS
 					</p>
 				</div>
 				<div className={'login_footer'}>
 					<p>
-						Patwork
+						Patstore
 					</p>
 					<p>
 						@ {new Date().getFullYear()}

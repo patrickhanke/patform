@@ -24,7 +24,7 @@ const ImageUploader = ({
 			path: {
 				fileNameFallback: `image_${new Date()}.jpg`,
 				fileNameVariablesEnabled: true,
-				folderPath: `/CMS/${path}/images`,
+				folderPath: `/patstore/${path}/images`,
 				folderPathVariablesEnabled: true
 			},
 			showRemoveButton: true,

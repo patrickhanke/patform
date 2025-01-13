@@ -47,7 +47,7 @@ const RegisterForm = () => {
 					setDisabled(false);
 				})
 				.then(() => {
-					setMessage('Sie haben sich erfolgreich bei der Patflow registriert. Bitte bestätigen Sie Ihre angegebene E-Mail Adresse bevor Sie sich einloggen.');
+					setMessage('Sie haben sich erfolgreich bei der patflow App registriert. Bitte bestätigen Sie Ihre angegebene E-Mail Adresse bevor Sie sich einloggen.');
 					setDisabled(false);
 				});
 		}

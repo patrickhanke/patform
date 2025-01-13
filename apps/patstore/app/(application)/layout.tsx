@@ -2,14 +2,14 @@ import React from 'react';
 import '@repo/styles/global';
 import '@repo/styles/layout';
 import { ApolloClient, OperationVariables } from '@apollo/client';
+import LayoutContext from './components/LayoutContext';
 import { Module, Project } from '@repo/types';
 import {get_initial_project, serverClient} from '@repo/provider';
 import { SiteHeader } from '@repo/ui';
-import LayoutContext from './components/LayoutContext';
 import RenderSidebar from './components/RenderSidebar';
 
 export const metadata = {
-	title: 'Patwork Admin',
+	title: 'Patstore App',
 	description: 'PH'
 };
 
