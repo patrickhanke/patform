@@ -5,12 +5,8 @@ import { User } from '@repo/types';
 import Cookies from 'js-cookie';
 import { generateUuid} from '@repo/provider';
 import axios from 'axios';
-import dynamic from 'next/dynamic';
 
-const getFcmToken = dynamic(() => import('@repo/provider').then(mod => mod.getFcmToken));
-const messaging = dynamic(() => import('@repo/provider').then(mod => mod.messaging));
-
-type LoginUser = (T: {email: string, password: string }) => Promise<({
+type LoginUser = (T: {email: string, password: string, getFcmToken: () => Promise<string | void> }) => Promise<({
     user: User | null,
     error: boolean,
     message: string
@@ -27,7 +23,7 @@ const loginclient = (installationId: string) => {
 	});
 };
 
-export const loginUser: LoginUser  =  async ({email, password}) => {
+export const loginUser: LoginUser  =  async ({email, password, getFcmToken}) => {
 	let returnValue = {
 		user: null,
 		error: true,
@@ -59,8 +55,8 @@ export const loginUser: LoginUser  =  async ({email, password}) => {
 					
 					const installationIdKey = process.env.INSTALLATION_ID || 'default_installation_id';
 					Cookies.set(installationIdKey, installationId, {expires: 365, sameSite: 'strict'});
-					const token = await getFcmToken(messaging);
-
+					const token = await getFcmToken();
+					
 					await axiosclient().post('functions/create-installation', {
 						deviceType: 'web',
 						deviceToken: token, 

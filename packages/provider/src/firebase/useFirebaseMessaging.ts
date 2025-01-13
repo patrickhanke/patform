@@ -9,7 +9,7 @@ const requestPermission = dynamic(() => import('./requestPermission'));
 import getFcmToken from './getFcmToken';
 import { saveNotification } from '../functions';
 
-const useFirebaseMessaging = () => {
+const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 	const [permission, setPermission] = useState<'granted' | 'denied' | 'error' | undefined>();
 	const [token, setToken] = useState<string | null>(null);
 
@@ -28,6 +28,7 @@ const useFirebaseMessaging = () => {
     
 	useEffect(() => {
 		if (!messaging) return console.error('Firebase Messaging not initialized');
+		if (!initialize) return;
 		if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
 			navigator.serviceWorker
 				.register('/firebase-messaging-sw.js')
@@ -72,7 +73,7 @@ const useFirebaseMessaging = () => {
 		}
 	}, [permission, messaging, token]);
 
-	return ({permission, token});
+	return ({permission, token, getFcmToken: getToken});
 };
 
 export default useFirebaseMessaging;

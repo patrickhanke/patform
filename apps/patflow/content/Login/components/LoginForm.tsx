@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { axiosclient } from '@repo/provider';
+import { axiosclient, useFirebaseMessaging } from '@repo/provider';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
@@ -15,6 +15,7 @@ const LoginSchema = Yup.object().shape({
 const LoginForm = () => {
 	const [disabled, setDisabled] = useState(false);
 	const [error, setError] = useState('');
+	const {getFcmToken} = useFirebaseMessaging({initialize: false})
 
 	const formik = useFormik({
 		validationSchema: LoginSchema,
@@ -42,7 +43,7 @@ const LoginForm = () => {
 				console.log(user.has_access);
 				
 				if (user.has_access === true) {
-					const login = await loginUser({email: values.email, password: values.password});
+					const login = await loginUser({email: values.email, password: values.password, getFcmToken});
 					console.log(login);
 					
 					if (login) {
