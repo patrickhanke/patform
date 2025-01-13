@@ -1,3 +1,5 @@
+'use client';
+
 import { axiosclient } from '../data';
 import { User } from '@repo/types';
 import Cookies from 'js-cookie';
