@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { onMessage } from 'firebase/messaging';
-import messaging from './initializeFirebase';
-import requestPermission from './requestPermission';
+import dynamic from 'next/dynamic';
+
+const messaging = dynamic(() => import('./initializeFirebase'));
+const requestPermission = dynamic(() => import('./requestPermission'));
 import getFcmToken from './getFcmToken';
 import { saveNotification } from '../functions';
 
