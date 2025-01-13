@@ -1,7 +1,7 @@
 import { axiosclient } from '../data';
 import { User } from '@repo/types';
 import Cookies from 'js-cookie';
-import { generateUuid, getFcmToken, messaging } from '@repo/provider';
+import { generateUuid } from '@repo/provider';
 import axios from 'axios';
 
 type LoginUser = (T: {email: string, password: string }) => Promise<({
@@ -53,11 +53,11 @@ export const loginUser: LoginUser  =  async ({email, password}) => {
 					
 					const installationIdKey = process.env.INSTALLATION_ID || 'default_installation_id';
 					Cookies.set(installationIdKey, installationId, {expires: 365, sameSite: 'strict'});
-					const token = await getFcmToken(messaging);
+					// const token = await getFcmToken(messaging);
 
 					await axiosclient().post('functions/create-installation', {
 						deviceType: 'web',
-						deviceToken: token, 
+						deviceToken: '123', 
 						channels: [],
 						appIdentifier: process.env.FIREBASE_APP_ID,
 						appName: 'patflow_web',
