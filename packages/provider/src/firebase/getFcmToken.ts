@@ -1,11 +1,12 @@
 'use client';
 
 import { Messaging } from 'firebase/messaging';
+import dynamic from 'next/dynamic';
+const getToken = dynamic(() => import('firebase/messaging').then(mod => mod.getToken), { ssr: false });
 
 const getFcmToken: (messaging: Messaging) => Promise<string | void> = async (messaging) => {
 	try {
 		const vapidKey = 'BJ3Q1Q-9N4W_xpbR4BVTLqEkwKMuuXC7lhl4yGleDnRQrwLML7dTM7uktXmb2a5o9U-R1o9-Xa_hNrKKaB-ROds'; // Replace with your Firebase project's VAPID key
-		const { getToken } = await import('firebase/messaging');
 		const token = await getToken(messaging, { vapidKey });
 		if (token) {
 			console.log('FCM Token:', token);
