@@ -94,18 +94,16 @@ const SiteHeaderContent = ({id, filters, setFilters, initialFilters}: SiteHeader
 					/>
 				}
 			</div>
-			<Suspense>
-				<button
-				className='full_button md secondary'
-				onClick={() => {
-					if (searchParams.get('task')) {
-						router.push(pathname);
-					}
-					setFilters(initialFilters());
-				}}>
-					Filter zurücksetzen
-				</button>
-			</Suspense>
+			<button
+			className='full_button md secondary'
+			onClick={() => {
+				if (searchParams.get('task')) {
+					router.push(pathname);
+				}
+				setFilters(initialFilters());
+			}}>
+				Filter zurücksetzen
+			</button>
 		</div>
 	);
 };

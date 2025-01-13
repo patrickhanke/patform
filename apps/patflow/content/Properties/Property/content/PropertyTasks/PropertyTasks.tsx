@@ -1,10 +1,12 @@
 import { TaskList, Tasks } from '@content';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const PropertyTasks = ({objectId}: {objectId: string}) => {
 
 	return (
-		<Tasks pageState='active' id={objectId} className={'Property'} />
+		<Suspense>
+			<Tasks pageState='active' id={objectId} className={'Property'} />
+		</Suspense>
 	);
 };
 
