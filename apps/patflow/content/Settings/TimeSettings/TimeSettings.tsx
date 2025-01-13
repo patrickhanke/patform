@@ -11,9 +11,10 @@ import { Holiday } from '@types';
 import { cloneDeep, set } from 'lodash';
 import axios from 'axios';
 import { SiteHeader, SiteHeaderButtons } from '@repo/ui';
+import { SiteState } from '@repo/types';
 
 const TimeSettings = () => {
-	const [siteState, setSiteState] = useState(site_states[0]);
+	const [siteState, setSiteState] = useState<SiteState>(site_states[0]);
 	const {projectId} = useContext(UserContext);
 	const [createTemplate, setCreateTemplate] = useState(false);
 	const { data: holidayData, refetch: refetchHolidays } = useQuery(
@@ -121,7 +122,7 @@ const TimeSettings = () => {
 			/>
 			{siteState.value === 'holiday-templates' && (
 				<HolidayTemplates 
-					projectId={project.objectId} 
+					projectId={projectId} 
 					createHolidayTemplate={createTemplate} 
 					setCreateHolidayTemplate={setCreateTemplate}  
 					holidays={holidayData?.objects.findHoliday.results || []}
@@ -132,7 +133,7 @@ const TimeSettings = () => {
 					holidays={holidayData?.objects.findHoliday.results || []} 
 				/>
 			)}
-			{siteState.value === 'surcharges' && project &&  <SurchargeSettings projectId={project.objectId} holidays={holidayData?.objects.findHoliday.results || []} />}
+			{siteState.value === 'surcharges' && projectId &&  <SurchargeSettings projectId={projectId} holidays={holidayData?.objects.findHoliday.results || []} />}
 		</>
 	);
 };
