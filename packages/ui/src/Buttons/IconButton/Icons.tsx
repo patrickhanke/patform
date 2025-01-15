@@ -2,7 +2,7 @@ import React from 'react';
 import { AiFillCopy, AiOutlineMinus, AiOutlineShoppingCart } from 'react-icons/ai';
 import { BsFillBarChartFill, BsLayoutTextWindowReverse, BsPeople, BsPlusLg } from 'react-icons/bs';
 import { FaInfo, FaRegEye, FaSave, FaTrash, FaUsers } from 'react-icons/fa';
-import {GrProjects} from 'react-icons/gr';
+import {GrClose, GrProjects} from 'react-icons/gr';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { IoReceiptOutline, IoSettingsOutline } from 'react-icons/io5';
 import { MdOutlineCleaningServices, MdOutlineContactPage } from 'react-icons/md';
@@ -28,7 +28,7 @@ import { LiaCommentsSolid } from 'react-icons/lia';
 import { MdOutlinePassword } from 'react-icons/md';
 import { IoImagesOutline } from 'react-icons/io5';
 import { LuArchive } from 'react-icons/lu';
-import { TfiClose, TfiList, TfiViewList } from 'react-icons/tfi';
+import { TfiList, TfiViewList } from 'react-icons/tfi';
 import { IoIosTimer } from 'react-icons/io';
 import { IconProps } from './types';
 
@@ -175,7 +175,7 @@ const Icons: React.FC<IconProps> = ({ icon, color }) => {
 		return <MdOutlineEditCalendar color={color || 'inherit'} />;
 	}
 	if (icon === 'close') {
-		return <TfiClose color={color || 'inherit'} />;
+		return <GrClose  color={color || 'inherit'} />;
 	}
 	if (icon === 'archive'){
 		return <LuArchive color={color || 'inherit'} />;

@@ -6,7 +6,7 @@ import styles from './Tickets.module.scss';
 import { useDataHandler } from '@repo/provider';
 import { TicketsComponent } from './types';
 import clsx from 'clsx';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import SiteHeaderContent from './components/SiteHeaderContent';
 import { Filter } from '@types';
 import { useCallback } from 'react';
@@ -15,10 +15,8 @@ import { Page, Table } from '@repo/ui';
 
 const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
-	const {loading: updateLoading} = useDataHandler();
-	const {tickets, loading, refetch} = useGetTickets({id, className, filters});
+	const {tickets, refetch} = useGetTickets({id, className, filters});
 	const searchParams = useSearchParams();
-	const router = useRouter();
 	const {updateData, deleteData} = useDataHandler();
 
 	const archiveTicket = useCallback(async (objectId: string) => {
@@ -58,20 +56,6 @@ const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 		return [];
 	}, [pageState, searchParams.get('ticket')]);
 
-	const siteHeaderButtons = useMemo(() => [{
-		type: 'button',
-		text: 'Filter zurücksetzen',
-		onClick: () => {
-			if (searchParams.get('ticket')) {
-				router.push('/tickets');
-			}
-			setFilters(initialFilters());
-		},
-		color: 'secondary',
-		is_reset_button: true,
-		disabled: loading || updateLoading || filters.length === 0
-	}], [loading, updateLoading, filters]);
-
 	const siteContent = useMemo(() => {
 			let content =  {
 				title: 'Tickets',
@@ -104,6 +88,7 @@ const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 				id={id}
 				filters={filters}
 				setFilters={setFilters}
+				initialFilters={initialFilters}
 				tickets={tickets || []}
 			/>
 		</Suspense>

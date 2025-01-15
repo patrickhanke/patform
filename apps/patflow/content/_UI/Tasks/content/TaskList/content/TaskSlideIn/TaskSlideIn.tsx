@@ -12,7 +12,7 @@ import DisplayPropery from '../DisplayPropery';
 import TeamAssignment from '../TeamAssignment';
 import { findTicketRoute } from '@provider';
 import { useRouter } from 'next/navigation';
-import { IconButton, SlideInRight, StateDisplay, SwitchButtons } from '@repo/ui';
+import { IconButton, SlideInRight, StateSelect, SwitchButtons } from '@repo/ui';
 import buttonStates from './constants/buttonStates';
 
 const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
@@ -122,7 +122,7 @@ const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 							</label>
 							<div>
 								{dataSlidein && dataSlidein.objects.getTask.ticket ? (
-									<StateDisplay
+									<StateSelect
 										type='label'
 										color='light'
 										label={dataSlidein.objects.getTask.ticket.title}

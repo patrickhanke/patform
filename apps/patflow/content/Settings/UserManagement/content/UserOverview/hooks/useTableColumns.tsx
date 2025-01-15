@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react';
 import EditStaffMember from '../components/EditStaffMember';
 import SetStaffMemberPassword from '../components/SetStaffMemberPassword';
 import { ApolloRefetch, User } from '@repo/types';
-import { StateDisplay, StatelessToggle, Toggle } from '@repo/ui';
+import { StateSelect, StatelessToggle, Toggle } from '@repo/ui';
 import { AppContext } from '@provider';
 import { useDataHandler } from '@repo/provider';
 
@@ -20,15 +20,15 @@ const useTableColumns = ({refetch}: {refetch: ApolloRefetch}) => {
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => <StateDisplay type='state' state={row.role.type} stateOptions={roles}  />,
+			accessorFn: row => <StateSelect type='state' state={row.role.type} stateOptions={roles}  />,
 			header: () => <span>Rolle</span>,
 			id: 'role',
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => <StatelessToggle 
-				onChange={async () => {
+			accessorFn: row => <Toggle 
+				onClick={async () => {
 					await updateData({
 						className: '_User',
 						objectId: row.objectId,
@@ -38,12 +38,8 @@ const useTableColumns = ({refetch}: {refetch: ApolloRefetch}) => {
 					});
 
 					await refetch();
-
 				}}
 				value={row.is_worker}
-
-
-			
 			/>,
 			header: () => <span>Arbeiter</span>,
 			id: 'worker',

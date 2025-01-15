@@ -5,8 +5,8 @@ module.exports = {
   extends: ["@repo/eslint-config/library.js"],
   parser: "@typescript-eslint/parser",
   rules: {
-		'global-require': 0,
-    'no-restricted-globals': ['error', 'navigator', 'window', 'document']
+		'global-require': 0
+    // 'no-restricted-globals': ['error', 'navigator', 'window', 'document']
   },
   parserOptions: {
     project: true

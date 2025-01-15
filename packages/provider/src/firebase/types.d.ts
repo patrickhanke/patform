@@ -39,18 +39,7 @@ export type MessageData =
   ticket_name: string,
 }
 
-export type Notification = {
-  title: string,
-  body: string,
-  image: Image,
-  timestamp: string,
-  id: string,
-  read: boolean,
-  data?: {[key: string]: string}
-}
-
 export type SendMessage = ({notification, data, tokens}: Message) => Promise<void>
-  
 
 export type NotificationSettings = {
   'task_assigned': boolean,

@@ -1,45 +1,38 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback } from 'react';
 import './styles.scss';
-import { useQuery } from '@apollo/client';
-import { ToggleType } from './types';
-import { get } from 'lodash';
+import { ToggleProps } from './types';
 import { useDataHandler } from '@repo/provider';
-import useToggleParameters from './hooks/useToggleParameters';
 
-const Toggle = ({ objectId, type }: { objectId: string, type: ToggleType }) => {
+const Toggle: FC<ToggleProps> = ({ objectId, onClick, className, key, value, refetch }) => {
 	const {updateData} = useDataHandler();
-	const [isChecked, setIsChecked] = useState(false);
-	const {query, path, entry, className} = useToggleParameters(type);
-
-	const {data, refetch} = useQuery(query, {
-		variables: {id: objectId}, 
-		notifyOnNetworkStatusChange: true
-	});
-	
-	useEffect(() => {
-		if (data) {
-			setIsChecked(get( data, path));
-		}
-
-	}, [data]);
     
 	const dataHandler = useCallback(async () => {
-		await updateData({
-			className,
-			objectId,
-			updateObject: {
-				[entry]: !isChecked
+		if (onClick) {
+			onClick(!value);
+			return;
+		}
+
+		if (objectId  && className && key) {
+			await updateData({
+				className,
+				objectId,
+				updateObject: {
+					[key]: !value
+				}
+			});
+			
+			if (refetch) {
+				refetch();
 			}
-		});
-		refetch();
-	}, [isChecked]);
+		}
+	}, [value, objectId, className, key, refetch]);
 
 	return (
 		<div className='toggle-container' onClick={ () => dataHandler()}>
 			<div className='toggle-switch'>
-				<input type="checkbox" checked={isChecked} readOnly />
+				<input type="checkbox" checked={value} readOnly />
 				<span className='toggle-slider'></span>
 			</div>
 		</div>

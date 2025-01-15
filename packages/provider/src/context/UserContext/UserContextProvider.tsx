@@ -30,6 +30,9 @@ const UserContextProvider = ({ children}: {children: React.ReactNode}) => {
 			.catch(error => console.error(error.message));
 	}, []);
 
+	console.log(user);
+	
+
 	const userContextObject = useMemo(() => ({
 		user: user as User, 
 		projectId: project || '',

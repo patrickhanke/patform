@@ -70,11 +70,12 @@
 }
 
 .slidein_content {
-    @include constants.flexbox($direction: column, $align: stretch, $gap: constants.$xs);
+    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$xs);
     flex: 1 1;
     position: relative;
     box-sizing: border-box;
     width: 100%;
     height: calc(100% - 42px);
     overflow:  auto;
+    padding: map-get(constants.$padding, 'md');
 }

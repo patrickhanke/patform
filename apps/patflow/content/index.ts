@@ -5,7 +5,6 @@ export {ToursOverview} from './Tours';
 export {StaffOverview, StaffMember} from './Staff';
 export {WasteOverview} from './Waste';
 export * from './Settings';
-export * from './Tickets';
 export * from './Record';
 export * from './_UI';
 export * from './Login';

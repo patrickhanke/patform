@@ -60,4 +60,12 @@ export type Image = string // filePath to Image
 
 export type ApolloRefetch = () => Promise<ApolloQueryResult<any>>
 
-
+export type Notification = {
+  title: string,
+  body: string,
+  image: Image,
+  timestamp: string,
+  id: string,
+  read: boolean,
+  data?: {[key: string]: string}
+}

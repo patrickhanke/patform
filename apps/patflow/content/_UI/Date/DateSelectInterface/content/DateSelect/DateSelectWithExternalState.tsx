@@ -14,6 +14,7 @@ import MultiDateSelectInterface from './components/MultiDateSelectInterface';
 import IntervalDateSelectInterface from './components/IntervalDateSelectInterface';
 import { DateSelectExternalStateProps } from './types';
 import IntervalInfo from './components/IntervalInfo';
+import { Divider } from '@repo/ui';
 
 const DateSelectWithExternalState = ({initialValue, dataHandler} : DateSelectExternalStateProps) => {
 	const initialDate = {
@@ -45,21 +46,6 @@ const DateSelectWithExternalState = ({initialValue, dataHandler} : DateSelectExt
 							draft.type = value;
 						})}
 					/>
-					{date.type.value === 'single' && 
-						<div className={clsx('info_container', 'margin_top')}>
-							<p> Hier kann für eine Aufgabe ein individueller Termin festgelegt werden. </p>
-						</div>
-					}
-					{date.type.value === 'multi' && 
-						<div className={clsx('info_container', 'margin_top')}>
-							<p> Hier können indiviuelle Termine für eine Aufgabe festgelegt werden. </p>
-						</div>
-					}
-					{(date.type.value === 'weekly' || date.type.value === 'monthly') && 
-						<div className={clsx('info_container', 'margin_top')}>
-							<p> Hier können Intervalle für eine Aufgabe festgelegt werden </p>
-						</div>
-					}
 				</div>
 				<div>
 					<label>Kategorie wählen</label>
@@ -70,6 +56,7 @@ const DateSelectWithExternalState = ({initialValue, dataHandler} : DateSelectExt
 						})}
 					/>
 				</div>
+				<Divider showLine size='medium' />
 				<div>
 					{date.type.value === 'single' && <SingleDateSelectInterface initialValue={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
 					{date.type.value === 'multi' &&  <MultiDateSelectInterface initialValue={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}

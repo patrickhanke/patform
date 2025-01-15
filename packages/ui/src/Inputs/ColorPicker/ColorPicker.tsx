@@ -1,10 +1,12 @@
+'use client';
+
 import { useRef, useState, FC } from 'react';
 import { HexColorInput, RgbaStringColorPicker } from 'react-colorful';
-import '../styles.scss';
+import './styles.scss';
 import { useOnClickOutside } from 'usehooks-ts';
-import { ColorPickerProps } from '../types';
+import { ColorPickerProps } from './types';
 
-const ColorPicker: FC<ColorPickerProps> = ({value = '', onChange, isOverlay = false, isHorizontal}) => {
+const ColorPicker: FC<ColorPickerProps> = ({value = '', onChange, isOverlay = false}) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const ref = useRef(null);
 	useOnClickOutside(ref, () => setIsOpen(false));
@@ -19,7 +21,7 @@ const ColorPicker: FC<ColorPickerProps> = ({value = '', onChange, isOverlay = fa
 						onClick={() => setIsOpen(true)}
 					/>
 					{isOpen && (
-						<div className={'color_picker_popover'} data-align_right={isHorizontal} ref={ref}>
+						<div className={'color_picker_popover'} ref={ref}>
 							<div>
 								<RgbaStringColorPicker
 									color={value}
@@ -33,7 +35,6 @@ const ColorPicker: FC<ColorPickerProps> = ({value = '', onChange, isOverlay = fa
 						</div>
 					)}
 				</>
-			
 				:
 				<>
 					{/* <HexColorPicker color={debouncedValue} onChange={setPickerValue}   /> */}

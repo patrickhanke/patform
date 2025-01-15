@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 const TicketsPage = () => {
     return (
         <Suspense>
-            <Tickets pageState='open' />
+            <Tickets pageState='closed' />
         </Suspense>
     );
 };

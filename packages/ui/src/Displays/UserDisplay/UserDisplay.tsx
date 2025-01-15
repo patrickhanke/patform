@@ -1,28 +1,43 @@
-'use cient';
+'use client';
 
 import styles from './UserDisplay.module.scss';
 import { MessageIndicator } from '@repo/ui';
-import { useContext } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { UserContext, getImageUrl } from '@repo/provider';
 
 const UserDisplay = () => {
 	const {user} = useContext(UserContext);
+	const [client, setClient] = useState(false);
+
+	const userData = useMemo(() => {
+		if (user && user.portrait) {
+			return ({
+				url: getImageUrl({filePath: user.portrait, width: 60, height: 60}),
+				alt: `${user.first_name} ${user.family_name}`
+			});
+		}
+		return {
+			url: '',
+			alt: ''
+		};
+	}, [user]);
+
+	useEffect(() => {
+		setClient(true);
+	}, []);
 	
-
-	if (!user) {
-		return null;
-	}
-
 	return ( 
 		<div className={styles.user_container}>
 			<div className={styles.user_image_container} >
-				{user.portrait && 
-				<img
-					src={getImageUrl({filePath:user.portrait, width: 60, height: 60})}
-					alt={`${user.first_name} ${user.family_name}`}
-					width={'24px'}
-					height={'24px'}
-				/>
+				{client && userData.url ? 
+					<img
+						src={userData.url}
+						alt={userData.alt}
+						width={'24px'}
+						height={'24px'}
+					/>
+					: 
+					<div className={styles.user_image_placeholder} />
 				}
 			</div>
 			<MessageIndicator />

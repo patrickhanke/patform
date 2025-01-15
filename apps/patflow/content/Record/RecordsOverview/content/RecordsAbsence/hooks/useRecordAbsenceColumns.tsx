@@ -4,7 +4,7 @@ import { AbsenceWithRecordIs, UseRecordAbsenceColumnsProps } from '../types';
 import { DisplayWorker } from '@content';
 import { absence_state_options, absence_type_options, getDateStringsFromIso } from '@provider';
 import EditAbsence from '../components/EditAbsence';
-import { StateDisplay } from '@repo/ui';
+import { StateSelect } from '@repo/ui';
 
 const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 	const columns: ColumnDef<AbsenceWithRecordIs>[] = useMemo(() => [
@@ -24,7 +24,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 		},
 		{
 			accessorFn: row => (
-				<StateDisplay
+				<StateSelect
 					type='state'
 					state={row.type}
 					stateOptions={absence_type_options}
@@ -37,7 +37,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 		},
 		{
 			accessorFn: row => (
-				<StateDisplay
+				<StateSelect
 					type='state'
 					state={row.state}
 					stateOptions={absence_state_options}

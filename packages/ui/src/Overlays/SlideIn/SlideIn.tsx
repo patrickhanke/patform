@@ -25,7 +25,7 @@ const SlideIn: React.FC<SlideInProps> = ({
 	const ref = useRef(null);
 	useOnClickOutside(ref, () => {
 		if (preventClickOutside === true) return;
-		close();
+		cancel();
 	});
 
 	return (
@@ -44,8 +44,8 @@ const SlideIn: React.FC<SlideInProps> = ({
 						<div className={'slidein_header'} >
 							<h3>{header}</h3>
 							<IconButton
-								icon='cancel'
-								onClick={() => close()}
+								icon='close'
+								onClick={() => cancel()}
 							/>
 						</div>
 						<div className="slidein_main_content">

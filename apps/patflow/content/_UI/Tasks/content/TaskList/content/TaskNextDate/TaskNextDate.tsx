@@ -7,7 +7,7 @@ import { getDateString } from '@provider';
 import { useDataHandler } from '@repo/provider';
 import { formatISO9075 } from 'date-fns';
 import { Task } from '@types';
-import { Icon, Loader, Modal, StateDisplay } from '@repo/ui';
+import { Icon, Loader, Modal, StateSelect } from '@repo/ui';
 
 type TaskNextDateProps = {
 	taskId: string, 
@@ -139,7 +139,7 @@ const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal
 		return (
 			<>
 				<div className={styles.object_container} >
-					<StateDisplay
+					<StateSelect
 						type='label'
 						label={nextDate.value}
 						color={nextDate.color}

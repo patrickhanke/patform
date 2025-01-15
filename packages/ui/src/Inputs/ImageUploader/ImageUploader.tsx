@@ -4,6 +4,7 @@ import './styles.scss';
 import { UploadDropzone, UploadDropzoneConfig } from '@bytescale/upload-widget-react';
 import { ErrorDisplay, ImageDisplay } from '@repo/ui';
 import { Image } from '@repo/types';
+import createFileName from './functions/createFileName';
 
 const ImageUploader = ({
 	previewImage,
@@ -11,13 +12,15 @@ const ImageUploader = ({
 	label,
 	path,
 	maxFileCount,
-	deleteHandler
+	deleteHandler,
+	filename
 } : {
 	previewImage?: Image | Image[],
 	onChange: (F: Image[] ) => void,
 	label: string,
 	path: string,
 	maxFileCount?: number,
+	filename?: string,
 	deleteHandler?: (image: Image) => void
 }) => {
 	const [reinitialize, setReinitialize] = React.useState(true);
@@ -26,7 +29,8 @@ const ImageUploader = ({
 		const configObject: UploadDropzoneConfig = {
 			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string, 
 			maxFileCount: maxFileCount || 10,
-			showFinishButton: true, // Note: You must use 'onUpdate' if you set 'showFinishButton: false' (default).
+			showFinishButton: true,
+
 			editor: {
 				images: {
 					preview: false,
@@ -66,9 +70,9 @@ const ImageUploader = ({
 				xOfY: 'of'
 			},
 			path: {
-				// fileName: createFileName(filename).filename,
-				// fileNameFallback: createFileName(filename).fallback,
-				// fileNameVariablesEnabled: true,
+				fileName: createFileName(filename),
+				fileNameFallback: createFileName(filename),
+				fileNameVariablesEnabled: true,
 				folderPath: `/patflow/${path}`,
 				folderPathVariablesEnabled: true
 			},

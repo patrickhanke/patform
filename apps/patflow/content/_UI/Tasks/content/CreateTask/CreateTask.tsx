@@ -48,7 +48,7 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 	useEffect(() => {
 		const errorArray : ErrorMessage[] = [];
 		if (!task.title) {
-			errorArray.push({message: 'Bitte eine Aufgabe angeben', key: 'task_title', id: 'task_title'});
+			errorArray.push({message: 'Bitte einen Title für eine Aufgabe angeben', key: 'task_title', id: 'task_title'});
 		}
 		if (!task.property) {
 			errorArray.push({message: 'Bitte ein zugehöriges Objekt angeben', key: 'taks_object', id: 'taks_object'});
@@ -187,12 +187,12 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 								})}
 								width={'100%'}
 							/>
-							<div>
+							{/* <div>
 								<label>
 									Datum für die Aufgabe festlegen 
 								</label>
 								<TimeDisplay date={date}  />
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>

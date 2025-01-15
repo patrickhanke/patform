@@ -2,7 +2,6 @@
 
 .ticket_overview {
     @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch);
-    background-color: constants.$lightest;
 }
 
 .tickets_container {
@@ -47,6 +46,7 @@
 }
 
 .task_title {
-    color: constants.$green;
+    color: constants.$dark;
+    font-weight: 500;
     text-wrap: wrap;
 }

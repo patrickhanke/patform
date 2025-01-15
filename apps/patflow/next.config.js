@@ -35,6 +35,12 @@ const nextConfig = {
 				hostname: 'ks588wtqbcwvgvbc096gr40cedytjy.files-sashido.cloud/',
 				port: '',
 				pathname: '/**'
+			},
+			{ 
+				protocol: 'https',
+				hostname: 'upcdn.io',
+				port: '',
+				pathname: '/**'
 			}
 		]
 	}

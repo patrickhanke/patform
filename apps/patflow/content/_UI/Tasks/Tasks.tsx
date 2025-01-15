@@ -10,7 +10,6 @@ import sortTasksForList from './functions/sortTasksForList';
 import TaskList from './content/TaskList';
 import { Divider, Page } from '@repo/ui';
 import site_states from './constants/site_states';
-import page_states from './constants/page_states';
 
 const Tasks = ({id, className, pageState}: TasksComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
@@ -81,8 +80,8 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 				/> */}
 				<Divider size='small' showLine={false} />
 				<TaskList 
-						taskList={tasks || []} 
-						refetch={refetch} 
+					taskList={tasks || []} 
+					refetch={refetch} 
 				/>
 			</>
 		);

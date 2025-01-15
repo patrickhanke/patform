@@ -3,19 +3,19 @@ const absence_type_options = [
 		value: 'illness',
 		id: 'illness',
 		label: 'Krankheit',
-		color: 'secondary'
+		color: 'red'
 	},
 	{
 		value: 'vacation',
 		id: 'vacation',
 		label: 'Urlaub',
-		color: 'primary'
+		color: 'purple'
 	},
 	{
 		value: 'other',
 		id: 'other',
 		label: 'Andere',
-		color: 'light'
+		color: 'yellow'
 	}
 ];
 

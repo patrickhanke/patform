@@ -14,7 +14,6 @@ const UserMessages = () => {
 	useEffect(() => {
 		const handleVisibilityChange = () => {
 			if (document.visibilityState === 'visible') {
-				console.log('Visible');
 				setNotificationsToRead();
 			} 
 		};
@@ -25,8 +24,6 @@ const UserMessages = () => {
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
 		};
 	}, []);
-
-	console.log(notifications);
 
 	if (!notifications || notifications.length === 0) {
 		return <div><p>Gegenwärtig keine neuen Nachrichten vorhanden</p></div>;

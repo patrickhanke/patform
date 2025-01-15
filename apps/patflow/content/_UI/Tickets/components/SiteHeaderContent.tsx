@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Select } from '../../Selects';
 import { FIND_ALL_PROPERTY } from '@queries';
 import { useQuery } from '@apollo/client';
@@ -7,21 +7,24 @@ import styles from '../Tickets.module.scss';
 import { filterChangeHandler, getDateStringsFromIso } from '@provider';
 import { Property, Ticket } from '@types';
 import { TextInput } from '@repo/ui';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-const SiteHeaderContent = ({id, filters, setFilters, tickets}: SiteHeaderContentComponent) => {
+const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({id, filters, setFilters, initialFilters, tickets}) => {
 	const {data: objectData} = useQuery(FIND_ALL_PROPERTY, {
 		skip: !!id
 	});
+
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const pathname = usePathname();
 
 	const selectOptions = useMemo(() => {	
 		const dateOptions = [] as {value: string, label: string}[];
 		let objectOptions = [] as {value: string, label: string}[];
 
-
 		if (objectData) {
 			objectOptions =  objectData.objects.findProperty.results.map((property: Property) => ({value: property.objectId, label: property.name}));
 		}
-
 
 		if (tickets && dateOptions.length === 0) {
 			tickets.forEach((ticket: Ticket) =>{ 
@@ -33,6 +36,8 @@ const SiteHeaderContent = ({id, filters, setFilters, tickets}: SiteHeaderContent
 
 	return (
 		<div className={styles.siteheader_content}>
+			<div className='button_container'>
+
 			<TextInput 
 				label=''
 				id='objectId'
@@ -52,14 +57,6 @@ const SiteHeaderContent = ({id, filters, setFilters, tickets}: SiteHeaderContent
 						isClearable
 					/>
 			}
-			{/* <Select 
-					label=''
-					options={ticket_state_options}
-					value={filters.find(filterElement => filterElement.key === 'status')?.value }
-					onChange={(value) => setFilters(filterChangeHandler('state', value?.value, '_eq', filters))}
-					placeholder='Status...'
-					isClearable
-				/> */}
 			<Select 
 				label=''
 				options={selectOptions.dateOptions}
@@ -76,6 +73,17 @@ const SiteHeaderContent = ({id, filters, setFilters, tickets}: SiteHeaderContent
 				placeholder='Bis...'
 				isClearable
 			/>
+			</div>
+		<button
+			className='full_button md secondary'
+			onClick={() => {
+				if (searchParams.get('ticket')) {
+					router.push(pathname);
+				}
+				setFilters(initialFilters());
+			}}>
+			Filter zurücksetzen
+		</button>
 		</div>
 	);
 };

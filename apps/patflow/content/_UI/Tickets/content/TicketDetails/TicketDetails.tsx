@@ -10,19 +10,20 @@ const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProp
 	const [showDetails, setShowDetails] = useState(false);
 
 	return (
-		<div>
-			<button className={clsx('full_button', 'sm', 'primary')} onClick={() => setShowDetails(true)} >
-				<Icon type='info' size={11} /> 
-				Details
-			</button>
-			<SlideInRight
-				isOpen={showDetails}
-				setIsOpen={setShowDetails}
-				header='Ticket Details'
-				size='small'
-			>
-				<div className='slidein_container'>
-					<div className='slidein_content'>
+		<>
+			<div>
+				<button className={clsx('full_button', 'sm', 'primary')} onClick={() => setShowDetails(true)} >
+					<Icon type='info' size={11} /> 
+					{' '}
+					Infos
+				</button>
+				<SlideInRight
+					isOpen={showDetails}
+					setIsOpen={setShowDetails}
+					header='Ticket Details'
+					size='small'
+				>
+					<div>
 						<div className={styles.ticket_slidein_content} >
 							<label>
 									Beschreibung
@@ -51,7 +52,7 @@ const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProp
 							</div>
 						</div>
 					</div>
-					<div className='slidein_footer' >
+					<div>
 						<div className='button_container'>
 							<button className={clsx('full_button', 'sm', 'light')} disabled={ticket.state !== 'closed' } onClick={() => setArchiveModal(true)} >
 								<Icon type='archive' size={11} /> 
@@ -65,38 +66,38 @@ const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProp
 							</button>
 						</div>
 					</div>
-					<Modal 
-						isOpen={archiveModal}
-						header='Ticket Archivieren'
-						confirmButtonHandler={() => {
-							setArchiveModal(false);
-							archiveTicket(ticket.objectId);
-							setShowDetails(false);
-						}}
-						cancelButtonHandler={() => setArchiveModal(false)}
-					>
-						<p>
-							Sie Sie sicher, dass sie das Ticket <span style={{fontWeight: 600}}>{ticket.title}</span> archivieren möchten? Dieser Vorgang lässt sich nicht rückgängig machen.
-						</p>
-					</Modal>
-					<Modal 
-						isOpen={deleteTicketModal}
-						header='Ticket löschen'
-						confirmButtonHandler={() =>{ 
-							setDeleteTicketkModal(false);
-							deleteTicket(ticket.objectId);
-							setShowDetails(false);
-						}}
-						cancelButtonHandler={() => setDeleteTicketkModal(false)}
-					>
-						<p>
-							Sie Sie sicher, dass sie das Ticket <span style={{fontWeight: 600}}>{ticket.title}</span> löschen möchten? Dieser Vorgang lässt sich nicht rückgängig machen.
-						</p>
-					</Modal>
-				</div>
-			</SlideInRight>
+				</SlideInRight>
 
-		</div>
+			</div>
+			<Modal 
+				isOpen={archiveModal}
+				header='Ticket Archivieren'
+				confirmButtonHandler={() => {
+					setArchiveModal(false);
+					archiveTicket(ticket.objectId);
+					setShowDetails(false);
+				}}
+				cancelButtonHandler={() => setArchiveModal(false)}
+			>
+				<p>
+					Sie Sie sicher, dass sie das Ticket <span style={{fontWeight: 600}}>{ticket.title}</span> archivieren möchten? Dieser Vorgang lässt sich nicht rückgängig machen.
+				</p>
+			</Modal>
+			<Modal 
+				isOpen={deleteTicketModal}
+				header='Ticket löschen'
+				confirmButtonHandler={() =>{ 
+					setDeleteTicketkModal(false);
+					deleteTicket(ticket.objectId);
+					setShowDetails(false);
+				}}
+				cancelButtonHandler={() => setDeleteTicketkModal(false)}
+			>
+				<p>
+					Sie Sie sicher, dass sie das Ticket <span style={{fontWeight: 600}}>{ticket.title}</span> löschen möchten? Dieser Vorgang lässt sich nicht rückgängig machen.
+				</p>
+			</Modal>
+		</>
 	);
 };
 

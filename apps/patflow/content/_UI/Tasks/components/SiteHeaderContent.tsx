@@ -35,14 +35,6 @@ const SiteHeaderContent = ({id, filters, setFilters, initialFilters}: SiteHeader
 	return (
 		<div className={styles.siteheader_content}>
 			<div className='button_container'>
-				{/* <SwitchButtons
-					buttonStates={[
-						{label: 'extended_list', value: 'extended', is_icon: true},
-						{label: 'small_list', value: 'compact', is_icon: true}
-					]}
-					currentStates={view}
-					changeHandler={(value) => setView(value as ViewState)}
-				/> */}
 				<TextInput
 					label=''
 					id='objectId'
@@ -51,26 +43,6 @@ const SiteHeaderContent = ({id, filters, setFilters, initialFilters}: SiteHeader
 					placeholder='Task ID...'
 					width='120px'
 				/>
-				{/* <Select
-					label=''
-					width='150px'
-					options={task_date_options}
-					value={filters.find(filterElement => filterElement.key === 'dates')?.id }
-					onChange={(value) => setFilters(filterChangeHandler('dates', getDateArray(value?.value).returnValue, getDateArray(value?.value).operator, filters, value?.value))}
-					placeholder='Zeitraum...'
-					isClearable
-				/> */}
-				{/* {siteType === 'active' &&
-						<Select
-							label=''
-							width='150px'
-							options={[...task_state_options.slice(0, 3)]}
-							value={filters.find(filterElement => filterElement.key === 'status')?.value }
-							onChange={(value) => setFilters(filterChangeHandler('state', value?.value, '_eq', filters))}
-							placeholder='Status...'
-							isClearable
-						/>
-				} */}
 				{!id && objectData &&
 					<Select
 						label=''

@@ -7,7 +7,7 @@
   .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 40px; /* Adjusted width */
+    width: 38px; /* Adjusted width */
     height: 20px; /* Adjusted height */
   }
   
@@ -32,10 +32,10 @@
   .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 14px; /* Adjusted height */
-    width: 14px; /* Adjusted width */
-    left: 3px; /* Adjusted position */
-    bottom: 3px; /* Adjusted position */
+    height: 16px; /* Adjusted height */
+    width: 16px; /* Adjusted width */
+    left: 2px; /* Adjusted position */
+    bottom: 2px; /* Adjusted position */
     background-color: white;
     border-radius: 50%; /* Makes it round */
     transition: .4s;
@@ -50,7 +50,7 @@
   }
   
   input:checked + .toggle-slider:before {
-    transform: translateX(19px); /* Half of the width */
+    transform: translateX(18px); /* Half of the width */
   }
   
   /* Rectangle Switch Shape */

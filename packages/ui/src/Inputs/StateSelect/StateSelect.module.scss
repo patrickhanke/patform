@@ -16,6 +16,10 @@
     max-width: 100%;
 }
 
+.state-select-interface__item {
+
+}
+
 @mixin state_display_container_styles {
     background-color: transparent;
     &:hover {
@@ -83,11 +87,6 @@
     border: none;
 }
 
-.state_display_container[data-color="purple"] {
-    @include constants.colorgroup('violet');
-    border: none;
-}
-
 .state_display_container[data-color="green"] {
     @include constants.colorgroup('green');
     border: none;
@@ -122,4 +121,41 @@
    background-color: transparent;
    border: none;
    padding: 0;
+}
+
+.state-select-interface {
+    position: absolute;
+    // bottom: -5px;
+    // left: 50%;
+    background-color: constants.$white;
+    border: 1px solid constants.$grey_tinted;
+    z-index: 3;
+    // transform: translateY(100%) translateX(-50%);
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm');
+    box-shadow: constants.$shadow_regular;
+    width: fit-content;
+    &__list {
+        list-style: none;
+        // Styles for the list
+    }
+    
+    &__item {
+        @extend .state_display_container;
+        // padding: map-get($map: constants.$padding, $key: 'xs');
+        width: 100%;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        color: constants.$dark;
+        padding-top: constants.$xs;
+        padding-bottom: constants.$xs;
+        &:hover {
+            background-color: constants.$light;
+        }
+    }
+
+    &__item[data-disabled="true"] {
+        cursor: not-allowed;
+        color: constants.$grey;
+    }
 }

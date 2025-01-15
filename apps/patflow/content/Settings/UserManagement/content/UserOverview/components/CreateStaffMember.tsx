@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Dispatch, SetStateAction} from 'react';
+import React, {useState, useEffect, Dispatch, SetStateAction, FC} from 'react';
 import clsx from 'clsx';
 import styles from '../UserOverview.module.scss';
 import { useImmer } from 'use-immer';
@@ -6,7 +6,9 @@ import { useQuery } from '@apollo/client';
 import { FIND_ALL_ROLES } from '@queries';
 import { generateColor } from '@repo/provider';
 import { CreateUser, ErrorMessage } from '@types';
-import { ImageUploader, Select, TextInput } from '@repo/ui';
+import { ImageUploader, Select, TextInput, ColorPicker } from '@repo/ui';
+import { User, UserRole } from '@repo/types';
+import { CreateStaffMemberPropes } from '../types';
 
 type RoleSelect= {
     id: string,
@@ -14,7 +16,7 @@ type RoleSelect= {
     label: string
 }
 
-const CreateStaffMember = ({workers = [], setIsOpen, createWorker, loading = false}: {workers: UserTypes.User[], setIsOpen: Dispatch<SetStateAction<boolean>>, createWorker: (W: UserTypes.CreateUser, N: number )=> void, loading: boolean}) => {
+const CreateStaffMember: FC<CreateStaffMemberPropes> = ({workers = [], setIsOpen, createWorker, loading = false}) => {
 	const {data: roleData} = useQuery(FIND_ALL_ROLES); 
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
 	const [worker, setWorker] =  useImmer({
@@ -63,9 +65,6 @@ const CreateStaffMember = ({workers = [], setIsOpen, createWorker, loading = fal
 	return (
 		<div className={styles.slidein_container} >
 			<form>
-				<p>
-					Hier kann ein neuer Mitarbeiter angelegt werden werden. 
-				</p>
 				<TextInput
 					label='Vorname'
 					id={'first_name'}
@@ -95,8 +94,8 @@ const CreateStaffMember = ({workers = [], setIsOpen, createWorker, loading = fal
 					label='Rolle auswählen'
 					id='role'
 					errors={errors}
-					options={roleData && roleData.objects.find_Role.results.map((role: UserTypes.UserRole) => ({value: role.objectId, id: role.objectId, label: role.name}))}
-					value={worker.role && roleData && roleData.objects.find_Role.results.map((role: UserTypes.UserRole) => ({value: role.objectId, id: role.objectId, label: role.name})).find((roleToFind: RoleSelect) => roleToFind.id === worker.role) }
+					options={roleData && roleData.objects.find_Role.results.map((role: UserRole) => ({value: role.objectId, id: role.objectId, label: role.name}))}
+					value={worker.role && roleData && roleData.objects.find_Role.results.map((role: UserRole) => ({value: role.objectId, id: role.objectId, label: role.name})).find((roleToFind: RoleSelect) => roleToFind.id === worker.role) }
 					onChange={value => setWorker(draft => {
 						draft.role = value.value;
 					})}
@@ -107,7 +106,9 @@ const CreateStaffMember = ({workers = [], setIsOpen, createWorker, loading = fal
 					filename={`${worker.first_name}_${worker.family_name}_${new Date()}_portrait.jpg`}
 					previewImage={worker.portrait || undefined}
 					onChange={(images) => setWorker(draft => {
-						draft.portrait = images[0];
+						if (typeof images[0] === 'string') {
+							draft.portrait = images[0];
+						}
 					})}
 					maxFileCount={1}
 				/>
@@ -134,11 +135,10 @@ const CreateStaffMember = ({workers = [], setIsOpen, createWorker, loading = fal
 						Farbe auswählen
 					</label>
 					<ColorPicker
-						color={worker.color}
+						value={worker.color}
 						onChange={(value: string) => setWorker(draft => {
 							draft.color = value;
 						})}
-						errors={errors}
 					/>
 				</div>
 			</form>

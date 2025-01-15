@@ -2,9 +2,9 @@ import React, { useContext, useMemo } from 'react';
 import styles from '../WorkersInterface.module.scss';
 import { DisplayWorkerInterfaceComponent } from '../types';
 import { useQuery } from '@apollo/client';
-import { find_day, find_record } from '@queries';
-import { absence_state_options, AppContext, getDatesFromAbsences, getImageUrl } from '@provider';
-import { getDayOfYear } from 'date-fns';
+import { find_day } from '@queries';
+import { absence_type_options, AppContext, getImageUrl } from '@provider';
+import { formatISO9075 } from 'date-fns';
 import { Absence, Day } from '@types';
 import { StateDisplay } from '@repo/ui';
 
@@ -24,13 +24,22 @@ const DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAva
 		if (data && nextDate) {
 			const dates: Day[] = data.objects.findDay.results;
 			console.log(dates)
-			const dateObject = dates.find(date => date.date === nextDate);
+			const formattedNextDay = formatISO9075( new Date(nextDate), {representation: 'date'});
+			const dateObject = dates.find(date => date.date === formattedNextDay);
+			console.log(dateObject);
+			
+			
 			if (dateObject) {
 				isAbsent = true;
-				type = dateObject.type as Absence['type'];
+				type = dateObject?.absence?.type as Absence['type'];
 			}
 		}
-		return({isAbsent, type});
+		return({
+			isAbsent, 
+			type,
+			color: absence_type_options.find(option => option.value === type)?.color,
+			label: absence_type_options.find(option => option.value === type)?.label
+		});
 	}, [data, showAvailability]);
 
 	console.log(workerAbsence)
@@ -59,12 +68,11 @@ const DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAva
 					{`${worker.first_name} ${worker.family_name}`}
 				</h4>
 			</div>
-			{workerAbsence.isAbsent && 
+			{workerAbsence.isAbsent && workerAbsence.type && workerAbsence.color && workerAbsence.label && 
 				<div className={styles.display_worker_absence} >
 					<StateDisplay 
-						type='state' 
-						stateOptions={absence_state_options}
-						state={workerAbsence.type}
+						label={workerAbsence.label}
+						color={workerAbsence.color} 
 					/> 
 				</div>
 			}

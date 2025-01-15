@@ -13,7 +13,7 @@ import { BsHousesFill } from 'react-icons/bs';
 import { FaShuttleVan } from 'react-icons/fa';
 import { GrTask, GrDownload } from 'react-icons/gr';
 import { ImImages } from 'react-icons/im';
-import { CiLocationOn } from 'react-icons/ci';
+import { CiBookmark, CiBookmarkCheck, CiBookmarkRemove, CiLocationOn } from 'react-icons/ci';
 import { TfiClose, TfiList, TfiViewList } from 'react-icons/tfi';
 import { LuArchive, LuMessageSquareText } from 'react-icons/lu';
 import { IoIosTimer } from 'react-icons/io';
@@ -133,7 +133,7 @@ const Icons = ({icon, color}: {icon: string, color?: string}) => {
 	if (icon === 'close') {
 		return <TfiClose color={color || 'inherit'} />;
 	}
-	if (icon === 'archive'){
+	if (icon === 'archive' || icon === 'archived'){
 		return <LuArchive color={color || 'inherit'} />;
 	}
 	if (icon === 'time'){
@@ -147,6 +147,15 @@ const Icons = ({icon, color}: {icon: string, color?: string}) => {
 	}
 	if (icon === 'messages'){
 		return <LuMessageSquareText color={color || 'inherit'} />;
+	}
+	if (icon === 'active'){
+		return <CiBookmark color={color || 'inherit'} />;
+	}
+	if (icon === 'executed'){
+		return <CiBookmarkCheck color={color || 'inherit'} />;
+	}
+	if (icon === 'completed' || icon === 'closed'){
+		return <CiBookmarkRemove color={color || 'inherit'} />;
 	}
 
 	return null;

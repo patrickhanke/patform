@@ -5,7 +5,6 @@ import styles from './Tallies.module.scss';
 import Tally from './content/Tally';
 import { useDataHandler } from '@repo/provider';
 import clsx from 'clsx';
-import { SiteHeader } from '@repo/ui';
 
 const Tallies = ({id, className}: TalliesComponent) => {
 	const {createData, loading: updateLoading} = useDataHandler();
@@ -31,11 +30,7 @@ const Tallies = ({id, className}: TalliesComponent) => {
 
 	return (
 		<>
-			<SiteHeader 
-				isSubHeader
-				siteHeaderButtons={siteHeaderButtons}
-				emptyContent
-			/>
+
 			<div className={clsx('site_content')}>
 				<div className={styles.tallies_container}>
 					{tallies && tallies.map((tally: object) => <Tally key={tally.objectId} tallyName={tally.name} tallyId={tally.objectId} />) }

@@ -2,7 +2,7 @@
 
 import { UserContext, generateColor, useDataHandler } from '@repo/provider';
 import { useQuery } from '@apollo/client';
-import React, { useContext, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import useTableColumns from './hooks/useTableColumns';
 import { FIND_ALL_USERS } from '@queries';
 import CreateStaffMember from './components/CreateStaffMember';
@@ -10,9 +10,9 @@ import { formatISO } from 'date-fns';
 import { CreateUser } from '@types';
 import { SiteHeader, SlideInRight } from '@repo/ui';
 import {Table} from '@repo/ui';
+import { UserOverviewProps } from './types';
 
-const UserOverview = () => {
-	const [isOpen, setIsOpen] = useState(false);
+const UserOverview: FC<UserOverviewProps> = ({isOpen, setIsOpen}) => {
 	const {createData, updateData, loading: dataLoading} = useDataHandler();
 	const {projectId} = useContext(UserContext);
 	
@@ -55,19 +55,12 @@ const UserOverview = () => {
 		setIsOpen(false);
 	};
 
-	const siteHeaderButtons = [{
-		text: 'Neuen Nutzer anlegen',
-		onClick: () => setIsOpen(true),
-		is_add_button: true
-	}];
+	
 
 	return (
 		<>
-			<SiteHeader  />
-			<div className='site_content'> 
-				<div className='content_element no_padding'>
-					<Table columns={columns} data={data?.objects?.find_User?.results || []} />
-				</div>
+			<div className='content_element no_padding'>
+				<Table columns={columns} data={data?.objects?.find_User?.results || []} />
 			</div>
 			<SlideInRight isOpen={isOpen} setIsOpen={setIsOpen} header='Neuen Mitarbeiter anlegen' >
 				<CreateStaffMember

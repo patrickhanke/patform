@@ -26,9 +26,9 @@ const SingleDateSelectInterface = ({initialValue, category, onChange}: SingleDat
 
 	return (
 		<>
-			<label>
+			<h3>
 				Individuelles Datum
-			</label>
+			</h3>
 			{category === 'opportunity' ? 
 				<div className='row_container'>
 					<DatePicker

@@ -22,19 +22,19 @@ const menu_items = [
 		sub_menu: [{
 			label: 'Aktiv',
 			value: '/active',
-			icon: 'services',
+			icon: 'active',
 		},{
 			label: 'Erledigt',
 			value: '/excecuted',
-			icon: 'waste',
+			icon: 'executed',
 		},{
 			label: 'Geschlossen',
 			value: '/completed',
-			icon: 'users'
+			icon: 'completed'
 		},{
 			label: 'Archiviert',
 			value: '/archived',
-			icon: 'calendar'
+			icon: 'archived'
 		}]
 	},{
 		label: 'Tickets',
@@ -43,15 +43,15 @@ const menu_items = [
 		sub_menu: [{
 			label: 'Offen',
 			value: '/open',
-			icon: 'services',
+			icon: 'active',
 		},{
 			label: 'In Bearbeitung',
 			value: '/in_progress',
-			icon: 'waste',
+			icon: 'executed',
 		},{
 			label: 'Geschlossen',
 			value: '/closed',
-			icon: 'users'
+			icon: 'closed'
 		}]
 	},{
 		label: 'Zeiterfassung',
@@ -63,28 +63,19 @@ const menu_items = [
 		icon: 'staff',
 		sub_menu: []
 	},{
-		label: 'Einstellungen',
-		value: '/settings',
-		icon: 'settings',
+		label: 'Nutzerverwaltung',
+		value: '/user_management',
+		icon: 'users',
 		divider: 'Einstellungen',
-		sub_menu: [{
-			label: 'Nachrichten',
-			value: '/messages',
-			icon: 'messages'
-		},{
-			label: 'Nutzerverwaltung',
-			value: '/user_management',
-			icon: 'users'
-		},{
-			label: 'Zeiten und Zuschläge',
-			value: '/times',
-			icon: 'calendar'
-		},{
-			label: 'Leistungsverzeichnisse',
-			value: '/services',
-			icon: 'services',
-			disabled: true
-		}]
+	},{
+		label: 'Zeiten und Zuschläge',
+		value: '/times',
+		icon: 'calendar'
+	},{
+		label: 'Leistungsverzeichnisse',
+		value: '/services',
+		icon: 'services',
+		disabled: true
 	}
 ];
 

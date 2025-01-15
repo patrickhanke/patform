@@ -35,9 +35,9 @@ const MultiDateSelectInterface = ({initialValue, category, onChange}: MultiDateS
 
 	return (
 		<>
-			<label>
+			<h3>
 				Individuelle Daten
-			</label>
+			</h3>
 			{initialValue?.dates.map((date: string, index: number) => (
 				category === 'opportunity' ? 
 					<div className='row_container' key={date}>

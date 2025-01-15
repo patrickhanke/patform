@@ -74,6 +74,7 @@
 }
 
 .slidein_content {
+    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$xs);
     width: 360px;
     order:2;
     padding: map-get(constants.$padding, 'sm');

@@ -10,9 +10,10 @@ import { CreateTask } from '../../Tasks';
 
 const TicketTask = ({ticketId, ticketTask, ticketPropertyId, ticketUserId, refetch, ticketState}:TicketTaskProps ) => {
 	const Button = ({onClick}: {onClick: () => void}) => (
-		<button onClick={() => onClick()} className={clsx('border_button', 'sm', 'dark')} disabled={ticketState === 'closed'}>
+		<button onClick={() => onClick()} className={clsx('full_button', 'sm', 'light')} disabled={ticketState === 'closed'}>
 			<Icon type='plus' size={11} />
-			<p>Aufgabe hinzufügen</p>
+			{' '}
+			Aufgabe hinzufügen
 		</button>
 	);
 	
@@ -23,7 +24,7 @@ const TicketTask = ({ticketId, ticketTask, ticketPropertyId, ticketUserId, refet
 					<Link className={styles.ticket_task_content} href={`${findTaskRoute(ticketTask.state)}/?task=${ticketTask.objectId}`}>
 						<p className={styles.task_title}>{ticketTask.title}</p> 
 						{/* <p>-</p>
-						<StateDisplay
+						<StateSelect
 							state={ticketTask.state}
 							type='Task'
 							noBackground

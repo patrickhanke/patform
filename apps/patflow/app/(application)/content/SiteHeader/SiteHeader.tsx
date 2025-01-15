@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useContext, useEffect } from 'react';
+import React, { Suspense, useContext, useEffect } from 'react';
 import styles from './SiteHeader.module.scss';
 import { SiteHeaderComponent } from './types';
 import { AppContext } from '@provider';
 import CalendarWeek from './components/CalendarWeek';
 import { UserDisplay } from '@repo/ui';
-import { NotificationContext } from '@repo/provider';
 
 const SiteHeader = ({
 	title, 
@@ -34,7 +33,9 @@ const SiteHeader = ({
 				<div className='vertical_line' />
 				<CalendarWeek />
 				<div className='vertical_line' />
-				<UserDisplay />
+				<Suspense>
+					<UserDisplay />
+				</Suspense>
 			</div>
 		</div>
 	)

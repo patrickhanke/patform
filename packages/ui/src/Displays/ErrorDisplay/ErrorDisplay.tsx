@@ -21,13 +21,13 @@ const ErrorDisplay = ({id, errors}: {id?: string, errors?: ErrorMessage[]}) => {
 	}, [errors]);
 
 	if (errors && errors.length > 0 && errorMessages.length > 0) {
-		return <div className={'error_container'}>
+		return <ul className='error_display_container'>
 			{errorMessages.map(error => (
-				<div key={error.key} className={'error_message'}>
+				<li key={error.key} className={'error_display_message'}>
 					{error.message}
-				</div>
+				</li>
 			))}
-		</div>; 
+		</ul>; 
 	}
 	return null;
 };

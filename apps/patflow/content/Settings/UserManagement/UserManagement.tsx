@@ -2,24 +2,25 @@
 
 import React, { useState } from 'react';
 import UserOverview from './content/UserOverview';
-import useUserManagementNavigation from './hooks/useUserManagementNavigation';
-import { SiteHeader } from '@repo/ui';
+import { Page } from '@repo/ui';
 
 const UserManagement = () => {
-	const siteStates = useUserManagementNavigation();
-	const [siteState, setSiteState] = useState(siteStates[0]);
+	// const siteStates = useUserManagementNavigation();
+	const [isOpen, setIsOpen] = useState(false);
+
+	const siteHeaderButtons = [{
+			text: 'Neuen Nutzer anlegen',
+			onClick: () => setIsOpen(true),
+			is_add_button: true
+		}];
 	
 	return (
-		<div>
-			<SiteHeader
+			<Page
 				title="Nutzerverwaltung"
-				hasSiteNavigation
-				navItems={siteStates}
-				navCurrentItem={siteState}
-				navOnClick={setSiteState}
-			/>
-			<UserOverview />
-		</div>
+				pageHeaderButtons={siteHeaderButtons}
+			>
+			<UserOverview isOpen={isOpen} setIsOpen={setIsOpen} />
+		</Page>
 	);
 };
 

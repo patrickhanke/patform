@@ -12,18 +12,18 @@
 }
 
 .icon_button_container[data-isdark="false"] {
-    border: 1px solid constants.$dark;
+    border: none;
     color: constants.$dark;
     background-color: transparent;
     &:hover {
         color: constants.$dark;
-        border: 1px solid constants.$dark;
+        border: none;
         background-color: constants.$light;
     }
 }
 
 .icon_button_container[data-isdark="true"] {
-    border: 1px solid constants.$dark;
+    border: none;
     color: constants.$light;
     background-color: constants.$dark;
 }

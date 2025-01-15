@@ -2,33 +2,40 @@ import React, { useContext, useMemo } from 'react';
 import styles from './DisplayWorker.module.scss';
 import { GrClose } from 'react-icons/gr';
 import { useQuery } from '@apollo/client';
-import { find_record, GET_USER_DISPLAY_DATA } from '@queries';
-import { AppContext, getDatesFromAbsences, getImageUrl } from '@provider';
-import { getDayOfYear } from 'date-fns';
+import { find_day, GET_USER_DISPLAY_DATA } from '@queries';
+import { AppContext, getImageUrl } from '@provider';
+import { formatISO9075 } from 'date-fns';
 import { DisplayWorkersProps } from './types';
 import { shadeColor } from '@repo/provider';
 import { Loader } from '@repo/ui';
+import { Day } from '@types';
 
 const DisplayWorker = ({workerId, removeWorker, nextDate, showAvailability = false, onlyImage=false}: DisplayWorkersProps) => {
 	const {year} = useContext(AppContext);
-	const {data} = useQuery(find_record, {
-		variables: {params: {user: {'_eq': workerId}, year: {_eq: year}}},
-		skip: !showAvailability
-	});
 
 	const {data: workerData} = useQuery(GET_USER_DISPLAY_DATA, {
 		variables: {id: workerId}
 	});
 	
+	const {data} = useQuery(find_day, {
+		variables: {params: {year: {_eq: year}, type: {_eq: 'absence'}, user: {_eq: workerId}}},
+		skip: !showAvailability
+	});
+
 	const workerAbsence = useMemo(() => {
 		let isAbsent = false;
 		if (data && nextDate) {
-			const dates = getDatesFromAbsences(data.objects.findRecord.results).abseceDays;
+			const dates: Day[] = data.objects.findDay.results;
+			console.log(dates)
+			const formattedNextDay = formatISO9075( new Date(nextDate), {representation: 'date'});
+			const dateObject = dates.find(date => date.date === formattedNextDay);
+			console.log(dateObject);
 			
-			isAbsent = dates.includes(getDayOfYear(new Date(nextDate)));
+			if (dateObject) {
+				isAbsent = true;
+			}
 		}
 		return isAbsent;
-
 	}, [data, showAvailability]);
 	
 	if (workerData) {
