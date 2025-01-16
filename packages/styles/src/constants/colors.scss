@@ -109,5 +109,8 @@ $tertiary_light: $yellow_tinted;
         background-color: $lightest;
         color: $grey;
     }
-
+    @if $color == 'blue' {
+        background-color: $blue_tinted;
+        color: $blue_shaded;
+    }
 }

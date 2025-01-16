@@ -32,8 +32,7 @@
 }
 
 .text_container {
-    @include constants.colorgroup('white');
-    background-color: constants.$lightest;
+    background-color: constants.$white;
     position: absolute;
     left: 50%;
     top: 50%;

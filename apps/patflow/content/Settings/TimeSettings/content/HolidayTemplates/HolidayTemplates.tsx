@@ -15,7 +15,7 @@ const HolidayTemplates: React.FC<HolidaysProps> = ({projectId, createHolidayTemp
 	const columns = useHolidayColumns({refetch, holidays});
 
 	return (
-		<div className='site_content'>
+		<>
 			<div className='content_element no_padding'>
 				<Table
 					data={data?.objects.findTemplate.results || []}
@@ -29,8 +29,7 @@ const HolidayTemplates: React.FC<HolidaysProps> = ({projectId, createHolidayTemp
 				refetch={refetch}
 				holidays={holidays}
 			/>
-
-		</div>
+		</>
 	);
 };
 

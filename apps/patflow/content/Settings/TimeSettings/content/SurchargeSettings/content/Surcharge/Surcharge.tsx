@@ -1,10 +1,10 @@
 import React from 'react';
 import { SurchargeComponentProps } from './types';
-import { getDateString } from '@repo/provider';
 import clsx from 'clsx';
 import styles from './Surcharge.module.scss';
 import surcharge_types from '../CreateSurcharge/constants/surcharge_types';
 import { IconButton } from '@repo/ui';
+import { getDateStringsFromIso } from '@repo/provider';
 
 const Surcharge: React.FC<SurchargeComponentProps> = ({surcharge, setEditSurcharge, setDeleteSurcharge}) => {
 	return (
@@ -29,13 +29,13 @@ const Surcharge: React.FC<SurchargeComponentProps> = ({surcharge, setEditSurchar
 					<label>
 						Startdatum: 
 					</label>
-					<p >{getDateString(new Date( surcharge.start_date)).date}</p>
+					<p >{getDateStringsFromIso(new Date( surcharge.start_date)).date}</p>
 				</div>
 				<div className='button_container'>
 					<label>
 						Enddatum: 
 					</label>
-					<p>{surcharge.end_date ?  getDateString(new Date( surcharge.end_date)).date : '-'}</p>
+					<p>{surcharge.end_date ?  getDateStringsFromIso(new Date( surcharge.end_date)).date : '-'}</p>
 				</div>
 				<div className='button_container'>
 					<IconButton

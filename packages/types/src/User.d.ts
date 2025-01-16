@@ -25,9 +25,11 @@ export type User = {
     type: string,
     role: UserRole,
     is_worker: boolean,
-    portrait: ApplicationTypes.Image
+    portrait: ApplicationTypes.Image,
+    password: string,
+    color?: string
 }
 
 export type UserDisplayData = Pick<User, 'objectId' | 'family_name'|'first_name'|'email'|'portrait'>;
 
-export type CreateUser =  Pick<User, 'family_name'|'first_name'|'email'|'portrait'> & {password: string, repeat_password: string, role: string}
+export type CreateUser =  Pick<User, 'family_name'|'first_name'|'email'|'portrait'> & {password: string, repeat_password: string, role: string, color?: string}

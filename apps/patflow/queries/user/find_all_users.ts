@@ -12,8 +12,9 @@ const find_all_users  = gql`
                     portrait 
                     role {
                         objectId
-                        name,
+                        name
                         type
+                        color
                     }
                     createdAt
                 }

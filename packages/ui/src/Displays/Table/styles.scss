@@ -11,6 +11,7 @@
     .sortable {
         @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$md);
         cursor: pointer;
+        flex: 1;
     }
     
     table {

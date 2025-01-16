@@ -10,11 +10,11 @@ import { useQuery } from '@apollo/client';
 import { Holiday } from '@types';
 import { cloneDeep, set } from 'lodash';
 import axios from 'axios';
-import { SiteHeader, SiteHeaderButtons } from '@repo/ui';
+import { Page, SiteHeaderButtons } from '@repo/ui';
 import { SiteState } from '@repo/types';
 
 const TimeSettings = () => {
-	const [siteState, setSiteState] = useState<SiteState>(site_states[0]);
+	const [siteState, setSiteState] = useState<SiteState>(site_states[0] as SiteState);
 	const {projectId} = useContext(UserContext);
 	const [createTemplate, setCreateTemplate] = useState(false);
 	const { data: holidayData, refetch: refetchHolidays } = useQuery(
@@ -59,7 +59,7 @@ const TimeSettings = () => {
 			const hdObject: {[key: string]: {datum: string}} = findDatum(data); 
 			Object.keys(hdObject).forEach((holiday: keyof typeof hdObject) => {
 				const holidayCopy = cloneDeep(returnObject[holiday]);
-				const datum = hdObject[holiday].datum;
+				const datum = hdObject[holiday]?.datum;
 				set(returnObject, [holiday],{...holidayCopy, [year.toString()]: datum});
 			});
 		});
@@ -111,15 +111,13 @@ const TimeSettings = () => {
 	}, [siteState]);
 
 	return (
-		<>
-			<SiteHeader
-				title="Zeiten und Zuschläge"
-				hasSiteNavigation
-				navItems={site_states}
-				navCurrentItem={siteState}
-				navOnClick={setSiteState}
-				siteHeaderButtons={siteHeaderButtons}
-			/>
+		<Page
+			title="Zeiten und Zuschläge"
+			pageStates={site_states}
+			pageState={siteState}
+			setPageState={setSiteState}
+			pageHeaderButtons={siteHeaderButtons}
+		>
 			{siteState.value === 'holiday-templates' && (
 				<HolidayTemplates 
 					projectId={projectId} 
@@ -134,7 +132,7 @@ const TimeSettings = () => {
 				/>
 			)}
 			{siteState.value === 'surcharges' && projectId &&  <SurchargeSettings projectId={projectId} holidays={holidayData?.objects.findHoliday.results || []} />}
-		</>
+		</Page>
 	);
 };
 

@@ -1,6 +1,8 @@
+@use '@repo/styles/constants';
 
 .color_picker_picker {
     position: relative;
+    padding: map-get($map: constants.$padding, $key: 'sm' );
     input {
         min-width:200px;
         width: 200px !important;

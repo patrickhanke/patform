@@ -7,7 +7,7 @@ const Holidays: React.FC<HolidaysProps> = ({holidays}) => {
 	const columns = useHolidayColumns();
 
 	return (
-		<div className='site_content'>
+		<div>
 			<div className='content_element no_padding'>
 				<Table
 					data={holidays || []}

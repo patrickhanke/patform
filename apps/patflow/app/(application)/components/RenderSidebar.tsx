@@ -64,18 +64,13 @@ const menu_items = [
 		sub_menu: []
 	},{
 		label: 'Nutzerverwaltung',
-		value: '/user_management',
+		value: '/settings/user_management',
 		icon: 'users',
 		divider: 'Einstellungen',
 	},{
 		label: 'Zeiten und Zuschläge',
-		value: '/times',
+		value: '/settings/times',
 		icon: 'calendar'
-	},{
-		label: 'Leistungsverzeichnisse',
-		value: '/services',
-		icon: 'services',
-		disabled: true
 	}
 ];
 

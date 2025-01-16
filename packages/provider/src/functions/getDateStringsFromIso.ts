@@ -1,9 +1,7 @@
-import getDateFromIso from './getDateFromIso.ts';
-
-export const getDateStringsFromIso = (datum: string | undefined) => {
+export const getDateStringsFromIso = (datum: string | undefined | Date) => {
 	if (!datum) return {datum: '', uhrzeit: '', datumUhrzeit: ''};
-	const newdatum = getDateFromIso(datum);
-	const date = new Date(newdatum);
+	
+	const date = new Date(datum);
 	const year = date.getFullYear();
 	const month = date.getMonth() + 1;
 	const day = date.getDate();
@@ -11,9 +9,9 @@ export const getDateStringsFromIso = (datum: string | undefined) => {
 	const hours = date.getHours();
 	const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
 	return {
-		datum: `${day}.${month}.${year}`,
-		uhrzeit: `${hours}:${minutes}`,
-		datumUhrzeit: `${day}.${month}.${year} ${hours}:${minutes}`
+		date: `${day}.${month}.${year}`,
+		time: `${hours}:${minutes}`,
+		dateTime: `${day}.${month}.${year} ${hours}:${minutes}`
 	};
 };
 

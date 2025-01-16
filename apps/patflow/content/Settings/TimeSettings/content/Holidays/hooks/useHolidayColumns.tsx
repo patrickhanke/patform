@@ -1,6 +1,7 @@
 import { Holiday } from '@types';
 import { ColumnDef } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
+import { getDateStringsFromIso } from '@repo/provider';
 
 const useHolidayColumns = () => { 
 	const columns: ColumnDef<Holiday>[] = useMemo(() =>{
@@ -17,14 +18,14 @@ const useHolidayColumns = () => {
 
 		for (let i = 0; i <= 4; i+=1) {
 			columnArray.push({
-				accessorFn: row =>  row.dates ? row.dates[year + i] : '-',
-				header: () => <span>{year + i}</span>,
+				accessorFn: row =>  row.dates ?  getDateStringsFromIso( row.dates[year + i]).date : '-',
+				header: () => <div style={{textAlign: 'right', width: '100%'}}>{year + i}</div>,
 				id: (year + i).toString(),
-				cell: info => info.getValue(),
-				footer: info => info.column.id
+				cell: info => <div style={{textAlign: 'right'}}>{info.getValue() as ReactNode}</div>,
+				footer: info => info.column.id,
+				
 			});
 		}
-
 		
 		return columnArray;
 	}, []);

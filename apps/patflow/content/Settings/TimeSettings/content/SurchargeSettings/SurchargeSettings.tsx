@@ -86,7 +86,7 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({projectId, holiday
 	});
 
 	return (
-		<div className='site_content'>
+		<div>
 			<Divider text='Aktive Zuschläge' />
 			{activeSurcharges.length > 0 ? (
 				<div className='vertical_container' > 

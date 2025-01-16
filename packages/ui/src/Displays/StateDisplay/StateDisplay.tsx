@@ -12,8 +12,6 @@ const StateDisplay: FC<StateDisplayProps> = ({
 	onClick,
 	width
 }) => {
-	console.log(color);
-	
 	return (
 		<div 
 			onClick={onClick} 

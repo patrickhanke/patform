@@ -77,6 +77,7 @@ const CreateHolidayTemplate: React.FC<CreateHolidayTemplateProps> = ({templates 
 			confirm={() => createTemplateHandler()}
 			header="Neues Feiertag-Template erstellen"
 			secondaryContent={selectDays}
+			showSecondaryContent={true}
 			errors={errors}
 			disabled={[
 				loading, 

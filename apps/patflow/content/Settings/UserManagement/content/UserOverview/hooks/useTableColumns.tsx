@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react';
 import EditStaffMember from '../components/EditStaffMember';
 import SetStaffMemberPassword from '../components/SetStaffMemberPassword';
 import { ApolloRefetch, User } from '@repo/types';
-import { StateSelect, StatelessToggle, Toggle } from '@repo/ui';
+import { StateDisplay, StateSelect, StatelessToggle, Toggle } from '@repo/ui';
 import { AppContext } from '@provider';
 import { useDataHandler } from '@repo/provider';
 
@@ -20,7 +20,12 @@ const useTableColumns = ({refetch}: {refetch: ApolloRefetch}) => {
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => <StateSelect type='state' state={row.role.type} stateOptions={roles}  />,
+			accessorFn: row => (
+				<StateDisplay
+					label={row.role?.name || 'Keine Rolle'}
+					color={row.role?.color || 'black'}
+				/>
+			),
 			header: () => <span>Rolle</span>,
 			id: 'role',
 			cell: info => info.getValue(),
