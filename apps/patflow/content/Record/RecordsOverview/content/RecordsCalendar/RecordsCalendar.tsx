@@ -62,7 +62,10 @@ const RecordsCalendar = ({records}: RecordsCalendarProps) => {
 	}, [records, absences, staffData]);
 
 	return (
-		<Calendar data={calendarData} />
+		<>
+			<p>Kalender ist noch nicht eingebunden!</p>
+			<Calendar data={calendarData} />
+		</>
 	);
 };
 

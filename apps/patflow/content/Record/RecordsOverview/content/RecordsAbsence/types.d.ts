@@ -1,5 +1,6 @@
 import { Absence, ApolloRefetch, Record } from '@types';
 import { Dispatch, SetStateAction } from 'react';
+import EditAbsence from './components/EditAbsence';
 
 export type GetRecordObject = {
     loading: boolean;
@@ -29,10 +30,8 @@ export type FindRecordFunction = (recordIs: string) => Record;
 
 export type RecordAbsenceProps = {
     records: Record[],
-    refetch: ApolloRefetch,
-    loading: boolean,
-    filters: ApplicationTypes.Filter[],
-    setFilters: Dispatch<SetStateAction<ApplicationTypes.Filter[]>>;
+    editAbsence: boolean,
+    setEditAbsence: Dispatch<SetStateAction<boolean>>
 }
 
 export type DeleteAbsenceProps = {

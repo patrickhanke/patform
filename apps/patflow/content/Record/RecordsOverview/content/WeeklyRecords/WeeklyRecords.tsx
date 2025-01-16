@@ -10,7 +10,7 @@ import { useQuery } from '@apollo/client';
 import {find_day} from '@queries';
 import { FIND_ALL_STAFF } from '@queries';
 import { cloneDeep } from 'lodash';
-import { Table } from '@repo/ui';
+import { Divider, Table } from '@repo/ui';
 
 const WeeklyRecords = ({
 	records, 
@@ -86,17 +86,6 @@ const WeeklyRecords = ({
 		return weekArray;
 	}, [records, selectedWeek, staffData, dayData]);
 
-	const siteHeaderButtons = useMemo(() => [{
-		type: 'button',
-		text: 'Filter zurücksetzen',
-		onClick: () => {
-			setFilters(initialFilters);
-		},
-		color: 'secondary',
-		is_reset_button: true,
-		disabled: loading || filters.length === 0
-	}], [loading]);
-
 	const siteHeaderContent = useMemo(() => (
 		<SiteHeaderContent 
 			filters={filters}
@@ -107,6 +96,21 @@ const WeeklyRecords = ({
 	), [records, filters, selectedWeek]);
 	
 	return (
+		<>
+		<div className='horizontal_container'>
+			<div className='button_container'>
+				{siteHeaderContent}
+			</div>
+			<button 
+				className='full_button dark md' 
+				onClick={() => {
+					setFilters(initialFilters)
+				}}
+			>
+				Filter zurücksetzen
+			</button>
+		</div>
+		<Divider size='small' showLine={false} />
 		<div className="content_element no_padding">
 			<Table
 				columns={columns}
@@ -114,6 +118,7 @@ const WeeklyRecords = ({
 				key={selectedWeek}
 			/>
 		</div>
+		</>
 	);
 };
 

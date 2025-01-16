@@ -9,11 +9,10 @@ import { useQuery } from '@apollo/client';
 import { FIND_ALL_STAFF } from '@queries';
 import useRecordAbsenceColumns from './hooks/useRecordAbsenceColumns';
 import EditRecordAbsence from './content/EditRecordAbsence';
-import { Table } from '@repo/ui';
+import { Divider, Table } from '@repo/ui';
 
-const RecordAbsence = ({records}: RecordAbsenceProps) => {
+const RecordAbsence = ({records, editAbsence, setEditAbsence}: RecordAbsenceProps) => {
 	const {year} = useContext(AppContext);
-	const [editAbsence, setEditAbsence] = useState<boolean>(false);
 	const {data: staffData} = useQuery(FIND_ALL_STAFF);
 	const [selectedStaff, setSelectedStaff] = useState<{value: string, label: string} | null>(null);
 
@@ -39,16 +38,7 @@ const RecordAbsence = ({records}: RecordAbsenceProps) => {
 	}
 	, [year, staffData, selectedStaff]);
 
-	const siteHeaderButtons = useMemo(() => [ {
-		type: 'button',
-		text: 'Neue Abwesenheit',
-		onClick: () => {
-			setEditAbsence(true);
-		},
-		color: 'primary',
-		is_add_button: true
-
-	}], []);
+	
 
 	const {data, refetch} = useQuery(generateGraphQLQuery({
 		type: 'find',
@@ -86,6 +76,7 @@ const RecordAbsence = ({records}: RecordAbsenceProps) => {
 				{absenceData.length > 0 && (
 					<>
 						{siteHeaderContent}
+						<Divider size='small' showLine={false} />
 						<div className='content_element no_padding'>
 							<Table columns={columns} data={absenceData} />
 						</div>

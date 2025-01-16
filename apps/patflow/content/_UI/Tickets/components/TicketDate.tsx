@@ -8,7 +8,7 @@ const TicketDate = ({ticketDate}: {ticketDate: string}) => {
 		<div className={styles.ticket_date_container} >
 			<div className={styles.ticket_subheadline}>
 				<Icon type='clock' size={12} />
-				<p>{`${getDateStringsFromIso(ticketDate).datum} - ${getDateStringsFromIso(ticketDate).uhrzeit}`}</p>
+				<span style={{ whiteSpace: 'nowrap' }}>{`${getDateStringsFromIso(ticketDate).dateTime}`}</span>
 			</div>
 		</div>
 	);

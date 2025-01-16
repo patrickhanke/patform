@@ -27,7 +27,7 @@
 }
 
 .day_container[data-is_today = "true"] {
-    background-color: constants.$primary;
+    background-color: constants.$blue;
 }
 
 .day_label {
@@ -43,6 +43,7 @@
     p {
         font-size: map-get($map: constants.$font_size, $key: 'sm' );
         font-weight: 600;
+        color: constants.$dark;
     }
 }
 

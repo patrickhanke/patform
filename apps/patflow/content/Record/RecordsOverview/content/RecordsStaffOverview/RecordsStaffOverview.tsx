@@ -8,7 +8,7 @@ import site_states from './constants/site_states';
 import StaffRecord from './content/StaffRecord';
 import { months } from '@provider';
 import useGetDay from './hooks/useGetDay';
-import { Table } from '@repo/ui';
+import { Divider, Table } from '@repo/ui';
 import { SiteState } from '@repo/types';
 
 const RecordsStaffOverview = ({year} : RecordsStaffOverviwProps) => {
@@ -18,7 +18,6 @@ const RecordsStaffOverview = ({year} : RecordsStaffOverviwProps) => {
 	const {days} = useGetDay({year, user: selectedUser?.value});
 	const columns = useTableColumns();
 	
-
 	const siteHeaderContent = useMemo(() => (
 		<SiteHeaderContent 
 			displayStates={site_states}
@@ -88,6 +87,10 @@ const RecordsStaffOverview = ({year} : RecordsStaffOverviwProps) => {
 
 	return (
 			<div>
+				<div className='button_container'>
+					{siteHeaderContent}
+				</div>
+				<Divider size='small' showLine={false} />
 				{selectedUser ? ( 
 					<>
 						{displayState.value === 'table' && (

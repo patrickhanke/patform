@@ -45,7 +45,7 @@ const useTableColumns = () => {
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		}
-	] as ColumnDef<Day<'work' | 'absence'>>[], []);
+	] as ColumnDef<Day>[], []);
 
 	return columns;
 };

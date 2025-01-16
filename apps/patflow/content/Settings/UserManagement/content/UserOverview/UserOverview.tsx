@@ -1,14 +1,10 @@
 'use client';
 
-import { UserContext, generateColor, useDataHandler } from '@repo/provider';
 import { useQuery } from '@apollo/client';
-import React, { FC, useContext, useState } from 'react';
+import React, { FC } from 'react';
 import useTableColumns from './hooks/useTableColumns';
 import { FIND_ALL_USERS } from '@queries';
 import CreateStaffMember from './content/CreateStaffMember';
-import { formatISO } from 'date-fns';
-import { CreateUser } from '@types';
-import { SiteHeader, SlideInRight } from '@repo/ui';
 import {Table} from '@repo/ui';
 import { UserOverviewProps } from './types';
 

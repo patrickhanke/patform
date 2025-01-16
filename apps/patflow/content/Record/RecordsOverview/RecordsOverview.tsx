@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import useGetRecords from './hooks/useGetRecords';
 import initialFilters from './constants/initialFilters';
 import WeeklyRecords from './content/WeeklyRecords/WeeklyRecords';
@@ -18,6 +18,22 @@ const RecordsOverview = () => {
 	const [filters, setFilters] = React.useState(initialFilters(year) as Filter[]);
 	const {records, loading, refetch} = useGetRecords({filters});
 	const [siteState, setSiteState] = useState(siteStates[0] as typeof siteStates[0]);
+	const [editAbsence, setEditAbsence] = useState(false);
+	
+	const pageHeaderButtons = useMemo(() => {
+		if (siteState.value === 'absence') {
+			return [{
+				type: 'button',
+				text: 'Neue Abwesenheit',
+				onClick: () => {
+					setEditAbsence(true);
+				},
+				color: 'primary',
+				is_add_button: true
+			}];
+		}
+
+	}, [siteState])
 
 	if (!records) {
 		return null;
@@ -30,6 +46,7 @@ const RecordsOverview = () => {
 			pageState={siteState}	
 			pageStates={siteStates}
 			setPageState={setSiteState}	
+			pageHeaderButtons={pageHeaderButtons}
 		>
 			{siteState.value === 'weeks' && ( 
 				<WeeklyRecords
@@ -48,10 +65,8 @@ const RecordsOverview = () => {
 			{siteState.value === 'absence' && ( 
 				<RecordsAbsence
 					records={records}
-					refetch={refetch}
-					loading={loading}
-					filters={filters}
-					setFilters={setFilters}
+					editAbsence={editAbsence}
+					setEditAbsence={setEditAbsence}
 				/>
 			)}
 			{siteState.value === 'calendar' && ( 

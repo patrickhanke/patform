@@ -7,7 +7,7 @@ const TicketProperty = ({ticketProperty}: {ticketProperty: string}) => {
 		<div className={styles.ticket_date_container} >
 			<div className={styles.ticket_subheadline}>
 				<Icon type='house' size={12} />
-				<p>{ticketProperty}</p>
+				<span style={{whiteSpace: 'nowrap'}}>{ticketProperty}</span>
 			</div>
 		</div>
 	);

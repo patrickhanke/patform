@@ -13,14 +13,19 @@ import { Day } from '@types';
 const DisplayWorker = ({workerId, removeWorker, nextDate, showAvailability = false, onlyImage=false}: DisplayWorkersProps) => {
 	const {year} = useContext(AppContext);
 
-	const {data: workerData} = useQuery(GET_USER_DISPLAY_DATA, {
+	const {data: workerData, loading: wokerLoading} = useQuery(GET_USER_DISPLAY_DATA, {
 		variables: {id: workerId}
 	});
 	
-	const {data} = useQuery(find_day, {
+	const {data, loading: dayLoading} = useQuery(find_day, {
 		variables: {params: {year: {_eq: year}, type: {_eq: 'absence'}, user: {_eq: workerId}}},
 		skip: !showAvailability
 	});
+
+	console.log(data);
+	console.log(workerId);
+	
+	
 
 	const workerAbsence = useMemo(() => {
 		let isAbsent = false;
@@ -37,6 +42,8 @@ const DisplayWorker = ({workerId, removeWorker, nextDate, showAvailability = fal
 		}
 		return isAbsent;
 	}, [data, showAvailability]);
+
+	if (wokerLoading || dayLoading) return <Loader width={'24px'} height={'24px'} />;
 	
 	if (workerData) {
 		const worker  = workerData.objects.get_User;
@@ -75,7 +82,7 @@ const DisplayWorker = ({workerId, removeWorker, nextDate, showAvailability = fal
 
 	if (onlyImage) return <Loader width={'24px'} height={'24px'} />;
 
-	return <Loader width={'120px'} height={'18px'} />;
+	return <span>Unbekannt</span>;
 };
 
 export default DisplayWorker;

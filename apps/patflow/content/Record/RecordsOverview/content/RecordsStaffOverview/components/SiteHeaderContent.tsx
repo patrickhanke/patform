@@ -36,7 +36,7 @@ const SiteHeaderContent = ({
 				<SwitchButtons 
 					buttonStates={displayStates}
 					currentStates={displayState}
-					changeHandler={(value) => {
+					changeHandler={(value: SiteHeaderContentProps['displayState']) => {
 						setDisplayState(value);
 					}}
 				
