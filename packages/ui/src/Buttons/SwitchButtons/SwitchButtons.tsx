@@ -13,7 +13,7 @@ const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates
 					key={button.value}
 					data-isfirst={index === 0}
 					data-islast={index + 1 === buttonStates.length }
-					data-isactive={currentStates.value === button.value}
+					data-isactive={currentStates?.value === button.value}
 					data-isdisabled={button.disabled === true}
 					disabled={button.disabled === true}
 					onClick={() => changeHandler(button)}

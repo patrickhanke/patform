@@ -22,16 +22,10 @@ const DisplayWorker = ({workerId, removeWorker, nextDate, showAvailability = fal
 		skip: !showAvailability
 	});
 
-	console.log(data);
-	console.log(workerId);
-	
-	
-
 	const workerAbsence = useMemo(() => {
 		let isAbsent = false;
 		if (data && nextDate) {
 			const dates: Day[] = data.objects.findDay.results;
-			console.log(dates)
 			const formattedNextDay = formatISO9075( new Date(nextDate), {representation: 'date'});
 			const dateObject = dates.find(date => date.date === formattedNextDay);
 			console.log(dateObject);

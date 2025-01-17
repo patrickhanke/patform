@@ -1,0 +1,22 @@
+@use '@repo/styles/constants';
+
+.elements_interface_container {
+    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: constants.$xs);
+}
+
+.list_element_container {
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$md);
+    cursor: pointer;
+    flex: 1;
+    padding: map-get($map: constants.$padding, $key: 'md' );
+    background-color: constants.$white;
+    &:hover {
+        background-color: constants.$grey_tinted;
+    }
+}
+
+.list_element_container[data-selected="true"] {
+    background-color: constants.$grey_tinted;
+}
+
+

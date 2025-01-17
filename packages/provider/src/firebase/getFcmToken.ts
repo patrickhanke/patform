@@ -1,8 +1,6 @@
 'use client';
 
-import { Messaging } from 'firebase/messaging';
-import dynamic from 'next/dynamic';
-const getToken = dynamic(() => import('firebase/messaging').then(mod => mod.getToken), { ssr: false });
+import { getToken, Messaging } from 'firebase/messaging';
 
 const getFcmToken: (messaging: Messaging) => Promise<string | void> = async (messaging) => {
 	try {

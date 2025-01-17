@@ -77,7 +77,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({workers = [], setIsOpen,
 				number: number,
 				password: worker.password,
 				portrait: worker.portrait,
-				setttings: {
+				settings: {
 					start_date: formatISO(new Date()),
 					vacation_days: 30,
 					color: generateColor()

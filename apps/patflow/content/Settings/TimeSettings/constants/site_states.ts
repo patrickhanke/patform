@@ -13,6 +13,11 @@ const site_states = [
 		value: 'holidays',
 		label: 'Feiertage',
 		disabled: false
+	},
+	{
+		value: 'records',
+		label: 'Zeiterfassung',
+		disabled: false
 	}
 ];
 

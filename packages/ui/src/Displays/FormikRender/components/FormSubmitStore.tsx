@@ -8,15 +8,8 @@ const FormSubmitStore = ({formValidationHandler, useWithDebounce = false}: FormS
 	const { submitForm, values, initialValues, isValid: formIsValid } = useFormikContext();
 	const [formValues, setFormValues] = useDebounceValue(initialValues, 2000);
 	
-	console.log(formValues);
-	console.log(initialValues);
-		
-	
 	useEffect(() => {
 		const dataHasChanged = !isEqual(values, initialValues);
-		console.log(dataHasChanged);
-		console.log(useWithDebounce);
-		
 		if (formValidationHandler) {
 			formValidationHandler(formIsValid);
 		}
@@ -33,11 +26,8 @@ const FormSubmitStore = ({formValidationHandler, useWithDebounce = false}: FormS
 	}, [values, initialValues, formIsValid, submitForm]);
 
 	useEffect(() => {
-		console.log({formValues});
 		if (useWithDebounce) {
 			const dataHasChanged = !isEqual(initialValues, formValues);
-			console.log({dataHasChanged});
-			
 			if (dataHasChanged) {
 				submitForm();
 			}

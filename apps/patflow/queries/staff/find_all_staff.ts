@@ -11,6 +11,7 @@ const find_all_staff  = gql`
                     is_worker
                     portrait
                     color
+                    time_settings
                     role {
                         objectId
                         name

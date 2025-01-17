@@ -23,7 +23,6 @@ const PersonDisplay = ({person, onlyImage=false}: PersonDisplayProps) => {
 					<div className='display_person_no_image_character' >
 						{person.label.split(' ').map(word => word[0]).join('')}
 					</div>
-
 				</div>
 			}
 			<div className='display_person_label' data-onlyimage={onlyImage}>

@@ -12,11 +12,13 @@ import { cloneDeep, set } from 'lodash';
 import axios from 'axios';
 import { Page, SiteHeaderButtons } from '@repo/ui';
 import { SiteState } from '@repo/types';
+import EditRecords from './content/EditRecords';
 
 const TimeSettings = () => {
 	const [siteState, setSiteState] = useState<SiteState>(site_states[0] as SiteState);
 	const {projectId} = useContext(UserContext);
 	const [createTemplate, setCreateTemplate] = useState(false);
+	const [createRecord, setCreateRecord] = useState(false);
 	const { data: holidayData, refetch: refetchHolidays } = useQuery(
 		generateGraphQLQuery({type: 'find', objectName: 'Holiday', fields: ['objectId', 'name', 'label', 'type', 'dates']}),
 		{
@@ -26,11 +28,8 @@ const TimeSettings = () => {
 
 	const {updateData} = useDataHandler();
 
-
 	const refreshHolidayDates = useCallback(async () => {
 		const holidays = holidayData?.objects.findHoliday.results || [];
-
-		
 		const yearArray = [];
 
 		for (let i = 0; i < 7; i+=1) {
@@ -107,6 +106,18 @@ const TimeSettings = () => {
 
 			}];
 		}
+		if (siteState.value === 'records') {
+			return [{
+				text: 'Neuen Record erstellen',
+				onClick: () => {
+					setCreateRecord(true);
+				},
+				is_add_button: false,
+				color: 'primary',
+				disabled: false
+
+			}];
+		}
 		return [];
 	}, [siteState]);
 
@@ -132,6 +143,7 @@ const TimeSettings = () => {
 				/>
 			)}
 			{siteState.value === 'surcharges' && projectId &&  <SurchargeSettings projectId={projectId} holidays={holidayData?.objects.findHoliday.results || []} />}
+			{siteState.value === 'records' && <EditRecords  createRecord={createRecord} setCreateRecord={setCreateRecord} projectId={projectId} />}
 		</Page>
 	);
 };

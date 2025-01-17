@@ -9,7 +9,11 @@ export type IconTypes =
     'arrow-down' | 
     'arrow-up' | 
     'ticket' | 
-    'weeks';
+    'weeks' |
+    'check' |
+    'add' |
+    'circle-check' |
+    'circle';
 
 export type IconProps ={
     type: IconTypes

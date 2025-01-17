@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { generateUuid} from '@repo/provider';
 import axios from 'axios';
 
-type LoginUser = (T: {email: string, password: string, getFcmToken: () => Promise<string | void> }) => Promise<({
+type LoginUser = (T: {email: string, password: string, getFcmToken: () => Promise<string | null> }) => Promise<({
     user: User | null,
     error: boolean,
     message: string
@@ -41,7 +41,7 @@ export const loginUser: LoginUser  =  async ({email, password, getFcmToken}) => 
 	if (user) {
 		const installationId = generateUuid();
 		
-		await loginclient(installationId). post('login', {
+		await loginclient(installationId).post('login', {
 			'username': email, 
 			'password': password
 		}) 
@@ -56,28 +56,41 @@ export const loginUser: LoginUser  =  async ({email, password, getFcmToken}) => 
 					const installationIdKey = process.env.INSTALLATION_ID || 'default_installation_id';
 					Cookies.set(installationIdKey, installationId, {expires: 365, sameSite: 'strict'});
 					const token = await getFcmToken();
-					
-					await axiosclient().post('functions/create-installation', {
-						deviceType: 'web',
-						deviceToken: token, 
-						channels: [],
-						appIdentifier: process.env.FIREBASE_APP_ID,
-						appName: 'patflow_web',
-						appVersion: '0.6.0',
-						parseVersion: '3.6.0',
-						localeIdentifier: 'de-DE',
-						timeZone: 'GMT',
-						user: response.data.objectId,
-						GCMSenderId: process.env.GCMS_SENDER_ID,
-						pushType: 'gcm',
-						installationId: installationId
-					});
+					if (token === undefined) {
+						console.log(
+							'FcmToken could not be generated'
+						);
+						
+						returnValue = {
+							error: true,
+							message: 'Das Einloggen ist leider fehlgeschlagen',
+							user: null
+						};
+					} else {
 
-					returnValue = {
-						error: false,
-						message: 'Erfolgreich eingeloggt',
-						user: response.data
-					};
+						await axiosclient().post('functions/create-installation', {
+							deviceType: 'web',
+							deviceToken: token, 
+							channels: [],
+							appIdentifier: process.env.FIREBASE_APP_ID,
+							appName: 'patflow_web',
+							appVersion: '0.6.0',
+							parseVersion: '3.6.0',
+							localeIdentifier: 'de-DE',
+							timeZone: 'GMT',
+							user: response.data.objectId,
+							GCMSenderId: process.env.GCMS_SENDER_ID,
+							pushType: 'gcm',
+							installationId: installationId
+						});
+	
+						returnValue = {
+							error: false,
+							message: 'Erfolgreich eingeloggt',
+							user: response.data
+						};
+					}
+
 				}
 			})
 			.catch(error => {
