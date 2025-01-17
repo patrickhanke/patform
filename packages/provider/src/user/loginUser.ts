@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import { generateUuid} from '@repo/provider';
 import axios from 'axios';
 
-type LoginUser = (T: {email: string, password: string, getFcmToken: () => Promise<string | null> }) => Promise<({
+type LoginUser = (T: {email: string, password: string, token: string }) => Promise<({
     user: User | null,
     error: boolean,
     message: string
@@ -23,7 +23,7 @@ const loginclient = (installationId: string) => {
 	});
 };
 
-export const loginUser: LoginUser  =  async ({email, password, getFcmToken}) => {
+export const loginUser: LoginUser  =  async ({email, password, token}) => {
 	let returnValue = {
 		user: null,
 		error: true,
@@ -55,7 +55,6 @@ export const loginUser: LoginUser  =  async ({email, password, getFcmToken}) => 
 					
 					const installationIdKey = process.env.INSTALLATION_ID || 'default_installation_id';
 					Cookies.set(installationIdKey, installationId, {expires: 365, sameSite: 'strict'});
-					const token = await getFcmToken();
 					if (token === undefined) {
 						console.log(
 							'FcmToken could not be generated'
