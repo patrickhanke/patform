@@ -4,10 +4,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { onMessage } from 'firebase/messaging';
 import dynamic from 'next/dynamic';
 
-const requestPermission = dynamic(() => import('./requestPermission'));
-import getFcmToken from './getFcmToken';
+const messaging = dynamic(() => import('./initializeFirebase'));
+const requestPermission = dynamic(() => import('./requestPermission'));import getFcmToken from './getFcmToken';
 import { saveNotification } from '../functions';
-import messaging from './initializeFirebase';
 
 const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 	const [permission, setPermission] = useState<'granted' | 'denied' | 'error' | undefined>();
