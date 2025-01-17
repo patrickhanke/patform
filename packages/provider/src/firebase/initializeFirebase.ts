@@ -1,7 +1,7 @@
 'use client';
 
 import { initializeApp } from 'firebase/app';
-import { getMessaging } from 'firebase/messaging';
+import { getMessaging, getToken, Messaging } from 'firebase/messaging';
 
 const firebaseConfig = {
 	apiKey: process.env.FIREBASE_API_KEY,
@@ -10,12 +10,37 @@ const firebaseConfig = {
 	storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 	messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
 	appId: process.env.FIREBASE_APP_ID,
-	measurementId: process.env.FIREBASE_MEASUREMENT_ID
+	measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+	vapidKey: 'BJ3Q1Q-9N4W_xpbR4BVTLqEkwKMuuXC7lhl4yGleDnRQrwLML7dTM7uktXmb2a5o9U-R1o9-Xa_hNrKKaB-ROds'
 };
-  
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
 
-export default messaging;
+export let messaging: Messaging;
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+if (typeof window !== 'undefined') {
+  messaging = getMessaging(app);
+}
+
+export const requestPermissionAndGetToken = async () => {
+	try {
+	  // Request permission to show notifications
+	  await Notification.requestPermission();
+  
+	  // Get the messaging token
+	  const token = await getToken(messaging, {
+		vapidKey: firebaseConfig.vapidKey,
+	  });
+  
+	  return token;
+	} catch (err) {
+	  console.error('Error getting messaging token:', err);
+	  return null;
+	}
+  };
+
+
+
 
 

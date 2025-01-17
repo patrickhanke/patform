@@ -4,33 +4,27 @@ import { useCallback, useEffect, useState } from 'react';
 import { onMessage } from 'firebase/messaging';
 import dynamic from 'next/dynamic';
 
-const messaging = dynamic(() => import('./initializeFirebase'));
-const requestPermission = dynamic(() => import('./requestPermission'));import getFcmToken from './getFcmToken';
+import { requestPermissionAndGetToken, messaging } from './initializeFirebase';
 import { saveNotification } from '../functions';
 
 const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 	const [permission, setPermission] = useState<'granted' | 'denied' | 'error' | undefined>();
 	const [token, setToken] = useState<string | null>(null);
 
-	const getPermission = useCallback(async () => {
-		const pm = await requestPermission();
-		setPermission(pm);
+	const getToken = useCallback(async () => {
+		const token = await requestPermissionAndGetToken();
+		setToken(token);
 	}, []);
 
-	const getToken = useCallback(async () => {
-		const currentToken = await getFcmToken(messaging);
-       
-		if (currentToken) {
-			setToken(currentToken);
-			return (currentToken);
-		}
-		return null;
-	}, [messaging]);
+	console.log(token);
+	
 
     
 	useEffect(() => {
-		if (!messaging) return console.error('Firebase Messaging not initialized');
 		if (!initialize) return;
+		if (!token) {
+			getToken();
+		};
 		if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
 			navigator.serviceWorker
 				.register('/firebase-messaging-sw.js')
@@ -47,15 +41,8 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 				console.log(...args);
 			}
 		};
-		if (!permission ) {
-			getPermission();
-		}
 
-		if (!token) {
-			getToken();
-		}
-
-		if (permission === 'granted' && token) {
+		if ( token) {
 			const unsubscribe = onMessage(messaging, (payload) => {
 				if (payload.notification) {
 					saveNotification({
@@ -73,7 +60,7 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 				unsubscribe(); // Unsubscribe from the onMessage event on cleanup
 			};
 		}
-	}, [permission, messaging, token]);
+	}, [token]);
 
 	return ({permission, token, getFcmToken: getToken});
 };
