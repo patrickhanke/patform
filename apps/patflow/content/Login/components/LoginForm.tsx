@@ -15,7 +15,7 @@ const LoginSchema = Yup.object().shape({
 const LoginForm = () => {
 	const [disabled, setDisabled] = useState(false);
 	const [error, setError] = useState('');
-	const {getFcmToken} = useFirebaseMessaging({initialize: false})
+	const {token} = useFirebaseMessaging({initialize: false})
 
 
 
@@ -45,7 +45,7 @@ const LoginForm = () => {
 				console.log(user.has_access);
 				
 				if (user.has_access === true) {
-					const login = await loginUser({email: values.email, password: values.password, getFcmToken});
+					const login = await loginUser({email: values.email, password: values.password, token});
 					console.log(login);
 					
 					if (login) {
@@ -65,6 +65,10 @@ const LoginForm = () => {
 			setDisabled(false);
 		}
 	});
+
+	if (!token) {
+		return null;
+	}
 
 	return (
 		<div>

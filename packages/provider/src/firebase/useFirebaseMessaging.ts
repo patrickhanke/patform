@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { onMessage } from 'firebase/messaging';
-import dynamic from 'next/dynamic';
 
 import { requestPermissionAndGetToken, messaging } from './initializeFirebase';
 import { saveNotification } from '../functions';
@@ -21,10 +20,10 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 
     
 	useEffect(() => {
-		if (!initialize) return;
 		if (!token) {
 			getToken();
 		};
+		if (!initialize) return;
 		if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
 			navigator.serviceWorker
 				.register('/firebase-messaging-sw.js')
@@ -43,6 +42,8 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 		};
 
 		if ( token) {
+			console.log('add listener');
+			
 			const unsubscribe = onMessage(messaging, (payload) => {
 				if (payload.notification) {
 					saveNotification({
