@@ -39,13 +39,15 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 		zIndex: 9999,
 		fontFamily: 'Geist',
 		fontWeight: 400,
-		fontSize: '12px'
+		maxHeight: '240px',
+		fontSize: '12px',
+		position: 'relative'
 	}),
 	singleValue: provided => ({
 		...provided,
 		fontFamily: 'Geist',
 		fontWeight: 400,
-		fontSize: '12px'
+		fontSize: '12px',
 	}),	
 	multiValueLabel: provided => ({
 		...provided,

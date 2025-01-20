@@ -14,5 +14,6 @@ export type SelectType = {
     label?: string,
     errors?: ErrorMessage[],
     id?: string,
-    width?: number | string
+    width?: number | string,
+    menuPosition?: 'fixed' | 'absolute' 
 }

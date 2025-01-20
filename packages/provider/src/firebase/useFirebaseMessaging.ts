@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { onMessage } from 'firebase/messaging';
 
 import { requestPermissionAndGetToken, messaging } from './initializeFirebase';
-import { saveNotification } from '../functions';
+import { initDB, saveNotification } from '../functions';
 
 const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 	const [permission, setPermission] = useState<'granted' | 'denied' | 'error' | undefined>();
@@ -16,8 +16,14 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 	}, []);
 
 	console.log(token);
-	
 
+	useEffect(() => {
+		const db = initDB();
+		console.log(db);
+
+		
+	}, []);
+	
     
 	useEffect(() => {
 		if (!token) {
@@ -25,13 +31,23 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 		};
 		if (!initialize) return;
 		if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-			navigator.serviceWorker
-				.register('/firebase-messaging-sw.js')
+			navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js')
 				.then((registration) => {
-					customLog('Service Worker registered with scope:', registration.scope);
+					if (registration) {
+						customLog('Service Worker already registered with scope:', registration.scope);
+					} else {
+						navigator.serviceWorker
+							.register('/firebase-messaging-sw.js')
+							.then((registration) => {
+								customLog('Service Worker registered with scope:', registration.scope);
+							})
+							.catch((error) => {
+								customLog('Service Worker registration failed:', error);
+							});
+					}
 				})
 				.catch((error) => {
-					customLog('Service Worker registration failed:', error);
+					customLog('Service Worker registration check failed:', error);
 				});
 		}
 		
@@ -46,6 +62,8 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 			
 			const unsubscribe = onMessage(messaging, (payload) => {
 				if (payload.notification) {
+					console.log(payload);
+					
 					saveNotification({
 						title: payload.notification.title as string,
 						body: payload.notification.body as string,

@@ -33,6 +33,7 @@ const ObjectSelectWithState = ({selectedObject, setSelectedObject, label, disabl
 				onChange={(values) => setSelectedObject(values)}
 				width={'100%'}
 				isDisabled={disabled}
+				menuPosition='absolute'
 			/>
 		</div>
 	);

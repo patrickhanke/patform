@@ -5,26 +5,33 @@ const dbName = 'notifications-database';
 const storeName = 'notifications-store';
 
 
-const initDB = async () => {
+export const initDB = async () => {
 	const db = await openDB(dbName, 2);
 	const version = db.version;
-
+	console.log(db);
+	console.log(db.objectStoreNames);
+	console.log(db.objectStoreNames.contains(storeName));
+	
 	if (db.objectStoreNames.contains(storeName)) {
+
 		return db;
 	}
-	await openDB(dbName, version + 1, {
+	await openDB(dbName, 3, {
 		upgrade(db) {
 			if (!db.objectStoreNames.contains(storeName)) {
-				const store = db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-				store.createIndex('title', 'title', { unique: false });
-				store.createIndex('body', 'body', { unique: false });
-				store.createIndex('image', 'image', { unique: false });
-				store.createIndex('timestamp', 'timestamp', { unique: false });
-				store.createIndex('read', 'read', { unique: false });
-				store.createIndex('data', 'data', { unique: false });
+				db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+				// store.createIndex('title', 'title', { unique: false });
+				// store.createIndex('body', 'body', { unique: false });
+				// store.createIndex('image', 'image', { unique: false });
+				// store.createIndex('timestamp', 'timestamp', { unique: false });
+				// store.createIndex('read', 'read', { unique: false });
+				// store.createIndex('data', 'data', { unique: false });
 			}
 		}
 	});
+
+	console.log(db);
+	
     
 	return db;
 };

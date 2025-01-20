@@ -1,14 +1,27 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import ReactSelect from 'react-select';
 import { SelectType } from './types';
 import styles from './Select.module.scss';
 import customStyles from './constants/styles';
 import { ErrorDisplay } from '@repo/ui';
 
-const Select = ({onChange, value, placeholder, options, isMulti = false, isDisabled = false, isClearable = false, label, id, errors, width = 150}: SelectType) => {
-	const [doc, setDoc] = useState<HTMLElement | null>(null);
+const Select: FC<SelectType> = ({
+	onChange, 
+	value, 
+	placeholder, 
+	options, 
+	isMulti = false, 
+	isDisabled = false, 
+	isClearable = false, 
+	label, 
+	id, 
+	errors, 
+	width = 150,
+	menuPosition='fixed'
+}) => {
+	const [_doc, setDoc] = useState<HTMLElement | null>(null);
 	
 	const valueBoundryHandler = (value: object | string | null) => {
 		if (typeof value === 'object' && value !== null) {
@@ -42,7 +55,7 @@ const Select = ({onChange, value, placeholder, options, isMulti = false, isDisab
 				classNamePrefix="react-select"
 				styles={customStyles({width})}
 				// menuPortalTarget={doc}
-				menuPosition="fixed"  
+				menuPosition={menuPosition}  
 				menuPlacement="auto"
 			/>
 			<ErrorDisplay errors={errors} id={id} />
