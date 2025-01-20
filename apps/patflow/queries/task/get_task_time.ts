@@ -5,6 +5,7 @@ const get_task_time  = gql`
         objects {
             getTask(objectId: $id) {
                 objectId
+                title
                 time
                 category
                 type

@@ -1,14 +1,11 @@
 
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import {Select} from '@content';
-import { useImmer } from 'use-immer';
 import { DateObjectWithNextDates } from '@types';
 import modi_options from './constants/modi_options';
-import clsx from 'clsx';
 import DateCategories from './components/DateCategories';
-import date_category_options from './constants/date_category_options';
 import SingleDateSelectInterface from './components/SingleDateSelectInterface';
 import MultiDateSelectInterface from './components/MultiDateSelectInterface';
 import IntervalDateSelectInterface from './components/IntervalDateSelectInterface';
@@ -16,23 +13,14 @@ import { DateSelectExternalStateProps } from './types';
 import IntervalInfo from './components/IntervalInfo';
 import { Divider } from '@repo/ui';
 
-const DateSelectWithExternalState = ({initialValue, dataHandler} : DateSelectExternalStateProps) => {
-	const initialDate = {
-		type: initialValue?.type || modi_options[0],
-		category: initialValue?.category || date_category_options[0],
-		interval: initialValue?.interval || 1,
-		start_date: initialValue?.start_date ||'',
-		end_date: initialValue?.end_date ||'',
-		dates: initialValue?.dates || [''],
-		weekday: initialValue?.weekday || undefined,
-		time: initialValue?.time || undefined
-	} as DateObjectWithNextDates ;
-
-	const [date, setDate] = useImmer(initialDate);
-
-	useEffect(() => {
-		dataHandler(date);
-	}, [date]);
+const DateSelectWithExternalState = ({date, dataHandler} : DateSelectExternalStateProps) => {
+	if (!date) {
+		return (
+			<p>
+				Kein Datum angegeben
+			</p>
+		)
+	}
 
 	return (
 		<>
@@ -42,25 +30,27 @@ const DateSelectWithExternalState = ({initialValue, dataHandler} : DateSelectExt
 						label='Interval wählen'
 						value={date.type}
 						options={modi_options}
-						onChange={value => setDate(draft => {
-							draft.type = value;
+						onChange={value => dataHandler({
+							...date, 
+							type: value
 						})}
 					/>
 				</div>
 				<div>
 					<label>Kategorie wählen</label>
 					<DateCategories 
-						initialValue={date.category} 
-						onChange={value => setDate(draft => {
-							draft.category = value;
+						date={date.category} 
+						onChange={value => dataHandler({
+							...date, 
+							category: value
 						})}
 					/>
 				</div>
 				<Divider showLine size='medium' />
 				<div>
-					{date.type.value === 'single' && <SingleDateSelectInterface initialValue={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
-					{date.type.value === 'multi' &&  <MultiDateSelectInterface initialValue={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
-					{(date.type.value === 'weekly' || date.type.value === 'monthly') &&  <IntervalDateSelectInterface initialValue={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
+					{date.type.value === 'single' && <SingleDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => dataHandler(newDate)} />}
+					{date.type.value === 'multi' &&  <MultiDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => dataHandler(newDate)} />}
+					{(date.type.value === 'weekly' || date.type.value === 'monthly') &&  <IntervalDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => dataHandler(newDate)} />}
 					{date.type.value === 'weekly' || date.type.value === 'monthly' && <IntervalInfo dates={date.dates} />}
 				</div>
 			</div>

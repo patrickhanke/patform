@@ -40,8 +40,15 @@ const customStyles = ({width}: {width: string | number}): StylesConfig => ({
 		fontFamily: 'Geist',
 		fontWeight: 400,
 		maxHeight: '240px',
-		fontSize: '12px',
-		position: 'relative'
+		fontSize: '12px'
+	}),
+	menuList: provided => ({
+		...provided,
+		maxHeight: '240px',
+		position: 'relative',
+		fontFamily: 'Geist',
+		fontWeight: 400,
+		fontSize: '12px'
 	}),
 	singleValue: provided => ({
 		...provided,

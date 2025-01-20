@@ -1,7 +1,6 @@
 'use client';
 
-import {DateSelectWithExternalState, ObjectSelectWithState, TimeDisplay, WorkerSelectWithState} from '@content';
-import { AppContext } from '@provider';
+import {DateSelectWithExternalState, ObjectSelectWithState, WorkerSelectWithState} from '@content';
 import clsx from 'clsx';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
@@ -16,14 +15,10 @@ import { useDataHandler, UserContext } from '@repo/provider';
 const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 	const {createData, updateData} = useDataHandler();
 	const {user} = useContext(UserContext);
-	const {roleUsers} = useContext(AppContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
-	const [task, setTask ] =  useImmer<CreateTaskType>(initial_task);
-
-	const [date, setDate] = useState({
+	const initialDate ={
 		type: modi_options[0],
 		category: date_category_options[0],
 		interval: 1,
@@ -33,7 +28,12 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 		weekday: '',
 		time: '',
 		next_dates: []
-	} as DateObjectWithNextDates);
+	} as DateObjectWithNextDates
+
+	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
+	const [task, setTask ] =  useImmer<CreateTaskType>(initial_task);
+
+	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
 
 	useEffect(() => {
 		if (initialData) {
@@ -109,8 +109,16 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 		}
 		setIsOpen(false);
 		setTask(initial_task);
+		// setDate(initialDate)
 		setLoading(false);
 	}, [task, date]);
+
+	useEffect(() => {
+		if (!isOpen) {
+			console.log(initialDate);
+			setDate(initialDate)
+		}
+	}, [isOpen])
 
 	return (
 		<>
@@ -130,10 +138,10 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 				header='Aufgabe erstellen'
 				disabled={[false, (errors.length > 0 || loading)]}
 				errors={errors}
-				showSecondaryContent={true}
+				showSecondaryContent={isOpen}
 				secondaryContent={
 					<DateSelectWithExternalState
-						initialValue={date}
+						date={date}
 						dataHandler={setDate}
 					/>
 				}

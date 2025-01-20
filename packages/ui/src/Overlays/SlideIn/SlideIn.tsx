@@ -21,7 +21,6 @@ const SlideIn: React.FC<SlideInProps> = ({
 	errors,
 	confirmText
 }) => {
-
 	const ref = useRef(null);
 	useOnClickOutside(ref, () => {
 		if (preventClickOutside === true) return;
@@ -31,7 +30,7 @@ const SlideIn: React.FC<SlideInProps> = ({
 	return (
 		<>
 			<div className={'overlay_container'} data-isopen={isOpen} />
-			<AnimatePresence initial={true}>
+			<AnimatePresence initial={true} >
 				{isOpen && (
 					<motion.div
 						initial={{ right: -300}}

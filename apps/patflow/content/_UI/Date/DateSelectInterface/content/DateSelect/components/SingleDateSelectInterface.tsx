@@ -4,21 +4,21 @@ import { formatISO9075 } from 'date-fns';
 import { DateObjectWithNextDates } from '@types';
 import { DatePicker } from '@repo/ui';
 
-const SingleDateSelectInterface = ({initialValue, category, onChange}: SingleDateSelectInterfaceProps) => {
-	const dateTransformHandler = useCallback((date: string) => {
+const SingleDateSelectInterface = ({date, category, onChange}: SingleDateSelectInterfaceProps) => {
+	const dateTransformHandler = useCallback((dateString: string) => {
 		const dateObject: DateObjectWithNextDates = {
-			...initialValue,
+			...date,
 			dates: [],
 			next_dates: []
 		};
 		
 		if (category === 'opportunity') {
-			dateObject.dates = [formatISO9075( new Date(date))];
-			dateObject.next_dates = [formatISO9075( new Date(date), {representation: 'date'})];
+			dateObject.dates = [formatISO9075( new Date(dateString))];
+			dateObject.next_dates = [formatISO9075( new Date(dateString), {representation: 'date'})];
 		}
 		if (category === 'fixed') {
-			dateObject.dates = [date];
-			dateObject.next_dates = [formatISO9075( new Date(date), {representation: 'date'})];
+			dateObject.dates = [dateString];
+			dateObject.next_dates = [formatISO9075( new Date(dateString), {representation: 'date'})];
 		}
 
 		onChange(dateObject);
@@ -32,7 +32,7 @@ const SingleDateSelectInterface = ({initialValue, category, onChange}: SingleDat
 			{category === 'opportunity' ? 
 				<div className='row_container'>
 					<DatePicker
-						defaultValue={initialValue.dates[0] ? formatISO9075(new Date(initialValue.dates[0]), {representation: 'date'}) : ''}
+						defaultValue={date.dates[0] ? formatISO9075(new Date(date.dates[0]), {representation: 'date'}) : ''}
 						onChange={dateTransformHandler}
 						type='week'
 						label='Woche auswählen'
@@ -42,7 +42,7 @@ const SingleDateSelectInterface = ({initialValue, category, onChange}: SingleDat
 				:
 				<div className='row_container'>
 					<DatePicker
-						defaultValue={initialValue.dates[0] || ''}
+						defaultValue={date.dates[0] || ''}
 						onChange={dateTransformHandler}
 						type='datetime'
 						label='Termin wählen'

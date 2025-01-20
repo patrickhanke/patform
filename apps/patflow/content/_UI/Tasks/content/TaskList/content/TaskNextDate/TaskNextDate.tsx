@@ -116,7 +116,7 @@ const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal
 		{
 			value: 'delete_task',
 			label: 'Aufgabe Löschen',
-			onClick: () => setDeleteTaskModal(data?.objects.getTask.dates),
+			onClick: () => setDeleteTaskModal(data?.objects.getTask),
 			color: 'red',
 			isDisabled:false
 		}

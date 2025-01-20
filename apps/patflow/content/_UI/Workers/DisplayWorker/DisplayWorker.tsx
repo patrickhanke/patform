@@ -28,7 +28,6 @@ const DisplayWorker = ({workerId, removeWorker, nextDate, showAvailability = fal
 			const dates: Day[] = data.objects.findDay.results;
 			const formattedNextDay = formatISO9075( new Date(nextDate), {representation: 'date'});
 			const dateObject = dates.find(date => date.date === formattedNextDay);
-			console.log(dateObject);
 			
 			if (dateObject) {
 				isAbsent = true;

@@ -5,40 +5,40 @@ import getUpcomingDates from '../functions/getUpcomingDates';
 import { DateObjectWithNextDates } from '@types';
 import { CreateButton, DatePicker } from '@repo/ui';
 
-const MultiDateSelectInterface = ({initialValue, category, onChange}: MultiDateSelectInterfaceProps) => {
-	const dateTransformHandler = useCallback((date: string, index?: number) => {
-		const datesCopy = [...initialValue.dates];
+const MultiDateSelectInterface = ({date, category, onChange}: MultiDateSelectInterfaceProps) => {
+	const dateTransformHandler = useCallback((dateString: string, index?: number) => {
+		const datesCopy = [...date.dates];
 		if (category === 'opportunity') {
 			if (typeof index === 'number') {
-				datesCopy[index] = date;
+				datesCopy[index] = dateString;
 			} else {
-				datesCopy.push(date);
+				datesCopy.push(dateString);
 			}
 		}
 		
 		if (category === 'fixed') {
 			if (typeof index === 'number') {
-				datesCopy[index] = date;
+				datesCopy[index] = dateString;
 			} else {
-				datesCopy.push(date);
+				datesCopy.push(dateString);
 			}
 		}
 
 		const dateObject: DateObjectWithNextDates = {
-			...initialValue,
+			...date,
 			dates: [...datesCopy],
-			next_dates: getUpcomingDates(datesCopy).map(date => formatISO9075( new Date(date), {representation: 'date'}))
+			next_dates: getUpcomingDates(datesCopy).map(dateString => formatISO9075( new Date(dateString), {representation: 'date'}))
 		};
 
 		onChange(dateObject);
-	}, [initialValue, category]);
+	}, [date, category]);
 
 	return (
 		<>
 			<h3>
 				Individuelle Daten
 			</h3>
-			{initialValue?.dates.map((date: string, index: number) => (
+			{date?.dates.map((date: string, index: number) => (
 				category === 'opportunity' ? 
 					<div className='row_container' key={date}>
 						<DatePicker
@@ -64,7 +64,7 @@ const MultiDateSelectInterface = ({initialValue, category, onChange}: MultiDateS
 				text='Neues Datum hinzufügen'
 				size='small'
 				onClick={() => dateTransformHandler('')}
-				disabled={initialValue.dates.includes('')}
+				disabled={date.dates.includes('')}
 			/>
 		</>
 	);

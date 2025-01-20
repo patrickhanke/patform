@@ -13,7 +13,7 @@ const TaskList = ({taskList, refetch} : TaskListComponent) => {
 	const [deleteTaskModal, setDeleteTaskModal] = useState<undefined | Task>(undefined);
 	const [archiveModal, setArchiveModal] = useState<undefined | Task>(undefined);
 
-	const deleteTask = async () => {
+	const deleteTask = useCallback(async () => {
 		if (deleteTaskModal) {
 			await deleteData({
 				className: 'Task',
@@ -21,7 +21,8 @@ const TaskList = ({taskList, refetch} : TaskListComponent) => {
 			});
 		}
 		refetch();
-	};
+		setDeleteTaskModal(undefined);
+	}, [deleteTaskModal]);
 
 	const archiveTaskHandler = useCallback(async () => {
 		if (archiveModal?.objectId) {
