@@ -8,8 +8,8 @@ import { CiClock2 } from 'react-icons/ci';
 const DateDisplay = ({date, displayType} : DateDisplayComponent) => {
 	return (
 		<div className={styles.date_display_container}>
-			{displayType === 'date' || displayType === 'date-and-time' && <div className={styles.date_element}><IoCalendarOutline /> {getDateStringsFromIso(date).datum}</div>}
-			{displayType === 'time' || displayType === 'date-and-time' && <div className={styles.date_element}><CiClock2 /> {getDateStringsFromIso(date).uhrzeit}</div>}
+			{displayType === 'date' || displayType === 'date-and-time' && <div className={styles.date_element}><IoCalendarOutline /> {getDateStringsFromIso(date).date}</div>}
+			{displayType === 'time' || displayType === 'date-and-time' && <div className={styles.date_element}><CiClock2 /> {getDateStringsFromIso(date).time}</div>}
 		</div>
 	);
 };

@@ -38,7 +38,7 @@ const ProperyDocuments = ({id}: {id: string}) => {
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => getDateStringsFromIso(row.createdAt).datum,
+			accessorFn: row => getDateStringsFromIso(row.createdAt).date,
 			header: () => <span>Erstellt</span>,
 			id: 'created_at',
 			cell: info => info.getValue(),
@@ -73,7 +73,7 @@ const ProperyDocuments = ({id}: {id: string}) => {
 		}
 	], []);
 
-	const addDocumentHandler = useCallback(async (content: {user: string, file: ApplicationTypes.Document['file'], name: string}) => {
+	const addDocumentHandler = useCallback(async (content: {user: string, file: Document['file'], name: string}) => {
 		await createData({
 			className: 'Document',
 			updateObject: {

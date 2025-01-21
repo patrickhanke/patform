@@ -69,7 +69,7 @@ const SlideInContent = ({title, tallyId}: {title: string, tallyId: string}) => {
 				<div className={styles.description_preview_content}>
 					{entriesData && entriesData.objects.getTally.entries ?
 						<p>
-							{`${getLastEntry(entriesData.objects.getTally.entries)?.value?.toString()}  (${getDateStringsFromIso( getLastEntry(entriesData.objects.getTally.entries)?.date).datum })`}
+							{`${getLastEntry(entriesData.objects.getTally.entries)?.value?.toString()}  (${getDateStringsFromIso( getLastEntry(entriesData.objects.getTally.entries)?.date).date })`}
 						</p>
 						:
 						<p>

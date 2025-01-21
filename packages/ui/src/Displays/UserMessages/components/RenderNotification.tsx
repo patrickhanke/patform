@@ -3,8 +3,10 @@ import clsx from 'clsx';
 import { IconButton } from '@repo/ui';
 import { RenderNotificationProps } from '../types';
 import { getDateStringsFromIso } from '@repo/provider';
+import { FC } from 'react';
 
-const RenderNotification: React.FC<RenderNotificationProps> = ({title, body, timestamp, read, id, deleteNotification}) => {
+const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp, read, id, deleteNotification}) => {
+	
 	return (
 		<div className={clsx(styles.user_message_container)} data-is_read={read}> 
 			<div className={styles.content_container}>
@@ -13,7 +15,7 @@ const RenderNotification: React.FC<RenderNotificationProps> = ({title, body, tim
 						<div>
 							<h3>
 								{title}
-								{timestamp && <span className={styles.time}>{`/ ${getDateStringsFromIso(timestamp).datumUhrzeit}`}</span>}
+								{timestamp && <span className={styles.time}>{`/ ${getDateStringsFromIso(new Date(timestamp)).dateTime}`}</span>}
 							</h3>
 						</div>
 						<IconButton icon='close' size={10} onClick={() => deleteNotification(id)} />

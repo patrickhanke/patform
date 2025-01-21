@@ -16,7 +16,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => `${getDateStringsFromIso(row.start_date).datum} - ${getDateStringsFromIso(row.end_date).datum}`,
+			accessorFn: row => `${getDateStringsFromIso(row.start_date).date} - ${getDateStringsFromIso(row.end_date).date}`,
 			header: () => <span>Datum</span>,
 			id: 'date',
 			cell: info => info.getValue(),

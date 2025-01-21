@@ -1,7 +1,7 @@
 const date_category_options = [
 	{
 		value: 'fixed',
-		label: 'Erledigen an'
+		label: 'Erledigen am'
 	},
 	{
 		value: 'opportunity',

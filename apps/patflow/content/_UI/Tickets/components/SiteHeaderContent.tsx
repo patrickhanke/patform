@@ -28,7 +28,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({id, filters, setFilt
 
 		if (tickets && dateOptions.length === 0) {
 			tickets.forEach((ticket: Ticket) =>{ 
-				if (!dateOptions.find(option => option.label === getDateStringsFromIso(ticket.createdAt).datum)) dateOptions.push({value: ticket.createdAt, label: getDateStringsFromIso(ticket.createdAt).datum});
+				if (!dateOptions.find(option => option.label === getDateStringsFromIso(ticket.createdAt).date)) dateOptions.push({value: ticket.createdAt, label: getDateStringsFromIso(ticket.createdAt).date});
 			});
 		}
 		return ({dateOptions, objectOptions});

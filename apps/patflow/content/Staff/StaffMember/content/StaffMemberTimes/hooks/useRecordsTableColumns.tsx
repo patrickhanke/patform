@@ -15,14 +15,14 @@ const useRecordsTableColumns: UseRecordTableColumns = ({ refetch, projectId }) =
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => getDateStringsFromIso( row.start_date).datum,
+			accessorFn: row => getDateStringsFromIso( row.start_date).date,
 			header: () => <span>Start</span>,
 			id: 'start_time',
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: row => getDateStringsFromIso( row.end_date).datum,
+			accessorFn: row => getDateStringsFromIso( row.end_date).date,
 			header: () => <span>Ende</span>,
 			id: 'end_time',
 			cell: info => info.getValue(),

@@ -1,5 +1,6 @@
 export const getDateStringsFromIso = (datum: Date | string | undefined) => {
-	if (!datum) return {datum: '-', uhrzeit: '-'};
+	if (!datum) return {date: '-', time: '-'};
+	
 	const date = new Date(datum);
 	const year = date.getFullYear();
 	const month = date.getMonth() + 1;
@@ -8,8 +9,8 @@ export const getDateStringsFromIso = (datum: Date | string | undefined) => {
 	const hours = date.getHours();
 	const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
 	return {
-		datum: `${day}.${month}.${year}`,
-		uhrzeit: `${hours}:${minutes}`
+		date: `${day}.${month}.${year}`,
+		time: `${hours}:${minutes}`
 	};
 };
 

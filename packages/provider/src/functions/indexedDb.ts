@@ -6,33 +6,22 @@ const storeName = 'notifications-store';
 
 
 export const initDB = async () => {
-	const db = await openDB(dbName, 2);
-	const version = db.version;
-	console.log(db);
-	console.log(db.objectStoreNames);
-	console.log(db.objectStoreNames.contains(storeName));
+	const dbVersion = 2;
 	
-	if (db.objectStoreNames.contains(storeName)) {
-
-		return db;
-	}
-	await openDB(dbName, 3, {
+	const db = await openDB(dbName, 2, {
 		upgrade(db) {
+			
 			if (!db.objectStoreNames.contains(storeName)) {
-				db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
-				// store.createIndex('title', 'title', { unique: false });
-				// store.createIndex('body', 'body', { unique: false });
-				// store.createIndex('image', 'image', { unique: false });
-				// store.createIndex('timestamp', 'timestamp', { unique: false });
-				// store.createIndex('read', 'read', { unique: false });
-				// store.createIndex('data', 'data', { unique: false });
+				db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true  });
 			}
 		}
 	});
 
-	console.log(db);
-	
-    
+	if (db.version !== dbVersion) {
+		db.close();
+		await openDB(dbName, dbVersion);
+	}
+
 	return db;
 };
 

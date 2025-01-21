@@ -16,7 +16,7 @@ const RecordTimeDisplay = ({setCurrentIndex, day, currentIndex, index} : RecordT
 	const dayLabel = (date: string) => {
 		let label = '-';
 		if (date) {
-			label = `${weekdays.find(weekday => weekday.day === getDay(new Date(day.date)))?.label} - ${getDateStringsFromIso(date).datum}`;
+			label = `${weekdays.find(weekday => weekday.day === getDay(new Date(day.date)))?.label} - ${getDateStringsFromIso(date).date}`;
 		}
 		
 		return label;
@@ -30,11 +30,11 @@ const RecordTimeDisplay = ({setCurrentIndex, day, currentIndex, index} : RecordT
 					<>
 						<div className='time_display_element'>
 							<div className='label'>Start</div>
-							<div className='time_display_element_content'>{getDateStringsFromIso(day.time?.start).uhrzeit}</div>
+							<div className='time_display_element_content'>{getDateStringsFromIso(day.time?.start).date}</div>
 						</div>
 						<div className='time_display_element'>
 							<div className='label'>Ende</div>
-							<div className='time_display_element_content'>{getDateStringsFromIso(day.time?.end).uhrzeit}</div>
+							<div className='time_display_element_content'>{getDateStringsFromIso(day.time?.end).time}</div>
 						</div>
 						<div className='time_display_element'>
 							<div className='label'>Pause</div>

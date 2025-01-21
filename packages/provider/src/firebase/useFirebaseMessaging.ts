@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { onMessage } from 'firebase/messaging';
 
 import { requestPermissionAndGetToken, messaging } from './initializeFirebase';
-import { initDB, saveNotification } from '../functions';
+import { saveNotification } from '../functions';
 
 const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 	const [permission, setPermission] = useState<'granted' | 'denied' | 'error' | undefined>();
@@ -15,14 +15,12 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 		setToken(token);
 	}, []);
 
-	console.log(token);
-
-	useEffect(() => {
-		const db = initDB();
-		console.log(db);
+	// useEffect(() => {
+	// 	const db = initDB();
+	// 	console.log(db);
 
 		
-	}, []);
+	// }, []);
 	
     
 	useEffect(() => {

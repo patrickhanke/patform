@@ -70,7 +70,7 @@ const EditTime = ({day, timeChangeHandler, workingTimes, selectedWeek, deleteDay
 			<div>
 				<h3> 
 					{day.date ? 
-						`${weekdays.find(weekday => weekday.day === (getDay(new Date(day.date))))?.label} - ${getDateStringsFromIso(formatISO9075(new Date(day.date) )).datum} ` 
+						`${weekdays.find(weekday => weekday.day === (getDay(new Date(day.date))))?.label} - ${getDateStringsFromIso(formatISO9075(new Date(day.date) )).date} ` 
 						: 
 						'Bitte Datum auswählen' 
 					}

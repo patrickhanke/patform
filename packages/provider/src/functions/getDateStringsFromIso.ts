@@ -1,5 +1,5 @@
 export const getDateStringsFromIso = (datum: string | undefined | Date) => {
-	if (!datum) return {datum: '', uhrzeit: '', datumUhrzeit: ''};
+	if (!datum) return {date: '', time: '', dateTime: ''};
 	
 	const date = new Date(datum);
 	const year = date.getFullYear();
