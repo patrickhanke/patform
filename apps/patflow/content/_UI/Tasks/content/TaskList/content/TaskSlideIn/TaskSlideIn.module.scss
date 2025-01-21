@@ -10,12 +10,18 @@
 }
 
 .task_slidein_bottom_content {
-    border-top: 1px solid constants.$grey;
     flex: 1 1 80%;
     display: flex;
     flex-direction: column;
+    align-items:stretch;
+    justify-content: space-between;
     gap: 0;
     padding: map-get(constants.$padding, 'sm');
+}
+
+.task_slidein_bottom_buttons {
+    border-bottom: 1px solid constants.$grey;
+    margin-bottom: constants.$md;
 }
 
 .task_slidein_header {
@@ -36,7 +42,6 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: map-get(constants.$padding, 'sm');
-
 };
 
 .task_slidein_footer {

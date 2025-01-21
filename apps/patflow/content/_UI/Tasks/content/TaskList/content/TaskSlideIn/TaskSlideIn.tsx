@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { FC, useState } from 'react';
 import TaskDescription from '../TaskDescription';
 import TaskComments from '../TaskComments';
 import styles from './TaskSlideIn.module.scss';
@@ -14,8 +14,9 @@ import { findTicketRoute } from '@provider';
 import { useRouter } from 'next/navigation';
 import { IconButton, SlideInRight, StateSelect, SwitchButtons } from '@repo/ui';
 import buttonStates from './constants/buttonStates';
+import { TaskSlideInProps } from './types';
 
-const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
+const TaskSlideIn: FC<TaskSlideInProps> = ({title, taskId, setDeleteTaskModal, setArchiveModal}) => {
 	const [showDetails, setShowDetails] = useState(false);
 	const router = useRouter();
 	const {data: dataSlidein, refetch: refetchSlideIn} = useQuery(GET_TASK_SLIDEIN_CONTENT, {
@@ -91,7 +92,7 @@ const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 								Datum
 							</label>
 							<div>
-								<TaskNextDate taskId={taskId} />
+								<TaskNextDate taskId={taskId} setArchiveModal={setArchiveModal} setDeleteTaskModal={setDeleteTaskModal} />
 							</div>
 						</div>
 						<div className={styles.task_slidein_content_element}>
@@ -136,9 +137,9 @@ const TaskSlideIn = ({title, taskId}: {title: string, taskId: string}) => {
 						</div>
 					</div>
 					<div className={styles.task_slidein_bottom_content}>
-						<div style={{marginBottom: 18}}> 
+						<div className={styles.task_slidein_bottom_buttons} > 
 							<SwitchButtons
-								buttonStates={buttonStates}
+								buttonStates={[...buttonStates]}
 								currentStates={buttonState}
 								changeHandler={setButtonState}
 								underlineButtons

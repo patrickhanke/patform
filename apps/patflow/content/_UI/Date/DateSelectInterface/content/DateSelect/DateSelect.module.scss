@@ -1,5 +1,10 @@
 @use '@repo/styles/constants';
 
+.date_select_content {
+    @include constants.flexbox($direction: column, $wrap: wrap, $align: stretch, $justify: flex-start, $gap: constants.$lg);
+    width: 100%;
+}
+
 .date_container {
     @include constants.flexbox($direction: column, $wrap: wrap, $align: stretch, $justify: flex-start, $gap: 0);
     padding: map-get($map: constants.$padding, $key: 'md' );

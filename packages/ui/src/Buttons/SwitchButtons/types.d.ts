@@ -8,7 +8,7 @@ export type SwitchButton = {
 }
 
 export type SwitchButtonProps = {
-    buttonStates: Array<SwitchButton & any>,
+    buttonStates: Array<SwitchButton>,
     currentStates: SwitchButton,
     changeHandler: React.SetStateAction.Dispatch<SwitchButton>,
     underlineButtons?: boolean

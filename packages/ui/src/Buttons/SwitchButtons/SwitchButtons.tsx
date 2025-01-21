@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './SwitchButtons.module.scss';
-import { Icons } from '@repo/ui';
+import { IconButtonTypes, Icons } from '@repo/ui';
 import { SwitchButtonProps } from './types';
 
 const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates, changeHandler, underlineButtons = false}) => {
@@ -10,7 +10,7 @@ const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates
 		<div className={styles.buttons_container} data-underline_buttons={underlineButtons}>
 			{buttonStates.map((button, index) => 
 				<button
-					key={button.value}
+					key={button.value.toString()}
 					data-isfirst={index === 0}
 					data-islast={index + 1 === buttonStates.length }
 					data-isactive={currentStates?.value === button.value}
@@ -19,7 +19,7 @@ const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates
 					onClick={() => changeHandler(button)}
 					style={{whiteSpace: 'nowrap'}}
 				>
-					{button.is_icon ? <Icons icon={button.label} /> : button.label}
+					{button.is_icon ? <Icons icon={button.label as IconButtonTypes} /> : button.label}
 				</button>
 			)}
 		</div>

@@ -3,6 +3,7 @@ import { SingleDateSelectInterfaceProps } from '../types';
 import { formatISO9075 } from 'date-fns';
 import { DateObjectWithNextDates } from '@types';
 import { DatePicker } from '@repo/ui';
+import { get } from 'lodash';
 
 const SingleDateSelectInterface = ({date, category, onChange}: SingleDateSelectInterfaceProps) => {
 	const dateTransformHandler = useCallback((dateString: string) => {
@@ -24,12 +25,15 @@ const SingleDateSelectInterface = ({date, category, onChange}: SingleDateSelectI
 		onChange(dateObject);
 	}, [category]);
 
+	console.log(date);
+	
+
 	return (
 		<>
 			<h3>
 				Individuelles Datum
 			</h3>
-			{category === 'opportunity' ? 
+			{get(date, 'dates[0]', undefined) && category === 'opportunity' ? 
 				<div className='row_container'>
 					<DatePicker
 						defaultValue={date.dates[0] ? formatISO9075(new Date(date.dates[0]), {representation: 'date'}) : ''}

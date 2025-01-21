@@ -17,7 +17,7 @@ const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 		deleteImage({
 			accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
 			apiKey: process.env.BYTESCALE_SECRET_KEY as string,
-			filePath: image.filePath
+			filePath: image
           
 		}).then(
 			error => console.error(error)
@@ -44,10 +44,10 @@ const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 				:
 				<>
 					<div className="button_container">
-						<img src={getImageUrl({filePath: image.filePath})} alt={image.name} />
-						<p>
-							{image.name}
-						</p>
+						<img src={getImageUrl({filePath: image})} alt={image} />
+						{/* <p>
+							{image}
+						</p> */}
 					</div>
 					<div>
 						{deleteHandler && <IconButton icon={'delete'} onClick={() => setShowDelete(true)} />}

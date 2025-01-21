@@ -12,8 +12,8 @@ import { Icon, Loader, Modal, StateSelect } from '@repo/ui';
 type TaskNextDateProps = {
 	taskId: string, 
 	tasksRefetch?: () => void, 
-	setArchiveModal: Dispatch<SetStateAction<Task | undefined>>,
-	setDeleteTaskModal: Dispatch<SetStateAction<Task | undefined>>
+	setArchiveModal?: Dispatch<SetStateAction<Task | undefined>>,
+	setDeleteTaskModal?: Dispatch<SetStateAction<Task | undefined>>
 }
 
 const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal}: TaskNextDateProps) => {
@@ -116,7 +116,11 @@ const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal
 		{
 			value: 'delete_task',
 			label: 'Aufgabe Löschen',
-			onClick: () => setDeleteTaskModal(data?.objects.getTask),
+			onClick: () => {
+				if (setDeleteTaskModal) {
+					setDeleteTaskModal(data?.objects.getTask)
+				}
+			},
 			color: 'red',
 			isDisabled:false
 		}
@@ -128,7 +132,7 @@ const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal
 
 	if (data) {
 		const task = data.objects.getTask;
-		if (task.state === 'completed') {
+		if (task.state === 'completed' && setArchiveModal) {
 			return (
 				<button className='border_button sm dark' onClick={() => setArchiveModal(task)}>
 					<Icon type='archive' size={11} />

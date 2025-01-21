@@ -2,7 +2,7 @@ import { DateTypes, Task } from '@types';
 import date_category_options from './constants/date_category_options';
 
 export type DateSelectProps = {
-    date: Task['times'] | undefined;
+    initialValue: Task['times'] | undefined;
     dataHandler: (value: DateTypes.DateObjectWithNextDates) => void;
     setShowSlideIn: React.Dispatch<React.SetStateAction<boolean>>;
     loading?: boolean;

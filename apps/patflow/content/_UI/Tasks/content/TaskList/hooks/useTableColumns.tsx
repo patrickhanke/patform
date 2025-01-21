@@ -69,7 +69,14 @@ const useTableColumns = ({refetch, setArchiveModal, setDeleteTaskModal}: UseTask
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: task => <TaskSlideIn title={task.title} taskId={task.objectId} />,
+			accessorFn: task => (
+			<TaskSlideIn 
+				title={task.title} 
+				taskId={task.objectId} 
+				setArchiveModal={setArchiveModal}  
+				setDeleteTaskModal={setDeleteTaskModal}
+				/>
+			),
 			header: () => <span>Info</span>,
 			id: 'info',
 			cell: info => info.getValue(),

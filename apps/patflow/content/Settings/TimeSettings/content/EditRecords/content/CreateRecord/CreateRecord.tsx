@@ -45,7 +45,18 @@ const CreateRecord: FC<CreateRecordProps> = ({ createRecord, setCreateRecord, us
 		if (year && data) {
 			setActiveRecord(data?.objects.findRecord.results.find((record: Record) => record.year === year - 1) || null);
 		}
-	}, [year, data]);
+	}, [data]);
+
+	useEffect(() => {
+		if (year !== nextRecord.year) {
+			setNextRecord({
+				...nextRecord,
+				year,
+				start_date: `${year}-01-01`,
+				end_date: `${year}-12-31`
+			})
+		}
+	}, [year, nextRecord]);
 
 	const { data: holidayTemplateData } = useQuery(
 		generateGraphQLQuery({type: 'find', objectName: 'Template', fields: ['objectId', 'name', 'type', 'holidays']}),
@@ -58,7 +69,7 @@ const CreateRecord: FC<CreateRecordProps> = ({ createRecord, setCreateRecord, us
 	);
 
 	const {createData} = useDataHandler();
-	
+
 	const buttonStates = useMemo(() => {
 		const stateArray: {value: number, label: string, disabled: boolean}[] = [];
 		for (let i = 0; i < 5; i+=1) {
@@ -211,9 +222,6 @@ const CreateRecord: FC<CreateRecordProps> = ({ createRecord, setCreateRecord, us
 	], [data, holidayTemplateData, timeSettings, adobt]);
 
 	const createRecordHandler = useCallback(async () => {
-		console.log(activeRecord);
-		console.log(nextRecord);
-		
 		if (
 			nextRecord === null || 
 			!nextRecord?.time_settings ||
@@ -387,8 +395,6 @@ const CreateRecord: FC<CreateRecordProps> = ({ createRecord, setCreateRecord, us
 								data={nextRecord}
 								isHorizontal
 								formSubmitHandler={(values) => {
-									console.log(values);
-									
 									setNextRecord({...nextRecord, ...values as HolidayTemplate});
 								}}
 								enableReinitialize
@@ -399,8 +405,6 @@ const CreateRecord: FC<CreateRecordProps> = ({ createRecord, setCreateRecord, us
 								data={timeSettings}
 								isHorizontal
 								formSubmitHandler={(values) => {
-									console.log(values);
-									
 									setNextRecord({...nextRecord, time_settings: values as RecordTimeSettings});
 								}}
 								useWithDebounce

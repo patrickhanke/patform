@@ -115,7 +115,6 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 
 	useEffect(() => {
 		if (!isOpen) {
-			console.log(initialDate);
 			setDate(initialDate)
 		}
 	}, [isOpen])

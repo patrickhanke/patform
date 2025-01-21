@@ -52,8 +52,8 @@ const DateSelect = ({initialValue, dataHandler, setShowSlideIn, loading} : DateS
 		function hasDuplicates(array: string[]) {
 			const valuesSoFar = [];
 			for (let i = 0; i < array.length; i+=1) {
-				if (array[i] !== '') {
-					const value = formatISO9075(new Date(array[i]), {representation: 'date'});
+				if (array[i] && array[i] !== '') {
+					const value = formatISO9075(new Date(array[i] as string), {representation: 'date'});
 					if (valuesSoFar.indexOf(value) !== -1) {
 						return true;
 					}
@@ -71,7 +71,7 @@ const DateSelect = ({initialValue, dataHandler, setShowSlideIn, loading} : DateS
 
 	return (
 		<>
-			<div className={clsx('slidein_content')}>
+			<div className={styles.date_select_content}>
 				<div>
 					<Select
 						label='Interval wählen'
@@ -81,35 +81,36 @@ const DateSelect = ({initialValue, dataHandler, setShowSlideIn, loading} : DateS
 							draft.type = value;
 						})}
 					/>
-					{date.type.value === 'single' && 
+					{date.type.value === 'single' &&
 						<div className={clsx('info_container', 'margin_top')}>
 							<p> Hier kann für eine Aufgabe ein individueller Termin festgelegt werden. </p>
 						</div>
 					}
-					{date.type.value === 'multi' && 
-						<div className={clsx('info_container', 'margin_top')}>
-							<p> Hier können indiviuelle Termine für eine Aufgabe festgelegt werden. </p>
-						</div>
-					}
-					{(date.type.value === 'weekly' || date.type.value === 'monthly') && 
-						<div className={clsx('info_container', 'margin_top')}>
-							<p> Hier können Intervalle für eine Aufgabe festgelegt werden </p>
-						</div>
-					}
+				{date.type.value === 'multi' && 
+					<div className={clsx('info_container', 'margin_top')}>
+						<p> Hier können indiviuelle Termine für eine Aufgabe festgelegt werden. </p>
+					</div>
+				}
+				{(date.type.value === 'weekly' || date.type.value === 'monthly') && 
+					<div className={clsx('info_container', 'margin_top')}>
+						<p> Hier können Intervalle für eine Aufgabe festgelegt werden </p>
+					</div>
+				}
 				</div>
+			
 				<div>
 					<label>Kategorie wählen</label>
-					<DateCategories 
-						initialValue={date.category} 
+					<DateCategories
+						date={date.category}
 						onChange={value => setDate(draft => {
 							draft.category = value;
 						})}
 					/>
 				</div>
 				<div>
-					{date.type.value === 'single' &&  <SingleDateSelectInterface initialValue={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
-					{date.type.value === 'multi' &&  <MultiDateSelectInterface initialValue={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
-					{(date.type.value === 'weekly' || date.type.value === 'monthly') &&  <IntervalDateSelectInterface initialValue={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
+					{date.type.value === 'single' &&  <SingleDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
+					{date.type.value === 'multi' &&  <MultiDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
+					{(date.type.value === 'weekly' || date.type.value === 'monthly') &&  <IntervalDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => setDate(newDate)} />}
 					{date.type.value === 'weekly' || date.type.value === 'monthly' && <IntervalInfo dates={date.dates} />}
 				</div>
 			</div>
