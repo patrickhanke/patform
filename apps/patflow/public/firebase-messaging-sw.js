@@ -28,6 +28,7 @@ messaging.onBackgroundMessage((payload) => {
 	};
 
 	self.registration.showNotification(notificationTitle, notificationOptions);
+	
 	// Save notification in local storage
 	const request = indexedDB.open('notifications-database', 2);
 
@@ -42,8 +43,7 @@ messaging.onBackgroundMessage((payload) => {
 			image: payload.notification.icon,
 			timestamp: new Date().toISOString(),
 			read: false,
-			data: payload.data,
-			id: payload.messageId
+			data: payload.data
 		};
 
 		store.add(notification);
