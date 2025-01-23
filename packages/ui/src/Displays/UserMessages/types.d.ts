@@ -1,5 +1,5 @@
 import { MessageTypes } from '@/types/General';
-import { Notification } from '@repo/types';
+import { Notification, NotificationData } from '@repo/types';
 
 export type MessageContent = {
     objectId: MessageTypes.Message['objectId']
@@ -9,7 +9,8 @@ export type MessageContent = {
     content: string,
     link: string,
     time: string,
-    is_read: MessageTypes.Message['is_read']
+    is_read: MessageTypes.Message['is_read'],
+    data: NotificationData
 }
 
 export type UserMessagesProps = {
@@ -19,3 +20,10 @@ export type UserMessagesProps = {
 
 export type RenderNotificationProps = Notification & {deleteNotification: (id: number | string) => void}
 
+
+export type NotificationStateDisplay = {
+    label: 'Ticket' | 'Task',
+    color: 'blue' | 'green',
+    icon: 'ticket' | 'task',
+    link: string | null
+}

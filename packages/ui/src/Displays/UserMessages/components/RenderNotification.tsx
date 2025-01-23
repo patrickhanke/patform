@@ -1,11 +1,22 @@
 import styles from '../UserMessage.module.scss';
 import clsx from 'clsx';
-import { IconButton } from '@repo/ui';
-import { RenderNotificationProps } from '../types';
+import { IconButton, StateDisplay } from '@repo/ui';
+import { NotificationStateDisplay, RenderNotificationProps } from '../types';
 import { getDateStringsFromIso } from '@repo/provider';
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
+import createLabelLinks from '../functions/createLabelLinks';
 
-const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp, read, id, deleteNotification}) => {
+const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp, read, id, deleteNotification, data}) => {
+	const stateDisplay: (NotificationStateDisplay | null) = useMemo(() => {
+		if (!data) return null;
+
+		return ({
+			label: data.type === 'ticket' ? 'Ticket' : 'Task',
+			color: data.type === 'ticket' ? 'blue' : 'green',
+			icon: data.type === 'ticket' ? 'ticket' : 'task',
+			link: createLabelLinks(data)
+		});
+	}, []);
 	
 	return (
 		<div className={clsx(styles.user_message_container)} data-is_read={read}> 
@@ -20,8 +31,17 @@ const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp
 						</div>
 						<IconButton icon='close' size={10} onClick={() => deleteNotification(id)} />
 					</div>
-					<div className={styles.user_message_text}>
-						<div dangerouslySetInnerHTML={{__html: body}} />
+					<div className={styles.user_message_footer}>
+						<div className={styles.user_message_text}>
+							<div dangerouslySetInnerHTML={{__html: body}} />
+						</div>
+						{stateDisplay && (
+							<StateDisplay
+								label={stateDisplay.label}
+								color={stateDisplay.color}
+								icon={stateDisplay.icon}
+							/>
+						)}
 					</div>
 				</div>
 			</div>

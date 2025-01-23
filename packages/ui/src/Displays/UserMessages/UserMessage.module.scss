@@ -57,3 +57,8 @@
 .user_message_text {
     max-width: 360px;
 };
+
+.user_message_footer {
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
+    width: 100%;
+}

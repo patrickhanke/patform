@@ -19,7 +19,7 @@ const StateDisplay: FC<StateDisplayProps> = ({
 			data-color={color}
 			style={{width: width || 'fit-content'}}
 		>
-			{icon && <Icon type={icon} />}
+			{icon && <Icon type={icon} size={12} />}
 			{label}
 		</div>
 	);

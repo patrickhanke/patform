@@ -43,6 +43,7 @@ const UserMessages = () => {
 						image={notification.image}
 						id={notification.id}
 						deleteNotification={deleteNotification}
+						data={notification.data}
 					/>
 				))}
 			</div>

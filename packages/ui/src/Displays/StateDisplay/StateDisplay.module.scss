@@ -1,6 +1,7 @@
 @use '@repo/styles/constants';
 
 .state_display_container {
+    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: constants.$xxs);
     position: relative;
     font-family: Geist, sans-serif;
     padding: map-get($map: constants.$padding, $key: 'sm');

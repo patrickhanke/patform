@@ -33,7 +33,7 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 			return([{key: 'objectId', value: searchParams.get('task') as string, operator: '_eq', id: 'objectId'}]);
 		}
 		return [{key: 'state', value: ['assigned', 'created', 'executed', 'completed'], operator: '_in', id: 'state'}];
-	}, [pageState, searchParams.get('ticket')]);
+	}, [pageState, searchParams.get('task')]);
 
 	const siteContent = useMemo(() => {
 		let content =  {

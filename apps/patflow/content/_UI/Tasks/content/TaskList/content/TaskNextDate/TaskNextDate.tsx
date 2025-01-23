@@ -41,11 +41,11 @@ const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal
 						is_overdue = true;
 					}
 					if (timeCopy.category.value === 'fixed') {
-							if (date.length > 10) {
-								value = `${getDateString(date).date} - ${getDateString(date).time} - D`;
-							} else {
-								value = `${getDateString(date).date} - D`;
-							}
+						if (date.length > 10) {
+							value = `${getDateString(date).date} - ${getDateString(date).time} - D`;
+						} else {
+							value = `${getDateString(date).date} - D`;
+						}
 					}
 					if (timeCopy.category.value === 'opportunity') {
 						value = `${getDateString(date).date} - T`;
