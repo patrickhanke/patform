@@ -15,35 +15,40 @@ const useTableColumns = () => {
 			header: () => <span>Datum</span>,
 			id: 'date',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorFn: (row) => <ColumnType type={row.type} absenceType={row.absence?.type} />,
 			header: () => <span>Typ</span>,
 			id: 'type',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorFn: (row) => <ColumnState type={row.type} state={row.type === 'absence' ? (row.absence?.state  || null): (row.time?.state || null)} />,
 			header: () => <span>Status</span>,
 			id: 'state',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorFn: row => <ColumnWorkingTime type={row.type} time={row.time} />,
 			header: () => <span>Arbeitszeiten</span>,
 			id: 'working_times',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorFn: row => <ColumnWorkingHours type={row.type} date={row} />,
 			header: () => <span>Stunden (Brutto)</span>,
 			id: 'amount',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		}
 	] as ColumnDef<Day>[], []);
 

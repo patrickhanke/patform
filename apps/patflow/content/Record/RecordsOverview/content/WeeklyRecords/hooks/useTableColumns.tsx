@@ -13,6 +13,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Erstellt von</span>,
 			id: 'user',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -20,6 +21,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Arbeitstage</span>,
 			id: 'working_days',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -27,6 +29,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Urlaubstage</span>,
 			id: 'vacation',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -34,6 +37,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Abwesenheit</span>,
 			id: 'absence',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -41,6 +45,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Arbeitszeit</span>,
 			id: 'time',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -48,6 +53,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Pausen</span>,
 			id: 'breaks',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -55,6 +61,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Gesamt</span>,
 			id: 'amount',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -62,6 +69,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Saldo</span>,
 			id: 'saldo',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -76,6 +84,7 @@ const useTableColumns = ({selectedWeek, refetch}: {selectedWeek: number, refetch
 			header: () => <span>Bearbeiten</span>,
 			id: 'edit',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		}
 	], [selectedWeek]);

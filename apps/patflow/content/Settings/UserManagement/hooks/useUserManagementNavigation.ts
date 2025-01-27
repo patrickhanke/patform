@@ -6,17 +6,20 @@ const useUserManagementNavigation = () => {
 		const siteStateArray = [
 			{
 				value: 'overview',
-				label: 'Überblick'
+				label: 'Überblick',
+				enableSorting: false
 			},
 			{
 				value: 'facility_management',
 				label: 'Hausverwaltungen',
-				disabled: true
+				disabled: true,
+				enableSorting: false
 			},
 			{
 				value: 'user_portals',
 				label: 'Nutzerportale',
-				disabled: true
+				disabled: true,
+				enableSorting: false
 			}
 		];
 		
@@ -25,6 +28,5 @@ const useUserManagementNavigation = () => {
 
 	return siteStates;
 };
-
 
 export default useUserManagementNavigation;

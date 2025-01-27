@@ -13,6 +13,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 			header: () => <span>Nutzer</span>,
 			id: 'created_by',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -20,6 +21,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 			header: () => <span>Datum</span>,
 			id: 'date',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -33,6 +35,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 			header: () => <span>Typ</span>,
 			id: 'absennce_type',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -47,6 +50,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 			header: () => <span>Status</span>,
 			id: 'absence',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -54,6 +58,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 			header: () => <span>Kommentar</span>,
 			id: 'comment',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -66,6 +71,7 @@ const useRecordAbsenceColumns = ({refetch}: UseRecordAbsenceColumnsProps) => {
 			header: () => <span>Bearbeiten</span>,
 			id: 'edit',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		}
 	], []); 

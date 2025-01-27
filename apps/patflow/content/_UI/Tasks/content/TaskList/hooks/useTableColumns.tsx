@@ -23,7 +23,15 @@ const useTableColumns = ({refetch, setArchiveModal, setDeleteTaskModal}: UseTask
 			header: () => <span>Titel</span>,
 			id: 'title',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			// footer: info => info.column.id,
+			enableSorting: true,
+			sortingFn: (rowA, rowB, columnId) => {
+				const titleA = rowA.original.title.toLowerCase();
+				const titleB = rowB.original.title.toLowerCase();
+				if (titleA < titleB) return -1;
+				if (titleA > titleB) return 1;
+				return 0;
+			}
 		},
 		{
 			accessorFn: (task) => (
@@ -37,6 +45,12 @@ const useTableColumns = ({refetch, setArchiveModal, setDeleteTaskModal}: UseTask
 			header: () => <span>Termin</span>,
 			id: 'start_time',
 			cell: info => info.getValue(),
+			enableSorting: true,
+			sortingFn: (rowA, rowB, columnId) => {
+				const dateA = rowA.original.dates[0] ? new Date(rowA.original.dates[0]).getTime() : 0;
+				const dateB = rowB.original.dates[0] ? new Date(rowB.original.dates[0]).getTime() : 0;
+				return dateA - dateB;
+			},
 			footer: info => info.column.id
 		},
 		{
@@ -44,6 +58,7 @@ const useTableColumns = ({refetch, setArchiveModal, setDeleteTaskModal}: UseTask
 			header: () => <span>Objekt</span>,
 			id: 'property',
 			cell: info => info.getValue(),
+			enableSorting: false,
 			footer: info => info.column.id
 		},
 		{
@@ -65,20 +80,22 @@ const useTableColumns = ({refetch, setArchiveModal, setDeleteTaskModal}: UseTask
 			),
 			header: () => <span>Zugewiesen an</span>,
 			id: 'absence_days',
+			enableSorting: false,
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		},
 		{
 			accessorFn: task => (
-			<TaskSlideIn 
-				title={task.title} 
-				taskId={task.objectId} 
-				setArchiveModal={setArchiveModal}  
-				setDeleteTaskModal={setDeleteTaskModal}
+				<TaskSlideIn 
+					title={task.title} 
+					taskId={task.objectId} 
+					setArchiveModal={setArchiveModal}  
+					setDeleteTaskModal={setDeleteTaskModal}
 				/>
 			),
 			header: () => <span>Info</span>,
 			id: 'info',
+			enableSorting: false,
 			cell: info => info.getValue(),
 			footer: info => info.column.id
 		}

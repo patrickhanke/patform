@@ -9,7 +9,8 @@ const useTableColumns = () => {
 			header: () => <span>Monat</span>,
 			id: 'date',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		
 		{
@@ -17,21 +18,24 @@ const useTableColumns = () => {
 			header: () => <span>Sollzeit</span>,
 			id: 'target',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorKey: 'monthTimes',
 			header: () => <span>Arbeitszeit</span>,
 			id: 'working_times',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorKey: 'monthSaldo',
 			header: () => <span>Monatssaldo</span>,
 			id: 'month_saldo',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		}
 		
 	] as ColumnDef<MonthData>[], []);

@@ -10,21 +10,24 @@ const useTableColumns = () => {
 			header: () => <span>Name</span>,
 			id: 'name',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorFn: row => row.role.name,
 			header: () => <span>Rolle</span>,
 			id: 'role',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
-			accessorFn: row => <StaffMemberSettings userId={row.objectId} /> ,
+			accessorFn: row => <StaffMemberSettings userId={row.objectId} />,
 			header: () => <span>Bearbeiten</span>,
 			id: 'edit',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		}
 	], []);
 

@@ -17,7 +17,8 @@ const useTableColumns = ({refetch}: {refetch: ApolloRefetch}) => {
 			header: () => <span>Name</span>,
 			id: 'name',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorFn: row => (
@@ -29,7 +30,8 @@ const useTableColumns = ({refetch}: {refetch: ApolloRefetch}) => {
 			header: () => <span>Rolle</span>,
 			id: 'role',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorFn: row => <Toggle 
@@ -49,7 +51,8 @@ const useTableColumns = ({refetch}: {refetch: ApolloRefetch}) => {
 			header: () => <span>Arbeiter</span>,
 			id: 'worker',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		},
 		{
 			accessorFn: row => 
@@ -60,7 +63,8 @@ const useTableColumns = ({refetch}: {refetch: ApolloRefetch}) => {
 			header: () => <span>Bearbeiten</span>,
 			id: 'edit',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			enableSorting: false
 		}
 	], []);
 

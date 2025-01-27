@@ -10,30 +10,33 @@ const useTableColumns = () => {
 		{
 			accessorKey: 'name',
 			header: () => <span>Name</span>,
-			id: 'name',
-			cell: info => info.getValue(),
-			footer: info => info.column.id
+			// cell: info => info.getValue(),
+			// footer: info => info.column.id,
+			sortingFn: 'alphanumeric'
 		},
 		{
 			accessorFn: row => getDateLabel(row.createdAt),
 			header: () => <span>Erstellt am</span>,
 			id: 'createdAt',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			sortingFn: 'alphanumeric'
 		},
 		{
 			accessorFn: row => <DisplayWorker workerId={row.created_by.objectId} />,
 			header: () => <span>Erstellt von</span>,
 			id: 'created_by',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			disableSorting: true
 		},
 		{
 			accessorFn: row => <IconButton icon='link' isLink link ={`/properties/${row.objectId}`} /> ,
 			header: () => <span>Bearbeiten</span>,
 			id: 'edit',
 			cell: info => info.getValue(),
-			footer: info => info.column.id
+			footer: info => info.column.id,
+			disableSorting: true
 		}
 	], []);
 

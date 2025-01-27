@@ -1,89 +1,60 @@
 'use client';
 
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import'./styles.scss';
 import {
-	Column,
 	// Table,
 	useReactTable,
-	ColumnFiltersState,
 	getCoreRowModel,
-	getFilteredRowModel,
-	getFacetedRowModel,
-	getFacetedUniqueValues,
-	getFacetedMinMaxValues,
 	getPaginationRowModel,
-	sortingFns,
 	getSortedRowModel,
-	FilterFn,
-	SortingFn,
-	ColumnDef,
 	flexRender,
-	FilterFns
+	SortingState,
+	Column
 } from '@tanstack/react-table';
-import {
-	RankingInfo,
-	rankItem,
-	compareItems
-} from '@tanstack/match-sorter-utils';
 import { TableTypes } from './types';
-import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
 import clsx from 'clsx';
+import { ChevronsUpDown, ChevronUp, ChevronDown} from 'lucide-react';
 
-const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-	// Rank the item
-	const itemRank = rankItem(row.getValue(columnId), value);
-  
-	// Store the itemRank info
-	addMeta({
-		itemRank
-	});
-  
-	// Return if the item should be filtered in/out
-	return itemRank.passed;
-};
 
-const Table: React.FC<TableTypes> = ({data, columns, rowStyles}) => {
-	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-	const [globalFilter, setGlobalFilter] = useState('');
-
+const Table: React.FC<TableTypes> = ({ data, columns, rowStyles }) => {
 	const tableData = useMemo(() => data, [data]);
+	const [sorting, setSorting] = useState<SortingState>([]);
+	const [pagination, setPagination] = useState({
+		pageIndex: 0, 
+		pageSize: 200, 
+	});
 
 	const table = useReactTable({
 		data: tableData,
 		columns,
-		filterFns: {
-			fuzzy: fuzzyFilter
-		},
 		state: {
-			columnFilters,
-			globalFilter
+			sorting,
+			pagination
 		},
-		onColumnFiltersChange: setColumnFilters,
-		onGlobalFilterChange: setGlobalFilter,
-		globalFilterFn: fuzzyFilter,
 		getCoreRowModel: getCoreRowModel(),
-		getFilteredRowModel: getFilteredRowModel(),
 		getSortedRowModel: getSortedRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
-		getFacetedRowModel: getFacetedRowModel(),
-		getFacetedUniqueValues: getFacetedUniqueValues(),
-		getFacetedMinMaxValues: getFacetedMinMaxValues(),
-		// debugTable: true,
-		// debugHeaders: true,
+		onPaginationChange: setPagination,
+		onSortingChange: setSorting,
+		rowCount: tableData.length,
+		debugTable: false,
+		debugHeaders: false,
 		debugColumns: false
 	});
 
-
-	// useEffect(() => {
-	// 	if (table.getState().columnFilters[0]?.id === 'fullName') {
-	// 		if (table.getState().sorting[0]?.id !== 'fullName') {
-	// 			table.setSorting([{ id: 'fullName', desc: false }]);
-	// 		}
-	// 	}
-	// }, [table.getState().columnFilters[0]?.id]);
-	if (!data || data.length === 0) return null;
+	const getSortIcon = useCallback((column: Column<any>) => {
+		const isSortable = column.getCanSort() || false;
+		if (!isSortable) return null;
+		const isSorted = sorting.find(sort => sort.id === column.id);
+		
+		if (isSorted?.id) {
+		  	return isSorted.desc === true ? <ChevronDown size={10} /> : <ChevronUp size={10} /> ;
+		}
+	
+		return <ChevronsUpDown size={10} />;
+	}, [sorting]);
 
 	return (
 		<div className='content_element no_padding'>
@@ -109,10 +80,7 @@ const Table: React.FC<TableTypes> = ({data, columns, rowStyles}) => {
 															header.column.columnDef.header,
 															header.getContext()
 														)}
-														{{
-															asc: <MdArrowDropUp size="14px" />,
-															desc: <MdArrowDropDown size="14px"/>
-														}[header.column.getIsSorted() as string] ?? null}
+														{getSortIcon(header.column)}
 													</div>
 												</>
 											)}
@@ -123,7 +91,7 @@ const Table: React.FC<TableTypes> = ({data, columns, rowStyles}) => {
 						))}
 					</thead>
 					<tbody>
-						{table.getCoreRowModel().rows.map(row => {
+						{table.getRowModel().rows.map(row => {
 							return (
 								<tr 
 									key={row.id}
