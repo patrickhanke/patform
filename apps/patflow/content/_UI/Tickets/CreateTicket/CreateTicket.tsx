@@ -1,9 +1,9 @@
 'use client';
 
 import { AppContext, RoleUsers } from '@provider';
-import { CreateTicket as CreateTickeType, ErrorMessage, TicketUpdateObject, User } from '@types';
+import { CreateTicket as CreateTickeType, ErrorMessage, TicketUpdateObject } from '@types';
 import clsx from 'clsx';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 import { useImmer } from 'use-immer';
 import styles from './CreateTicket.module.scss';
 import { Plus } from 'lucide-react';
@@ -12,7 +12,7 @@ import { ImageUploader, Modal } from '@repo/ui';
 import { ObjectSelectWithState } from '@content';
 import { useDataHandler, UserContext } from '@repo/provider';
 
-const CreateTicket = ({refetch}: { refetch?:() => void}  ) => {
+const CreateTicket = ({setRefetchTicket}: { setRefetchTicket: Dispatch<SetStateAction<Date | undefined>>}  ) => {
 	const {createData} = useDataHandler();
 	const {user} = useContext(UserContext);
 	const {roleUsers} = useContext(AppContext);
@@ -53,10 +53,8 @@ const CreateTicket = ({refetch}: { refetch?:() => void}  ) => {
 			updateObject,
 			message: {type: 'ticket_created', users: roleUsers.admin as RoleUsers['admin']}
 		});
-
-		if (refetch) {
-			refetch();
-		}
+		
+		setRefetchTicket(new Date());
 
 		setTicket(draft => {
 			draft.title = initial_ticket.title,
@@ -64,6 +62,7 @@ const CreateTicket = ({refetch}: { refetch?:() => void}  ) => {
 			draft.property = initial_ticket.property,
 			draft.images = initial_ticket.images;
 		});
+
 		setIsOpen(false);
 	}, [ticket]);
 	

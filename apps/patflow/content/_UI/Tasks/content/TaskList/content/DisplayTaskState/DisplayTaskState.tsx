@@ -23,7 +23,6 @@ const DisplayTaskState = ({taskId, taskState}: {taskId: string, taskState: TaskS
 		}
 	}, [data, taskState]);
 	
-	
 	if (state) return (
 		<div className={styles.task_state_container} >
 			<StateSelect

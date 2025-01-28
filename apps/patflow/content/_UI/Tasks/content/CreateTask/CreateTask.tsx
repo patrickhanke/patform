@@ -12,7 +12,7 @@ import { Icon, SlideIn, TextInput } from '@repo/ui';
 import { modi_options, date_category_options } from '@content';
 import { useDataHandler, UserContext } from '@repo/provider';
 
-const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
+const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 	const {createData, updateData} = useDataHandler();
 	const {user} = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
@@ -104,9 +104,8 @@ const CreateTask = ({refetch, button, initialData}: CreateTaskProps) => {
 			setLoading(false);
 		});
 
-		if (refetch) {
-			refetch();
-		}
+		setRefetchTask( new Date() );
+
 		setIsOpen(false);
 		setTask(initial_task);
 		// setDate(initialDate)

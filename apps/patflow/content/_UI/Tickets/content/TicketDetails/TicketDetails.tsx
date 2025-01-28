@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './TicketDetails.module.scss';
 import clsx from 'clsx';
 import { TicketDetailsProps } from '@types';
@@ -8,6 +8,12 @@ const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProp
 	const [archiveModal, setArchiveModal] = useState(false);
 	const [deleteTicketModal, setDeleteTicketkModal] = useState(false);
 	const [showDetails, setShowDetails] = useState(false);
+
+	const deleteTicketHandler = useCallback(async () => {
+		setDeleteTicketkModal(false);
+		deleteTicket(ticket.objectId);
+		setShowDetails(false);
+	}, [ticket]);
 
 	return (
 		<>
@@ -86,11 +92,7 @@ const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProp
 			<Modal 
 				isOpen={deleteTicketModal}
 				header='Ticket löschen'
-				confirmButtonHandler={() =>{ 
-					setDeleteTicketkModal(false);
-					deleteTicket(ticket.objectId);
-					setShowDetails(false);
-				}}
+				confirmButtonHandler={() => deleteTicketHandler()}
 				cancelButtonHandler={() => setDeleteTicketkModal(false)}
 			>
 				<p>

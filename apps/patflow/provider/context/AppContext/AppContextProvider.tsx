@@ -12,7 +12,8 @@ import dynamic from 'next/dynamic'
 const SelectYear = dynamic(() => import('./components/SelectYear'), { ssr: false })
 
 const AppContextProvider = ({children} : {children: React.ReactNode}) => {
-	const [refetchFunction, setRefetchFunction] = useState();
+	const [refetchTicket, setRefetchTicket] = useState<Date | undefined>();
+	const [refetchTask, setRefetchTask] = useState<Date | undefined>();
 	const [year, setYear] = useState(new Date().getFullYear());
 	const {data: roleData} = useQuery(FIND_ALL_ROLES, {fetchPolicy: 'cache-first'}); 
 	
@@ -33,15 +34,15 @@ const AppContextProvider = ({children} : {children: React.ReactNode}) => {
 	}, [roleData]);
 
 	const appContextObject = useMemo(() => ({
-		refetchFunction,
-		setRefetchFunction,
-		createTicket: <CreateTicket refetch={refetchFunction} />,
-		createTask: <CreateTask refetch={refetchFunction} />,
+		refetchTask,
+		refetchTicket,
+		createTicket: <CreateTicket setRefetchTicket={setRefetchTicket} />,
+		createTask: <CreateTask setRefetchTask={setRefetchTask} />,
 		selectYear: <SelectYear year={year} setYear={setYear} />,
 		year,
 		roles: roleData ? roleData.objects.find_Role.results.map((role: UserRole) => ({value: role.objectId, type: role.type, label: role.name, color: role.color, users: role.users.results})) : [],
 		roleUsers
-	}), [refetchFunction, roleUsers, year, roleData]);
+	}), [refetchTask, refetchTicket, roleUsers, year, roleData]);
 	
 	return (
 		<AppContext.Provider

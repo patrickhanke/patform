@@ -3,16 +3,14 @@
 .image_container {
     // @include constants.flexbox($direction: row, $align: center, $gap: constants.$sm, $wrap: wrap );
     // padding: map-get($map: constants.$padding, $key: 'xs' );
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm, $wrap: wrap );
-    padding: map-get($map: constants.$padding, $key: 'xs' );
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$xs, $wrap: wrap );
     background-color: constants.$light;
     border: 1px solid constants.$grey;
     width: auto;
-    border-radius: map-get($map: constants.$border_radius, $key: 'md');
-    height: 72px;
 };
 
 .image_icons {
-    @include constants.flexbox($direction: column, $justify: center, $align: center, $gap: constants.$md);
+    @include constants.flexbox($direction: column, $justify: center, $align: center, $gap: constants.$xs);
+    padding: map-get($map: constants.$padding, $key: 'xs' );
 }
 

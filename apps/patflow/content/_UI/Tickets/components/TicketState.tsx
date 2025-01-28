@@ -16,7 +16,7 @@ const TicketState = ({ticketId, ticketState, refetch}: TicketStateProps) => {
 			}
 		});
 		refetch();
-	}, []);
+	}, [ticketId, ticketState]);
 
 	return (
 		<div className={styles.ticket_state_container} >

@@ -8,8 +8,8 @@ export type dynamicItem = {
 export type RoleUsers = { [Property in UserTypes.UserRoleTypes]: UserTypes.User['objectId'][]}
 
 export type ContextValues = {
-    refetchFunction?: () => void,
-    setRefetchFunction?: Dispatch<SetStateAction<() => void>>,
+    refetchTicket: Date | undefined,
+    refetchTask?: Date | undefined,
     createTicket: JSX.Element,
     createTask: JSX.Element,
     selectYear: JSX.Element,

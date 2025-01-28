@@ -73,9 +73,7 @@ const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 				</>
 				:
 				<>
-					<div>
-						<Image src={getImageUrl()} alt={image} />
-					</div>
+					<Image src={getImageUrl()} alt={image} />
 					<div className={styles.image_icons}>
 						<IconButton icon={'download'} onClick={() => downloadImage()} />
 						{deleteHandler && <IconButton icon={'delete'} onClick={() => setShowDelete(true)} />}

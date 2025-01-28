@@ -1,6 +1,7 @@
 import { DateTypes } from '@/types/General';
 import { Comment, Document, Task, TaskState } from './Task';
 import { PropertySelect } from '../Property/Property';
+import { Dispatch, SetStateAction } from 'react';
 
 export type TaskInitialData = Partial<Pick<Task, 'title' | 'description' | 'documents' | 'state' | 'time' | 'ticket' >>
 
@@ -22,7 +23,7 @@ export type CreateTaskUpdateObject = {
 }
 
 export type CreateTaskProps = {
-    refetch?: () => void,
+    setRefetchTask: Dispatch<SetStateAction<Date | undefined>>,
     button?: React.FC<{onClick: () => void}>,
     initialData?: {
         assigned_staff?: [string],

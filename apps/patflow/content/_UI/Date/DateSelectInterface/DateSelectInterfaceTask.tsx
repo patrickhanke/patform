@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import DateSelect from './content/DateSelect';
 import { useDataHandler } from '@repo/provider';
 import { useQuery } from '@apollo/client';
@@ -39,7 +39,7 @@ const DateSelectInterfaceTask = ({taskId, showDateInterface, setShowDateInterfac
 		refetch();
 	}, [showDateInterface]);
 
-	const dataHandler = async (timeValue: DateObjectWithNextDates ) => {
+	const dataHandler = useCallback(async (timeValue: DateObjectWithNextDates ) => {
 		const timeValueCopy = {...timeValue};
 		
 		const next_dates: string[] = [];
@@ -67,7 +67,7 @@ const DateSelectInterfaceTask = ({taskId, showDateInterface, setShowDateInterfac
 		}
 		setLoading(false);
 		setShowDateInterface(false);
-	};
+	}, [taskId, time]);
 
 	return (
 		<SlideInRight

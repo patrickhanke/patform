@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import useGetTasks from './hooks/useGetTasks';
 import { Filter } from '@types';
 import { SiteType, TasksComponent } from './types';
@@ -10,12 +10,14 @@ import sortTasksForList from './functions/sortTasksForList';
 import TaskList from './content/TaskList';
 import { Divider, Page } from '@repo/ui';
 import site_states from './constants/site_states';
+import { AppContext } from '@provider';
 
 const Tasks = ({id, className, pageState}: TasksComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
 	const [siteState, setSiteState] = useState<typeof site_states[number]>(site_states[0] as typeof site_states[0]);
 	const searchParams = useSearchParams();
 	const {tasks, refetch} = useGetTasks({id, className, filters, siteType: siteState.value as SiteType});
+	const {refetchTask} = useContext(AppContext);
 
 	const initialFilters: () => Filter[] = useCallback(() => {
 		if (pageState === 'active') {
@@ -61,6 +63,12 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 		setFilters(initialFilters());
 	}, [siteState]);
 
+	useEffect(() => {
+		if (refetchTask) {
+			refetch();
+		}
+	}, [refetchTask]);
+
 	if (id && className) {
 		return (
 			<>
@@ -70,14 +78,6 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 					setFilters={setFilters}
 					initialFilters={initialFilters}
 				/>
-				{/* <SwitchButtons
-					buttonStates={page_states}
-					currentStates={page_states.find((state) => state.value === currentPage) as typeof page_states[number]}
-					changeHandler={(state: SwitchButton) => {
-						setCurrentPage(state.value);
-					}}
-
-				/> */}
 				<Divider size='small' showLine={false} />
 				<TaskList 
 					taskList={tasks || []} 
@@ -107,12 +107,12 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 					<TaskList 
 						taskList={tasks || []} 
 						refetch={refetch} 
-				/>
+					/>
 					: 
-				<TaskList
-					taskList={sortTasksForList(tasks || []).find((taskList) => taskList.value === siteState.value)?.data || []}	
-					refetch={refetch}
-				/>
+					<TaskList
+						taskList={sortTasksForList(tasks || []).find((taskList) => taskList.value === siteState.value)?.data || []}	
+						refetch={refetch}
+					/>
 			}
 		</Page>
 	);

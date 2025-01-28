@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useEffect, useMemo } from 'react';
+import React, { Suspense, useContext, useEffect, useMemo } from 'react';
 import useGetTickets from './hooks/useGetTickets';
 import styles from './Tickets.module.scss';
 import { useDataHandler } from '@repo/provider';
@@ -12,12 +12,14 @@ import { Filter } from '@types';
 import { useCallback } from 'react';
 import useTicketColumns from './hooks/useTicketColumns';
 import { Page, Table } from '@repo/ui';
+import { AppContext } from '@provider';
 
 const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
 	const {tickets, refetch} = useGetTickets({id, className, filters});
 	const searchParams = useSearchParams();
 	const {updateData, deleteData} = useDataHandler();
+	const {refetchTicket} = useContext(AppContext);
 
 	const archiveTicket = useCallback(async (objectId: string) => {
 		await updateData({
@@ -81,6 +83,12 @@ const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 	useEffect(() => {
 		setFilters(initialFilters());
 	}, [searchParams.get('ticket'), pageState]);
+
+	useEffect(() => {
+		if (refetchTicket) {
+			refetch()
+		}
+	}, [refetchTicket]);
 
 	const siteHeaderContent = useMemo(() => (
 		<Suspense fallback={<div>Loading...</div>}>
