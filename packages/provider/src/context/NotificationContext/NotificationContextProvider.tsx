@@ -6,6 +6,7 @@ import { setNotificationsToRead as snr, Notification } from '@repo/provider';
 import NotificationContext from './NotificationContext';
 import useInstallations from './hooks/useInstallations';
 import { MessagePayload } from 'firebase/messaging';
+import { isEqual } from 'lodash';
  
 const NotificationContextProvider = ({children} : {children: React.ReactNode}) => {
 	const {user} = useContext(UserContext);
@@ -44,8 +45,12 @@ const NotificationContextProvider = ({children} : {children: React.ReactNode}) =
 				notificationArray.push(notification);
 			}
 		});
-		setNotifications(notificationArray.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
-		setUnreadNotifications(unreadNotificationArray.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+		if (!isEqual(notifications, notificationArray)) {
+			setNotifications(notificationArray.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+		}
+		if (!isEqual(unreadNotifications, unreadNotificationArray)) {
+			setUnreadNotifications(unreadNotificationArray.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+		}
 	}, [notifications, unreadNotifications]);
 
 	const deleteNotificationCallaback = useCallback(async (id: number | string) => {
@@ -56,7 +61,7 @@ const NotificationContextProvider = ({children} : {children: React.ReactNode}) =
 	useEffect(() => {
 		const interval = setInterval(async () => {
 			getNotificationCallback();
-		}, 12000); 
+		}, 24000); 
 	
 		return () => clearInterval(interval);
 	}, []);

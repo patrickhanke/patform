@@ -64,11 +64,5 @@
 }
 
 .user_message_header {
-    cursor: default;
-    border-bottom: 1.2px solid transparent;
-}
-
-.user_message_header[data-islink="true"] {
-    border-bottom: 1.2px solid constants.$dark;
-    cursor: pointer;
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
 }
