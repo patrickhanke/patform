@@ -22,21 +22,24 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 	const {newNotification} = useContext(NotificationContext);
 
 	const initialFilters: () => Filter[] = useCallback(() => {
+		const filterArray: Filter[] = [];
 		if (pageState === 'active') {
-			return([
+			filterArray.push(
 				{key: 'state', value: ['assigned', 'created'], operator: '_in', id: 'state'}
-			]);
+			);
 		} else if (pageState === 'executed') {
-			return([{key: 'state', value: 'executed', operator: '_eq', id: 'state'}]);
+			filterArray.push({key: 'state', value: 'executed', operator: '_eq', id: 'state'});
 		} else if (pageState === 'completed') {
-			return([{key: 'state', value: 'completed', operator: '_eq', id: 'state'}]);
+			filterArray.push({key: 'state', value: 'completed', operator: '_eq', id: 'state'});
 		} else if (pageState === 'archived') {
-			return([{key: 'state', value: 'archived', operator: '_eq', id: 'state'}]);
+			filterArray.push({key: 'state', value: 'archived', operator: '_eq', id: 'state'});
 		}
 		if (searchParams.get('task')) {
-			return([{key: 'objectId', value: searchParams.get('task') as string, operator: '_eq', id: 'objectId'}]);
+			filterArray.push({key: 'objectId', value: searchParams.get('task') as string, operator: '_eq', id: 'objectId'});
 		}
-		return [{key: 'state', value: ['assigned', 'created', 'executed', 'completed'], operator: '_in', id: 'state'}];
+		// return [{key: 'state', value: ['assigned', 'created', 'executed', 'completed'], operator: '_in', id: 'state'}];
+		return filterArray;
+	
 	}, [pageState, searchParams.get('task')]);
 
 	const siteContent = useMemo(() => {

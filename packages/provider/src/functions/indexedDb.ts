@@ -66,3 +66,11 @@ export const deleteNotification = async (id: number | string) => {
 	await store.delete(id);
 	await tx.done;
 };
+
+export const deleteAllNotifications = async () => {
+	const db = await initDB();
+	const tx = db.transaction(storeName, 'readwrite');
+	const store = tx.objectStore(storeName);
+	await store.clear();
+	await tx.done;
+};

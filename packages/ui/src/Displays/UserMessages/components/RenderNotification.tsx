@@ -2,11 +2,14 @@ import styles from '../UserMessage.module.scss';
 import clsx from 'clsx';
 import { IconButton, StateDisplay } from '@repo/ui';
 import { NotificationStateDisplay, RenderNotificationProps } from '../types';
-import { getDateStringsFromIso } from '@repo/provider';
-import { FC, useMemo } from 'react';
+import { axiosclient, getDateStringsFromIso } from '@repo/provider';
+import { FC, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import createLabelLinks from '../functions/createLabelLinks';
 
 const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp, read, id, deleteNotification, data}) => {
+	const router = useRouter();
+
 	const stateDisplay: (NotificationStateDisplay | null) = useMemo(() => {
 		if (!data) return null;
 
@@ -17,13 +20,46 @@ const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp
 			link: createLabelLinks(data)
 		});
 	}, []);
+
+	const createLink = useCallback(async () => {
+		if (data && data.type === 'task') {
+			const {data: responseData} = await axiosclient().post('/functions/get-task-link', {id: data.id});
+			
+			if (responseData.result) {
+				router.push(responseData.result);
+			}
+		}
+
+		if (data && data.type === 'ticket') {
+			const {data: responseData} = await axiosclient().post('/functions/get-ticket-link', {id: data.id});
+			console.log(responseData);
+			
+			if (responseData.result) {
+				router.push(responseData.result);
+			}
+		}
+	}, [data]);
+
+	const isLink = useMemo(() => {
+		let link = false;
+		if (data && data.type === 'task') {
+			link = true;
+		}
+		if (data && data.type === 'ticket') {
+			link = true;
+		}
+		return link;
+	}, [data]);
 	
+	console.log(data);
+	
+
 	return (
 		<div className={clsx(styles.user_message_container)} data-is_read={read}> 
 			<div className={styles.content_container}>
 				<div className={styles.user_message_content}>
 					<div className={styles.user_message_headline} data-is_read={read}>
-						<div>
+						<div className={styles.user_message_header} onClick={() => createLink()} data-islink={isLink} >
 							<h3>
 								{title}
 								{timestamp && <span className={styles.time}>{`/ ${getDateStringsFromIso(new Date(timestamp)).dateTime}`}</span>}

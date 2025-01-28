@@ -14,8 +14,9 @@ export type MessageContent = {
 }
 
 export type UserMessagesProps = {
-    userMessages: MessageTypes.Message[],
-    refetchMessages: () => void
+    notifications: Notification[],
+    setNotificationsToRead: () => void,
+    deleteNotification: (id: number | string) => void
 }
 
 export type RenderNotificationProps = Notification & {deleteNotification: (id: number | string) => void}

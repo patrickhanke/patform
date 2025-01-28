@@ -44,19 +44,20 @@ const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 	const columns = useTicketColumns({refetch, archiveTicket, deleteTicket});
 
 	const initialFilters: () => Filter[] = useCallback(() => {
+		const filterArray: Filter[] = [];
 		if (pageState === 'open') {
-			return([
+			filterArray.push(
 				{key: 'state', value: 'open', operator: '_in', id: 'state'}
-			]);
+			);
 		} else if (pageState === 'in_progress') {
-			return([{key: 'state', value: 'in_progress', operator: '_eq', id: 'state'}]);
+			filterArray.push({key: 'state', value: 'in_progress', operator: '_eq', id: 'state'});
 		} else if (pageState === 'closed') {
-			return([{key: 'state', value: 'closed', operator: '_eq', id: 'state'}]);
+			filterArray.push({key: 'state', value: 'closed', operator: '_eq', id: 'state'});
 		}
 		if (searchParams.get('ticket')) {
-			return([{key: 'objectId', value: searchParams.get('ticket') as string, operator: '_eq', id: 'objectId'}]);
+			filterArray.push({key: 'objectId', value: searchParams.get('ticket') as string, operator: '_eq', id: 'objectId'});
 		}
-		return [];
+		return filterArray;
 	}, [pageState, searchParams.get('ticket')]);
 
 	const siteContent = useMemo(() => {

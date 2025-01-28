@@ -39,7 +39,7 @@
 
 .time {
     color: constants.$grey;
-    display: inline-block;
+    // display: inline-block;
     font-size: map-get($map: constants.$font_size, $key: 'sm' );
     margin-left: constants.$sm;
 }
@@ -61,4 +61,14 @@
 .user_message_footer {
     @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
     width: 100%;
+}
+
+.user_message_header {
+    cursor: default;
+    border-bottom: 1.2px solid transparent;
+}
+
+.user_message_header[data-islink="true"] {
+    border-bottom: 1.2px solid constants.$dark;
+    cursor: pointer;
 }

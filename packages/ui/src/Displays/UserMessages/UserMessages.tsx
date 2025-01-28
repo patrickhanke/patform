@@ -1,16 +1,13 @@
 'use client';
 
-// import { UserContext, sortArrayForDivider, useDataHandler } from '@provider';
-import { useContext, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import styles from './UserMessage.module.scss';
 import clsx from 'clsx';
-import { NotificationContext } from '@repo/provider';
 import { Notification } from '@repo/types';
 import RenderNotification from './components/RenderNotification';
+import { UserMessagesProps } from './types';
 
-const UserMessages = () => {
-	const {notifications, setNotificationsToRead, deleteNotification} = useContext(NotificationContext);
-
+const UserMessages: FC<UserMessagesProps> = ({notifications, setNotificationsToRead, deleteNotification}) => {
 	useEffect(() => {
 		const handleVisibilityChange = () => {
 			if (document.visibilityState === 'visible') {
