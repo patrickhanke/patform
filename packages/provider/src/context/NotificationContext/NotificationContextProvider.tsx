@@ -5,17 +5,30 @@ import { deleteNotification, getNotifications, useFirebaseMessaging, UserContext
 import { setNotificationsToRead as snr, Notification } from '@repo/provider';
 import NotificationContext from './NotificationContext';
 import useInstallations from './hooks/useInstallations';
-
-
+import { MessagePayload } from 'firebase/messaging';
  
 const NotificationContextProvider = ({children} : {children: React.ReactNode}) => {
 	const {user} = useContext(UserContext);
-	const {token} = useFirebaseMessaging({initialize: true});
+	const [newNotification, setNewNotification] = useState<string | undefined>(undefined);
+	
+	const messageChangeHanlder = useCallback((notification: MessagePayload) => {
+		
+		if (notification?.messageId && (newNotification !== notification.messageId)) {
+			setNewNotification(notification.messageId);
+		}
+	}, [newNotification]);
+	
+	const {token} = useFirebaseMessaging({
+		initialize: true, 
+		changeHandler: messageChangeHanlder
+	});
+
 	useInstallations({
 		user, 
 		firebaseToken: token, 
 		hasInstallation: true
 	});
+
 	const [notifications, setNotifications] = useState<Notification[]>([]);
 	const [unreadNotifications, setUnreadNotifications] = useState<Notification[]>([]);
 
@@ -56,6 +69,7 @@ const NotificationContextProvider = ({children} : {children: React.ReactNode}) =
 	}, []);
 
 	const notificationContextObject = useMemo(() => ({
+		newNotification,
 		notifications,
 		unreadNotifications,
 		setNotificationsToRead,

@@ -11,6 +11,7 @@ import TaskList from './content/TaskList';
 import { Divider, Page } from '@repo/ui';
 import site_states from './constants/site_states';
 import { AppContext } from '@provider';
+import { NotificationContext } from '@repo/provider';
 
 const Tasks = ({id, className, pageState}: TasksComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
@@ -18,6 +19,7 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 	const searchParams = useSearchParams();
 	const {tasks, refetch} = useGetTasks({id, className, filters, siteType: siteState.value as SiteType});
 	const {refetchTask} = useContext(AppContext);
+	const {newNotification} = useContext(NotificationContext);
 
 	const initialFilters: () => Filter[] = useCallback(() => {
 		if (pageState === 'active') {
@@ -68,6 +70,12 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 			refetch();
 		}
 	}, [refetchTask]);
+
+	useEffect(() => {
+		if (newNotification) {
+			refetch();
+		}
+	}, [newNotification]);
 
 	if (id && className) {
 		return (

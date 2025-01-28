@@ -3,7 +3,7 @@
 import React, { Suspense, useContext, useEffect, useMemo } from 'react';
 import useGetTickets from './hooks/useGetTickets';
 import styles from './Tickets.module.scss';
-import { useDataHandler } from '@repo/provider';
+import { NotificationContext, useDataHandler } from '@repo/provider';
 import { TicketsComponent } from './types';
 import clsx from 'clsx';
 import { useSearchParams } from 'next/navigation';
@@ -20,6 +20,7 @@ const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 	const searchParams = useSearchParams();
 	const {updateData, deleteData} = useDataHandler();
 	const {refetchTicket} = useContext(AppContext);
+	const {newNotification} = useContext(NotificationContext);
 
 	const archiveTicket = useCallback(async (objectId: string) => {
 		await updateData({
@@ -89,6 +90,12 @@ const Tickets = ({id, className, pageState='open'}: TicketsComponent) => {
 			refetch()
 		}
 	}, [refetchTicket]);
+
+	useEffect(() => {
+		if (newNotification) {
+			refetch();
+		}
+	}, [newNotification]);
 
 	const siteHeaderContent = useMemo(() => (
 		<Suspense fallback={<div>Loading...</div>}>

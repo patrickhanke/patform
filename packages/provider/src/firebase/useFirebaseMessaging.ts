@@ -1,12 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { onMessage } from 'firebase/messaging';
+import { MessagePayload, onMessage } from 'firebase/messaging';
 
 import { requestPermissionAndGetToken, messaging } from './initializeFirebase';
 import { saveNotification } from '../functions';
 
-const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
+const useFirebaseMessaging = ({initialize = true, changeHandler}: {initialize?: boolean, changeHandler?: (n: MessagePayload) => void}) => {
 	const [permission, setPermission] = useState<'granted' | 'denied' | 'error' | undefined>();
 	const [token, setToken] = useState<string | null>(null);
 
@@ -56,12 +56,8 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 		};
 
 		if ( token) {
-			console.log('add listener');
-			
 			const unsubscribe = onMessage(messaging, (payload) => {
 				if (payload.notification) {
-					console.log(payload);
-					
 					saveNotification({
 						title: payload.notification.title as string,
 						body: payload.notification.body as string,
@@ -72,7 +68,11 @@ const useFirebaseMessaging = ({initialize = true}: {initialize?: boolean}) => {
 						data: payload.data
 					});
 				}
+				if (changeHandler) {
+					changeHandler(payload);
+				}
 			});
+
 			return () => {
 				unsubscribe(); // Unsubscribe from the onMessage event on cleanup
 			};
