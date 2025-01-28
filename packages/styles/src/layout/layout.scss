@@ -12,7 +12,7 @@
 
 .layout_sidebar_container {
     position: relative;
-    width: 150px;
+    width: 180px;
     height: 100%;
     background-color: transparent;
     box-sizing: border-box;
@@ -59,7 +59,7 @@
 .main_content {
     @include constants.flexbox($direction: row, $align: stretch, $gap: 0);
     position: relative;
-    width: calc(100% - 150px);
+    width: calc(100% - 180px);
     flex: 1;
 }
 
