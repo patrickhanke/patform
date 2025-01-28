@@ -28,7 +28,7 @@
     color: constants.$green;
 };
 
-.task_state_element[data-state="excecuted"] {
+.task_state_element[data-state="executed"] {
     background-color: constants.$green_tinted;
     border: 1px solid constants.$green;
     color: constants.$green;

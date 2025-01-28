@@ -25,7 +25,7 @@ const menu_items = [
 			icon: 'active',
 		},{
 			label: 'Erledigt',
-			value: '/excecuted',
+			value: '/executed',
 			icon: 'executed',
 		},{
 			label: 'Geschlossen',

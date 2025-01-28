@@ -199,7 +199,7 @@ label {
     color: constants.$green;
 };
 
-.state_element[data-state="excecuted"] {
+.state_element[data-state="executed"] {
     background-color: constants.$green_tinted;
     border: 1px solid constants.$green;
     color: constants.$green;
