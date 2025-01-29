@@ -43,7 +43,7 @@ const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProp
 							<label>
 									Objekt
 							</label>
-							<p>{ticket.property.name}</p>
+							<p>{ticket?.property?.name}</p>
 						</div>
 						<div className={styles.ticket_slidein_content} >
 							<label>

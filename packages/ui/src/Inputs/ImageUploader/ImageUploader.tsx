@@ -4,7 +4,6 @@ import './styles.scss';
 import { UploadDropzone, UploadDropzoneConfig } from '@bytescale/upload-widget-react';
 import { ErrorDisplay, ImageDisplay } from '@repo/ui';
 import { Image } from '@repo/types';
-import createFileName from './functions/createFileName';
 
 const ImageUploader = ({
 	previewImage,
@@ -25,12 +24,10 @@ const ImageUploader = ({
 }) => {
 	const [reinitialize, setReinitialize] = React.useState(true);
 	const options = useMemo(() => { 
-		
 		const configObject: UploadDropzoneConfig = {
 			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string, 
 			maxFileCount: maxFileCount || 10,
 			showFinishButton: true,
-
 			editor: {
 				images: {
 					preview: false,
@@ -70,10 +67,7 @@ const ImageUploader = ({
 				xOfY: 'of'
 			},
 			path: {
-				fileName: createFileName(filename),
-				fileNameFallback: createFileName(filename),
-				fileNameVariablesEnabled: true,
-				folderPath: `/patflow/${path}`,
+				folderPath: path,
 				folderPathVariablesEnabled: true
 			},
 			showRemoveButton: true,
@@ -85,7 +79,7 @@ const ImageUploader = ({
 			}
 		} ;
 		return (configObject);
-	}, []);
+	}, [path, maxFileCount, filename]);
 
 	const reinitializeHandler = useCallback(() => {
 		setReinitialize(false);
@@ -117,7 +111,7 @@ const ImageUploader = ({
 	return (
 		<div className={'upload_container'}>
 			<label htmlFor="logo">{label}</label>
-			{previewImage && previewImages }
+			{previewImage && previewImages}
 			{reinitialize && 
 				<UploadDropzone
 					options={options}
@@ -129,6 +123,7 @@ const ImageUploader = ({
 					width="100%"
 					height="fit-content"
 					className={'upload_zone'}
+
 				/>
 			}
 			<ErrorDisplay id='uloader' errors={[]} />

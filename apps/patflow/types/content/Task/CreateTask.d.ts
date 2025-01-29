@@ -16,6 +16,7 @@ export type CreateTaskUpdateObject = {
     assigned_staff: string[],
     ticket?: {__type: 'Pointer', className: 'Ticket', objectId: string},
     property?: {__type: 'Pointer', className: 'Property', objectId: string},
+    project?: {__type: 'Pointer', className: 'Project', objectId: string},
     type: string, 
     category: string,
     dates: string[] | undefined,

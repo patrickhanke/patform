@@ -46,7 +46,7 @@ const useTicketColumns = ({refetch, archiveTicket, deleteTicket}: UseTicketColum
 			footer: info => info.column.id
 		},
 		{
-			accessorFn: ticket => <TicketProperty ticketProperty={ticket.property.name} />,
+			accessorFn: ticket => <TicketProperty ticketProperty={ticket?.property?.name} />,
 			header: () => <span>Objekt</span>,
 			id: 'property',
 			enableSorting: false,
@@ -76,7 +76,7 @@ const useTicketColumns = ({refetch, archiveTicket, deleteTicket}: UseTicketColum
 					ticketTask={ticket.task}
 					refetch={refetch}
 					ticketUserId={ticket.created_by?.objectId as string}
-					ticketPropertyId={ticket.property.objectId}
+					ticketPropertyId={ticket?.property?.objectId}
 					ticketState={ticket.state}
 				/>
 			),

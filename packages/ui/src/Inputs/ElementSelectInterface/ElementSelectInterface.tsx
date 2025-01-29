@@ -46,8 +46,6 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({elements=[], s
 					element={element}
 					isSelected={selectedElements.some((el: SelectElement) => el.value === element.value)}
 					onSelect={elementChangeHandler}
-
-
 				/>
 			))}
 		</div>

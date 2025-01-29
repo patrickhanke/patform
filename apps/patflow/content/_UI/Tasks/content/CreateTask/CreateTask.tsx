@@ -14,7 +14,7 @@ import { useDataHandler, UserContext } from '@repo/provider';
 
 const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 	const {createData, updateData} = useDataHandler();
-	const {user} = useContext(UserContext);
+	const {user, projectId} = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
@@ -73,7 +73,8 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 			type: date.type.value,
 			category: date.category.value,
 			dates: date.next_dates,
-			time: date
+			time: date,
+			project: {__type: 'Pointer', className: 'Project', objectId: projectId}
 		};
 
 		if (task.ticket) {

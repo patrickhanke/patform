@@ -1,12 +1,12 @@
-import { useDataHandler } from '@repo/provider';
-import React, { useCallback } from 'react';
+import { useDataHandler, UserContext } from '@repo/provider';
+import React, { useCallback, useContext } from 'react';
 import styles from './TaskImages.module.scss';
 import { Image } from '@types';
 import { ImageDisplay, ImageUploader } from '@repo/modules';
 
 const TaskImages = ({taskId, taskName, refetch, images}: {taskId: string, taskName: string, images: Image[], refetch: () => void}) => {
 	const {updateData} = useDataHandler();
-
+	const {projectId} = useContext(UserContext);
 	const addImageHandler = useCallback(async (content: Image[]) => {
 		const newImages = [...images, ...content];
 
@@ -49,7 +49,7 @@ const TaskImages = ({taskId, taskName, refetch, images}: {taskId: string, taskNa
 				<ImageUploader 
 					onChange={addImageHandler} 
 					label='Bild hinzufügen'
-					path='tasks'
+					path={`/patflow/${projectId}/tasks/${taskId}`}
 					filename={`${taskName}_${new Date()}.jpg`}
 				/>
 			</div>
