@@ -4,7 +4,7 @@ import { AppContext, getImageUrl } from '@repo/provider';
 import { TableColumnImageProps } from '../types';
 import { Modal, IconButton } from '@repo/ui';
 import {useContext, useState} from 'react';
-import { ImageUploader } from '@repo/modules';
+import { ImageUploader } from '@repo/ui';
 import '../styles.scss';
 
 const TableColumnImage = ({ url, isEditable = false, onChange, maxFileCount }: TableColumnImageProps) => {

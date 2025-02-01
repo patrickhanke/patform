@@ -2,7 +2,8 @@ import { useDataHandler, UserContext } from '@repo/provider';
 import React, { useCallback, useContext } from 'react';
 import styles from './TaskImages.module.scss';
 import { Image } from '@types';
-import { ImageDisplay, ImageUploader } from '@repo/modules';
+import { ImageDisplay } from '@repo/modules';
+import { ImageUploader } from '@repo/ui';
 
 const TaskImages = ({taskId, taskName, refetch, images}: {taskId: string, taskName: string, images: Image[], refetch: () => void}) => {
 	const {updateData} = useDataHandler();
