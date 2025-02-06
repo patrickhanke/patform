@@ -5,7 +5,7 @@ type CreateButtonType = {
     onClick: (t?: any) => void,
     text: string,
     size: 'small' | 'medium',
-	disabled: boolean
+	disabled?: boolean
 }
 
 const CreateButton = ({onClick, text, size, disabled}: CreateButtonType) => {

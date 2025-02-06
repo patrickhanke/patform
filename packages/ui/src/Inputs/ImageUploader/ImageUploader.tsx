@@ -28,7 +28,7 @@ const ImageUploader = ({
 			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string, 
 			maxFileCount: maxFileCount || 10,
 			showFinishButton: true,
-		editor: {
+			editor: {
 				images: {
 					preview: false,
 					crop: false

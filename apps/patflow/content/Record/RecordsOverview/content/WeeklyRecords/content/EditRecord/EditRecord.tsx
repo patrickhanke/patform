@@ -180,6 +180,7 @@ const EditRecord = ({userId, selectedWeek, weekDays, refetch} : EditRecordProps)
 					setSlideIn(false);
 				}}
 				secondaryContent={secondaryContent}
+				showSecondaryContent={!isNaN(currentIndex)}
 				disabled={disabled}
 				errors={errors}
 			> 
