@@ -6,7 +6,7 @@ import { IconButton } from '@repo/ui';
 import deleteImage from './functions/deleteImage';
 import './styles.scss';
 import { Image } from '@repo/types';
-import getImageUrl from './functions/getImageUrl';
+import { getImageUrl } from '@repo/provider';
 
 const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 	const [showDelete, setShowDelete] = useState(false);
@@ -44,7 +44,9 @@ const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 				:
 				<>
 					<div className="button_container">
-						<img src={getImageUrl({filePath: image})} alt={image} />
+						<a href={getImageUrl({filePath: image})} target="_blank" rel="noopener noreferrer">
+							<img src={getImageUrl({filePath: image, width:40})} alt={image} />
+						</a>
 						{/* <p>
 							{image}
 						</p> */}
