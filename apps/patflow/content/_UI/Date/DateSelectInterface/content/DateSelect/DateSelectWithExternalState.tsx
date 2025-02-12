@@ -39,7 +39,7 @@ const DateSelectWithExternalState = ({date, dataHandler} : DateSelectExternalSta
 				<div>
 					<label>Kategorie wählen</label>
 					<DateCategories 
-						date={date.category} 
+						value={date.category} 
 						onChange={value => dataHandler({
 							...date, 
 							category: value
@@ -50,8 +50,7 @@ const DateSelectWithExternalState = ({date, dataHandler} : DateSelectExternalSta
 				<div>
 					{date.type.value === 'single' && <SingleDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => dataHandler(newDate)} />}
 					{date.type.value === 'multi' &&  <MultiDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => dataHandler(newDate)} />}
-					{(date.type.value === 'weekly' || date.type.value === 'monthly') &&  <IntervalDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => dataHandler(newDate)} />}
-					{date.type.value === 'weekly' || date.type.value === 'monthly' && <IntervalInfo dates={date.dates} />}
+					{date.type.value === 'interval' &&  <IntervalDateSelectInterface date={date} category={date.category.value} onChange={(newDate: DateObjectWithNextDates) => dataHandler(newDate)} />}
 				</div>
 			</div>
 			

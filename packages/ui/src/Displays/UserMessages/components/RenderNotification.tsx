@@ -26,7 +26,7 @@ const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp
 		if (data && data.type === 'task') {
 			await axiosclient().post('/functions/get-task-link', {id: data.id})
 				.then(response => {
-					linkString = response.data.result;
+					linkString = response.data.result?.link;
 				})
 				.catch(() => {
 					linkString = 'no_link';
@@ -36,8 +36,7 @@ const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp
 		if (data && data.type === 'ticket') {
 			await axiosclient().post('/functions/get-ticket-link', {id: data.id})
 				.then(response => {
-
-					linkString = response.data.result;
+					linkString = response.data.result?.link;
 				})
 				.catch(() => {
 					linkString = 'no_link';

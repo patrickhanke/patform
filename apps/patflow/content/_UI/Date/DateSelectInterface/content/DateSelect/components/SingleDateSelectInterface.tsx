@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { SingleDateSelectInterfaceProps } from '../types';
 import { formatISO9075 } from 'date-fns';
 import { DateObjectWithNextDates } from '@types';
@@ -25,35 +25,35 @@ const SingleDateSelectInterface = ({date, category, onChange}: SingleDateSelectI
 		onChange(dateObject);
 	}, [category]);
 
-	console.log(date);
-	
+	const renderDateSelect = useMemo(() => (
+		category === 'opportunity' ? 
+		<div className='row_container'>
+			<DatePicker
+				defaultValue={date.dates[0] ? formatISO9075(new Date(date.dates[0]), {representation: 'date'}) : ''}
+				onChange={dateTransformHandler}
+				type='week'
+				label='Woche auswählen'
+				id='week'
+			/>
+		</div>
+		:
+		<div className='row_container'>
+			<DatePicker
+				defaultValue={date.dates[0] || ''}
+				onChange={dateTransformHandler}
+				type='datetime'
+				label='Termin wählen'
+				id='date'
+			/>
+		</div>
+	), [date, category])
 
 	return (
 		<>
 			<h3>
 				Individuelles Datum
 			</h3>
-			{get(date, 'dates[0]', undefined) && category === 'opportunity' ? 
-				<div className='row_container'>
-					<DatePicker
-						defaultValue={date.dates[0] ? formatISO9075(new Date(date.dates[0]), {representation: 'date'}) : ''}
-						onChange={dateTransformHandler}
-						type='week'
-						label='Woche auswählen'
-						id='week'
-					/>
-				</div>
-				:
-				<div className='row_container'>
-					<DatePicker
-						defaultValue={date.dates[0] || ''}
-						onChange={dateTransformHandler}
-						type='datetime'
-						label='Termin wählen'
-						id='date'
-					/>
-				</div>
-			}
+			{renderDateSelect}
 		</>
 	);
 };

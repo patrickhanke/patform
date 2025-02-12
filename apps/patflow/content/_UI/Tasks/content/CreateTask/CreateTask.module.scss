@@ -20,3 +20,16 @@
     @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$xs);
     white-space: nowrap;
 };
+
+.ticket_container {
+    @include constants.flexbox($direction: column, $align: flex-start, $justify: space-between, $gap: constants.$xs)
+}
+
+.property_container {
+    @include constants.flexbox($direction: column, $align: flex-start, $justify: space-between, $gap: constants.$xs)
+}
+
+.worker_container {
+    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$xxs)
+}
+

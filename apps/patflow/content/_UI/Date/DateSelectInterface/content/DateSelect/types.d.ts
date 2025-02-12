@@ -14,7 +14,7 @@ export type DateSelectExternalStateProps = {
 };
 
 export type DateCategoriesProps = {
-    date: typeof date_category_options[number];
+    value: typeof date_category_options[number];
     onChange: (value: typeof date_category_options[number]) => void;
 };
 

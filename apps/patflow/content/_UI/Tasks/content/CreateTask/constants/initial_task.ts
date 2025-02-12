@@ -6,6 +6,7 @@ const initial_task = {
 	description: '',
 	documents: [],
 	assigned_staff: [],
+	images: [],
 	time: undefined,
 	property: undefined,
 	ticket: undefined

@@ -1,53 +1,123 @@
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { IntervalDateSelectInterfaceProps } from '../types';
-import getDatesFromInterval from '../functions/getDatesFromInterval';
-import week_interval_options from '../constants/week_interval_options';
-import month_interval_options from '../constants/month_interval_options';
-import { DateObject, DateObjectWithNextDates } from '@types';
+import { DateObjectWithNextDates } from '@types';
 import { Select, DatePicker } from '@repo/ui';
+import { set } from 'lodash';
+import { formatISO9075 } from 'date-fns';
+import styles from '../DateSelect.module.scss';
+import getDatesFromInterval from '../functions/getDatesFromInterval';
 
 type keys = keyof DateObjectWithNextDates;
 
 type value = DateObjectWithNextDates[keys];
 type DateObjectCopy = {[key in keys]?: value};
 
-const IntervalDateSelectInterface = ({initialValue, onChange}: IntervalDateSelectInterfaceProps) => {
-	const dateTransformHandler = (key: keyof DateObject  , value: value) => {
-		const dateObjectCopy: DateObjectCopy = { ...initialValue };
-		dateObjectCopy[key] = value;
+const IntervalDateSelectInterface = ({date, category, onChange}: IntervalDateSelectInterfaceProps) => {
+	
+	const dateTransformHandler = useCallback((key: 'start_date' | 'end_date' | 'interval.number' | 'interval.unit', value: string | number) => {
+		const dateObject: DateObjectWithNextDates = {
+			...date,
+			dates: [],
+			next_dates: []
+		};
+		console.log(key);
+		console.log(value);
+		if (key) {
+			set(dateObject, key, value);
+		}
+		
+		// if (category === 'opportunity') {
+		// 	dateObject.dates = [formatISO9075( new Date(value))];
+		// 	dateObject.next_dates = [formatISO9075( new Date(value), {representation: 'date'})];
+		// }
+		// if (category === 'fixed') {
+		// 	dateObject.dates = [value];
+		// 	dateObject.next_dates = [formatISO9075( new Date(value), {representation: 'date'})];
+		// }
 
+		console.log({dateObject});
+		
+		console.log(getDatesFromInterval(dateObject))
+		onChange(dateObject);
+	}, [category, date]);
 
-		dateObjectCopy['dates'] = getDatesFromInterval(dateObjectCopy as DateObjectWithNextDates ).allDates;
-		dateObjectCopy['next_dates'] = getDatesFromInterval(dateObjectCopy as DateObjectWithNextDates ).nextDates;
-
-		onChange(dateObjectCopy as DateObjectWithNextDates);
-	};
+	const intervalSelectOptions = useMemo(() => [
+		{
+			value: 'days',
+			label: 'Tage',
+			isDisabled: category === 'opportunity'
+		},{
+			value: 'weeks',
+			label: 'Wochen'
+		},{
+			value: 'months',
+			label: 'Monate'
+		}
+	], [category])
 
 	return (
 		<div>
-			<DatePicker 
-				defaultValue={initialValue.start_date || ''}
-				onChange={value => dateTransformHandler('start_date', value)}
-				type={'datetime-local'}
-				id='start_date'
-				label='Startwoche'
-			/>
-			<DatePicker 
-				defaultValue={initialValue.start_date || ''}
-				onChange={value => dateTransformHandler('end_date', value)}
-				type={'week'}
-				id='end_date'
-				label='Endwoche'
-				disabled={initialValue.start_date === ''}
-			/>
-			<Select
-				label='Interval'
-				options={initialValue.type.value === 'weekly' ? week_interval_options : month_interval_options}
-				value={initialValue.interval}
-				onChange={value => dateTransformHandler('interval', value.value)}
-				isDisabled={initialValue.start_date === ''}
-				isClearable
-			/>
+			<h3 style={{color: 'red'}}>
+				Muss noch getestet werden
+			</h3>
+			{category === 'opportunity' ? 
+				<>
+					<div className='row_container'>
+						<DatePicker
+							defaultValue={date.start_date ? formatISO9075(new Date(date.dates[0]), {representation: 'date'}) : ''}
+							onChange={value => dateTransformHandler('start_date', value)}
+							type='week'
+							label='Startwoche auswählen'
+							id='week'
+						/>
+						<DatePicker
+							defaultValue={date.end_date ? formatISO9075(new Date(date.dates[0]), {representation: 'date'}) : ''}
+							onChange={value => dateTransformHandler('end_date', value)}
+							type='week'
+							label='Endwoche auswählen (optional)'
+							id='week'
+						/>
+					</div>
+				</>
+				:
+				<div className='row_container'>
+					<DatePicker
+						defaultValue={date.start_date || ''}
+						onChange={value => dateTransformHandler('start_date', value)}
+						type='datetime'
+						label='Startzeitpunkt wählen'
+						id='date'
+					/>
+					<DatePicker
+						defaultValue={date.end_date || ''}
+						onChange={value => dateTransformHandler('end_date', value)}
+						type='datetime'
+						label='Endzeitpunkt wählen (optional)'
+						id='date'
+					/>
+				</div>
+			}
+			<div>
+				<label>Intervall festlegen</label>
+				<div className={styles.interval_container}>
+					<p>
+						Alle
+					</p>
+					<input
+						type='number'
+						value={date.interval.number}
+						onChange={(e) => dateTransformHandler('interval.number', Number(e.target.value))}
+						style={{width: '54px', margin: '0 0.5px'}}
+					/>
+					<Select
+						// label='Interval'
+						options={intervalSelectOptions}
+						value={date.interval.unit}
+						onChange={value => dateTransformHandler('interval.unit', value.value)}
+						isClearable={false}
+					/>
+				</div>
+			</div>
 		</div>
 	);
 };

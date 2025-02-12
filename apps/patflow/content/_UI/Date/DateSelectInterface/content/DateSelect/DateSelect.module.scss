@@ -58,3 +58,8 @@
     padding: map-get(constants.$padding, 'sm');
     background-color: constants.$light;
 }
+
+.interval_container {
+    @include constants.flexbox($direction: row, $wrap: wrap, $align: center, $justify: flex-start, $gap: constants.$xs);
+    width: 100%;
+}

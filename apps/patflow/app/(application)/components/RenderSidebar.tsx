@@ -31,10 +31,6 @@ const menu_items = [
 			label: 'Geschlossen',
 			value: '/completed',
 			icon: 'completed'
-		},{
-			label: 'Archiviert',
-			value: '/archived',
-			icon: 'archived'
 		}]
 	},{
 		label: 'Tickets',

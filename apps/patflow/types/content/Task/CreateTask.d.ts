@@ -33,6 +33,6 @@ export type CreateTaskProps = {
      }
 }
 
-export type CreateTask = Pick<Task, 'title' | 'description' | 'documents' | 'state' | 'ticket' | 'assigned_staff' > & 
+export type CreateTask = Pick<Task, 'title' | 'description' | 'documents' | 'state' | 'ticket' | 'assigned_staff' | 'images' > & 
 {property?: PropertyTypes.PropertySelect | undefined }&
 {time: DateObject | undefined}

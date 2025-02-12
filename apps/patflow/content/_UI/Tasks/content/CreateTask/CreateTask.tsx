@@ -1,30 +1,37 @@
 'use client';
 
-import {DateSelectWithExternalState, ObjectSelectWithState, WorkerSelectWithState} from '@content';
+import {DateSelectWithExternalState, DisplayWorker} from '@content';
 import clsx from 'clsx';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import styles from './CreateTask.module.scss';
-import {TicketSelectWithState} from '@content';
 import { CreateTask as CreateTaskType, CreateTaskProps, DateObjectWithNextDates, ErrorMessage, CreateTaskUpdateObject } from '@types';
 import initial_task from './constants/initial_task';
-import { Icon, SlideIn, TextInput } from '@repo/ui';
+import { Icon, ImageUploader, SlideIn, TextInput } from '@repo/ui';
 import { modi_options, date_category_options } from '@content';
 import { useDataHandler, UserContext } from '@repo/provider';
+import SelectTicket from './components/SelectTicket';
+import SelectProperty from './components/SelectProperty';
+import SelectWorker from './components/SelectWorker';
+import { getDateString } from '@provider';
 
 const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
-	const {createData, updateData} = useDataHandler();
+	const {createData, updateData, deleteData} = useDataHandler();
 	const {user, projectId} = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [secContent, setSecContent] = useState<undefined | 'ticket' | 'date' | 'property' | 'worker'>('date')
 
 	const initialDate ={
 		type: modi_options[0],
 		category: date_category_options[0],
-		interval: 1,
+		interval: {
+			number: 1,
+			unit: 'days'
+		},
 		start_date: '',
 		end_date: '',
-		dates: [''],
+		dates: [],
 		weekday: '',
 		time: '',
 		next_dates: []
@@ -32,8 +39,35 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
 	const [task, setTask ] =  useImmer<CreateTaskType>(initial_task);
-
+	const [taskId, setTaskId] = useState<string | undefined>(undefined);
+	
 	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
+
+	useEffect(() => {
+		if (!taskId && isOpen) {
+			createData({
+				className: 'Task',
+				updateObject: {
+					title: task.title,
+					created_by: {__type: 'Pointer', className: '_User', objectId: user?.objectId},
+					description: task.description,
+					documents: task.documents,
+					state: task.state,
+					assigned_staff: task.assigned_staff,
+					comments: [],
+					images: [],
+					type: date.type.value,
+					category: date.category.value,
+					dates: date.next_dates,
+					time: date,
+					project: {__type: 'Pointer', className: 'Project', objectId: projectId}
+				},
+				afterSaveHandler(objectId) {
+					setTaskId(objectId);
+				},
+			})
+		}
+	}, [taskId, isOpen]);
 
 	useEffect(() => {
 		if (initialData) {
@@ -60,6 +94,10 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 	}, [task, date]);
 
 	const createTask = useCallback(async () => {
+		if (!taskId) {
+			return;
+		}
+
 		setLoading(true);
 		const updateObject: CreateTaskUpdateObject  = {
 			title: task.title,
@@ -85,12 +123,13 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 			updateObject['property'] = {__type: 'Pointer', className: 'Property', objectId: task.property};
 		}
 
-		await createData({
+		await updateData({
 			className: 'Task',
+			objectId: taskId,
 			updateObject,
 			async afterSaveHandler(objectId) {
 				if (task.ticket) {
-					updateData({
+					await updateData({
 						className: 'Ticket',
 						objectId: task.ticket,
 						updateObject: {
@@ -98,10 +137,10 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 						}
 					});
 				}
+				setTaskId(undefined);
 			},
 		})
 		.catch((error) => {
-			console.log(error);
 			setLoading(false);
 		});
 
@@ -119,6 +158,32 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 		}
 	}, [isOpen])
 
+	const secondaryContent = useMemo(() => {
+		if (secContent === 'worker') {
+			return (
+				<SelectWorker setTask={setTask} task={task} />
+			)
+		}
+		if (secContent === 'ticket') {
+			return (
+				<SelectTicket setTask={setTask} task={task} />
+			)
+		}
+		if (secContent === 'property') {
+			return (
+				<SelectProperty setTask={setTask} task={task} />
+			)
+		}
+		if (secContent === 'date') {
+			return (
+				<DateSelectWithExternalState
+					date={date}
+					dataHandler={setDate}
+				/>
+			)
+		}
+	}, [date, setDate, secContent, task])
+
 	return (
 		<>
 			{button ? button({onClick: () => setIsOpen(true)}) :
@@ -132,18 +197,30 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 			}
 			<SlideIn
 				isOpen={isOpen}
-				cancel={() => setIsOpen(false)}
+				cancel={async () => {
+					setTask(draft => {
+						draft.title = '',
+						draft.description = '',
+						draft.property = undefined,
+						draft.images = [];
+					});
+					if (taskId) {
+						await deleteData({
+							className: 'Ticket',
+							objectId: taskId,
+						})
+						setTaskId(undefined);
+					}
+					
+					setIsOpen(false)
+				}}
 				confirm={() => createTask()}
 				header='Aufgabe erstellen'
 				disabled={[false, (errors.length > 0 || loading)]}
 				errors={errors}
 				showSecondaryContent={isOpen}
-				secondaryContent={
-					<DateSelectWithExternalState
-						date={date}
-						dataHandler={setDate}
-					/>
-				}
+				secondaryContent={secondaryContent}
+				preventClickOutside
 			> 
 				<div className={clsx(styles.create_task_container, 'flexbox_column_with_gap')}>
 					<div className={styles.main_inputs_container}>
@@ -156,26 +233,70 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 								})}
 								errors={errors}
 							/>
-							<TicketSelectWithState
-								label='Ticket auswählen'
-								selectedTicket={task?.ticket}
-								setSelectedTicket={(value) => setTask(draft => {
-									if (!value?.value) {
-										draft.ticket = undefined;
-									}
-									draft.ticket = value?.value;
-								})}
-								disabled={initialData ? Object.keys(initialData).includes('ticket') : false}
-							/>
-							<ObjectSelectWithState
-								label='Objekt auswählen'
-								selectedObject={task?.property}
-								setSelectedObject={(value) => setTask(draft => {
-									draft.property = value.value;
-								})}
-								key='task_property_select'
-								disabled={ initialData ? Object.keys(initialData).includes('property') : false}
-							/>
+							<div>
+								<label>
+									Datum auswählen
+								</label>
+								{date.dates.length > 0 ? 
+									<div>
+										{date.dates.map((date: string) => (
+											<div className='content_element' onClick={() => setSecContent('date')}>
+												{getDateString(new Date(date)).date}
+											</div>
+										))}
+									</div>
+									: 
+									<button className='full_button sm dark' onClick={() => setSecContent('date')}>
+										Datum wählen
+									</button>	
+								}
+							</div>
+							<div>
+								<label>
+									Ticket auswählen
+								</label>
+								{task.ticket ?
+									<div className='content_element' onClick={() => setSecContent('ticket')}>
+										<SelectTicket setTask={setTask} task={task} showTicketOnly />
+									</div>	
+									: 
+									<button className='full_button sm dark' onClick={() => setSecContent('ticket')}>
+										Ticket wählen
+									</button>
+								}
+							</div>
+							<div>
+								<label>
+									Objekt auswählen
+								</label>
+								{task.property ?
+									<div className='content_element' onClick={() => setSecContent('property')}>
+										<SelectProperty setTask={setTask} task={task} showPropertyOnly />
+									</div>	
+									: 
+									<button className='full_button sm dark' onClick={() => setSecContent('property')}>
+										Objekt wählen
+									</button>
+								}
+							</div>
+							<div>
+								<label>
+									Arbeiter zuweisen
+								</label>
+								{task.assigned_staff.length > 0 ?
+										<div className={styles.worker_container}>
+											{task.assigned_staff.map((workerId) => (
+												<div className='content_element' onClick={() => setSecContent('worker')}>
+													<DisplayWorker key={workerId} workerId={workerId} />
+												</div>
+											))}
+										</div>
+									: 
+									<button className='full_button sm dark' onClick={() => setSecContent('worker')}>
+										Arbeiter wählen
+									</button>
+								}
+							</div>
 							<TextInput
 								label='Beschreibung'
 								id='description'
@@ -186,20 +307,19 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 								width='100%'
 								isTextArea
 							/>
-							<WorkerSelectWithState
-								label='Arbeiter auswählen'
-								selectedWorkers={task.assigned_staff}
-								setSelectedWorkers={(value) => setTask(draft => {
-									draft.assigned_staff = value.map((worker) => worker.value);
+							<ImageUploader
+								path={`/patflow/${projectId}/tickets/${taskId}`}
+								label='Bilder'
+								onChange={(images: string[]) => setTask(draft => {
+									draft.images.push(...images);
 								})}
-								width={'100%'}
+								maxFileCount={10}
+								previewImage={task.images}
+								deleteHandler={(image: string) => setTask(draft => {
+									const index = draft.images.findIndex((i: string) => i === image);
+									draft.images.splice(index, 1);
+								})}
 							/>
-							{/* <div>
-								<label>
-									Datum für die Aufgabe festlegen 
-								</label>
-								<TimeDisplay date={date}  />
-							</div> */}
 						</div>
 					</div>
 				</div>

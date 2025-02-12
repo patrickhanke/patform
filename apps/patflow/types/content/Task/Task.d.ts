@@ -15,6 +15,7 @@ export type Task ={
     ticket?: TicketTypes.Ticket,
     assigned_staff: string[],
     dates: string[],
+    images: string[],
     category: 'fixed' | 'opportunity'
 }
 

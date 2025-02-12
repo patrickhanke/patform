@@ -32,7 +32,7 @@ const WorkerSelect = ({selectedWorkers, setSelectedWorkers, label, width = 180}:
 	}, [workerData]);
 
 	return (
-		<div>
+		<div style={{zIndex: 3}}>
 			<Select
 				label={label || ''}
 				id='workers'

@@ -1,7 +1,19 @@
 @use '@repo/styles/constants';
 
+.elements_container {
+    height: 100%;
+    position: relative;
+}
+
+.filter_container{
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
 .elements_interface_container {
     @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: constants.$xs);
+    overflow: auto;
 }
 
 .list_element_container {

@@ -5,12 +5,13 @@ export type SelectElement = {
 } & any
 
 export type ElementSelectInterfaceProps = {
+    title?: string,
     elements: SelectElement[],
     selectedElements: SelectElement[],
     onSelect: (elements: SelectElement[]) => void,
     min?: number,
-    max?: number
-
+    max?: number,
+    isSearchable?: boolean 
 };
 
 export type ListElementProps = {

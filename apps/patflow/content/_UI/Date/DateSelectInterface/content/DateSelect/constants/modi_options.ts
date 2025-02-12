@@ -8,6 +8,11 @@ const modi_options = [
 		label: 'Serientermine'
 	},
 	{
+		value: 'interval',
+		label: 'Intervall',
+		isDisabled: false
+	},
+	{
 		value: 'weekly',
 		label: 'Wöchentlich',
 		isDisabled: true

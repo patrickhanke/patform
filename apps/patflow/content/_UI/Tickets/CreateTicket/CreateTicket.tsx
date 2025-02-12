@@ -159,7 +159,6 @@ const CreateTicket = ({setRefetchTicket}: { setRefetchTicket: Dispatch<SetStateA
 							})}
 							key='ticket_property_select'
 						/>
-						
 						<ImageUploader
 							path={`/patflow/${projectId}/tickets/${ticketId}`}
 							label='Bild'

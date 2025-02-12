@@ -40,7 +40,10 @@ export type TaskTimeCategory =
 export type DateObject = {
   type: DateInterval,
   category: typeof date_category_options[number],
-  interval: number,
+  interval: {
+    number: number,
+    unit: string
+  },
   dates: string[],
   start_date: string,
   end_date: string,
