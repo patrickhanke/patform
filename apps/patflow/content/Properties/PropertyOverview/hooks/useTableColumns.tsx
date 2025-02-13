@@ -4,6 +4,7 @@ import { Property } from '@types';
 import { IconButton } from '@repo/ui';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import TeamAssignment from '../content/TeamAssignment';
 
 const useTableColumns = () => { 
 	const columns: ColumnDef<Property>[] = useMemo(() => [
@@ -26,6 +27,19 @@ const useTableColumns = () => {
 			accessorFn: row => <DisplayWorker workerId={row.created_by.objectId} />,
 			header: () => <span>Erstellt von</span>,
 			id: 'created_by',
+			cell: info => info.getValue(),
+			footer: info => info.column.id,
+			disableSorting: true
+		},
+		{
+			accessorFn: row => (
+				<TeamAssignment
+					propertyId={row.objectId}
+					showAsButton
+				/>
+			),
+			header: () => <span>Zugewiesene Arbeiter</span>,
+			id: 'assigned_staff',
 			cell: info => info.getValue(),
 			footer: info => info.column.id,
 			disableSorting: true

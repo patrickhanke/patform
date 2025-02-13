@@ -33,7 +33,8 @@ const PropertyOverview = () => {
 				name: data.name,
 				settings: {'key': false},
 				project: {__type: 'Pointer', className: 'Project', objectId: projectId},
-				created_by: {__type: 'Pointer', className: '_User', objectId: user.objectId}
+				created_by: {__type: 'Pointer', className: '_User', objectId: user.objectId},
+				assigned_staff: []
 			},
 			afterSaveHandler: () => refetch
 		});

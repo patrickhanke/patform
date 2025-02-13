@@ -77,8 +77,12 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 
 	return (
 		<div className={styles.elements_container}>
-			{title && <h3>{title}</h3>}
-			<Divider />
+			{title && 
+				<>
+					<h3>{title}</h3>
+					<Divider />
+				</>
+			}
 			{isSearchable && (
 				<div className={styles.filter_container}>
 					<input onChange={(e) => setSearchTerm(e.target.value)} placeholder='Suche ...' />
