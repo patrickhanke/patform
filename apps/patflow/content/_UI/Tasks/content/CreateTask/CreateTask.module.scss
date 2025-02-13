@@ -33,3 +33,8 @@
     @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$xxs)
 }
 
+.worker_display_container {
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$xs);
+    width: 100%;
+}
+

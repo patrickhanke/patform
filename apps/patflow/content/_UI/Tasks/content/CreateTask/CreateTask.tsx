@@ -43,8 +43,6 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 	
 	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
 
-	console.log(task);
-
 	const resetState = () => {
 		setTask(initial_task);
 		setDate(initialDate);
@@ -172,7 +170,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 	const secondaryContent = useMemo(() => {
 		if (secContent === 'worker') {
 			return (
-				<SelectWorker setTask={setTask} task={task} />
+				<SelectWorker setTask={setTask} task={task}  />
 			)
 		}
 		if (secContent === 'ticket') {

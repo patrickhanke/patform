@@ -15,7 +15,8 @@ export type SelectPropertyProps = {
 
 export type SelectWorkerProps = {
     setTask: Dispatch<SetStateAction<CreateTask>>,
-    task: CreateTask
+    task: CreateTask,
+    propertyId?: string
 }
 
 export type TicketOption = {
