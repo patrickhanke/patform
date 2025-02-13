@@ -1,6 +1,6 @@
 import { useDataHandler } from '@repo/provider';
-import deleteImageHandler from '../../ImageDisplay/functions/deleteImage';
 import { UseImageDataHandlerProps } from '../types';
+import deleteImageHandler from '../functions/deleteImage';
 
 const useImageDataHandler = ({projectId, afterSaveFunction, afterCancelFunction}: UseImageDataHandlerProps) => {
 	const { createData } = useDataHandler();

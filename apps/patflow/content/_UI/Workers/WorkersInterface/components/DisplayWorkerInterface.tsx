@@ -3,10 +3,11 @@ import styles from '../WorkersInterface.module.scss';
 import { DisplayWorkerInterfaceComponent } from '../types';
 import { useQuery } from '@apollo/client';
 import { find_day } from '@queries';
-import { absence_type_options, AppContext, getImageUrl } from '@provider';
+import { absence_type_options, AppContext } from '@provider';
 import { formatISO9075 } from 'date-fns';
 import { Absence, Day } from '@types';
 import { StateDisplay } from '@repo/ui';
+import { getImageUrl } from '@repo/provider';
 
 const DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAvailability=true} :DisplayWorkerInterfaceComponent ) => {
 	const {year} = useContext(AppContext);
@@ -50,7 +51,7 @@ const DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAva
 				<div className={styles.display_worker_image_container} >
 					{worker.portrait ? 
 						<img
-							src={getImageUrl(worker.portrait, 60,60)}
+							src={getImageUrl({filePath: worker.portrait, height: 60, width: 60})}
 							alt={`${worker.first_name} ${worker.family_name}`}
 							width={'24px'}
 							height={'24px'}

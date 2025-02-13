@@ -3,10 +3,10 @@ import styles from './DisplayWorker.module.scss';
 import { GrClose } from 'react-icons/gr';
 import { useQuery } from '@apollo/client';
 import { find_day, GET_USER_DISPLAY_DATA } from '@queries';
-import { absence_type_options, AppContext, getImageUrl } from '@provider';
+import { absence_type_options, AppContext } from '@provider';
 import { formatISO9075 } from 'date-fns';
 import { DisplayWorkersProps } from './types';
-import { shadeColor } from '@repo/provider';
+import { getImageUrl, shadeColor } from '@repo/provider';
 import { Loader, StateDisplay } from '@repo/ui';
 import { Absence, Day } from '@types';
 
@@ -61,7 +61,7 @@ const DisplayWorker = ({workerId, showState= false, nextDate, showAvailability =
 				{worker.portrait ? 
 					<div className={styles.display_worker_image_container} data-isabsent={workerAbsence.isAbsent} data-onlyimage={onlyImage} >
 						<img
-							src={getImageUrl(worker.portrait, 60,60)}
+							src={getImageUrl({filePath: worker.portrait, height: 60, width: 60})}
 							alt={`${worker.first_name} ${worker.family_name}`}
 							width={onlyImage ? '24px' : '18px'}
 							height={onlyImage ? '24px' : '18px'}

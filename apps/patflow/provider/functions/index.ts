@@ -8,7 +8,6 @@ export {default as getTaskStateLabel} from './getTaskStateLabel';
 export {default as sortArrayForDivider} from './sortArrayForDivider';
 export {default as filterChangeHandler} from './filterChangeHandler';
 export {default as getDateString} from './getDateString';
-export {default as getImageUrl} from './getImageUrl';
 export {default as getDateLabel} from './getDateLabel';
 export * from './taskHandlers';
 export * from './ticketHandlers';

@@ -1,7 +1,8 @@
 import React from 'react';
-import {getImageUrl, ImageUploader} from '@repo/modules';
+import {ImageUploader} from '@repo/modules';
 import { ImageField, Modal } from '@repo/ui';
 import {useState} from 'react';
+import { getImageUrl } from '@repo/provider';
 
 interface ImageUploadProps {
     fieldValues: {

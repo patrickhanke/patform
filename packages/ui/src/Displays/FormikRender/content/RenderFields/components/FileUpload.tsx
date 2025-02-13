@@ -1,6 +1,6 @@
 import React from 'react';
-import {getImageUrl, FileUploader} from '@repo/modules';
-import { ImageField, Modal } from '@repo/ui';
+import {getImageUrl} from '@repo/provider';
+import { FileUploader, ImageField, Modal } from '@repo/ui';
 import {useState} from 'react';
 
 interface FileUploadProps {
@@ -39,6 +39,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ fieldValues, field, setFieldVal
 				buttonDisabled={[ false, !file]}
 			>
 				<FileUploader 
+					type='file'
 					onChange={imgUrl => setFile(imgUrl as string)}
 					path={`${process.env.BYTESCALE_FILE_FOLDER}/files` as string}
 					returnType={'string'}

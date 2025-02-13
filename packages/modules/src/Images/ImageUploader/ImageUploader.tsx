@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import './styles.scss';
 import { ErrorDisplay } from '@repo/ui';
 import { UploadDropzone, UploadDropzoneConfig } from '@bytescale/upload-widget-react';
-import { getImageUrl } from '../ImageDisplay';
 import { v4 as uuidv4 } from 'uuid';
 import { ImageUplaoderProps } from './types';
 import clsx from 'clsx';
+import { getImageUrl } from '@repo/provider';
 
 const ImageUploader = ({
 	previewImages,
