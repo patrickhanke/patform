@@ -11,16 +11,6 @@ const modi_options = [
 		value: 'interval',
 		label: 'Intervall',
 		isDisabled: false
-	},
-	{
-		value: 'weekly',
-		label: 'Wöchentlich',
-		isDisabled: true
-	},
-	{
-		value: 'monthly',
-		label: 'Monatlich',
-		isDisabled: true
 	}
 ];
 

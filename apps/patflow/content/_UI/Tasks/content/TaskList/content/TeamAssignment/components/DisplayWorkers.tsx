@@ -1,14 +1,15 @@
-import { DisplayWorker, WorkersInterface } from '@content';
+import { DisplayWorker } from '@content';
 import { useDataHandler } from '@repo/provider';
-import { GET_TASK_WORKERS } from '@queries';
+import { FIND_ALL_STAFF, GET_TASK_WORKERS } from '@queries';
 import { DisplayWorkersProps, Task, Worker } from '@types';
 import { useQuery } from '@apollo/client';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { cloneDeep, pull } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 import styles from '../TeamAssignment.module.scss';
 import { formatISO9075 } from 'date-fns';
-import { SlideInRight } from '@repo/ui';
+import { ElementSelectInterface, SlideInRight } from '@repo/ui';
+import { WorkerOption } from '../types';
 
 const DisplayWorkers = ({taskId, refetchTask, taskState, showAsButton=false, selectWorkers= false} : DisplayWorkersProps) => {
 	const [isOpen, setIsOpen] = useState(false);	
@@ -17,6 +18,8 @@ const DisplayWorkers = ({taskId, refetchTask, taskState, showAsButton=false, sel
 		variables: {id: taskId},
 		notifyOnNetworkStatusChange: true
 	});
+    const {data: workerData} = useQuery(FIND_ALL_STAFF);
+
 
 	const taskStateHandler = useCallback(async (stateValue: Task['state']) => {
 		await updateData({
@@ -53,37 +56,47 @@ const DisplayWorkers = ({taskId, refetchTask, taskState, showAsButton=false, sel
 		}
 	}, [taskState, data]);
 
-	const changeWorkerHandler = useCallback(async (type: 'add' | 'remove', id: Worker['objectId']) => {
-		const workerArray = cloneDeep(data?.objects.getTask.assigned_staff) || [];
-		
-		if (type === 'remove') {
-			const newWorkerArray = pull(workerArray, id);
-			await updateData({
-				className: 'Task',
-				objectId: taskId,
-				updateObject: {
-					assigned_staff: newWorkerArray
-				}
-			});
-		}
-		if (type === 'add') {
-			await updateData({
-				className: 'Task',
-				objectId: taskId,
-				updateObject: {
-					assigned_staff: [...workerArray, id]
-				}
-			});
-		}
-		refetch();
-	}, [data]);   
-    
+	const elements = useMemo(() => {
+			const workerOptionsArray: WorkerOption[] = [];
+			if (workerData) {
+				workerData.objects.find_User.results.forEach((worker: Worker) => {
+					if (worker) {
+						workerOptionsArray.push({
+							value: worker.objectId,
+							id: worker.objectId,
+							label: `${worker.first_name} ${worker.family_name}`,
+							element: <DisplayWorker
+								workerId={worker.objectId} 
+								nextDate={nextDate}
+								showAvailability
+								showState
+							/>
+						});
+					}
+				});
+			}
+			workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
+	
+			return workerOptionsArray;
+		}, [workerData]);
+	
 	const workerComponent = useMemo(() =>
-		<WorkersInterface
-			workers={data?.objects?.getTask?.assigned_staff || []}
-			onChange={changeWorkerHandler}
-			nextDate={nextDate}
-		/>
+		<ElementSelectInterface
+            elements={elements}
+            selectedElements={ data ? data.objects.getTask.assigned_staff.map((element: string) => elements.find((el) => el.value === element)) : []}
+            onSelect={async (values) => {
+				const workers = values.map((value) => value.value);
+				await updateData({
+					className: 'Task',
+					objectId: taskId,
+					updateObject: {
+						assigned_staff: [...workers]
+					}
+				});
+				refetch();
+            }}
+            max={5}
+        />
 	, [data, data?.objects?.getTask?.assigned_staff?.length, nextDate]);
 
 	const staffNumber = data?.objects.getTask.assigned_staff.length || 0;

@@ -38,10 +38,23 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 	} as DateObjectWithNextDates
 
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
-	const [task, setTask ] =  useImmer<CreateTaskType>(initial_task);
+	const [task, setTask] =  useImmer<CreateTaskType>(initial_task);
 	const [taskId, setTaskId] = useState<string | undefined>(undefined);
 	
 	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
+
+	console.log(task);
+
+	const resetState = () => {
+		setTask(initial_task);
+		setDate(initialDate);
+		setTaskId(undefined);
+		setSecContent('date');
+		setIsOpen(false);
+		setLoading(false);
+		setErrors([]);
+	}
+	
 
 	useEffect(() => {
 		if (!taskId && isOpen) {
@@ -141,15 +154,13 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 			},
 		})
 		.catch((error) => {
+			console.log(error)
 			setLoading(false);
 		});
 
 		setRefetchTask( new Date() );
 
-		setIsOpen(false);
-		setTask(initial_task);
-		// setDate(initialDate)
-		setLoading(false);
+		resetState();
 	}, [task, date]);
 
 	useEffect(() => {
@@ -206,13 +217,12 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 					});
 					if (taskId) {
 						await deleteData({
-							className: 'Ticket',
+							className: 'Task',
 							objectId: taskId,
 						})
 						setTaskId(undefined);
 					}
-					
-					setIsOpen(false)
+					resetState()
 				}}
 				confirm={() => createTask()}
 				header='Aufgabe erstellen'
@@ -240,13 +250,13 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 								{date.dates.length > 0 ? 
 									<div>
 										{date.dates.map((date: string) => (
-											<div className='content_element' onClick={() => setSecContent('date')}>
+											<div key={date} className='content_element' onClick={() => setSecContent('date')}>
 												{getDateString(new Date(date)).date}
 											</div>
 										))}
 									</div>
 									: 
-									<button className='full_button sm dark' onClick={() => setSecContent('date')}>
+									<button className='full_button sm secondary' onClick={() => setSecContent('date')}>
 										Datum wählen
 									</button>	
 								}
@@ -260,7 +270,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 										<SelectTicket setTask={setTask} task={task} showTicketOnly />
 									</div>	
 									: 
-									<button className='full_button sm dark' onClick={() => setSecContent('ticket')}>
+									<button className='full_button sm secondary' onClick={() => setSecContent('ticket')}>
 										Ticket wählen
 									</button>
 								}
@@ -274,7 +284,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 										<SelectProperty setTask={setTask} task={task} showPropertyOnly />
 									</div>	
 									: 
-									<button className='full_button sm dark' onClick={() => setSecContent('property')}>
+									<button className='full_button sm secondary' onClick={() => setSecContent('property')}>
 										Objekt wählen
 									</button>
 								}
@@ -292,7 +302,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 											))}
 										</div>
 									: 
-									<button className='full_button sm dark' onClick={() => setSecContent('worker')}>
+									<button className='full_button sm secondary' onClick={() => setSecContent('worker')}>
 										Arbeiter wählen
 									</button>
 								}

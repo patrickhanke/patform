@@ -15,15 +15,11 @@ const DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAva
 		skip: !showAvailability
 	});
 
-	console.log(nextDate);
-	
-	
 	const workerAbsence = useMemo(() => {
 		let isAbsent = false;
 		let type: Absence['type'] = 'other';
 		if (data && nextDate) {
 			const dates: Day[] = data.objects.findDay.results;
-			console.log(dates)
 			const formattedNextDay = formatISO9075( new Date(nextDate), {representation: 'date'});
 			const dateObject = dates.find(date => date.date === formattedNextDay);
 			console.log(dateObject);
@@ -41,9 +37,6 @@ const DisplayWorkerInterface = ({worker, isSelected, onChange, nextDate, showAva
 			label: absence_type_options.find(option => option.value === type)?.label
 		});
 	}, [data, showAvailability]);
-
-	console.log(workerAbsence)
-	console.log(data)
 
 	return (
 		<button

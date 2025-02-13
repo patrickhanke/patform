@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { IntervalDateSelectInterfaceProps } from '../types';
 import { DateObjectWithNextDates } from '@types';
 import { Select, DatePicker } from '@repo/ui';
-import { set } from 'lodash';
+import { cloneDeep, set } from 'lodash';
 import { formatISO9075 } from 'date-fns';
 import styles from '../DateSelect.module.scss';
 import getDatesFromInterval from '../functions/getDatesFromInterval';
@@ -26,14 +26,19 @@ const IntervalDateSelectInterface = ({date, category, onChange}: IntervalDateSel
 			set(dateObject, key, value);
 		}
 		
-		// if (category === 'opportunity') {
-		// 	dateObject.dates = [formatISO9075( new Date(value))];
-		// 	dateObject.next_dates = [formatISO9075( new Date(value), {representation: 'date'})];
-		// }
-		// if (category === 'fixed') {
-		// 	dateObject.dates = [value];
-		// 	dateObject.next_dates = [formatISO9075( new Date(value), {representation: 'date'})];
-		// }
+		const {nextDates} = getDatesFromInterval(dateObject);
+
+		if (typeof nextDates[0] === 'string') {
+			if (category === 'opportunity') {
+				dateObject.dates = [nextDates[0]];
+				dateObject.next_dates = [formatISO9075( nextDates[0], {representation: 'date'})];
+			}
+			if (category === 'fixed') {
+				dateObject.dates = [nextDates[0]];
+				dateObject.next_dates = [formatISO9075( new Date(nextDates[0]), {representation: 'date'})];
+			}
+		}
+
 
 		console.log({dateObject});
 		
@@ -55,6 +60,16 @@ const IntervalDateSelectInterface = ({date, category, onChange}: IntervalDateSel
 		}
 	], [category])
 
+	useEffect(() => {
+		if (category === 'opportunity' && date.interval.unit === 'days') {
+			const dateObjectCopy = cloneDeep(date) as DateObjectCopy;
+			dateObjectCopy.interval.unit = 'weeks';
+			onChange(dateObjectCopy as DateObjectWithNextDates);
+		}
+	}, [category, date]);
+
+	console.log({date});
+
 	return (
 		<div>
 			<h3 style={{color: 'red'}}>
@@ -64,14 +79,14 @@ const IntervalDateSelectInterface = ({date, category, onChange}: IntervalDateSel
 				<>
 					<div className='row_container'>
 						<DatePicker
-							defaultValue={date.start_date ? formatISO9075(new Date(date.dates[0]), {representation: 'date'}) : ''}
+							defaultValue={date.start_date ? formatISO9075(new Date(date.start_date), {representation: 'date'}) : ''}
 							onChange={value => dateTransformHandler('start_date', value)}
 							type='week'
 							label='Startwoche auswählen'
 							id='week'
 						/>
 						<DatePicker
-							defaultValue={date.end_date ? formatISO9075(new Date(date.dates[0]), {representation: 'date'}) : ''}
+							defaultValue={date.end_date ? formatISO9075(new Date(date.end_date), {representation: 'date'}) : ''}
 							onChange={value => dateTransformHandler('end_date', value)}
 							type='week'
 							label='Endwoche auswählen (optional)'

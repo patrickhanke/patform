@@ -11,7 +11,7 @@ const DatePicker: FC<DatePickerProps> = ({defaultValue, onChange, type, label, i
 	const [debouncedValue, setDateValue] = useDebounceValue(defaultValue || '', 900);
 
 	useEffect(() => {
-		if (debouncedValue !== defaultValue && debouncedValue.length > 2) {
+		if (debouncedValue !== defaultValue) {
 			onChange(debouncedValue);
 		}
 	}, [debouncedValue]);
@@ -50,9 +50,17 @@ const DatePicker: FC<DatePickerProps> = ({defaultValue, onChange, type, label, i
 					type={type}
 					style={{width}}
 					onChange={(e) =>{
-						const year = Number(e.target.value.split('-W')[0]);
-						const week = Number(e.target.value.split('-W')[1]);
-						setDateValue(formatISO9075( getDateFromWeek(week, 0, year), {representation: 'date'}));
+						console.log(e.target.value);
+						
+						if (e.target.value) {
+							const year = Number(e.target.value.split('-W')[0]);
+							const week = Number(e.target.value.split('-W')[1]);
+							setDateValue(formatISO9075( getDateFromWeek(week, 0, year), {representation: 'date'}));
+						} else {
+							console.log('empty');
+							
+							setDateValue('');
+						}
 					}}
 					defaultValue={transformWeekValue(defaultValue)}
 					step={undefined}

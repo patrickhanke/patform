@@ -37,9 +37,8 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 		if (searchParams.get('task')) {
 			filterArray.push({key: 'objectId', value: searchParams.get('task') as string, operator: '_eq', id: 'objectId'});
 		}
-		// return [{key: 'state', value: ['assigned', 'created', 'executed', 'completed'], operator: '_in', id: 'state'}];
+
 		return filterArray;
-	
 	}, [pageState, searchParams.get('task')]);
 
 	const siteContent = useMemo(() => {
@@ -97,13 +96,21 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 			</>
 		);
 	}
+
+	const siteStates = useMemo(() => {
+		return site_states.map((state) => ({
+			...state,
+			label: `${state.label} (${sortTasksForList(tasks || []).find((taskList) => taskList.value === state.value)?.data.length})`,
+			count: tasks?.filter((task) => task.state === state.value).length
+		}))
+	}, [tasks])
 		
 	return (
 		<Page 
 			title={siteContent.title}
 			description={siteContent.description}
 			refetch={refetch}
-			pageStates={pageState === 'active' ? site_states : undefined}
+			pageStates={pageState === 'active' ? siteStates : undefined}
 			pageState={siteState}
 			setPageState={setSiteState}
 		>

@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, Fragment, useCallback, useMemo, useState } from 'react';
 import ListElement from './components/ListElement';
 import { ElementSelectInterfaceProps, SelectElement } from './types';
 import { cloneDeep } from 'lodash';
@@ -81,21 +81,20 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 			<Divider />
 			{isSearchable && (
 				<div className={styles.filter_container}>
-					<input onChange={(e) => setSearchTerm(e.target.value)} />
+					<input onChange={(e) => setSearchTerm(e.target.value)} placeholder='Suche ...' />
 				</div>
 			)}
 			<div className={styles.elements_interface_container}>
 				{filteredElements.map((element: SelectElement, index, elements) => (
-					<>
+					<Fragment key={element.value}>
 						{checkForHeader(element.header, index, elements) && <label>{element.header}</label>}
-			
 						<ListElement
 							key={element.value}
 							element={element}
 							isSelected={selectedElements.some((el: SelectElement) => el.value === element.value)}
 							onSelect={elementChangeHandler}
 						/>
-					</>
+					</Fragment>
 				))}
 			</div>
 		</div>
