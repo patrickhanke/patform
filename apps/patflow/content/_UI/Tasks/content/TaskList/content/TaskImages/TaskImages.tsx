@@ -2,7 +2,7 @@ import { useDataHandler, UserContext } from '@repo/provider';
 import React, { useCallback, useContext } from 'react';
 import styles from './TaskImages.module.scss';
 import { Image } from '@types';
-import { ImageUploader, ImageDisplay } from '@repo/ui';
+import { ImageUploader, ImagesDisplay } from '@repo/ui';
 
 const TaskImages = ({taskId, taskName, refetch, images}: {taskId: string, taskName: string, images: Image[], refetch: () => void}) => {
 	const {updateData} = useDataHandler();
@@ -37,13 +37,14 @@ const TaskImages = ({taskId, taskName, refetch, images}: {taskId: string, taskNa
 	return (
 		<>
 			<div className={styles.task_slidein_image_container}>
-				{images.map((image: Image) => (
+				<ImagesDisplay images={images} />
+				{/* {images.map((image: Image) => (
 					<ImageDisplay 
 						key={image} 
 						image={image} 
 						deleteHandler={removeImageHandler}
 					/>
-				))}
+				))} */}
 			</div>
 			<div className={styles.task_slidein_footer}>
 				<ImageUploader 

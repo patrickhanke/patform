@@ -1,6 +1,6 @@
 import * as Bytescale from '@bytescale/sdk';
 
-export const getImageUrl = ({filePath, height, width}: {filePath: string, height?: number, width?: number}) => {
+export const getImageUrl = ({ filePath, height, width }: { filePath: string, height?: number, width?: number }): string => {
 	let url = '';
 	if (!width && !height) {
 		url = Bytescale.UrlBuilder.url({
@@ -54,7 +54,6 @@ export const getImageUrl = ({filePath, height, width}: {filePath: string, height
 	}
 
 	return url;
-
 };
 
 export const getFileUrl = (filePath: string) => {

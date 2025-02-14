@@ -14,3 +14,4 @@ export * from './FileDisplay';
 export * from './UserDisplay';
 export * from './UserMessages';
 export * from './StateDisplay';
+export * from './ImagesDisplay';

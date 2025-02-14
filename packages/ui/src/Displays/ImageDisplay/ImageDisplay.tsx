@@ -56,7 +56,6 @@ const ImageDisplay = ({image, deleteHandler}: ImageDisplayProps) => {
 			filePath: image
 		});
 		saveAs(url, image);
-		
 	};
 
 	return (
