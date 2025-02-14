@@ -48,8 +48,8 @@ const useTableColumns = ({refetch, setArchiveModal, setDeleteTaskModal, pageStat
 				header: () => <span>Termin</span>,
 				id: 'start_time',
 				cell: info => info.getValue(),
-				enableSorting: true,
-				sortingFn: (rowA, rowB, columnId) => {
+				enableSorting: pageState === 'active' ?  true : false,
+				sortingFn: (rowA, rowB) => {
 					const dateA = rowA.original.dates[0] ? new Date(rowA.original.dates[0]).getTime() : 0;
 					const dateB = rowB.original.dates[0] ? new Date(rowB.original.dates[0]).getTime() : 0;
 					return dateA - dateB;
@@ -107,8 +107,7 @@ const useTableColumns = ({refetch, setArchiveModal, setDeleteTaskModal, pageStat
 		if (pageState === 'executed') {
 			col.splice(4, 0, {
 				accessorFn: task => task.executed_at ?  `${getDateString(task.executed_at).date} - ${getDateString(task.executed_at).time}` : '-',
-				header: (row) => {
-					console.log(row);
+				header: () => {
 					return (
 						<span>
 							Ausgeführt am

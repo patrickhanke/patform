@@ -59,6 +59,36 @@ const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal
 					if (timeCopy.category.value === 'interval') {
 						color = 'yellow';
 					}
+				} 
+			} else if (data.objects.getTask.state === 'executed') {
+				const timeCopy: Task['time'] = {...data.objects.getTask.time};
+				if (timeCopy.dates.length > 0) {
+					const date = timeCopy.dates[timeCopy.dates.length - 1];
+					
+					if (date) {
+						if (timeCopy.category.value === 'fixed') {
+							if (date.length > 10) {
+								value = `${getDateString(date).date} - ${getDateString(date).time} - D`;
+							} else {
+								value = `${getDateString(date).date} - D`;
+							}
+						}
+						if (timeCopy.category.value === 'opportunity') {
+							value = `${getDateString(date).date} - T`;
+						}
+						if (timeCopy.category.value === 'fixed' && new Date(date).getTime() < new Date().getTime()) {
+							color = 'red';
+						}
+						if (timeCopy.category.value === 'opportunity') {
+							color = 'blue';
+						}
+						if (timeCopy.category.value === 'interval') {
+							color = 'yellow';
+						}
+						// value = `${getDateString(date).date} - ${getDateString(date).time} - D`;
+					}
+				} else {
+					value = 'Aufgabe erledigt';
 				}
 			} else {
 				value = 'Kein Termin';
