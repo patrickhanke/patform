@@ -20,31 +20,24 @@ const TaskImages = ({taskId, taskName, refetch, images}: {taskId: string, taskNa
 		refetch();
 	}, [images]);
 
-	const removeImageHandler = useCallback(async (content: Image) => {
-		const newImages = [...images];
-		newImages.splice(newImages.indexOf(content), 1);
+	// const removeImageHandler = useCallback(async (content: Image) => {
+	// 	const newImages = [...images];
+	// 	newImages.splice(newImages.indexOf(content), 1);
 
-		await updateData({
-			className: 'Task',
-			objectId: taskId,
-			updateObject: {
-				images: newImages
-			}
-		});
-		refetch();
-	}, [images]);
+	// 	await updateData({
+	// 		className: 'Task',
+	// 		objectId: taskId,
+	// 		updateObject: {
+	// 			images: newImages
+	// 		}
+	// 	});
+	// 	refetch();
+	// }, [images]);
 
 	return (
 		<>
 			<div className={styles.task_slidein_image_container}>
 				<ImagesDisplay images={images} />
-				{/* {images.map((image: Image) => (
-					<ImageDisplay 
-						key={image} 
-						image={image} 
-						deleteHandler={removeImageHandler}
-					/>
-				))} */}
 			</div>
 			<div className={styles.task_slidein_footer}>
 				<ImageUploader 

@@ -28,7 +28,6 @@ const Dashboard = () => {
 				notifications={notifications}
 				setNotificationsToRead={setNotificationsToRead}
 				deleteNotification={deleteNotification}
-			
 			/>
 		</Page>
 	);

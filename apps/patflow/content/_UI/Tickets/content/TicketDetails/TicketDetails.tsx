@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import styles from './TicketDetails.module.scss';
 import clsx from 'clsx';
 import { TicketDetailsProps } from '@types';
-import {Icon, ImageDisplay, Modal, SlideInRight} from '@repo/ui';
+import {Icon, ImageDisplay, ImagesDisplay, Modal, SlideInRight} from '@repo/ui';
 
 const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProps) => {
 	const [archiveModal, setArchiveModal] = useState(false);
@@ -50,9 +50,8 @@ const TicketDetails = ({ticket, deleteTicket, archiveTicket} : TicketDetailsProp
 									Bilder
 							</label>
 							<div className='images_container'>
-								{ticket.images && ticket.images.length > 0 ? ticket.images.map((ticketImage: string) =>
-									<ImageDisplay image={ticketImage} key={ticketImage} />
-								)
+								{ticket.images && ticket.images.length > 0 ? 
+									<ImagesDisplay images={ticket.images} />
 									: <p>Kein Bilder hinterlegt </p>
 								}
 							</div>

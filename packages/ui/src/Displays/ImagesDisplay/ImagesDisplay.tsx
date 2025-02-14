@@ -18,6 +18,7 @@ const ImagesDisplay: FC<ImageGalleryProps> = ({images, height= '240px'}) => {
 	return (
 		<div style={{position: 'relative', height}}>
 			<ImageGallery
+				showPlayButton={false}
 				items={renderImages}
 				autoPlay={false}
 				slideOnThumbnailOver={false}
