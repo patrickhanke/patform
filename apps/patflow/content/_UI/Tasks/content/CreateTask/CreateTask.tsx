@@ -55,6 +55,8 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 	
 
 	useEffect(() => {
+		console.log('effect');
+		
 		if (!taskId && isOpen) {
 			createData({
 				className: 'Task',
@@ -78,7 +80,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 				},
 			})
 		}
-	}, [taskId, isOpen]);
+	}, [taskId, isOpen, task]);
 
 	useEffect(() => {
 		if (initialData) {
@@ -104,6 +106,10 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 		setErrors(errorArray);
 	}, [task, date]);
 
+	console.log(task);
+	console.log(taskId);
+	
+
 	const createTask = useCallback(async () => {
 		if (!taskId) {
 			return;
@@ -118,7 +124,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 			state: task.state,
 			assigned_staff: task.assigned_staff,
 			comments: [],
-			images: [],
+			images: task.images || [],
 			type: date.type.value,
 			category: date.category.value,
 			dates: date.next_dates,
@@ -155,11 +161,11 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 			console.log(error)
 			setLoading(false);
 		});
-
-		setRefetchTask( new Date() );
-
+		if (setRefetchTask) {
+				setRefetchTask( new Date() );
+ 		}
 		resetState();
-	}, [task, date]);
+	}, [task, date, taskId]);
 
 	useEffect(() => {
 		if (!isOpen) {
@@ -316,7 +322,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 								isTextArea
 							/>
 							<ImageUploader
-								path={`/patflow/${projectId}/tickets/${taskId}`}
+								path={`/patflow/${projectId}/tasks/${taskId}`}
 								label='Bilder'
 								onChange={(images: string[]) => setTask(draft => {
 									draft.images.push(...images);

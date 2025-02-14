@@ -54,6 +54,9 @@ const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp
 			linkHandler();
 		}
 	}, [data, link]);
+
+	console.log(data);
+	
 	
 	return (
 		<div className={clsx(styles.user_message_container)} data-is_read={read}> 

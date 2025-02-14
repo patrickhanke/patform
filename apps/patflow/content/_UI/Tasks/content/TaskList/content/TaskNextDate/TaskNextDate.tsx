@@ -56,6 +56,9 @@ const TaskNextDate = ({taskId, tasksRefetch, setArchiveModal, setDeleteTaskModal
 					if (timeCopy.category.value === 'opportunity') {
 						color = 'blue';
 					}
+					if (timeCopy.category.value === 'interval') {
+						color = 'yellow';
+					}
 				}
 			} else {
 				value = 'Kein Termin';

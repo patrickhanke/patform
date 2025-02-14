@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import './styles.scss';
 
 import { useOnClickOutside } from 'usehooks-ts';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence  } from 'motion/react';
 import { SlideInProps } from './types';
 import { ErrorDisplay, IconButton } from '@repo/ui';
 
