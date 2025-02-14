@@ -1,17 +1,17 @@
 import { DisplayWorker } from '@content';
 import { useDataHandler } from '@repo/provider';
 import { FIND_ALL_STAFF, GET_TASK_WORKERS } from '@queries';
-import { DisplayWorkersProps, Task, Worker } from '@types';
+import { Task, Worker } from '@types';
 import { useQuery } from '@apollo/client';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { cloneDeep } from 'lodash';
 
 import styles from '../TeamAssignment.module.scss';
 import { formatISO9075 } from 'date-fns';
 import { ElementSelectInterface, SlideInRight } from '@repo/ui';
-import { WorkerOption } from '../types';
+import { DisplayWorkerProps, WorkerOption } from '../types';
 
-const DisplayWorkers = ({taskId, refetchTask, taskState, showAsButton=false, selectWorkers= false} : DisplayWorkersProps) => {
+const DisplayWorkers: FC<DisplayWorkerProps> = ({taskId, refetchTask, taskState, showAsButton=false, selectWorkers= false}) => {
 	const [isOpen, setIsOpen] = useState(false);	
 	const {updateData} = useDataHandler();
 	const {data, refetch} = useQuery(GET_TASK_WORKERS, {

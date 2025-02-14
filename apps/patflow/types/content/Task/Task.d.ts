@@ -1,4 +1,4 @@
-import { DateObject, DateTypes, Document, UserTypes } from '@types';
+import { DateObject, DateTypes, Document, TDateISO, UserTypes } from '@types';
 import { PropertyTypes } from '../Property';
 
 export type TaskState = 'completed' | 'executed' | 'created' | 'assigned' | 'archived'
@@ -16,6 +16,7 @@ export type Task ={
     assigned_staff: string[],
     dates: string[],
     images: string[],
+    executed_at?: TDateISO,
     category: 'fixed' | 'opportunity'
 }
 

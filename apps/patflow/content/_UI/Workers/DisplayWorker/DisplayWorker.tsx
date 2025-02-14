@@ -17,14 +17,10 @@ const DisplayWorker = ({workerId, showState= false, nextDate, showAvailability =
 		variables: {id: workerId}
 	});
 
-	console.log(nextDate);
-	
-	
 	const {data, loading: dayLoading} = useQuery(find_day, {
 		variables: {params: {year: {_eq: year}, type: {_eq: 'absence'}, user: {_eq: workerId}}},
 		skip: !showAvailability
 	});
-	console.log(data?.objects.findDay.results);
 
 	const workerAbsence = useMemo(() => {
 		let isAbsent = false;
@@ -33,8 +29,6 @@ const DisplayWorker = ({workerId, showState= false, nextDate, showAvailability =
 			const dates: Day[] = data.objects.findDay.results;
 			const formattedNextDay = formatISO9075( new Date(nextDate), {representation: 'date'});
 			const dateObject = dates.find(date => date.date === formattedNextDay);
-			console.log(dateObject);
-			
 			
 			if (dateObject) {
 				isAbsent = true;
@@ -49,8 +43,6 @@ const DisplayWorker = ({workerId, showState= false, nextDate, showAvailability =
 		});
 	}, [data, showAvailability]);
 
-	console.log(workerAbsence);
-	
 
 	if (wokerLoading || dayLoading) return <Loader width={'24px'} height={'24px'} />;
 	

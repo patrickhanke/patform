@@ -8,7 +8,7 @@ import useTableColumns from './hooks/useTableColumns';
 import { Task } from '@types';
 import { Modal, Table } from '@repo/ui';
 
-const TaskList = ({taskList, refetch} : TaskListComponent) => {
+const TaskList = ({taskList, refetch, pageState} : TaskListComponent) => {
 	const {updateData, deleteData} = useDataHandler();
 	const [deleteTaskModal, setDeleteTaskModal] = useState<undefined | Task>(undefined);
 	const [archiveModal, setArchiveModal] = useState<undefined | Task>(undefined);
@@ -38,7 +38,7 @@ const TaskList = ({taskList, refetch} : TaskListComponent) => {
 		refetch();
 	}, [archiveModal]);
 
-	const columns = useTableColumns({refetch, setArchiveModal, setDeleteTaskModal});
+	const columns = useTableColumns({refetch, setArchiveModal, setDeleteTaskModal, pageState});
 
 	return (
 		<>

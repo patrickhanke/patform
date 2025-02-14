@@ -11,6 +11,7 @@ const FIND_ALL_TASKS  = gql`
                     time
                     assigned_staff
                     dates
+                    executed_at
                 }
             }
         }

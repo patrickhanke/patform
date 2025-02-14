@@ -92,6 +92,7 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 				<TaskList 
 					taskList={tasks || []} 
 					refetch={refetch} 
+					pageState={pageState}
 				/>
 			</>
 		);
@@ -100,7 +101,7 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 	const siteStates = useMemo(() => {
 		return site_states.map((state) => ({
 			...state,
-			label: `${state.label} (${sortTasksForList(tasks || []).find((taskList) => taskList.value === state.value)?.data.length})`,
+			label: `${state.label} (${sortTasksForList(tasks || []).find((taskList) => taskList.value === state.value)?.data.length || '0'})`,
 			count: tasks?.filter((task) => task.state === state.value).length
 		}))
 	}, [tasks])
@@ -125,11 +126,13 @@ const Tasks = ({id, className, pageState}: TasksComponent) => {
 					<TaskList 
 						taskList={tasks || []} 
 						refetch={refetch} 
+						pageState={pageState}
 					/>
 					: 
 					<TaskList
 						taskList={sortTasksForList(tasks || []).find((taskList) => taskList.value === siteState.value)?.data || []}	
 						refetch={refetch}
+						pageState={pageState}
 					/>
 			}
 		</Page>

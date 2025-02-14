@@ -90,25 +90,24 @@ const sortTasksForList: (array: Array<Task>) => TaskSection = (array: Array<Task
 						taskList[taskListIndex].data.push(taskWidthDate);
 					}
 				});
-				if (task.state === 'created') {
-					const taskWidthId = {
-						...task,
-						id: `${task.objectId}`
-					};
+			} else if (task.state === 'created') {
+				const taskWidthId = {
+					...task,
+					id: `${task.objectId}`
+				};
 
-					const taskListIndex = taskList.findIndex(
-						(taskListElement) => taskListElement.label === 'Keine Zeitangabe'
-					);
-					if (taskListIndex === -1) {
-						taskList.push({
-							label: 'Keine Zeitangabe',
-							value: 'no_date',
-							date: '',
-							data: [taskWidthId]
-						});
-					} else if (taskListIndex !== -1 && taskList[taskListIndex]) {
-						taskList[taskListIndex].data.push(taskWidthId);
-					}
+				const taskListIndex = taskList.findIndex(
+					(taskListElement) => taskListElement.label === 'Keine Zeitangabe'
+				);
+				if (taskListIndex === -1) {
+					taskList.push({
+						label: 'Keine Zeitangabe',
+						value: 'no_date',
+						date: '',
+						data: [taskWidthId]
+					});
+				} else if (taskListIndex !== -1 && taskList[taskListIndex]) {
+					taskList[taskListIndex].data.push(taskWidthId);
 				}
 			}
 		}
