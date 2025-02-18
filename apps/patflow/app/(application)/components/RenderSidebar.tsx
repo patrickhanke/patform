@@ -50,6 +50,10 @@ const menu_items = [
 			icon: 'closed'
 		}]
 	},{
+		label: 'Touren',
+		value: '/tours',
+		icon: 'tours'
+	},{
 		label: 'Zeiterfassung',
 		value: '/records',
 		icon: 'time'

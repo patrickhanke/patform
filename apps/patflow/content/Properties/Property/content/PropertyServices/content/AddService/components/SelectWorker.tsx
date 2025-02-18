@@ -1,23 +1,22 @@
 import { useQuery } from '@apollo/client';
 import { FIND_ALL_STAFF } from '@queries';
 import { ElementSelectInterface, StateDisplay } from '@repo/ui'
-import { Task, Worker } from '@types';
+import { CreateService, Service, Worker } from '@types';
 import React, { FC, useMemo } from 'react'
 import { PropertyOptions, SelectWorkerProps } from '../types';
 import { DisplayWorker } from 'content/_UI/Workers';
 import { generateGraphQLQuery } from '@repo/provider';
-import styles from '../CreateTask.module.scss';
+import styles from '../AddService.module.scss';
 
-const SelectWorker: FC<SelectWorkerProps> = ({setTask, task}) => {
+const SelectWorker: FC<SelectWorkerProps> = ({setService, service, propertyId}) => {
     const {data: workerData} = useQuery(FIND_ALL_STAFF);
     const {data: propertyData} = useQuery(generateGraphQLQuery({
 		objectName: 'Property',
 		fields: ['assigned_staff', 'objectId', 'name'],
 		type: 'get'
 	}), {
-		variables: {id: task.property},
+		variables: {id: propertyId},
 		notifyOnNetworkStatusChange: true,
-        skip: !task.property
 	}); 
 
 	const elements = useMemo(() => {
@@ -57,21 +56,21 @@ const SelectWorker: FC<SelectWorkerProps> = ({setTask, task}) => {
         <ElementSelectInterface
             title='Arbeiter auswählen'
             elements={elements}
-            selectedElements={task.assigned_staff.map(element => elements.find((el) => el.value === element))}
+            selectedElements={service.assigned_staff.map(element => elements.find((el) => el.value === element))}
             onSelect={(values) => {
                 if (values.length > 0) {
-                    setTask((task: Task) => ({
-                        ...task,
+                    setService((service: CreateService) => ({
+                        ...service,
                         assigned_staff: values.map((value) => value.value)
                     }))
                 } else if (values.length === 0) {
-                    setTask((task: Task) => ({
-                        ...task,
+                    setService((service: CreateService) => ({
+                        ...service,
                         assigned_staff: []
                     }))
                 }
             }}
-            max={100}
+            max={5}
         />
   )
 }

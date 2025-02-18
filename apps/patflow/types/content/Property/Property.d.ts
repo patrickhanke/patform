@@ -1,5 +1,5 @@
 import { DateTypes, UserTypes } from '@/types/General';
-import { User } from '@types';
+import { DateObject, User } from '@types';
 
 export type Property = {
     objectId: string, 
@@ -7,10 +7,12 @@ export type Property = {
     settings: object,
     created_by: UserTypes.User
     createdAt: string
+    services: {[key: string]: PropertyServices}
 }
 
 export type PropertyService = {
-    objectId: string, 
+    id: string,
+    serviceId: string, 
     time: DateTypes.DateObject,
     name: string,
     interval: string,
@@ -27,3 +29,19 @@ export type PropertySelect = {
     id: string,
     label: string
 }
+
+export type Service = {
+    objectId: string,
+    name: string,
+    created_by: User,
+    description: string,
+    assigned_staff: string[],
+    images: string[],
+    is_active: boolean,
+    dates: string[],
+    time: DateObject,
+    project: string,
+    property: string
+}
+
+export type CreateService = Pick<Service, 'name' | 'description' | 'images' | 'is_active' | 'assigned_staff' >

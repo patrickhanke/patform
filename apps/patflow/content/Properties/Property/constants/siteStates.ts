@@ -10,8 +10,7 @@ const useSiteStates = () => {
 			}, 
 			{
 				value: 'services',
-				label: 'Leistungsverzeichnis',
-				disabled: true
+				label: 'Leistungsverzeichnis'
 			},
 			{
 				value: 'tallies',

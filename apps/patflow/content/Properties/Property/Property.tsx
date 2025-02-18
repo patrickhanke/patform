@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { use, useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import useSiteStates from './constants/siteStates';
 import { GET_PROPERTY } from '@queries';
@@ -11,11 +11,14 @@ import PropertyTallies from './content/PropertyTallies';
 import PropertyDocuments from './content/PropertyDocuments';
 import PropertyTickets from './content/PropertyTickets';
 import { Params, Property as PropertyType } from '@types';
-import { Page } from '@repo/ui';
+import { Page, PageHeaderButton } from '@repo/ui';
+import { set } from 'lodash';
 
 const Property = ({params} : {params: Params}) => {
 	const siteStates = useSiteStates();
 	const [siteState, setSiteState] = useState<typeof siteStates[number]>(siteStates[0] as typeof siteStates[number]);
+	const [addService, setAddService] = useState(false);
+	
 	const {data, refetch} = useQuery (
 		GET_PROPERTY, 
 		{
@@ -40,8 +43,21 @@ const Property = ({params} : {params: Params}) => {
 		if (siteState.value === 'tallies') {
 			content.description = 'Zähler';
 		}
-
 		return content;
+	}, [siteState]);
+
+	const pageHeaderButtons: PageHeaderButton[] =  useMemo(() => {
+		if (siteState.value === 'services') {
+			return ([
+				{
+					text: 'Leistung hinzufügen',
+					onClick: () => setAddService(true),
+					is_add_button: true
+				}
+			] as PageHeaderButton[])
+		}
+		return [];
+	
 	}, [siteState]);
 
 	if (!data) return null;
@@ -56,6 +72,7 @@ const Property = ({params} : {params: Params}) => {
 			pageStates={siteStates}
 			pageState={siteState}
 			setPageState={setSiteState}
+			pageHeaderButtons={pageHeaderButtons}
 		>
 			{siteState.value === 'tasks' && 
 				<PropertyTasks objectId={params.object_id}/>
@@ -64,7 +81,7 @@ const Property = ({params} : {params: Params}) => {
 				<PropertySettings objectId={params.object_id}  />
 			}
 			{siteState.value === 'services' && 
-				<PropertyServices objectId={params.object_id}  />
+				<PropertyServices objectId={params.object_id} addService={addService} setAddService={setAddService}  />
 			}
 			{siteState.value === 'tallies' && 
 				<PropertyTallies objectId={params.object_id} />

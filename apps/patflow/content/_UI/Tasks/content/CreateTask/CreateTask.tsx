@@ -106,10 +106,6 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 		setErrors(errorArray);
 	}, [task, date]);
 
-	console.log(task);
-	console.log(taskId);
-	
-
 	const createTask = useCallback(async () => {
 		if (!taskId) {
 			return;
