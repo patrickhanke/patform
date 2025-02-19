@@ -13,15 +13,20 @@ export type Property = {
 export type PropertyService = {
     id: string,
     serviceId: string, 
-    time: DateTypes.DateObject,
-    name: string,
-    interval: string,
     active: boolean,
-    period: {
-        start: string,
-        end: string
+    days: string[],
+    type: 'interval' | 'dates',
+    dates: `${string}-${string}`[],
+    interval: {
+        number: number,
+        unit: string,
+        start_date: string,
+        end_date: string
+    },
+    settings: {
+        continue: boolean,
+        repeat: boolean
     }
-    worker: User
 }
 
 export type PropertySelect = {

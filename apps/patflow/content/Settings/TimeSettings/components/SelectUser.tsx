@@ -31,6 +31,7 @@ const SelectUser = () => {
                 }))}
                 selectedElements={selectedUsers}
                 onSelect={elements => setSelectedUsers(elements)}
+                isSearchable
             />
     </div>
   )

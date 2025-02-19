@@ -59,7 +59,8 @@ const DisplayWorkers = ({propertyId, showAsButton=false} : DisplayWorkersProps) 
 				});
 				refetch();
             }}
-            max={5}
+            max={100}
+			isSearchable
         />
 	, [data, data?.objects?.getProperty?.assigned_staff?.length]);
 

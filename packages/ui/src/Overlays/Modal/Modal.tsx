@@ -12,7 +12,8 @@ const Modal: React.FC<ModalProps> = ({
 	cancelButtonHandler, 
 	confirmButtonHandler,
 	buttonDisabled = [false, false],
-	errors = []
+	errors = [],
+	confirmButtonText = 'Bestätigen'
 }) => {
 	if (isOpen === true) return (
 		<Fragment key={header}>
@@ -33,7 +34,7 @@ const Modal: React.FC<ModalProps> = ({
                         Abbrechen
 					</button>
 					<button className={clsx('full_button', 'md', 'dark')} onClick={() => confirmButtonHandler()} disabled={buttonDisabled[1]}>
-                        Bestätigen
+						{confirmButtonText}
 					</button>
 				</div>
 			</div>

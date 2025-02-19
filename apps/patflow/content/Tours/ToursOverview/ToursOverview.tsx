@@ -15,7 +15,7 @@ const ToursOverview = () => {
 		objectName: 'Property', 
 		fields: ['objectId', 'name', 'services']})
 	)
-	const columns = usePropertyTableColumns();
+	const columns = usePropertyTableColumns({refetch});
 
 	const tableData =  useMemo(() => {
 		if (data) {
@@ -41,9 +41,6 @@ const ToursOverview = () => {
 	console.log(data);
 	console.log(tableData);
 	
-
-
-
 	return (
 		<Page title='Touren'>
 			<div className="content_element no_padding">

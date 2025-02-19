@@ -95,7 +95,8 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({taskId, refetchTask, taskState,
 				});
 				refetch();
             }}
-            max={5}
+            max={100}
+			isSearchable
         />
 	, [data, data?.objects?.getTask?.assigned_staff?.length, nextDate]);
 

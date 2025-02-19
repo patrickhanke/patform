@@ -52,6 +52,7 @@ const SelectTicket: FC<SelectTicketProps> = ({setTask, task, showTicketOnly =  f
         <ElementSelectInterface
             title='Ticket auswählen'
             elements={elements}
+            isSearchable
             selectedElements={elements.filter((el) => el.value === task.ticket)}
             onSelect={(values) => {
                 

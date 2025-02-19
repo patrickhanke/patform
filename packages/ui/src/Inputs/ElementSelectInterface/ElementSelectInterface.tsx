@@ -14,31 +14,52 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 	onSelect, 
 	min = 1, 
 	max = 1, 
-	isSearchable=true
+	isSearchable=false,
+	selectProperty= false
 }) => {
 	const [searchInput, setSearchTerm] = useState('');
-    
+
 	const elementChangeHandler = useCallback((element: SelectElement) => {
 		const elementsCopy = cloneDeep(selectedElements);
-		const isSelected = !!elementsCopy.find((el: SelectElement) => el.value === element.value);
 		
-		if (isSelected) {
-			const newElements = elementsCopy.filter((el: SelectElement) => el.value !== element.value);
-			onSelect(newElements);
-		}
+		if (selectProperty) {
+			const elementIndex = elementsCopy.findIndex((el: SelectElement) => el.value === element.value);
+			if (elementIndex !== -1) {
+				elementsCopy[elementIndex].selected = !elementsCopy[elementIndex].selected;
+			}
+			onSelect(elementsCopy);
+		} else {
+			const isSelected = !!elementsCopy.find((el: SelectElement) => el.value === element.value);
+			if (isSelected) {
+				if (element.single) {
+					onSelect([]);
+				} else {
+					const newElements = elementsCopy.filter((el: SelectElement) => el.value !== element.value);
+					onSelect(newElements);
+				}
+			}
+	
+			if (isSelected === false) {
+				if (element.single) {
+					onSelect([element]);
+				} else {
+					if (elementsCopy.length < max) {
+						elementsCopy.push(element);
+						
+						const newElements = elementsCopy.filter((el: SelectElement) => !el.single);
+						onSelect(newElements);
+					}
+					if (elementsCopy.length === max) {
+						elementsCopy.shift();
+						elementsCopy.push(element);
+						const newElements = elementsCopy.filter((el: SelectElement) => !el.single);
 
-		if (isSelected === false) {
-            
-			if (elementsCopy.length < max) {
-				elementsCopy.push(element);
-				onSelect(elementsCopy);
-			}
-			if (elementsCopy.length === max) {
-				elementsCopy.shift();
-				elementsCopy.push(element);
-				onSelect(elementsCopy);
+						onSelect(newElements);
+					}
+				}
 			}
 		}
+		
 		
 	}, [elements, onSelect, selectedElements]);
 
@@ -80,7 +101,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 			{title && 
 				<>
 					<h3>{title}</h3>
-					<Divider />
+					<Divider showLine={false} />
 				</>
 			}
 			{isSearchable && (
@@ -95,7 +116,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 						<ListElement
 							key={element.value}
 							element={element}
-							isSelected={selectedElements.some((el: SelectElement) => el.value === element.value)}
+							isSelected={!selectProperty ? selectedElements.some((el: SelectElement) => el.value === element.value) : element.selected}
 							onSelect={elementChangeHandler}
 						/>
 					</Fragment>

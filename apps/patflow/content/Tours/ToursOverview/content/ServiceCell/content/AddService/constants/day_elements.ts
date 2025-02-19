@@ -1,5 +1,5 @@
 const day_elements = [
-    { value: 'any', label: 'Egal' },
+    { value: 'any', label: 'Egal', single: true },
     { value: 'monday', label: 'Montag' },
     { value: 'tuesday', label: 'Dienstag' },
     { value: 'wednesday', label: 'Mittwoch' },

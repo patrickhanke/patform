@@ -70,7 +70,8 @@ const SelectWorker: FC<SelectWorkerProps> = ({setService, service, propertyId}) 
                     }))
                 }
             }}
-            max={5}
+            max={100}
+            isSearchable
         />
   )
 }

@@ -8,5 +8,6 @@ export type ModalProps = {
     cancelButtonHandler: ()=> void,
     confirmButtonHandler: () => void,
     buttonDisabled?: boolean[],
-    errors?: ErrorMessage[]
+    errors?: ErrorMessage[],
+    confirmButtonText?: string
 }

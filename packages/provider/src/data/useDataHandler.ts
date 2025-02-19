@@ -42,13 +42,15 @@ const useDataHandler = () => {
 		objectId, 
 		updateObject, 
 		afterSaveHandler, 
-		feedback
+		feedback,
+		onError
 	}: {
         className: string, 
         objectId: string, 
         updateObject: any, 
         afterSaveHandler?: (objectId: string) => void,
-        feedback?: string
+        feedback?: string,
+		onError?: (error: string) => void
     }) => {
 		let data : Array<any> = [];
 		setLoading(true);
@@ -67,6 +69,9 @@ const useDataHandler = () => {
 				console.log(error.message);
 				if (feedback) {
 					setFeedback('Fehler','error', new Date() );
+				}
+				if (onError) {
+					onError(error.message);
 				}
 			});
 		setLoading(false);

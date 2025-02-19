@@ -19,7 +19,10 @@ const DateSelectInterfaceTask = ({taskId, showDateInterface, setShowDateInterfac
 	const [time, setTime] = useState<Task['time']>({
 		type: modi_options[0] as DateInterval,
 		category: date_category_options[0],
-		interval: 1,
+		interval: {
+			number: 1,
+			unit: 'weeks'
+		},
 		start_date: '',
 		end_date: '',
 		dates: [''],

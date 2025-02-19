@@ -2,3 +2,32 @@
 @forward './layout/buttons.scss';
 @forward './layout/layout.scss';
 @forward './layout/inputs.scss';
+
+.flex {
+    display: flex;
+}
+
+.row {
+    flex-direction: row;
+}
+
+.col {
+    flex-direction: column;
+}
+
+.a-ce {
+    align-items: center;
+}
+
+.j-ce {
+    justify-content: center;
+}
+
+.j-sb {
+    justify-content: space-between;
+}
+
+.a-st {
+    align-items: flex-start;
+}
+

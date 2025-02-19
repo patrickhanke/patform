@@ -50,14 +50,12 @@ const DatePicker: FC<DatePickerProps> = ({defaultValue, onChange, type, label, i
 					type={type}
 					style={{width}}
 					onChange={(e) =>{
-						console.log(e.target.value);
 						
 						if (e.target.value) {
 							const year = Number(e.target.value.split('-W')[0]);
 							const week = Number(e.target.value.split('-W')[1]);
 							setDateValue(formatISO9075( getDateFromWeek(week, 0, year), {representation: 'date'}));
 						} else {
-							console.log('empty');
 							
 							setDateValue('');
 						}

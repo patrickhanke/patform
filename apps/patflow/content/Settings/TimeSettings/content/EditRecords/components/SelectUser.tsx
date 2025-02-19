@@ -44,6 +44,7 @@ const SelectUser: FC<SelectUserProps> = ({selectedUser, setSelectedUser}) => {
                 elements={elements}          
                 selectedElements={selectedElement}
                 onSelect={elements => setSelectedUser(elements)}
+                isSearchable
             />
     </div>
   )

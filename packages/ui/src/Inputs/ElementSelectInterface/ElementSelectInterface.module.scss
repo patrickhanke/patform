@@ -26,6 +26,12 @@
     &:hover {
         background-color: constants.$grey_tinted;
     }
+    &:disabled {
+        cursor: default;
+        &:hover {
+            background-color: constants.$white;
+        }
+    }
 }
 
 .list_element_container[data-selected="true"] {

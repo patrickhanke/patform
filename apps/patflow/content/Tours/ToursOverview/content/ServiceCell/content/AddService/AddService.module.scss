@@ -1,0 +1,21 @@
+@use '@repo/styles/constants';
+
+.modal_content_container {
+    height: 480px;
+    position: relative;
+    width: 360px;
+}
+
+.interval_container {
+    @include constants.flexbox($direction: row, $wrap: wrap, $align: center, $justify: flex-start, $gap: constants.$xs);
+    width: 100%;
+}
+
+.date_container {
+    @include constants.flexbox($direction: column, $wrap: wrap, $align: stretch, $justify: flex-start, $gap: constants.$xs);
+    width: 100%;
+}
+
+.switch_button_container {
+    border-bottom: 1px solid constants.$grey;
+}

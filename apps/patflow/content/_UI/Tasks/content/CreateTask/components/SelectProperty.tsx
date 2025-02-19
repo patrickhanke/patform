@@ -47,9 +47,9 @@ const SelectProperty: FC<SelectPropertyProps> = ({setTask, task, showPropertyOnl
         <ElementSelectInterface
             title='Objekt auswählen'
             elements={elements}
+            isSearchable
             selectedElements={elements.filter((el) => el.value === task.property)}
             onSelect={(values) => {
-                
                 if (values.length > 0) {
                     setTask((task: Task) => ({
                         ...task,
@@ -62,6 +62,7 @@ const SelectProperty: FC<SelectPropertyProps> = ({setTask, task, showPropertyOnl
                     }))
                 }
             }}
+            
 
         />
   )

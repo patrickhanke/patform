@@ -72,6 +72,7 @@ const SelectWorker: FC<SelectWorkerProps> = ({setTask, task}) => {
                 }
             }}
             max={100}
+            isSearchable
         />
   )
 }

@@ -1,7 +1,10 @@
 export type SelectElement = {
     value: string;
     label: string;
-    element?: ReactNode
+    element?: ReactNode;
+    selected?: boolean;
+    single?: boolean;
+    disabled?: boolean;
 } & any
 
 export type ElementSelectInterfaceProps = {
@@ -11,7 +14,8 @@ export type ElementSelectInterfaceProps = {
     onSelect: (elements: SelectElement[]) => void,
     min?: number,
     max?: number,
-    isSearchable?: boolean 
+    isSearchable?: boolean ,
+    selectProperty?: boolean
 };
 
 export type ListElementProps = {
