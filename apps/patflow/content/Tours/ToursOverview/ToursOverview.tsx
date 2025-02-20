@@ -1,62 +1,46 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import { Page, Table } from '@repo/ui';
-import { useQuery } from '@apollo/client';
-import usePropertyTableColumns from './hooks/usePropertyTableColumns';
-import { generateGraphQLQuery } from '@provider';
-import { Property, PropertyService } from '@types';
-import { AddEditServiceState, ServiceData } from './types';
-import AddEditService from './content/AddEditService';
+import React, { useContext, useMemo, useState } from 'react';
+import { Page } from '@repo/ui';
+import { PageState } from '@repo/types';
+import page_states from './constants/page_states';
+import ServiceSettings from './content/ServiceSettings';
+import { UserContext } from '@repo/provider';
+import Services from './content/Services';
 
 const ToursOverview = () => {
-	const [addEditService, setAddEditService] = React.useState<AddEditServiceState | null>(null);
-	const {data, refetch}  = useQuery(generateGraphQLQuery({
-		type: 'find' , 
-		objectName: 'Property', 
-		fields: ['objectId', 'name', 'services']})
-	)
-	const columns = usePropertyTableColumns({refetch, addEditService, setAddEditService});
+	const {projectId} = useContext(UserContext)
+	const [createService, setCreateService] = useState<boolean>(false);
+	const [pageState, setPageState] = useState<PageState>(page_states[0] as PageState);
 
-	const tableData =  useMemo(() => {
-		if (data) {
-			const properties = data.objects.findProperty.results;
-			console.log(properties);
-			const services: ServiceData[]  = [];
-			
-			properties.forEach((property: Property) =>{ 
-				const propertyObject: ServiceData = {
-					objectId: property.objectId,
-					name: property.name,
-					...property.services
+	const pageHeaderButtons = useMemo(() => {
+		if (pageState.value === 'settings') {
+			return [
+				{
+					text: 'Service erstellen',
+					onClick: () => setCreateService(true)
 				}
-				services.push(propertyObject);
-			});
-
-			return services;
+			]
 		}
+	}, [pageState]);
 
-		return [];
-	}, [data]);
-
-	console.log(data);
-	console.log(tableData);
-	
 	return (
-		<Page title='Touren'>
-			<div className="content_element no_padding">
-				<Table columns={columns} data={tableData} />
-			</div>
-			{!!addEditService &&
-                <AddEditService 
-                    title={`${addEditService.propertyName} - ${addEditService.serviceName}`} 
-                    addEditService={addEditService} 
-                    setAddEditService={setAddEditService} 
-                    propertyId={addEditService.propertyId} 
-                    serviceId={addEditService.serviceId}
-                    refetch={refetch}
-                />
-            }
+		<Page 
+			title='Touren'
+			pageState={pageState}
+			pageStates={page_states}
+			setPageState={setPageState}
+			pageHeaderButtons={pageHeaderButtons}
+
+		>
+			{pageState.value === 'services' && (
+				<>
+					<Services />
+				</>
+			)}
+			{pageState.value === 'settings' && (
+				<ServiceSettings projectId={projectId} createService={createService} setCreateService={setCreateService} />
+			)}
 		</Page>
 	);
 };

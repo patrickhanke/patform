@@ -38,15 +38,10 @@ export type PropertySelect = {
 export type Service = {
     objectId: string,
     name: string,
-    created_by: User,
+    created_by: User | null | undefined,
     description: string,
-    assigned_staff: string[],
-    images: string[],
     is_active: boolean,
-    dates: string[],
-    time: DateObject,
     project: string,
-    property: string
 }
 
 export type CreateService = Pick<Service, 'name' | 'description' | 'images' | 'is_active' | 'assigned_staff' >

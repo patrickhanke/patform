@@ -4,24 +4,21 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import ServiceCell from '../content/ServiceCell';
-import { ServiceData, UsePropertyTableColumns } from '../types';
+import { ServiceData, UseServiceTableColumns } from '../types';
 
-const useTableColumns: (T: UsePropertyTableColumns) => ColumnDef<ServiceData>[] = ({refetch, addEditService, setAddEditService}) => { 
-
+const useServiceTableColumns: (T: UseServiceTableColumns) => ColumnDef<ServiceData>[] = ({refetch, addEditService, setAddEditService}) => { 
 	const {data} = useQuery(generateGraphQLQuery({
 		type: 'find' , 
 		objectName: 'Service', 
-		fields: ['objectId', 'name', 'time']})
+		fields: ['objectId', 'name', 'is_active', 'description']})
 	)
-
-	console.log(data);
-	
 
 	const columns: ColumnDef<ServiceData>[] = useMemo(() => {
 		const columnsArray: ColumnDef<ServiceData>[] = [
 			{
 				accessorKey: 'name',
 				header: () => <span>Name</span>,
+				id: 'name',
 				cell: info => info.getValue(),
 				footer: info => info.column.id,
 				sortingFn: 'alphanumeric'
@@ -32,6 +29,8 @@ const useTableColumns: (T: UsePropertyTableColumns) => ColumnDef<ServiceData>[] 
 			const services = data.objects.findService.results;
 			console.log(services);
 			services.map((service: Service) => {
+				if (!service.is_active) return;
+				
 				columnsArray.push({
 					accessorFn: row => (
 						<ServiceCell 
@@ -40,8 +39,6 @@ const useTableColumns: (T: UsePropertyTableColumns) => ColumnDef<ServiceData>[] 
 							serviceName={service.name} 
 							propertyId={row.objectId}
 							propertyName={row.name} 
-							refetch={refetch} 
-							addEditService={addEditService}
 							setAddEditService={setAddEditService}
 						/>
 					),
@@ -63,4 +60,4 @@ const useTableColumns: (T: UsePropertyTableColumns) => ColumnDef<ServiceData>[] 
 	return columns;
 };
 
-export default useTableColumns;
+export default useServiceTableColumns;

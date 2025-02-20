@@ -9,8 +9,6 @@ export type ServiceCellProps = {
     serviceName: string,
     propertyId: string,
     propertyName: string,
-    refetch: ApolloRefetch,
-    addEditService: AddEditServiceState | null,
     setAddEditService: Dispatch<SetStateAction<AddEditServiceState | null>>
 }
 
