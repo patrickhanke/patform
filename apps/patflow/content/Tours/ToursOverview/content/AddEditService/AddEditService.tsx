@@ -1,19 +1,21 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
-import { AddServiceProps, ButtonStates } from './types'
+import { AddEditServiceProps, ButtonStates } from './types'
 import { Divider, Modal, SwitchButtons } from '@repo/ui'
 import ServiceDaySelect from './components/ServiceDaySelect';
 import { ErrorMessage, PropertyService } from '@types';
-import { generateGraphQLQuery, generateUuid, useDataHandler } from '@repo/provider';
+import { generateGraphQLQuery, useDataHandler } from '@repo/provider';
 import ServiceIntervalSelect from './components/ServiceTimeSelect.tsx ';
-import styles from './AddService.module.scss';
+import styles from './AddEditService.module.scss';
 import ServiceSettings from './components/ServiceSettings';
 import { useQuery } from '@apollo/client';
 import getButtonStates from './constants/button_states';
 import { cloneDeep } from 'lodash';
+import { AddEditServiceState } from '../../types';
 
-const AddService: FC<AddServiceProps> = ({title, addService, setAddService, propertyId, serviceId, refetch}) => {
+const AddEditService: FC<AddEditServiceProps> = ({title, addEditService, setAddEditService, propertyId, serviceId, refetch}) => {
     const {updateData} = useDataHandler()
     const [loading, setLoading] = useState(false);
+    const [deleteService, setDeleteService] = useState(false);
     const {data} = useQuery(generateGraphQLQuery({
         objectName: 'Property', 
         type: 'get',
@@ -24,31 +26,10 @@ const AddService: FC<AddServiceProps> = ({title, addService, setAddService, prop
             id: propertyId
         }
     })
-
-    console.log({data});
     
-    
-    const [service, setService] = useState<PropertyService>( {
-        id: generateUuid(),
-        days: [],
-        serviceId,
-        active: true,
-        type: 'interval',
-        dates: [],
-        interval: {
-            number: 1,
-            unit: 'weeks',
-            start_date: '',
-            end_date: ''
-        },
-        settings: {
-            continue: true,
-            repeat: false
-        }
-    })
-    const button_states: ButtonStates = useMemo(() =>  getButtonStates(service.type), [service])
+    const [service, setService] = useState<AddEditServiceState>(addEditService)
+    const button_states: ButtonStates = useMemo(() => getButtonStates(service.type), [service])
     const [errors, setErrors] = useState<ErrorMessage[]>([])
-    console.log(button_states);
     
     const [buttonState, setButtonsState] = useState<typeof button_states[number]>(button_states[0] as typeof button_states[number])
     
@@ -78,8 +59,6 @@ const AddService: FC<AddServiceProps> = ({title, addService, setAddService, prop
 
     }, [service, buttonState])
 
-    console.log({service});
-
     const saveServiceHandler = useCallback(async () => {
         setLoading(true);
         if (data) {
@@ -102,15 +81,38 @@ const AddService: FC<AddServiceProps> = ({title, addService, setAddService, prop
         }
         await refetch();
         setLoading(false);
-        setAddService(false)
+        setAddEditService(null)
     }, [service, data, serviceId, propertyId])
-    
+
+   const deleteServiceHandler = async (serviceId: string) => {
+        setLoading(true);
+        if (data) {
+            const property = data.objects.getProperty;
+            const propertyServices = cloneDeep(property.services);
+            const services = propertyServices || {};
+            delete services[serviceId];
+            await updateData({
+                className: 'Property',
+                objectId: propertyId,
+                updateObject: {
+                    objectId: propertyId,
+                    services: services
+                },
+                onError: () => {
+                    setLoading(false);
+                }
+            })
+        }
+        await refetch();
+        setLoading(false);
+        setAddEditService(null)
+    }
 
     return (
         <Modal
             header={title}
-            isOpen={addService} 
-            cancelButtonHandler={() => setAddService(false)}
+            isOpen={!!addEditService} 
+            cancelButtonHandler={() => setAddEditService(null)}
             confirmButtonHandler={() => {
                 if (buttonState.value === 'settings') {
                     saveServiceHandler()
@@ -132,6 +134,7 @@ const AddService: FC<AddServiceProps> = ({title, addService, setAddService, prop
             errors={errors}
             buttonDisabled={[loading, errors.length > 0 || loading]}
         >
+            
             <div className={styles.switch_button_container}>
                 <SwitchButtons
                     buttonStates={button_states}
@@ -164,11 +167,29 @@ const AddService: FC<AddServiceProps> = ({title, addService, setAddService, prop
                         onChange={(service) => {
                             setService(service)
                         }}
+                        showDeleteButton={!!data?.objects.getProperty.services[serviceId]}
+                        setDelete={setDeleteService}
                     />
                 )}
             </div>
+            {deleteService &&
+                <div className={styles.delete_service_container}>
+                    <p>
+                        Möchten Sie die Leistung wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.
+                    </p>
+                    <div className='button_container'>
+                        <button className='full_button light md' onClick={() => {
+                            setDeleteService(false)
+                        }}>Abbrechen</button>
+                        <button className='full_button red md' onClick={() => {
+                            deleteServiceHandler(serviceId)
+                        }}>Löschen</button>
+                    </div>
+                </div>
+                
+            }
         </Modal>
     )
 }
 
-export default AddService
+export default AddEditService

@@ -1,7 +1,7 @@
 import { CreateButton, DatePicker, Select, SwitchButtons } from '@repo/ui'
 import React, { FC, useCallback, useMemo } from 'react'
 import { ServiceIntervalSelectProps } from '../types'
-import styles from '../AddService.module.scss'
+import styles from '../AddEditService.module.scss'
 import { formatISO9075 } from 'date-fns'
 import { cloneDeep, set } from 'lodash'
 import SelectServiceDate from './SelectServiceDate'

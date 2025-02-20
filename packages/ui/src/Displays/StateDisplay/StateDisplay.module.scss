@@ -17,6 +17,10 @@
     max-width: 100%;
 }
 
+.state_display_container[data-click] {
+    cursor: pointer;
+}
+
 @mixin state_display_container_styles {
     background-color: transparent;
     &:hover {

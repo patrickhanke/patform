@@ -1,10 +1,11 @@
 import { ApolloRefetch, PropertyService } from "@types";
 import { Dispatch, SetStateAction } from "react";
+import { AddEditServiceState } from "../../types";
 
-export type AddServiceProps = {
+export type AddEditServiceProps = {
     title: string,
-    addService: boolean,
-    setAddService: Dispatch<SetStateAction<boolean>>,
+    addEditService: AddEditServiceState,
+    setAddEditService: Dispatch<SetStateAction<AddEditServiceState | null>>,
     propertyId: string,
     serviceId,
     refetch: ApolloRefetch
@@ -22,7 +23,9 @@ export type ServiceIntervalSelectProps = {
 
 export type ServiceSettingsProps = {
     service: PropertyService,
-    onChange: (T:service) => void
+    onChange: (T:service) => void,
+    showDeleteButton: boolean,
+    setDelete: Dispatch<SetStateAction<boolean>>
 }
 
 export type ButtonStates = [

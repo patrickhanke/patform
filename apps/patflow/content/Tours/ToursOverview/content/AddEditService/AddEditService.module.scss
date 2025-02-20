@@ -19,3 +19,15 @@
 .switch_button_container {
     border-bottom: 1px solid constants.$grey;
 }
+
+.delete_service_container {
+    @include constants.flexbox($direction: column, $align: center, $justify: center, $gap: constants.$lg);
+    position: absolute;
+    background-color: rgba(255,255,255, 0.9);
+    width: 100% !important;
+    height: 100% !important;
+    top: 0;
+    left: 0;
+    padding: map-get($map: constants.$padding, $key: 'md');
+    text-align: center;
+}

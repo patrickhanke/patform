@@ -5,17 +5,18 @@ import { Page, Table } from '@repo/ui';
 import { useQuery } from '@apollo/client';
 import usePropertyTableColumns from './hooks/usePropertyTableColumns';
 import { generateGraphQLQuery } from '@provider';
-import { Property } from '@types';
-import { ServiceData } from './types';
+import { Property, PropertyService } from '@types';
+import { AddEditServiceState, ServiceData } from './types';
+import AddEditService from './content/AddEditService';
 
 const ToursOverview = () => {
-
+	const [addEditService, setAddEditService] = React.useState<AddEditServiceState | null>(null);
 	const {data, refetch}  = useQuery(generateGraphQLQuery({
 		type: 'find' , 
 		objectName: 'Property', 
 		fields: ['objectId', 'name', 'services']})
 	)
-	const columns = usePropertyTableColumns({refetch});
+	const columns = usePropertyTableColumns({refetch, addEditService, setAddEditService});
 
 	const tableData =  useMemo(() => {
 		if (data) {
@@ -46,6 +47,16 @@ const ToursOverview = () => {
 			<div className="content_element no_padding">
 				<Table columns={columns} data={tableData} />
 			</div>
+			{!!addEditService &&
+                <AddEditService 
+                    title={`${addEditService.propertyName} - ${addEditService.serviceName}`} 
+                    addEditService={addEditService} 
+                    setAddEditService={setAddEditService} 
+                    propertyId={addEditService.propertyId} 
+                    serviceId={addEditService.serviceId}
+                    refetch={refetch}
+                />
+            }
 		</Page>
 	);
 };

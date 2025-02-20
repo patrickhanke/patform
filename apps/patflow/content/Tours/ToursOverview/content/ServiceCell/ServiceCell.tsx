@@ -1,33 +1,51 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { ServiceCellProps } from './types';
-import AddService from './content/AddService';
+import { generateUuid } from '@repo/provider';
+import CellContent from './components/CellContent';
 
-const ServiceCell: FC<ServiceCellProps> = ({services, id, serviceName, propertyId, refetch}) => {
-    const [addService, setAddService] = useState(false);
+const ServiceCell: FC<ServiceCellProps> = ({services, id, serviceName, propertyId, propertyName, refetch, addEditService, setAddEditService}) => {
     const service = services[id];
     console.log({services});
     console.log({service});
 
     if (!service) return( 
         <div>
-            <button onClick={() => setAddService(true)}>+</button>
-            {addService &&
-                <AddService 
-                    title={`${services.name} - ${serviceName}`} 
-                    addService={addService} 
-                    setAddService={setAddService} 
-                    propertyId={propertyId} 
-                    serviceId={id}
-                    refetch={refetch}
-                />
-            }
+            <button 
+                className='full_button light sm'
+                onClick={() => setAddEditService({
+                    id: generateUuid(),
+                    days: [],
+                    active: true,
+                    type: 'interval',
+                    dates: [],
+                    interval: {
+                        number: 1,
+                        unit: 'weeks',
+                        start_date: '',
+                        end_date: ''
+                    },
+                    settings: {
+                        continue: true,
+                        repeat: false
+                    },
+                    serviceId: id,
+                    serviceName,
+                    propertyId,
+                    propertyName
+                })}
+            >+ Hinzufügen</button>
         </div>
     );
     
   return (
-    <div>
-
-    </div>
+    <CellContent 
+        service={service} 
+        setAddEditService={setAddEditService}  
+        serviceId={id}
+        serviceName={serviceName}
+        propertyId={propertyId}
+        propertyName={propertyName}
+    />
   )
 }
 

@@ -71,6 +71,14 @@
     }
 };
 
+.full_button.red {
+    background-color: $red;
+    color: $white;
+    &:hover {
+        background-color: $red_shaded;
+    }
+};
+
 .full_button:disabled {
     background-color: $light !important;
     color: $grey;
