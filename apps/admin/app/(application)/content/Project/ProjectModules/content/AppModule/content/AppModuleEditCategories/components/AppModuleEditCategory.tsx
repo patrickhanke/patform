@@ -15,7 +15,7 @@ const AppModuleEditCategory = ({category, setCategory, projectId}: AppModuleEdit
 			fields: ['objectId', 'name', 'position', 'categories', 'connected_class']
 		}
 	), {
-		variables: paramsHandler({filters: [{key: 'project', value: projectId as string, operator: '_eq', id: 'projectId'}]} )
+		variables: {params: paramsHandler({projectId})}
 	});
 
 	const changeHandler = useCallback(( value: {[key: string]: any}) => {

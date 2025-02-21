@@ -177,7 +177,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 		}
 		if (secContent === 'ticket') {
 			return (
-				<SelectTicket setTask={setTask} task={task} />
+				<SelectTicket projectId={projectId} setTask={setTask} task={task} />
 			)
 		}
 		if (secContent === 'property') {
@@ -267,7 +267,7 @@ const CreateTask = ({setRefetchTask, button, initialData}: CreateTaskProps) => {
 								</label>
 								{task.ticket ?
 									<div className='content_element' onClick={() => setSecContent('ticket')}>
-										<SelectTicket setTask={setTask} task={task} showTicketOnly />
+										<SelectTicket projectId={projectId} setTask={setTask} task={task} showTicketOnly />
 									</div>	
 									: 
 									<button className='full_button sm secondary' onClick={() => setSecContent('ticket')}>

@@ -2,6 +2,7 @@ import { CreateTask, Task } from "@types"
 import { ReactNode, SetStateAction } from "react"
 
 export type SelectTicketProps = {
+    projectId: string,
     setTask: Dispatch<SetStateAction<CreateTask>>,
     task: CreateTask,
     showTicketOnly?: boolean

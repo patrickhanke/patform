@@ -21,8 +21,6 @@ const CellContent: FC<CellContentProps> = ({
     }, [service, serviceId, serviceName, propertyId, propertyName])
 
     const getUnit = (unit: string) => {
-
-
        const units =
         [
             {
@@ -36,8 +34,6 @@ const CellContent: FC<CellContentProps> = ({
         const unitLabel = units.find((un) => un.value === unit)
         return unitLabel?.label
     }
-    console.log(service);
-    
     
     const renderService = useMemo(() => {
         if (service.type === 'interval') {
@@ -65,11 +61,12 @@ const CellContent: FC<CellContentProps> = ({
         } 
 
     }, [service])
-  return (
-    <div className='button_container'>
-       {renderService}
-    </div>
-  )
+
+    return (
+        <div className='button_container'>
+            {renderService}
+        </div>
+    )
 }
 
 export default CellContent;

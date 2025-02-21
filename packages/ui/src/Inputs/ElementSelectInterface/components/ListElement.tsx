@@ -5,8 +5,6 @@ import clsx from 'clsx';
 import { Icon } from '@repo/ui';
 
 const ListElement: FC<ListElementProps> = ({element, isSelected, onSelect}) => {
-	console.log(element);
-	
 	return (
 		<>	
 			<button 

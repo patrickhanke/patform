@@ -27,10 +27,9 @@ const useServiceTableColumns: (T: UseServiceTableColumns) => ColumnDef<ServiceDa
 		
 		if (data) {
 			const services = data.objects.findService.results;
-			console.log(services);
 			services.map((service: Service) => {
 				if (!service.is_active) return;
-				
+
 				columnsArray.push({
 					accessorFn: row => (
 						<ServiceCell 
@@ -53,9 +52,6 @@ const useServiceTableColumns: (T: UseServiceTableColumns) => ColumnDef<ServiceDa
 
 		return columnsArray;
 	}, [data]);
-
-	console.log(columns);
-	
 
 	return columns;
 };

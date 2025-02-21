@@ -3,10 +3,8 @@ import { ServiceCellProps } from './types';
 import { generateUuid } from '@repo/provider';
 import CellContent from './components/CellContent';
 
-const ServiceCell: FC<ServiceCellProps> = ({services, id, serviceName, propertyId, propertyName, refetch, addEditService, setAddEditService}) => {
+const ServiceCell: FC<ServiceCellProps> = ({services, id, serviceName, propertyId, propertyName, setAddEditService}) => {
     const service = services[id];
-    console.log({services});
-    console.log({service});
 
     if (!service) return( 
         <div>

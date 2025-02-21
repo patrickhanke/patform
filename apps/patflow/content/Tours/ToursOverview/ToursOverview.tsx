@@ -7,6 +7,7 @@ import page_states from './constants/page_states';
 import ServiceSettings from './content/ServiceSettings';
 import { UserContext } from '@repo/provider';
 import Services from './content/Services';
+import Tours from './content/Tours';
 
 const ToursOverview = () => {
 	const {projectId} = useContext(UserContext)
@@ -15,6 +16,14 @@ const ToursOverview = () => {
 
 	const pageHeaderButtons = useMemo(() => {
 		if (pageState.value === 'settings') {
+			return [
+				{
+					text: 'Service erstellen',
+					onClick: () => setCreateService(true)
+				}
+			]
+		}
+		if (pageState.value === 'tours') {
 			return [
 				{
 					text: 'Service erstellen',
@@ -40,6 +49,9 @@ const ToursOverview = () => {
 			)}
 			{pageState.value === 'settings' && (
 				<ServiceSettings projectId={projectId} createService={createService} setCreateService={setCreateService} />
+			)}
+			{pageState.value === 'tours' && (
+				<Tours projectId={projectId} />
 			)}
 		</Page>
 	);
