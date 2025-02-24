@@ -3,7 +3,7 @@ import { ApolloRefetch, PropertyService } from "@types"
 export type ServiceData = {
     objectId: string,
     name: string,
-} & PropertyServices
+} & Property['services']
 
 export type AddEditServiceState = {
     serviceId: string,
@@ -13,7 +13,5 @@ export type AddEditServiceState = {
 } & PropertyService
 
 export type UseServiceTableColumns = {
-    refetch: ApolloRefetch,
-    addEditService: AddEditServiceState | null,
     setAddEditService: Dispatch<SetStateAction<AddEditServiceState | null>>
 }

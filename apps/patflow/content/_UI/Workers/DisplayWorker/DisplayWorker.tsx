@@ -43,7 +43,6 @@ const DisplayWorker = ({workerId, showState= false, nextDate, showAvailability =
 		});
 	}, [data, showAvailability]);
 
-
 	if (wokerLoading || dayLoading) return <Loader width={'24px'} height={'24px'} />;
 	
 	if (workerData) {

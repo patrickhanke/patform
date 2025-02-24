@@ -3,15 +3,18 @@ import { DateObject, User } from '@types';
 
 export type Property = {
     objectId: string, 
-    name: string,
+    name: string,   
     settings: object,
     created_by: UserTypes.User
     createdAt: string
-    services: {[key: string]: PropertyServices}
+    services: {[key: string]: PropertyServices},
+    assigned_staff: string[],
+    archived: boolean
 }
 
 export type PropertyService = {
     id: string,
+    assigned_staff: string[],
     serviceId: string, 
     active: boolean,
     days: string[],

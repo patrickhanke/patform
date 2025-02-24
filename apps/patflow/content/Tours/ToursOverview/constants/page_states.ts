@@ -6,7 +6,7 @@ const page_states = [
         value: 'settings',
         label: 'Leistungseinstellungen'
     },{
-        value: 'tour',
+        value: 'tours',
         label: 'Touren'
     }
 ]

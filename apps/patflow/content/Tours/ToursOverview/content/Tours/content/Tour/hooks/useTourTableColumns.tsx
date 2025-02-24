@@ -3,10 +3,10 @@ import {  Service } from '@types';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { useQuery } from '@apollo/client';
-import ServiceCell from '../content/ServiceCell';
-import { ServiceData, UseServiceTableColumns } from '../types';
+import { ServiceData, UseTourTableColumns } from '../types';
+import TourCell from '../components/TourCell';
 
-const useServiceTableColumns: (T: UseServiceTableColumns) => ColumnDef<ServiceData>[] = ({setAddEditService}) => { 
+const useTourTableColumns: (T: UseTourTableColumns) => ColumnDef<ServiceData>[] = ({workerId, refetch}) => { 
 	const {data} = useQuery(generateGraphQLQuery({
 		type: 'find' , 
 		objectName: 'Service', 
@@ -32,16 +32,19 @@ const useServiceTableColumns: (T: UseServiceTableColumns) => ColumnDef<ServiceDa
 
 				columnsArray.push({
 					accessorFn: row => (
-						<ServiceCell 
+						<TourCell 
 							services={row || undefined} 
 							id={service.objectId} 
 							serviceName={service.name} 
 							propertyId={row.objectId}
 							propertyName={row.name} 
-							setAddEditService={setAddEditService}
+							userId={workerId}
+							refetch={refetch}
+							// setAddEditService={setAddEditService}
 						/>
 					),
 					header: () => <span>{service.name}</span>,
+					maxSize: 60,
 					id: service.objectId,
 					cell: info => info.getValue(),
 					footer: info => info.column.id,
@@ -51,9 +54,9 @@ const useServiceTableColumns: (T: UseServiceTableColumns) => ColumnDef<ServiceDa
 		}
 
 		return columnsArray;
-	}, [data]);
+	}, [data, workerId]);
 
 	return columns;
 };
 
-export default useServiceTableColumns;
+export default useTourTableColumns;

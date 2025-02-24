@@ -2,6 +2,7 @@
 @forward './layout/buttons.scss';
 @forward './layout/layout.scss';
 @forward './layout/inputs.scss';
+@use 'constants.scss' as *;
 
 .flex {
     display: flex;
@@ -19,6 +20,10 @@
     align-items: center;
 }
 
+.a-st {
+    align-items: stretch;
+}
+
 .j-ce {
     justify-content: center;
 }
@@ -33,5 +38,9 @@
 
 .c-pointer {
     cursor: pointer;
+}
+
+.gap-md {
+    gap: $md
 }
 

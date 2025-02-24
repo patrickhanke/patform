@@ -4,8 +4,9 @@ import './styles.scss';
 import styles from './IconButton.module.scss';
 import clsx from 'clsx';
 import Icons from './Icons';
+import { FC } from 'react';
 
-const IconButton: React.FC<IconButtonProps> = ({
+const IconButton: FC<IconButtonProps> = ({
 	icon, 
 	isLink, 
 	isBlank, 

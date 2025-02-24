@@ -12,7 +12,7 @@ export type IconProps = {
 };
 
 export type IconButtonProps = {
-    icon: IconType,
+    icon: IconTypes,
     isLink?: boolean,
     isDarkButton?: boolean,
     onClick?: () => void,

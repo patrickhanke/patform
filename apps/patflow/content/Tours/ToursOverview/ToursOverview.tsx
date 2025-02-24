@@ -13,6 +13,7 @@ const ToursOverview = () => {
 	const {projectId} = useContext(UserContext)
 	const [createService, setCreateService] = useState<boolean>(false);
 	const [pageState, setPageState] = useState<PageState>(page_states[0] as PageState);
+	const [headerContent, setPageHeaderContent] = useState<React.ReactNode | null>(null);
 
 	const pageHeaderButtons = useMemo(() => {
 		if (pageState.value === 'settings') {
@@ -23,15 +24,19 @@ const ToursOverview = () => {
 				}
 			]
 		}
-		if (pageState.value === 'tours') {
-			return [
-				{
-					text: 'Service erstellen',
-					onClick: () => setCreateService(true)
-				}
-			]
-		}
+		
 	}, [pageState]);
+
+	const pageHeaderContent = useMemo(() => {
+		
+		if (pageState.value === 'tours' && headerContent) {
+			return headerContent;
+		}
+	}, [pageState, headerContent]);
+
+	console.log(pageHeaderContent);
+	
+
 
 	return (
 		<Page 
@@ -40,18 +45,17 @@ const ToursOverview = () => {
 			pageStates={page_states}
 			setPageState={setPageState}
 			pageHeaderButtons={pageHeaderButtons}
+			pageHeaderContent={pageHeaderContent}
 
 		>
 			{pageState.value === 'services' && (
-				<>
-					<Services />
-				</>
+				<Services projectId={projectId} />
 			)}
 			{pageState.value === 'settings' && (
 				<ServiceSettings projectId={projectId} createService={createService} setCreateService={setCreateService} />
 			)}
 			{pageState.value === 'tours' && (
-				<Tours projectId={projectId} />
+				<Tours projectId={projectId} setPageHeaderContent={setPageHeaderContent} />
 			)}
 		</Page>
 	);

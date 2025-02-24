@@ -18,7 +18,7 @@ import clsx from 'clsx';
 import { ChevronsUpDown, ChevronUp, ChevronDown} from 'lucide-react';
 
 
-const Table: React.FC<TableTypes> = ({ data, columns, rowStyles }) => {
+const Table: React.FC<TableTypes> = ({ data, columns, rowStyles, cellBorders = false }) => {
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [pagination, setPagination] = useState({
@@ -99,7 +99,7 @@ const Table: React.FC<TableTypes> = ({ data, columns, rowStyles }) => {
 								>
 									{row.getVisibleCells().map(cell => {
 										return (
-											<td key={cell.id}>
+											<td key={cell.id} data-cell_borders={cellBorders}>
 												{flexRender(
 													cell.column.columnDef.cell,
 													cell.getContext()

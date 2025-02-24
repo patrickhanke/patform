@@ -6,17 +6,19 @@ import { Property } from '@types';
 import AddEditService from './content/AddEditService';
 import useServiceTableColumns from './hooks/useServiceTableColumns';
 import { Table } from '@repo/ui';
+import { paramsHandler } from '@repo/provider';
 
-const Services = () => {
+const Services = ({projectId}: {projectId: string}) => {
     const [addEditService, setAddEditService] = useState<AddEditServiceState | null>(null);
     
     const {data, refetch}  = useQuery(generateGraphQLQuery({
 		type: 'find' , 
 		objectName: 'Property', 
-		fields: ['objectId', 'name', 'services']})
-	)
+		fields: ['objectId', 'name', 'services']}), {
+        variables: {params: paramsHandler({projectId})}
+    })
 
-	const columns = useServiceTableColumns({refetch, addEditService, setAddEditService});
+	const columns = useServiceTableColumns({setAddEditService});
 
     const tableData =  useMemo(() => {
         if (data) {
@@ -28,7 +30,7 @@ const Services = () => {
                 const propertyObject: ServiceData = {
                     objectId: property.objectId,
                     name: property.name,
-                    ...property.services
+                    ...property.services as Property['services']
                 }
                 services.push(propertyObject);
             });
@@ -39,9 +41,6 @@ const Services = () => {
         return [];
     }, [data]);
 
-
-    console.log(columns);
-    
     return (
         <>
             <div className="content_element no_padding">

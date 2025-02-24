@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from "react";
 
 export type ServiceCellProps = {
     services: ServiceData;
-    id: string,
+    id: keyof ServiceData,
     serviceName: string,
     propertyId: string,
     propertyName: string,

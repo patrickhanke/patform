@@ -1,6 +1,6 @@
 'use client';
 
-import { UserContext, useDataHandler } from '@repo/provider';
+import { UserContext, generateGraphQLQuery, useDataHandler } from '@repo/provider';
 import React, { useCallback, useContext } from 'react';
 import useTableColumns from './hooks/useTableColumns';
 import { useQuery } from '@apollo/client';
@@ -14,13 +14,21 @@ const PropertyOverview = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const {user, projectId} = useContext(UserContext);
 
-	const {data, refetch}  = useQuery(FIND_ALL_PROPERTY, {onCompleted(data) {
-		const breadcrumbArray: Array<{value: string, label: string}> = [];
-		data.objects.findProperty.results.forEach((object: Property) => breadcrumbArray.push({
-			value: `/${object.objectId}`,
-			label: object.name
-		}));
-	}});
+	const {data, refetch}  = useQuery(generateGraphQLQuery({
+		objectName: 'Property',
+		type: 'find',
+		fields: ['objectId', 'name', 'createdAt', 'created_by {objectId username}', 'archived'],
+	}), {
+		variables: {params: {project: {_eq: projectId}, archived: {_ne: true}}},
+		
+		onCompleted(data) {
+			const breadcrumbArray: Array<{value: string, label: string}> = [];
+			data.objects.findProperty.results.forEach((object: Property) => breadcrumbArray.push({
+				value: `/${object.objectId}`,
+				label: object.name
+			}));
+		}
+	});
 
 	const {createData} =  useDataHandler();
 
@@ -34,7 +42,8 @@ const PropertyOverview = () => {
 				settings: {'key': false},
 				project: {__type: 'Pointer', className: 'Project', objectId: projectId},
 				created_by: {__type: 'Pointer', className: '_User', objectId: user.objectId},
-				assigned_staff: []
+				assigned_staff: [],
+				archived: false
 			},
 			afterSaveHandler: () => refetch
 		});

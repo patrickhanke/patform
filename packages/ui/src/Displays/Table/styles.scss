@@ -42,9 +42,13 @@
         padding: map-get($map: constants.$padding, $key: 'sm' );
         white-space: nowrap;
     }
+    th[data-cell_borders = 'true'] {
+        border-right: 1px solid constants.$grey_tinted;
+    }
     th:last-child {
         border-right: none;
     }
+    
     tr {
         font-family: 'Open Sans', sans-serif;
         td {
@@ -53,8 +57,12 @@
     }
     td {
         padding: map-get($map: constants.$padding, $key: 'sm' );
+        position: relative;
     }
-    
+
+    td[data-cell_borders = 'true'] {
+        border-right: 1px solid constants.$grey_tinted;
+    }   
     td:last-child {
         border-right: none;
     }

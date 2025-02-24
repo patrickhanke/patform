@@ -66,7 +66,20 @@ const AddEditService: FC<AddEditServiceProps> = ({title, addEditService, setAddE
             console.log(property);
             const propertyServices = cloneDeep(property.services);
             const services = propertyServices || {};
-            services[serviceId] = service;
+            const serviceCopy: PropertyService = {
+                id: service.id,
+                assigned_staff: service.assigned_staff || [],
+                serviceId: service.serviceId,
+                active: service.active,
+                days: service.days,
+                type: service.type,
+                dates: service.dates,
+                interval: service.interval,
+                settings: service.settings
+            }
+            services[serviceId] = serviceCopy;
+
+            
             await updateData({
                 className: 'Property',
                 objectId: propertyId,

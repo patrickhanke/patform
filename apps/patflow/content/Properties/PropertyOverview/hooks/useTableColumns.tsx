@@ -1,18 +1,40 @@
 import { DisplayWorker } from '@content';
 import { getDateLabel } from '@provider';
 import { Property } from '@types';
-import { IconButton } from '@repo/ui';
+import { IconButton, TableColumnString } from '@repo/ui';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import TeamAssignment from '../content/TeamAssignment';
+import { useDataHandler } from '@repo/provider';
+import PropertySettings from '../content/PropertySettings';
 
 const useTableColumns = () => { 
+	const {updateData} = useDataHandler()
 	const columns: ColumnDef<Property>[] = useMemo(() => [
 		{
-			accessorKey: 'name',
+			accessorFn: (row) => (
+			<TableColumnString 
+				isEditable
+				value={row.name}
+				onChange={async (value) => {
+					await updateData({
+						className: 'Property',
+						objectId: row.objectId,
+						updateObject: {
+							name: value
+						},
+						onError: () => {
+							console.log('error');
+						}
+					})
+
+				}}
+			 />
+			),
 			header: () => <span>Name</span>,
-			// cell: info => info.getValue(),
-			// footer: info => info.column.id,
+			id: 'name',
+			cell: info => info.getValue(),
+			footer: info => info.column.id,
 			sortingFn: 'alphanumeric'
 		},
 		{
@@ -45,9 +67,17 @@ const useTableColumns = () => {
 			disableSorting: true
 		},
 		{
+			accessorFn: row => <PropertySettings propertyId={row.objectId} /> ,
+			header: () => <span>Zur Objektseite</span>,
+			id: 'link',
+			cell: info => info.getValue(),
+			footer: info => info.column.id,
+			disableSorting: true
+		},
+		{
 			accessorFn: row => <IconButton icon='link' isLink link ={`/properties/${row.objectId}`} /> ,
-			header: () => <span>Bearbeiten</span>,
-			id: 'edit',
+			header: () => <span>Zur Objektseite</span>,
+			id: 'link',
 			cell: info => info.getValue(),
 			footer: info => info.column.id,
 			disableSorting: true

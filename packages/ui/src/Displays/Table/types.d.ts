@@ -12,7 +12,8 @@ export type TableTypes = {
     enableRowSelection?: boolean,
     title?: string,
     theadSpan?: number,
-    rowStyles?: (row: TData[number]) => React.StyleHTMLAttributes
+    rowStyles?: (row: TData[number]) => React.StyleHTMLAttributes,
+    cellBorders?: boolean
 }
 
 export type ColumnDef<TData> = ColumnDef<TData>;

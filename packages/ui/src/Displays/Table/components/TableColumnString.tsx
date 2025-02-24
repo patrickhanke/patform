@@ -19,9 +19,9 @@ const TableColumnString = ({value, isEditable = false, onChange }: TableColumnSt
 						onChange={e => setString(e.target.value)}
 					/> 
 					: 
-					<button type='button' className='edit_text' onClick={() => setIsOpen(!isOpen)}>
+					<div style={{textDecoration: isEditable ? 'underline' : 'none', cursor: isEditable ? 'pointer' : 'default'}} className='edit_text' onClick={() => setIsOpen(!isOpen)}>
 						{value ? value : '-'}
-					</button>
+					</div>
 				}
 
 				{isEditable &&  

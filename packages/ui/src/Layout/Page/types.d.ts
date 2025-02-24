@@ -1,5 +1,6 @@
 import { PageState } from '@repo/types';
 import { Field } from '../../Displays';
+import { ReactNode } from 'react';
 
 export type CreateClassProps<T> = {
     initialData?: {[key: keyof T]: any };
@@ -20,7 +21,7 @@ export type PageHeaderButton = {
 
 export type PageHeaderButtons = PageHeaderButton[]
 
-type PageHeaderContent =  React.JSX.Element;
+type PageHeaderContent =  ReactNode | null;
 
 export type PageCreateClassObject = CreateClassProps;
 
