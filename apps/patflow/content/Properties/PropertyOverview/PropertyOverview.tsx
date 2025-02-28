@@ -4,7 +4,6 @@ import { UserContext, generateGraphQLQuery, useDataHandler } from '@repo/provide
 import React, { useCallback, useContext } from 'react';
 import useTableColumns from './hooks/useTableColumns';
 import { useQuery } from '@apollo/client';
-import { FIND_ALL_PROPERTY } from '@queries';
 import CreatePropterty from './components/CreateProperty';
 import initialData from './constants/initialData';
 import { Property } from '@types';

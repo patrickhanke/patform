@@ -95,6 +95,7 @@ const AddService: FC<AddServiceProps> = ({ addService, setAddService, propertyId
 			description: service.description,
 			assigned_staff: service.assigned_staff,
 			comments: [],
+			substitutes: {},
 			images: service.images || [],
 			time: service,
 			project: { __type: 'Pointer', className: 'Project', objectId: projectId },

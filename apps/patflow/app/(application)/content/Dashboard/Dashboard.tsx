@@ -6,7 +6,7 @@ import { useContext, useMemo } from 'react';
 import { NotificationContext } from '@repo/provider';
 
 const Dashboard = () => {
-	const {notifications, setNotificationsToRead, deleteNotification} = useContext(NotificationContext);
+	const {notifications, reloadNotifications, setNotificationsToRead, deleteNotification} = useContext(NotificationContext);
 
 	const pageHeaderButtons = useMemo(() => [
 		{
@@ -22,7 +22,18 @@ const Dashboard = () => {
 	return (
 		<Page 
 			title='Dashboard'
-			pageHeaderButtons={pageHeaderButtons}
+			pageHeaderButtons={[
+				{
+					text: 'Alle Nachrichten löschen ',
+					onClick: async () => 	{
+						await deleteAllNotifications()
+						await reloadNotifications()
+					},
+					color: 'primary',
+					disabled: notifications.length === 0
+				}
+		
+			]}
 		>
 			<UserMessages
 				notifications={notifications}

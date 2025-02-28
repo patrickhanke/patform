@@ -17,8 +17,6 @@ const Page = ({
 	refetch,
 	emptyContent=false
 }: PageProps) => {
-	console.log(pageHeaderContent);
-	
 	return (
 		<>
 			<div className='page_header_container'>

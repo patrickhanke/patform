@@ -61,7 +61,7 @@ export type Image = string // filePath to Image
 export type ApolloRefetch = () => Promise<ApolloQueryResult<any>>
 
 export type NotificationData = {
-    type: 'ticket' | 'task',
+    type: 'ticket' | 'task' | 'absence',
     id: string,
     action: 
     'task_created' | 
@@ -70,7 +70,8 @@ export type NotificationData = {
     'ticket_image_added' | 
     'task_image_added' | 
     'ticket_comment_added' |
-    'task_comment_added' 
+    'task_comment_added'  |
+    'absence_submitted'
 }
 
 

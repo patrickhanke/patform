@@ -4,11 +4,13 @@ import { Dispatch, SetStateAction } from "react";
 export type TourProps = {
     projectId: string;
     workerId: string;
+    year: number;
 }
 
 export type UseTourTableColumns = {
     workerId: string,
-    refetch: ApolloRefetch
+    refetch: ApolloRefetch,
+    year: number
 }
 
 export type ServiceData = {
@@ -23,6 +25,7 @@ export type TourCellProps = {
     propertyId: string,
     propertyName: string,
     userId: string,
-    refetch: ApolloRefetch
+    refetch: ApolloRefetch,
+    year: number,
     // setAddEditService: Dispatch<SetStateAction<AddEditServiceState | null>>
 }

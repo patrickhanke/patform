@@ -5,7 +5,20 @@ import styles from './SwitchButtons.module.scss';
 import { IconButtonTypes, Icons } from '@repo/ui';
 import { SwitchButtonProps } from './types';
 
-const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates, changeHandler, underlineButtons = false}) => {
+const SwitchButtons: React.FC<SwitchButtonProps> = ({buttonStates, currentStates, changeHandler, underlineButtons = false, useFragment}) => {
+	
+	React.useEffect(() => {
+		if (useFragment && window.location.hash) {
+			const urlHash = window.location.hash.substring(1);
+
+			const button = buttonStates.find(button => button.value === urlHash);
+			if (button && button.value !== currentStates?.value) {
+				changeHandler(button);
+				window.history.replaceState(null, '', ' ');
+			}
+		}
+	}, [useFragment, currentStates, buttonStates]);
+
 	return (
 		<div className={styles.buttons_container} data-underline_buttons={underlineButtons}>
 			{buttonStates.map((button, index) => 

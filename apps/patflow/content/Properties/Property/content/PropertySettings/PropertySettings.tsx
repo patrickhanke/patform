@@ -65,6 +65,8 @@ const PropertySettings : FC<PropertySettingsProps> = ({propertyId, refetch}) => 
 				isHorizontal
 				useWithDebounce
 			/>
+
+			
 			
 			<ArchiveProperty propertyId={propertyId} refetch={refetch} isArchived={property.archived} />
 		</div>

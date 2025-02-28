@@ -23,8 +23,8 @@ export type RenderNotificationProps = Notification & {deleteNotification: (id: n
 
 
 export type NotificationStateDisplay = {
-    label: 'Ticket' | 'Task',
-    color: 'blue' | 'green',
-    icon: 'ticket' | 'task',
+    label: 'Ticket' | 'Task' | 'Urlaub'| '',
+    color: 'blue' | 'green' | 'yellow'| '',
+    icon: 'ticket' | 'task' | 'clock',
     link: string | null
 }

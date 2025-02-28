@@ -9,3 +9,10 @@ export type UseTourTableColumns = {
     workerId: string,
     refetch: ApolloRefetch
 }
+
+export type TourStore = {
+    week: {value: number, label: string},
+    worker: string | null,
+    setWeek: (week: TourStore['week']) => void,
+    setWorker: (worker: string) => void
+}

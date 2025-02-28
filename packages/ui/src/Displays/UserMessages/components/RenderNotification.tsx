@@ -11,13 +11,31 @@ const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp
 	
 	const stateDisplay: (NotificationStateDisplay | null) = useMemo(() => {
 		if (!data) return null;
+		const returnValue: NotificationStateDisplay = {
+			label: '',
+			color: '',
+			icon: 'task',
+			link: ''
+		};
 
-		return ({
-			label: data.type === 'ticket' ? 'Ticket' : 'Task',
-			color: data.type === 'ticket' ? 'blue' : 'green',
-			icon: data.type === 'ticket' ? 'ticket' : 'task',
-			link: createLabelLinks(data)
-		});
+		if (data.type === 'task') {
+			returnValue.label = 'Task';
+			returnValue.color = 'green';
+			returnValue.icon = 'task';
+			returnValue.link = createLabelLinks( data);
+		}  else if (data.type === 'ticket') {
+			returnValue.label = 'Ticket';
+			returnValue.color = 'green';
+			returnValue.icon = 'ticket';
+			returnValue.link = createLabelLinks(data);
+		} else if (data.type === 'absence') {
+			returnValue.label = 'Urlaub';
+			returnValue.color = 'yellow';
+			returnValue.icon = 'clock';
+			returnValue.link = createLabelLinks(data);
+		}
+
+		return (returnValue);
 	}, []);
 
 	const linkHandler = useCallback(async () => {
@@ -42,6 +60,20 @@ const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp
 					linkString = 'no_link';
 				});
 		}
+		
+		if (data && data.type === 'ticket') {
+			await axiosclient().post('/functions/get-ticket-link', {id: data.id})
+				.then(response => {
+					linkString = response.data.result?.link;
+				})
+				.catch(() => {
+					linkString = 'no_link';
+				});
+		}
+
+		if (data && data.type === 'absence') {
+			linkString = '/records#absence';
+		}
 
 		if (linkString) {
 			setLink(linkString);
@@ -50,14 +82,11 @@ const RenderNotification: FC<RenderNotificationProps> = ({title, body, timestamp
 	}, [data]);
 
 	useEffect(() => {
-		if (data && (data.type === 'task' || data.type === 'ticket') && link === null) {
+		if (data && (data.type === 'task' || data.type === 'ticket' || data.type === 'absence') && link === null) {
 			linkHandler();
 		}
 	}, [data, link]);
 
-	console.log(data);
-	
-	
 	return (
 		<div className={clsx(styles.user_message_container)} data-is_read={read}> 
 			<div className={styles.content_container}>

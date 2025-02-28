@@ -20,7 +20,7 @@ export let messaging: Messaging;
 const app = initializeApp(firebaseConfig);
 
 if (typeof window !== 'undefined') {
-  messaging = getMessaging(app);
+	messaging = getMessaging(app);
 }
 
 export const requestPermissionAndGetToken = async () => {
@@ -30,7 +30,7 @@ export const requestPermissionAndGetToken = async () => {
   
 	  // Get the messaging token
 	  const token = await getToken(messaging, {
-		vapidKey: firebaseConfig.vapidKey,
+			vapidKey: firebaseConfig.vapidKey
 	  });
   
 	  return token;
@@ -38,7 +38,7 @@ export const requestPermissionAndGetToken = async () => {
 	  console.error('Error getting messaging token:', err);
 	  return null;
 	}
-  };
+};
 
 
 

@@ -5,9 +5,11 @@ const createLabelLinks: (data: NotificationData) => string | null = (data) => {
 		return null;
 	} else {
 		if (data.type === 'ticket') {
-			return `/tickets/active/ticket=?${data.id || data.ticketId}`;
+			return `/tickets/active/ticket=?${data.id || data.id}`;
 		} else if (data.type === 'task') {
-			return `/tasks/active/?task=${data.id || data.taskId}`;
+			return `/tasks/active/?task=${data.id || data.id}`;
+		} else if (data.type === 'absence') {
+			return '/records#absence';
 		}
 	}
 	return '';

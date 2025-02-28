@@ -10,7 +10,8 @@ const PageNavigation = ({siteStates = [], activeState, onClick}: PageNavigationP
 					buttonStates={siteStates}
 					currentStates={activeState}
 					changeHandler={(value: PageNavigationProps['activeState']) => onClick(value)}
-					underlineButtons={true}
+					underlineButtons
+					useFragment
 				/>
 			</div>
 		</div>

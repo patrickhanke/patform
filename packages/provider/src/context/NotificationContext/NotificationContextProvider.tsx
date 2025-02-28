@@ -78,7 +78,8 @@ const NotificationContextProvider = ({children} : {children: React.ReactNode}) =
 		notifications,
 		unreadNotifications,
 		setNotificationsToRead,
-		deleteNotification: deleteNotificationCallaback
+		deleteNotification: deleteNotificationCallaback,
+		reloadNotifications: getNotificationCallback
 	}), [notifications, unreadNotifications]);
 	
 	return (

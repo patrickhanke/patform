@@ -3,7 +3,6 @@ import { ClassCategories, ModuleCategory, Module, EventClass, ClassState, Person
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from '@repo/types'; 
 import { MapPlace } from '../Map';
 
-
 export type TableTypes = {
     data: TData[],
     columns: ColumnDef<TData>[],

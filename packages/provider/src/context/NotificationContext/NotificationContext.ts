@@ -8,7 +8,8 @@ interface ContextValues {
     unreadNotifications: Notification[],
     setNotificationsToRead: () => void,
     deleteNotification: (id: number | string) => void,
-    newNotification: string | undefined
+    newNotification: string | undefined,
+    reloadNotifications: () => void
 }
 
 const NotificationContext = React.createContext({} as ContextValues );

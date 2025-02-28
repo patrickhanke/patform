@@ -6,7 +6,6 @@ import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import TeamAssignment from '../content/TeamAssignment';
 import { useDataHandler } from '@repo/provider';
-import PropertySettings from '../content/PropertySettings';
 
 const useTableColumns = () => { 
 	const {updateData} = useDataHandler()
@@ -62,14 +61,6 @@ const useTableColumns = () => {
 			),
 			header: () => <span>Zugewiesene Arbeiter</span>,
 			id: 'assigned_staff',
-			cell: info => info.getValue(),
-			footer: info => info.column.id,
-			disableSorting: true
-		},
-		{
-			accessorFn: row => <PropertySettings propertyId={row.objectId} /> ,
-			header: () => <span>Zur Objektseite</span>,
-			id: 'link',
 			cell: info => info.getValue(),
 			footer: info => info.column.id,
 			disableSorting: true

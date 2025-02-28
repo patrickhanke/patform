@@ -26,7 +26,7 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(({
 					<h2>{title}</h2>
 					{description && <p style={{ marginTop: '18px' }}>{description}</p>}
 				</div>
-				{(isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0) || pageHeaderContent &&
+				{(isArray(pageHeaderButtons) && pageHeaderButtons?.length > 0) &&
                     <div className={'pageheader_button_container'}>
                     	{isArray(pageHeaderButtons) && pageHeaderButtons.map(button => (
                     		<button

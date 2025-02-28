@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client';
 import { ServiceData, UseTourTableColumns } from '../types';
 import TourCell from '../components/TourCell';
 
-const useTourTableColumns: (T: UseTourTableColumns) => ColumnDef<ServiceData>[] = ({workerId, refetch}) => { 
+const useTourTableColumns: (T: UseTourTableColumns) => ColumnDef<ServiceData>[] = ({workerId, refetch, year}) => { 
 	const {data} = useQuery(generateGraphQLQuery({
 		type: 'find' , 
 		objectName: 'Service', 
@@ -28,33 +28,36 @@ const useTourTableColumns: (T: UseTourTableColumns) => ColumnDef<ServiceData>[] 
 		if (data) {
 			const services = data.objects.findService.results;
 			services.map((service: Service) => {
-				if (!service.is_active) return;
+				if (service.is_active) {
+					columnsArray.push({
+						accessorFn: row => (
+							<TourCell 
+								key={service.objectId}
+								services={row || undefined} 
+								id={service.objectId} 
+								serviceName={service.name} 
+								propertyId={row.objectId}
+								propertyName={row.name} 
+								userId={workerId}
+								refetch={refetch}
+								year={year}
+								// setAddEditService={setAddEditService}
+							/>
+						),
+						header: () => <span>{service.name}</span>,
+						maxSize: 60,
+						id: service.objectId,
+						cell: info => info.getValue(),
+						footer: info => info.column.id,
+						sortingFn: 'alphanumeric'
+					})
+				};
 
-				columnsArray.push({
-					accessorFn: row => (
-						<TourCell 
-							services={row || undefined} 
-							id={service.objectId} 
-							serviceName={service.name} 
-							propertyId={row.objectId}
-							propertyName={row.name} 
-							userId={workerId}
-							refetch={refetch}
-							// setAddEditService={setAddEditService}
-						/>
-					),
-					header: () => <span>{service.name}</span>,
-					maxSize: 60,
-					id: service.objectId,
-					cell: info => info.getValue(),
-					footer: info => info.column.id,
-					sortingFn: 'alphanumeric'
-				},)
 			})
 		}
 
 		return columnsArray;
-	}, [data, workerId]);
+	}, [data, workerId, year]);
 
 	return columns;
 };

@@ -15,6 +15,9 @@ export type Property = {
 export type PropertyService = {
     id: string,
     assigned_staff: string[],
+    substitutes: {
+        [key: number]: string[]
+    }
     serviceId: string, 
     active: boolean,
     days: string[],

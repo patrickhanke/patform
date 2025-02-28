@@ -6,7 +6,7 @@ import { ServiceData, TourProps } from './types'
 import { Property } from '@types'
 import { Table } from '@repo/ui'
 
-const Tour: FC<TourProps> = ({projectId, workerId}) => {
+const Tour: FC<TourProps> = ({projectId, workerId, year}) => {
     const {data, refetch}  = useQuery(generateGraphQLQuery({
 		type: 'find' , 
 		objectName: 'Property', 
@@ -37,12 +37,10 @@ const Tour: FC<TourProps> = ({projectId, workerId}) => {
         return [];
     }, [data, workerId]);
 
-    const columns = useTourTableColumns({workerId, refetch})
+    const columns = useTourTableColumns({workerId, refetch, year})
 
     return (
-        <div>
-            <Table columns={columns} data={tableData} cellBorders />
-        </div>
+        <Table columns={columns} data={tableData} cellBorders />
     )
 }
 
