@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 const Admin = () => {
-	const user = 'user'
+	const user = 'user';
         
 	if (user) return (
 		<div className={'admin_container'}>

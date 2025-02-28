@@ -1,0 +1,6 @@
+@use '@repo/styles/constants';
+
+.app_module_category_container {
+    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
+    background-color: constants.$white;
+}

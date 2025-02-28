@@ -17,8 +17,8 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 	
-	const token = request.cookies.get('patwork_token')?.value || '1234' as string;
-	const loggedInCookie = request.cookies.get('patwork_logged_in')?.value || '';
+	const token = request.cookies.get('patstore_token')?.value || '1234' as string;
+	const loggedInCookie = request.cookies.get('patstore_logged_in')?.value || '';
 	let loggedIn = loggedInCookie ==='true'|| false;
 
 	if (!token) {
@@ -64,7 +64,7 @@ export async function middleware(request: NextRequest) {
 	const response = NextResponse.next();
 	
 	if (loggedIn) {
-		response.cookies.set('patwork_logged_in', 'true');
+		response.cookies.set('patstore_logged_in', 'true');
 	}
 	
 	const projectId =  process.env.PROJECT_ID;
