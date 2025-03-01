@@ -17,7 +17,6 @@ const LoginForm = () => {
 	const router = useRouter();
 	const [error, setError] = useState('');
 
-
 	const formik = useFormik({
 		validationSchema: LoginSchema,
 		initialValues: {
@@ -27,12 +26,6 @@ const LoginForm = () => {
 		onSubmit: async (values) => {
 			console.log(values);
 			
-			// setDisabled(true);
-			// const user : User[] = await getData({className: `_User?where={"email":"${values.email}"}`})
-			// 	.catch(() => {
-			// 		window.alert('Für diese E-Mail Adresse ist kein Nutzer hinterlegt');
-			// 		return [] as User[];
-			// 	});
 			const user = await axiosclient()
 				.post('/functions/get-user-data', {
 					email: values.email
@@ -42,13 +35,12 @@ const LoginForm = () => {
 			setDisabled(false);
 				
 			if (user?.data?.result?.is_superuser === true) {
-				 
 				await axiosclient().post('login', {
 					'username': user?.data?.result?.username, 
 					'password': values.password
 				})
 					.then(response => {
-						Cookies.set('patwork_token', response.data.sessionToken, {expires: 90});
+						Cookies.set('patwork_token', response.data.sessionToken, {expires: 180});
 						setError('');
 					})
 					.catch(error => {

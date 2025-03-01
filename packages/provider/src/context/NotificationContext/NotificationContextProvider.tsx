@@ -9,6 +9,8 @@ import { MessagePayload } from 'firebase/messaging';
 import { isEqual } from 'lodash';
  
 const NotificationContextProvider = ({children} : {children: React.ReactNode}) => {
+	console.log('NotificationContextProvider');
+	
 	const {user} = useContext(UserContext);
 	const [newNotification, setNewNotification] = useState<string | undefined>(undefined);
 	

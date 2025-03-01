@@ -1,5 +1,5 @@
 import React from 'react';
-import AdminPage from './UI/AdminPage/AdminPage';
+import { AdminPage } from '../../ui';
 
 const Dashboard = () => {
 	return (

@@ -5,7 +5,7 @@ import { MessageIndicator } from '@repo/ui';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { UserContext, getImageUrl } from '@repo/provider';
 
-const UserDisplay = () => {
+const UserDisplay = ({userMessages=false}: {userMessages: boolean}) => {
 	const {user} = useContext(UserContext);
 	const [client, setClient] = useState(false);
 
@@ -40,7 +40,7 @@ const UserDisplay = () => {
 					<div className={styles.user_image_placeholder} />
 				}
 			</div>
-			<MessageIndicator />
+			{userMessages && <MessageIndicator />}
 			{/* <h4 style={{fontSize: '12px', fontWeight: 600}}>{`${user.first_name} ${user.family_name}`}</h4> */}
 		</div>
 	);

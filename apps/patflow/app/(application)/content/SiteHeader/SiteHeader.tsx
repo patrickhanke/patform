@@ -34,7 +34,7 @@ const SiteHeader = ({
 				<CalendarWeek />
 				<div className='vertical_line' />
 				<Suspense>
-					<UserDisplay />
+					<UserDisplay userMessages  />
 				</Suspense>
 			</div>
 		</div>

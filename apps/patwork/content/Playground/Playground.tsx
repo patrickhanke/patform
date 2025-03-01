@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react';
 import { AppContext } from '../../provider';
-import AdminPage from '../../UI/AdminPage/AdminPage';
+import { AdminPage } from '../../ui';
 
 const Playground = ({params}: {params: {project_id: string}}) => {
     const {getCurrentProject} = useContext(AppContext);

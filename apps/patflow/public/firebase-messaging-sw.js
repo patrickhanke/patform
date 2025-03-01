@@ -11,11 +11,16 @@ const firebaseConfig = {
 	appId: '1:641842391250:web:af88774f5d9e0aac01250b',
 	measurementId: 'G-32QEKHD6FM'
 };
+
+console.log('fb messaging');
+
 // Initialize Firebase in the service worker
 firebase.initializeApp(firebaseConfig);
 
 // Retrieve an instance of Firebase Messaging
 const messaging = firebase.messaging();
+
+
 
 // Handle background messages
 messaging.onBackgroundMessage((payload) => {

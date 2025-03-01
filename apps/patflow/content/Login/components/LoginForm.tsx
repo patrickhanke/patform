@@ -17,8 +17,6 @@ const LoginForm = () => {
 	const [error, setError] = useState('');
 	const {token} = useFirebaseMessaging({initialize: false})
 
-
-
 	const formik = useFormik({
 		validationSchema: LoginSchema,
 		initialValues: {
@@ -41,12 +39,8 @@ const LoginForm = () => {
 			}
 
 			if (user) {
-				console.log(user);
-				console.log(user.has_access);
-				
 				if (user.has_access === true) {
 					const login = await loginUser({email: values.email, password: values.password, token});
-					console.log(login);
 					
 					if (login) {
 						if (login.error) {

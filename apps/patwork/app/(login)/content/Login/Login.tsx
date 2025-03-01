@@ -18,7 +18,7 @@ const Login = () => {
 					<h1>Patwork Admin</h1>
 					<div className={'login_divider'} />
 					<p>
-						Login Patwork CMS
+						Login Patwork Admin
 					</p>
 				</div>
 				<div className={'login_footer'}>

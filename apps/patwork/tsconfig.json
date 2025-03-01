@@ -10,11 +10,11 @@
   "paths": {
       "@patwork/*": ["./src/*"],
       "@patwork/provider": ["./provider/index.ts"],
-      "@patwork/settings/*": ["./settings/*"],
-      "@patwork/styles/*": ["./styles/*"],
       "@patwork/content": ["./content/index.ts"],
-      "@patwork/queries": ["./queries/index.ts"],
-      "@patwork/types": ["./types/index.ts"]
+      // "@patwork/settings/*": ["./settings/*"],
+      // "@patwork/styles/*": ["./styles/*"],
+      // "@patwork/queries": ["./queries/index.ts"],
+      // "@patwork/types": ["./types/index.ts"]
     },
   "include": [
     "next-env.d.ts",
