@@ -37,7 +37,7 @@ const CreateClass = <T extends Classes>({initialData, fields, text, className, r
 			<button
 				onClick={() => setIsOpen(true)}
 				disabled={false}
-				className='full_button sm primary'
+				className='full_button md primary'
 			>
 				{text}
 			</button>

@@ -10,7 +10,7 @@ import { UserMessagesProps } from './types';
 const UserMessages: FC<UserMessagesProps> = ({notifications, setNotificationsToRead, deleteNotification}) => {
 	useEffect(() => {
 		const handleVisibilityChange = () => {
-			if (document.visibilityState === 'visible') {
+			if (document.visibilityState === 'visible' && !!setNotificationsToRead) {
 				setNotificationsToRead();
 			} 
 		};

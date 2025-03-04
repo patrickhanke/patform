@@ -17,7 +17,7 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next();
 	}
 	
-	const token = request.cookies.get('patstore_token')?.value || '1234' as string;
+	const token = request.cookies.get('patstore_token')?.value;
 	const loggedInCookie = request.cookies.get('patstore_logged_in')?.value || '';
 	let loggedIn = loggedInCookie ==='true'|| false;
 

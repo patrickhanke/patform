@@ -47,20 +47,23 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(({
                             		{pageHeaderContent}
                             	</div>
                             	<div>
-                            		{createClass?.className && (
-                            			<CreateClass
-                                            initialData={createClass.initialData}
-                                            fields={createClass.fields}
-                                            text={createClass.text || 'Neues Objekt erstellen'}
-                                            className={createClass.className}
-                                            refetch={refetch}
-                            			/>
-                            		)}
+                            		
                             	</div>
                             </>
                     	}
                     </div>
 				}
+				<div>
+					{createClass?.className && (
+						<CreateClass
+							initialData={createClass.initialData}
+							fields={createClass.fields}
+							text={createClass.text || 'Neues Objekt erstellen'}
+							className={createClass.className}
+							refetch={refetch}
+						/>
+					)}
+				</div>
 			</div>
 			{pageStates.length > 0 && pageState && setPageState &&
                 <PageNavigation

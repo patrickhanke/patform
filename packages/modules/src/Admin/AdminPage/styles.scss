@@ -1,0 +1,10 @@
+@use '@repo/styles/constants';
+
+.page-content {
+    height: 100%;
+    width: 100%;
+    flex: 1 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: map-get($map: constants.$padding, $key: 'site' );
+}

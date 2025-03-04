@@ -1,32 +1,35 @@
 import React from 'react';
 import '@repo/styles/global';
 import '@repo/styles/layout';
-import { ApolloClient, OperationVariables } from '@apollo/client';
 import LayoutContext from './components/LayoutContext';
-import { Module, Project } from '@repo/types';
-import {get_initial_project, serverClient} from '@repo/provider';
 import { SiteHeader } from '@repo/ui';
 import RenderSidebar from './components/RenderSidebar';
+import { cookies } from 'next/headers';
 
 export const metadata = {
 	title: 'Patstore App',
 	description: 'PH'
 };
 
-interface GetProjectsResponse {
-	objects: {
-		getProject: Project;
-	};
-};
-
 const getData = async () => {
-	const projectId = process.env.PROJECT_ID;
-	
-	const client: ApolloClient<any> = serverClient(process.env.SASHIDO_GQL_URL as string, process.env.SASHIDO_APP_ID as string, process.env.SASHIDO_MASTER_KEY as string);
-	
-	const { data } = await client.query<GetProjectsResponse, OperationVariables>({ query: get_initial_project, variables: { id: projectId ||'H7eK6Fv3cn' } });
-  
-	return data;
+	const cookieStore = cookies();
+	const token = cookieStore.get('patstore_token')?.value;
+
+	const httpHeaders = {
+		'X-Parse-Session-Token': token || '',
+		'X-Parse-Application-Id': process.env.SASHIDO_APP_ID || '',
+		'X-Parse-REST-API-Key': process.env.SASHIDO_REST_KEY || ''
+	};
+
+	const headers = new Headers(httpHeaders);
+
+	const user = await fetch(`${process.env.SASHIDO_API_URL}users/me`,{ 
+		method: 'GET',
+		headers
+	})
+	.then(response => response.json())
+
+	return user;
 };
 
 export default async function  RootLayout({
@@ -35,19 +38,14 @@ export default async function  RootLayout({
 	children: React.ReactNode,
 }) {
 	const data = await getData();
-	
+
 	return (
 		<html lang="de">
 			<body>
 				<div className={'layout'}>
-					<LayoutContext project={data.objects.getProject}>
+					<LayoutContext projects={data.projects}>
 						<RenderSidebar 
-							logo={data.objects.getProject.logo}
-							menuItems={data.objects.getProject.modules.results.map((module: Module) => ({
-								label: module.name,
-								icon: module.icon,
-								value: module.path
-							}))} 
+						
 						/>
 
 						<div className={'main_content'} id='main_content'>
