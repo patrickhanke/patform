@@ -4,10 +4,10 @@ import Image from 'next/image';
 
 import lettering from  '../images/patstore_lettering.png';
 import logo from  '../images/patstore_logo.png';
-import { ProjectInitializerProps } from '../types';
+import { ProjectLoaderProps } from '../types';
 import {LoadingIndicator} from '@repo/ui';
 
-const ProjectInitializer: FC<ProjectInitializerProps> = ({loading, error, project}) => {
+const ProjectLoader: FC<ProjectLoaderProps> = ({loading, error, project}) => {
     if (!loading && project) {
         return null
     }
@@ -38,4 +38,4 @@ const ProjectInitializer: FC<ProjectInitializerProps> = ({loading, error, projec
     )
 }
 
-export default ProjectInitializer
+export default ProjectLoader

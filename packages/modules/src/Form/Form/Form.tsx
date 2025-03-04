@@ -4,9 +4,9 @@
 import FormDataContent from './content/FormData';
 import { useGetForm } from './hooks/useGetForm';
 import siteStates from './constants/siteStates';
-import { Loader, Page } from '@repo/ui';
-import { useContext, useState } from 'react';
-import { AppContext } from '@repo/provider';
+import { Loader, Page, PageHeaderButton } from '@repo/ui';
+import { useContext, useMemo, useState } from 'react';
+import { AppContext, ProjectLoader } from '@repo/provider';
 import FormData from './content/FormData';
 import FormSettings from './content/FormSettings';
 import FormFields from './content/FormFields';
@@ -16,22 +16,42 @@ const Form = ({params}: {params: Params}) => {
 	const formId = params.form_id;
 	const {form, refetch} = useGetForm({formId});
 	const {currentModule} = useContext(AppContext);
-	const [siteState, setSiteState] = useState<{value: string, label: string}>(siteStates[0] as {value: string, label: string});	
-	
+	const [siteState, setSiteState] = useState<typeof siteStates[number]>(siteStates[0] as {value: string, label: string});	
+	const [createField, setCreateField] = useState(false);
+
+	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
+		if (siteState.value === 'fields') {
+			return ([
+				{
+					text: 'Feld hinzufügen',
+					onClick: () => setCreateField(true),
+					is_add_button: true
+
+				}
+			])
+		}
+		return [];
+	}, [siteState]);
+
+	if (!form) {
+		return <ProjectLoader loading={!form} />;
+	}
+
 	return (
 		<Page 
 			title={ form ? form?.name : 'Lädt ...' }
 			emptyContent={true}
 			refetch={refetch}
 			pageStates={siteStates}
-			activeState={siteState}
-			navOnClick={setSiteState}
+			pageState={siteState}
+			setPageState={setSiteState}
+			pageHeaderButtons={pageHeaderButtons}
 		>
 			{!form ? <p>Formular nicht gefunden</p> : 
 				<>
 					{siteState.value === 'data' && <FormData formId={formId} />}
-					{siteState.value === 'fields' && <FormSettings formId={formId} />}
-					{siteState.value === 'formData' && <FormFields formId={formId} />}
+					{siteState.value === 'settings' && <FormSettings formId={formId} />}
+					{siteState.value === 'fields' && <FormFields formId={formId} createField={createField} setCreateField={setCreateField} />}
 				</>
 
 			}

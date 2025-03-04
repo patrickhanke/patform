@@ -14,7 +14,7 @@ const item = {
 	id: ''
 };
 
-const DnD = <T extends any[]>({items, ItemComponent, componentStyles, objectClass, subField}: DnDProps<T>) => {
+const DnD = <T extends any[]>({items, ItemComponent, componentStyles, objectClass, subField, onChange, refetch}: DnDProps<T>) => {
 	const [listItems, setListItems] = useState([] as unknown as typeof items);
 	const [activeItem, setActiveItem] = useState(item as typeof items[number]);
 	const {updateData} = useDataHandler();
@@ -33,28 +33,35 @@ const DnD = <T extends any[]>({items, ItemComponent, componentStyles, objectClas
 	}, [items]);
 
 	const afterSortFunction = useCallback(async (newItems: typeof items) =>{ 
-		if (subField?.id && subField?.field) {
+		if (objectClass && subField?.id && subField?.field) {
 			 await updateData({
 				className: objectClass,
 				objectId: subField.id,
 				updateObject: {
-					[subField.field]: items.map((item, index) => ({...item, position: index + 1}))
+					[subField.field]: newItems.map((item, index) => ({...item, position: index + 1}))
 				}
 			});
-		} else {
-			const newQuestions = newItems.map((item, index) =>  updateData({
+			if (refetch) {
+				refetch();
+			}
+		} else if (objectClass ) {
+			const newItemsPromise = newItems.map((item, index) =>  updateData({
 				className: objectClass,
 				objectId: item.id,
 				updateObject: {
 					position: index + 1
 				}
 			}));
-			await Promise.all(newQuestions);
+			await Promise.all(newItemsPromise);
+			if (refetch) {
+				refetch();
+			}
+		} else if (onChange) {
+			onChange(newItems);
 		}
 	}, []);
 
-
-	const onChange = useCallback((itemArray: typeof items) => {
+	const afterDrop = useCallback((itemArray: typeof items) => {
 		setListItems(itemArray);
 		afterSortFunction(itemArray);
 	}, []);
@@ -71,7 +78,7 @@ const DnD = <T extends any[]>({items, ItemComponent, componentStyles, objectClas
 					const activeIndex = listItems.findIndex(({ id }) => id === active.id);
 					const overIndex = listItems.findIndex(({ id }) => id === over?.id);
 
-					onChange(arrayMove(listItems, activeIndex, overIndex) as typeof items);
+					afterDrop(arrayMove(listItems, activeIndex, overIndex) as typeof items);
 					// afterSortFunction(arrayMove(listItems, activeIndex, overIndex))
 				}
 				// setActiveItem(item);

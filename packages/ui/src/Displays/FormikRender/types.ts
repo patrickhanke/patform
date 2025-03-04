@@ -4,7 +4,7 @@ import {Dispatch, SetStateAction} from 'react';
 import { Pointer } from '@repo/types';
 import { DatePickerTypes } from '@repo/ui';
 
-export type  handleFormData<V extends FormDataElement> = (data: V) => void
+export type handleFormData<V extends FormDataElement> = (data: V) => void
 
 export type FormikRenderProps = {
     fields: Field[],

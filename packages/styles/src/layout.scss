@@ -24,6 +24,10 @@
     align-items: stretch;
 }
 
+.j-st {
+    justify-content: flex-start;
+}
+
 .j-ce {
     justify-content: center;
 }
@@ -40,7 +44,15 @@
     cursor: pointer;
 }
 
+.gap-xs {
+    gap: $xs;
+}
+
+.gap-sm {
+    gap: $sm;
+}
+
 .gap-md {
-    gap: $md
+    gap: $md;
 }
 

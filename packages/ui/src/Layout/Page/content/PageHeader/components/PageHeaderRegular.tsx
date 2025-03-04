@@ -19,6 +19,9 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(({
 	pageState,
 	setPageState
 }, ref) => {
+
+	console.log(pageHeaderButtons);
+	
 	return (
 		<div ref={ref} className='pageheader_content'>
 			<div className={'pageheader_content_container'}>
@@ -46,24 +49,19 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(({
                             	<div>
                             		{pageHeaderContent}
                             	</div>
-                            	<div>
-                            		
-                            	</div>
                             </>
                     	}
                     </div>
 				}
-				<div>
-					{createClass?.className && (
-						<CreateClass
-							initialData={createClass.initialData}
-							fields={createClass.fields}
-							text={createClass.text || 'Neues Objekt erstellen'}
-							className={createClass.className}
-							refetch={refetch}
-						/>
-					)}
-				</div>
+				{createClass?.className && (
+					<CreateClass
+						initialData={createClass.initialData}
+						fields={createClass.fields}
+						text={createClass.text || 'Neues Objekt erstellen'}
+						className={createClass.className}
+						refetch={refetch}
+					/>
+				)}
 			</div>
 			{pageStates.length > 0 && pageState && setPageState &&
                 <PageNavigation

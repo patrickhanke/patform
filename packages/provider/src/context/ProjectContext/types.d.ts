@@ -5,8 +5,8 @@ export type ContextValues = {
     loadProject: (projectId: string) => void
 }
 
-export type ProjectInitializerProps = {
+export type ProjectLoaderProps = {
     loading: boolean,
-    error: any,
-    project: Project | undefined
+    error?: any,
+    project?: Project | undefined
 }

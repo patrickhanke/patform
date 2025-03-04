@@ -5,7 +5,7 @@ import {ProjectContext} from './ProjectContext';
 import { Project } from '@repo/types';
 import { generateGraphQLQuery } from '../../Apollo';
 import { useQuery } from '@apollo/client';
-import ProjectInitializer from './components/ProjectInitializer';
+import ProjectLoader from './components/ProjectLoader';
 
 const ProjectContextProvider = ({projects, children}: {projects: string[], children: ReactNode}) => { 
 	const [currentProject, setCurrentProject] = useState<Project>();
@@ -44,7 +44,7 @@ const ProjectContextProvider = ({projects, children}: {projects: string[], child
 		<ProjectContext.Provider
 			value={projectContextObject}
 		>
-			<ProjectInitializer loading={loading} error={error} project={currentProject} />
+			<ProjectLoader loading={loading} error={error} project={currentProject} />
 			{children}
 		</ProjectContext.Provider>
 	);

@@ -22,7 +22,7 @@ const FormRecipients: React.FC<FormRecipientsProps> = ({initialRecipients = []})
 						name: '',
 						id: v4()
 					});
-	  } }
+	  			} }
 			/>
 		</div>
 	);
