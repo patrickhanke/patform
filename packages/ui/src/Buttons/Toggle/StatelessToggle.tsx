@@ -1,25 +1,20 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import { FC } from 'react';
 import './styles.scss';
 import { StatelessToggleProps } from './types';
 
-const StatelessToggle = ({ onChange, value, disabled = false, label }: StatelessToggleProps) => {
-    
-	const dataHandler = useCallback(async () => {
-		onChange(!value);
-	}, [value]);
-
+const StatelessToggle: FC<StatelessToggleProps> = ({ onChange, value, disabled = false, label }) => {
 	return (
 		<div className='toggle-container'>
 			{label && <label >{label}</label>}
-			<div className='toggle-switch'>
+			<div className='toggle-switch' data-disabled={disabled}>
 				<input
 					type="checkbox"
 					checked={value}
 					disabled={disabled}
 				/>
-				<span onClick={() => dataHandler()} className='toggle-slider'></span>
+				<span onClick={() => onChange(!value)} className='toggle-slider'></span>
 			</div>
 		</div>
 	);

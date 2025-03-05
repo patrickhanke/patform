@@ -24,6 +24,10 @@
     align-items: stretch;
 }
 
+.a-fs {
+    align-items: flex-start;
+}
+
 .j-st {
     justify-content: flex-start;
 }
@@ -36,9 +40,7 @@
     justify-content: space-between;
 }
 
-.ai-fs {
-    align-items: flex-start;
-}
+
 
 .c-pointer {
     cursor: pointer;
@@ -56,3 +58,6 @@
     gap: $md;
 }
 
+.w-100 {
+    width: 100%;
+}

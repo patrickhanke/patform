@@ -12,5 +12,9 @@ export type FormClass = ClassProperties & {
     description: string,
     settings: {
         recipients: Recipient[],
+        response: boolean,
+        static_form: boolean,
+        notification: boolean,
+        notification_text: string
     }
 }

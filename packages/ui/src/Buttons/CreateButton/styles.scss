@@ -17,6 +17,12 @@
         color: white;
         border: 2px solid constants.$primary;
     }
+    &:disabled {
+        background-color: constants.$light;
+        color: constants.$grey;
+        border: 2px dotted constants.$grey;
+        cursor: not-allowed;
+    }
 }
 
 .create_button[data-size="medium"] {

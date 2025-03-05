@@ -1,60 +1,79 @@
 @use '@repo/styles/constants';
 
 .toggle-container {
-    display: inline-block;
-  }
-  
-  .toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 38px; /* Adjusted width */
-    height: 20px; /* Adjusted height */
-  }
-  
-  .toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    border-radius: 20px; /* Half of the height for a round toggle */
-    transition: .4s;
-  }
-  
-  .toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 16px; /* Adjusted height */
-    width: 16px; /* Adjusted width */
-    left: 2px; /* Adjusted position */
-    bottom: 2px; /* Adjusted position */
-    background-color: white;
-    border-radius: 50%; /* Makes it round */
-    transition: .4s;
-  }
-  
-  input:checked + .toggle-slider {
-    background-color: constants.$primary;
-  }
-  
-  input:focus + .toggle-slider {
-    box-shadow: 0 0 1px constants.$primary;
-  }
-  
-  input:checked + .toggle-slider:before {
-    transform: translateX(18px); /* Half of the width */
-  }
-  
-  /* Rectangle Switch Shape */
-  .toggle-slider:before {
-    border-radius: 50%;
-  }
-  
+  display: inline-flex;
+  align-items: center;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 38px; /* Adjusted width */
+  height: 20px; /* Adjusted height */
+}
+
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 20px; /* Half of the height for a round toggle */
+  transition: .4s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px; /* Adjusted height */
+  width: 16px; /* Adjusted width */
+  left: 2px; /* Adjusted position */
+  bottom: 2px; /* Adjusted position */
+  background-color: white;
+  border-radius: 50%; /* Makes it round */
+  transition: .4s;
+  box-shadow: .5px .5px 2px constants.$dark;
+}
+
+
+
+input:checked + .toggle-slider {
+  background-color: constants.$green_shaded;
+}
+
+input:focus + .toggle-slider {
+  box-shadow: 0 0 2px constants.$dark;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(18px); /* Half of the width */
+}
+
+input:disabled + .toggle-slider  {
+  background-color: constants.$light;
+}
+
+input:disabled + .toggle-slider:before  {
+  box-shadow: none;
+}
+
+/* Rectangle Switch Shape */
+.toggle-slider:before {
+  border-radius: 50%;
+}
+
+.toggle-label {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #333;
+}
+

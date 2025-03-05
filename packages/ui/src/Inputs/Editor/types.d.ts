@@ -3,6 +3,7 @@ export type EditorComponent = {
     content?: string
     editable?: boolean
     placeholder?: string
+    disabled?: boolean
     withToolbar?: boolean
     withPopover?: boolean
     withTypographyExtension?: boolean

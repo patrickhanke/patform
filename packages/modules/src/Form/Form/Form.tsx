@@ -1,12 +1,11 @@
 
 'use client';
 
-import FormDataContent from './content/FormData';
 import { useGetForm } from './hooks/useGetForm';
 import siteStates from './constants/siteStates';
-import { Loader, Page, PageHeaderButton } from '@repo/ui';
-import { useContext, useMemo, useState } from 'react';
-import { AppContext, ProjectLoader } from '@repo/provider';
+import { Page, PageHeaderButton } from '@repo/ui';
+import { useMemo, useState } from 'react';
+import { ProjectLoader } from '@repo/provider';
 import FormData from './content/FormData';
 import FormSettings from './content/FormSettings';
 import FormFields from './content/FormFields';
@@ -15,7 +14,6 @@ import { Params } from '@repo/types';
 const Form = ({params}: {params: Params}) => {
 	const formId = params.form_id;
 	const {form, refetch} = useGetForm({formId});
-	const {currentModule} = useContext(AppContext);
 	const [siteState, setSiteState] = useState<typeof siteStates[number]>(siteStates[0] as {value: string, label: string});	
 	const [createField, setCreateField] = useState(false);
 
@@ -25,13 +23,13 @@ const Form = ({params}: {params: Params}) => {
 				{
 					text: 'Feld hinzufügen',
 					onClick: () => setCreateField(true),
-					is_add_button: true
-
+					is_add_button: true,
+					disabled: form.settings.static_form === true
 				}
 			])
 		}
 		return [];
-	}, [siteState]);
+	}, [siteState, form]);
 
 	if (!form) {
 		return <ProjectLoader loading={!form} />;

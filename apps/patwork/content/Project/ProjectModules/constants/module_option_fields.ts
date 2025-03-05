@@ -86,6 +86,23 @@ export const module_option_fields: ModuleOptionsField = {
         categories: [],
         connected_class: 'Image',
     },
+    '/forms': {
+        path: '/forms',
+        name: 'Fromulare',
+        icon: 'forms',
+        settings: {
+            categories: [],
+            recipients: [],
+            response: false,
+            static_form: false,
+            notification: false,
+            notification_text: false
+        },
+        fields: [],
+        position: 6,
+        categories: [],
+        connected_class: 'Data',
+    },
     '/training-group': {
         path: '/training-group',
         name: 'Trainingsgruppe',

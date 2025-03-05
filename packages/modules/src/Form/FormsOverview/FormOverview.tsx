@@ -15,6 +15,7 @@ const FormsOverview = () => {
 	const columns = useCreateColumns<FormClass>({
 		data:[
 			{id: 'name', type: 'edit_string', label: 'Name'},
+			{id: 'objectId', type: 'string', label: 'ID'},
 			{id: 'description', type: 'edit_textfield', label: 'Text'}
 		],
 		fields: currentModule.fields,

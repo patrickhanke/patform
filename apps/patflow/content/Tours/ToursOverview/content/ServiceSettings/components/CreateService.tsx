@@ -43,7 +43,7 @@ const CreateService: FC<CreateServiceProps> = ({createService, setCreateService,
             buttonDisabled={[loading, loading || errors.length > 0]}
             errors={errors}
         >
-            <div className='flex col ai-fs'>
+            <div className='flex col a-fs'>
                 <TextInput
                     label='Name'
                     id='name'

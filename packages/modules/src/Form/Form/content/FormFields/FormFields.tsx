@@ -10,7 +10,7 @@ const FormFields: FC<FormFieldsProps> = ({formId, createField, setCreateField}) 
 	const {data, refetch} = useQuery(generateGraphQLQuery({
 		type: 'get',
 		objectName: 'Form',
-		fields: ['objectId', 'createdAt', 'fields']
+		fields: ['objectId', 'createdAt', 'fields', 'settings']
 	}), {
 		variables: {id: formId }
 	});
@@ -18,6 +18,14 @@ const FormFields: FC<FormFieldsProps> = ({formId, createField, setCreateField}) 
 	if (!data) {
 		return null;
 	}
+
+	if (data.objects.getForm.settings?.static_form === true) {
+		return (
+			<p>
+				Bei einem statischen Formular können keine Felder angelegt oder verändert werden. 
+			</p>
+		)
+	}	
 
 	return (
 		<div>

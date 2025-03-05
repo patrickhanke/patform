@@ -2,6 +2,7 @@ import { Table } from '@repo/ui';
 import { generateGraphQLQuery } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import useFormDataColumns from './hooks/useFormDataColumns';
+import generateFormData from './functions/generateFormData';
 
 const FormData = ({formId}: {formId: string}) => {
 	const {data, refetch} = useQuery(generateGraphQLQuery({
@@ -9,23 +10,30 @@ const FormData = ({formId}: {formId: string}) => {
 		objectName: 'Data',
 		fields: ['objectId', 'createdAt', 'data']
 	}), {
-		variables: {reference: {_eq: formId} }
+		variables: {params:{reference_id: {_eq: formId}} }
 	});
 
+	console.log(formId);
+	console.log(data);
+	
+	
 	const columns = useFormDataColumns({data: data?.objects.findData.results, refetch});
 	
 	if (!data) {
 		return null;
 	}
 
-	const formData= data.objects.findData.results;
+	const formData = generateFormData(data.objects.findData.results.map((data: any) => data.data));
 
 	return (
 		<div>
-			<Table
-				data={formData}
-				columns={columns}
-			/>
+			{formData.length === 0 ?
+				<p>Keine Daten vorhanden</p> : 
+				<Table
+					data={formData}
+					columns={columns}
+				/>
+			}
 		</div>
 	);
 };

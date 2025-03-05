@@ -6,7 +6,7 @@ import { cloneDeep } from 'lodash';
 const ServiceSettings: FC<ServiceSettingsProps> = ({service, onChange, showDeleteButton, setDelete}) => {
 
     const interfaceElement: FC<{title: string, text: string}> = useCallback(({title, text}) => (
-        <div className='flex col ai-fs j-sp'>
+        <div className='flex col a-fs j-sp'>
             <h3>
                 {title}
             </h3>
