@@ -30,6 +30,19 @@ export type User = {
     color?: string
 }
 
+export type PatstoreUser = {
+    label: string,
+    objectId: string,
+    email: string,
+    username: string,
+    is_superuser: boolean,
+    type: string,
+    role: UserRole,
+    portrait: ApplicationTypes.Image,
+    password: string,
+    projects: string[]
+}
+
 export type UserDisplayData = Pick<User, 'objectId' | 'family_name'|'first_name'|'email'|'portrait'>;
 
 export type CreateUser =  Pick<User, 'family_name'|'first_name'|'email'|'portrait'> & {password: string, repeat_password: string, role: string, color?: string}

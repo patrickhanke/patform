@@ -15,7 +15,7 @@ const ProjectContextProvider = ({projects, children}: {projects: string[], child
 	const {data, loading, error} = useQuery((generateGraphQLQuery({
 		type: 'get',
 		objectName: 'Project',
-		fields: ['objectId', 'name', 'logo {url name}', 'modules {results {objectId name path icon settings fields categories connected_class}}'],
+		fields: ['objectId', 'name', 'logo', 'modules {results {objectId name path icon settings fields categories connected_class}}'],
 	})),
 	{
 

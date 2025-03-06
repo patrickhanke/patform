@@ -4,7 +4,7 @@ import { Modal, Select } from '@repo/ui';
 import { module_option_fields } from '../constants/module_option_fields';
 import { useDebounceValue } from 'usehooks-ts';
 
-const CreateModule: React.FC<CreateModuleProps> = ({createModule, setCreateModule, createModuleHandler, modules}) => {
+const CreateModule: React.FC<CreateModuleProps> = ({createModule, setCreateModule, createModuleHandler, modules = []}) => {
     const [selectedModule, setSelectedModule] = useState<SelectModule | null>(null);
     const [moduleName, setModuleName] = useDebounceValue<string>(selectedModule?.label || '', 2000);
     const modalSelectOptions : SelectModule[] = useMemo(() => (Object.keys(module_option_fields) as Array<keyof ModuleOptionsField>).map((moduleFieldKey) => ({

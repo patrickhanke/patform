@@ -7,10 +7,7 @@ const get_initial_project = gql`
 				name
 				objectId
 				content
-				logo {
-					name
-					url
-				}
+				logo
 				modules {
 					results {
 						objectId

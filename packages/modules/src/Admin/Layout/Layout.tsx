@@ -53,7 +53,7 @@ export default async function RootLayout({
 							menuItems={data.objects.findProject.results.map((project: Project) => ({
 								label: project.name,
 								icon: undefined,
-								value: `/project/${project.objectId}`,
+								value: `/admin/project/${project.objectId}`
 							}))
 						} 
 						/>

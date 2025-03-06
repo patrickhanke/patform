@@ -8,7 +8,7 @@ import { ProjectLoaderProps } from '../types';
 import {LoadingIndicator} from '@repo/ui';
 
 const ProjectLoader: FC<ProjectLoaderProps> = ({loading, error, project}) => {
-    if (!loading && project) {
+    if (!loading) {
         return null
     }
     

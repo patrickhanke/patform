@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { module_option_fields } from './constants/module_option_fields'
 
 export type SelectModule = {
-    value: typeof module_option_fields, 
+    value: keyof typeof module_option_fields, 
     label: string,
     fields: module_option_fields[keyof typeof module_option_fields],
     disabled: boolean

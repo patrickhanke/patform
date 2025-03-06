@@ -51,10 +51,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ fieldValues, field, setFieldV
 		);
 
 	}
-	
+
 	return (
 		<>
-			<label htmlFor={fieldValues.name}>{field.label} </label>
+			{/* <label htmlFor={fieldValues.name}>{field.label} </label> */}
 			<ImageUploader 
 				onChange={value => setFieldValue(field.name, value)}
 				path={process.env.BYTESCALE_IMAGE_FOLDER as string}

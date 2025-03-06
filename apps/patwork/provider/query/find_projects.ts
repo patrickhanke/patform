@@ -8,10 +8,7 @@ export const find_initial_projects = gql`
 					name
 					objectId
 					content
-					logo {
-						name
-						url
-					}
+					logo 
 					modules {
 						results {
 							objectId

@@ -4,17 +4,14 @@ import { Modal, Select } from '@repo/ui';
 import { module_option_fields } from '../constants/module_option_fields';
 import { useDebounceValue } from 'usehooks-ts';
 
-const CreateModule: React.FC<CreateModuleProps> = ({createModule, setCreateModule, createModuleHandler, modules}) => {
-    console.log(modules);
-    
-    
+const CreateModule: React.FC<CreateModuleProps> = ({createModule, setCreateModule, createModuleHandler, modules = []}) => {
     const [selectedModule, setSelectedModule] = useState<SelectModule | null>(null);
     const [moduleName, setModuleName] = useDebounceValue<string>(selectedModule?.label || '', 2000);
-    const modalSelectOptions : SelectModule[] = useMemo(() => Object.keys(module_option_fields).map((moduleFieldKey: SelectModule['value']) => ({
+    const modalSelectOptions : SelectModule[] = useMemo(() => (Object.keys(module_option_fields) as Array<keyof typeof module_option_fields>).map((moduleFieldKey: keyof typeof module_option_fields) => ({
         value: moduleFieldKey,
         label: module_option_fields[moduleFieldKey].name,
         fields: module_option_fields[moduleFieldKey],
-        isDisabled: modules.find((module) => module.path === module_option_fields[moduleFieldKey].path) ? true : false
+        disabled: modules.find((module) => module.path === module_option_fields[moduleFieldKey].path) ? true : false
     })), []);
 
     const [loading, setLoading] = useState(false);

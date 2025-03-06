@@ -6,10 +6,7 @@ const get_project_settings = gql`
 			getProject(objectId: $id) {
                 name
                 objectId
-                logo {
-                    name
-                    url
-                }
+                logo
 			}
 		}
 	}

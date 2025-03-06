@@ -4,7 +4,6 @@ import { GenerateGraphQLQueryFunction } from '../types';
 const stringreplace = (str: string, find?: string, replace?: string) => {
 	const letStringCopy = str;
     
-	letStringCopy.replace(new RegExp('logo', 'g'), 'logo {name url}');
 	letStringCopy.replace(new RegExp('author', 'g'), 'author {objectId label portrait}');
 	return letStringCopy;
 };
