@@ -4,7 +4,6 @@ import { useContext, useState } from 'react';
 import styles from './SiteHeader.module.scss';
 import { SiteHeaderComponent } from './types';
 import { AppContext } from '@repo/provider';
-import { UserDisplay } from '@repo/ui';
 import AddProject from './components/AddProject';
 
 const SiteHeader = ({
@@ -25,7 +24,6 @@ const SiteHeader = ({
 							Neues Projekt erstellen
 						</button>
 						<div className='vertical_line' />
-						<UserDisplay />
 					</div>
 				</div>
 			</div>

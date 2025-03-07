@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './LoadingIndicator.module.scss';
+import './styles.scss';
 
 const LoadingIndicator: React.FC = () => {
 	return (
-		<div className={styles.loading_indicator} />
+		<div className={'loading_indicator'} />
 	);
 };
 

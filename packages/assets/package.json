@@ -1,16 +1,10 @@
 {
-  "name": "@repo/styles",
+  "name": "@repo/assets",
   "type": "module",
   "version": "1.0.0",
   "private": true,
   "exports": {
-    "./layout": "./src/layout.scss",
-    "./global": "./src/global.scss",
-    "./constants": "./src/constants.scss",
-    "./sizes": "./src/constants/sizes.scss",
-    "./colors": "./src/constants/colors.scss",
-    "./buttons": "./src/layout/buttons.scss",
-    "./typography": "./src/layout/typography.scss"
+    ".": "./src/index.ts"
   },
   "dependencies": {
     "@repo/eslint-config": "1.0.0",

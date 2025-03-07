@@ -33,7 +33,8 @@ const RenderSidebar = () => {
 	return (
 		<div className={'layout_sidebar_container'} id='sidebar'>
 			<div className={'layout_sidebar_header'}>
-				<Logo logo={project.logo} />
+				<Logo logo={project.logo} alt={project.name} />
+				<h1>{project.name ? project.name : 'patstore'}</h1>
 			</div>
 			<Sidebar menuItems={menuItems} />
 		</div >

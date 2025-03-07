@@ -34,7 +34,7 @@
 }
 
 .layout_sidebar_header {
-    @include constants.flexbox($direction: row, $align: center, $justify: center);
+    @include constants.flexbox($direction: row, $align: center, $justify: flex-start);
     border-bottom: 1px solid constants.$grey;
     background-color: transparent;
     overflow: hidden;

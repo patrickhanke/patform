@@ -14,7 +14,7 @@
     "@bytescale/upload-widget-react": "^4.19.0"
   },
   "devDependencies": {
-    "@repo/eslint-config": "0.0.0",
+    "@repo/eslint-config": "1.0.0",
     "@repo/typescript-config": "1.0.0",
     "@types/eslint": "^8.56.5",
     "@types/node": "^20.11.24",
