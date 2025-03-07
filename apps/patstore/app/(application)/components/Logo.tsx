@@ -1,11 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import React from 'react';
 
 const Logo = ({logo} : {logo: string}) => {
 	return (
-		<Image
+		<img
 			src={logo}
 			width={21}
 			height={21}

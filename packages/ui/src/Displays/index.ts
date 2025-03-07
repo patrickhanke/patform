@@ -11,7 +11,6 @@ export * from './DateDisplay';
 export * from './Calendar';
 export * from './ImageDisplay';
 export * from './FileDisplay';
-export * from './UserDisplay';
 export * from './UserMessages';
 export * from './StateDisplay';
 export * from './ImagesDisplay';

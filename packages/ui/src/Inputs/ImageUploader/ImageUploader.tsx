@@ -12,7 +12,9 @@ const ImageUploader = ({
 	path,
 	maxFileCount,
 	deleteHandler,
-	filename
+	filename,
+	crop = false,
+	preview = false
 } : {
 	previewImage?: Image | Image[],
 	onChange: (F: Image[] ) => void,
@@ -20,7 +22,9 @@ const ImageUploader = ({
 	path: string,
 	maxFileCount?: number,
 	filename?: string,
-	deleteHandler?: (image: Image) => void
+	deleteHandler?: (image: Image) => void,
+	crop?: boolean,
+	preview?: boolean
 }) => {
 	const [reinitialize, setReinitialize] = React.useState(true);
 	const options = useMemo(() => { 
@@ -30,8 +34,8 @@ const ImageUploader = ({
 			showFinishButton: true,
 			editor: {
 				images: {
-					preview: false,
-					crop: false
+					preview,
+					crop
 				}
 			},
 			locale: {

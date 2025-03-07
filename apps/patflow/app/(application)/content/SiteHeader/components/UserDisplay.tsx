@@ -1,11 +1,11 @@
 'use client';
 
-import styles from './UserDisplay.module.scss';
+import styles from '../SiteHeader.module.scss';
 import { MessageIndicator } from '@repo/ui';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { UserContext, getImageUrl } from '@repo/provider';
 
-const UserDisplay = ({userMessages=false}: {userMessages?: boolean}) => {
+const UserDisplay = ({userMessages=false}: {userMessages: boolean}) => {
 	const {user} = useContext(UserContext);
 	const [client, setClient] = useState(false);
 

@@ -2,13 +2,13 @@
 
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import {ProjectContext} from './ProjectContext';
-import { Project } from '@repo/types';
+import { PatstoreProject, Project } from '@repo/types';
 import { generateGraphQLQuery } from '../../Apollo';
 import { useQuery } from '@apollo/client';
 import ProjectLoader from './components/ProjectLoader';
 
 const ProjectContextProvider = ({projects, children}: {projects: string[], children: ReactNode}) => { 
-	const [currentProject, setCurrentProject] = useState<Project>();
+	const [currentProject, setCurrentProject] = useState<PatstoreProject>();
 
 	const [projectId, setProjectId] = useState<string | undefined>(projects[0]);
 
@@ -18,7 +18,6 @@ const ProjectContextProvider = ({projects, children}: {projects: string[], child
 		fields: ['objectId', 'name', 'logo', 'modules {results {objectId name path icon settings fields categories connected_class}}'],
 	})),
 	{
-
 		variables: {
 			id: projectId,
 		},

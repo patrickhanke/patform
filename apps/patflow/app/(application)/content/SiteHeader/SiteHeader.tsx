@@ -5,7 +5,7 @@ import styles from './SiteHeader.module.scss';
 import { SiteHeaderComponent } from './types';
 import { AppContext } from '@provider';
 import CalendarWeek from './components/CalendarWeek';
-import { UserDisplay } from '@repo/ui';
+import UserDisplay from './components/UserDisplay';
 
 const SiteHeader = ({
 	title, 

@@ -2,9 +2,9 @@ import React from 'react';
 import '@repo/styles/global';
 import '@repo/styles/layout';
 import LayoutContext from './components/LayoutContext';
-import { SiteHeader } from '@repo/ui';
 import RenderSidebar from './components/RenderSidebar';
 import { cookies } from 'next/headers';
+import { SiteHeader } from './content/SiteHeader';
 
 export const metadata = {
 	title: 'Patstore App',
@@ -44,10 +44,7 @@ export default async function  RootLayout({
 			<body>
 				<div className={'layout'}>
 					<LayoutContext projects={data.projects}>
-						<RenderSidebar 
-						
-						/>
-
+						<RenderSidebar />
 						<div className={'main_content'} id='main_content'>
 							<div className={'content_container'} id='page_content'>
 								<SiteHeader />

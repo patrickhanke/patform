@@ -28,7 +28,6 @@ const LayoutContext = ({projects, children}: {projects: string[], children: Reac
 						);
 					}}
 				</ProjectContext.Consumer>
-				
 			</ProjectContextProvider>
 		</ApolloAppProvider>
 	);

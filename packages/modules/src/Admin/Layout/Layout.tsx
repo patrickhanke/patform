@@ -4,11 +4,11 @@ import '@repo/styles/layout';
 import { ApolloClient, OperationVariables } from '@apollo/client';
 import { Module, Project } from '@repo/types';
 import {serverClient} from '@repo/provider';
-import { SiteHeader } from '@repo/ui';
 import LayoutContext from './components/LayoutContext';
 import RenderSidebar from './components/RenderSidebar';
 import Head from 'next/head';
 import { find_initial_projects } from '../../../../../apps/patwork/provider/query/find_projects';
+import SiteHeader from './content/SiteHeader';
 
 export const metadata = {
 	title: 'Patwork Admin',
