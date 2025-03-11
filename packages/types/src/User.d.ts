@@ -37,6 +37,7 @@ export type PatstoreUser = {
     username: string,
     is_superuser: boolean,
     type: string,
+    name: string,
     role: UserRole,
     portrait: ApplicationTypes.Image,
     password: string,

@@ -3,7 +3,7 @@ import styles from './Layout.module.scss';
 import '@repo/styles/global';
 
 export const metadata = {
-	title: 'Patstore Admin Login',
+	title: 'Patstore Login',
 	description: 'PH'
 };
 

@@ -21,7 +21,7 @@ const AppUsers: FC<AppUsersProps> = ({
     const {data, refetch} = useQuery(generateGraphQLQuery({
         type: 'find',
         objectName: '_User',
-        fields: ['objectId', 'username', 'email', 'label']
+        fields: ['objectId', 'username', 'email', 'label', 'name']
     }), {
         variables: {params: paramsHandler({filters: [{key: 'projects', value: projectId, operator: '_in', id: 'projects'}]})}
     })
@@ -36,10 +36,14 @@ const AppUsers: FC<AppUsersProps> = ({
                 username: '',
                 label: '',
                 value:'',
+                name: '',
                 projects: [projectId]
             })
         }
     }, [createUser, user])
+
+    console.log(user);
+    
     
     const updateUserHandler = useCallback(async () => {
         setLoading(true)
@@ -53,7 +57,8 @@ const AppUsers: FC<AppUsersProps> = ({
                     projects: [projectId],
                     password: v4(),
                     email: user?.username,
-                    set_passowrd: true
+                    set_passowrd: true,
+                    name: user?.name
                 }
             })
         }
@@ -91,6 +96,7 @@ const AppUsers: FC<AppUsersProps> = ({
                 }}
                 confirm={() => updateUserHandler()}
                 disabled={[loading, loading]}
+                preventClickOutside
             >
                 <div>
                     {createUser && user && <CreateUser user={user} setUser={setUser} />}

@@ -1,14 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 import { ApolloRefetch } from "@repo/types";
 
-export type AppUsersProps = {
+export type UsersOverviewProps = {
     projectId: string;
     createUser: boolean;
     setCreateUser: Dispatch<SetStateAction<boolean>>;
     addUser: boolean;
     setAddUser: Dispatch<SetStateAction<boolean>>;
 }
-
 
 export type CreateUserProps = {
     user: UserObject,
@@ -17,7 +16,6 @@ export type CreateUserProps = {
 
 export type UserObject = {
     username: string,
-    label: string,
     projects: string[],
     value: string,
     name: string

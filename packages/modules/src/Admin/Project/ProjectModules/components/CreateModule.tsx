@@ -18,7 +18,7 @@ const CreateModule: React.FC<CreateModuleProps> = ({createModule, setCreateModul
 
      return (
         <Modal
-            header='Neues Modul erstellen'
+            header='Modul hinzufügen'
             isOpen={createModule}
             cancelButtonHandler={() => setCreateModule(false)}
             confirmButtonHandler={async () =>{ 

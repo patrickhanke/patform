@@ -11,3 +11,4 @@ export * from './Group';
 export * from './Dashboard';
 export * from './Downloads';
 export * from './Admin';
+export * from './Users';

@@ -147,4 +147,16 @@ export const module_option_fields: ModuleOptionsField = {
         categories: [],
         connected_class: 'Form',
     },
+    '/users': {
+      path: '/users',
+      name: 'Nutzer',
+      icon: 'users',
+      settings: {
+          categories: [],
+        },
+      fields: [],
+      position: 10, 
+      categories: [],
+      connected_class: '_User',
+  },
 } 

@@ -14,9 +14,9 @@ const CreateUser: FC<CreateUserProps> = ({user, setUser}) => {
             placeholder: 'beispiel@email.de'
 		} as Field,{
             label: `Benutzername`,
-            name: 'userlabel',
+            name: 'name',
             type: 'input',
-            value: user.username,
+            value: user.name,
             dataType: 'string',
             placeholder: 'Vor- und Nachname',
         }

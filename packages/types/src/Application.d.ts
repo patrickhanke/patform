@@ -15,7 +15,7 @@ export type FilterOperator = '_eq' | '_ne' | '_lt' | '_lte' | '_gt' | '_gte' | '
 
 export type Filter = {
     key: string,
-    value: string | Array<string | number> | number,
+    value: string | Array<string | number> | number | boolean,
     operator: FilterOperator,
     id: string
 }
