@@ -17,7 +17,7 @@ import TableColumnTexteditor from '../components/TableColumnTexteditor';
 import TableColumnGeopoint from '../components/TableColumnGeopoint';
 import { MapPlace } from '../../Map';
 import TableColumnEditState from '../components/TableColumnEditState';
-import {get} from 'lodash';
+import {get} from 'lodash-es';
 import TableColumnGallery from '../components/TableColumnGallery';
 import TableColumnPerson from '../components/TableColumnPerson';
 import TableColumnTimesField from '../content/TableColumnTimesField';

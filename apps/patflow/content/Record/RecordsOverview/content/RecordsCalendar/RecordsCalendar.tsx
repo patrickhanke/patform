@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { RecordsCalendarProps } from './types';
 import { eachDayOfInterval, formatISO9075 } from 'date-fns';
-import { get, set } from 'lodash';
+import { get, set } from 'lodash-es';
 import { absence_type_options } from '@provider';
 import { useQuery } from '@apollo/client';
 import { FIND_ALL_STAFF } from '@queries';

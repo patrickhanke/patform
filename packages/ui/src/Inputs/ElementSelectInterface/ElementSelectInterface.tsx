@@ -3,7 +3,7 @@
 import { FC, Fragment, useCallback, useMemo, useState } from 'react';
 import ListElement from './components/ListElement';
 import { ElementSelectInterfaceProps, SelectElement } from './types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import styles from './ElementSelectInterface.module.scss';
 import { Divider } from '../../Layout';
 

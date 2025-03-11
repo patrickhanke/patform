@@ -1,6 +1,6 @@
 import { ColumnData } from "@repo/ui";
 import { FormDataClass } from "@repo/types";
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 const geneateFormColumns: (T: FormDataClass['data']) => ColumnData<FormDataClass['data']>[] = (data) => {
 	const columnData: ColumnData<FormDataClass['data']>[] = [];

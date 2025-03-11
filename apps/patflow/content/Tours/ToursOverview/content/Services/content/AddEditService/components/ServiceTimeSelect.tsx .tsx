@@ -3,7 +3,7 @@ import React, { FC, useCallback, useMemo } from 'react'
 import { ServiceIntervalSelectProps } from '../types'
 import styles from '../AddEditService.module.scss'
 import { formatISO9075 } from 'date-fns'
-import { cloneDeep, set } from 'lodash'
+import { cloneDeep, set } from 'lodash-es'
 import SelectServiceDate from './SelectServiceDate'
 import { PropertyService } from '@types'
 

@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import React, { useCallback, useState } from 'react';
 import Surcharge from './content/Surcharge';
 import CreateSurcharge from './content/CreateSurcharge';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import ArchiveSurcharge from './components/ArchiveSurcharge';
 import { SurchargeSettingsProps } from './types';
 import { CreateButton, Divider } from '@repo/ui';

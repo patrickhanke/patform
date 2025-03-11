@@ -1,5 +1,5 @@
 import { Filter } from '@repo/types';
-import { set } from 'lodash';
+import { set } from 'lodash-es';
 
 const filterChangeHandler = (
 	key: Filter['key'], 

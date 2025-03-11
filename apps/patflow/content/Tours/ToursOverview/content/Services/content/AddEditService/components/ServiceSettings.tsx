@@ -1,7 +1,7 @@
 import { Divider, ElementSelectInterface } from '@repo/ui'
 import React, { FC, useCallback, useMemo } from 'react'
 import { ServiceSettingsProps } from '../types'
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 const ServiceSettings: FC<ServiceSettingsProps> = ({service, onChange, showDeleteButton, setDelete}) => {
 

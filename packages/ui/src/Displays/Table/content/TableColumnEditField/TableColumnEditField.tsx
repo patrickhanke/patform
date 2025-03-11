@@ -7,7 +7,7 @@ import { AppContext, generateGraphQLQuery, useDataHandler } from '@repo/provider
 import { Form } from '@repo/ui';
 import { TableColumnEditFieldComponent, TableColumnEditFieldProps } from './types';
 import { Classes } from '@repo/types';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 const TableColumnEditField: TableColumnEditFieldComponent = <Class extends Classes>({objectId, className}: TableColumnEditFieldProps) => {
 	const {updateData}  = useDataHandler();

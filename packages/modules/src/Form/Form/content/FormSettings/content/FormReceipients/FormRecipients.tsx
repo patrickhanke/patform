@@ -4,7 +4,7 @@ import { CreateButton } from '@repo/ui';
 import { v4 } from 'uuid';
 import { FormRecipientsProps } from './types';
 import { Recipient } from '@repo/types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import './styles.scss'
 
 const FormRecipients: React.FC<FormRecipientsProps> = ({settingsKey, settings, updateSettings}) => {

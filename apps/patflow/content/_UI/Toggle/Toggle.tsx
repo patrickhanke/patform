@@ -6,7 +6,7 @@ import { useDataHandler } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import { ToggleType } from './types';
 import useToggleParameters from './hooks/useToggleParameters';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 const Toggle = ({ objectId, type }: { objectId: string, type: ToggleType }) => {
 	const {updateData} = useDataHandler();

@@ -6,7 +6,7 @@ import styles from './EditRecord.module.scss';
 import { AppContext, createTime, findDefaultTimeForDate, getWorktimeDuration, useGetActiveRecord } from '@provider';
 import { useDataHandler } from '@repo/provider';
 import EditTime from './components/EditTime';
-import { cloneDeep, pullAllBy, set } from 'lodash';
+import { cloneDeep, pullAllBy, set } from 'lodash-es';
 import { CreateButton, IconButton, SlideIn } from '@repo/ui';
 import { generateUuid } from '@repo/provider';
 

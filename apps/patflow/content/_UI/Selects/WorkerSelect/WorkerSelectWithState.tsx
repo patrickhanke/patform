@@ -5,7 +5,7 @@ import { FIND_ALL_STAFF } from '@queries';
 import { Worker } from '@types';
 import { Image } from '@repo/types';
 import { WorkerSelectWithStateProps } from './types';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 type WorkerSelect = {
     value: string,

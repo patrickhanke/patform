@@ -1,6 +1,6 @@
 import { Day } from '@types';
 import { eachDayOfInterval, formatISO9075 } from 'date-fns';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 const checkForConflicts =  (start_date: string, end_date: string, days: Day[], absenceId: string | undefined) => {
 	const doubleBookedDays: string[] = [];

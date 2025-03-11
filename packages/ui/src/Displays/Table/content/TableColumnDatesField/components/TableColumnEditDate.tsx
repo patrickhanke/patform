@@ -3,7 +3,7 @@ import { Map, Select, StatelessToggle, SwitchButtons } from '@repo/ui';
 import { EventDate, LocationClass } from '@repo/types';
 import { TableColumnEditDateProps } from '../types';
 import locationButtonStates from '../constants/locationButtonStates';
-import { set, cloneDeep } from 'lodash';
+import { set, cloneDeep } from 'lodash-es';
 import { useQuery } from '@apollo/client';
 import { AppContext, generateGraphQLQuery, paramsHandler } from '@repo/provider';
 

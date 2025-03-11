@@ -7,7 +7,7 @@ import { AppContext, generateGraphQLQuery } from '@repo/provider';
 import { useQuery } from '@apollo/client';
 import { PersonClass } from '@repo/types';
 import { PersonsInterface } from '@repo/modules';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 
 const TableColumnPersons = ({value = [], isEditable, onChange}: TableColumnPersonsProps) => {

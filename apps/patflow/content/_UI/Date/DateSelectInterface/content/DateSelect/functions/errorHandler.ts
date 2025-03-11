@@ -1,6 +1,6 @@
 import { ApplicationTypes, DateTypes } from '@types';
 import { formatISO9075 } from 'date-fns';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 const errorHandler = (date:  DateTypes.DateObjectWithNextDates) => {
 	const errorArray : ApplicationTypes.ErrorMessage[] = [];

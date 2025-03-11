@@ -2,7 +2,7 @@ import { useCallback, useContext, useMemo } from 'react';
 import { Map, Select, SwitchButtons } from '@repo/ui';
 import { EventTime, LocationClass } from '@repo/types';
 import locationButtonStates from '../constants/locationButtonStates';
-import { set, cloneDeep } from 'lodash';
+import { set, cloneDeep } from 'lodash-es';
 import { useQuery } from '@apollo/client';
 import { AppContext, generateGraphQLQuery, getWeekdayLabel, paramsHandler, weekdays } from '@repo/provider';
 import { TableColumnEditTimeProps } from '../types';

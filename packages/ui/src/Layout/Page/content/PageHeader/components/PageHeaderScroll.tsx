@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { PageNavigation } from '../../PageNavigation';
 import { Plus, RotateCcw } from 'lucide-react';
 import clsx from 'clsx';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 import CreateClass from '../content/CreateClass';
 import { PageHeaderScrollProps } from '../types';
 import '../styles.scss';

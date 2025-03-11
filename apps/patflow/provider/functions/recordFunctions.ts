@@ -1,6 +1,6 @@
 import { CreateInitialTime, DefaultDay, Holiday, Record, TimeObject } from '@types';
 import { eachDayOfInterval, formatISO9075, hoursToMilliseconds, isWeekend, minutesToMilliseconds, isSunday, isFriday, isThursday, isWednesday, isMonday } from 'date-fns';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 const checkForWorkingDay: (date: Date, weekdays: number, holidays: string[]) => boolean = (date: Date, weekdays, holidays) => {
 	if (holidays.includes(formatISO9075(date, {representation: 'date'}))) {

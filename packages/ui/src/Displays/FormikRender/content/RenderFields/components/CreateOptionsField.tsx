@@ -1,7 +1,7 @@
 import React from 'react';
 import { CreateOptions, optionType } from '@types';
 import { v4 as uuidv4 } from 'uuid';
-import { get, isArray } from 'lodash';
+import { get, isArray } from 'lodash-es';
 import styles from '../RenderFields.module.scss';
 import { FormikContextType, useFormikContext } from 'formik';
 import { CreateButton, IconButton } from '@repo/ui';

@@ -9,7 +9,7 @@ import styles from './AddEditService.module.scss';
 import ServiceSettings from './components/ServiceSettings';
 import { useQuery } from '@apollo/client';
 import getButtonStates from './constants/button_states';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { AddEditServiceState } from '../../types';
 
 const AddEditService: FC<AddEditServiceProps> = ({title, addEditService, setAddEditService, propertyId, serviceId, refetch}) => {

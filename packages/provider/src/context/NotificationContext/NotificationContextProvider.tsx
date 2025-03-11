@@ -6,7 +6,7 @@ import { setNotificationsToRead as snr, Notification } from '@repo/provider';
 import NotificationContext from './NotificationContext';
 import useInstallations from './hooks/useInstallations';
 import { MessagePayload } from 'firebase/messaging';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
  
 const NotificationContextProvider = ({children} : {children: React.ReactNode}) => {
 	console.log('NotificationContextProvider');

@@ -4,7 +4,7 @@ import styles from '../Tour.module.scss';
 import { useDataHandler } from '@repo/provider';
 import { generateGraphQLQuery } from '@provider';
 import { useQuery } from '@apollo/client';
-import { cloneDeep, set } from 'lodash';
+import { cloneDeep, set } from 'lodash-es';
 import { IconButton } from '@repo/ui';
 import { DisplayWorker, TeamAssignment, WorkersInterface } from 'content/_UI';
 import renderCurrentService from '../functions/renderCurrentService';

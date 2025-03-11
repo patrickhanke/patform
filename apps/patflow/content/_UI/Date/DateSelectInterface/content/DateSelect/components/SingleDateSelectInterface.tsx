@@ -3,7 +3,7 @@ import { SingleDateSelectInterfaceProps } from '../types';
 import { formatISO9075 } from 'date-fns';
 import { DateObjectWithNextDates } from '@types';
 import { DatePicker } from '@repo/ui';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 const SingleDateSelectInterface = ({date, category, onChange}: SingleDateSelectInterfaceProps) => {
 	const dateTransformHandler = useCallback((dateString: string) => {

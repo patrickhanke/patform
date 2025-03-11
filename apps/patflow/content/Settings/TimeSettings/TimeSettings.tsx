@@ -8,7 +8,7 @@ import HolidayTemplates from './content/HolidayTemplates';
 import Holidays from './content/Holidays';
 import { useQuery } from '@apollo/client';
 import { Holiday } from '@types';
-import { cloneDeep, set } from 'lodash';
+import { cloneDeep, set } from 'lodash-es';
 import axios from 'axios';
 import { Page, SiteHeaderButtons } from '@repo/ui';
 import { SiteState } from '@repo/types';

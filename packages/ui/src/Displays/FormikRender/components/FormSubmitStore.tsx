@@ -1,5 +1,5 @@
 import { useFormikContext } from 'formik';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { useEffect } from 'react';
 import { FormSubmitStoreProps } from '../types';
 import { useDebounceValue } from 'usehooks-ts';

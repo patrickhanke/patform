@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { FileUplaoderProps } from './types';
 import './styles.scss';
 import useRenderPreviewContent from './hooks/useRenderPreviewContent';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 const FileUploader = ({
 	type,

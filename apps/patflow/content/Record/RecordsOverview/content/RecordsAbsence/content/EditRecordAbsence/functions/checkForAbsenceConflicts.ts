@@ -1,6 +1,6 @@
 import { Absence } from '@types';
 import { eachDayOfInterval, formatISO9075 } from 'date-fns';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 const checkForAbsenceConflicts =  (
 	start_date: string, 

@@ -10,7 +10,7 @@ import ImageUpload from './components/ImageUpload';
 import TextEditor from './components/TextEditor';
 import getPointerValue from './functions/getPointerValue';
 import PersonSelect from './components/PersonSelect';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import SelectToggle from './components/SelectToggle';
 import DatePickerField from './components/DatePickerField';
 

@@ -7,7 +7,6 @@ const PUBLIC_FILE = /\.(.*)$/;
 
 export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl;
-
 	if (
 		pathname.startsWith('/_next') || // exclude Next.js internals
 		pathname.startsWith('/api') || //  exclude all API routes
@@ -83,7 +82,3 @@ export async function middleware(request: NextRequest) {
 
 	return response;
 }
-
-// export const config = {
-// 	matcher:[ '/app/(application)/:path*']
-// }

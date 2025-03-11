@@ -1,6 +1,6 @@
 import { getDateFromIso } from '@repo/provider';
 import { TallyTypes } from '@types';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 function getLastEntry(entries: TallyTypes.Entry[] | undefined): TallyTypes.Entry | undefined {
     if (isArray(entries) && entries?.length > 0) {

@@ -9,7 +9,7 @@ import { Day, StaffMember } from '@types';
 import { useQuery } from '@apollo/client';
 import {find_day} from '@queries';
 import { FIND_ALL_STAFF } from '@queries';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { Divider, Table } from '@repo/ui';
 
 const WeeklyRecords = ({

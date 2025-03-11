@@ -8,7 +8,7 @@ import { FC, useEffect, useState } from 'react';
 import CreateUser from './components/CreateUser';
 import AddUser from './components/AddUser';
 import { v4 } from 'uuid';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 const AppUsers: FC<AppUsersProps> = ({
     projectId, 

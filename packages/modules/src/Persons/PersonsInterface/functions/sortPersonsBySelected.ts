@@ -1,5 +1,5 @@
 import { PersonClass } from '@repo/types';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 
 const sortPersonsBySelected = (persons: PersonClass[], selectedPersons: string[]): PersonClass[] => {
 	const personsCopy = cloneDeep(persons);

@@ -13,7 +13,7 @@ import { DateSelectProps } from './types';
 import styles from './DateSelect.module.scss';
 import IntervalInfo from './components/IntervalInfo';
 import { formatISO9075 } from 'date-fns';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 import { DateObjectWithNextDates, ErrorMessage } from '@types';
 import { ErrorDisplay, Select } from '@repo/ui';
 

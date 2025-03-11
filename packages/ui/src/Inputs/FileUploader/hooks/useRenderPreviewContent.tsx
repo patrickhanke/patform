@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 import { UseRenderPreviewContentHook } from '../types';
 import { getImageUrl } from '@repo/provider';
 import FilePreview from '../components/FilePreview';

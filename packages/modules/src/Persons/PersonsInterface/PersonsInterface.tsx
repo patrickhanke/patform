@@ -8,7 +8,7 @@ import { AppContext } from '@repo/provider';
 import useFindPerson from './hooks/useFindPerson';
 import DisplayPersonsInterface from './components/DisplayPersonInterface';
 import { IconButton, PersonDisplay, SlideIn } from '@repo/ui';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import sortPersonsBySelected from './functions/sortPersonsBySelected';
 import { type } from '../../../../provider/src/Apollo/index';
 

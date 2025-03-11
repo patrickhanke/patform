@@ -8,7 +8,7 @@ import { Day, ErrorMessage, StaffMember } from '@types';
 import { FIND_ALL_STAFF, find_day } from '@queries';
 import { useQuery } from '@apollo/client';
 import checkForConflicts from './functions/checkForConflicts';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import initialAbsence from './constants/initialAbsence';
 import checkForAbsenceConflicts from './functions/checkForAbsenceConflicts';
 import { SlideIn, TextInput } from '@repo/ui';

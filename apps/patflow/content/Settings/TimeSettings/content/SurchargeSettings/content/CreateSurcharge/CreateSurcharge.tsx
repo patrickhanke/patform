@@ -4,7 +4,7 @@ import { CreateSurchargeProps } from './types';
 import { ErrorMessage, Surcharge } from '@types';
 import default_surcharge from './constants/default_surcharge';
 import surcharge_types from './constants/surcharge_types';
-import { cloneDeep, set } from 'lodash';
+import { cloneDeep, set } from 'lodash-es';
 import SurchargeTimeEdit from './components/SurchargeTimeEdit';
 import './CreateSurcharge.scss';
 import SurchargeDaySelect from './components/SurchargeDaySelect';

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { useCallback, useMemo } from 'react';
 
 const styles = 'color: black; width: 100%; background-color: orange;';

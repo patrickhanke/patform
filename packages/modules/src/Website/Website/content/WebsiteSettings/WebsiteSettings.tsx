@@ -1,7 +1,7 @@
 import { Field, Form } from '@repo/ui';
 import { WebsiteSettingsProps } from './types';
 import { useMemo } from 'react';
-import { cloneDeep, set } from 'lodash';
+import { cloneDeep, set } from 'lodash-es';
 import { useDataHandler } from '@repo/provider';
 import { FormikValues } from 'formik';
 

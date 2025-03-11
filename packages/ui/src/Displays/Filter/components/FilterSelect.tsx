@@ -3,7 +3,7 @@ import { generateGraphQLQuery } from '@repo/provider';
 import { Loader, Select } from '@repo/ui';
 import filterChangeHandler from '../functions/filterChangeHandler';
 import { FilterSelectProps } from '../types';
-import {get} from 'lodash';
+import {get} from 'lodash-es';
 
 const FilterSelect = ({category, filters, setFilters}: FilterSelectProps) => {
 	const {data, loading} = useQuery(generateGraphQLQuery({type: 'find', objectName: category.connected_class,fields: [category.key, 'label', 'objectId']}));

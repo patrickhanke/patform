@@ -8,7 +8,7 @@ import { createInitialTimes, getHolidayDates } from '@provider';
 import { generateGraphQLQuery, useDataHandler } from '@repo/provider';
 import RecordSettings from './components/RecordSettings';
 import defaultRecord from './constants/defaultRecord';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { Divider, Form, PersonDisplay, SlideIn, SwitchButtons } from '@repo/ui';
 
 const CreateRecord: FC<CreateRecordProps> = ({ createRecord, setCreateRecord, userId, timeSettings, refetch, projectId, person }) => {

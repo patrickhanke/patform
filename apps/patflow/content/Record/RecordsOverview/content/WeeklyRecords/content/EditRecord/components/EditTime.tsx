@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useMemo, useState } from 'react';
 import { EditTimeProps, WorkingTime } from '../types';
 import styles from '../EditRecord.module.scss';
 import { useDebounceCallback } from 'usehooks-ts';
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import { SwitchButton as SwitchButtonType } from '@types';
 import { Select } from '@content';
 import { Modal } from '@repo/ui';

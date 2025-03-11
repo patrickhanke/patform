@@ -1,6 +1,6 @@
 import { getDateFromIso } from '@repo/provider';
 import { TallyTypes } from '@types';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 function getSortedEntries(entries: TallyTypes.Entry[] | undefined): TallyTypes.Entry[]  | [] {
     if (isArray(entries) && entries?.length > 0) {

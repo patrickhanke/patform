@@ -7,7 +7,7 @@ import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client';
 import { Select } from '@repo/ui';
 import { SelectOption } from '@repo/types';
-import { cloneDeep, pull, isArray } from 'lodash';
+import { cloneDeep, pull, isArray } from 'lodash-es';
 
 const TableColumnCategory = ({ category, className, objectId, categories = [], refetch }: TableColumnCategoryProps) => {
 	const {updateData} = useDataHandler();  

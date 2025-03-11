@@ -7,7 +7,7 @@ import { PersonClass } from '@repo/types';
 import { PersonOption, PersonSelectProps } from './types';
 import ReactSelect from 'react-select';
 import customStyles from './constants/styles';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 const PersonsSelect = ({persons, isMulti = true, onChange}: PersonSelectProps) => {
 	const {modules} = useContext(AppContext);

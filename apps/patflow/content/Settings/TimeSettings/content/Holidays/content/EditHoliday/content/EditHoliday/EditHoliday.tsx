@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Divider, SlideIn } from '@repo/ui';
 import SurchargeDaySelect from './components/HolidayTemplateDaySelect';
-import { cloneDeep, set } from 'lodash';
+import { cloneDeep, set } from 'lodash-es';
 import { ErrorMessage, Holiday, HolidayTemplate } from '@types';
 import { generateGraphQLQuery, useDataHandler, UserContext } from '@repo/provider';
 import { useQuery } from '@apollo/client';

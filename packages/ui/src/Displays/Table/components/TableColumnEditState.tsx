@@ -1,6 +1,6 @@
 import { Select } from '@repo/ui';
 import { TableColumnEditStateProps } from '../types';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 const TableColumnEditState = ({value, isEditable, onChange, options = []}: TableColumnEditStateProps) => {
 	return (

@@ -4,7 +4,7 @@ import { generateGraphQLQuery, paramsHandler, UserContext } from '@repo/provider
 import { useCallback } from 'react';
 import { GetWorkingTimes, PeriodObject } from './types';
 import findSurchargesForDay from './functions/findSurchargesForDay';
-import { get, set } from 'lodash';
+import { get, set } from 'lodash-es';
 import checkSurchargeTimeCondition from './functions/checkSurchargeTimeCondition';
 import checkSurchargeDayCondition from './functions/checkSurchargeDayCondition';
 

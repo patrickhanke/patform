@@ -5,7 +5,7 @@ import { SelectType } from './types';
 import './styles.scss';
 import customStyles from './constants/styles';
 import { ErrorDisplay } from '../../Displays';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 const Select = ({onChange, value, placeholder, options, isMulti = false, isDisabled = false, isClearable = false, menuPosition = 'absolute', label, id, errors, width = 150}: SelectType) => {
 	const valueBoundryHandler = (value: object | string | null) => {

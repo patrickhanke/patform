@@ -6,7 +6,7 @@ import { Modal } from '@repo/ui';
 import {useContext, useState} from 'react';
 import { ImageUploader } from '@repo/modules';
 import '../styles.scss';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 
 const TableColumnGallery = ({ value = [], onChange, maxFileCount = 0 }: TableColumnGalleryProps) => {
 	const {currentModule} = useContext(AppContext);

@@ -1,6 +1,6 @@
 import { PageHeaderComponent } from './types';
 import { Plus, RotateCcw } from 'lucide-react';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 import clsx from 'clsx';
 import './styles.scss';
 import CreateClass from './content/CreateClass';

@@ -33,7 +33,7 @@
     "@vis.gl/react-google-maps": "^1.2.0",
     "file-saver": "^2.0.5",
     "html-to-text": "^9.0.5",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "lowlight": "^3.1.0",
     "mime": "4.0.4",
     "motion": "^12.4.2",

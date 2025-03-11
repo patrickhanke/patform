@@ -1,7 +1,7 @@
 import { FormDataClass } from '@repo/types';
 import { useCreateColumns } from '@repo/ui';
 import { ApolloRefetch } from '@repo/provider';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 import geneateFormColumns from '../functions/generateFormColumns';
 
 const useFormDataColumns = ({data, refetch}: {data: FormDataClass['data'], refetch: ApolloRefetch}) => {
