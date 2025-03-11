@@ -35,7 +35,20 @@ export async function middleware(request: NextRequest) {
 	const headers = new Headers(httpHeaders);
 	let user: User | null = null as User | null;
 
-	if (!token && request.nextUrl.pathname !== '/login') {
+	console.log('includes login', request.nextUrl.pathname.includes('/login'));
+	let isApplicationPath = true
+
+	if (request.nextUrl.pathname.includes('/login')) {
+		isApplicationPath = false
+	}
+
+	if (request.nextUrl.pathname.includes('/invite')) {
+		isApplicationPath = false
+	}
+
+	if (!token && !isApplicationPath) {
+		return NextResponse.next();
+	} else if (!token && isApplicationPath) {
 		return NextResponse.redirect(new URL('/login', request.url));
 	}
 
@@ -76,8 +89,6 @@ export async function middleware(request: NextRequest) {
 		
 			if (data.ok) {
 				const modules = await data.json();
-				console.log(modules);
-				
 				modules.results.forEach((module: any) => {
 					pathArray.push(module.path);
 				});
