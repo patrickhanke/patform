@@ -1,4 +1,3 @@
-import { axiosclient } from '@repo/provider';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { User } from '@repo/types';
@@ -10,7 +9,7 @@ export async function middleware(request: NextRequest) {
 	if (
 		pathname.startsWith('/_next') || // exclude Next.js internals
 		pathname.startsWith('/api') || //  exclude all API routes
-		pathname.startsWith('/static') || // exclude static files
+		pathname.startsWith('/static') || // exclude static files ||
 		PUBLIC_FILE.test(pathname) // exclude all files in the public folder
 	) {
 		return NextResponse.next();
@@ -47,8 +46,6 @@ export async function middleware(request: NextRequest) {
 		})
 			.then(response => response.json())
 			.then((actualData: User & {sessionToken: string}) => {
-				console.log(actualData, 'actualData');
-				
 				if (actualData.sessionToken === token && !loggedIn) {
 					loggedIn = true;
 				}		
@@ -68,13 +65,28 @@ export async function middleware(request: NextRequest) {
 	
 	const projectId =  process.env.PROJECT_ID;
 	const pathArray: string[] = [];
-	await axiosclient().get(`classes/Module?where={"project":{"__type":"Pointer","className":"Project","objectId":"${projectId}"}}`).then((res) => {
-		res.data.results.forEach((module: any) => {
-			pathArray.push(module.path)
-		})
-	}).catch((err) => {
-		console.log(err.message)
-	})
+	try {
+			const data = await fetch(`https://pg-app-uefbsna5l6ijyse42wipewpjwu804d.scalabl.cloud/1/classes/Module?where={"project":{"__type":"Pointer","className":"Project","objectId":"${projectId}"}}`, {
+				method: 'GET',
+				headers: {
+					'X-Parse-Application-Id': process.env.SASHIDO_APP_ID || '',
+					'X-Parse-REST-API-Key': process.env.SASHIDO_REST_KEY || ''
+				}
+			});
+		
+			if (data.ok) {
+				const modules = await data.json();
+				console.log(modules);
+				
+				modules.results.forEach((module: any) => {
+					pathArray.push(module.path);
+				});
+			} else {
+				console.error('Failed to fetch modules:', data.status, data.statusText);
+			}
+		} catch (err: any) {
+			console.error('Error fetching modules:', err.message);
+	}
 	
 	if (!pathArray.includes(request.nextUrl.pathname ) && user?.is_superuser === false) {
 		return NextResponse.redirect(new URL('/', request.url));
