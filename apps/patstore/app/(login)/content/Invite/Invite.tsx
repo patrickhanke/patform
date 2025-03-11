@@ -11,16 +11,16 @@ const Invite = () => {
 
 	const project = useMemo(() => {
 		let project;
-		axiosclient().post('functions/get_project_from_path', {path})
-		.then(data => {
-			project = data;
-
-		})
-		.catch(error => console.error(error.message));
+		if (path !== '/login') {
+			axiosclient().post('functions/get_project_from_path', {path})
+			.then(data => {
+				project = data;
+	
+			})
+			.catch(error => console.error(error.message));
+		}
 		return project
 	}, [])
-	console.log(project);
-
 	
 	return (
 		<>
@@ -41,10 +41,6 @@ const Invite = () => {
 					</p>
 				</div>
 
-			</div>
-			<div className={'Invite_right_container'}>
-				
-				
 			</div>
 		</>
 	);
