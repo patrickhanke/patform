@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import '../styles.scss';
+import { Modal } from '@repo/ui';
+import PasswordForm from './PasswordForm';
 
 const LoginSchema = Yup.object().shape({
 	email: Yup.string().email('Ungültiges E-Mail Format').required('Eine E-Mail Adresse muss angegeben werden'),
@@ -16,6 +18,7 @@ const LoginForm = () => {
 	const [disabled, setDisabled] = useState(false);
 	const router = useRouter();
 	const [error, setError] = useState('');
+	const [passwordReset, setPasswordReset] = useState(false);
 
 
 	const formik = useFormik({
@@ -100,11 +103,16 @@ const LoginForm = () => {
 						{formik.errors.password}
 					</div>
 				}
-				<button type="submit" className='full_button md primary' disabled={disabled}>Anmelden</button>
+				<div className='button_container'>
+					<button type="submit" className='full_button md primary' disabled={disabled}>Anmelden</button>
+					<button type="button" className='full_button md grey' disabled={disabled} onClick={() => setPasswordReset(true)}>Passwort vergessen?</button>
+				</div>
 			</form>
 			<div className='error_message'>
 				{error && error}
 			</div>
+
+			<PasswordForm passwordReset={passwordReset} setPasswordReset={setPasswordReset} />
 		</div>
 	);
 };

@@ -46,7 +46,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
         console.log('update user')
         
         if (createUser && user) {
-            axiosclient().post('/functions/send_user_invitation', {
+            axiosclient().post('/functions/send-user-invitation', {
                 username: user.username,
                 email: user.username,
                 name: user.name,

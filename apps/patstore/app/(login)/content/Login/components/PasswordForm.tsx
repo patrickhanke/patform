@@ -1,63 +1,66 @@
-import { useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { axiosclient } from '@repo/provider';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import * as yup from 'yup';
 
-import clsx from 'clsx';
 import '../styles.scss';
+import { Modal, TextInput } from '@repo/ui';
+import { PasswordFormProps } from '../types';
+import { ErrorMessage } from '@repo/types';
 
-const PasswordSchema = Yup.object().shape({
-	email: Yup.string().email('Ungültiges E-Mail Format').required('Eine E-Mail Adresse muss angegeben werden')
-});
+const PasswordForm: FC<PasswordFormProps> = ({passwordReset, setPasswordReset}) => {
+	const [email, setEmail] = useState('');
+	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 
-const PasswordForm = () => {
-	const [message, setMessage] = useState('');
+	const submitHandler = useCallback(async () => {
+		const errorArray: ErrorMessage[] = []
+		let schema = yup.object().shape({
+			email: yup.string().email().required(),
+		});
 
-	const formik = useFormik({
-		validationSchema: PasswordSchema,
-		initialValues: {
-			email: ''
-		},
-		onSubmit: async values => {
-			await axiosclient().post('requestPasswordReset', {
-				'email': values.email
-			})
-				.catch(error => {
-					window.alert(JSON.stringify(error.message, null, ''));
-					
+		await schema.validate({email: email}).catch((errors) => {
+			errorArray.push({message: errors.errors[0], id: errors.path, key: errors.path})
+		})
+
+		if (errorArray.length === 0) {
+			await axiosclient().post('functions/send-password-reset', {email})
+				.then((message) => {
+					console.log(message);
+					console.log('E-Mail wurde versendet');
 				})
-				.then(() => {
-					setMessage('Sie erhalten Eine E-Mail mit einem Link für das Rücksetzen des Passworts');
-				});
-			// setDisabled(false);
+				.catch((error) => {
+					console.error(error);
+					errorArray.push({message: error.message, id: 'email', key: 'email'});
+			});
 		}
-	});
+		setErrors(errorArray);
+
+	}, [email]);
 
 	return (
-		<div>
-			<form onSubmit={formik.handleSubmit} className={'login_form_container'}>
-				<h2>
-					Passwort zurücksetzen
-				</h2>
-				<label htmlFor="email">E-Mail Adresse</label>
-				<input
-					id="email"
-					name="email"
-					type="email"
-					onChange={formik.handleChange}
-					value={formik.values.email}
-					className={clsx(formik.errors.email && 'error')}
+		<Modal
+			header='Passwort zurücksetzen'
+			isOpen={passwordReset}
+			confirmButtonHandler={() => submitHandler()}
+			cancelButtonHandler={() => setPasswordReset(false)}
+			errors={errors}
+			confirmButtonText='Link anfordern'
+			buttonDisabled={[false, errors.length > 0]}
+		>
+				<p>
+					Geben Sie eine E-Mail Adresse an, um einen Passwort-Reset Link zu erhalten.
+				</p>
+				<TextInput
+					label='E-Mail Adresse'
+					id='email'
+					defaultValue={email}
+					onChange={value => {
+						if (errors.length > 0) {
+							setErrors([])
+						}
+						setEmail(value)
+					}}
 				/>
-				{formik.errors.email &&
-					<div className='error_message'>
-						{formik.errors.email}
-					</div>
-				}
-				
-				{message ? <p>{message} </p> : <button type="submit">Zurücksetzen</button>}
-			</form>
-
-		</div>
+		</Modal>
 	);
 };
 

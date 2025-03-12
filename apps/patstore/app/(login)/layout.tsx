@@ -1,6 +1,7 @@
 import React from 'react';
-import styles from './Layout.module.scss';
 import '@repo/styles/global';
+import './styles.scss';
+import Framework from './content/Framework';
 
 export const metadata = {
 	title: 'Patstore Login',
@@ -14,8 +15,9 @@ export default async function  RootLayout({
 }) {
 	return (
 		<html lang="de">
-			<body className={styles.layout}>
-				{children}
+			<body className={'login_layout'}>
+				<Framework />
+				<div className='login_content'>{children}</div>
 			</body>
 		</html>
 	);

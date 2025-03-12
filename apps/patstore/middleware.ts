@@ -36,6 +36,32 @@ export async function middleware(request: NextRequest) {
 	let user: User | null = null as User | null;
 
 	console.log('includes login', request.nextUrl.pathname.includes('/login'));
+
+
+	let projectArray: string[] = [];
+	try {
+		const data = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
+			method: 'GET',
+			headers: {
+				'X-Parse-Application-Id': process.env.SASHIDO_APP_ID || '',
+				'X-Parse-REST-API-Key': process.env.SASHIDO_REST_KEY || ''
+			}
+		});
+	
+		if (data.ok) {
+			const projects = await data.json();
+			projects.results.forEach((project: any) => {
+				projectArray.push(project.path);
+			});
+		} else {
+			console.error('Failed to fetch projects:', data.status, data.statusText);
+		}
+	} catch (err: any) {
+		console.error('Error fetching projects:', err.message);
+	}
+
+	console.log('projectArray', projectArray);
+	
 	let isApplicationPath = true
 
 	if (request.nextUrl.pathname.includes('/login')) {
@@ -45,6 +71,18 @@ export async function middleware(request: NextRequest) {
 	if (request.nextUrl.pathname.includes('/invite')) {
 		isApplicationPath = false
 	}
+
+	if (request.nextUrl.pathname.includes('/password')) {
+		isApplicationPath = false
+	}
+
+	if (projectArray.length > 0) {
+		projectArray.forEach((project) => {
+			if (request.nextUrl.pathname.includes(project)) {
+				isApplicationPath = false
+			}
+		})
+	};
 
 	if (!token && !isApplicationPath) {
 		return NextResponse.next();
@@ -79,24 +117,24 @@ export async function middleware(request: NextRequest) {
 	const projectId =  process.env.PROJECT_ID;
 	const pathArray: string[] = [];
 	try {
-			const data = await fetch(`https://pg-app-uefbsna5l6ijyse42wipewpjwu804d.scalabl.cloud/1/classes/Module?where={"project":{"__type":"Pointer","className":"Project","objectId":"${projectId}"}}`, {
-				method: 'GET',
-				headers: {
-					'X-Parse-Application-Id': process.env.SASHIDO_APP_ID || '',
-					'X-Parse-REST-API-Key': process.env.SASHIDO_REST_KEY || ''
-				}
-			});
-		
-			if (data.ok) {
-				const modules = await data.json();
-				modules.results.forEach((module: any) => {
-					pathArray.push(module.path);
-				});
-			} else {
-				console.error('Failed to fetch modules:', data.status, data.statusText);
+		const data = await fetch(`https://pg-app-uefbsna5l6ijyse42wipewpjwu804d.scalabl.cloud/1/classes/Module?where={"project":{"__type":"Pointer","className":"Project","objectId":"${projectId}"}}`, {
+			method: 'GET',
+			headers: {
+				'X-Parse-Application-Id': process.env.SASHIDO_APP_ID || '',
+				'X-Parse-REST-API-Key': process.env.SASHIDO_REST_KEY || ''
 			}
-		} catch (err: any) {
-			console.error('Error fetching modules:', err.message);
+		});
+	
+		if (data.ok) {
+			const modules = await data.json();
+			modules.results.forEach((module: any) => {
+				pathArray.push(module.path);
+			});
+		} else {
+			console.error('Failed to fetch modules:', data.status, data.statusText);
+		}
+	} catch (err: any) {
+		console.error('Error fetching modules:', err.message);
 	}
 	
 	if (!pathArray.includes(request.nextUrl.pathname ) && user?.is_superuser === false) {
