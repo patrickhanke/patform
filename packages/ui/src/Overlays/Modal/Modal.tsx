@@ -26,7 +26,7 @@ const Modal: React.FC<ModalProps> = ({
 					</h3>
 				</div>
 				<div className={'modal_content'}>
-					{children}
+					{isOpen && children}
 					<ErrorDisplay errors={errors} />
 				</div>
 				<div className={'modal_footer'}>

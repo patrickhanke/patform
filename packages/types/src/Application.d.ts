@@ -84,3 +84,10 @@ export type Notification = {
   read: boolean,
   data?: NotificationData
 }
+
+export type Response = {
+    success: boolean,
+    message: string,
+    type: string,
+    [key: string]: any
+}

@@ -11,21 +11,27 @@ import { LoadingIndicator } from '@repo/ui';
 const Login = () => {
 	const path = usePathname();
 	const [project, setProject] = useState();
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 
-	const getProject = useCallback(() => {
-		setLoading(true);
-		axiosclient().post('functions/get-project-from-path', {path})
-		.then(response => {
-			console.log(response);
-			setProject(response.data.result);
+	const getProject = useCallback(async () => {
+		if (path !== '/login' ) {
+			setLoading(true);
+			await axiosclient().post('functions/get-project-from-path', {path})
+			.then(response => {
+				console.log(response);
+				setProject(response.data.result);
+				setLoading(false);
+			})
+			.catch(error =>{ 
+				console.error(error.message)
+				setLoading(false);
+			});
 			setLoading(false);
-		})
-		.catch(error =>{ 
-			console.error(error.message)
-			setLoading(false);
-		});
+		}
 	}, [path])
+
+	console.log(loading);
+	
 
 	useEffect(() => {
 		getProject();

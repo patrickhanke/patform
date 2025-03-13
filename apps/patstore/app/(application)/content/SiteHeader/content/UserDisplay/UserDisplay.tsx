@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './UserDisplay.module.scss';
-import { MessageIndicator } from '@repo/ui';
+import { Icon, MessageIndicator } from '@repo/ui';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { axiosclient, getImageUrl } from '@repo/provider';
 import { UserDisplayProps } from './types';
@@ -21,6 +21,9 @@ const UserDisplay: FC<UserDisplayProps> = ({userMessages=false}) => {
 	}, [])
 
 	const userShort = (username: string) => {
+		if (!username) {
+			return 'U';
+		}
 		const nameParts = username.split(' ');
 		if (nameParts.length === 1 && nameParts[0]) {
 			return nameParts[0][0];
@@ -31,25 +34,7 @@ const UserDisplay: FC<UserDisplayProps> = ({userMessages=false}) => {
 		return 'U'
 	}
 
-	const userMenu = useMemo(() => {
-		const menuArray = [
-			{
-				label: 'Profile',
-				onClick: () => console.log('Profile')
-			},
-			{
-				label: 'Settings',
-				onClick: () => console.log('Settings')
-			},
-			{
-				label: 'Logout',
-				onClick: () => console.log('Logout')
-			}
-		]
-
-		return menuArray
-
-	}, [user])
+	
 
 	useEffect(() => {
 		getUser();
@@ -77,6 +62,7 @@ const UserDisplay: FC<UserDisplayProps> = ({userMessages=false}) => {
 						</div>
 					}
 				</div>
+				<Icon type='arrow-down' size={15} />
 				{userMessages && <MessageIndicator />}
 			</div>
 			{user && <UserSettings user={user} userSettings={userSettings} setUserSettings={setUserSettings} getUser={getUser} />}

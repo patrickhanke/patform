@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { axiosclient } from '@repo/provider';
 import { useFormik } from 'formik';
@@ -32,7 +34,7 @@ const RegisterForm = ({email, project, invitationKey}: {email: string, project: 
 		onSubmit: async values => {
 
 			setDisabled(true);
-			const key: string = await axiosclient().post('functions/check-for-invite', {email, project_id: project.objectId})
+			const response = await axiosclient().post('functions/check-for-invite', {email, project_id: project.objectId})
 				.then(response => {
 					console.log(response);
 					
@@ -43,9 +45,8 @@ const RegisterForm = ({email, project, invitationKey}: {email: string, project: 
 					setDisabled(false);
 				});
 			console.log(invitationKey);
-			console.log(key);
 
-			if (invitationKey && invitationKey === key) {
+			if (response.key && invitationKey === response.key) {
 				await axiosclient().post('users', {
 					'username': email, 
 					'name': values.username,
@@ -55,7 +56,7 @@ const RegisterForm = ({email, project, invitationKey}: {email: string, project: 
 					'is_superuser': false,
 				})
 					.then(async () => {
-						await axiosclient().post('functions/remove-invitation-key', {key, project_id: project.objectId})
+						await axiosclient().post('functions/remove-invitation-key', {key: response.key, project_id: project.objectId})
 						
 						setSuccess(true)
 						setDisabled(false);
@@ -78,13 +79,8 @@ const RegisterForm = ({email, project, invitationKey}: {email: string, project: 
 			}
 
 			setDisabled(false);
-			
-			
 		}
 	});
-
-	console.log(disabled);
-	
 
 	return success ? 
 		<p>

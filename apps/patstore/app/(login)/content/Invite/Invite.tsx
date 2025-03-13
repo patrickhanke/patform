@@ -52,27 +52,28 @@ const Invite = () => {
 
 	const email = params.get('email');
 	const key = params.get('key');
+	console.log(email, key);
+	
 
 	return (
 		<>
-				<div >
-					<DisplayProject project={project} />
-					<br />
-					<p>
-						Sie wurden eingeladen, sich bei dem Projekt {project.name || 'patstore'} anzumelden.
+			<div >
+				<DisplayProject project={project} />
+				<br />
+				<p>
+					Sie wurden eingeladen, sich bei dem Projekt {project.name || 'patstore'} anzumelden.
+				</p>
+			</div>
+			<div >
+				{email && key ?
+					<RegisterForm email={email} project={project} invitationKey={key} />
+					: 
+					<p className='error'> 
+						Die Einladung ist ungültig. 
+						Falls es sich um eine gültige Linkeinladung handelt, wenden Sie sich bitte an <a href="mailto:info@patwork.net">info@patwork.net</a>.
 					</p>
-				</div>
-				<div >
-					{email && key ?
-						<RegisterForm email={email} project={project} key={key} />
-						: 
-						<p className='error'> 
-							Die Einladung ist ungültig. 
-							Falls es sich um eine gültige Linkeinladung handelt, wenden Sie sich bitte an <a href="mailto:info@patwork.net">info@patwork.net</a>.
-						</p>
-					}
-				</div>
-
+				}
+			</div>
 		</>
 	);
 };

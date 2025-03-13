@@ -74,6 +74,16 @@
     line-height: 12px;
 };
 
+.success_message {
+	font-weight: 500;
+	font-size: 14px;
+	font-family: Geist, sans-serif;
+    color: green;
+    display: inline-block;
+    font-size: map-get($map: constants.$font_size, $key: 'xs' );
+    line-height: 12px;
+};
+
 .warning_message {
 	color: orange;
 	font-weight: 500;

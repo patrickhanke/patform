@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { axiosclient } from '@repo/provider';
 import { useFormik } from 'formik';
@@ -5,8 +7,7 @@ import Cookies from 'js-cookie';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
-import '../styles.scss';
-import PasswordForm from './PasswordForm';
+import PasswordForm from './components/PasswordForm';
 
 const LoginSchema = Yup.object().shape({
 	email: Yup.string().email('Ungültiges E-Mail Format').required('Eine E-Mail Adresse muss angegeben werden'),
@@ -27,6 +28,7 @@ const LoginForm = () => {
 		},
 		onSubmit: async (values) => {
 			setDisabled(false);
+				 
 			await axiosclient().post('login', {
 				'username': values.email, 
 				'password': values.password

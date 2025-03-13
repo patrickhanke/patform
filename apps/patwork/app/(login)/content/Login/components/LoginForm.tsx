@@ -24,8 +24,6 @@ const LoginForm = () => {
 			password: ''
 		},
 		onSubmit: async (values) => {
-			console.log(values);
-			
 			const user = await axiosclient()
 				.post('/functions/get-user-data', {
 					email: values.email
@@ -34,7 +32,7 @@ const LoginForm = () => {
 			console.log(user);
 			setDisabled(false);
 				
-			if (user?.data?.result?.is_superuser === true) {
+			if (user?.data?.result?.user?.is_superuser === true) {
 				await axiosclient().post('login', {
 					'username': user?.data?.result?.username, 
 					'password': values.password

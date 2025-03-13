@@ -28,11 +28,8 @@ const CreateUser: FC<CreateUserProps> = ({user, setUser}) => {
                 fields={formFields as Field[]}
                 data={user}
                 formSubmitHandler={(data) => {
-                    console.log(data);
-                    
                     setUser(data as UserObject)
                 }}
-
             />
         </div>
     )

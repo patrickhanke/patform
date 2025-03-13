@@ -1,15 +1,15 @@
-import { FC, useCallback, useState } from 'react';
-import { axiosclient } from '@repo/provider';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { axiosclient, compileAxiosError } from '@repo/provider';
 import * as yup from 'yup';
 
-import '../styles.scss';
 import { Modal, TextInput } from '@repo/ui';
 import { PasswordFormProps } from '../types';
-import { ErrorMessage } from '@repo/types';
+import { ErrorMessage, Response } from '@repo/types';
 
 const PasswordForm: FC<PasswordFormProps> = ({passwordReset, setPasswordReset}) => {
 	const [email, setEmail] = useState('');
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
+	const [response, setResponse] = useState<Response | undefined>();
 
 	const submitHandler = useCallback(async () => {
 		const errorArray: ErrorMessage[] = []
@@ -18,23 +18,34 @@ const PasswordForm: FC<PasswordFormProps> = ({passwordReset, setPasswordReset}) 
 		});
 
 		await schema.validate({email: email}).catch((errors) => {
-			errorArray.push({message: errors.errors[0], id: errors.path, key: errors.path})
+			errorArray.push({message: 'Bitte geben Sie eine gültie E-Mail Adresse an', id: errors.path, key: errors.path})
 		})
 
 		if (errorArray.length === 0) {
-			await axiosclient().post('functions/send-password-reset', {email})
-				.then((message) => {
-					console.log(message);
-					console.log('E-Mail wurde versendet');
+			const response = await axiosclient().post('functions/send-password-reset', {email})
+				.then((response) => {
+					return response.data.result;
 				})
 				.catch((error) => {
 					console.error(error);
-					errorArray.push({message: error.message, id: 'email', key: 'email'});
+					return compileAxiosError(error);
 			});
+			setResponse(response);
 		}
 		setErrors(errorArray);
 
 	}, [email]);
+
+	console.log(response);
+
+	useEffect(() => {
+		if (response && response.success === true) {
+			setTimeout(() => {
+				setPasswordReset(false);
+			}, 2000);
+		}
+	}, [response])
+	
 
 	return passwordReset && (
 		<Modal
@@ -56,10 +67,18 @@ const PasswordForm: FC<PasswordFormProps> = ({passwordReset, setPasswordReset}) 
 					onChange={value => {
 						if (errors.length > 0) {
 							setErrors([])
+						} 
+						if (response) {
+							setResponse(undefined)
 						}
 						setEmail(value)
 					}}
 				/>
+			{response && response.message && (
+				<p className={response.success === false ? 'error_message' : 'success_message'}>
+					{response.message}
+				</p>
+			)}
 		</Modal>
 	);
 };

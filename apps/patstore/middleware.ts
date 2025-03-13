@@ -35,9 +35,6 @@ export async function middleware(request: NextRequest) {
 	const headers = new Headers(httpHeaders);
 	let user: User | null = null as User | null;
 
-	console.log('includes login', request.nextUrl.pathname.includes('/login'));
-
-
 	let projectArray: string[] = [];
 	try {
 		const data = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
@@ -60,8 +57,6 @@ export async function middleware(request: NextRequest) {
 		console.error('Error fetching projects:', err.message);
 	}
 
-	console.log('projectArray', projectArray);
-	
 	let isApplicationPath = true
 
 	if (request.nextUrl.pathname.includes('/login')) {
@@ -115,7 +110,7 @@ export async function middleware(request: NextRequest) {
 	}
 	
 	const projectId =  process.env.PROJECT_ID;
-	const pathArray: string[] = [];
+	const pathArray: string[] = ['/'];
 	try {
 		const data = await fetch(`https://pg-app-uefbsna5l6ijyse42wipewpjwu804d.scalabl.cloud/1/classes/Module?where={"project":{"__type":"Pointer","className":"Project","objectId":"${projectId}"}}`, {
 			method: 'GET',
@@ -136,7 +131,7 @@ export async function middleware(request: NextRequest) {
 	} catch (err: any) {
 		console.error('Error fetching modules:', err.message);
 	}
-	
+
 	if (!pathArray.includes(request.nextUrl.pathname ) && user?.is_superuser === false) {
 		return NextResponse.redirect(new URL('/', request.url));
 	}

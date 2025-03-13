@@ -2,7 +2,7 @@
 
 import {useCallback, useContext, useMemo} from 'react';
 import { useQuery } from '@apollo/client';
-import { AppContext, axiosclient, generateGraphQLQuery, paramsHandler, useDataHandler } from '@repo/provider';
+import { AppContext, axiosclient, generateGraphQLQuery, paramsHandler, ProjectContext, useDataHandler } from '@repo/provider';
 import { Page, SlideIn, Table } from '@repo/ui';
 import useUserColumns from './hooks/useUserColumns';
 import { UsersOverviewProps, UserObject } from './types';
@@ -10,7 +10,7 @@ import { FC, useEffect, useState } from 'react';
 import CreateUser from './components/CreateUser';
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
-    const {project} = useContext(AppContext);
+    const {project} = useContext(ProjectContext);
     const [createUser, setCreateUser] = useState(false)
     const {data, refetch} = useQuery(generateGraphQLQuery({
         type: 'find',
