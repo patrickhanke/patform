@@ -2,7 +2,6 @@
 
 import { compileAxiosError } from '@repo/provider';
 import { DisplayProject, RegisterForm } from '../../content';
-import './styles.scss';
 import axios from 'axios';
 
 const fetchProject = async (path: string) => {
