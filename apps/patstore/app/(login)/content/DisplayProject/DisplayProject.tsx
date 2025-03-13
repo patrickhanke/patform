@@ -2,8 +2,6 @@ import React from 'react'
 import { PatstoreProject } from '@repo/types'
 
 const DisplayProject = ({project}: {project?: PatstoreProject}) => {
-    console.log('display project', project);
-    
     if (!project) {
         return (
             <div className='flex col a-ce gap-md ta-ce'>

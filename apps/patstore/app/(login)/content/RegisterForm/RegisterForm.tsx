@@ -40,11 +40,9 @@ const RegisterForm = ({email, project, invitationKey}: {email: string, project: 
 					
 					return response.data.result;
 				})
-				.catch(error => {
-					console.error(error);
+				.catch(() => {
 					setDisabled(false);
 				});
-			console.log(invitationKey);
 
 			if (response.key && invitationKey === response.key) {
 				await axiosclient().post('users', {
@@ -84,7 +82,7 @@ const RegisterForm = ({email, project, invitationKey}: {email: string, project: 
 
 	return success ? 
 		<p>
-			Sie haben sich erfolgreich für das Projekt {project.name} registriert. Sie können sich jetzt <a href={`https://store.patwork${project.path}`}>hier</a> einloggen.
+			Sie haben sich erfolgreich für das Projekt {project.name} registriert. Sie können sich jetzt <a href={`https://store.patwork.net/${project.path}`}>hier</a> einloggen.
 		</p>
 		:
 		<div>

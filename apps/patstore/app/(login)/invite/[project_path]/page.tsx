@@ -33,7 +33,6 @@ interface InviteProps {
 const Invite: React.FC<InviteProps> = async ({ searchParams, params }) => {
     const response = await fetchProject(`/${params.project_path}`);
     const {email, key} = searchParams;
-    console.log(email, key);
 
     if (response.success === false) {
         return (

@@ -19,11 +19,6 @@ const PasswordForm = ({email, userId, passwordKey}: {email: string, userId: stri
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
 
-    console.log(userId, passwordKey);
-    console.log(success);
-    
-    
-
     const formik = useFormik({
         validationSchema: SignupSchema,
         initialValues: {
@@ -43,7 +38,6 @@ const PasswordForm = ({email, userId, passwordKey}: {email: string, userId: stri
                     return compileAxiosError(error);
                 });
                 
-            console.log({response});
             if (response && response.success === true) {
                 setSuccess(true);
             } else if (response && response.success === false) {
@@ -54,9 +48,6 @@ const PasswordForm = ({email, userId, passwordKey}: {email: string, userId: stri
             }
         }
     });
-
-    console.log(disabled);
-    
 
     return success ? 
         <>

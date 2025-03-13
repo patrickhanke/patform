@@ -1,12 +1,9 @@
 'use client';
 
 import { ApolloAppProvider, AppContextProvider, ProjectContext } from '@repo/provider';
-import { Project } from '@repo/types';
 import {ProjectContextProvider} from '@repo/provider';
 
 const LayoutContext = ({projects, children}: {projects: string[], children: React.ReactNode}) => {
-	console.log({projects});
-	
 	
 	return (
 		<ApolloAppProvider
@@ -16,8 +13,6 @@ const LayoutContext = ({projects, children}: {projects: string[], children: Reac
 			<ProjectContextProvider projects={projects}>
 				<ProjectContext.Consumer>
 					{({project}) => {
-						console.log(project);
-						
 						if (!project || !project.objectId) {
 							return null;
 						}

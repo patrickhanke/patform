@@ -27,7 +27,6 @@ const PasswordForm: FC<PasswordFormProps> = ({passwordReset, setPasswordReset}) 
 					return response.data.result;
 				})
 				.catch((error) => {
-					console.error(error);
 					return compileAxiosError(error);
 			});
 			setResponse(response);
@@ -36,8 +35,6 @@ const PasswordForm: FC<PasswordFormProps> = ({passwordReset, setPasswordReset}) 
 
 	}, [email]);
 
-	console.log(response);
-
 	useEffect(() => {
 		if (response && response.success === true) {
 			setTimeout(() => {
@@ -45,7 +42,6 @@ const PasswordForm: FC<PasswordFormProps> = ({passwordReset, setPasswordReset}) 
 			}, 2000);
 		}
 	}, [response])
-	
 
 	return passwordReset && (
 		<Modal

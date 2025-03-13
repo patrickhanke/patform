@@ -1,5 +1,0 @@
-@use '@repo/styles/constants';
-
-.invite_container {
-    @include constants.flexbox($direction: column, $align: center, $justify: center, $gap: 12px);
-}

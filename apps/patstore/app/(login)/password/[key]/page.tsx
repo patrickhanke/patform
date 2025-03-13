@@ -39,8 +39,6 @@ const Password = async ({ searchParams, params }: PasswordProps) => {
 
     const response = await fetchUserData(email, key);
 
-    console.log('data', email, key, response);
-
     return (
         <>
             <DisplayProject />
