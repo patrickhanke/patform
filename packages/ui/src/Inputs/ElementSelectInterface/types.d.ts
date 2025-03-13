@@ -5,7 +5,8 @@ export type SelectElement = {
     selected?: boolean;
     single?: boolean;
     disabled?: boolean;
-} & any
+    [key: string]: any;
+} 
 
 export type ElementSelectInterfaceProps = {
     title?: string,

@@ -13,7 +13,8 @@ export type IconTypes =
     'check' |
     'add' |
     'circle-check' |
-    'circle';
+    'circle' |
+    'circle-user-round'
 
 export type IconProps ={
     type: IconTypes

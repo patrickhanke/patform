@@ -16,7 +16,8 @@ const TextInput = ({
 	onBlur,
 	min,
 	max,
-	placeholder
+	placeholder,
+	disabled
 }: {
     label?: string, 
     type?: HTMLInputElement['type'], 
@@ -29,7 +30,8 @@ const TextInput = ({
 	onBlur?: () => void,
 	min?: number,
 	max?: number,
-	placeholder?: string
+	placeholder?: string,
+	disabled?: boolean
 }) => {
 	const inputRef = useRef(null as unknown as HTMLInputElement);
 	const textareaRef = useRef(null as unknown as HTMLTextAreaElement);
@@ -57,6 +59,7 @@ const TextInput = ({
 					style={{width}}
 					onBlur={onBlur}
 					placeholder={placeholder ? placeholder : ''}
+					disabled={disabled}
 				>
 				</textarea> 
 				:
@@ -71,6 +74,7 @@ const TextInput = ({
 					min={min}
 					max={max}
 					placeholder={placeholder ? placeholder : ''}
+					disabled={disabled}
 				>
 				</input>
 			}

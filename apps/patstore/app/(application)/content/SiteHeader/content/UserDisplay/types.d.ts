@@ -12,6 +12,16 @@ export type UserSettingsProps = {
     getUser: () => Promise<void>;
 }
 
+
+export type UserPasswordProps = {
+    user: PatstoreUser;
+    userPassword: boolean;
+    setUserPassword: Dispatch<SetStateAction<boolean>>;
+}
+
 export type ProjectSelectionProps = {
     projects: string[];
+    selectProject: boolean;
+    setSelectProject: Dispatch<SetStateAction<boolean>>;
 }
+

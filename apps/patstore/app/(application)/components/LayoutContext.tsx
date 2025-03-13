@@ -1,6 +1,6 @@
 'use client';
 
-import { ApolloAppProvider, AppContextProvider, ProjectContext } from '@repo/provider';
+import { ApolloAppProvider, AppContextProvider, DataContextProvider, ProjectContext } from '@repo/provider';
 import {ProjectContextProvider} from '@repo/provider';
 
 const LayoutContext = ({projects, children}: {projects: string[], children: React.ReactNode}) => {
@@ -18,7 +18,9 @@ const LayoutContext = ({projects, children}: {projects: string[], children: Reac
 						}
 						return (
 							<AppContextProvider project={project}>
-								{children}
+								<DataContextProvider>
+									{children}
+								</DataContextProvider>
 							</AppContextProvider>
 						);
 					}}

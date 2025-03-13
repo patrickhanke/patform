@@ -4,6 +4,7 @@
     @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
     cursor: pointer;
     position: relative;
+    overflow: visible;
 };
 
 .user_image_container {
@@ -13,7 +14,7 @@
     border-radius: 50%;
     overflow: hidden;
     background-color: constants.$grey;
-};
+};  
 
 .user_image_placeholder {
     height: 24px;

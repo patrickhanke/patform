@@ -4,38 +4,13 @@ import { useCallback, useMemo, useState } from 'react';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import axiosapi from './axios.ts';
 import axiosclient from './axios.ts';
+import { useDataContext } from '../context/index.ts';
+import compileAxiosError from './compileAxiosError.ts';
 
 const useDataHandler = () => {
 	const setFeedback = (a: string,b: string,c: Date) => console.log(a,b,c);
 	const [loading, setLoading] = useState(false);
-
-
-	// const createMessageHandler = async (type: MessageTypes.MessageTypes, id: string, users: UserTypes.User['objectId'][] ) => {
-	// 	const updateObject: MessageTypes.MessageUpdateObject = {
-	// 		is_read: false,
-	// 		type: type
-	// 	};  
-
-	// 	if (type === 'task_created') {
-	// 		updateObject.task = {__type: 'Pointer', className: 'Task', objectId: id};
-	// 	}
-
-	// 	if (type === 'ticket_created') {
-	// 		updateObject.ticket = {__type: 'Pointer', className: 'Ticket', objectId: id};
-	// 	}
-
-	// 	users.forEach(userId => {
-	// 		createData({
-	// 			className: 'Message',   
-	// 			updateObject: {
-	// 				...updateObject,
-	// 				created_by: {__type: 'Pointer', className: '_User', objectId: user.objectId},
-	// 				user: {__type: 'Pointer', className: '_User', objectId: userId}
-	// 			}
-	// 		});
-	// 	});
-	// };
-
+	const {feedbackHandler} = useDataContext();
 
 	const updateData = useCallback( async ({
 		className, 
@@ -59,16 +34,19 @@ const useDataHandler = () => {
 			.then((response : AxiosResponse<any, any>) => {
 				data = response.data.results;
 				if (feedback) {
-					setFeedback(feedback,'success', new Date() );
+					feedbackHandler({
+						success: true,
+						message: feedback,
+						type: 'success'
+					});
 				}
 				if (afterSaveHandler) {
 					afterSaveHandler(response.data.objectId);
 				}
 			})
 			.catch(error => {
-				console.log(error.message);
 				if (feedback) {
-					setFeedback('Fehler','error', new Date() );
+					feedbackHandler(compileAxiosError(error));
 				}
 				if (onError) {
 					onError(error.message);
@@ -97,15 +75,18 @@ const useDataHandler = () => {
 		await axiosclient().delete(`classes/${className}/${objectId}`)
 			.then((response : AxiosResponse<any, any>) => {
 				if (feedback) {
-					setFeedback(feedback, 'success',new Date());
+					feedbackHandler({
+						success: true,
+						message: feedback,
+						type: 'success'
+					});
 				}
 				if (afterSaveHandler) {
 					afterSaveHandler(response.data.objectId);
 				}
 			})
 			.catch(error => {
-				console.log(error.message);
-				setFeedback('Fehler', 'error', new Date());
+				feedbackHandler(compileAxiosError(error));
 			});
 		setLoading(false);
 		setFeedback('','', new Date() );
@@ -116,14 +97,12 @@ const useDataHandler = () => {
 		query, 
 		updateObject, 
 		afterSaveHandler,
-		message,
 		feedback
 	}: {
         className: string, 
         query?: string, 
         updateObject?: any, 
         afterSaveHandler?: (objectId: string) => void,
-		message?: {type: string, users: string[]}
         feedback?: string
     }) => {
 		const data : Array<any> = [];
@@ -131,18 +110,18 @@ const useDataHandler = () => {
 		await axiosapi().post(`classes/${className}`, query || updateObject as AxiosRequestConfig<any> )
 			.then((response : AxiosResponse<any, any>) => {
 				if (feedback) {
-					setFeedback(feedback, 'success',new Date());
+					feedbackHandler({
+						success: true,
+						message: feedback,
+						type: 'success'
+					});
 				}
 				if (afterSaveHandler) {
 					afterSaveHandler(response.data.objectId);
 				}
-				// if (message) {
-				// 	createMessageHandler(message.type, response.data.objectId, message.users);
-				// }
 			})
 			.catch(error => {
-				console.log(error.message);
-				setFeedback('Fehler', 'error', new Date());
+				feedbackHandler(compileAxiosError(error));
 			});
 		setLoading(false);
 		return data;
@@ -167,7 +146,7 @@ const useDataHandler = () => {
 					data = response.data.results;
 				})
 				.catch(error => {
-					console.error(`Error: ${error.message}`);
+					feedbackHandler(compileAxiosError(error));
 				});
 		}
 		setLoading(false);

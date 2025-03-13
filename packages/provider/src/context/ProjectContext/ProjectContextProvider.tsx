@@ -9,8 +9,15 @@ import ProjectLoader from './components/ProjectLoader';
 
 const ProjectContextProvider = ({projects, children}: {projects: string[], children: ReactNode}) => { 
 	const [currentProject, setCurrentProject] = useState<PatstoreProject>();
-
-	const [projectId, setProjectId] = useState<string | null | undefined>(localStorage.getItem('patstore_project_id') ?  localStorage.getItem('patstore_project_id') : projects[0]);
+	const initialProjectId = useMemo(() => {
+		if (typeof window !== 'undefined') {
+			const localId = localStorage.getItem('patstore_project_id');
+			return localId ? localId : projects[0];
+		}
+		return projects[0];
+	}, [projects]);
+	
+	const [projectId, setProjectId] = useState<string | null | undefined>(initialProjectId);
 
 	const {data, loading, error} = useQuery((generateGraphQLQuery({
 		type: 'get',

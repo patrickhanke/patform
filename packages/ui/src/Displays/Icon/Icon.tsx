@@ -1,5 +1,5 @@
 import { IconProps } from './types';
-import { Archive, Clock, Info, ListTodo, Plus, Home, CalendarDays, ChevronDown, Tag, Calendar, ChevronUp, CircleCheck, Circle } from 'lucide-react';
+import { Archive, Clock, Info, ListTodo, Plus, Home, CalendarDays, ChevronDown, Tag, Calendar, ChevronUp, CircleCheck, Circle, CircleUserRound } from 'lucide-react';
 
 const Icon = ({ size = 18, strokeWidth = 1, type, color }: IconProps) => {
 	return (
@@ -102,6 +102,14 @@ const Icon = ({ size = 18, strokeWidth = 1, type, color }: IconProps) => {
 			)}
 			{type === 'circle' && (
 				<Circle
+					width={size}
+					height={size}
+					strokeWidth={strokeWidth}
+					color={color}
+				/>
+			)}
+			{type === 'circle-user-round' && (
+				<CircleUserRound
 					width={size}
 					height={size}
 					strokeWidth={strokeWidth}

@@ -18,7 +18,7 @@ const AppContextProvider = ({project, children} : {project: Project,children: Re
 		setPageTitle,
 		project,
 		currentModule,
-		modules: project.modules.results
+		modules: project.modules.results,
 	}), [pageTitle, project, currentModule]);
 
 	return (
