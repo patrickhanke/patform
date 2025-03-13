@@ -22,7 +22,9 @@ const fetchProject = async (path: string) => {
 }
 
 interface InviteProps {
-    searchParams: URLSearchParams;
+    searchParams: {
+        email: string, key:string
+    };
     params: {
         project_path: string;
     };
@@ -30,8 +32,7 @@ interface InviteProps {
 
 const Invite: React.FC<InviteProps> = async ({ searchParams, params }) => {
     const response = await fetchProject(`/${params.project_path}`);
-    const email = searchParams.get('email');
-    const key = searchParams.get('key');
+    const {email, key} = searchParams;
     console.log(email, key);
 
     if (response.success === false) {
