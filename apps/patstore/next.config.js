@@ -15,6 +15,7 @@ module.exports = {
 		BYTESCALE_ACCOUNT_ID: process.env.BYTESCALE_ACCOUNT_ID,
 		BYTESCALE_PUBLIC_KEY: process.env.BYTESCALE_PUBLIC_KEY,
 		BYTESCALE_SECRET_KEY: process.env.BYTESCALE_SECRET_KEY,
+		APP_NAME: 'patsore',
 		SESSION_TOKEN: 'patstore_token',
 		BYTESCALE_IMAGE_FOLDER: 'patstore',
 		PROJECT_ID: 'lt4HonzqK3',

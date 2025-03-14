@@ -2,13 +2,13 @@ import React from 'react';
 import '@repo/styles/global';
 import '@repo/styles/layout';
 import { ApolloClient, OperationVariables } from '@apollo/client';
-import { Module, Project } from '@repo/types';
+import { Project } from '@repo/types';
 import {serverClient} from '@repo/provider';
 import LayoutContext from './components/LayoutContext';
 import RenderSidebar from './components/RenderSidebar';
 import Head from 'next/head';
-import { find_initial_projects } from '../../../../../apps/patwork/provider/query/find_projects';
 import SiteHeader from './content/SiteHeader';
+import find_initial_projects from './constants/find_initial_projects';
 
 export const metadata = {
 	title: 'Patwork Admin',

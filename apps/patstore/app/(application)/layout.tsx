@@ -37,14 +37,13 @@ export default async function  RootLayout({
 }: {
 	children: React.ReactNode,
 }) {
-	const data = await getData();
-
+	const user = await getData();
 	return (
 		<html lang="de">
 			<body>
 				<div className={'layout'}>
-					<LayoutContext projects={data.projects}>
-						<RenderSidebar />
+					<LayoutContext user={user}>
+						<RenderSidebar user={user} />
 						<div className={'main_content'} id='main_content'>
 							<div className={'content_container'} id='page_content'>
 								<SiteHeader />

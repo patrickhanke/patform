@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const find_initial_projects = gql` 
+const find_initial_projects = gql` 
     query findProjects {
     	objects {
 			findProject {
@@ -26,3 +26,5 @@ export const find_initial_projects = gql`
 		}
 	}
 `;
+
+export default find_initial_projects;

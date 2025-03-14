@@ -16,7 +16,6 @@ const AppContextProvider = ({project, children} : {project: Project,children: Re
 	const appContextObject = useMemo(() => ({
 		pageTitle,
 		setPageTitle,
-		project,
 		currentModule,
 		modules: project.modules.results
 	}), [pageTitle, project, currentModule]);

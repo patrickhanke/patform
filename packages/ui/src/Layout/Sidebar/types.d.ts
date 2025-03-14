@@ -1,4 +1,13 @@
+import { PatstoreUser } from "@repo/types"
+import React from "react"
 
+export type SidebarProps = {
+    menuItems: MenuItemType[]
+    user: PatstoreUser,
+    children?: React.ReactNode,
+    appVersion? : string,
+    appName?: string
+}
 
 
 export type MenuItem = ReadOnly<{

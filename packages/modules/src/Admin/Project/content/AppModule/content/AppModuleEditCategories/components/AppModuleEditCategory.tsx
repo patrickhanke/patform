@@ -1,13 +1,11 @@
-import { useCallback, useContext, useMemo } from 'react';
-import { AppContext, generateGraphQLQuery, paramsHandler } from '@repo/provider';
+import { useCallback, useMemo } from 'react';
+import { generateGraphQLQuery, paramsHandler } from '@repo/provider';
 import { Select, StatelessToggle } from '@repo/ui';
 import { Module, ModuleCategory } from '@repo/types';
 import { AppModuleEditCategoryProps } from '../types';
 import { useQuery } from '@apollo/client';
 
 const AppModuleEditCategory = ({category, setCategory, projectId}: AppModuleEditCategoryProps) => {
-	const {project} = useContext(AppContext);
-
 	const {data} = useQuery(generateGraphQLQuery(
 		{
 			type: 'find', 

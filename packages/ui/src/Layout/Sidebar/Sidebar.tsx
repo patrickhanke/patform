@@ -1,14 +1,14 @@
 'use client';
 
 import MenuItem from './components/MenuItem';
-import Logout from './components/Logout';
-import { MenuItem as MenuItemType } from './types';
-import { ReactNode } from 'react';
+import { MenuItem as MenuItemType, SidebarProps } from './types';
+import { FC } from 'react';
 import { BsArrowLeftRight } from 'react-icons/bs';
 import { Divider } from '../Divider';
 import './styles.scss';
 
-const Sidebar = ({menuItems, children}: {menuItems: MenuItemType[], children?: ReactNode}) => {
+const Sidebar: FC<SidebarProps> = ({menuItems, user, children, appVersion = '1.0.0', appName = 'patstore'}) => {
+
 	return (
 		<div className='sidebar_container'>
 			<div>
@@ -73,8 +73,21 @@ const Sidebar = ({menuItems, children}: {menuItems: MenuItemType[], children?: R
 				</div>
 			</div>
 			<ul className='menu_item_container'>
+				{user?.is_superuser && (
+					<li>
+						<MenuItem
+							link='/admin'
+							label='Admin'
+							icon='admin'
+							subMenu={false}
+						/>
+					</li>
+				)}	
+				
 				<li>
-					<Logout />
+					<h5>
+						patstore v. {appVersion}
+					</h5>
 				</li>
 			</ul>
 		</div>

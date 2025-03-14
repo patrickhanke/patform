@@ -1,10 +1,9 @@
 'use client';
 
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import styles from './SiteHeader.module.scss';
 import { SiteHeaderComponent } from './types';
 import { AppContext } from '@repo/provider';
-import AddProject from './components/AddProject';
 import { UserDisplay } from './content/UserDisplay';
 
 const SiteHeader = ({

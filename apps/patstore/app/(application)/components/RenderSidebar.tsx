@@ -2,12 +2,12 @@
 
 import React, { useContext, useMemo } from 'react'
 import Logo from './Logo'
-import { MenuItem, Sidebar } from '@repo/ui'
+import { Sidebar } from '@repo/ui'
 import { ProjectContext } from '@repo/provider';
-import { Module, Project, User } from '@repo/types';
+import { Module, PatstoreUser} from '@repo/types';
+import packageJson from '../../../package.json'
 
-
-const RenderSidebar = () => {
+const RenderSidebar = ({user} : {user: PatstoreUser}) => {
 	const {project} = useContext(ProjectContext)
 
 	const menuItems =  useMemo(() => {
@@ -26,6 +26,7 @@ const RenderSidebar = () => {
 		return menuItemsArray
 	}, [project])
 
+
 	if (!project) {
 		return null
 	}
@@ -36,7 +37,12 @@ const RenderSidebar = () => {
 				<Logo logo={project.logo} alt={project.name} />
 				<h1>{project.name ? project.name : 'patstore'}</h1>
 			</div>
-			<Sidebar menuItems={menuItems} />
+			<Sidebar 
+				menuItems={menuItems} 
+				user={user} 
+				appVersion={packageJson.version}
+				appName={process.env.APP_NAME}
+			/>
 		</div >
   )
 }
