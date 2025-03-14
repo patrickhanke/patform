@@ -1,1 +1,1 @@
-export {ProjectModules as default } from '@repo/modules'
+export {Project as default } from '@repo/modules'

@@ -1,1 +1,0 @@
-export {ProjectUsers as default} from '@repo/modules';

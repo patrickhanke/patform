@@ -11,8 +11,9 @@ import { SelectModule } from './types';
 import CreateModule from './components/CreateModule';
 import site_states from './constants/site_states';
 import AppUsers from './content/AppUsers';
+import ProjectSettings from './content/ProjectSettings';
 
-const ProjectModules = ({params}: {params: {project_id: string}}) => {
+const Project = ({params}: {params: {project_id: string}}) => {
 	const {data: projectData, loading: projectLoading} = useQuery(generateGraphQLQuery(
 		{
 			type: 'get', 
@@ -119,8 +120,13 @@ const ProjectModules = ({params}: {params: {project_id: string}}) => {
 					/>
 				</>	
 			)}
+			{siteState?.value === 'settings' && (
+				<>
+					<ProjectSettings projectId={params.project_id} />
+				</>	
+			)}
 		</AdminPage>
 	);
 };
 
-export default ProjectModules;
+export default Project;

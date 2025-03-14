@@ -85,7 +85,7 @@ export type StringField =
     BasicField & {
         type: 'input' | 'url' | 'password' | 'textarea' | 'texteditor';
         dataType?: 'string';
-        value: string,
+        value?: string,
         textAlign?: 'left' | 'center' | 'right',
         validation: {
             required?: string;
@@ -102,7 +102,7 @@ export type StringField =
 export type ToggleField = 
     BasicField & {
         type: 'toggle' | 'select_toggle';
-        value: boolean;
+        value?: boolean;
         validation?: {
             required?: string;
         }
@@ -111,7 +111,7 @@ export type ToggleField =
 export type NumberField =
     BasicField & {
         value: number;
-        type: 'number';
+        type?: 'number';
         dataType?: 'number';
         textAlign?: 'left' | 'center' | 'right',
         options: {
@@ -130,12 +130,12 @@ export type NumberField =
 export type ImageField =
     BasicField & {
         type: 'image';
-        value: string;
+        value?: string;
         options: {
             return_type: 'array' | 'string';
             max_file_count: number
         };
-        validation: {
+        validation?: {
             required?: string;
             max_file_count?: number;
         }
@@ -144,7 +144,7 @@ export type ImageField =
 export type FileField =
     BasicField & {
         type: 'file';
-        value: string | string[];
+        value?: string | string[];
         path: string;
         validation: {
             required?: string;
@@ -155,7 +155,7 @@ export type FileField =
 export type SelectField =
     BasicField & {
         type: 'select';
-        value: string | object;
+        value?: string | object;
         dataType: 'string' | 'object';
         select_options: {label: string, value: string}[]
     }
@@ -163,7 +163,7 @@ export type SelectField =
 export type PointerSelectField =
     BasicField & {
         type: 'pointer_select';
-        value: Pointer<any>;
+        value?: Pointer<any>;
         select_options: {label: string, value: string}[]
         options : {
             pointer_class: string;
@@ -172,14 +172,14 @@ export type PointerSelectField =
 
 export type PersonsSelectField =
     BasicField & {
-        value: object;
+        value?: object;
         type: 'persons_select';
     }
 
 export type ColorField =
     BasicField & {
         type: 'color';
-        value: string;
+        value?: string;
         validation: {
             required?: string;
         }
@@ -188,7 +188,7 @@ export type ColorField =
 export type DateField =
     BasicField & {
         type: DatePickerTypes;
-        value: string;
+        value?: string;
         validation: {
             required?: string;
         }

@@ -1,1 +1,0 @@
-export {ProjectModules as default} from '@repo/modules';

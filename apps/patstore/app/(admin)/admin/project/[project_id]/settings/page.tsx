@@ -1,1 +1,0 @@
-export {ProjectSettings as default} from '@repo/modules';

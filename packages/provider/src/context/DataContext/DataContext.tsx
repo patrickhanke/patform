@@ -8,6 +8,9 @@ export interface DataContextProps {
     loadingHandler: (loadingValue: boolean) => void;
 }
 
-const DataContext = React.createContext<DataContextProps | undefined>(undefined);
+const DataContext = React.createContext<DataContextProps | undefined>({
+    feedbackHandler: () => {},
+    loadingHandler: () => {}
+});
 
 export default DataContext;

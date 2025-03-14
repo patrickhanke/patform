@@ -22,9 +22,6 @@ export async function middleware(request: NextRequest) {
 	if (!token) {
 		loggedIn = false;
 	} 
-	console.log(token, 'token');
-	console.log(loggedIn, 'log');
-	console.log(request.nextUrl.pathname, 'pathname');
 
 	const httpHeaders = {
 		'X-Parse-Session-Token': token || '',

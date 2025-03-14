@@ -6,6 +6,10 @@ const site_states = [
     {
         value: 'users',
         label: 'Nutzer'
+    },
+    {
+        value: 'settings',
+        label: 'Einstellungen'
     }
 ]
 
