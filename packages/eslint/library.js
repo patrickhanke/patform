@@ -12,8 +12,10 @@ module.exports = {
     ],
     plugins: [
         "only-warn", 
-        "react"
+        "react",
+        "@typescript-eslint"
     ],
+    parser: "@typescript-eslint/parser",
     globals: {
         React: true,
         JSX: true,

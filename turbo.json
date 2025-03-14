@@ -1,24 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": [
-    "SASHIDO_API_URL",
-    "SASHIDO_GQL_URL",
-    "SASHIDO_APP_ID",
-    "SASHIDO_REST_KEY",
-    "SASHIDO_MASTER_KEY",
-    "SASHIDO_FILE_URL",
-    "SASHIDO_CLIENT_KEY",
     "BYTESCALE_ACCOUNT_ID",
     "BYTESCALE_PUBLIC_KEY",
-    "BYTESCALE_SECRET_KEY",
-    "SESSION_TOKEN",
-    "FIREBASE_API_KEY",
-    "FIREBASE_AUTH_DOMAIN",
-    "FIREBASE_PROJECT_ID",
-    "FIREBASE_STORAGE_BUCKET",
-    "FIREBASE_MESSAGING_SENDER_ID",
-    "FIREBASE_APP_ID",
-    "FIREBASE_MEASUREMENT_ID"
+    "BYTESCALE_SECRET_KEY"
   ],
   "globalDependencies": [
     ".env"

@@ -13,8 +13,8 @@
     "./typography": "./src/layout/typography.scss"
   },
   "dependencies": {
-    "@repo/eslint-config": "1.0.0",
-    "@repo/typescript-config": "1.0.0",
+    "@repo/eslint": "1.0.0",
+    "@repo/typescript": "1.0.0",
     "dotenv-cli": "^7.4.2"
   },
   "scripts": {
@@ -27,7 +27,7 @@
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
-    "eslint": "^8.57.0",
+    "eslint": "^9.22.0",
     "react": "^18.2.0",
     "typescript": "^5.4.3"
   }

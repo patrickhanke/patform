@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useMemo, useRef } from 'react'
+import { FC, Fragment, useMemo, useRef } from 'react'
 import { motion } from 'framer-motion'
 import './styles.scss'
 import { useOnClickOutside } from 'usehooks-ts';

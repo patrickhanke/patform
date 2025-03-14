@@ -1,17 +1,17 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-	transpilePackages: ['@repo/ui', '@repo/provider'],
+	transpilePackages: ['@repo/ui', '@repo/provider', '@repo/modules', '@repo/types'],
 	typescript: {
 		ignoreBuildErrors: true
 	},
 	env: {
-		SASHIDO_API_URL: process.env.SASHIDO_API_URL,
-		SASHIDO_GQL_URL: process.env.SASHIDO_GQL_URL,
-		SASHIDO_APP_ID: process.env.SASHIDO_APP_ID,
-		SASHIDO_REST_KEY: process.env.SASHIDO_REST_KEY,
-		SASHIDO_MASTER_KEY: process.env.SASHIDO_MASTER_KEY,
-		SASHIDO_FILE_URL: process.env.SASHIDO_FILE_URL,
-		SASHIDO_CLIENT_KEY: process.env.SASHIDO_CLIENT_KEY,
+		SASHIDO_API_URL: 'https://pg-app-uefbsna5l6ijyse42wipewpjwu804d.scalabl.cloud/1/',
+		SASHIDO_GQL_URL: 'https://pg-app-uefbsna5l6ijyse42wipewpjwu804d.scalabl.cloud/graphql/',
+		SASHIDO_APP_ID: '6UL6mWiTgB6z9zsk4VDPwFghIDMg6q4qRQQXTaSl',
+		SASHIDO_REST_KEY: 'NkcV3C5kwXFrmi2WjnAcK1TEEQPQqhg4RSM6kQqq',
+		SASHIDO_MASTER_KEY:  'xeAPUQ5V801pU7kBfY3condMnGqQ8O6hQ4DqRSgQ',
+		SASHIDO_FILE_URL:  'https://uefbsna5l6ijyse42wipewpjwu804d.files-sashido.cloud/',
+		SASHIDO_CLIENT_KEY: '51W77ssEooxl3BPTf1BH0mbQqDRQVMgqqFM64hQS',
 		BYTESCALE_ACCOUNT_ID: process.env.BYTESCALE_ACCOUNT_ID,
 		BYTESCALE_PUBLIC_KEY: process.env.BYTESCALE_PUBLIC_KEY,
 		BYTESCALE_SECRET_KEY: process.env.BYTESCALE_SECRET_KEY,

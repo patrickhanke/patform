@@ -49,7 +49,6 @@ const TableColumnImage = ({ url, isEditable = false, onChange, maxFileCount }: T
 					label='Bild'
 					onChange={imgUrl => setImage(imgUrl as string)}
 					path={`${process.env.BYTESCALE_IMAGE_FOLDER}${currentModule.path}`}
-					returnType='string'
 					maxFileCount={maxFileCount}
 				/>
 			</Modal>

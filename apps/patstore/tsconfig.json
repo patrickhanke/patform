@@ -1,18 +1,29 @@
 {
-  "extends": "@repo/typescript-config/nextjs.json",
+  "extends": "@repo/typescript/nextjs.json",
   "compilerOptions": {
     "plugins": [
       {
         "name": "next"
       }
     ]
+  },  
+  "baseUrl": ".",
+  "paths": {
+    "@patstore/*": ["./*"],
+    "@patstore/provider": ["./provider/index.ts"],
+    "@patstore/settings/*": ["./settings/*"],
+    "@patstore/styles/*": ["./styles/*"],
+    "@patstore/content": ["./content/index.ts"],
+    "@patstore/queries": ["./queries/index.ts"],
+    "@patstore/types": ["./types/index.ts"]
   },
   "include": [
     "next-env.d.ts",
     "next.config.js",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "custom.d.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".eslintrc.js", "jest.config.js"]
 }
