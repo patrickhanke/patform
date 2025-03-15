@@ -25,7 +25,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 
       if (selectProperty) {
         const elementIndex = elementsCopy.findIndex(
-          (el: SelectElement) => el.value === element.value
+          (el: SelectElement) => el.value === element.value,
         );
         if (elementIndex !== -1) {
           elementsCopy[elementIndex].selected =
@@ -34,14 +34,14 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
         onSelect(elementsCopy);
       } else {
         const isSelected = !!elementsCopy.find(
-          (el: SelectElement) => el.value === element.value
+          (el: SelectElement) => el.value === element.value,
         );
         if (isSelected) {
           if (element.single) {
             onSelect([]);
           } else {
             const newElements = elementsCopy.filter(
-              (el: SelectElement) => el.value !== element.value
+              (el: SelectElement) => el.value !== element.value,
             );
             onSelect(newElements);
           }
@@ -55,7 +55,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
               elementsCopy.push(element);
 
               const newElements = elementsCopy.filter(
-                (el: SelectElement) => !el.single
+                (el: SelectElement) => !el.single,
               );
               onSelect(newElements);
             }
@@ -63,7 +63,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
               elementsCopy.shift();
               elementsCopy.push(element);
               const newElements = elementsCopy.filter(
-                (el: SelectElement) => !el.single
+                (el: SelectElement) => !el.single,
               );
 
               onSelect(newElements);
@@ -72,13 +72,13 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
         }
       }
     },
-    [elements, onSelect, selectedElements]
+    [elements, onSelect, selectedElements],
   );
 
   const checkForHeader = (
     header: string,
     index: number,
-    elements: SelectElement[]
+    elements: SelectElement[],
   ) => {
     if (!header) {
       return false;
@@ -144,7 +144,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
               isSelected={
                 !selectProperty
                   ? selectedElements.some(
-                      (el: SelectElement) => el.value === element.value
+                      (el: SelectElement) => el.value === element.value,
                     )
                   : element.selected
               }

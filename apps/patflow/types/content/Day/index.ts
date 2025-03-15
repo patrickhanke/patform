@@ -1,1 +1,1 @@
-export type * from './Day';
+export type * from "./Day";

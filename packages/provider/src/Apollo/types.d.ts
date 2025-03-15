@@ -24,11 +24,11 @@ type ParamsHandlerProps = {
 };
 
 export type GenerateGraphQLQueryFunction = (
-  T: QueryProps
+  T: QueryProps,
 ) => ReturnType<typeof generateGraphQLQuery>;
 
 export type ParamsHandlerType = (
-  T: ParamsHandlerProps
+  T: ParamsHandlerProps,
 ) => ReturnType<typeof paramsHandler>;
 
 export type ApolloAppProviderProps = {
@@ -39,7 +39,7 @@ export type ApolloAppProviderProps = {
 
 export type makeClientProps = (
   appId: string,
-  masterKey: string
+  masterKey: string,
 ) => ApolloClient<NormalizedCacheObject>;
 
 export type ApolloRefetch = () => Promise<ApolloQueryResult<any>>;

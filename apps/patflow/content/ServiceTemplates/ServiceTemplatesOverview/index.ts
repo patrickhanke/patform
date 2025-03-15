@@ -1,1 +1,1 @@
-export { default } from './ServiceTemplatesOverview';
+export { default } from "./ServiceTemplatesOverview";

@@ -19,14 +19,14 @@ const paramsHandler: ParamsHandlerType = ({ projectId, moduleId, filters }) => {
     filterObject = filters?.reduce(
       (
         acc: { [key: string]: { [key in FilterOperator]: any } },
-        filter: Filter
+        filter: Filter,
       ) => {
         acc[filter.key] = { [filter.operator]: filter.value } as {
           [key in FilterOperator]: any;
         };
         return acc;
       },
-      {}
+      {},
     );
   }
 

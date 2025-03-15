@@ -2,7 +2,7 @@ import { isArray } from "lodash";
 import { FormDataClass } from "@repo/types";
 
 const generateFormData: (
-  T: FormDataClass["data"]
+  T: FormDataClass["data"],
 ) => { [key: string]: string }[] = (data) => {
   const dataArray: { [key: string]: string }[] = [];
 

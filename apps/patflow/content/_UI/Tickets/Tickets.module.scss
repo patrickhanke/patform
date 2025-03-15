@@ -1,100 +1,100 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .ticket_overview {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: flex-start,
-        $align: stretch
-    );
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch
+  );
 }
 
 .tickets_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch,
-        $gap: 0
-    );
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch,
+    $gap: 0
+  );
 
-    .ticket_subheadline {
-        @include constants.flexbox(
-            $direction: row,
-            $justify: flex-start,
-            $align: center,
-            $gap: constants.$xs
-        );
-        color: constants.$grey_shaded;
-    }
+  .ticket_subheadline {
+    @include constants.flexbox(
+      $direction: row,
+      $justify: flex-start,
+      $align: center,
+      $gap: constants.$xs
+    );
+    color: constants.$grey_shaded;
+  }
 }
 
 .siteheader_content {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: space-between,
-        $align: center
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center
+  );
 }
 
 .ticket_subheadline {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: constants.$xs
-    );
-    height: auto;
-    .label {
-        font-size: map-get($map: constants.$font_size, $key: 'sm');
-    }
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$xs
+  );
+  height: auto;
+  .label {
+    font-size: map-get($map: constants.$font_size, $key: "sm");
+  }
 }
 
 .ticket_state_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: center,
-        $align: center,
-        $gap: constants.$xs
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: center,
+    $align: center,
+    $gap: constants.$xs
+  );
 }
 
 .ticket_ticket_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: constants.$xs
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$xs
+  );
 }
 
 .ticket_task_content {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: constants.$xs
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$xs
+  );
 }
 
 .ticket_date_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: constants.$xs
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$xs
+  );
 }
 
 .ticket_user_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: constants.$xs
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$xs
+  );
 }
 
 .task_title {
-    color: constants.$dark;
-    font-weight: 500;
-    text-wrap: wrap;
+  color: constants.$dark;
+  font-weight: 500;
+  text-wrap: wrap;
 }

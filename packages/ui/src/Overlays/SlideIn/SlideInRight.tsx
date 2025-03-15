@@ -36,7 +36,7 @@ const SlideInRight = ({
         ref={ref}
         className={clsx(
           styles.slidein_container,
-          isOpen === true && styles.is_open
+          isOpen === true && styles.is_open,
         )}
         data-size={size}
       >

@@ -50,7 +50,7 @@ export const getInitialData = (fields: Field[]) => {
       acc[field.name.slice(field.name.lastIndexOf(".") + 1) as keyof Field] =
         field.initialValue;
       return acc;
-    }
+    },
   );
 
   return dataFields;

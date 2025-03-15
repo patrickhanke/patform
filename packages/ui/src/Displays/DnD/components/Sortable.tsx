@@ -42,7 +42,7 @@ const Sortable = ({
       listeners,
       ref: setActivatorNodeRef,
     }),
-    [attributes, listeners, setActivatorNodeRef]
+    [attributes, listeners, setActivatorNodeRef],
   );
 
   const style = {

@@ -32,7 +32,7 @@ export const saveNotification = async (notification: Notification) => {
   if (notifications.length > 30) {
     const oldestNotification = notifications.sort(
       (a, b) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
     )[0];
     await store.delete(oldestNotification.id);
   }

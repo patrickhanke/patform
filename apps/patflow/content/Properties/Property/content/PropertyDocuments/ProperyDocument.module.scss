@@ -1,13 +1,13 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .create_document_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: center,
-        $align: flex-start,
-        $gap: constants.$xs
-    );
-    background-color: constants.$lightest;
-    padding: map-get($map: constants.$padding, $key: 'md');
-    height: 100%;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: center,
+    $align: flex-start,
+    $gap: constants.$xs
+  );
+  background-color: constants.$lightest;
+  padding: map-get($map: constants.$padding, $key: "md");
+  height: 100%;
 }

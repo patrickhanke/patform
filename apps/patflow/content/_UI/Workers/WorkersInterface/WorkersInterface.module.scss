@@ -1,88 +1,88 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .worker_interface_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: flex-start,
-        $align: stretch,
-        $gap: constants.$xs
-    );
-    padding: map-get($map: constants.$padding, $key: 'sm');
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$xs
+  );
+  padding: map-get($map: constants.$padding, $key: "sm");
 }
 
 .display_worker_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: space-between,
-        $align: center
-    );
-    width: 100%;
-    border: none;
-    border-radius: map-get($map: constants.$border_radius, $key: 'sm');
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    padding-right: constants.$md;
-    padding-left: 0;
-    box-shadow: constants.$shadow_regular;
-    overflow: hidden;
-    height: 24px;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center
+  );
+  width: 100%;
+  border: none;
+  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  padding-right: constants.$md;
+  padding-left: 0;
+  box-shadow: constants.$shadow_regular;
+  overflow: hidden;
+  height: 24px;
 }
 
-.display_worker_container[data-isabsent='true'] {
-    cursor: default;
+.display_worker_container[data-isabsent="true"] {
+  cursor: default;
 }
 
-.display_worker_container[data-isselected='true'] {
+.display_worker_container[data-isselected="true"] {
+  background-color: constants.$light;
+  color: constants.$dark;
+  // &:hover {
+  //     background-color: constants.$green;
+  //     // color: constants.$white;
+  // }
+}
+
+.display_worker_container[data-isselected="false"] {
+  background-color: constants.$white;
+  &:hover {
     background-color: constants.$light;
-    color: constants.$dark;
-    // &:hover {
-    //     background-color: constants.$green;
-    //     // color: constants.$white;
-    // }
-}
-
-.display_worker_container[data-isselected='false'] {
-    background-color: constants.$white;
-    &:hover {
-        background-color: constants.$light;
-    }
+  }
 }
 
 .display_worker_container {
-    &:disabled {
-        background-color: transparent;
-        color: constants.$grey;
-        &:hover {
-            background-color: transparent;
-        }
+  &:disabled {
+    background-color: transparent;
+    color: constants.$grey;
+    &:hover {
+      background-color: transparent;
     }
+  }
 }
 
 .display_worker_container_pers_data {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: constants.$xs
-    );
-    font-family: Geist, sans-serif;
-    font-weight: 500;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$xs
+  );
+  font-family: Geist, sans-serif;
+  font-weight: 500;
 }
 
 .display_worker_image_container {
-    height: 24px;
-    width: 24px;
-    position: relative;
-    border-radius: 0;
-    overflow: hidden;
-    background-color: constants.$grey;
+  height: 24px;
+  width: 24px;
+  position: relative;
+  border-radius: 0;
+  overflow: hidden;
+  background-color: constants.$grey;
 }
 
 .display_worker_delete_button {
-    height: 18px;
-    width: 18px;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: constants.$grey;
+  height: 18px;
+  width: 18px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: constants.$grey;
 }

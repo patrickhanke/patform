@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
 const WasteOverview = () => {
-    return <div>WasteOverview</div>;
+  return <div>WasteOverview</div>;
 };
 
 export default WasteOverview;

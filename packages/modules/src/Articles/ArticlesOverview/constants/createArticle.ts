@@ -2,7 +2,7 @@ import { CreateClassProps } from "@repo/ui";
 import { ArticleClass } from "@repo/types";
 
 const createArticle = (
-  persons: { value: string; label: string }[]
+  persons: { value: string; label: string }[],
 ): CreateClassProps<ArticleClass> => ({
   initialData: {
     state: "draft",

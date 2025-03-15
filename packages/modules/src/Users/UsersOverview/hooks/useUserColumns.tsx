@@ -54,7 +54,7 @@ const useUserColumns = () => {
         enableSorting: false,
       },
     ],
-    []
+    [],
   );
 
   return columns;

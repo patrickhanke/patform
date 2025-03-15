@@ -51,7 +51,7 @@ const CreatePerson = ({ refetch }: { refetch: () => void }) => {
           ] = field.initialValue;
           return acc;
         },
-        {}
+        {},
       ),
     };
 

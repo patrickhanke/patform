@@ -1,45 +1,45 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
-@import '../../Task.module.scss';
+@import "../../Task.module.scss";
 
 .task_state_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center
-    );
-    font-weight: 500;
-    font-size: 0.7rem;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center
+  );
+  font-weight: 500;
+  font-size: 0.7rem;
 }
 
 .task_state_element {
-    padding: map-get($map: constants.$padding, $key: 'xs');
-    border-radius: map-get($map: constants.$border_radius, $key: 'md');
-    background-color: transparent;
-    border: 1px solid constants.$primary;
-    color: constants.$primary;
+  padding: map-get($map: constants.$padding, $key: "xs");
+  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  background-color: transparent;
+  border: 1px solid constants.$primary;
+  color: constants.$primary;
 }
 
-.task_state_element[data-state='created'] {
-    background-color: constants.$yellow_tinted;
-    border: 1px solid constants.$yellow;
-    color: constants.$yellow;
+.task_state_element[data-state="created"] {
+  background-color: constants.$yellow_tinted;
+  border: 1px solid constants.$yellow;
+  color: constants.$yellow;
 }
 
-.task_state_element[data-state='completed'] {
-    background-color: constants.$green_tinted;
-    border: 1px solid constants.$green;
-    color: constants.$green;
+.task_state_element[data-state="completed"] {
+  background-color: constants.$green_tinted;
+  border: 1px solid constants.$green;
+  color: constants.$green;
 }
 
-.task_state_element[data-state='executed'] {
-    background-color: constants.$green_tinted;
-    border: 1px solid constants.$green;
-    color: constants.$green;
+.task_state_element[data-state="executed"] {
+  background-color: constants.$green_tinted;
+  border: 1px solid constants.$green;
+  color: constants.$green;
 }
 
-.task_state_element[data-state='assigned'] {
-    background-color: constants.$yellow_tinted;
-    border: 1px solid constants.$yellow;
-    color: constants.$yellow;
+.task_state_element[data-state="assigned"] {
+  background-color: constants.$yellow_tinted;
+  border: 1px solid constants.$yellow;
+  color: constants.$yellow;
 }

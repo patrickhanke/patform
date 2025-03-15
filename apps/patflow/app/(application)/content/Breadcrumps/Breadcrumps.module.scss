@@ -1,33 +1,33 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .header_breadcrumps {
-    @include constants.flexbox(
-        $direction: row,
-        $align: center,
-        $justify: flex-start,
-        $gap: 4px
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-start,
+    $gap: 4px
+  );
 }
 
 .breadcrumps {
-    font-family: 'Geist', sans-serif;
-    font-weight: 400;
-    font-variant: normal;
-    letter-spacing: 1px;
-    margin: 0;
-    text-decoration: none;
-    line-height: 1;
-    font-size: map-get($map: constants.$font_size, $key: 'md');
+  font-family: "Geist", sans-serif;
+  font-weight: 400;
+  font-variant: normal;
+  letter-spacing: 1px;
+  margin: 0;
+  text-decoration: none;
+  line-height: 1;
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  color: constants.$dark;
+  transition:
+    text-decoration 0.2s ease,
+    color 0.2s ease;
+  &:hover {
     color: constants.$dark;
-    transition:
-        text-decoration 0.2s ease,
-        color 0.2s ease;
-    &:hover {
-        color: constants.$dark;
-        text-decoration: underline;
-    }
+    text-decoration: underline;
+  }
 }
 
 .breadcrumps:last-child {
-    font-weight: 500;
+  font-weight: 500;
 }

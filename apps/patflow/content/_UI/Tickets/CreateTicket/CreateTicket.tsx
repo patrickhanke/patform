@@ -143,7 +143,7 @@ const CreateTicket = ({
           "full_button",
           "secondary",
           "md",
-          styles.create_ticket_button
+          styles.create_ticket_button,
         )}
         onClick={() => setIsOpen(true)}
       >
@@ -224,7 +224,7 @@ const CreateTicket = ({
               deleteHandler={(image) =>
                 setTicket((draft) => {
                   const index = draft.images.findIndex(
-                    (i: string) => i === image
+                    (i: string) => i === image,
                   );
                   draft.images.splice(index, 1);
                 })

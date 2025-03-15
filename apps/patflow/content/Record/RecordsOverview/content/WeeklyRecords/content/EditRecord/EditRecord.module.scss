@@ -1,49 +1,49 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .content_button {
-    cursor: pointer;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
-    &:hover {
-        background-color: constants.$light;
-    }
-}
-.content_button[data-active='true'] {
+  cursor: pointer;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  &:hover {
     background-color: constants.$light;
+  }
+}
+.content_button[data-active="true"] {
+  background-color: constants.$light;
 }
 
 .time_display_content {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: space-between,
-        $align: center
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center
+  );
 }
 
 .record_time_display_list {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch
-    );
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch
+  );
 }
 
 .time_display_title {
-    width: 120px;
+  width: 120px;
 }
 
 .edit_time_form {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch
-    );
-    input {
-        flex-basis: 90px;
-        flex-shrink: 1;
-        flex-grow: 0;
-        min-width: 48px !important;
-    }
-    textarea {
-        min-height: 48px;
-    }
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch
+  );
+  input {
+    flex-basis: 90px;
+    flex-shrink: 1;
+    flex-grow: 0;
+    min-width: 48px !important;
+  }
+  textarea {
+    min-height: 48px;
+  }
 }

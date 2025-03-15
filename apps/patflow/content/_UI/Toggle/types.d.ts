@@ -1,1 +1,1 @@
-export type ToggleType = 'get_service_active' | 'is_worker';
+export type ToggleType = "get_service_active" | "is_worker";

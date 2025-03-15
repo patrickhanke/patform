@@ -1,87 +1,83 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .display_worker_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: constants.$xxs
-    );
-    width: fit-content;
-    font-family: Geist, sans-serif;
-    border-radius: map-get($map: constants.$border_radius, $key: 'md');
-    letter-spacing: 1px;
-    font-size: map-get($map: constants.$font_size, $key: 'sm');
-    padding-right: constants.$xs;
-    font-weight: 500;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$xxs
+  );
+  width: fit-content;
+  font-family: Geist, sans-serif;
+  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  letter-spacing: 1px;
+  font-size: map-get($map: constants.$font_size, $key: "sm");
+  padding-right: constants.$xs;
+  font-weight: 500;
 }
 
-.display_worker_container[data-isabsent='false'] {
-    background-color: transparent;
-    color: constants.$green_shaded;
+.display_worker_container[data-isabsent="false"] {
+  background-color: transparent;
+  color: constants.$green_shaded;
 }
 
-.display_worker_container[data-isabsent='true'] {
-    opacity: 0.6;
+.display_worker_container[data-isabsent="true"] {
+  opacity: 0.6;
 }
 
-.display_worker_container[data-onlyimage='true'] {
-    padding: 0;
+.display_worker_container[data-onlyimage="true"] {
+  padding: 0;
 }
 
 .display_worker_image_container {
-    height: 18px;
-    width: 18px;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
+  height: 18px;
+  width: 18px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
-.display_worker_image_container[data-onlyimage='true'] {
-    border: 2px solid #fff;
-    width: 24px;
-    height: 24px;
+.display_worker_image_container[data-onlyimage="true"] {
+  border: 2px solid #fff;
+  width: 24px;
+  height: 24px;
 }
 
-.display_worker_image_container[data-isabsent='true'] {
-    border: 2px solid constants.$red;
+.display_worker_image_container[data-isabsent="true"] {
+  border: 2px solid constants.$red;
 }
 
 .display_worker_delete_button {
-    height: 21px;
-    width: 21px;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: constants.$grey;
+  height: 21px;
+  width: 21px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: constants.$grey;
 }
 
 .display_worker_no_image {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: center,
-        $align: center
-    );
-    height: 18px;
-    width: 18px;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
+  @include constants.flexbox($direction: row, $justify: center, $align: center);
+  height: 18px;
+  width: 18px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
-.display_worker_no_image[data-onlyimage='true'] {
-    border: 2px solid #fff;
-    width: 24px;
-    height: 24px;
+.display_worker_no_image[data-onlyimage="true"] {
+  border: 2px solid #fff;
+  width: 24px;
+  height: 24px;
 }
 
 .display_worker_no_image_background {
-    width: 100%;
-    height: 100%;
-    position: absolute;
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }
 
 .display_worker_no_image_character {
-    position: relative;
-    font-size: map-get($map: constants.$font_size, $key: 'xs');
+  position: relative;
+  font-size: map-get($map: constants.$font_size, $key: "xs");
 }

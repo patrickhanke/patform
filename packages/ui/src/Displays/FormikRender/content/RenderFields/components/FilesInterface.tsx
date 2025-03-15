@@ -22,7 +22,7 @@ const FilesInterface = ({
       const filesCopy = [...files];
 
       const fileToDelete = filesCopy.findIndex(
-        (fileToFind) => fileToFind.url === file.url
+        (fileToFind) => fileToFind.url === file.url,
       );
       filesCopy.splice(fileToDelete, 1);
 
@@ -37,7 +37,7 @@ const FilesInterface = ({
         afterSaveHandler();
       }
     },
-    [files]
+    [files],
   );
 
   if (files) {
@@ -69,7 +69,7 @@ const FilesInterface = ({
                 const filesCopy = [...files];
                 setEdit([false, ""]);
                 const fileToUpdate = filesCopy.findIndex(
-                  (fileToFind) => fileToFind.url === file.url
+                  (fileToFind) => fileToFind.url === file.url,
                 );
                 filesCopy[fileToUpdate].name = fileName;
 

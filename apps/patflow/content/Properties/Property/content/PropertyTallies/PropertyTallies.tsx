@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
 const PropertyTallies = ({ objectId }: { objectId: string }) => {
-    return (
-        <div>
-            <p>Tallies</p>
-        </div>
-    );
+  return (
+    <div>
+      <p>Tallies</p>
+    </div>
+  );
 };
 
 export default PropertyTallies;

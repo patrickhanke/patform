@@ -10,35 +10,35 @@ const checkForTypeNameLabel = (fieldCopy, index) => {
   if (!fieldCopy.type) {
     console.info(
       `%c Position ${index + 1}: Ein Typ (image, input, textarea, select, date) muss angegeben werden`,
-      styles
+      styles,
     );
     isValid = false;
   }
   if (!fieldCopy.name) {
     console.info(
       `%c Position ${index + 1}: Ein Name (name: string) muss angegeben werden`,
-      styles
+      styles,
     );
     isValid = false;
   }
   if (!fieldCopy.label) {
     console.info(
       `%c Position ${index + 1}: ${fieldCopy.name}: Ein Label (label: string) muss angegeben werden`,
-      styles
+      styles,
     );
     isValid = false;
   }
   if (!fieldCopy.dataType) {
     console.info(
       `%c Position ${index + 1}: ${fieldCopy.name}: Ein dataType (dataType: 'string', 'object', 'bool', 'number', 'date', 'pointer) muss angegeben werden`,
-      styles
+      styles,
     );
     isValid = false;
   }
   if (fieldCopy.dataType === "pointer" && !fieldCopy.pointerClass) {
     console.info(
       `%c Position ${index + 1}: ${fieldCopy.name}: Der DataType Pointer benötigt eine pointerClass (pointerClass: className), die auf die entstprechenden Datenbankclasse verweist  `,
-      styles
+      styles,
     );
     isValid = false;
   }
@@ -48,7 +48,7 @@ const checkForTypeNameLabel = (fieldCopy, index) => {
   ) {
     console.info(
       `%c Position ${index + 1}: ${fieldCopy.name}: Ein Select muss Options (options: [{'value': string, 'label': string}...]) besitzen`,
-      styles
+      styles,
     );
     isValid = false;
   }
@@ -86,7 +86,7 @@ const useGetFormikData = ({ fields, data }) => {
         if (!fieldCopy.options || fieldCopy.options.length === 0) {
           console.info(
             `%c ${fieldCopy.label}: Bei einem Select müssen Optionen (options: string) hinzugefügt werden`,
-            styles
+            styles,
           );
           isValid = false;
         }
@@ -96,10 +96,10 @@ const useGetFormikData = ({ fields, data }) => {
             if (typeof value === "object") {
               fieldCopy.initialValue =
                 fieldCopy.options.find(
-                  (option) => option.value === value.value
+                  (option) => option.value === value.value,
                 ) ||
                 fieldCopy.options.find(
-                  (option) => option.label === value.label
+                  (option) => option.label === value.label,
                 );
             }
             if (typeof value === "string") {
@@ -111,10 +111,10 @@ const useGetFormikData = ({ fields, data }) => {
             if (typeof value === "object") {
               fieldCopy.initialValue =
                 fieldCopy.options.find(
-                  (option) => option.value === value.value
+                  (option) => option.value === value.value,
                 ) ||
                 fieldCopy.options.find(
-                  (option) => option.label === value.label
+                  (option) => option.label === value.label,
                 );
             }
             if (typeof value === "string") {
@@ -166,7 +166,7 @@ const useGetFormikData = ({ fields, data }) => {
       });
       return updateObjectMemo;
     },
-    [fields]
+    [fields],
   );
 
   return { formikFields, updateObject };

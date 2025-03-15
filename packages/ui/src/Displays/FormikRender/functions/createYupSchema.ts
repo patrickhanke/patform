@@ -12,11 +12,11 @@ const createYupSchema: CreateYupSchemaFunction = (type, validation) => {
         .required(validation?.required || undefined)
         .min(
           validation?.min_length ? validation.min_length : 0,
-          `Die Mindestlänge beträgt ${validation?.min_length}`
+          `Die Mindestlänge beträgt ${validation?.min_length}`,
         )
         .max(
           validation?.max_length ? validation.max_length : 10000,
-          `Die Höchstlänge beträgt ${validation?.max_length}`
+          `Die Höchstlänge beträgt ${validation?.max_length}`,
         );
     }
     if (type === "number") {
@@ -24,11 +24,11 @@ const createYupSchema: CreateYupSchemaFunction = (type, validation) => {
         .required(validation?.required || undefined)
         .min(
           validation?.min_value ? validation.min_value : 0,
-          `Der Mindestwert beträgt ${validation?.min_value}`
+          `Der Mindestwert beträgt ${validation?.min_value}`,
         )
         .max(
           validation?.max_value ? validation.max_value : 10000,
-          `Der Höchstwert beträgt ${validation?.max_value}`
+          `Der Höchstwert beträgt ${validation?.max_value}`,
         );
     }
     if (type === "persons_select") {

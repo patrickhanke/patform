@@ -12,7 +12,7 @@ export type PersonSelectProps = {
   onChange: (
     values:
       | MultiValue<PersonOption | undefined>
-      | SingleValue<PersonOption | undefined>
+      | SingleValue<PersonOption | undefined>,
   ) => void;
 };
 

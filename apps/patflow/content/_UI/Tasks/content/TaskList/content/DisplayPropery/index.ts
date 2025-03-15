@@ -1,1 +1,1 @@
-export { default } from './DisplayProperty';
+export { default } from "./DisplayProperty";

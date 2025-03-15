@@ -11,11 +11,11 @@ const CreateModule: React.FC<CreateModuleProps> = ({
   modules = [],
 }) => {
   const [selectedModule, setSelectedModule] = useState<SelectModule | null>(
-    null
+    null,
   );
   const [moduleName, setModuleName] = useDebounceValue<string>(
     selectedModule?.label || "",
-    2000
+    2000,
   );
   const modalSelectOptions: SelectModule[] = useMemo(
     () =>
@@ -28,12 +28,12 @@ const CreateModule: React.FC<CreateModuleProps> = ({
         label: module_option_fields[moduleFieldKey].name,
         fields: module_option_fields[moduleFieldKey],
         disabled: modules.find(
-          (module) => module.path === module_option_fields[moduleFieldKey].path
+          (module) => module.path === module_option_fields[moduleFieldKey].path,
         )
           ? true
           : false,
       })),
-    []
+    [],
   );
 
   const [loading, setLoading] = useState(false);

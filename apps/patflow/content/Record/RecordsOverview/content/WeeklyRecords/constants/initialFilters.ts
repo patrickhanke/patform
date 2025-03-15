@@ -1,12 +1,12 @@
-import { Filter } from '@repo/types';
+import { Filter } from "@repo/types";
 
 const initialFilters: Filter[] = [
-    {
-        key: 'year',
-        operator: '_eq',
-        value: new Date().getFullYear(),
-        id: 'year',
-    },
+  {
+    key: "year",
+    operator: "_eq",
+    value: new Date().getFullYear(),
+    id: "year",
+  },
 ];
 
 export default initialFilters;

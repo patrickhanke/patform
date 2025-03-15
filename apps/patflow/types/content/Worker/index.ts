@@ -1,3 +1,3 @@
-export * from './Worker';
-export * from './Absence';
-export * from './Record';
+export * from "./Worker";
+export * from "./Absence";
+export * from "./Record";

@@ -1,1 +1,1 @@
-export { default } from './PropertyServices';
+export { default } from "./PropertyServices";

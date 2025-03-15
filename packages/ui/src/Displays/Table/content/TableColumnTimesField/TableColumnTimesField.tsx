@@ -30,7 +30,7 @@ const TableColumnTimesField = ({
     (id: string | null) => {
       return times.find((field) => field.id === id);
     },
-    [times]
+    [times],
   );
 
   return (

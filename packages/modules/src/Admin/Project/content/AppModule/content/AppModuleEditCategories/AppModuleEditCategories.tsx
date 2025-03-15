@@ -24,7 +24,7 @@ const AppModuleEditCategories = ({
   const [editCategories, setEditCategories] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useImmer<ModuleCategory[]>(
-    initialCategories || []
+    initialCategories || [],
   );
   const [activeCategory, setActiveCategory] = React.useState("");
 
@@ -46,7 +46,7 @@ const AppModuleEditCategories = ({
     (id: string) => {
       return categories.find((field) => field.id === id);
     },
-    [categories]
+    [categories],
   );
 
   return (

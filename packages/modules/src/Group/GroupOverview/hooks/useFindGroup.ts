@@ -22,7 +22,7 @@ const useFindGroup: UseFindGroupHook = ({ moduleId, filters }) => {
     {
       variables: { params: paramsHandler({ moduleId, filters }) },
       notifyOnNetworkStatusChange: true,
-    }
+    },
   );
 
   return {

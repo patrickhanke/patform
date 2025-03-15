@@ -29,7 +29,7 @@ const TableColumnPersons = ({
           },
         },
       },
-    }
+    },
   );
 
   console.log(personData);

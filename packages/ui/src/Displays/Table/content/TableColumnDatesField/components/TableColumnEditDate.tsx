@@ -31,7 +31,7 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
           },
         ],
       }),
-    }
+    },
   );
 
   console.log(modules);
@@ -44,7 +44,7 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
       (location: LocationClass) => ({
         label: location.label,
         value: location.objectId,
-      })
+      }),
     );
   }, [locationData]);
 
@@ -53,12 +53,12 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
       key: string,
       value:
         | EventDate[keyof EventDate]
-        | EventDate["place"][keyof EventDate["place"]]
+        | EventDate["place"][keyof EventDate["place"]],
     ) => {
       if (date) {
         setDates((draft: EventDate[]) => {
           const index: number = draft.findIndex(
-            (dateToFind) => dateToFind.id === date.id
+            (dateToFind) => dateToFind.id === date.id,
           );
           const dateCopy: typeof date = cloneDeep(date);
           set(dateCopy, key, value);
@@ -69,7 +69,7 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
         });
       }
     },
-    [date, setDates]
+    [date, setDates],
   );
 
   if (!date) {
@@ -116,7 +116,7 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
           buttonStates={locationButtonStates}
           currentStates={
             locationButtonStates.find(
-              (button) => button.value === date.place.type
+              (button) => button.value === date.place.type,
             ) as { label: string; value: string }
           }
           changeHandler={(value) => changeHandler("place.type", value.value)}
@@ -140,7 +140,7 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
                 options={locationOptions}
                 value={locationOptions.find(
                   (location: { value: string; label: string }) =>
-                    location.value === date.place.location
+                    location.value === date.place.location,
                 )}
                 onChange={(loc) => changeHandler("place.location", loc.value)}
               />

@@ -28,7 +28,7 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
           },
         },
       },
-    }
+    },
   );
   const projectSelectHandler = useCallback(() => {
     if (
@@ -70,7 +70,7 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
             ({
               value: project.objectId,
               label: project.name,
-            }) as const
+            }) as const,
         )}
         onSelect={(value) => setSelectedProject(value)}
         selectedElements={selectedProject}

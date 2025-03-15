@@ -1,159 +1,153 @@
-'use client';
+"use client";
 
-import React, { useCallback, useEffect } from 'react';
-import { DatePickerProps } from './types';
-import { useDebounceValue } from 'usehooks-ts';
-import { formatISO9075 } from 'date-fns';
-import { getDateFromWeek } from '@provider';
-import transformWeekValue from './functions/transformWeekValue';
+import React, { useCallback, useEffect } from "react";
+import { DatePickerProps } from "./types";
+import { useDebounceValue } from "usehooks-ts";
+import { formatISO9075 } from "date-fns";
+import { getDateFromWeek } from "@provider";
+import transformWeekValue from "./functions/transformWeekValue";
 
 const DatePicker = ({
-    defaultValue,
-    onChange,
-    type,
-    label,
-    id,
-    disabled = false,
-    width = 180,
-    min,
-    max,
+  defaultValue,
+  onChange,
+  type,
+  label,
+  id,
+  disabled = false,
+  width = 180,
+  min,
+  max,
 }: DatePickerProps) => {
-    const [debouncedValue, setDateValue] = useDebounceValue(
-        defaultValue || '',
-        900
-    );
+  const [debouncedValue, setDateValue] = useDebounceValue(
+    defaultValue || "",
+    900,
+  );
 
-    useEffect(() => {
-        if (debouncedValue !== defaultValue && debouncedValue.length > 2) {
-            onChange(debouncedValue);
-        }
-    }, [debouncedValue]);
+  useEffect(() => {
+    if (debouncedValue !== defaultValue && debouncedValue.length > 2) {
+      onChange(debouncedValue);
+    }
+  }, [debouncedValue]);
 
-    const timeChangeHandler = useCallback(
-        (type: 'date' | 'time', value: string) => {
-            if (type === 'date') {
-                debouncedValue.split('T')[1]
-                    ? setDateValue(`${value}T${debouncedValue.split('T')[1]}`)
-                    : setDateValue(value);
-            }
-            if (type === 'time') {
-                value.length === 5
-                    ? setDateValue(`${debouncedValue.split('T')[0]}T${value}`)
-                    : setDateValue(`${debouncedValue.split('T')[0]}`);
-            }
-        },
-        [debouncedValue]
-    );
+  const timeChangeHandler = useCallback(
+    (type: "date" | "time", value: string) => {
+      if (type === "date") {
+        debouncedValue.split("T")[1]
+          ? setDateValue(`${value}T${debouncedValue.split("T")[1]}`)
+          : setDateValue(value);
+      }
+      if (type === "time") {
+        value.length === 5
+          ? setDateValue(`${debouncedValue.split("T")[0]}T${value}`)
+          : setDateValue(`${debouncedValue.split("T")[0]}`);
+      }
+    },
+    [debouncedValue],
+  );
 
-    return (
+  return (
+    <>
+      <label htmlFor={id}>{label}</label>
+      {type === "time" && (
+        <input
+          aria-label="Time"
+          id={id}
+          name={id}
+          type={type}
+          style={{ width }}
+          onChange={(e) => setDateValue(e.target.value)}
+          defaultValue={defaultValue}
+          step={undefined}
+          disabled={disabled}
+        />
+      )}
+      {type === "week" && (
+        <input
+          aria-label="Date"
+          id={id}
+          name={id}
+          type={type}
+          style={{ width }}
+          onChange={(e) => {
+            const year = Number(e.target.value.split("-W")[0]);
+            const week = Number(e.target.value.split("-W")[1]);
+            setDateValue(
+              formatISO9075(getDateFromWeek(week, 0, year), {
+                representation: "date",
+              }),
+            );
+          }}
+          defaultValue={transformWeekValue(defaultValue)}
+          step={undefined}
+          disabled={disabled}
+        />
+      )}
+      {type === "date" && (
+        <input
+          aria-label="Date"
+          id={id}
+          name={id}
+          type={"date"}
+          style={{ width }}
+          onChange={(e) => setDateValue(e.target.value)}
+          defaultValue={defaultValue}
+          step={undefined}
+          disabled={disabled}
+        />
+      )}
+      {type === "datetime-local" && (
         <>
-            <label htmlFor={id}>{label}</label>
-            {type === 'time' && (
-                <input
-                    aria-label="Time"
-                    id={id}
-                    name={id}
-                    type={type}
-                    style={{ width }}
-                    onChange={e => setDateValue(e.target.value)}
-                    defaultValue={defaultValue}
-                    step={undefined}
-                    disabled={disabled}
-                />
-            )}
-            {type === 'week' && (
-                <input
-                    aria-label="Date"
-                    id={id}
-                    name={id}
-                    type={type}
-                    style={{ width }}
-                    onChange={e => {
-                        const year = Number(e.target.value.split('-W')[0]);
-                        const week = Number(e.target.value.split('-W')[1]);
-                        setDateValue(
-                            formatISO9075(getDateFromWeek(week, 0, year), {
-                                representation: 'date',
-                            })
-                        );
-                    }}
-                    defaultValue={transformWeekValue(defaultValue)}
-                    step={undefined}
-                    disabled={disabled}
-                />
-            )}
-            {type === 'date' && (
-                <input
-                    aria-label="Date"
-                    id={id}
-                    name={id}
-                    type={'date'}
-                    style={{ width }}
-                    onChange={e => setDateValue(e.target.value)}
-                    defaultValue={defaultValue}
-                    step={undefined}
-                    disabled={disabled}
-                />
-            )}
-            {type === 'datetime-local' && (
-                <>
-                    <input
-                        aria-label="Date"
-                        id={id}
-                        name={id}
-                        type={'datetime-local'}
-                        style={{ width }}
-                        onChange={e => setDateValue(e.target.value)}
-                        defaultValue={defaultValue}
-                        step={undefined}
-                        disabled={disabled}
-                        min={min}
-                        max={max}
-                    />
-                </>
-            )}
-            {type === 'datetime' && (
-                <div className="button_container">
-                    <input
-                        aria-label="Date"
-                        id={id}
-                        name={id}
-                        type={'date'}
-                        style={{ width: 110 }}
-                        onChange={e =>
-                            timeChangeHandler('date', e.target.value)
-                        }
-                        defaultValue={
-                            defaultValue.length > 10
-                                ? defaultValue.split('T')[0]
-                                : defaultValue
-                        }
-                        step={undefined}
-                        disabled={disabled}
-                        min={min}
-                        max={max}
-                    />
-                    <input
-                        aria-label="Time"
-                        id={id}
-                        name={id}
-                        type={'time'}
-                        style={{ width: 80 }}
-                        onChange={e =>
-                            timeChangeHandler('time', e.target.value)
-                        }
-                        defaultValue={
-                            defaultValue.length > 10
-                                ? defaultValue.split('T')[1]
-                                : ''
-                        }
-                        step={undefined}
-                        disabled={isNaN(new Date(debouncedValue).getTime())}
-                    />
-                </div>
-            )}
+          <input
+            aria-label="Date"
+            id={id}
+            name={id}
+            type={"datetime-local"}
+            style={{ width }}
+            onChange={(e) => setDateValue(e.target.value)}
+            defaultValue={defaultValue}
+            step={undefined}
+            disabled={disabled}
+            min={min}
+            max={max}
+          />
         </>
-    );
+      )}
+      {type === "datetime" && (
+        <div className="button_container">
+          <input
+            aria-label="Date"
+            id={id}
+            name={id}
+            type={"date"}
+            style={{ width: 110 }}
+            onChange={(e) => timeChangeHandler("date", e.target.value)}
+            defaultValue={
+              defaultValue.length > 10
+                ? defaultValue.split("T")[0]
+                : defaultValue
+            }
+            step={undefined}
+            disabled={disabled}
+            min={min}
+            max={max}
+          />
+          <input
+            aria-label="Time"
+            id={id}
+            name={id}
+            type={"time"}
+            style={{ width: 80 }}
+            onChange={(e) => timeChangeHandler("time", e.target.value)}
+            defaultValue={
+              defaultValue.length > 10 ? defaultValue.split("T")[1] : ""
+            }
+            step={undefined}
+            disabled={isNaN(new Date(debouncedValue).getTime())}
+          />
+        </div>
+      )}
+    </>
+  );
 };
 
 export default DatePicker;

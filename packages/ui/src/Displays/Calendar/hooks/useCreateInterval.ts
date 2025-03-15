@@ -29,7 +29,7 @@ const useCreateInterval: UseCreateIntervalHook = ({ view }) => {
       const end = setDay(
         new Date(year, month + getInterval(view.value).distance, 0),
         0,
-        { weekStartsOn: 1 }
+        { weekStartsOn: 1 },
       );
 
       const dayInterval = eachDayOfInterval(
@@ -37,16 +37,16 @@ const useCreateInterval: UseCreateIntervalHook = ({ view }) => {
           start,
           end,
         },
-        { step: 1 }
+        { step: 1 },
       );
 
       const formatedDayInterval = dayInterval.map((day) =>
-        formatISO9075(day, { representation: "date" })
+        formatISO9075(day, { representation: "date" }),
       );
 
       return [...formatedDayInterval] as string[];
     },
-    [view]
+    [view],
   );
 
   const interval: WeekInterval[] = useMemo(() => {

@@ -1,6 +1,6 @@
-import { ApolloRefetch, HolidayTemplate } from '@types';
+import { ApolloRefetch, HolidayTemplate } from "@types";
 
 export type EditHolidayTemplateProps = {
-    template: HolidayTemplate;
-    refetch: ApolloRefetch;
+  template: HolidayTemplate;
+  refetch: ApolloRefetch;
 };

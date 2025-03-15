@@ -1,69 +1,60 @@
-import { useDataHandler } from '@repo/provider';
-import React, { useCallback, useState } from 'react';
-import styles from '../Task.module.scss';
-import { IconButton, TextInput } from '@repo/ui';
+import { useDataHandler } from "@repo/provider";
+import React, { useCallback, useState } from "react";
+import styles from "../Task.module.scss";
+import { IconButton, TextInput } from "@repo/ui";
 
 const TaskTitle = ({
-    taskId,
-    taskState,
-    taskTitle,
-    refetch,
+  taskId,
+  taskState,
+  taskTitle,
+  refetch,
 }: {
-    taskId: string;
-    taskState: string;
-    taskTitle: string;
-    refetch: () => void;
+  taskId: string;
+  taskState: string;
+  taskTitle: string;
+  refetch: () => void;
 }) => {
-    const [title, setTitle] = useState(taskTitle || '');
-    const { updateData } = useDataHandler();
-    const [titleEdit, setTitleEdit] = useState(false);
+  const [title, setTitle] = useState(taskTitle || "");
+  const { updateData } = useDataHandler();
+  const [titleEdit, setTitleEdit] = useState(false);
 
-    const titleDataHandler = useCallback(async () => {
-        await updateData({
-            className: 'Task',
-            objectId: taskId,
-            updateObject: {
-                title,
-            },
-        });
-        refetch();
-        setTitleEdit(false);
-    }, [title]);
+  const titleDataHandler = useCallback(async () => {
+    await updateData({
+      className: "Task",
+      objectId: taskId,
+      updateObject: {
+        title,
+      },
+    });
+    refetch();
+    setTitleEdit(false);
+  }, [title]);
 
-    if (taskState === 'completed' || taskState === 'archived') {
-        return <div className={styles.task_title_container}>{taskTitle}</div>;
-    }
+  if (taskState === "completed" || taskState === "archived") {
+    return <div className={styles.task_title_container}>{taskTitle}</div>;
+  }
 
-    return titleEdit ? (
-        <div className={styles.task_title_container}>
-            <TextInput
-                id="task_title"
-                label=""
-                defaultValue={taskTitle}
-                onChange={value => setTitle(value)}
-            />
-            <div className="button_container">
-                <IconButton
-                    icon="cancel"
-                    onClick={() => setTitleEdit(false)}
-                />
-                <IconButton
-                    icon="check"
-                    onClick={() => titleDataHandler()}
-                />
-            </div>
-        </div>
-    ) : (
-        <div className={styles.task_title_container}>
-            <div style={{ flex: '1', display: 'inline-flex' }}>
-                <p style={{ textWrap: 'wrap' }}>{taskTitle}</p>
-            </div>
-            <IconButton
-                icon="edit"
-                onClick={() => setTitleEdit(true)}
-            />
-        </div>
-    );
+  return titleEdit ? (
+    <div className={styles.task_title_container}>
+      <TextInput
+        id="task_title"
+        label=""
+        defaultValue={taskTitle}
+        onChange={(value) => setTitle(value)}
+      />
+      <div className="button_container">
+        <IconButton icon="cancel" onClick={() => setTitleEdit(false)} />
+        <IconButton icon="check" onClick={() => titleDataHandler()} />
+      </div>
+    </div>
+  ) : (
+    <div className={styles.task_title_container}>
+      <div style={{ flex: "1", display: "inline-flex" }}>
+        <p style={{ textWrap: "wrap" }}>{taskTitle}</p>
+      </div>
+      <IconButton icon="edit" onClick={() => setTitleEdit(true)} />
+    </div>
+  );
 };
 
 export default TaskTitle;

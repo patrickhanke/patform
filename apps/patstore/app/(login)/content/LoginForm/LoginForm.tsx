@@ -40,7 +40,7 @@ const LoginForm = () => {
           Cookies.set(
             process.env.SESSION_TOKEN as string,
             response.data.sessionToken,
-            { expires: 90 }
+            { expires: 90 },
           );
           setError("");
         })

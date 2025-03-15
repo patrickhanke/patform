@@ -5,5 +5,5 @@ export type TableColumnDeleteFieldProps = {
 };
 
 export type TableColumnDeleteFieldComponent = (
-  params: TableColumnDeleteFieldProps
+  params: TableColumnDeleteFieldProps,
 ) => ReactElement;

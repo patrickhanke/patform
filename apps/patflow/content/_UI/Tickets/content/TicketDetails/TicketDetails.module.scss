@@ -1,64 +1,64 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .ticket_details_container {
-    @include constants.flexbox(
-        $direction: column,
-        $wrap: wrap,
-        $align: stretch,
-        $justify: flex-start,
-        $gap: 0
-    );
-    padding: map-get($map: constants.$padding, $key: 'md');
+  @include constants.flexbox(
+    $direction: column,
+    $wrap: wrap,
+    $align: stretch,
+    $justify: flex-start,
+    $gap: 0
+  );
+  padding: map-get($map: constants.$padding, $key: "md");
 }
 
 .ticket_slidein_content {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: flex-start,
-        $gap: 0
-    );
-    height: auto;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: flex-start,
+    $gap: 0
+  );
+  height: auto;
 }
 
 .ticket_slidein_header {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: space-between,
-        $align: flex-end
-    );
-    width: 100%;
-    flex: 0 0 40px;
-    border-bottom: 1px solid constants.$grey;
-    h2 {
-        margin-bottom: constants.$xs;
-        cursor: pointer;
-    }
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: flex-end
+  );
+  width: 100%;
+  flex: 0 0 40px;
+  border-bottom: 1px solid constants.$grey;
+  h2 {
+    margin-bottom: constants.$xs;
+    cursor: pointer;
+  }
 }
 
 .ticket_slidein_content_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch,
-        $gap: constants.$md
-    );
-    flex: 0 1 100%;
-    position: relative;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: map-get(constants.$padding, 'sm');
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch,
+    $gap: constants.$md
+  );
+  flex: 0 1 100%;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: map-get(constants.$padding, "sm");
 }
 
 .ticket_slidein_footer {
-    flex: 0 0 120px;
-    width: 100%;
-    border-top: 1px solid constants.$grey;
-    background-color: constants.$light;
-    position: relative;
+  flex: 0 0 120px;
+  width: 100%;
+  border-top: 1px solid constants.$grey;
+  background-color: constants.$light;
+  position: relative;
 }
 
 .task_details_header {
-    padding-left: constants.$sm;
-    padding-right: constants.$sm;
+  padding-left: constants.$sm;
+  padding-right: constants.$sm;
 }

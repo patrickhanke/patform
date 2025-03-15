@@ -1,1 +1,1 @@
-export { default } from './PropertyTasks';
+export { default } from "./PropertyTasks";

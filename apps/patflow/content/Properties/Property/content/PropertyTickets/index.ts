@@ -1,1 +1,1 @@
-export { default } from './ObjectTickets';
+export { default } from "./ObjectTickets";

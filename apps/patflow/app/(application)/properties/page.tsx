@@ -1,1 +1,1 @@
-export { PropertyOverview as default } from '@content';
+export { PropertyOverview as default } from "@content";

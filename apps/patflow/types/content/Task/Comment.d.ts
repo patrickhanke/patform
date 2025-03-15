@@ -1,4 +1,4 @@
 export type CreateCommentObject = {
-    user: string;
-    text: string;
+  user: string;
+  text: string;
 };

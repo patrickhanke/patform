@@ -19,7 +19,7 @@ const PlaceAutocomplete = ({ onPlaceSelect }: PlaceAutocompleteProps) => {
           "place_id",
           "reference",
         ],
-      })
+      }),
     );
   }, [places]);
 

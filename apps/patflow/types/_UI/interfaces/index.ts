@@ -1,1 +1,1 @@
-export * as FilterTypes from './Filter';
+export * as FilterTypes from "./Filter";

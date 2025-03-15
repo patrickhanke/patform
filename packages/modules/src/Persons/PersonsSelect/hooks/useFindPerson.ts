@@ -13,7 +13,7 @@ const useFindPerson: UseFindPersonsHook = ({ moduleId, filters }) => {
       variables: { params: paramsHandler({ moduleId, filters }) },
       notifyOnNetworkStatusChange: true,
       skip: !moduleId,
-    }
+    },
   );
 
   return {

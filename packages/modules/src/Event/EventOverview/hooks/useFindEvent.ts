@@ -21,7 +21,7 @@ const useFindEvent: UseFindEventHook = ({ moduleId, filters }) => {
     {
       variables: { params: paramsHandler({ moduleId, filters }) },
       notifyOnNetworkStatusChange: true,
-    }
+    },
   );
 
   return {

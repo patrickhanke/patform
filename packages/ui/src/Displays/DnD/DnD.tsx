@@ -43,7 +43,7 @@ const DnD = <T extends any[]>({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const DnD = <T extends any[]>({
           updateObject: {
             position: index + 1,
           },
-        })
+        }),
       );
       await Promise.all(newItemsPromise);
       if (refetch) {
@@ -104,7 +104,7 @@ const DnD = <T extends any[]>({
           const overIndex = listItems.findIndex(({ id }) => id === over?.id);
 
           afterDrop(
-            arrayMove(listItems, activeIndex, overIndex) as typeof items
+            arrayMove(listItems, activeIndex, overIndex) as typeof items,
           );
           // afterSortFunction(arrayMove(listItems, activeIndex, overIndex))
         }

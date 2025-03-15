@@ -54,7 +54,7 @@ const WebsiteSettings = ({ settings, moduleId }: WebsiteSettingsProps) => {
         value: siteSettings?.logo_square,
       },
     ],
-    [siteSettings]
+    [siteSettings],
   );
 
   const updateSettings = (data: FormikValues) => {

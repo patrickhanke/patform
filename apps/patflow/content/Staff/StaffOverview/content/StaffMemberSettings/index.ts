@@ -1,1 +1,1 @@
-export { default } from './StaffMemberSettings';
+export { default } from "./StaffMemberSettings";

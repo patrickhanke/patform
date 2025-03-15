@@ -11,7 +11,7 @@ import { ViewState } from "./content/CalendarHeader/types";
 
 const Calendar = ({ data }: CalendarProps) => {
   const [view, setView] = useState<ViewState>(
-    viewSettings[0] as (typeof viewSettings)[0]
+    viewSettings[0] as (typeof viewSettings)[0],
   );
   const [intervalIndex, setIntervalIndex] = useState(new Date().getMonth());
   const year = 2024;
@@ -27,7 +27,7 @@ const Calendar = ({ data }: CalendarProps) => {
           start,
           end,
         },
-        { step: 1 }
+        { step: 1 },
       );
     }
     if (view.value === "quaterly") {
@@ -38,12 +38,12 @@ const Calendar = ({ data }: CalendarProps) => {
           start,
           end,
         },
-        { step: 1 }
+        { step: 1 },
       );
     }
 
     return dayInterval.map((day) =>
-      formatISO9075(day, { representation: "date" })
+      formatISO9075(day, { representation: "date" }),
     );
   }, [view, interval, intervalIndex, year]);
 

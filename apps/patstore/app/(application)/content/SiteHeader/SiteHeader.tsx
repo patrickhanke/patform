@@ -8,7 +8,7 @@ import { SiteHeaderComponent } from "./types";
 
 import { AppContext } from "@repo/provider";
 
-import { UserDisplay } from "./content/UserDisplay"
+import { UserDisplay } from "./content/UserDisplay";
 
 const SiteHeader = ({ title }: SiteHeaderComponent) => {
   const { pageTitle } = useContext(AppContext);

@@ -13,7 +13,7 @@ const FormData = ({ formId }: { formId: string }) => {
     }),
     {
       variables: { params: { reference_id: { _eq: formId } } },
-    }
+    },
   );
 
   console.log(formId);
@@ -29,7 +29,7 @@ const FormData = ({ formId }: { formId: string }) => {
   }
 
   const formData = generateFormData(
-    data.objects.findData.results.map((data: any) => data.data)
+    data.objects.findData.results.map((data: any) => data.data),
   );
 
   return (

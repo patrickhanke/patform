@@ -117,7 +117,7 @@ export async function middleware(request: NextRequest) {
           "X-Parse-Application-Id": process.env.SASHIDO_APP_ID || "",
           "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY || "",
         },
-      }
+      },
     );
 
     if (data.ok) {

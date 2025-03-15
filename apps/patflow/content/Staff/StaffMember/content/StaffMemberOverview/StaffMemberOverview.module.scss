@@ -1,48 +1,48 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .overview_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: flex-start
-    );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: flex-start
+  );
+  width: 100%;
 }
 
 .user_data_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: flex-start,
-        $align: flex-start,
-        $gap: constants.$md
-    );
-    width: 100%;
-    flex: 1 1 50%;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: flex-start,
+    $gap: constants.$md
+  );
+  width: 100%;
+  flex: 1 1 50%;
 }
 
 .user_data_element {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: flex-start,
-        $align: flex-start,
-        $gap: constants.$xs
-    );
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: flex-start,
+    $gap: constants.$xs
+  );
 }
 
 .user_portrait_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: center,
-        $align: center
-    );
-    flex: 1 1 50%;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: center,
+    $align: center
+  );
+  flex: 1 1 50%;
 }
 
 .user_portrait_image_container {
-    height: 180px;
-    width: 180px;
-    position: relative;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: constants.$grey;
+  height: 180px;
+  width: 180px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: constants.$grey;
 }

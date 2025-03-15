@@ -1,7 +1,7 @@
 import { PageCreateClassObject } from "@repo/ui";
 
 const create_module: (pojectId: string) => PageCreateClassObject = (
-  projectId: string
+  projectId: string,
 ) => ({
   className: "Module",
   text: "Neuen Nutzer erstellen",

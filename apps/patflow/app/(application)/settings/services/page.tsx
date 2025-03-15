@@ -1,1 +1,1 @@
-export { ServiceTemplatesOverview as default } from '@content';
+export { ServiceTemplatesOverview as default } from "@content";

@@ -27,14 +27,14 @@ const Project = ({ params }: { params: { project_id: string } }) => {
     }),
     {
       variables: { id: params.project_id },
-    }
+    },
   );
   const [createModule, setCreateModule] = useState(false);
   const [createUser, setCreateUser] = useState(false);
   const [addUser, setAddUser] = useState(false);
 
   const [siteState, setSiteState] = useState(
-    site_states[0] as (typeof site_states)[number]
+    site_states[0] as (typeof site_states)[number],
   );
   const { createData, updateData } = useDataHandler();
   const { data, loading, refetch } = useQuery(
@@ -56,7 +56,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
           ],
         }),
       },
-    }
+    },
   );
 
   const pageHeaderButtons = useMemo(() => {
@@ -112,7 +112,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
       await refetch();
       setCreateModule(false);
     },
-    [data]
+    [data],
   );
 
   if (!data && !projectData) return <ProjectLoader loading={true} />;

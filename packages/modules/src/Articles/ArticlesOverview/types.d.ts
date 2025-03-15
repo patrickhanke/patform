@@ -13,7 +13,7 @@ export type UseFindArticlesHook = ({
 };
 
 export type CreateArticle = (
-  persons: { value: string; label: string }[]
+  persons: { value: string; label: string }[],
 ) => PageCreateClassObject;
 
 export type DeleteModalProps = {

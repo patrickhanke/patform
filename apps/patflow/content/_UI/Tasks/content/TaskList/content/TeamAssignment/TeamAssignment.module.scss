@@ -1,51 +1,51 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
-@import '../../Task.module.scss';
+@import "../../Task.module.scss";
 
 .team_assignment_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center
+  );
 }
 
 .team_assignment_workers_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $wrap: wrap,
-        $gap: constants.$xxs
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $wrap: wrap,
+    $gap: constants.$xxs
+  );
 }
 
 .edit_workers_button {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center
-    );
-    border: 1px dotted constants.$primary;
-    color: constants.$primary;
-    background-color: transparent;
-    font-size: map-get($map: constants.$font_size, $key: 'sm');
-    cursor: pointer;
-    font-weight: 500;
-    padding: map-get($map: constants.$padding, $key: 'xs');
-    border-radius: map-get($map: constants.$border_radius, $key: 'md');
-    &:hover {
-        background-color: constants.$primary;
-        color: constants.$white;
-    }
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center
+  );
+  border: 1px dotted constants.$primary;
+  color: constants.$primary;
+  background-color: transparent;
+  font-size: map-get($map: constants.$font_size, $key: "sm");
+  cursor: pointer;
+  font-weight: 500;
+  padding: map-get($map: constants.$padding, $key: "xs");
+  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  &:hover {
+    background-color: constants.$primary;
+    color: constants.$white;
+  }
 }
 
 .button_workers_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: 0
-    );
-    width: fit-content;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: 0
+  );
+  width: fit-content;
 }

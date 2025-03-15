@@ -11,7 +11,7 @@ const FilterSelect = ({ category, filters, setFilters }: FilterSelectProps) => {
       type: "find",
       objectName: category.connected_class,
       fields: [category.key, "label", "objectId"],
-    })
+    }),
   );
 
   if (loading) return <Loader width="180px" height="30px" />;
@@ -21,7 +21,7 @@ const FilterSelect = ({ category, filters, setFilters }: FilterSelectProps) => {
     const options = get(
       data,
       `objects.find${category.connected_class}.results`,
-      []
+      [],
     ).map((result: any) => ({ label: result.label, value: result.objectId }));
 
     return (
@@ -32,7 +32,7 @@ const FilterSelect = ({ category, filters, setFilters }: FilterSelectProps) => {
         value={filter?.value || null}
         onChange={(value) =>
           setFilters(
-            filterChangeHandler("categories", value.value, "_in", filters)
+            filterChangeHandler("categories", value.value, "_in", filters),
           )
         }
         placeholder={category.label}

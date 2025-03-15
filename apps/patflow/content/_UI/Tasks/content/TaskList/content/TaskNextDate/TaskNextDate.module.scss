@@ -1,17 +1,17 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
-@import '../../Task.module.scss';
+@import "../../Task.module.scss";
 
 .object_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center
+  );
+  font-weight: 500;
+  font-size: 0.7rem;
+  p[data-is-overdue="true"] {
+    color: constants.$red;
     font-weight: 500;
-    font-size: 0.7rem;
-    p[data-is-overdue='true'] {
-        color: constants.$red;
-        font-weight: 500;
-    }
+  }
 }

@@ -3,7 +3,7 @@ import { cloneDeep } from "lodash-es";
 
 const sortPersonsBySelected = (
   persons: PersonClass[],
-  selectedPersons: string[]
+  selectedPersons: string[],
 ): PersonClass[] => {
   const personsCopy = cloneDeep(persons);
   return personsCopy.sort((a, b) => {

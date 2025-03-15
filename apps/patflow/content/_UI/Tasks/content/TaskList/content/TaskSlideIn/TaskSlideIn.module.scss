@@ -1,95 +1,95 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .task_slidein_content {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch,
-        $gap: constants.$sm
-    );
-    height: 100%;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch,
+    $gap: constants.$sm
+  );
+  height: 100%;
 }
 
 .task_slidein_top_content {
-    flex: 1 1 50%;
+  flex: 1 1 50%;
 }
 
 .task_slidein_bottom_content {
-    flex: 1 1 80%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: space-between;
-    gap: 0;
-    padding: map-get(constants.$padding, 'sm');
+  flex: 1 1 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0;
+  padding: map-get(constants.$padding, "sm");
 }
 
 .task_slidein_bottom_buttons {
-    border-bottom: 1px solid constants.$grey;
-    margin-bottom: constants.$md;
+  border-bottom: 1px solid constants.$grey;
+  margin-bottom: constants.$md;
 }
 
 .task_slidein_header {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: space-between,
-        $align: flex-end
-    );
-    width: 100%;
-    flex: 0 0 40px;
-    border-bottom: 1px solid constants.$grey;
-    h2 {
-        margin-bottom: constants.$xs;
-        cursor: pointer;
-    }
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: flex-end
+  );
+  width: 100%;
+  flex: 0 0 40px;
+  border-bottom: 1px solid constants.$grey;
+  h2 {
+    margin-bottom: constants.$xs;
+    cursor: pointer;
+  }
 }
 
 .task_slidein_content_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: flex-start,
-        $align: stretch,
-        $gap: constants.$md
-    );
-    flex: 0 1 100%;
-    position: relative;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: map-get(constants.$padding, 'sm');
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$md
+  );
+  flex: 0 1 100%;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: map-get(constants.$padding, "sm");
 }
 
 .task_slidein_footer {
-    flex: 0 0 120px;
-    width: 100%;
-    border-top: 1px solid constants.$grey;
-    background-color: constants.$light;
-    position: relative;
+  flex: 0 0 120px;
+  width: 100%;
+  border-top: 1px solid constants.$grey;
+  background-color: constants.$light;
+  position: relative;
 }
 
 .task_slidein_content_element {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $change_to_column: true
-    );
-    flex: 1 1 100%;
-    padding: map-get(constants.$padding, 'sm');
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $change_to_column: true
+  );
+  flex: 1 1 100%;
+  padding: map-get(constants.$padding, "sm");
 }
 
-.task_slidein_content_element[data-flexstart='true'] {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: flex-start,
-        $change_to_column: true
-    );
-    flex: 1 1 100%;
-    padding: map-get(constants.$padding, 'sm');
+.task_slidein_content_element[data-flexstart="true"] {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: flex-start,
+    $change_to_column: true
+  );
+  flex: 1 1 100%;
+  padding: map-get(constants.$padding, "sm");
 }
 
 .task_slidein_content_element_label {
-    width: 90px;
-    margin: 0;
-    color: constants.$grey;
+  width: 90px;
+  margin: 0;
+  color: constants.$grey;
 }

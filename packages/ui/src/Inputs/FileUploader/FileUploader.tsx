@@ -71,16 +71,20 @@ const FileUploader = ({
             if (setSecondaryContent) {
               if (returnType === "string" && files?.uploadedFiles.length > 0) {
                 return onChange(
-                  files?.uploadedFiles.map((file) => file.filePath)[0] as string
+                  files?.uploadedFiles.map(
+                    (file) => file.filePath,
+                  )[0] as string,
                 ) as unknown as (F: string) => void;
               }
               return onChange(
-                files?.uploadedFiles.map((file) => file.filePath)
+                files?.uploadedFiles.map((file) => file.filePath),
               ) as unknown as (F: string[]) => void;
             } else {
               if (returnType === "string" && files?.uploadedFiles.length > 0) {
                 return setFiles(
-                  files?.uploadedFiles.map((file) => file.filePath)[0] as string
+                  files?.uploadedFiles.map(
+                    (file) => file.filePath,
+                  )[0] as string,
                 ) as unknown as (F: string) => void;
               } else {
                 setFiles(files?.uploadedFiles.map((file) => file.filePath));

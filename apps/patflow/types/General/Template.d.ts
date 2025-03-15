@@ -1,12 +1,12 @@
-import { Project } from './Project';
+import { Project } from "./Project";
 
 type GeneralTemplate = {
-    objectId: string;
-    name: string;
-    project: Project;
+  objectId: string;
+  name: string;
+  project: Project;
 };
 
 export type HolidayTemplate = GeneralTemplate & {
-    type: 'holiday';
-    holidays: string[];
+  type: "holiday";
+  holidays: string[];
 };

@@ -10,13 +10,13 @@ type UseStorageReturnValue = {
   getItem: (
     key: keys,
     type?: StorageType,
-    value_type?: valueType
+    value_type?: valueType,
   ) => UserTypes.User | undefined;
   setItem: (
     key: keys,
     value: string,
     type?: StorageType,
-    value_type?: valueType
+    value_type?: valueType,
   ) => boolean;
   removeItem: (key: keys, type?: StorageType) => void;
 };
@@ -45,12 +45,12 @@ const useStorage = (): UseStorageReturnValue => {
   const setItem = (
     key: keys,
     value: string | object,
-    type?: StorageType
+    type?: StorageType,
   ): boolean => {
     // if (isBrowser) {
     window[storageType(type)].setItem(
       key,
-      typeof value === "object" ? JSON.stringify(value) : value
+      typeof value === "object" ? JSON.stringify(value) : value,
     );
     return true;
     // }

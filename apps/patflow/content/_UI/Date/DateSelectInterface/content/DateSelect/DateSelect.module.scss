@@ -1,99 +1,99 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .date_select_content {
-    @include constants.flexbox(
-        $direction: column,
-        $wrap: wrap,
-        $align: stretch,
-        $justify: flex-start,
-        $gap: constants.$lg
-    );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: column,
+    $wrap: wrap,
+    $align: stretch,
+    $justify: flex-start,
+    $gap: constants.$lg
+  );
+  width: 100%;
 }
 
 .date_container {
-    @include constants.flexbox(
-        $direction: column,
-        $wrap: wrap,
-        $align: stretch,
-        $justify: flex-start,
-        $gap: 0
-    );
-    padding: map-get($map: constants.$padding, $key: 'md');
+  @include constants.flexbox(
+    $direction: column,
+    $wrap: wrap,
+    $align: stretch,
+    $justify: flex-start,
+    $gap: 0
+  );
+  padding: map-get($map: constants.$padding, $key: "md");
 }
 
 .date_select_container {
-    @include constants.flexbox(
-        $direction: row,
-        $wrap: wrap,
-        $align: flex-start,
-        $justify: flex-start,
-        $gap: 0
-    );
+  @include constants.flexbox(
+    $direction: row,
+    $wrap: wrap,
+    $align: flex-start,
+    $justify: flex-start,
+    $gap: 0
+  );
 }
 
 .cw_component_container {
-    width: 24px;
-    height: 30px;
-    border: 1px solid constants.$secondary;
-    color: constants.$secondary;
-    background-color: transparent;
-    cursor: pointer;
+  width: 24px;
+  height: 30px;
+  border: 1px solid constants.$secondary;
+  color: constants.$secondary;
+  background-color: transparent;
+  cursor: pointer;
 }
 
-.cw_component_container[data-isthisweek='true'] {
-    border: 2px solid constants.$red;
-    color: constants.$red;
+.cw_component_container[data-isthisweek="true"] {
+  border: 2px solid constants.$red;
+  color: constants.$red;
 }
 
-.cw_component_container[data-is-selected='true'] {
-    color: white;
-    background-color: constants.$secondary;
+.cw_component_container[data-is-selected="true"] {
+  color: white;
+  background-color: constants.$secondary;
 }
 
 .footer {
-    @include constants.flexbox(
-        $direction: column,
-        $align: flex-start,
-        $justify: flex-end
-    );
-    height: 100%;
-    width: 100%;
-    padding: map-get(constants.$padding, 'md');
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: flex-end
+  );
+  height: 100%;
+  width: 100%;
+  padding: map-get(constants.$padding, "md");
 }
 
 .interval_info_container {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
-.interval_info_container[data-is-active='true'] {
-    opacity: 0.5;
+.interval_info_container[data-is-active="true"] {
+  opacity: 0.5;
 }
 
 .interval_info_content {
-    @include constants.flexbox(
-        $direction: column,
-        $wrap: wrap,
-        $align: flex-start,
-        $justify: flex-start,
-        $gap: constants.$xs
-    );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: column,
+    $wrap: wrap,
+    $align: flex-start,
+    $justify: flex-start,
+    $gap: constants.$xs
+  );
+  width: 100%;
 }
 
 .interval_info_element {
-    padding: map-get(constants.$padding, 'sm');
-    background-color: constants.$light;
+  padding: map-get(constants.$padding, "sm");
+  background-color: constants.$light;
 }
 
 .interval_container {
-    @include constants.flexbox(
-        $direction: row,
-        $wrap: wrap,
-        $align: center,
-        $justify: flex-start,
-        $gap: constants.$xs
-    );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: row,
+    $wrap: wrap,
+    $align: center,
+    $justify: flex-start,
+    $gap: constants.$xs
+  );
+  width: 100%;
 }

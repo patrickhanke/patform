@@ -1,7 +1,7 @@
 module.exports = {
   singleQuote: false,
   semi: true,
-  trailingComma: 'es5',
-  endOfLine: 'crlf',
-  linebreakStyle: 'windows',
+  trailingComma: "es5",
+  endOfLine: "crlf",
+  linebreakStyle: "windows",
 };

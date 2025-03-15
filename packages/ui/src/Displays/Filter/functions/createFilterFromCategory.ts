@@ -1,7 +1,7 @@
 import { Filter, ModuleCategory } from "@repo/types";
 
 const createFilterFromCategory: (category: ModuleCategory) => Filter = (
-  category
+  category,
 ) => {
   return {
     id: category.id,

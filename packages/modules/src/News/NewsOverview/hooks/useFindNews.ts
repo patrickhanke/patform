@@ -12,7 +12,7 @@ const useFindNews: UseFindNewsHook = ({ moduleId, filters }) => {
     {
       variables: { params: paramsHandler({ moduleId, filters }) },
       notifyOnNetworkStatusChange: true,
-    }
+    },
   );
 
   return {

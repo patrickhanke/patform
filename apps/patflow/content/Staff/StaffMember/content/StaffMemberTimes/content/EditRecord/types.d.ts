@@ -1,7 +1,7 @@
-import { ApolloRefetch, Record } from '@types';
+import { ApolloRefetch, Record } from "@types";
 
 export type EditRecordProps = {
-    record: Record;
-    refetch: ApolloRefetch;
-    projectId: string;
+  record: Record;
+  refetch: ApolloRefetch;
+  projectId: string;
 };

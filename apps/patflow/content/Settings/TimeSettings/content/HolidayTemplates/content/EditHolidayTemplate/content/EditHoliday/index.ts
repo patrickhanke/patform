@@ -1,1 +1,1 @@
-export { default } from './EditHoliday';
+export { default } from "./EditHoliday";

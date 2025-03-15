@@ -1,149 +1,142 @@
-import { DisplayWorker } from '@content';
-import { generateGraphQLQuery, useDataHandler } from '@repo/provider';
-import { FIND_ALL_STAFF } from '@queries';
-import { DisplayWorkersProps, Worker } from '@types';
-import { useQuery } from '@apollo/client';
-import React, { useMemo, useState } from 'react';
+import { DisplayWorker } from "@content";
+import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { FIND_ALL_STAFF } from "@queries";
+import { DisplayWorkersProps, Worker } from "@types";
+import { useQuery } from "@apollo/client";
+import React, { useMemo, useState } from "react";
 
-import styles from '../TeamAssignment.module.scss';
-import { ElementSelectInterface, SlideInRight } from '@repo/ui';
-import { WorkerOption } from '../types';
+import styles from "../TeamAssignment.module.scss";
+import { ElementSelectInterface, SlideInRight } from "@repo/ui";
+import { WorkerOption } from "../types";
 
 const DisplayWorkers = ({
-    propertyId,
-    showAsButton = false,
+  propertyId,
+  showAsButton = false,
 }: DisplayWorkersProps) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const { updateData } = useDataHandler();
-    const { data, refetch } = useQuery(
-        generateGraphQLQuery({
-            objectName: 'Property',
-            fields: ['assigned_staff'],
-            type: 'get',
-        }),
-        {
-            variables: { id: propertyId },
-            notifyOnNetworkStatusChange: true,
+  const [isOpen, setIsOpen] = useState(false);
+  const { updateData } = useDataHandler();
+  const { data, refetch } = useQuery(
+    generateGraphQLQuery({
+      objectName: "Property",
+      fields: ["assigned_staff"],
+      type: "get",
+    }),
+    {
+      variables: { id: propertyId },
+      notifyOnNetworkStatusChange: true,
+    },
+  );
+  const { data: workerData } = useQuery(FIND_ALL_STAFF);
+
+  const elements = useMemo(() => {
+    const workerOptionsArray: WorkerOption[] = [];
+    if (workerData) {
+      workerData.objects.find_User.results.forEach((worker: Worker) => {
+        if (worker) {
+          workerOptionsArray.push({
+            value: worker.objectId,
+            id: worker.objectId,
+            label: `${worker.first_name} ${worker.family_name}`,
+            element: <DisplayWorker workerId={worker.objectId} />,
+          });
         }
-    );
-    const { data: workerData } = useQuery(FIND_ALL_STAFF);
+      });
+    }
+    workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
-    const elements = useMemo(() => {
-        const workerOptionsArray: WorkerOption[] = [];
-        if (workerData) {
-            workerData.objects.find_User.results.forEach((worker: Worker) => {
-                if (worker) {
-                    workerOptionsArray.push({
-                        value: worker.objectId,
-                        id: worker.objectId,
-                        label: `${worker.first_name} ${worker.family_name}`,
-                        element: <DisplayWorker workerId={worker.objectId} />,
-                    });
-                }
-            });
+    return workerOptionsArray;
+  }, [workerData]);
+
+  const workerComponent = useMemo(
+    () => (
+      <ElementSelectInterface
+        elements={elements}
+        selectedElements={
+          data
+            ? data.objects.getProperty.assigned_staff.map((element: string) =>
+                elements.find((el) => el.value === element),
+              )
+            : []
         }
-        workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
+        onSelect={async (values) => {
+          const workers = values.map((value) => value.value);
+          await updateData({
+            className: "Property",
+            objectId: propertyId,
+            updateObject: {
+              assigned_staff: [...workers],
+            },
+          });
+          refetch();
+        }}
+        max={100}
+        isSearchable
+      />
+    ),
+    [data, data?.objects?.getProperty?.assigned_staff?.length],
+  );
 
-        return workerOptionsArray;
-    }, [workerData]);
+  const staffNumber = data?.objects.getProperty.assigned_staff.length || 0;
 
-    const workerComponent = useMemo(
-        () => (
-            <ElementSelectInterface
-                elements={elements}
-                selectedElements={
-                    data
-                        ? data.objects.getProperty.assigned_staff.map(
-                              (element: string) =>
-                                  elements.find(el => el.value === element)
-                          )
-                        : []
-                }
-                onSelect={async values => {
-                    const workers = values.map(value => value.value);
-                    await updateData({
-                        className: 'Property',
-                        objectId: propertyId,
-                        updateObject: {
-                            assigned_staff: [...workers],
-                        },
-                    });
-                    refetch();
-                }}
-                max={100}
-                isSearchable
+  if (data)
+    return !showAsButton ? (
+      <>
+        {data.objects.getProperty.assigned_staff.map(
+          (workerId: Worker["objectId"]) => (
+            <DisplayWorker
+              key={workerId}
+              workerId={workerId}
+              onlyImage={false}
             />
-        ),
-        [data, data?.objects?.getProperty?.assigned_staff?.length]
+          ),
+        )}
+        <SlideInRight
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          header="Arbeiter auswählen"
+        >
+          {workerComponent}
+        </SlideInRight>
+      </>
+    ) : (
+      <>
+        <button
+          className={"full_button sm light"}
+          onClick={() => setIsOpen(true)}
+        >
+          {/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
+          <div className={styles.button_workers_container}>
+            {staffNumber > 0 ? (
+              data.objects.getProperty.assigned_staff.map(
+                (workerId: Worker["objectId"], index: number) => (
+                  <div
+                    key={workerId}
+                    style={{
+                      width: "fit-content",
+                      transform: `translateX(${-index * 12}px)`,
+                      overflow: "visible",
+                      zIndex: index,
+                    }}
+                  >
+                    <DisplayWorker workerId={workerId} onlyImage={true} />
+                  </div>
+                ),
+              )
+            ) : (
+              <span>+ Arbeiter hinzufügen</span>
+            )}
+          </div>
+        </button>
+        <SlideInRight
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          header="Arbeiter auswählen"
+        >
+          {workerComponent}
+        </SlideInRight>
+      </>
     );
-
-    const staffNumber = data?.objects.getProperty.assigned_staff.length || 0;
-
-    if (data)
-        return !showAsButton ? (
-            <>
-                {data.objects.getProperty.assigned_staff.map(
-                    (workerId: Worker['objectId']) => (
-                        <DisplayWorker
-                            key={workerId}
-                            workerId={workerId}
-                            onlyImage={false}
-                        />
-                    )
-                )}
-                <SlideInRight
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                    header="Arbeiter auswählen"
-                >
-                    {workerComponent}
-                </SlideInRight>
-            </>
-        ) : (
-            <>
-                <button
-                    className={'full_button sm light'}
-                    onClick={() => setIsOpen(true)}
-                >
-                    {/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
-                    <div className={styles.button_workers_container}>
-                        {staffNumber > 0 ? (
-                            data.objects.getProperty.assigned_staff.map(
-                                (
-                                    workerId: Worker['objectId'],
-                                    index: number
-                                ) => (
-                                    <div
-                                        key={workerId}
-                                        style={{
-                                            width: 'fit-content',
-                                            transform: `translateX(${-index * 12}px)`,
-                                            overflow: 'visible',
-                                            zIndex: index,
-                                        }}
-                                    >
-                                        <DisplayWorker
-                                            workerId={workerId}
-                                            onlyImage={true}
-                                        />
-                                    </div>
-                                )
-                            )
-                        ) : (
-                            <span>+ Arbeiter hinzufügen</span>
-                        )}
-                    </div>
-                </button>
-                <SlideInRight
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                    header="Arbeiter auswählen"
-                >
-                    {workerComponent}
-                </SlideInRight>
-            </>
-        );
-    return null;
+  return null;
 };
 
 export default DisplayWorkers;

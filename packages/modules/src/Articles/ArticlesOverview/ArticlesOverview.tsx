@@ -32,7 +32,7 @@ const ArticlesOverview = () => {
           },
         },
       },
-    }
+    },
   );
 
   const columns = useCreateColumns<ArticleClass>({
@@ -59,7 +59,7 @@ const ArticlesOverview = () => {
         personData?.objects.findPerson.results.map((person: PersonClass) => ({
           value: person.objectId,
           label: person.label,
-        })) || []
+        })) || [],
       )}
       refetch={refetch}
     >

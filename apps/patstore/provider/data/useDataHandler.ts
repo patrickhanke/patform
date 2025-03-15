@@ -55,7 +55,7 @@ const useDataHandler = () => {
       await axiosapi()
         .put(
           `classes/${className}/${objectId}`,
-          updateObject as AxiosRequestConfig<any>
+          updateObject as AxiosRequestConfig<any>,
         )
         .then((response: AxiosResponse<any, any>) => {
           data = response.data.results;
@@ -76,7 +76,7 @@ const useDataHandler = () => {
 
       return data;
     },
-    []
+    [],
   );
 
   const deleteData = useCallback(
@@ -112,7 +112,7 @@ const useDataHandler = () => {
       setLoading(false);
       setFeedback("", "", new Date());
     },
-    []
+    [],
   );
 
   const createData = useCallback(
@@ -136,7 +136,7 @@ const useDataHandler = () => {
       await axiosapi()
         .post(
           `classes/${className}`,
-          query || (updateObject as AxiosRequestConfig<any>)
+          query || (updateObject as AxiosRequestConfig<any>),
         )
         .then((response: AxiosResponse<any, any>) => {
           if (feedback) {
@@ -156,7 +156,7 @@ const useDataHandler = () => {
       setLoading(false);
       return data;
     },
-    []
+    [],
   );
 
   const getData = useCallback(
@@ -186,7 +186,7 @@ const useDataHandler = () => {
       setLoading(false);
       return data;
     },
-    []
+    [],
   );
 
   const returnFunctions = useMemo(() => {

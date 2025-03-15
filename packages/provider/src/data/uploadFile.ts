@@ -22,7 +22,7 @@ const uploadFile = async ({
             "Origin, X-Requested-With, Content-Type, Accept, Authorization",
           "Access-Control-Allow-Credentials": true,
         },
-      }
+      },
     )
     .then((response) => {
       return response.data;

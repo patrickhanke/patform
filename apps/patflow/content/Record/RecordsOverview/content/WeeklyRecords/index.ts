@@ -1,1 +1,1 @@
-export { default } from './WeeklyRecords';
+export { default } from "./WeeklyRecords";

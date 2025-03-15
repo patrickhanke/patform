@@ -4,5 +4,5 @@ export type TableColumnEditFieldProps = {
 };
 
 export type TableColumnEditFieldComponent = (
-  params: TableColumnEditFieldProps
+  params: TableColumnEditFieldProps,
 ) => React.JSX.Element;

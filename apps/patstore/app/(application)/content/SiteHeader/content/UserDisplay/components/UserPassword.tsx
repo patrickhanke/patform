@@ -10,7 +10,7 @@ const passwordschema = Yup.object().shape({
     .min(8, "Passwort muss mindestens 8 Zeichen lang sein")
     .matches(
       /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&_*])/,
-      "Passwort muss einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten"
+      "Passwort muss einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten",
     )
     .required("Pflichtfeld"),
 });

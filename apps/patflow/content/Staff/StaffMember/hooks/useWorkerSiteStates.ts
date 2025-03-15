@@ -1,26 +1,26 @@
-import { useMemo } from 'react';
+import { useMemo } from "react";
 
 const useWorkerSiteStates = () => {
-    const siteStates = useMemo(() => {
-        const siteStateArray = [
-            {
-                value: 'overview',
-                label: 'Überblick',
-            },
-            {
-                value: 'times',
-                label: 'Zeiterfassung',
-            },
-            {
-                value: 'settings',
-                label: 'Einstellungen',
-            },
-        ];
+  const siteStates = useMemo(() => {
+    const siteStateArray = [
+      {
+        value: "overview",
+        label: "Überblick",
+      },
+      {
+        value: "times",
+        label: "Zeiterfassung",
+      },
+      {
+        value: "settings",
+        label: "Einstellungen",
+      },
+    ];
 
-        return siteStateArray;
-    }, []);
+    return siteStateArray;
+  }, []);
 
-    return siteStates;
+  return siteStates;
 };
 
 export default useWorkerSiteStates;

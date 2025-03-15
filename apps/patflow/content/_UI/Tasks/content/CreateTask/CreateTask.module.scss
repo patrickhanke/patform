@@ -1,77 +1,77 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .create_task_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch
-    );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch
+  );
+  width: 100%;
 }
 
 .main_inputs_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: space-between,
-        $align: flex-start
-    );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: flex-start
+  );
+  width: 100%;
 }
 
 .inputs_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch,
-        $gap: 0
-    );
-    flex: 1 1 50%;
-    min-width: 300px;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch,
+    $gap: 0
+  );
+  flex: 1 1 50%;
+  min-width: 300px;
 }
 
 .create_task_button {
-    @include constants.flexbox(
-        $direction: row,
-        $align: center,
-        $justify: space-between,
-        $gap: constants.$xs
-    );
-    white-space: nowrap;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$xs
+  );
+  white-space: nowrap;
 }
 
 .ticket_container {
-    @include constants.flexbox(
-        $direction: column,
-        $align: flex-start,
-        $justify: space-between,
-        $gap: constants.$xs
-    );
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: space-between,
+    $gap: constants.$xs
+  );
 }
 
 .property_container {
-    @include constants.flexbox(
-        $direction: column,
-        $align: flex-start,
-        $justify: space-between,
-        $gap: constants.$xs
-    );
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: space-between,
+    $gap: constants.$xs
+  );
 }
 
 .worker_container {
-    @include constants.flexbox(
-        $direction: column,
-        $align: stretch,
-        $justify: space-between,
-        $gap: constants.$xxs
-    );
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: space-between,
+    $gap: constants.$xxs
+  );
 }
 
 .worker_display_container {
-    @include constants.flexbox(
-        $direction: row,
-        $align: center,
-        $justify: space-between,
-        $gap: constants.$xs
-    );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$xs
+  );
+  width: 100%;
 }

@@ -49,7 +49,7 @@ function SuggestionDropdown<TItem>({
         },
       });
     },
-    [selectedIndex]
+    [selectedIndex],
   );
 
   React.useImperativeHandle(forwardedRef, () => ({

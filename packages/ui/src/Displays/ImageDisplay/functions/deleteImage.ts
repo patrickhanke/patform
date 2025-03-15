@@ -14,9 +14,9 @@ async function deleteImage(params) {
       headers: Object.fromEntries(
         entries({
           Authorization: `Bearer ${params.apiKey}`,
-        })
+        }),
       ),
-    }
+    },
   );
 
   if (Math.floor(response.status / 100) !== 2) {

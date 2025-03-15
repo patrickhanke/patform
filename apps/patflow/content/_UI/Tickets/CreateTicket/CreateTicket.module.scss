@@ -1,31 +1,31 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .main_inputs_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch
-    );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch
+  );
+  width: 100%;
 }
 
 .inputs_container {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: stretch,
-        $gap: 0
-    );
-    flex: 1 1 50%;
-    min-width: 300px;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch,
+    $gap: 0
+  );
+  flex: 1 1 50%;
+  min-width: 300px;
 }
 
 .create_ticket_button {
-    @include constants.flexbox(
-        $direction: row,
-        $align: center,
-        $justify: space-between,
-        $gap: constants.$xs
-    );
-    white-space: nowrap;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$xs
+  );
+  white-space: nowrap;
 }

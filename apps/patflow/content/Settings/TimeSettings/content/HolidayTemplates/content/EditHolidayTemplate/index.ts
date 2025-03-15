@@ -1,1 +1,1 @@
-export { default } from './EditHolidayTemplate';
+export { default } from "./EditHolidayTemplate";

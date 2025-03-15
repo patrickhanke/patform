@@ -1,1 +1,1 @@
-export { default } from './CommentInterface';
+export { default } from "./CommentInterface";

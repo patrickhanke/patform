@@ -29,7 +29,7 @@ const TableColumnDatesField = ({
     (id: string | null) => {
       return dates.find((field) => field.id === id);
     },
-    [dates]
+    [dates],
   );
 
   return (

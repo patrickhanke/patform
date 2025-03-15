@@ -1,1 +1,1 @@
-export { default } from './EditHoliday.tsx';
+export { default } from "./EditHoliday.tsx";

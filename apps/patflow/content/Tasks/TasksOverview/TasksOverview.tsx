@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { TaskPageState, Tasks } from '@content';
-import React, { Suspense } from 'react';
+import { TaskPageState, Tasks } from "@content";
+import React, { Suspense } from "react";
 
 const TasksOverview = ({ pageState }: { pageState: TaskPageState }) => {
-    return (
-        <Suspense>
-            <Tasks pageState={pageState} />
-        </Suspense>
-    );
+  return (
+    <Suspense>
+      <Tasks pageState={pageState} />
+    </Suspense>
+  );
 };
 
 export default TasksOverview;

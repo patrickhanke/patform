@@ -45,7 +45,7 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
           plop.getDestBasePath(),
           "__tests__",
           "__fixtures__",
-          answers.name
+          answers.name,
         );
         fs.mkdirSync(directory);
 

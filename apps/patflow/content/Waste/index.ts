@@ -1,1 +1,1 @@
-export { default as WasteOverview } from './WasteOverview';
+export { default as WasteOverview } from "./WasteOverview";

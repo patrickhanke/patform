@@ -1,1 +1,1 @@
-export { default } from './ServiceSettings';
+export { default } from "./ServiceSettings";

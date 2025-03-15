@@ -3,7 +3,7 @@ import { FormDataClass } from "@repo/types";
 import { isArray } from "lodash-es";
 
 const geneateFormColumns: (
-  T: FormDataClass["data"]
+  T: FormDataClass["data"],
 ) => ColumnData<FormDataClass["data"]>[] = (data) => {
   const columnData: ColumnData<FormDataClass["data"]>[] = [];
 

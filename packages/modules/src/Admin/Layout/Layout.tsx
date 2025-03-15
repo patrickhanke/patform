@@ -29,7 +29,7 @@ const getData = async () => {
   const client: ApolloClient<any> = serverClient(
     process.env.SASHIDO_GQL_URL as string,
     process.env.SASHIDO_APP_ID as string,
-    process.env.SASHIDO_MASTER_KEY as string
+    process.env.SASHIDO_MASTER_KEY as string,
   );
 
   const { data } = await client.query<GetProjectsResponse, OperationVariables>({
@@ -62,7 +62,7 @@ export default async function RootLayout({
                   label: project.name,
                   icon: undefined,
                   value: `/admin/project/${project.objectId}`,
-                })
+                }),
               )}
             />
 

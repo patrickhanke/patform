@@ -16,10 +16,10 @@ const AppModuleEditSettings = ({
   const [editSettings, setEditSettings] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useImmer<ModuleSettings>(
-    initialSettings || {}
+    initialSettings || {},
   );
   const [activeSetting, setActiveSetting] = React.useState(
-    null as unknown as keyof ModuleSettings | null
+    null as unknown as keyof ModuleSettings | null,
   );
 
   const slideInConfirmHandler = useCallback(async () => {
@@ -48,7 +48,7 @@ const AppModuleEditSettings = ({
         settings={settings}
       />
     ),
-    [activeSetting, settings, setSettings]
+    [activeSetting, settings, setSettings],
   );
 
   return (

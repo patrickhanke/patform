@@ -1,111 +1,111 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .task_container {
-    border-bottom: 1px solid constants.$grey;
-    background-color: constants.$white;
+  border-bottom: 1px solid constants.$grey;
+  background-color: constants.$white;
 }
 
 .task_main_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: 0
-    );
-    width: 100%;
-    height: 100%;
-    position: relative;
-    overflow: visible;
-    padding: map-get($map: constants.$padding, $key: 'sm');
-    padding-top: 0;
-    padding-bottom: 0;
-    // background-color: constants.$white;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: 0
+  );
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: visible;
+  padding: map-get($map: constants.$padding, $key: "sm");
+  padding-top: 0;
+  padding-bottom: 0;
+  // background-color: constants.$white;
 }
 
 .task_content_element {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: stretch,
-        $change_to_column: true
-    );
-    flex: 1 1 100%;
-    // padding: map-get($map: constants.$padding, $key: 'sm' )
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: stretch,
+    $change_to_column: true
+  );
+  flex: 1 1 100%;
+  // padding: map-get($map: constants.$padding, $key: 'sm' )
 }
 
 .task_content_element_small {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: flex-start,
-        $align: stretch,
-        $gap: constants.$xs
-    );
-    flex: 1 1 50%;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$xs
+  );
+  flex: 1 1 50%;
 }
 
 .task_subheadline {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: flex-start,
-        $align: center,
-        $gap: constants.$xs
-    );
-    width: 60px;
-    height: auto;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$xs
+  );
+  width: 60px;
+  height: auto;
 }
 
 .task_footer {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: space-between,
-        $align: center
-    );
-    border-top: 1px solid constants.$grey;
-    padding: map-get($map: constants.$padding, $key: 'sm');
-    background-color: constants.$lightest;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center
+  );
+  border-top: 1px solid constants.$grey;
+  padding: map-get($map: constants.$padding, $key: "sm");
+  background-color: constants.$lightest;
 }
 
 .task_pre_content {
-    @include constants.flexbox(
-        $direction: column,
-        $justify: space-between,
-        $align: center
-    );
-    border-right: 1px solid constants.$grey;
-    overflow: hidden;
-    border-top-left-radius: constants.$xxs;
-    border-bottom-left-radius: constants.$xxs;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: center
+  );
+  border-right: 1px solid constants.$grey;
+  overflow: hidden;
+  border-top-left-radius: constants.$xxs;
+  border-bottom-left-radius: constants.$xxs;
 }
 
 .task_title_container {
-    @include constants.flexbox(
-        $direction: row,
-        $justify: space-between,
-        $align: center
-    );
-    width: 210px;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center
+  );
+  width: 210px;
 }
 
 .task_title {
-    flex: 1 1 240px;
-    p {
-        font-weight: 500;
-        font-size: map-get($map: constants.$font_size, $key: 'sm');
-    }
+  flex: 1 1 240px;
+  p {
+    font-weight: 500;
+    font-size: map-get($map: constants.$font_size, $key: "sm");
+  }
 }
 
 .task_date {
-    flex: 0 0 180px;
+  flex: 0 0 180px;
 }
 
 .task_property {
-    flex: 0 0 180px;
+  flex: 0 0 180px;
 }
 
 .task_state {
-    flex: 0 0 120px;
+  flex: 0 0 120px;
 }
 
 .task_team {
-    flex: 0.5 0 90px;
+  flex: 0.5 0 90px;
 }

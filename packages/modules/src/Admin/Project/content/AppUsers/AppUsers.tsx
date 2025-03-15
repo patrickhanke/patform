@@ -41,7 +41,7 @@ const AppUsers: FC<AppUsersProps> = ({
           ],
         }),
       },
-    }
+    },
   );
   const columns = useUserColumns();
 

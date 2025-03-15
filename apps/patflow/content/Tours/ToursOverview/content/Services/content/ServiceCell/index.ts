@@ -1,1 +1,1 @@
-export { default } from './ServiceCell';
+export { default } from "./ServiceCell";

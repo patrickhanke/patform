@@ -40,12 +40,12 @@ const PersonsSelect = ({
         onChange(
           values && isArray(values)
             ? values.map((value: PersonOption) => value.value)
-            : []
+            : [],
         )
       }
       options={options}
       value={persons.map((personId: string) =>
-        options.find((option) => option.value === personId)
+        options.find((option) => option.value === personId),
       )}
       isMulti={isMulti}
       // components={customComponent}

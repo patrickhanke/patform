@@ -1,3 +1,3 @@
-export * from './Property';
-export * from './Tally';
-export * from './PropertyDocuments';
+export * from "./Property";
+export * from "./Tally";
+export * from "./PropertyDocuments";

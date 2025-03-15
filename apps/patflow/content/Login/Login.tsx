@@ -11,7 +11,7 @@ import { Divider, SwitchButtons } from "@repo/ui";
 
 const Login = () => {
   const [formState, setFormState] = useState(
-    buttonStates[0] as (typeof buttonStates)[0]
+    buttonStates[0] as (typeof buttonStates)[0],
   );
 
   return (

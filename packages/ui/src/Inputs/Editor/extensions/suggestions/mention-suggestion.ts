@@ -54,7 +54,7 @@ const MentionSuggestion = Node.create<MentionOptions>({
         },
         items: ({ query }) => {
           return MENTION_SUGGESTIONS.filter(({ name }) =>
-            name.toLowerCase().includes(query.toLowerCase())
+            name.toLowerCase().includes(query.toLowerCase()),
           );
         },
         render: () => {

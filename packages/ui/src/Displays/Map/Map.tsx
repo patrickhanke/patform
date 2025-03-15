@@ -18,7 +18,7 @@ const API_KEY = "AIzaSyAJgX9vOxmGb-w5JtU4z9xrlXJ0vKpQHP8";
 
 const Map = ({ initialPlace, onChange, height }: MapProps) => {
   const [selectedPlace, setSelectedPlace] = useState<MapPlace | null>(
-    initialPlace || null
+    initialPlace || null,
   );
   const [markerRef, marker] = useAdvancedMarkerRef();
 
