@@ -1,1 +1,1 @@
-export {default} from './FormRecipients';
+export { default } from "./FormRecipients";

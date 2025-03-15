@@ -1,1 +1,1 @@
-export {default} from './WebsiteSettings';
+export { default } from "./WebsiteSettings";

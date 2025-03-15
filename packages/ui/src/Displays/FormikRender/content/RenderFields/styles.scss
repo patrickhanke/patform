@@ -1,150 +1,156 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .toggle_content {
-    display: flex; 
-    flex-direction: column;
-    flex: 0 1 50%; 
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 50%;
 }
 
-.toggle_content[data-labelBefore ='true'] {
-    flex-direction: row;
-    position: relative; 
-	width: 50px;
-	height: 28px;
-	border-radius: 15px;
-	overflow: hidden;
-	cursor: pointer
+.toggle_content[data-labelBefore="true"] {
+  flex-direction: row;
+  position: relative;
+  width: 50px;
+  height: 28px;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .toggle_container {
-    transform: scale(.8);
-    border: 2px solid constants.$primary 
-
+  transform: scale(0.8);
+  border: 2px solid constants.$primary;
 }
 
-.toggle_container[data-disabled='true'] {
-    border: 2px solid constants.$grey 
+.toggle_container[data-disabled="true"] {
+  border: 2px solid constants.$grey;
 }
 
 .toggle_container_background {
-    position: relative;
-	width: 100%;
-	height: 100%;
-    opacity: 0; 
-	transition: opacity 0.4s ease;
-    background-color: constants.$primary;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background-color: constants.$primary;
 }
 
-.toggle_container_background[data-disabled='true'] {
-    background-color: constants.$grey; 
+.toggle_container_background[data-disabled="true"] {
+  background-color: constants.$grey;
 }
 
-.toggle_container_background[data-toggleState='true'] {
-    opacity: 1; 
+.toggle_container_background[data-toggleState="true"] {
+  opacity: 1;
 }
 
 .toggle_container_circle {
-    border-radius: 50%;
-	width: 17px;
-	height: 17px;
-	top: 3px;
-	left: 4px;
-	position: absolute;
-    background-color: constants.$primary;
-	transition: transform 0.4s ease, background-color 0.4s ease;
-    transform: translateX(0);
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+  top: 3px;
+  left: 4px;
+  position: absolute;
+  background-color: constants.$primary;
+  transition:
+    transform 0.4s ease,
+    background-color 0.4s ease;
+  transform: translateX(0);
 }
 
-.toggle_container_circle[data-disabled='true'] {
-    background-color: constants.$grey;
+.toggle_container_circle[data-disabled="true"] {
+  background-color: constants.$grey;
 }
 
-.toggle_container_circle[data-toggleState='true'] {
-    background-color: constants.$white;
-    transform: translateX(22)
+.toggle_container_circle[data-toggleState="true"] {
+  background-color: constants.$white;
+  transform: translateX(22);
 }
 
 .error_message {
-	font-weight: 500;
-	font-size: 14px;
-	font-family: Geist, sans-serif;
-    color: #cc0033;
-    display: inline-block;
-    font-size: map-get($map: constants.$font_size, $key: 'xs' );
-    line-height: 12px;
-};
+  font-weight: 500;
+  font-size: 14px;
+  font-family: Geist, sans-serif;
+  color: #cc0033;
+  display: inline-block;
+  font-size: map-get($map: constants.$font_size, $key: "xs");
+  line-height: 12px;
+}
 
 .success_message {
-	font-weight: 500;
-	font-size: 14px;
-	font-family: Geist, sans-serif;
-    color: green;
-    display: inline-block;
-    font-size: map-get($map: constants.$font_size, $key: 'xs' );
-    line-height: 12px;
-};
+  font-weight: 500;
+  font-size: 14px;
+  font-family: Geist, sans-serif;
+  color: green;
+  display: inline-block;
+  font-size: map-get($map: constants.$font_size, $key: "xs");
+  line-height: 12px;
+}
 
 .warning_message {
-	color: orange;
-	font-weight: 500;
-	font-size: 14px;
-	font-family: Geist, sans-serif;
-    display: inline-block;
-    font-size: map-get($map: constants.$font_size, $key: 'xs' );
-    line-height: 12px;
-};
+  color: orange;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: Geist, sans-serif;
+  display: inline-block;
+  font-size: map-get($map: constants.$font_size, $key: "xs");
+  line-height: 12px;
+}
 
 .color_picker_picker {
-    position: relative;
-    input {
-        min-width:200px;
-        width: 200px !important;
-    }
+  position: relative;
+  input {
+    min-width: 200px;
+    width: 200px !important;
+  }
 }
-  
+
 .color_picker_swatch {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    border: 3px solid #fff;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 3px solid #fff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .color_picker_popover {
-    position: absolute;
-    top: calc(100% + 2px);
-    left: 0;
-    right: auto;
-    z-index: 3;
-    border-radius: 9px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    background-color: white;
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: auto;
+  z-index: 3;
+  border-radius: 9px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: white;
 }
 
-.color_picker_popover[data-align_right = "true"] {
-    left: auto;
-    right: 0;
+.color_picker_popover[data-align_right="true"] {
+  left: auto;
+  right: 0;
 }
 
 .form_horizontal_container {
-	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
-
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$md
+  );
 }
 
 .form_divider {
-	width: 100%;
-	height: 1px;
-	background-color: constants.$grey;
-	margin: constants.$xs 0;
+  width: 100%;
+  height: 1px;
+  background-color: constants.$grey;
+  margin: constants.$xs 0;
 }
 
 .text_editor_preview_text {
-    width: 100%;
-    overflow: hidden;
-    display: inline-block;
-    height: 36px;
-    padding: map-get($map: constants.$padding, $key: 'xs' );
-    background-color: constants.$lightest;
+  width: 100%;
+  overflow: hidden;
+  display: inline-block;
+  height: 36px;
+  padding: map-get($map: constants.$padding, $key: "xs");
+  background-color: constants.$lightest;
 }
-

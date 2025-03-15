@@ -1,1 +1,1 @@
-export {default as DateDisplay} from './DateDisplay';
+export { default as DateDisplay } from "./DateDisplay";

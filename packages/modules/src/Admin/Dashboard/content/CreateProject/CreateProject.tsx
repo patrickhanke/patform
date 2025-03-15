@@ -1,52 +1,53 @@
-import { FileUploader, SlideIn, TextInput } from '@repo/ui'
-import React, { FC, useCallback, useState } from 'react'
-import { CreateProjectProps } from './types'
-import { useDataHandler } from '@repo/provider'
+import { FileUploader, SlideIn, TextInput } from "@repo/ui";
+import React, { FC, useCallback, useState } from "react";
+import { CreateProjectProps } from "./types";
+import { useDataHandler } from "@repo/provider";
 
 const initialProject = {
-    name: '',
-    description: ''
-}
+  name: "",
+  description: "",
+};
 
-const CreateProject: FC<CreateProjectProps> = ({createProject, setCreateProject}) => {
-    const createData = useDataHandler('createProject')
-    
-    const [project, setProject] = useState<typeof initialProject>({
-        name: '',
-        description: ''
-    })
+const CreateProject: FC<CreateProjectProps> = ({
+  createProject,
+  setCreateProject,
+}) => {
+  const createData = useDataHandler("createProject");
 
-    const createProjectHandler = useCallback(() => {
+  const [project, setProject] = useState<typeof initialProject>({
+    name: "",
+    description: "",
+  });
 
-    }, [project])
-  
-    return (
-        <>
-            <SlideIn 
-                isOpen={createProject}
-                cancel={() => setCreateProject(false)}
-                header='Neues Projekt'
-                confirm={() => setCreateProject(false)}
-                preventClickOutside
-            >
-                <div>
-                    <h2>Neues Projekt</h2>
+  const createProjectHandler = useCallback(() => {}, [project]);
 
-                    <div>
-                        <label htmlFor='name'>Name</label>
-                    
-                        <TextInput 
-                                onChange={(value) => setProject({...project, name: value})}
-                                placeholder='Name'
-                                id='name'
-                        />
+  return (
+    <>
+      <SlideIn
+        isOpen={createProject}
+        cancel={() => setCreateProject(false)}
+        header="Neues Projekt"
+        confirm={() => setCreateProject(false)}
+        preventClickOutside
+      >
+        <div>
+          <h2>Neues Projekt</h2>
 
-                        <input type='file' />
-                    </div>
-                </div>
-            </SlideIn>
-        </>
-  )
-}
+          <div>
+            <label htmlFor="name">Name</label>
 
-export default CreateProject
+            <TextInput
+              onChange={(value) => setProject({ ...project, name: value })}
+              placeholder="Name"
+              id="name"
+            />
+
+            <input type="file" />
+          </div>
+        </div>
+      </SlideIn>
+    </>
+  );
+};
+
+export default CreateProject;

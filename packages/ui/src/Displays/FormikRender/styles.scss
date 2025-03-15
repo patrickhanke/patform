@@ -1,30 +1,30 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .form_container {
-    overflow: visible;
-	height: auto;
-	width: auto;
-	padding-right: constants.$sm;
-	.form {
-		display: flex;
-		flex-direction: column;
-		flex-wrap: wrap;
-	}
-	.ck {
-		width: inherit;
-		font-family: Open Sans;
-		font-size:map-get($map: constants.$font-size, $key: 'md' );;
-		font-weight: 500;
-    	padding: 3px 6px;
-    	border: 1px solid #dddddd;
-		height: auto;
-		outline: 0px;
-		transition: border 0.4s ease;
-	}
+  overflow: visible;
+  height: auto;
+  width: auto;
+  padding-right: constants.$sm;
+  .form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .ck {
+    width: inherit;
+    font-family: Open Sans;
+    font-size: map-get($map: constants.$font-size, $key: "md");
+    font-weight: 500;
+    padding: 3px 6px;
+    border: 1px solid #dddddd;
+    height: auto;
+    outline: 0px;
+    transition: border 0.4s ease;
+  }
 }
 
-.form_container[divideform='true'] {
-    .form { 
-        flex-direction: row;
-    }
+.form_container[divideform="true"] {
+  .form {
+    flex-direction: row;
+  }
 }

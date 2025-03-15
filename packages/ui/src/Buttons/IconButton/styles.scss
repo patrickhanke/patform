@@ -1,74 +1,81 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .icon_button_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: 0);
-    cursor: pointer;
-    font-size: map-get($map: constants.$font_size, $key: 'md' );
-    position: relative;
-    width: 21px;
-    height: 21px;
-    border-radius: map-get($map: constants.$border_radius, $key: 'xs');
-    padding: 0;
-    flex:  0 0 auto;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: center,
+    $gap: 0
+  );
+  cursor: pointer;
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  position: relative;
+  width: 21px;
+  height: 21px;
+  border-radius: map-get($map: constants.$border_radius, $key: "xs");
+  padding: 0;
+  flex: 0 0 auto;
 }
 
 .icon_button_container[data-isdark="false"] {
-    border: none;
-    color: constants.$grey_shaded;
-    background-color: transparent;
-    &:hover {
-        color: constants.$dark;
-        border: 1px solid constants.$dark;
-        background-color: constants.$light;
-    }
+  border: none;
+  color: constants.$grey_shaded;
+  background-color: transparent;
+  &:hover {
+    color: constants.$dark;
+    border: 1px solid constants.$dark;
+    background-color: constants.$light;
+  }
 }
 
 .icon_button_container[data-isdark="true"] {
-    border: 1px solid constants.$dark;
-    color: constants.$light;
-    background-color: constants.$dark;
-   
+  border: 1px solid constants.$dark;
+  color: constants.$light;
+  background-color: constants.$dark;
 }
 
 .icon_button_container[data-haslabel="true"] {
-    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: constants.$xxs);
-    cursor: pointer;
-    font-size: map-get($map: constants.$font_size, $key: 'md' );
-    position: relative;
-    padding: 0;
-    border:none;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: center,
+    $gap: constants.$xxs
+  );
+  cursor: pointer;
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  position: relative;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  &:hover {
+    color: inherit;
+    border: none;
     background-color: transparent;
-    &:hover {
-        color: inherit;
-        border: none;
-        background-color: transparent;
-    }
-    label {
-        margin: 0;
-        color: inherit !important;
-        font-weight: 400;
-        cursor: pointer;
-    }
+  }
+  label {
+    margin: 0;
+    color: inherit !important;
+    font-weight: 400;
+    cursor: pointer;
+  }
 }
 
-
 .icon_button_container:disabled {
-    border: 1px solid constants.$grey_tinted;
-    color: constants.$grey_tinted;
-    background-color: transparent;
-    cursor: default;
+  border: 1px solid constants.$grey_tinted;
+  color: constants.$grey_tinted;
+  background-color: transparent;
+  cursor: default;
 }
 
 .icon_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: center);
-    position: 'relative';
-    background-color: transparent;
-    font-weight: 500;
-   
-    line-height: 1;
-    position: relative;
-    font-size: 12px;
-   
+  @include constants.flexbox($direction: row, $align: center, $justify: center);
+  position: "relative";
+  background-color: transparent;
+  font-weight: 500;
+
+  line-height: 1;
+  position: relative;
+  font-size: 12px;
 }
 
 // .icon_button_container:disabled {

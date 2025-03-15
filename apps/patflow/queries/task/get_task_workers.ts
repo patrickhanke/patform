@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const get_task_workers  = gql`
+const get_task_workers = gql`
     query getTaskWorkers($id: ID!) {
         objects {
             getTask(objectId: $id) {
@@ -10,7 +10,7 @@ const get_task_workers  = gql`
                 time
                 title
             }
-        }   
+        }
     }
 `;
 

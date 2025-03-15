@@ -1,1 +1,1 @@
-export {default as LocationOverview} from './LocationOverview';
+export { default as LocationOverview } from "./LocationOverview";

@@ -14,89 +14,103 @@ import { Params, Property as PropertyType } from '@types';
 import { Page, PageHeaderButton } from '@repo/ui';
 import { generateGraphQLQuery } from '@repo/provider';
 
-const Property = ({params} : {params: Params}) => {
-	const siteStates = useSiteStates();
-	const [siteState, setSiteState] = useState<typeof siteStates[number]>(siteStates[0] as typeof siteStates[number]);
-	const [addService, setAddService] = useState(false);
-	
-	const {data, refetch} = useQuery (generateGraphQLQuery({
-			objectName: 'Property',
-			type: 'get',
-			fields: ['objectId', 'name', 'createdAt', 'created_by {objectId username}, archived']
-	}), {
-			variables: {id: params.object_id}, 
-			fetchPolicy: 'no-cache'
-		}
-	);
+const Property = ({ params }: { params: Params }) => {
+    const siteStates = useSiteStates();
+    const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
+        siteStates[0] as (typeof siteStates)[number]
+    );
+    const [addService, setAddService] = useState(false);
 
-	const siteContent = useMemo(() => {
-		const content = {
-			description: 'Objektübersicht'
-		}
-		if (siteState.value === 'tasks') {
-			content.description = 'Aufgabenübersicht';
-		}
-		if (siteState.value === 'settings') {
-			content.description = 'Einstellungen';
-		}
-		if (siteState.value === 'services') {
-			content.description = 'Dienstleistungen';
-		}
-		if (siteState.value === 'tallies') {
-			content.description = 'Zähler';
-		}
-		return content;
-	}, [siteState]);
+    const { data, refetch } = useQuery(
+        generateGraphQLQuery({
+            objectName: 'Property',
+            type: 'get',
+            fields: [
+                'objectId',
+                'name',
+                'createdAt',
+                'created_by {objectId username}, archived',
+            ],
+        }),
+        {
+            variables: { id: params.object_id },
+            fetchPolicy: 'no-cache',
+        }
+    );
 
-	const pageHeaderButtons: PageHeaderButton[] =  useMemo(() => {
-		if (siteState.value === 'services') {
-			return ([
-				{
-					text: 'Leistung hinzufügen',
-					onClick: () => setAddService(true),
-					is_add_button: true
-				}
-			] as PageHeaderButton[])
-		}
-		return [];
-	
-	}, [siteState]);
+    const siteContent = useMemo(() => {
+        const content = {
+            description: 'Objektübersicht',
+        };
+        if (siteState.value === 'tasks') {
+            content.description = 'Aufgabenübersicht';
+        }
+        if (siteState.value === 'settings') {
+            content.description = 'Einstellungen';
+        }
+        if (siteState.value === 'services') {
+            content.description = 'Dienstleistungen';
+        }
+        if (siteState.value === 'tallies') {
+            content.description = 'Zähler';
+        }
+        return content;
+    }, [siteState]);
 
-	if (!data) return null;
+    const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
+        if (siteState.value === 'services') {
+            return [
+                {
+                    text: 'Leistung hinzufügen',
+                    onClick: () => setAddService(true),
+                    is_add_button: true,
+                },
+            ] as PageHeaderButton[];
+        }
+        return [];
+    }, [siteState]);
 
-	const property: PropertyType = data.objects.getProperty;
+    if (!data) return null;
 
-	return (
-		<Page 
-			title={`${property.name} ${property.archived ? '(Archiviert)' : ''}`}
-			description={siteContent.description}
-			refetch={refetch}
-			pageStates={siteStates}
-			pageState={siteState}
-			setPageState={setSiteState}
-			pageHeaderButtons={pageHeaderButtons}
-		>
-			{siteState.value === 'tasks' && 
-				<PropertyTasks objectId={params.object_id}/>
-			}
-			{siteState.value === 'settings' && 
-				<PropertySettings propertyId={params.object_id} refetch={refetch}   />
-			}
-			{siteState.value === 'services' && 
-				<PropertyServices objectId={params.object_id} addService={addService} setAddService={setAddService}  />
-			}
-			{siteState.value === 'tallies' && 
-				<PropertyTallies objectId={params.object_id} />
-			}
-			{siteState.value === 'documents' && 
-				<PropertyDocuments id={params.object_id} />
-			}
-			{siteState.value === 'tickets' && 
-				<PropertyTickets id={params.object_id} />
-			}
-		</Page>
-	);
+    const property: PropertyType = data.objects.getProperty;
 
+    return (
+        <Page
+            title={`${property.name} ${property.archived ? '(Archiviert)' : ''}`}
+            description={siteContent.description}
+            refetch={refetch}
+            pageStates={siteStates}
+            pageState={siteState}
+            setPageState={setSiteState}
+            pageHeaderButtons={pageHeaderButtons}
+        >
+            {siteState.value === 'tasks' && (
+                <PropertyTasks objectId={params.object_id} />
+            )}
+            {siteState.value === 'settings' && (
+                <PropertySettings
+                    propertyId={params.object_id}
+                    refetch={refetch}
+                />
+            )}
+            {siteState.value === 'services' && (
+                <PropertyServices
+                    objectId={params.object_id}
+                    addService={addService}
+                    setAddService={setAddService}
+                />
+            )}
+            {siteState.value === 'tallies' && (
+                <PropertyTallies objectId={params.object_id} />
+            )}
+            {siteState.value === 'documents' && (
+                <PropertyDocuments id={params.object_id} />
+            )}
+            {siteState.value === 'tickets' && (
+                <PropertyTickets id={params.object_id} />
+            )}
+        </Page>
+    );
 };
 
 export default Property;

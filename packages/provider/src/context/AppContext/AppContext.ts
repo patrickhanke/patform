@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { ContextValues } from './types';
+import React from "react";
+import { ContextValues } from "./types";
 
-const AppContext = React.createContext({} as ContextValues );
+const AppContext = React.createContext({} as ContextValues);
 
 export default AppContext;

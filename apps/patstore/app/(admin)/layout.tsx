@@ -1,1 +1,1 @@
-export {AdminLayout as default } from '@repo/modules';
+export { AdminLayout as default } from "@repo/modules";

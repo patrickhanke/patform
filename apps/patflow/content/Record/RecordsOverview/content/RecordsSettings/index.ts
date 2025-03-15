@@ -1,1 +1,1 @@
-export {default} from './RecordsSettings';
+export { default } from './RecordsSettings';

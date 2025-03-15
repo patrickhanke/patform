@@ -1,1 +1,1 @@
-export {WasteOverview as default} from '@content';
+export { WasteOverview as default } from '@content';

@@ -1,1 +1,1 @@
-export {default} from './DisplayWorker';
+export { default } from './DisplayWorker';

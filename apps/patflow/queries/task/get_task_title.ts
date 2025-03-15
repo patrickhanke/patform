@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const get_task_title  = gql`
+const get_task_title = gql`
     query getTaskTitle($id: ID!) {
         objects {
             getTask(objectId: $id) {

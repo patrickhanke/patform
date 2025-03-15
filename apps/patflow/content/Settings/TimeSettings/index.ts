@@ -1,1 +1,1 @@
-export {default} from './TimeSettings';
+export { default } from './TimeSettings';

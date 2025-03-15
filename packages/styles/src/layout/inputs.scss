@@ -1,43 +1,47 @@
-@use '../constants.scss';
+@use "../constants.scss";
 
 input {
-    font-family: Geist;
-    font-size: map-get($map: constants.$font_size, $key: 'md');
-    font-weight: 500;
-    border: 1px solid constants.$grey_shaded;
-    padding:  map-get($map: constants.$padding, $key: 'md');
-    outline: none;
-    transition: border .2s ease, box-shadow .2s ease;
-    letter-spacing: .6px;
-    // box-sizing: inline-box;
-    border-radius: map-get($map: constants.$border_radius, $key: 'xs' );
-    &:focus {
-        // border: 1px solid constants.$secondary;
-        box-shadow: 0px 0px 1px 1px constants.$blue_tinted;
-    }
-    &:active {
-        // border: 1px solid constants.$secondary;
-        box-shadow: 0px 0px 1px 1px constants.$blue_tinted;
-    }
+  font-family: Geist;
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-weight: 500;
+  border: 1px solid constants.$grey_shaded;
+  padding: map-get($map: constants.$padding, $key: "md");
+  outline: none;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+  letter-spacing: 0.6px;
+  // box-sizing: inline-box;
+  border-radius: map-get($map: constants.$border_radius, $key: "xs");
+  &:focus {
+    // border: 1px solid constants.$secondary;
+    box-shadow: 0px 0px 1px 1px constants.$blue_tinted;
+  }
+  &:active {
+    // border: 1px solid constants.$secondary;
+    box-shadow: 0px 0px 1px 1px constants.$blue_tinted;
+  }
 }
 textarea {
-    border-radius: map-get($map: constants.$border_radius, $key: 'xs' );
-    font-family: 'Open Sans', sans-serif;
-    font-size: map-get($map: constants.$font_size, $key: 'md');
-    box-sizing: border-box;
-    font-weight: 500;
-    border: 1px solid constants.$grey_shaded;
-    padding: map-get($map: constants.$padding, $key: 'sm');
-    outline: none;
-    transition: border .2s ease, box-shadow .2s ease;
-    letter-spacing: .6px;
-    box-sizing: border-box;
-    &:focus {
-        // border: 1px solid constants.$dark;
-        box-shadow: 0px 0px 1px 1px constants.$blue_tinted;
-    }
-    &:active {
-        // border: 1px solid constants.$dark;
-        box-shadow: 0px 0px 1px 1px constants.$blue_tinted;
-    }
+  border-radius: map-get($map: constants.$border_radius, $key: "xs");
+  font-family: "Open Sans", sans-serif;
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  box-sizing: border-box;
+  font-weight: 500;
+  border: 1px solid constants.$grey_shaded;
+  padding: map-get($map: constants.$padding, $key: "sm");
+  outline: none;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+  letter-spacing: 0.6px;
+  box-sizing: border-box;
+  &:focus {
+    // border: 1px solid constants.$dark;
+    box-shadow: 0px 0px 1px 1px constants.$blue_tinted;
+  }
+  &:active {
+    // border: 1px solid constants.$dark;
+    box-shadow: 0px 0px 1px 1px constants.$blue_tinted;
+  }
 }

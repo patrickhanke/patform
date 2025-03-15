@@ -1,3 +1,3 @@
-export {default as Map} from './Map';
+export { default as Map } from "./Map";
 
-export type {MapPlace} from './types';
+export type { MapPlace } from "./types";

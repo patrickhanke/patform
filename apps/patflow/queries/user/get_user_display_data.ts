@@ -3,11 +3,11 @@ import { gql } from '@apollo/client';
 const get_user_display_data = gql`
     query getUSerDisplayData($id: ID!) {
         objects {
-            get_User (objectId: $id) {
+            get_User(objectId: $id) {
                 objectId
                 username
                 email
-                portrait 
+                portrait
                 first_name
                 family_name
                 color

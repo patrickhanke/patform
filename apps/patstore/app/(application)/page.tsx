@@ -1,1 +1,1 @@
-export {Dashboard as default} from '@repo/modules'
+export { Dashboard as default } from "@repo/modules";

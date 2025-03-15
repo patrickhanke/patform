@@ -1,1 +1,1 @@
-export {default} from './WorkersInterface';
+export { default } from './WorkersInterface';

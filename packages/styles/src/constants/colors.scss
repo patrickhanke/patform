@@ -1,6 +1,6 @@
 $grey_shaded: #999999;
 $grey: #cdcdcd;
-$grey_tinted: #F0F0F0;
+$grey_tinted: #f0f0f0;
 // $primary: #117776;
 // $primary_shaded: #0f6b6a;
 
@@ -8,39 +8,39 @@ $dark_shaded: #111111;
 $dark: #333333;
 $dark_tinted: #444444;
 
-$light: #f4f4f6;    
+$light: #f4f4f6;
 $lightest: #fafafa;
 $white: #fff;
 
-$magenta: #F5C6EA;
-$magenta_shaded: #721C65;
-$magenta_tinted: #F8D7F3;
+$magenta: #f5c6ea;
+$magenta_shaded: #721c65;
+$magenta_tinted: #f8d7f3;
 
-$blue: #B3DAF9;
-$blue_shaded: #0D3A7F;
-$blue_tinted: #DDEFFD;
+$blue: #b3daf9;
+$blue_shaded: #0d3a7f;
+$blue_tinted: #ddeffd;
 
-$yellow: #FFEEBA;
+$yellow: #ffeeba;
 $yellow_shaded: #856404;
-$yellow_tinted: #FFF3CD;
+$yellow_tinted: #fff3cd;
 
 // $green: #70B588;
 // $green_shaded: #5dab78;
 // $green_tinted: #e2f0e7;
 
-$red: #C62A32 ;
+$red: #c62a32;
 $red_shaded: #812323;
 $red_tinted: #e27a70;
 
-$violet: #D1C4E9;
-$violet_shaded: #512DA8;
-$violet_tinted: #EDE7F6;
+$violet: #d1c4e9;
+$violet_shaded: #512da8;
+$violet_tinted: #ede7f6;
 
-$green: #C3E6CB;
+$green: #c3e6cb;
 $green_shaded: #155724;
-$green_tinted: #D4EDDA;
+$green_tinted: #d4edda;
 
-$primary:  $dark;
+$primary: $dark;
 $primary_shaded: $dark_shaded;
 $primary_tinted: $dark_tinted;
 
@@ -48,69 +48,69 @@ $secondary: $blue;
 $secondary_shaded: $blue_shaded;
 $secondary_light: $blue_tinted;
 
-$tertiary:  $yellow;
+$tertiary: $yellow;
 $tertiary_shaded: $yellow_shaded;
 $tertiary_light: $yellow_tinted;
 
-@mixin colorgroup($color: 'primary') {
-    @if $color == 'primary' {
-        background-color: $primary_tinted;
-        color: $primary
-    }
-    @if $color == 'secondary' {
-        background-color: $secondary_light;
-        color: $secondary;
-    }
-    @if $color == 'tertiary' {
-        background-color: $tertiary_light;
-        color: $tertiary;
-    }
-    @if $color == 'violet' {
-        background-color: $violet_tinted;
-        color: $violet_shaded;
-    }
-    @if $color == 'green' {
-        background-color: $green_tinted;
-        color: $green_shaded;
-    }
-    @if $color == 'yellow' {
-        background-color: $yellow_tinted;
-        color: $yellow_shaded;
-    }
-    @if $color == 'red' {
-        background-color: $red_tinted;
-        color: $red_shaded !important;
-    }
-    @if $color == 'dark' {
-        background-color: $light;
-        color: $dark;
-    }
-    @if $color == 'light' {
-        background-color: $light;
-        color: $dark;
-    }
-    @if $color == 'success' {
-        background-color: $green_tinted;
-        color: $green_shaded;
-    }
-    @if $color == 'warning' {
-        background-color: $yellow_tinted;
-        color: $yellow_shaded;
-    }
-    @if $color == 'danger' {
-        background-color: $red_tinted;
-        color: $red_shaded;
-    }
-    @if $color == 'info' {
-        background-color: $blue_tinted;
-        color: $blue_shaded;
-    }
-    @if $color == 'lightest' {
-        background-color: $lightest;
-        color: $grey;
-    }
-    @if $color == 'blue' {
-        background-color: $blue_tinted;
-        color: $blue_shaded;
-    }
+@mixin colorgroup($color: "primary") {
+  @if $color == "primary" {
+    background-color: $primary_tinted;
+    color: $primary;
+  }
+  @if $color == "secondary" {
+    background-color: $secondary_light;
+    color: $secondary;
+  }
+  @if $color == "tertiary" {
+    background-color: $tertiary_light;
+    color: $tertiary;
+  }
+  @if $color == "violet" {
+    background-color: $violet_tinted;
+    color: $violet_shaded;
+  }
+  @if $color == "green" {
+    background-color: $green_tinted;
+    color: $green_shaded;
+  }
+  @if $color == "yellow" {
+    background-color: $yellow_tinted;
+    color: $yellow_shaded;
+  }
+  @if $color == "red" {
+    background-color: $red_tinted;
+    color: $red_shaded !important;
+  }
+  @if $color == "dark" {
+    background-color: $light;
+    color: $dark;
+  }
+  @if $color == "light" {
+    background-color: $light;
+    color: $dark;
+  }
+  @if $color == "success" {
+    background-color: $green_tinted;
+    color: $green_shaded;
+  }
+  @if $color == "warning" {
+    background-color: $yellow_tinted;
+    color: $yellow_shaded;
+  }
+  @if $color == "danger" {
+    background-color: $red_tinted;
+    color: $red_shaded;
+  }
+  @if $color == "info" {
+    background-color: $blue_tinted;
+    color: $blue_shaded;
+  }
+  @if $color == "lightest" {
+    background-color: $lightest;
+    color: $grey;
+  }
+  @if $color == "blue" {
+    background-color: $blue_tinted;
+    color: $blue_shaded;
+  }
 }

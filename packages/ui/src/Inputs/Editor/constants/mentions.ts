@@ -1,9 +1,9 @@
-import shuffle from 'lodash-es/shuffle.js'
+import shuffle from "lodash-es/shuffle.js";
 
 type Mention = {
-    id: number
-    name: string
-}
+  id: number;
+  name: string;
+};
 
 /*const MENTION_SUGGESTIONS: Mention[] = shuffle([
     { id: 8218877932, name: 'Adrien Brody' },
@@ -209,10 +209,10 @@ type Mention = {
 ])
 */
 const MENTION_SUGGESTIONS: Mention[] = [
-    { id: 8506571847, name: 'Aer' },
-    { id: 8506571847, name: 'Ana' },
-    { id: 7964905155, name: 'Anaïs' },
-]
-export { MENTION_SUGGESTIONS }
+  { id: 8506571847, name: "Aer" },
+  { id: 8506571847, name: "Ana" },
+  { id: 7964905155, name: "Anaïs" },
+];
+export { MENTION_SUGGESTIONS };
 
-export type { Mention }
+export type { Mention };

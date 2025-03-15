@@ -1,35 +1,37 @@
-@use '@repo/styles/buttons';
+@use "@repo/styles/buttons";
 
 .upload_container {
-    @include constants.flexbox($direction: column, $align: flex-star, $gap: 0 );
-    width: 100%;
-    height: fit-content;
-    position: relative;
+  @include constants.flexbox($direction: column, $align: flex-star, $gap: 0);
+  width: 100%;
+  height: fit-content;
+  position: relative;
 }
 
 .upload_zone {
-    .upload-widget__root .upload-widget.upload-widget--full-screen .upload-widget__internal.upload-widget__internal--md.upload-widget__internal--draggable .upload-widget__internal__children .upload-widget__image-editor .upload-widget__image-editor__actions.upload-widget__controls.upload-widget__controls--space button.btn {
-       @extend .full_button;
-       margin-top: 10px;
+  .upload-widget__root
+    .upload-widget.upload-widget--full-screen
+    .upload-widget__internal.upload-widget__internal--md.upload-widget__internal--draggable
+    .upload-widget__internal__children
+    .upload-widget__image-editor
+    .upload-widget__image-editor__actions.upload-widget__controls.upload-widget__controls--space
+    button.btn {
+    @extend .full_button;
+    margin-top: 10px;
+  }
+  min-height: 180px;
+  .upload-widget__root {
+    background-color: constants.$red;
+    .upload-widget {
+      background-color: constants.$red;
     }
-    min-height: 180px; 
-    .upload-widget__root {
-        background-color: constants.$red;
-        .upload-widget {
-            background-color: constants.$red;
-        }
+  }
+  button {
+    margin-top: 100px;
+  }
+  .upload_widget {
+    .btn {
+      @extend .full_button;
+      margin-top: 10px;
     }
-    button {
-        margin-top: 100px;
-    }
-    .upload_widget {
-       
-        .btn {
-            @extend .full_button;
-            margin-top: 10px;
-        }
-    }
-
-   
+  }
 }
-

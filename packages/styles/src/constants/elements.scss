@@ -1,169 +1,191 @@
-@use './breakpoints' as *;
-@use './colors' as * ;
-@use './sizes' as *;
+@use "./breakpoints" as *;
+@use "./colors" as *;
+@use "./sizes" as *;
 
-@mixin flexbox ($direction: row, $align: center, $justify: space-between, $height: auto, $width: auto, $wrap: no-wrap, $gap: $sm,  $change_to_column: 'false') {
-    display: flex;
-    flex-direction: $direction;
-    align-items: $align;
-    justify-content: $justify;
-    gap: $gap;
-    height: $height;
-    width: $width;
-    flex-wrap: $wrap;
-    @if $change_to_column == 'true' {
-       @include breakpoints.mq('xs') {
-            flex-direction: row;
-       };
-       @include breakpoints.mq('md') {
-            flex-direction: column;
-       };
-    };
-};
+@mixin flexbox(
+  $direction: row,
+  $align: center,
+  $justify: space-between,
+  $height: auto,
+  $width: auto,
+  $wrap: no-wrap,
+  $gap: $sm,
+  $change_to_column: "false"
+) {
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+  height: $height;
+  width: $width;
+  flex-wrap: $wrap;
+  @if $change_to_column == "true" {
+    @include breakpoints.mq("xs") {
+      flex-direction: row;
+    }
+    @include breakpoints.mq("md") {
+      flex-direction: column;
+    }
+  }
+}
 
 @mixin button_container {
-    @include flexbox($direction: row, $align: center, $justify: flex-end, $gap: $xs);
-};
+  @include flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-end,
+    $gap: $xs
+  );
+}
 
-@mixin icon_button_container($isactive: 'false') {
-    @include flexbox($direction: row, $align: center, $justify: center);
-    position: 'relative';
-    // background-color: $grey;
-    box-sizing: border-box;
-    background-color: transparent;
-    color: $primary;
-    flex: 0 0 30px;
-    // border: none;
-    border: 1.5px solid $primary;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    font-size: map-get($map: $font_size, $key: 'md' );
-    font-family: 'Geist';
-    font-weight: 500;
-    line-height: 1;
-    position: relative;
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
-    border-radius: 50%;
-    border-radius: map-get($map: $border_radius, $key: 'sm' );
-    &:hover{
-        background-color: $primary;
-        color: white !important;
-    }
-    @if $isactive == 'true' {
-        background-color: $primary;
-        color: white !important;
-
-    }
+@mixin icon_button_container($isactive: "false") {
+  @include flexbox($direction: row, $align: center, $justify: center);
+  position: "relative";
+  // background-color: $grey;
+  box-sizing: border-box;
+  background-color: transparent;
+  color: $primary;
+  flex: 0 0 30px;
+  // border: none;
+  border: 1.5px solid $primary;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  font-size: map-get($map: $font_size, $key: "md");
+  font-family: "Geist";
+  font-weight: 500;
+  line-height: 1;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  border-radius: 50%;
+  border-radius: map-get($map: $border_radius, $key: "sm");
+  &:hover {
+    background-color: $primary;
+    color: white !important;
+  }
+  @if $isactive == "true" {
+    background-color: $primary;
+    color: white !important;
+  }
 }
 
 @mixin list_element {
-    padding: map-get($map: $padding, $key: 'sm' );
-    border-bottom: 1px solid $grey_shaded;
-    position: relative;
-    font-size: map-get($map: $font_size, $key: 'sm' )
+  padding: map-get($map: $padding, $key: "sm");
+  border-bottom: 1px solid $grey_shaded;
+  position: relative;
+  font-size: map-get($map: $font_size, $key: "sm");
 }
 
 @mixin elements_container {
-    border: 1px solid $grey;
-    padding: map-get($map: $padding, $key: 'md' );
-    border-radius: map-get($map: $border_radius, $key: 'md' );
-    position: relative;
-    box-sizing: border-box;
+  border: 1px solid $grey;
+  padding: map-get($map: $padding, $key: "md");
+  border-radius: map-get($map: $border_radius, $key: "md");
+  position: relative;
+  box-sizing: border-box;
 }
 
-@mixin label($size: 'md', $color: 'primary' ) {
+@mixin label($size: "md", $color: "primary") {
+  background-color: transparent;
+  text-transform: uppercase;
+  border-radius: map-get($map: $border_radius, $key: "sm");
+  width: fit-content;
+
+  @if $size == "sm" {
+    padding: map-get($padding, "xs");
+    font-size: map-get($font_size, "xs");
+  }
+  @if $size == "md" {
+    padding: map-get($padding, "sm");
+    font-size: map-get($font_size, "sm");
+  }
+  @if $size == "lg" {
+    padding: map-get($padding, "lg");
+    font-size: map-get($font_size, "lg");
+  }
+
+  @if $color == "violet" {
+    color: $violet_shaded;
+    background-color: $violet_tinted;
+    border: 1px solid $violet;
+  }
+  @if $color == "green" {
+    color: $green_shaded;
+    background-color: $green_tinted;
+    border: 1px solid $green;
+  }
+  @if $color == "yellow" {
+    color: $yellow_shaded;
+    background-color: $yellow_tinted;
+    border: 1px solid $yellow;
+  }
+  @if $color == "red" {
+    color: $red_shaded;
+    background-color: $red_tinted;
+    border: 1px solid $red;
+  }
+}
+
+@mixin full_button_mixin($size: "sm", $color: "primary") {
+  @include flexbox(
+    $direction: row,
+    $align: center,
+    $justify: center,
+    $gap: $xxs
+  );
+  font-family: Geist, sans-serif;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  border: none;
+  font-weight: 500;
+  border-radius: $xxs;
+  &:disabled {
+    background-color: transparent !important;
+    color: $grey;
+    cursor: not-allowed;
+    &:hover {
+      background-color: $grey_tinted !important;
+      color: $grey !important;
+    }
+  }
+  @if ($size == "sm") {
+    padding: map-get($padding, "xs");
+    font-size: map-get($font_size, "sm");
+  }
+  @if ($size == "md") {
+    padding: map-get($padding, "md");
+    font-size: map-get($font_size, "md");
+  }
+  @if ($size == "lg") {
+    padding: map-get($padding, "lg");
+    font-size: map-get($font_size, "md");
+  }
+  @if ($color == "primary") {
+    background-color: $primary;
+    color: $white;
+    &:hover {
+      background-color: $primary_shaded;
+      color: $white;
+    }
+  }
+  @if ($color == "secondary") {
+    background-color: $secondary;
+    color: $white;
+    &:hover {
+      background-color: $secondary_shaded;
+      color: $white;
+    }
+  }
+  @if ($color == "light") {
     background-color: transparent;
-    text-transform: uppercase;
-    border-radius: map-get($map: $border_radius, $key: 'sm' );
-    width: fit-content;
-
-    @if $size == 'sm' {
-        padding: map-get($padding, 'xs');
-        font-size: map-get($font_size, 'xs');
+    color: $dark;
+    &:hover {
+      background-color: $light;
     }
-    @if $size == 'md' {
-        padding: map-get($padding, 'sm');
-        font-size: map-get($font_size, 'sm');
-    }
-    @if $size == 'lg' {
-        padding: map-get($padding, 'lg');
-        font-size: map-get($font_size, 'lg');
-    }
-
-    @if $color == 'violet' {
-        color: $violet_shaded;
-        background-color: $violet_tinted;
-        border: 1px solid $violet;
-    }
-    @if $color == 'green' {
-        color: $green_shaded;
-        background-color: $green_tinted;
-        border: 1px solid $green;
-    }
-    @if $color == 'yellow' {
-        color: $yellow_shaded;
-        background-color: $yellow_tinted;
-        border: 1px solid $yellow;
-    }
-    @if $color == 'red' {
-        color: $red_shaded;
-        background-color: $red_tinted;
-        border: 1px solid $red;
-    }
-};
-
-@mixin full_button_mixin($size: 'sm', $color: 'primary') {
-    @include flexbox($direction: row, $align: center, $justify: center, $gap: $xxs);
-    font-family: Geist, sans-serif;
-    cursor: pointer;
-    transition: background-color .2s ease, color .2s ease;
-    border: none;
-    font-weight: 500;
-    border-radius: $xxs;
-    &:disabled {
-        background-color: transparent !important;
-        color: $grey;
-        cursor: not-allowed;
-        &:hover {
-            background-color: $grey_tinted !important;
-            color: $grey !important;
-        }
-    }
-    @if($size == 'sm') {
-        padding: map-get($padding, 'xs');
-        font-size: map-get($font_size, 'sm');
-    }
-    @if($size == 'md') {
-        padding: map-get($padding, 'md');
-        font-size: map-get($font_size, 'md');
-    }
-    @if($size == 'lg') {
-        padding: map-get($padding, 'lg');
-        font-size: map-get($font_size, 'md');
-    }
-    @if($color == 'primary') {
-        background-color: $primary;
-        color: $white;
-        &:hover {
-            background-color: $primary_shaded;
-            color: $white;
-        }
-    }
-    @if($color == 'secondary') {
-        background-color: $secondary;
-        color: $white;
-        &:hover {
-            background-color: $secondary_shaded;
-            color: $white;
-        }
-    }
-    @if($color == 'light') {
-        background-color: transparent;
-        color: $dark;
-        &:hover {
-            background-color: $light;
-        }
-    }
+  }
 }

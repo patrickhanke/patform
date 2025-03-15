@@ -3,22 +3,34 @@
 @import '../../Tally.module.scss';
 
 .description_container {
-    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch);
-};
+    @include constants.flexbox(
+        $direction: column,
+        $justify: space-between,
+        $align: stretch
+    );
+}
 
 .description_header {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
-};
+    @include constants.flexbox(
+        $direction: row,
+        $justify: flex-start,
+        $align: center
+    );
+}
 
- .description_content {
-    @include constants.flexbox($direction: column, $justify: space-between, $align: flex-start);
-};
+.description_content {
+    @include constants.flexbox(
+        $direction: column,
+        $justify: space-between,
+        $align: flex-start
+    );
+}
 
 .description_content_icon {
     width: 24px;
-};
+}
 
 .description_content_text {
     padding-left: 24px;
     width: 100%;
-};
+}

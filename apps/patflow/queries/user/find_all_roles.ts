@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const find_all_roles  = gql`
+const find_all_roles = gql`
     query findAllRoles {
         objects {
-            find_Role (order: name_DESC) {
+            find_Role(order: name_DESC) {
                 results {
                     objectId
                     name

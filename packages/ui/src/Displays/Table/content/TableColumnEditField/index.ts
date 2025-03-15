@@ -1,1 +1,1 @@
-export {default} from './TableColumnEditField';
+export { default } from "./TableColumnEditField";

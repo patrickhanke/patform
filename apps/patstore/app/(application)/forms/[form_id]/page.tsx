@@ -1,1 +1,1 @@
-export {Form as default} from '@repo/modules';
+export { Form as default } from "@repo/modules";

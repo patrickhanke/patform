@@ -1,1 +1,1 @@
-export {default} from './CreateStaffMember';
+export { default } from './CreateStaffMember';

@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const get_task_slidein_content  = gql`
+const get_task_slidein_content = gql`
     query getTaskObject($id: ID!) {
         objects {
             getTask(objectId: $id) {

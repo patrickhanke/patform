@@ -1,1 +1,1 @@
-export {default} from './SwitchButtons';
+export { default } from "./SwitchButtons";

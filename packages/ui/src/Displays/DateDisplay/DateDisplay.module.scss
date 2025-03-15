@@ -1,17 +1,24 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .date_display_container {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
-    position: relative;
-    width: fit-content;
-    font-family: Geist, sans-serif;
-    font-size: .7rem;
-    font-weight: 500;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center
+  );
+  position: relative;
+  width: fit-content;
+  font-family: Geist, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
 }
 
 .date_element {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 4px);
-    color: constants.$secondary;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: 4px
+  );
+  color: constants.$secondary;
 }
-
-

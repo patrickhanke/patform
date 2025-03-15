@@ -1,97 +1,111 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .buttons_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: 0);
-    // box-shadow: .5px .5px 1px constants.$grey_tinted;
-    button {
-        // border-radius: map-get($map: constants.$border_radius, $key: 'md' );
-        font-size: map-get($map: constants.$font_size, $key: 'md' );
-        background-color: transparent;
-        font-weight: 500;
-        color: constants.$dark;
-        border: 1px solid constants.$grey;
-        border-right: none;
-        cursor: pointer;
-        padding: map-get($map: constants.$padding, $key: 'md' );
-        transition: color .2s ease, background-color .2s ease;
-        &:hover {
-            background-color: constants.$light;
-            // color: constants.$primary;
-        }
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-start,
+    $gap: 0
+  );
+  // box-shadow: .5px .5px 1px constants.$grey_tinted;
+  button {
+    // border-radius: map-get($map: constants.$border_radius, $key: 'md' );
+    font-size: map-get($map: constants.$font_size, $key: "md");
+    background-color: transparent;
+    font-weight: 500;
+    color: constants.$dark;
+    border: 1px solid constants.$grey;
+    border-right: none;
+    cursor: pointer;
+    padding: map-get($map: constants.$padding, $key: "md");
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+    &:hover {
+      background-color: constants.$light;
+      // color: constants.$primary;
     }
+  }
 
-    button[data-isactive="true"] {
-        background-color: constants.$light;
+  button[data-isactive="true"] {
+    background-color: constants.$light;
+  }
+  button[data-isfirst="true"] {
+    border-radius: constants.$xs 0 0 constants.$xs;
+  }
+  button[data-islast="true"] {
+    border-right: 1px solid constants.$grey;
+    border-radius: 0 constants.$xs constants.$xs 0;
+  }
+  button:disabled {
+    background-color: transparent;
+    color: constants.$grey;
+    cursor: not-allowed;
+    &:hover {
+      background-color: transparent;
+      color: constants.$grey;
+      cursor: not-allowed;
     }
-    button[data-isfirst="true"] {
-        border-radius: constants.$xs 0 0 constants.$xs;
-    }
-    button[data-islast="true"] {
-        border-right: 1px solid constants.$grey;
-        border-radius: 0 constants.$xs constants.$xs 0;
-    }
-    button:disabled {
-        background-color: transparent;
-        color: constants.$grey;
-        cursor: not-allowed;
-        &:hover {
-            background-color: transparent;
-            color: constants.$grey;
-            cursor: not-allowed;
-        }
-        
-    }
-
+  }
 }
 
-
 .buttons_container[data-underline_buttons="true"] {
-    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$sm);
-    margin-top: 0;
-    margin-bottom: 0;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    button {
-        @include constants.flexbox($direction: column, $align: center, $justify: space-between, $gap: 0);
-        border-bottom: 2px solid transparent;
-        border-left: none;
-        border-right: none;
-        border-top: none;
-        background-color: transparent;
-        cursor: pointer;
-        color: constants.$grey_shaded;
-        font-weight: 500;
-        transition: border-bottom .2 ease, color .2 ease;
-        &:hover {
-            border-bottom: 2px solid constants.$dark;
-            color: constants.$dark;
-        }
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-start,
+    $gap: constants.$sm
+  );
+  margin-top: 0;
+  margin-bottom: 0;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  button {
+    @include constants.flexbox(
+      $direction: column,
+      $align: center,
+      $justify: space-between,
+      $gap: 0
+    );
+    border-bottom: 2px solid transparent;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: constants.$grey_shaded;
+    font-weight: 500;
+    transition:
+      border-bottom 0.2 ease,
+      color 0.2 ease;
+    &:hover {
+      border-bottom: 2px solid constants.$dark;
+      color: constants.$dark;
     }
+  }
 
-    button[data-isactive="true"] {
-        border-bottom: 2px solid constants.$dark;
-        color: constants.$dark;
-    }
-    button[data-isfirst="true"] {
-        border-radius: 0;
-    }
-    button[data-islast="true"] {
-        border-right: none;
-        border-radius: 0;
-    }
-   
-    button:disabled {
-        color: constants.$grey;
-        cursor: not-allowed;
-        border-bottom: 2px solid transparent;
-        background-color: transparent;
-        &:hover {
-            color: constants.$grey;
-            cursor: not-allowed;
-            border-bottom: 2px solid transparent;
-            background-color: transparent;
-        }
-        
-    }
+  button[data-isactive="true"] {
+    border-bottom: 2px solid constants.$dark;
+    color: constants.$dark;
+  }
+  button[data-isfirst="true"] {
+    border-radius: 0;
+  }
+  button[data-islast="true"] {
+    border-right: none;
+    border-radius: 0;
+  }
 
+  button:disabled {
+    color: constants.$grey;
+    cursor: not-allowed;
+    border-bottom: 2px solid transparent;
+    background-color: transparent;
+    &:hover {
+      color: constants.$grey;
+      cursor: not-allowed;
+      border-bottom: 2px solid transparent;
+      background-color: transparent;
+    }
+  }
 }

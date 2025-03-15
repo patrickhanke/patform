@@ -1,1 +1,1 @@
-export {default} from './ToursOverview';
+export { default } from './ToursOverview';

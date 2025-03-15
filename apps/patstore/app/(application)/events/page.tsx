@@ -1,1 +1,1 @@
-export {EventOverview as default } from '@repo/modules';
+export { EventOverview as default } from "@repo/modules";

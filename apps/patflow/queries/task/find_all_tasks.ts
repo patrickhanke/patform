@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-const FIND_ALL_TASKS  = gql`
-    query findAllTasks($params: TaskConstraints ) {
+const FIND_ALL_TASKS = gql`
+    query findAllTasks($params: TaskConstraints) {
         objects {
             findTask(where: $params) {
                 results {

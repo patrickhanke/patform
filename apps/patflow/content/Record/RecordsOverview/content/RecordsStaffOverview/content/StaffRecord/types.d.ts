@@ -3,14 +3,14 @@ import { UserDisplayData } from '@types';
 
 export type StaffRecordProps = {
     days: RecordData;
-    month: typeof months[number];
+    month: (typeof months)[number];
     year: number;
     user: UserDisplayData;
-}
+};
 
 export type MonthData = {
-    month: string,
-    monthSaldo: string,
-    target: string,
-    monthTimes: string
-}
+    month: string;
+    monthSaldo: string;
+    target: string;
+    monthTimes: string;
+};

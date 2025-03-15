@@ -2,44 +2,55 @@ import { Absence } from '@types';
 import { eachDayOfInterval, formatISO9075 } from 'date-fns';
 import { cloneDeep } from 'lodash-es';
 
-const checkForAbsenceConflicts =  (
-	start_date: string, 
-	end_date: string, 
-	absences: Absence[],
-	absenceId?: string
+const checkForAbsenceConflicts = (
+    start_date: string,
+    end_date: string,
+    absences: Absence[],
+    absenceId?: string
 ) => {
-	const doubleBookedDays: string[] = [];
-	
-	const absencesDateArray: string[] = [];
+    const doubleBookedDays: string[] = [];
 
-	let absencesCopy = cloneDeep(absences);
-	if (absenceId) {
-		absencesCopy = absencesCopy.filter(absence => absence.objectId !== absenceId);
-	}
+    const absencesDateArray: string[] = [];
 
-	absencesCopy.forEach((absence) => {
-		const absenceInterval = eachDayOfInterval({
-			start: new Date(absence.start_date),
-			end: new Date(absence.end_date)
-		}, {step: 1});
-		const formatedAbsenceInterval = absenceInterval.map(day => formatISO9075(day, {representation: 'date'}));
-		absencesDateArray.push(...formatedAbsenceInterval);
-	});
-    
+    let absencesCopy = cloneDeep(absences);
+    if (absenceId) {
+        absencesCopy = absencesCopy.filter(
+            absence => absence.objectId !== absenceId
+        );
+    }
 
-	const absenceDateArray = eachDayOfInterval({
-		start: new Date(start_date),
-		end: new Date(end_date)
-	}, {step: 1});
-    
-	const formattedAbsenceDateArray: string[] = absenceDateArray.map(day => formatISO9075(day, {representation: 'date'}));
+    absencesCopy.forEach(absence => {
+        const absenceInterval = eachDayOfInterval(
+            {
+                start: new Date(absence.start_date),
+                end: new Date(absence.end_date),
+            },
+            { step: 1 }
+        );
+        const formatedAbsenceInterval = absenceInterval.map(day =>
+            formatISO9075(day, { representation: 'date' })
+        );
+        absencesDateArray.push(...formatedAbsenceInterval);
+    });
 
-	formattedAbsenceDateArray.forEach(date => {
-		if (absencesDateArray.includes(date)) {
-			doubleBookedDays.push(date);
-		}
-	});
-	return doubleBookedDays;
+    const absenceDateArray = eachDayOfInterval(
+        {
+            start: new Date(start_date),
+            end: new Date(end_date),
+        },
+        { step: 1 }
+    );
+
+    const formattedAbsenceDateArray: string[] = absenceDateArray.map(day =>
+        formatISO9075(day, { representation: 'date' })
+    );
+
+    formattedAbsenceDateArray.forEach(date => {
+        if (absencesDateArray.includes(date)) {
+            doubleBookedDays.push(date);
+        }
+    });
+    return doubleBookedDays;
 };
 
 export default checkForAbsenceConflicts;

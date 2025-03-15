@@ -14,28 +14,28 @@ export type DateSelectExternalStateProps = {
 };
 
 export type DateCategoriesProps = {
-    value: typeof date_category_options[number];
-    onChange: (value: typeof date_category_options[number]) => void;
+    value: (typeof date_category_options)[number];
+    onChange: (value: (typeof date_category_options)[number]) => void;
 };
 
 export type SingleDateSelectInterfaceProps = {
     date: DateTypes.DateObjectWithNextDates;
-    category: typeof date_category_options[number]['value'];
+    category: (typeof date_category_options)[number]['value'];
     onChange: (value: DateTypes.DateObjectWithNextDates) => void;
 };
 
 export type MultiDateSelectInterfaceProps = {
     date: DateTypes.DateObjectWithNextDates;
-    category: typeof date_category_options[number]['value'];
+    category: (typeof date_category_options)[number]['value'];
     onChange: (value: DateTypes.DateObjectWithNextDates) => void;
 };
 
 export type IntervalDateSelectInterfaceProps = {
     date: DateTypes.DateObjectWithNextDates;
-    category: typeof date_category_options[number]['value'];
+    category: (typeof date_category_options)[number]['value'];
     onChange: (value: DateTypes.DateObjectWithNextDates) => void;
 };
 
-export type IntervalInfoProps = {   
+export type IntervalInfoProps = {
     dates: string[];
 };

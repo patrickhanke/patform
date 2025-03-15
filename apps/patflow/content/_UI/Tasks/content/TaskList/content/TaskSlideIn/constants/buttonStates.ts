@@ -1,16 +1,16 @@
 const buttonStates = [
     {
         value: 'comments',
-        label: 'Kommentare'
+        label: 'Kommentare',
     },
     {
         value: 'images',
-        label: 'Bilder'
+        label: 'Bilder',
     },
     {
         value: 'documents',
-        label: 'Dokumente'
-    }
+        label: 'Dokumente',
+    },
 ] as const;
 
 export default buttonStates;

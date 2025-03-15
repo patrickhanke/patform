@@ -1,1 +1,1 @@
-export {default} from './DisplayTaskState';
+export { default } from './DisplayTaskState';

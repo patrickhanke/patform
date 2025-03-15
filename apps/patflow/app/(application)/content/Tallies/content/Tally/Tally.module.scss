@@ -1,38 +1,61 @@
 @use '@repo/styles/constants';
 
 .tally_container {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: center
+    );
     width: 100%;
-    padding: map-get($map: constants.$padding, $key: 'md' );
-};
+    padding: map-get($map: constants.$padding, $key: 'md');
+}
 
 .tally_content_container {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-start, $gap: constants.$md, $change_to_column: true);
-    padding: map-get($map: constants.$padding, $key: 'sm' )
-};
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: flex-start,
+        $gap: constants.$md,
+        $change_to_column: true
+    );
+    padding: map-get($map: constants.$padding, $key: 'sm');
+}
 
 .tally_workers_container {
-    padding: map-get($map: constants.$padding, $key: 'md' );
+    padding: map-get($map: constants.$padding, $key: 'md');
     border-top: 1px solid constants.$grey;
     // background-color: constants.$lightest;
-};
+}
 
 .tally_content_element {
-    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: flex-start,
+        $align: stretch
+    );
     flex: 1 1 50%;
-    padding: map-get($map: constants.$padding, $key: 'sm' )
-};
+    padding: map-get($map: constants.$padding, $key: 'sm');
+}
 
 .tally_subheadline {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xs);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: flex-start,
+        $align: center,
+        $gap: constants.$xs
+    );
     width: 60px;
     height: auto;
-};
+}
 
 .tally_footer {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: center
+    );
     border-top: 1px solid constants.$grey;
-    padding: map-get($map: constants.$padding, $key: 'md' );
+    padding: map-get($map: constants.$padding, $key: 'md');
     background-color: constants.$lightest;
 }
 
@@ -42,7 +65,12 @@
 }
 
 .description_preview_header {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xs);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: flex-start,
+        $align: center,
+        $gap: constants.$xs
+    );
     position: relative;
     width: 100%;
     cursor: pointer;
@@ -62,12 +90,21 @@
 }
 
 .tally_slidein_content {
-    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: constants.$sm);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: space-between,
+        $align: stretch,
+        $gap: constants.$sm
+    );
     height: 100%;
 }
 
 .tally_slidein_header {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-end);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: flex-end
+    );
     width: 100%;
     flex: 0 0 40px;
     border-bottom: 1px solid constants.$grey;
@@ -78,14 +115,18 @@
 }
 
 .tally_slidein_content_container {
-    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: constants.$md);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: space-between,
+        $align: stretch,
+        $gap: constants.$md
+    );
     flex: 0 1 100%;
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
     padding: map-get(constants.$padding, 'sm');
-
-};
+}
 
 .tally_slidein_footer {
     flex: 0 0 120px;
@@ -93,4 +134,4 @@
     border-top: 1px solid constants.$grey;
     background-color: constants.$light;
     position: relative;
-};
+}

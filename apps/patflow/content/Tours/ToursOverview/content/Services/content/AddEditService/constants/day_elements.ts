@@ -6,7 +6,7 @@ const day_elements = [
     { value: 'thursday', label: 'Donnerstag' },
     { value: 'friday', label: 'Freitag' },
     { value: 'saturday', label: 'Samstag' },
-    { value: 'sunday', label: 'Sonntag' }
+    { value: 'sunday', label: 'Sonntag' },
 ];
 
 export default day_elements;

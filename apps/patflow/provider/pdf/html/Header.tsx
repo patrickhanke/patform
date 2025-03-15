@@ -56,43 +56,32 @@ const styleObject = `@media print {
 		}
 	}`;
 
-const Header = ( ) => {
-	// console.log(btoa(logo));
+const Header = () => {
+    // console.log(btoa(logo));
 
-	return (
-		<html>
-			<head>
-				<style>
-					{styleObject}
-				</style>
-			</head>
+    return (
+        <html>
+            <head>
+                <style>{styleObject}</style>
+            </head>
 
-			<body>
-				<section className='title'>
-					<div className='flex-row'>
-						<div >
-							
-						</div>
-						<p>
-							Patflow
-						</p>
-					</div>
+            <body>
+                <section className="title">
+                    <div className="flex-row">
+                        <div></div>
+                        <p>Patflow</p>
+                    </div>
 
-					<div className='divider' />
-				</section>
-				<div className='flex-row'>
-					<div >
-					</div>
-					<p>
-                        Patflow
-					</p>
-				</div>
-				<div style={{}} />
-			</body>
-		</html>
-
-		
-	);
+                    <div className="divider" />
+                </section>
+                <div className="flex-row">
+                    <div></div>
+                    <p>Patflow</p>
+                </div>
+                <div style={{}} />
+            </body>
+        </html>
+    );
 };
 
 export default Header;

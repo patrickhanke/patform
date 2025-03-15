@@ -1,1 +1,1 @@
-export {default} from './AppModuleEditSettings';
+export { default } from "./AppModuleEditSettings";

@@ -1,7 +1,7 @@
-import { ClassProperties } from './Classes';
+import { ClassProperties } from "./Classes";
 
 export type PageClass = ClassProperties & {
-    name: string,
-    title: string,
-    subtitle: string
-}
+  name: string;
+  title: string;
+  subtitle: string;
+};

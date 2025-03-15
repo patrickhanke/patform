@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const find_documents_for_task  = gql`
+const find_documents_for_task = gql`
     query findDocumentsForTask($id: TaskPointer!) {
         objects {
-            findDocument(where: {task: {_eq: $id}}, order: createdAt_DESC) {
+            findDocument(where: { task: { _eq: $id } }, order: createdAt_DESC) {
                 results {
                     objectId
                     createdAt

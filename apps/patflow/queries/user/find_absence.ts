@@ -1,33 +1,33 @@
 import { gql } from '@apollo/client';
 
 const find_absence = gql`
-    query findAbsencesForUser ($params: AbsenceConstraints) {
+    query findAbsencesForUser($params: AbsenceConstraints) {
         objects {
-            findAbsence (where: $params) {
+            findAbsence(where: $params) {
                 results {
                     objectId
                     start_date
                     end_date
                     state
-                    comment 
+                    comment
                     type
                     year
                     user {
                         objectId
                         username
                         first_name
-                        family_name  
+                        family_name
                         email
                         color
-                        portrait 
+                        portrait
                     }
                     created_by {
                         objectId
                         username
                         first_name
-                        family_name  
+                        family_name
                         email
-                        portrait 
+                        portrait
                     }
                 }
             }

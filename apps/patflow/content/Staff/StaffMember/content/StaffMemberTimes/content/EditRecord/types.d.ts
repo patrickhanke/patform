@@ -4,4 +4,4 @@ export type EditRecordProps = {
     record: Record;
     refetch: ApolloRefetch;
     projectId: string;
-}
+};

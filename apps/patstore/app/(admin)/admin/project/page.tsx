@@ -1,7 +1,3 @@
-const ProjectPage = () => (
-    <div>
-        Projektseite
-    </div>
-)
+const ProjectPage = () => <div>Projektseite</div>;
 
 export default ProjectPage;

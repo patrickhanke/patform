@@ -1,32 +1,37 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .drag_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$xs);
-    padding: map-get($map: constants.$padding, $key: 'sm' );
-    margin-top: constants.$xs;
-    margin-bottom: constants.$xs;
-    width: 100%;
-    position: relative;
-    box-sizing: border-box ;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-start,
+    $gap: constants.$xs
+  );
+  padding: map-get($map: constants.$padding, $key: "sm");
+  margin-top: constants.$xs;
+  margin-bottom: constants.$xs;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
 }
 
-.drag_container[is_dragging = "true"] {
-    box-shadow: 6px 6px 2px rgba(0,0,0,0.6)
-} 
+.drag_container[is_dragging="true"] {
+  box-shadow: 6px 6px 2px rgba(0, 0, 0, 0.6);
+}
 
 .drag_handle {
-    width: 12px;
-    touch-action: none;
-    cursor: var(--cursor, grab);
-    border: none;
-    outline: none;
-    appearance: none;
-    background-color: transparent;
-    -webkit-tap-highlight-color: transparent;
-    padding: 0;
-  }
+  width: 12px;
+  touch-action: none;
+  cursor: var(--cursor, grab);
+  border: none;
+  outline: none;
+  appearance: none;
+  background-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+}
 
-  .drag_content {
-    width: calc(100% - 12px);
-    position: relative;
-  }
+.drag_content {
+  width: calc(100% - 12px);
+  position: relative;
+}

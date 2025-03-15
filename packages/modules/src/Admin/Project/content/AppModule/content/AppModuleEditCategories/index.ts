@@ -1,1 +1,1 @@
-export {default} from './AppModuleEditCategories';
+export { default } from "./AppModuleEditCategories";

@@ -1,68 +1,67 @@
-
 const weekdays = [
-	{
-		day: 1,
-		index: 0,
-		id: 'monday',
-		objectId: 'monday',
-		value: 'monday',
-		name: 'Montag',
-		label: 'Montag'
-	},
-	{
-		day: 2,
-		index: 1,
-		id: 'tuesday',
-		objectId: 'tuesday',
-		value: 'tuesday',
-		name: 'Dienstag',
-		label: 'Dienstag'
-	},
-	{
-		day: 3,
-		index: 2,
-		id: 'wednesday',
-		objectId: 'wednesday',
-		value: 'wednesday',
-		name: 'Mittwoch',
-		label: 'Mittwoch'
-	},
-	{
-		day: 4,
-		index: 3,
-		id: 'thursday',
-		objectId: 'thursday',
-		value: 'thursday',
-		name: 'Donnerstag',
-		label: 'Donnerstag'
-	},
-	{
-		day: 5,
-		index: 4,
-		id: 'friday',
-		objectId: 'friday',
-		value: 'friday',
-		name: 'Freitag',
-		label: 'Freitag'
-	},
-	{
-		day: 6,
-		index: 5,
-		id: 'saturday',
-		objectId: 'saturday',
-		value: 'saturday',
-		name: 'Samstag',
-		label: 'Samstag'
-	},
-	{
-		day: 0,
-		index: 6,
-		id: 'sunday',
-		objectId: 'sunday',
-		value: 'sunday',
-		name: 'Sonntag',
-		label: 'Sonntag'
-	}
+    {
+        day: 1,
+        index: 0,
+        id: 'monday',
+        objectId: 'monday',
+        value: 'monday',
+        name: 'Montag',
+        label: 'Montag',
+    },
+    {
+        day: 2,
+        index: 1,
+        id: 'tuesday',
+        objectId: 'tuesday',
+        value: 'tuesday',
+        name: 'Dienstag',
+        label: 'Dienstag',
+    },
+    {
+        day: 3,
+        index: 2,
+        id: 'wednesday',
+        objectId: 'wednesday',
+        value: 'wednesday',
+        name: 'Mittwoch',
+        label: 'Mittwoch',
+    },
+    {
+        day: 4,
+        index: 3,
+        id: 'thursday',
+        objectId: 'thursday',
+        value: 'thursday',
+        name: 'Donnerstag',
+        label: 'Donnerstag',
+    },
+    {
+        day: 5,
+        index: 4,
+        id: 'friday',
+        objectId: 'friday',
+        value: 'friday',
+        name: 'Freitag',
+        label: 'Freitag',
+    },
+    {
+        day: 6,
+        index: 5,
+        id: 'saturday',
+        objectId: 'saturday',
+        value: 'saturday',
+        name: 'Samstag',
+        label: 'Samstag',
+    },
+    {
+        day: 0,
+        index: 6,
+        id: 'sunday',
+        objectId: 'sunday',
+        value: 'sunday',
+        name: 'Sonntag',
+        label: 'Sonntag',
+    },
 ];
 
 export default weekdays;

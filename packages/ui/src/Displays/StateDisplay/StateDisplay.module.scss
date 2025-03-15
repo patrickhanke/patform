@@ -1,130 +1,140 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .state_display_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: constants.$xxs);
-    position: relative;
-    font-family: Geist, sans-serif;
-    padding: map-get($map: constants.$padding, $key: 'sm');
-    width: fit-content;
-    font-weight: 500;
-    letter-spacing: 1.2px;
-    border-radius: map-get($map: constants.$border_radius, $key: 'sm');
-    font-size: map-get($map: constants.$font_size, $key: 'sm');
-    border: none;
-    text-wrap:  nowrap;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 100%;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: center,
+    $gap: constants.$xxs
+  );
+  position: relative;
+  font-family: Geist, sans-serif;
+  padding: map-get($map: constants.$padding, $key: "sm");
+  width: fit-content;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  font-size: map-get($map: constants.$font_size, $key: "sm");
+  border: none;
+  text-wrap: nowrap;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .state_display_container[data-click] {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 @mixin state_display_container_styles {
-    background-color: transparent;
-    &:hover {
-        background-color: constants.$light;
-    }
+  background-color: transparent;
+  &:hover {
+    background-color: constants.$light;
+  }
 }
 
 .state_display_button {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .state_display_container[data-showicon="true"] {
-    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: constants.$xxs);
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: center,
+    $gap: constants.$xxs
+  );
 }
 
 .state_display_container[data-color="primary"] {
-    @include constants.colorgroup('primary');
-    border: none;
+  @include constants.colorgroup("primary");
+  border: none;
 }
 
 .state_display_container[data-color="secondary"] {
-    @include constants.colorgroup('secondary');
-    border: none;
+  @include constants.colorgroup("secondary");
+  border: none;
 }
 
 .state_display_container[data-color="tertiary"] {
-    @include constants.colorgroup('tertiary');
-    border: none;
+  @include constants.colorgroup("tertiary");
+  border: none;
 }
 
 .state_display_container[data-color="dark"] {
-    @include constants.colorgroup('dark');
-    border: none;
+  @include constants.colorgroup("dark");
+  border: none;
 }
 
 .state_display_container[data-color="light"] {
-    @include constants.colorgroup('light');
-    border: none;
+  @include constants.colorgroup("light");
+  border: none;
 }
 
 .state_display_container[data-color="success"] {
-    @include constants.colorgroup('success');
-    border: none;
+  @include constants.colorgroup("success");
+  border: none;
 }
 
 .state_display_container[data-color="warning"] {
-    @include constants.colorgroup('warning');
-    border: none;
+  @include constants.colorgroup("warning");
+  border: none;
 }
 
 .state_display_container[data-color="danger"] {
-    @include constants.colorgroup('danger');
-    border: none;
+  @include constants.colorgroup("danger");
+  border: none;
 }
 
 .state_display_container[data-color="info"] {
-    @include constants.colorgroup('info');
-    border: none;
+  @include constants.colorgroup("info");
+  border: none;
 }
 
 .state_display_container[data-color="violet"] {
-    @include constants.colorgroup('violet');
-    border: none;
+  @include constants.colorgroup("violet");
+  border: none;
 }
 
 .state_display_container[data-color="purple"] {
-    @include constants.colorgroup('violet');
-    border: none;
+  @include constants.colorgroup("violet");
+  border: none;
 }
 
 .state_display_container[data-color="green"] {
-    @include constants.colorgroup('green');
-    border: none;
+  @include constants.colorgroup("green");
+  border: none;
 }
 
 .state_display_container[data-color="yellow"] {
-    @include constants.colorgroup('yellow');
-    border: none;
+  @include constants.colorgroup("yellow");
+  border: none;
 }
 
 .state_display_container[data-color="red"] {
-    @include constants.colorgroup('red');
-    border: none;
+  @include constants.colorgroup("red");
+  border: none;
 }
 
 .state_display_container[data-color="blue"] {
-    @include constants.colorgroup('blue');
-    border: none;
+  @include constants.colorgroup("blue");
+  border: none;
 }
 
 .state_display_container[data-color="grey"] {
-    @include constants.colorgroup('grey');
-    border: none;
+  @include constants.colorgroup("grey");
+  border: none;
 }
 
 .state_display_container[data-display_interface="true"] {
-    cursor: pointer;
-    @include state_display_container_styles;
+  cursor: pointer;
+  @include state_display_container_styles;
 }
 
 .state_display_container[data-no_background="true"] {
-   background-color: transparent;
-   border: none;
-   padding: 0;
+  background-color: transparent;
+  border: none;
+  padding: 0;
 }

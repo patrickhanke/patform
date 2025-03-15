@@ -1,4 +1,4 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .toggle-container {
   display: inline-flex;
@@ -11,7 +11,6 @@
   width: 38px; /* Adjusted width */
   height: 20px; /* Adjusted height */
 }
-
 
 .toggle-switch input {
   opacity: 0;
@@ -28,7 +27,7 @@
   bottom: 0;
   background-color: #ccc;
   border-radius: 20px; /* Half of the height for a round toggle */
-  transition: .4s;
+  transition: 0.4s;
 }
 
 .toggle-slider:before {
@@ -40,11 +39,9 @@
   bottom: 2px; /* Adjusted position */
   background-color: white;
   border-radius: 50%; /* Makes it round */
-  transition: .4s;
-  box-shadow: .5px .5px 2px constants.$dark;
+  transition: 0.4s;
+  box-shadow: 0.5px 0.5px 2px constants.$dark;
 }
-
-
 
 input:checked + .toggle-slider {
   background-color: constants.$green_shaded;
@@ -58,11 +55,11 @@ input:checked + .toggle-slider:before {
   transform: translateX(18px); /* Half of the width */
 }
 
-input:disabled + .toggle-slider  {
+input:disabled + .toggle-slider {
   background-color: constants.$light;
 }
 
-input:disabled + .toggle-slider:before  {
+input:disabled + .toggle-slider:before {
   box-shadow: none;
 }
 
@@ -76,4 +73,3 @@ input:disabled + .toggle-slider:before  {
   font-size: 14px;
   color: #333;
 }
-

@@ -1,69 +1,78 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .modal_overlay_container {
-    background-color: rgba(0,0,0, 0.09);
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    z-index: 5;
-    left: 0;
-    top: 0;
-    cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.09);
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  cursor: pointer;
 }
 
 .modal_animate {
-    animation-duration: .4s;
-    animation-delay: 0s;
-    animation-name: modal-animate;
-    animation-fill-mode: forwards;
-  }
+  animation-duration: 0.4s;
+  animation-delay: 0s;
+  animation-name: modal-animate;
+  animation-fill-mode: forwards;
+}
 
-@keyframes modal-animate{
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+@keyframes modal-animate {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .modal_container {
-    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: 0);
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: auto;
-    max-height: 95%;
-    width: auto;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
-    min-width: 360px;
-    min-height: 180px;
-    max-width: 960px;
-    overflow: hidden;
-    background-color: constants.$white;
-    z-index: 6;
-    border-radius: map-get($map: constants.$border_radius, $key: 'lg' );
-    border: 1px solid constants.$grey;
-};
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: space-between,
+    $gap: 0
+  );
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: auto;
+  max-height: 95%;
+  width: auto;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
+  min-width: 360px;
+  min-height: 180px;
+  max-width: 960px;
+  overflow: hidden;
+  background-color: constants.$white;
+  z-index: 6;
+  border-radius: map-get($map: constants.$border_radius, $key: "lg");
+  border: 1px solid constants.$grey;
+}
 
 .modal_header {
-    padding: map-get($map: constants.$padding, $key: 'md' );
-    border-bottom: 1px solid constants.$grey;
+  padding: map-get($map: constants.$padding, $key: "md");
+  border-bottom: 1px solid constants.$grey;
 }
 
 .modal_content {
-    padding: map-get($map: constants.$padding, $key: 'md' );
-    // overflow-y: auto;
-    overflow: auto;
-    flex: 0 1;
-    position: relative;
+  padding: map-get($map: constants.$padding, $key: "md");
+  // overflow-y: auto;
+  overflow: auto;
+  flex: 0 1;
+  position: relative;
 }
 
 .modal_footer {
-    @include constants.flexbox($direction: row, $align: center, $justify: flex-end, $gap: constants.$lg);
-    padding: map-get($map: constants.$padding, $key: 'md' );
-    background-color: constants.$light;
-    border-top: 1px solid constants.$grey;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-end,
+    $gap: constants.$lg
+  );
+  padding: map-get($map: constants.$padding, $key: "md");
+  background-color: constants.$light;
+  border-top: 1px solid constants.$grey;
 }
-

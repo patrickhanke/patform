@@ -1,8 +1,8 @@
-@use '@repo/styles/buttons';
-@use '@repo/styles/constants';
+@use "@repo/styles/buttons";
+@use "@repo/styles/constants";
 
 .upload_container {
-    @include constants.flexbox($direction: column, $align: flex-star, $gap: 0 );
-    width: 100%;
-    height: auto;
-};
+  @include constants.flexbox($direction: column, $align: flex-star, $gap: 0);
+  width: 100%;
+  height: auto;
+}

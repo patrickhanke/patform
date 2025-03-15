@@ -1,3 +1,3 @@
-export {default as ElementSelectInterface} from './ElementSelectInterface';
+export { default as ElementSelectInterface } from "./ElementSelectInterface";
 
-export type {SelectElement} from './types';
+export type { SelectElement } from "./types";

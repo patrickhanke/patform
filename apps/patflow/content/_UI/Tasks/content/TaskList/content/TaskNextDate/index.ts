@@ -1,1 +1,1 @@
-export {default} from './TaskNextDate';
+export { default } from './TaskNextDate';

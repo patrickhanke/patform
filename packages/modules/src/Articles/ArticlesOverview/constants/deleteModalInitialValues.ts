@@ -1,9 +1,9 @@
-import { DeleteModalProps } from '../types';
+import { DeleteModalProps } from "../types";
 
 const deleteModalInitialValues: DeleteModalProps = {
-	isOpen: false,
-	confirmButtonHandler: () => {},
-	header: 'Bericht löschen'
+  isOpen: false,
+  confirmButtonHandler: () => {},
+  header: "Bericht löschen",
 };
 
 export default deleteModalInitialValues;

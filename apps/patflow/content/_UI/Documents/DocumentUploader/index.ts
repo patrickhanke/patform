@@ -1,1 +1,1 @@
-export {default} from './DocumentUploader';
+export { default } from './DocumentUploader';

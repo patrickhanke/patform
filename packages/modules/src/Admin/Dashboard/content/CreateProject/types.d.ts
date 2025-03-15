@@ -1,6 +1,6 @@
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction } from "react";
 
 export type CreateProjectProps = {
-    createProject: boolean, 
-    setCreateProject: Dispatch<SetStateAction<boolean>>
-}
+  createProject: boolean;
+  setCreateProject: Dispatch<SetStateAction<boolean>>;
+};

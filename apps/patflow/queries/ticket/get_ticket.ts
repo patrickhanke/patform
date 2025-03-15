@@ -12,8 +12,8 @@ const GET_TICKET = gql`
                 images
                 task {
                     objectId
-                    title  
-                    state              
+                    title
+                    state
                 }
                 created_by {
                     objectId

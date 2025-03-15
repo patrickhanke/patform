@@ -5,12 +5,11 @@ import React from 'react';
 import makeClient from './client';
 
 function ApolloAppProvider({ children }: React.PropsWithChildren) {
-	
-	return (
-		<ApolloNextAppProvider makeClient={makeClient}>
-			{children}
-		</ApolloNextAppProvider>
-	);
+    return (
+        <ApolloNextAppProvider makeClient={makeClient}>
+            {children}
+        </ApolloNextAppProvider>
+    );
 }
 
 export default ApolloAppProvider;

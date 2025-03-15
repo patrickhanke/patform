@@ -1,9 +1,9 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const find_all_tallies = gql`
     query FindAllTallies {
         objects {
-            findTally{
+            findTally {
                 results {
                     objectId
                     name

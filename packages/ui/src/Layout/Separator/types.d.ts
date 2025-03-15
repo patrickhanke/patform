@@ -1,1 +1,7 @@
-export type SeparatorComponent = ({size, noLine=false} : {size: 'xs' | 'sm' | 'md' | 'lg', noLine?: boolean}) => JSX.Element;
+export type SeparatorComponent = ({
+  size,
+  noLine = false,
+}: {
+  size: "xs" | "sm" | "md" | "lg";
+  noLine?: boolean;
+}) => JSX.Element;

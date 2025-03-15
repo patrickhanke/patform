@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 
 const TasksPage = () => (
     <Suspense>
-        <Tasks pageState='completed' />
+        <Tasks pageState="completed" />
     </Suspense>
 );
 

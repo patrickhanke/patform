@@ -1,14 +1,14 @@
-import { parse } from 'twemoji-parser';
+import { parse } from "twemoji-parser";
 
 function parseTwemoji(emoji: string) {
-	const [twemoji] = parse(emoji);
+  const [twemoji] = parse(emoji);
 
-	return {
-		src: twemoji.url,
-		alt: twemoji.text,
-		class: 'emoji',
-		draggable: 'false'
-	};
+  return {
+    src: twemoji.url,
+    alt: twemoji.text,
+    class: "emoji",
+    draggable: "false",
+  };
 }
 
 export default parseTwemoji;

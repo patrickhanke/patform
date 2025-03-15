@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const get_service_time  = gql`
+const get_service_time = gql`
     query getServiceTime($id: ID!) {
         objects {
-            getService (objectId: $id) {
+            getService(objectId: $id) {
                 objectId
                 time
             }

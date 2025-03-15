@@ -1,3 +1,3 @@
-export {default as Calendar} from './Calendar';
+export { default as Calendar } from "./Calendar";
 
-export type * from './types';
+export type * from "./types";

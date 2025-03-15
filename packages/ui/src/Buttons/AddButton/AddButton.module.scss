@@ -1,105 +1,118 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .add_button_container {
-    position: absolute;
-    top: 0;
-    left: 0; 
-    z-index: 3;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    display: inline-block;
-    background-color: constants.$primary;
-    color: constants.$white;
-    cursor: pointer;
-    transition: color .4s ease, background-color .4s ease, box-shadow .4s ease, transform .6s ease;
-};
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: inline-block;
+  background-color: constants.$primary;
+  color: constants.$white;
+  cursor: pointer;
+  transition:
+    color 0.4s ease,
+    background-color 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.6s ease;
+}
 
 .add_button_container:hover {
-    background-color: constants.$primary;
-    color: constants.$white;
+  background-color: constants.$primary;
+  color: constants.$white;
 }
 
 .add_button_icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    height: 36px;
-    width: 36px;
-    border-radius: 50%;
-    font-size: 36px;
-    line-height: 1;
-    cursor: pointer;
-    transition: transform 1s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  font-size: 36px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 1s ease;
 }
 
-
-.add_button_icon[data-isopen='true'] {
-   transform: translate(-50%, -50%) rotate(-225deg);
+.add_button_icon[data-isopen="true"] {
+  transform: translate(-50%, -50%) rotate(-225deg);
 }
 
 .add_button {
-    position: fixed;
-    bottom: 18px;
-    right: 30px;
-    height: 48px;
-    width: 48px;
-    border-radius: 24px;
-    padding: 0;
-    z-index: 2;
-    background-color: constants.$white;
-    box-shadow: constants.$shadow_large_regular;
-    transition: width .6s ease, box-shadow .4s ease;
-    box-sizing: border-box;
-    overflow: hidden;
+  position: fixed;
+  bottom: 18px;
+  right: 30px;
+  height: 48px;
+  width: 48px;
+  border-radius: 24px;
+  padding: 0;
+  z-index: 2;
+  background-color: constants.$white;
+  box-shadow: constants.$shadow_large_regular;
+  transition:
+    width 0.6s ease,
+    box-shadow 0.4s ease;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .add_button:hover {
-    box-shadow: constants.$shadow_large_regular_hover;
-};
+  box-shadow: constants.$shadow_large_regular_hover;
+}
 
 // .items_container[data-isopen='true'] {
 //     padding: 6px 18px 6px 66px;
 // }
 
-.add_button[data-isopen='true'][data-iconslength='1'] {
-    width: 106px;
-};
+.add_button[data-isopen="true"][data-iconslength="1"] {
+  width: 106px;
+}
 
-.add_button[data-isopen='true'][data-iconslength='2'] {
-    width: 142px;
-};
+.add_button[data-isopen="true"][data-iconslength="2"] {
+  width: 142px;
+}
 
-.add_button[data-isopen='true'][data-iconslength='3'] {
-    width: 178px;
-};
+.add_button[data-isopen="true"][data-iconslength="3"] {
+  width: 178px;
+}
 
 .icons_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$xs);
-    padding: 6px 18px 6px 58px;
-    height: 100%;
-    box-sizing: border-box;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$xs
+  );
+  padding: 6px 18px 6px 58px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .icon {
-    @include constants.flexbox($direction: row, $align: center, $justify: center);
-    font-size: 18px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    cursor: pointer;
-    opacity: 0;
-    color: constants.$primary;
-    background-color: transparent;
-    transition: background-color 0.4s ease, color 0.4s ease, opacity 0.4s ease;
+  @include constants.flexbox($direction: row, $align: center, $justify: center);
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0;
+  color: constants.$primary;
+  background-color: transparent;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    opacity 0.4s ease;
 }
 
 .icon:hover {
-    background-color: constants.$primary;
-    color: constants.$white;
+  background-color: constants.$primary;
+  color: constants.$white;
 }
 
-.icon[data-isopen='true'] {
-    opacity: 1;
+.icon[data-isopen="true"] {
+  opacity: 1;
 }

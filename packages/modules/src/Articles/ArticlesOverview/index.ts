@@ -1,1 +1,1 @@
-export {default as ArticlesOverview} from './ArticlesOverview';
+export { default as ArticlesOverview } from "./ArticlesOverview";

@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const get_object_service_workers  = gql`
+const get_object_service_workers = gql`
     query getObjectServiceWorkers($id: ID!) {
         objects {
-            getService (objectId: $id) {
+            getService(objectId: $id) {
                 objectId
                 workers {
                     results {

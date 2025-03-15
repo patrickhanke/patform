@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const find_object_documents  = gql`
+const find_object_documents = gql`
     query findPropertyDocument($params: DocumentConstraints) {
         objects {
-            findDocument (where: $params, order: createdAt_DESC ) {
+            findDocument(where: $params, order: createdAt_DESC) {
                 results {
                     createdAt
                     objectId

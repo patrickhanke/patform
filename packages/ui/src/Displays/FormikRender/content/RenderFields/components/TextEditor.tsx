@@ -1,5 +1,5 @@
-import React from 'react';
-import { Editor } from '@repo/ui';
+import React from "react";
+import { Editor } from "@repo/ui";
 
 interface TextEditorProps {
   name: string;
@@ -10,56 +10,61 @@ interface TextEditorProps {
   handleBlur: (value: string) => void;
   placeholder?: string;
   isHorizontal?: boolean;
-  setSecondaryContent?: React.Dispatch<React.SetStateAction<React.ReactNode | null>>;
+  setSecondaryContent?: React.Dispatch<
+    React.SetStateAction<React.ReactNode | null>
+  >;
 }
 
 const TextEditor: React.FC<TextEditorProps> = ({
-	name,
-	label,
-	id,
-	onChange,
-	values,
-	setSecondaryContent,
-	placeholder,
-	isHorizontal
+  name,
+  label,
+  id,
+  onChange,
+  values,
+  setSecondaryContent,
+  placeholder,
+  isHorizontal,
 }) => {
-	return (
-		<div className={isHorizontal ? 'form_horizontal_container' : ''}>
-			<label htmlFor={name}>{label || name} </label>
-			{!setSecondaryContent ? 
-				<Editor
-					id={id}
-					content={values[name] || ''}
-					onChange={onChange}
-					placeholder={placeholder}
-				/>
-				:
-				<div>
-					{ values[name] ? 
-						<div className='text_editor_preview_text' dangerouslySetInnerHTML={{__html: values[name]}} />
-						: 
-						<p>
-							Kein Text
-						</p>
-					}
-					<button
-						className='full_button sm primary'
-						type='button'
-						onClick={() => setSecondaryContent(
-							<Editor
-								id={id}
-								content={values[name] || ''}
-								onChange={onChange}
-								placeholder={placeholder}
-							/>
-						)}
-					>
-						Editor öffnen
-					</button>
-				</div>
-			}
-		</div>
-	);
+  return (
+    <div className={isHorizontal ? "form_horizontal_container" : ""}>
+      <label htmlFor={name}>{label || name} </label>
+      {!setSecondaryContent ? (
+        <Editor
+          id={id}
+          content={values[name] || ""}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
+      ) : (
+        <div>
+          {values[name] ? (
+            <div
+              className="text_editor_preview_text"
+              dangerouslySetInnerHTML={{ __html: values[name] }}
+            />
+          ) : (
+            <p>Kein Text</p>
+          )}
+          <button
+            className="full_button sm primary"
+            type="button"
+            onClick={() =>
+              setSecondaryContent(
+                <Editor
+                  id={id}
+                  content={values[name] || ""}
+                  onChange={onChange}
+                  placeholder={placeholder}
+                />,
+              )
+            }
+          >
+            Editor öffnen
+          </button>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default TextEditor;

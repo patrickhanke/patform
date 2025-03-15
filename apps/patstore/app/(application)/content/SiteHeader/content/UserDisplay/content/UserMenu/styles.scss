@@ -1,49 +1,53 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .user_menu_container {
-    position: fixed;
-    max-width: 300px;
-    top: 40px;
-    right: 12px;
-    z-index: 9;
-    background-color: white;
-    cursor: default;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    transform-origin: top left;
-    box-shadow: constants.$shadow_large_regular;
+  position: fixed;
+  max-width: 300px;
+  top: 40px;
+  right: 12px;
+  z-index: 9;
+  background-color: white;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  transform-origin: top left;
+  box-shadow: constants.$shadow_large_regular;
 }
 
 .user_menu_item {
-    font-family: 'Geist';
-    font-size: map-get($map: constants.$font_size, $key: 'md' );
-    padding: constants.$md;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    font-weight: 500;
-    letter-spacing: 1px;
-    min-width: 240px;
-    overflow: hidden;
-    &:hover {
-        background-color: constants.$light;
-    }
+  font-family: "Geist";
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  padding: constants.$md;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-weight: 500;
+  letter-spacing: 1px;
+  min-width: 240px;
+  overflow: hidden;
+  &:hover {
+    background-color: constants.$light;
+  }
 }
 
 .user_menu_header {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 12px);
-    width: auto;
-    padding: constants.$md;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: 12px
+  );
+  width: auto;
+  padding: constants.$md;
 }
 
 .user_menu_portrait_container {
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: constants.$grey;
-    position: relative;
-
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: constants.$grey;
+  position: relative;
 }

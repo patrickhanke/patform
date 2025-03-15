@@ -1,1 +1,1 @@
-export {default as DisplayProject} from './DisplayProject';
+export { default as DisplayProject } from "./DisplayProject";

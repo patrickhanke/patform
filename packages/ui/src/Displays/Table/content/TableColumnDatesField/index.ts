@@ -1,1 +1,1 @@
-export {default} from './TableColumnDatesField';
+export { default } from "./TableColumnDatesField";

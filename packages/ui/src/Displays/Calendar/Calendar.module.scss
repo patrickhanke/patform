@@ -1,14 +1,24 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .calendar_container {
-    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: 0, $wrap: wrap);
-    margin-top: constants.$lg;
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: 0,
+    $wrap: wrap
+  );
+  margin-top: constants.$lg;
 }
 
 .days_container {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: stretch, $gap: 0, $wrap: no-wrap);
-    width: 100%;
-    border: 1px solid constants.$grey;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: 0,
+    $wrap: no-wrap
+  );
+  width: 100%;
+  border: 1px solid constants.$grey;
 }
-
-

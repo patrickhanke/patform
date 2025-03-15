@@ -1,5 +1,5 @@
-import React, { FC, useCallback, useMemo, useState } from 'react'
-import { TourCellProps } from '../types'
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { TourCellProps } from '../types';
 import styles from '../Tour.module.scss';
 import { useDataHandler } from '@repo/provider';
 import { generateGraphQLQuery } from '@provider';
@@ -11,33 +11,49 @@ import renderCurrentService from '../functions/renderCurrentService';
 import useTourStore from '../../../hooks/useTourStore';
 import { PropertyService, Worker } from '@types';
 
-const TourCell: FC<TourCellProps> = ({services, id, serviceName, propertyId, propertyName, refetch, year}) => {
-    const {updateData} = useDataHandler()
-    const [loading, setLoading] = useState(false);  
+const TourCell: FC<TourCellProps> = ({
+    services,
+    id,
+    serviceName,
+    propertyId,
+    propertyName,
+    refetch,
+    year,
+}) => {
+    const { updateData } = useDataHandler();
+    const [loading, setLoading] = useState(false);
     const week = useTourStore(state => state.week);
     const worker = useTourStore(state => state.worker);
-    const {data} = useQuery(generateGraphQLQuery({
-        objectName: 'Property', 
-        type: 'get',
-        fields: ['services', 'objectId']
-    }),
-    {
-        variables: {
-            id: propertyId
+    const { data } = useQuery(
+        generateGraphQLQuery({
+            objectName: 'Property',
+            type: 'get',
+            fields: ['services', 'objectId'],
+        }),
+        {
+            variables: {
+                id: propertyId,
+            },
         }
-    })
+    );
 
     const service: PropertyService | undefined = services[id];
     const [workers, setWorkers] = useState<string[]>([]);
-    const activeWeek = useMemo(() => week.value === 0 ? true : renderCurrentService({service, week: week.value, year}), [week, year])
+    const activeWeek = useMemo(
+        () =>
+            week.value === 0
+                ? true
+                : renderCurrentService({ service, week: week.value, year }),
+        [week, year]
+    );
 
-    const addServiceToUserHandler =  useCallback(async () => {
+    const addServiceToUserHandler = useCallback(async () => {
         setLoading(true);
         if (data) {
             const property = data.objects.getProperty;
             const propertyServices = cloneDeep(property.services);
             const services = propertyServices || {};
-            set(services, `${id}.assigned_staff`, [worker] );
+            set(services, `${id}.assigned_staff`, [worker]);
             // services[id] = service;
             console.log(services);
             await updateData({
@@ -45,24 +61,24 @@ const TourCell: FC<TourCellProps> = ({services, id, serviceName, propertyId, pro
                 objectId: propertyId,
                 updateObject: {
                     objectId: propertyId,
-                    services: services
+                    services: services,
                 },
                 onError: () => {
                     setLoading(false);
-                }
-            })
+                },
+            });
         }
         await refetch();
         setLoading(false);
-    }, [service])
+    }, [service]);
 
-    const removeServiceFromUserHandler =  useCallback(async () => {
+    const removeServiceFromUserHandler = useCallback(async () => {
         setLoading(true);
         if (data) {
             const property = data.objects.getProperty;
             const propertyServices = cloneDeep(property.services);
             const services = propertyServices || {};
-            set(services, `${id}.assigned_staff`, [] );
+            set(services, `${id}.assigned_staff`, []);
             // services[id] = service;
             console.log(services);
             await updateData({
@@ -70,85 +86,86 @@ const TourCell: FC<TourCellProps> = ({services, id, serviceName, propertyId, pro
                 objectId: propertyId,
                 updateObject: {
                     objectId: propertyId,
-                    services: services
+                    services: services,
                 },
                 onError: () => {
                     setLoading(false);
-                }
-            })
+                },
+            });
         }
         await refetch();
         setLoading(false);
-    }, [service])
+    }, [service]);
 
-    
-
-    
     if (!service) {
-        return (
-            <div className={styles.no_service} />
-        )
+        return <div className={styles.no_service} />;
     }
 
     if (!activeWeek) {
-        return (
-            <div className={styles.no_service} />
-        )
+        return <div className={styles.no_service} />;
     }
 
-    if (worker && service.assigned_staff.includes(worker) && service.substitutes) {
+    if (
+        worker &&
+        service.assigned_staff.includes(worker) &&
+        service.substitutes
+    ) {
         return (
-            <div className='flex row al-ct'>
+            <div className="flex row al-ct">
+                <div
+                    style={{ cursor: 'pointer' }}
+                    onClick={removeServiceFromUserHandler}
+                >
+                    <DisplayWorker
+                        workerId={service.assigned_staff[0]}
+                        onlyImage
+                    />
+                </div>
+                /
+                <div>
+                    <TeamAssignment
+                        workers={workers || []}
+                        onChange={async values => {
+                            console.log(values);
 
-            <div style={{cursor: 'pointer'}} onClick={removeServiceFromUserHandler}>
-                <DisplayWorker workerId={service.assigned_staff[0]} onlyImage  />
-            </div>
-            /
-            <div>
-                <TeamAssignment 
-                    workers={workers || []} 
-                    onChange={async values => {
-                        console.log(values);
+                            setWorkers(values.map(worker => worker.value));
 
-                        setWorkers(values.map((worker) => worker.value));
-                        
-                        // const property = data.objects.getProperty;
-                        // const propertyServices = cloneDeep(property.services);
-                        // const services = propertyServices || {};
-                        // const staff = values.map((value: Worker) => value.objectId);
-                        // set(services, `${id}.subsititutes.${week.value}`, [] );
-                        // // services[id] = service;
-                        // console.log(services);
-                        // await updateData({
-                        //     className: 'Property',
-                        //     objectId: propertyId,
-                        //     updateObject: {
-                        //         objectId: propertyId,
-                        //         services: services
-                        //     },
-                        //     onError: () => {
-                        //         setLoading(false);
-                        //     }
-                        // })
-                        
-                    }} 
-                    showAsButton
-                />
+                            // const property = data.objects.getProperty;
+                            // const propertyServices = cloneDeep(property.services);
+                            // const services = propertyServices || {};
+                            // const staff = values.map((value: Worker) => value.objectId);
+                            // set(services, `${id}.subsititutes.${week.value}`, [] );
+                            // // services[id] = service;
+                            // console.log(services);
+                            // await updateData({
+                            //     className: 'Property',
+                            //     objectId: propertyId,
+                            //     updateObject: {
+                            //         objectId: propertyId,
+                            //         services: services
+                            //     },
+                            //     onError: () => {
+                            //         setLoading(false);
+                            //     }
+                            // })
+                        }}
+                        showAsButton
+                    />
+                </div>
             </div>
-            </div>
-        )
+        );
     }
-  
+
     return (
         <div>
             <IconButton
                 icon="plus"
-                color='green'
+                color="green"
                 onClick={addServiceToUserHandler}
                 disabled={loading}
             />
         </div>
-    )
-}
+    );
+};
 
-export default TourCell
+export default TourCell;

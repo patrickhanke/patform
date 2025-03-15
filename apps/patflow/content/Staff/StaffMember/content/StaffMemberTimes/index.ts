@@ -1,1 +1,1 @@
-export {default} from './StaffMemberTimes';
+export { default } from './StaffMemberTimes';

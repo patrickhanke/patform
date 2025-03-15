@@ -1,1 +1,1 @@
-export {default as Records} from './RecordsOverview';
+export { default as Records } from './RecordsOverview';

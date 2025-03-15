@@ -1,12 +1,12 @@
-import { Filter, LocationClass } from '@repo/types';
+import { Filter, LocationClass } from "@repo/types";
 
 export type FilterArray = Filter[];
 
 export type UseFindLocationHook = ({
-	moduleId: string,
-	filters: FilterArray 
-}) => ({
-    loading: boolean,
-    locations?: LocationClass[],
-    refetch: () => void
-});
+  moduleId: string,
+  filters: FilterArray,
+}) => {
+  loading: boolean;
+  locations?: LocationClass[];
+  refetch: () => void;
+};

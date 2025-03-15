@@ -1,1 +1,1 @@
-export {default as ImagesOverview} from './ImagesOverview';
+export { default as ImagesOverview } from "./ImagesOverview";

@@ -1,1 +1,1 @@
-export {default} from './UserOverview';
+export { default } from './UserOverview';

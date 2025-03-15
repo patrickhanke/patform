@@ -1,1 +1,1 @@
-export {default as GroupOverview} from './GroupOverview';
+export { default as GroupOverview } from "./GroupOverview";

@@ -1,1 +1,1 @@
-export {default} from './EditUserTimes';
+export { default } from './EditUserTimes';

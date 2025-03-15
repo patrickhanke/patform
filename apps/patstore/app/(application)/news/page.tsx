@@ -1,1 +1,1 @@
-export {NewsOverview as default} from '@repo/modules';
+export { NewsOverview as default } from "@repo/modules";

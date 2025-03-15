@@ -2,26 +2,24 @@ import { Dispatch, SetStateAction } from "react";
 import { PatstoreUser } from "@repo/types";
 
 export type UserDisplayProps = {
-    userMessages?: boolean;
+  userMessages?: boolean;
 };
 
 export type UserSettingsProps = {
-    user: PatstoreUser;
-    userSettings: boolean;
-    setUserSettings: Dispatch<SetStateAction<boolean>>;
-    getUser: () => Promise<void>;
-}
-
+  user: PatstoreUser;
+  userSettings: boolean;
+  setUserSettings: Dispatch<SetStateAction<boolean>>;
+  getUser: () => Promise<void>;
+};
 
 export type UserPasswordProps = {
-    user: PatstoreUser;
-    userPassword: boolean;
-    setUserPassword: Dispatch<SetStateAction<boolean>>;
-}
+  user: PatstoreUser;
+  userPassword: boolean;
+  setUserPassword: Dispatch<SetStateAction<boolean>>;
+};
 
 export type ProjectSelectionProps = {
-    projects: string[];
-    selectProject: boolean;
-    setSelectProject: Dispatch<SetStateAction<boolean>>;
-}
-
+  projects: string[];
+  selectProject: boolean;
+  setSelectProject: Dispatch<SetStateAction<boolean>>;
+};

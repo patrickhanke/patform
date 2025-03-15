@@ -1,20 +1,20 @@
 const page_states = [
     {
         value: 'active',
-        label: 'Aktiv'
+        label: 'Aktiv',
     },
     {
         value: 'executed',
-        label: 'Ausgeführt'
+        label: 'Ausgeführt',
     },
     {
         value: 'completed',
-        label: 'Abgeschlossen'
+        label: 'Abgeschlossen',
     },
     {
         value: 'archived',
-        label: 'Archiviert'
-    }
-]
+        label: 'Archiviert',
+    },
+];
 
 export default page_states;

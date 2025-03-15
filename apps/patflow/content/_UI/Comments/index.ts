@@ -1,1 +1,1 @@
-export {default as CommentInterface} from './CommentInterface';
+export { default as CommentInterface } from './CommentInterface';

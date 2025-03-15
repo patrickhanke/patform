@@ -1,1 +1,1 @@
-export {default} from './PropertyOverview';
+export { default } from './PropertyOverview';

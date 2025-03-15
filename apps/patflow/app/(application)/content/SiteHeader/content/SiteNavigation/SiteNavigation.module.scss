@@ -1,7 +1,11 @@
 @use '@repo/styles/constants';
 
 .site_navigation_container {
-    @include constants.flexbox($direction: row, $align: flex-end, $justify: flex-start);
+    @include constants.flexbox(
+        $direction: row,
+        $align: flex-end,
+        $justify: flex-start
+    );
     width: auto;
     position: relative;
     z-index: 2;
@@ -9,20 +13,27 @@
 }
 
 .navigation_element_container {
-    @include constants.flexbox($direction: column, $align: center, $justify: space-between, $gap: 0);
+    @include constants.flexbox(
+        $direction: column,
+        $align: center,
+        $justify: space-between,
+        $gap: 0
+    );
     background-color: transparent;
     cursor: pointer;
     color: constants.$grey_shaded;
     font-weight: 500;
-    transition: border-bottom .2 ease, color .2 ease;
+    transition:
+        border-bottom 0.2 ease,
+        color 0.2 ease;
     // border: .5px solid constants.$grey;
     border: none;
-    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm');
     &:hover {
         background-color: constants.$light;
     }
     .title_container {
-        padding: map-get($map: constants.$padding, $key: 'xs' )
+        padding: map-get($map: constants.$padding, $key: 'xs');
     }
 }
 
@@ -30,5 +41,4 @@
     background-color: constants.$primary;
     color: constants.$light;
     // border: .5px solid constants.$secondary;
-
 }

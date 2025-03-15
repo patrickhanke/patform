@@ -1,1 +1,1 @@
-export {default as RenderFilters } from './RenderFilters';
+export { default as RenderFilters } from "./RenderFilters";

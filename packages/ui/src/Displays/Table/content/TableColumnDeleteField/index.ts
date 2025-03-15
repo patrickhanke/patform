@@ -1,1 +1,1 @@
-export {default} from './TableColumnDeleteField';
+export { default } from "./TableColumnDeleteField";

@@ -1,15 +1,17 @@
-import { FieldValidationArray, getFieldsWithValidationFunction } from '../types';
+import {
+  FieldValidationArray,
+  getFieldsWithValidationFunction,
+} from "../types";
 
 const getFieldsWithValidation: getFieldsWithValidationFunction = (fields) => {
-	const fieldArray: FieldValidationArray = [];
-	fields.forEach(field => {
-		if (field.validation) {
-			fieldArray.push(field as FieldValidationArray[number]);
-        
-		}
-	});
+  const fieldArray: FieldValidationArray = [];
+  fields.forEach((field) => {
+    if (field.validation) {
+      fieldArray.push(field as FieldValidationArray[number]);
+    }
+  });
 
-	return fieldArray;
+  return fieldArray;
 };
 
 export default getFieldsWithValidation;

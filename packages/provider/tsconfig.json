@@ -2,12 +2,12 @@
   "extends": "@repo/typescript/react-library.json",
   "compilerOptions": {
     "esModuleInterop": true,
-    "module": "ESNext", 
+    "module": "ESNext",
     "moduleResolution": "Bundler",
     "composite": true,
     "incremental": true
     // "rootDir": "./src"
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "firebase"],
+  "exclude": ["node_modules", "dist", "firebase"]
 }

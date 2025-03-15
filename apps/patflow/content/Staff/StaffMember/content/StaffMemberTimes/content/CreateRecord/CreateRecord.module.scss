@@ -1,13 +1,23 @@
 @use '@repo/styles/constants';
 
 .create_record_content {
-    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: constants.$lg);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: flex-start,
+        $align: stretch,
+        $gap: constants.$lg
+    );
     height: 100%;
     overflow: hidden;
 }
 
 .create_record_switch_buttons {
-    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: constants.$lg);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: flex-start,
+        $align: stretch,
+        $gap: constants.$lg
+    );
 }
 
 .create_record_form_container {
@@ -16,11 +26,18 @@
 }
 
 .record_settings_container {
-    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: space-between,
+        $align: stretch
+    );
     width: 100%;
-   
 }
 
 .record_settings_info {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: center
+    );
 }

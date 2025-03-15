@@ -1,1 +1,1 @@
-export {default as FileDisplay} from './FileDisplay';
+export { default as FileDisplay } from "./FileDisplay";

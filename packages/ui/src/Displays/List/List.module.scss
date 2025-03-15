@@ -1,32 +1,52 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .list_container {
-    @include constants.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: 0);
-    border: 1px solid constants.$grey_shaded;
-    border-radius: map-get($map: constants.$border_radius, $key: 'md' );
-    overflow: hidden;
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: flex-start,
+    $gap: 0
+  );
+  border: 1px solid constants.$grey_shaded;
+  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  overflow: hidden;
 }
 
 .list_header {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
-    background-color: constants.$light;
-    padding: map-get($map: constants.$padding, $key: 'md');
-    border-bottom: 1px solid constants.$dark;
-    h3 {
-        font-weight: 600;
-        font-size: constants.$sm
-    }
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: 0
+  );
+  background-color: constants.$light;
+  padding: map-get($map: constants.$padding, $key: "md");
+  border-bottom: 1px solid constants.$dark;
+  h3 {
+    font-weight: 600;
+    font-size: constants.$sm;
+  }
 }
 
 .list_element_container {
-    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: 0);
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: space-between,
+    $gap: 0
+  );
 }
 
 .list_element {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
-    @include constants.list_element;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: 0
+  );
+  @include constants.list_element;
 }
 
-.list_element[data-islast='true'] {
-    border-bottom: none;
+.list_element[data-islast="true"] {
+  border-bottom: none;
 }

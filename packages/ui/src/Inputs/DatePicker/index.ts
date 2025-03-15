@@ -1,3 +1,3 @@
-export {default as DatePicker} from './DatePicker'; 
+export { default as DatePicker } from "./DatePicker";
 
-export type * from './types';
+export type * from "./types";

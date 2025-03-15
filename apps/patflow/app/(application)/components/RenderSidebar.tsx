@@ -1,88 +1,107 @@
 'use client';
 
-import React from 'react'
-import Logo from './Logo'
-import { Sidebar } from '@repo/ui'
+import React from 'react';
+import Logo from './Logo';
+import { Sidebar } from '@repo/ui';
 
 const menu_items = [
-	{
-		label: 'Dashboard',
-		value: '/',
-		icon: 'dashboard',
-		sub_menu: []
-	},{
-		label: 'Objekte',
-		value: '/properties',
-		icon: 'objects',
-		sub_menu: []
-	},{
-		label: 'Aufgaben',
-		value: '/tasks',
-		icon: 'tasks',
-		sub_menu: [{
-			label: 'Aktiv',
-			value: '/active',
-			icon: 'active',
-		},{
-			label: 'Erledigt',
-			value: '/executed',
-			icon: 'executed',
-		},{
-			label: 'Geschlossen',
-			value: '/completed',
-			icon: 'completed'
-		}]
-	},{
-		label: 'Tickets',
-		value: '/tickets',
-		icon: 'tickets',
-		sub_menu: [{
-			label: 'Offen',
-			value: '/open',
-			icon: 'active',
-		},{
-			label: 'In Bearbeitung',
-			value: '/in_progress',
-			icon: 'executed',
-		},{
-			label: 'Geschlossen',
-			value: '/closed',
-			icon: 'closed'
-		}]
-	},{
-		label: 'Touren',
-		value: '/tours',
-		icon: 'tours'
-	},{
-		label: 'Zeiterfassung',
-		value: '/records',
-		icon: 'time'
-	},{
-		label: 'Mitarbeiter',
-		value: '/staff',
-		icon: 'staff',
-		sub_menu: []
-	},{
-		label: 'Nutzerverwaltung',
-		value: '/settings/user_management',
-		icon: 'users',
-		divider: 'Einstellungen',
-	},{
-		label: 'Zeiten und Zuschläge',
-		value: '/settings/times',
-		icon: 'calendar'
-	}
+    {
+        label: 'Dashboard',
+        value: '/',
+        icon: 'dashboard',
+        sub_menu: [],
+    },
+    {
+        label: 'Objekte',
+        value: '/properties',
+        icon: 'objects',
+        sub_menu: [],
+    },
+    {
+        label: 'Aufgaben',
+        value: '/tasks',
+        icon: 'tasks',
+        sub_menu: [
+            {
+                label: 'Aktiv',
+                value: '/active',
+                icon: 'active',
+            },
+            {
+                label: 'Erledigt',
+                value: '/executed',
+                icon: 'executed',
+            },
+            {
+                label: 'Geschlossen',
+                value: '/completed',
+                icon: 'completed',
+            },
+        ],
+    },
+    {
+        label: 'Tickets',
+        value: '/tickets',
+        icon: 'tickets',
+        sub_menu: [
+            {
+                label: 'Offen',
+                value: '/open',
+                icon: 'active',
+            },
+            {
+                label: 'In Bearbeitung',
+                value: '/in_progress',
+                icon: 'executed',
+            },
+            {
+                label: 'Geschlossen',
+                value: '/closed',
+                icon: 'closed',
+            },
+        ],
+    },
+    {
+        label: 'Touren',
+        value: '/tours',
+        icon: 'tours',
+    },
+    {
+        label: 'Zeiterfassung',
+        value: '/records',
+        icon: 'time',
+    },
+    {
+        label: 'Mitarbeiter',
+        value: '/staff',
+        icon: 'staff',
+        sub_menu: [],
+    },
+    {
+        label: 'Nutzerverwaltung',
+        value: '/settings/user_management',
+        icon: 'users',
+        divider: 'Einstellungen',
+    },
+    {
+        label: 'Zeiten und Zuschläge',
+        value: '/settings/times',
+        icon: 'calendar',
+    },
 ];
 
 const RenderSidebar = () => {
-	return (
-		<div className='layout_sidebar_container' id='sidebar'>
-			<div className='layout_sidebar_header'>
-				<Logo />
-			</div>
-			<Sidebar menuItems={menu_items} />
-		</div >
-	)
-}
+    return (
+        <div
+            className="layout_sidebar_container"
+            id="sidebar"
+        >
+            <div className="layout_sidebar_header">
+                <Logo />
+            </div>
+            <Sidebar menuItems={menu_items} />
+        </div>
+    );
+};
 
-export default RenderSidebar
+export default RenderSidebar;

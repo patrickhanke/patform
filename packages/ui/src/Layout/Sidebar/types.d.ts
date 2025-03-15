@@ -1,33 +1,32 @@
-import { PatstoreUser } from "@repo/types"
-import React from "react"
+import { PatstoreUser } from "@repo/types";
+import React from "react";
 
 export type SidebarProps = {
-    menuItems: MenuItemType[]
-    user: PatstoreUser,
-    children?: React.ReactNode,
-    appVersion? : string,
-    appName?: string
-}
-
+  menuItems: MenuItemType[];
+  user: PatstoreUser;
+  children?: React.ReactNode;
+  appVersion?: string;
+  appName?: string;
+};
 
 export type MenuItem = ReadOnly<{
-    value: string,
-    label: string,
-    icon: string,
-    disabled?: boolean,
-    sub_menu: {
-      value: string,
-      label: string,
-      icon: string,
-      disabled?: boolean
-    }[]
-  }>
+  value: string;
+  label: string;
+  icon: string;
+  disabled?: boolean;
+  sub_menu: {
+    value: string;
+    label: string;
+    icon: string;
+    disabled?: boolean;
+  }[];
+}>;
 
 export type MenuItemProps = {
-    link: string,
-    label: string,
-    icon: string,
-    subMenu: MenuItemType['sub_menu'],
-    disabled?: boolean,
-    divider?: string
-  }
+  link: string;
+  label: string;
+  icon: string;
+  subMenu: MenuItemType["sub_menu"];
+  disabled?: boolean;
+  divider?: string;
+};

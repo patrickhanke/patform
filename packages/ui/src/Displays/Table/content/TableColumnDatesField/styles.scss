@@ -1,19 +1,34 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .table_column_date_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: 0);
-    background-color: constants.$white;
-    width: 100%;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: 0
+  );
+  background-color: constants.$white;
+  width: 100%;
 }
 
 .table_columns_dates_list {
-    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$md);
-    width: 100%;
-    margin-top: constants.$md;
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: space-between,
+    $gap: constants.$md
+  );
+  width: 100%;
+  margin-top: constants.$md;
 }
 
 .table_columns_dates_location_container {
-    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$md);
-    width: 100%;
-    margin-top: constants.$md;
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: space-between,
+    $gap: constants.$md
+  );
+  width: 100%;
+  margin-top: constants.$md;
 }

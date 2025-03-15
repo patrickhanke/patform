@@ -1,38 +1,38 @@
-import { PageState } from '@repo/types';
-import { Dispatch, SetStateAction } from 'react';
-import { PageProps } from '../../types';
+import { PageState } from "@repo/types";
+import { Dispatch, SetStateAction } from "react";
+import { PageProps } from "../../types";
 
 export type PageNavigationProps = {
-    pageState: PageState[],
-    activeState: PageState,
-    onClick: Dispatch<SetStateAction<PageState>>
-}
+  pageState: PageState[];
+  activeState: PageState;
+  onClick: Dispatch<SetStateAction<PageState>>;
+};
 
 export type PageHeaderButton = {
-    text: string,
-    onClick: () => void,
-    is_add_button?: boolean,
-    is_reset_button?: boolean,
-    color?: string,
-    disabled?: boolean,
-}
+  text: string;
+  onClick: () => void;
+  is_add_button?: boolean;
+  is_reset_button?: boolean;
+  color?: string;
+  disabled?: boolean;
+};
 
-export type PageHeaderButtons = PageHeaderButton[]
+export type PageHeaderButtons = PageHeaderButton[];
 
-type PageHeaderContent =  React.JSX.Element;
+type PageHeaderContent = React.JSX.Element;
 
 export type PageHeaderComponent = {
-    title?: PageProps['title'], 
-    pageHeaderContent?: PageProps['pageHeaderContent'], 
-    pageHeaderButtons?: PageProps['pageHeaderButtons'],
-    emptyContent?: PageProps['emptyContent'],
-    refetch?: PageProps['refetch'],
-    createClass?: PageProps['createClass'],
-    projectId?: string
-}
+  title?: PageProps["title"];
+  pageHeaderContent?: PageProps["pageHeaderContent"];
+  pageHeaderButtons?: PageProps["pageHeaderButtons"];
+  emptyContent?: PageProps["emptyContent"];
+  refetch?: PageProps["refetch"];
+  createClass?: PageProps["createClass"];
+  projectId?: string;
+};
 
 export type PageNavigationComponent = {
-    items: PageHeaderComponent['navItems'],
-    currentItem: PageHeaderComponent['navCurrentItem'],
-    onClick: PageHeaderComponent['navOnClick']
-}
+  items: PageHeaderComponent["navItems"];
+  currentItem: PageHeaderComponent["navCurrentItem"];
+  onClick: PageHeaderComponent["navOnClick"];
+};

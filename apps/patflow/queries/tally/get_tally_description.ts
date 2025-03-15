@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 const get_tally_description = gql`
     query GetTallyDescription($id: ID!) {

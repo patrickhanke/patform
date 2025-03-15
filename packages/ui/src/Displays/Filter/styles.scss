@@ -1,7 +1,12 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .filter_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
-    width: 100%;
-    overflow: auto;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$md
+  );
+  width: 100%;
+  overflow: auto;
 }

@@ -1,1 +1,1 @@
-export {default} from './TallyDescription';
+export { default } from './TallyDescription';

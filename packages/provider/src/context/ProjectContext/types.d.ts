@@ -1,12 +1,12 @@
-import { Module, Project } from '@repo/types';
+import { Module, Project } from "@repo/types";
 
 export type ContextValues = {
-    project: PatstoreContext | undefined,
-    loadProject: (projectId: string) => void
-}
+  project: PatstoreContext | undefined;
+  loadProject: (projectId: string) => void;
+};
 
 export type ProjectLoaderProps = {
-    loading: boolean,
-    error?: any,
-    project?: PatstoreContext | undefined
-}
+  loading: boolean;
+  error?: any;
+  project?: PatstoreContext | undefined;
+};

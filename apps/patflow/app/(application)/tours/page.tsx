@@ -1,1 +1,1 @@
-export {ToursOverview as default} from '@content';
+export { ToursOverview as default } from '@content';

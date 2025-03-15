@@ -6,7 +6,7 @@
         "name": "next"
       }
     ]
-  },  
+  },
   "baseUrl": ".",
   "paths": {
     "@patstore/*": ["./*"],
@@ -25,5 +25,5 @@
     ".next/types/**/*.ts",
     "custom.d.ts"
   ],
-  "exclude": ["node_modules", ".eslintrc.js", "jest.config.js"]
+  "exclude": ["node_modules", "eslint.config.js", "jest.config.js"]
 }

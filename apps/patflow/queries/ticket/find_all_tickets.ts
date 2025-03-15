@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-const FIND_ALL_TICKETS  = gql`
-    query findAllTickets($params: TicketConstraints ) {
+const FIND_ALL_TICKETS = gql`
+    query findAllTickets($params: TicketConstraints) {
         objects {
             findTicket(where: $params, order: createdAt_DESC) {
                 results {
@@ -24,7 +24,7 @@ const FIND_ALL_TICKETS  = gql`
                     task {
                         objectId
                         id: objectId
-                        title                
+                        title
                     }
                 }
             }

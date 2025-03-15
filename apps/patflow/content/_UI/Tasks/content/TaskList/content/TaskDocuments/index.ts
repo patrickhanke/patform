@@ -1,1 +1,1 @@
-export {default} from './TaskDocuments';
+export { default } from './TaskDocuments';

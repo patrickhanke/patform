@@ -1,14 +1,16 @@
 const page_states = [
     {
         value: 'services',
-        label: 'Leistungsverzeichnis'
-    },{
+        label: 'Leistungsverzeichnis',
+    },
+    {
         value: 'settings',
-        label: 'Leistungseinstellungen'
-    },{
+        label: 'Leistungseinstellungen',
+    },
+    {
         value: 'tours',
-        label: 'Touren'
-    }
-]
+        label: 'Touren',
+    },
+];
 
 export default page_states;

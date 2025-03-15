@@ -1,1 +1,1 @@
-export {default} from './CreateTask';
+export { default } from './CreateTask';

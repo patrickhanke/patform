@@ -1,8 +1,8 @@
-import { DateTypes } from '@types';
+import { DateTypes } from "@types";
 
-export type DisplayType = 'date' | 'time' | 'date-and-time'
+export type DisplayType = "date" | "time" | "date-and-time";
 
 export type DateDisplayComponent = {
-    date: DateTypes.TDateISO,
-    displayType: DisplayType
-}
+  date: DateTypes.TDateISO;
+  displayType: DisplayType;
+};

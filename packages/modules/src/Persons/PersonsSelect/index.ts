@@ -1,1 +1,1 @@
-export {default as PersonsSelect} from './PersonsSelect';
+export { default as PersonsSelect } from "./PersonsSelect";

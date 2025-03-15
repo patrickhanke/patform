@@ -1,12 +1,12 @@
-import { DisplayProject, LoginForm } from '../content';
+import { DisplayProject, LoginForm } from "../content";
 
 const Login = async () => {
-	return (
-		<>
-			<DisplayProject />
-			<LoginForm />
-		</>
-	);
+  return (
+    <>
+      <DisplayProject />
+      <LoginForm />
+    </>
+  );
 };
 
 export default Login;

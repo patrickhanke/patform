@@ -1,68 +1,107 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .user_messages_container {
-    @include constants.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: 0);
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: flex-start,
+    $gap: 0
+  );
 }
 
 .siteheader_content {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center
+  );
 }
 
 .user_message_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
-    border-bottom: 1px solid constants.$grey;
-    position: relative;
-    background-color: constants.$white;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$md
+  );
+  border-bottom: 1px solid constants.$grey;
+  position: relative;
+  background-color: constants.$white;
 }
 
 .user_message_container[data-is_read="false"] {
-    background-color: constants.$light;
+  background-color: constants.$light;
 }
 
 .content_container {
-    @include constants.flexbox($direction: row, $align: flex-start, $justify: flex-start, $gap: constants.$md);
-    padding: map-get($map: constants.$padding, $key: 'md' );
-    width: 100%;
+  @include constants.flexbox(
+    $direction: row,
+    $align: flex-start,
+    $justify: flex-start,
+    $gap: constants.$md
+  );
+  padding: map-get($map: constants.$padding, $key: "md");
+  width: 100%;
 }
 
 .user_message_content {
-    @include constants.flexbox($direction: column, $align: flex-start, $justify: center, $gap: constants.$xxs);
-    flex: 1;
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: center,
+    $gap: constants.$xxs
+  );
+  flex: 1;
 }
 
 .user_message_icon {
-    background-color: constants.$grey;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
+  background-color: constants.$grey;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
 }
 
 .time {
-    color: constants.$grey;
-    // display: inline-block;
-    font-size: map-get($map: constants.$font_size, $key: 'sm' );
-    margin-left: constants.$sm;
+  color: constants.$grey;
+  // display: inline-block;
+  font-size: map-get($map: constants.$font_size, $key: "sm");
+  margin-left: constants.$sm;
 }
 
 .user_message_headline {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
-    width: 100%;
-    color: constants.$dark;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$md
+  );
+  width: 100%;
+  color: constants.$dark;
 }
 
 .user_message_headline[data-is_read="false"] {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .user_message_text {
-    max-width: 360px;
-};
+  max-width: 360px;
+}
 
 .user_message_footer {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
-    width: 100%;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$md
+  );
+  width: 100%;
 }
 
 .user_message_header {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$md);
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$md
+  );
 }

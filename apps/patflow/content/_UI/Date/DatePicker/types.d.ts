@@ -6,7 +6,7 @@ export type DatePickerProps = {
     id: string;
     disabled?: boolean;
     width?: number | string;
-    onlyDate?: boolean; 
+    onlyDate?: boolean;
     min?: string;
     max?: string;
-};  
+};

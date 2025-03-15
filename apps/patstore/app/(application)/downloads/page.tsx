@@ -1,1 +1,1 @@
-export { DownloadsOverview as default } from '@repo/modules';
+export { DownloadsOverview as default } from "@repo/modules";

@@ -5,36 +5,21 @@
     "BYTESCALE_PUBLIC_KEY",
     "BYTESCALE_SECRET_KEY"
   ],
-  "globalDependencies": [
-    ".env"
-  ],
+  "globalDependencies": [".env"],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env"
-      ],
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".env"],
       "outputLogs": "full"
     },
     "lint": {
-      "dependsOn": [
-        "^lint"
-      ]
+      "dependsOn": ["^lint"]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env"
-      ]
+      "inputs": ["$TURBO_DEFAULT$", ".env"]
     }
   }
 }

@@ -1,65 +1,63 @@
-@use '../constants/sizes';
-@use '../constants/colors';
+@use "../constants/sizes";
+@use "../constants/colors";
 
 form {
-      
-      label.error {
-        color: #cc0033;
-      }
-      
-      .error_message {
-        color: #cc0033;
-        display: inline-block;
-        font-size: map-get($map: constants.$font_size, $key: 'xs' );
-        line-height: 12px;
-        // margin-top: constants.$xs;
-      }
-      
-      .input-group .error_message {
-        display: none;
-      }
-      
-      /* Error Styling */
-      .error .error_message {
-        display: inline-block;
-      }
-    
-    input {
-        padding: map-get($map: constants.$padding, $key: 'sm' );
-        border: 1px solid constants.$grey_shaded;
-        transition: border .4s ease;
-        outline: 0;
-        font-size: map-get($map: constants.$font_size, $key: 'md' );
-        border: 1px solid constants.$grey_tinted;
-        position: relative;
-        box-sizing: border-box;
-        outline: none;
-        min-width: 300px;
-        width: 100%;
-        max-width: 360px;
-    
-        &:focus {
-            padding: map-get($map: constants.$padding, $key: 'sm' );
-            border-radius: 0;
-            border: 1px solid constants.$primary;
-        }
-    
-        &:focus-visible {
-            padding: map-get($map: constants.$padding, $key: 'sm' );
-            border-radius: 0;
-            border: 1px solid constants.$primary;
-        }
-    
-        &:target {
-            padding: map-get($map: constants.$padding, $key: 'sm' );
-            border-radius: 0;
-            border: 1px solid constants.$primary;
-        }
-    }
-    input.error {
-        // background-color: #fce4e4;
-        border: 1px solid #cc0033;
-        outline: none;
-      }
-}
+  label.error {
+    color: #cc0033;
+  }
 
+  .error_message {
+    color: #cc0033;
+    display: inline-block;
+    font-size: map-get($map: constants.$font_size, $key: "xs");
+    line-height: 12px;
+    // margin-top: constants.$xs;
+  }
+
+  .input-group .error_message {
+    display: none;
+  }
+
+  /* Error Styling */
+  .error .error_message {
+    display: inline-block;
+  }
+
+  input {
+    padding: map-get($map: constants.$padding, $key: "sm");
+    border: 1px solid constants.$grey_shaded;
+    transition: border 0.4s ease;
+    outline: 0;
+    font-size: map-get($map: constants.$font_size, $key: "md");
+    border: 1px solid constants.$grey_tinted;
+    position: relative;
+    box-sizing: border-box;
+    outline: none;
+    min-width: 300px;
+    width: 100%;
+    max-width: 360px;
+
+    &:focus {
+      padding: map-get($map: constants.$padding, $key: "sm");
+      border-radius: 0;
+      border: 1px solid constants.$primary;
+    }
+
+    &:focus-visible {
+      padding: map-get($map: constants.$padding, $key: "sm");
+      border-radius: 0;
+      border: 1px solid constants.$primary;
+    }
+
+    &:target {
+      padding: map-get($map: constants.$padding, $key: "sm");
+      border-radius: 0;
+      border: 1px solid constants.$primary;
+    }
+  }
+  input.error {
+    // background-color: #fce4e4;
+    border: 1px solid #cc0033;
+    outline: none;
+  }
+}

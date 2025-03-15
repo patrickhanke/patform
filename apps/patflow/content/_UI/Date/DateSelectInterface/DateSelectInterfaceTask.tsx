@@ -12,82 +12,95 @@ import { formatISO9075 } from 'date-fns';
 import { DateInterval, DateObjectWithNextDates, Task } from '@types';
 import { SlideInRight } from '@repo/ui';
 
-const DateSelectInterfaceTask = ({taskId, showDateInterface, setShowDateInterface, tasksRefetch}: DateSelectInterfaceTaskProps) => {
-	const {updateData} = useDataHandler();
-	const [loading, setLoading] = useState(false);
+const DateSelectInterfaceTask = ({
+    taskId,
+    showDateInterface,
+    setShowDateInterface,
+    tasksRefetch,
+}: DateSelectInterfaceTaskProps) => {
+    const { updateData } = useDataHandler();
+    const [loading, setLoading] = useState(false);
 
-	const [time, setTime] = useState<Task['time']>({
-		type: modi_options[0] as DateInterval,
-		category: date_category_options[0],
-		interval: {
-			number: 1,
-			unit: 'weeks'
-		},
-		start_date: '',
-		end_date: '',
-		dates: [''],
-		weekday: '',
-		time: ''
-	});
+    const [time, setTime] = useState<Task['time']>({
+        type: modi_options[0] as DateInterval,
+        category: date_category_options[0],
+        interval: {
+            number: 1,
+            unit: 'weeks',
+        },
+        start_date: '',
+        end_date: '',
+        dates: [''],
+        weekday: '',
+        time: '',
+    });
 
-	const {loading: queryLoading, refetch} = useQuery(GET_TASK_TIME, {
-		variables: {id: taskId}, 
-		onCompleted(data) {
-			setTime(data.objects.getTask.time);
-		},
-		notifyOnNetworkStatusChange: true
-	});
+    const { loading: queryLoading, refetch } = useQuery(GET_TASK_TIME, {
+        variables: { id: taskId },
+        onCompleted(data) {
+            setTime(data.objects.getTask.time);
+        },
+        notifyOnNetworkStatusChange: true,
+    });
 
-	useEffect(() => {
-		refetch();
-	}, [showDateInterface]);
+    useEffect(() => {
+        refetch();
+    }, [showDateInterface]);
 
-	const dataHandler = useCallback(async (timeValue: DateObjectWithNextDates ) => {
-		const timeValueCopy = {...timeValue};
-		
-		const next_dates: string[] = [];
+    const dataHandler = useCallback(
+        async (timeValue: DateObjectWithNextDates) => {
+            const timeValueCopy = { ...timeValue };
 
-		timeValueCopy.dates.forEach((date: string )=> {
-			const isodate = formatISO9075(new Date(date), {representation: 'date'});
-			if (!next_dates.includes(isodate) && new Date(date).getTime() > new Date().getTime()) {
-				next_dates.push(isodate);
-			}
-		});
-		
-		setLoading(true);
-		await updateData({
-			className: 'Task',
-			objectId: taskId,
-			updateObject: {
-				type: timeValue.type.value,
-				category: timeValue.category.value,
-				dates: next_dates,
-				time: timeValue
-			}
-		});
-		if (tasksRefetch) {
-			tasksRefetch();
-		}
-		setLoading(false);
-		setShowDateInterface(false);
-	}, [taskId, time]);
+            const next_dates: string[] = [];
 
-	return (
-		<SlideInRight
-			isOpen={showDateInterface}
-			setIsOpen={setShowDateInterface}
-			header='Zeiten bearbeiten'
-			size='small'
-			preventClickOutside
-		>
-			<DateSelect
-				initialValue={time}
-				dataHandler={dataHandler}
-				setShowSlideIn={setShowDateInterface}
-				loading={loading || queryLoading}
-			/>
-		</SlideInRight>
-	);
+            timeValueCopy.dates.forEach((date: string) => {
+                const isodate = formatISO9075(new Date(date), {
+                    representation: 'date',
+                });
+                if (
+                    !next_dates.includes(isodate) &&
+                    new Date(date).getTime() > new Date().getTime()
+                ) {
+                    next_dates.push(isodate);
+                }
+            });
+
+            setLoading(true);
+            await updateData({
+                className: 'Task',
+                objectId: taskId,
+                updateObject: {
+                    type: timeValue.type.value,
+                    category: timeValue.category.value,
+                    dates: next_dates,
+                    time: timeValue,
+                },
+            });
+            if (tasksRefetch) {
+                tasksRefetch();
+            }
+            setLoading(false);
+            setShowDateInterface(false);
+        },
+        [taskId, time]
+    );
+
+    return (
+        <SlideInRight
+            isOpen={showDateInterface}
+            setIsOpen={setShowDateInterface}
+            header="Zeiten bearbeiten"
+            size="small"
+            preventClickOutside
+        >
+            <DateSelect
+                initialValue={time}
+                dataHandler={dataHandler}
+                setShowSlideIn={setShowDateInterface}
+                loading={loading || queryLoading}
+            />
+        </SlideInRight>
+    );
 };
 
 export default DateSelectInterfaceTask;

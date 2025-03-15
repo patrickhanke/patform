@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const get_property  = gql`
+const get_property = gql`
     query getPropertyById($id: ID!) {
         objects {
-            getProperty (objectId: $id) {
+            getProperty(objectId: $id) {
                 objectId
                 name
                 createdAt

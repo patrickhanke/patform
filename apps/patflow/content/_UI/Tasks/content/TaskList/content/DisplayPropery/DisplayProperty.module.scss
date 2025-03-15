@@ -3,9 +3,13 @@
 @import '../../Task.module.scss';
 
 .object_container {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: center);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: flex-start,
+        $align: center
+    );
     font-weight: 500;
-    font-size: .7rem;
+    font-size: 0.7rem;
     max-width: 180px;
     position: relative;
 }

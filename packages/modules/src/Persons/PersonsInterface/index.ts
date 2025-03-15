@@ -1,1 +1,1 @@
-export {default as PersonsInterface} from './PersonsInterface';
+export { default as PersonsInterface } from "./PersonsInterface";

@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const get_staff_isworker  = gql`
+const get_staff_isworker = gql`
     query getWorkerIsWorker($id: ID!) {
         objects {
-            get_User (objectId: $id) {
+            get_User(objectId: $id) {
                 objectId
                 is_worker
             }

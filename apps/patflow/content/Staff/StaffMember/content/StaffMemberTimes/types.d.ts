@@ -7,12 +7,12 @@ export type StaffMemberTimesProps = {
     timeSettings: User['time_settings'];
     createRecord: boolean;
     setCreateRecord: Dispatch<SetStateAction<boolean>>;
-    projectId: string; 
+    projectId: string;
 };
 
 type TableColumnProps = {
     refetch: ApolloRefetch;
-    projectId: string
-}
+    projectId: string;
+};
 
 export type UseRecordTableColumns = (TableColumnProps) => ColumnDef<Record>[];

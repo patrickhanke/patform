@@ -1,94 +1,101 @@
-import React from 'react';
-import classNames from 'classnames';
-import { SuggestionKeyDownProps } from '@tiptap/suggestion';
-import { OverlayScrollbarsComponent, OverlayScrollbarsComponentProps } from 'overlayscrollbars-react';
+import React from "react";
+import classNames from "classnames";
+import { SuggestionKeyDownProps } from "@tiptap/suggestion";
+import {
+  OverlayScrollbarsComponent,
+  OverlayScrollbarsComponentProps,
+} from "overlayscrollbars-react";
 
-import './SuggestionDropdown.scss';
+import "./SuggestionDropdown.scss";
 
 type SuggestionDropdownRef = {
-    onKeyDown: (props: SuggestionKeyDownProps) => boolean
-}
+  onKeyDown: (props: SuggestionKeyDownProps) => boolean;
+};
 
 type SuggestionDropdownProps<TItem> = {
-    forwardedRef: React.ForwardedRef<SuggestionDropdownRef>
-    items: TItem[]
-    onSelect: (item: TItem) => void
-    renderItem: (item: TItem) => JSX.Element
-}
+  forwardedRef: React.ForwardedRef<SuggestionDropdownRef>;
+  items: TItem[];
+  onSelect: (item: TItem) => void;
+  renderItem: (item: TItem) => JSX.Element;
+};
 
 function SuggestionDropdown<TItem>({
-	forwardedRef,
-	items,
-	onSelect,
-	renderItem
+  forwardedRef,
+  items,
+  onSelect,
+  renderItem,
 }: SuggestionDropdownProps<TItem>) {
-	const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-	const overlayScrollbarsRef = React.useRef<OverlayScrollbarsComponentProps>(null);
-	const selectedItemRef = React.useRef<HTMLLIElement>(null);
+  const overlayScrollbarsRef =
+    React.useRef<OverlayScrollbarsComponentProps>(null);
+  const selectedItemRef = React.useRef<HTMLLIElement>(null);
 
-	function selectItem(index: number) {
-		const item = items[index];
+  function selectItem(index: number) {
+    const item = items[index];
 
-		if (item) {
-			onSelect(item);
-		}
-	}
+    if (item) {
+      onSelect(item);
+    }
+  }
 
-	React.useEffect(
-		function scrollSelectedItemIntoView() {
-			overlayScrollbarsRef.current?.osInstance().scroll({
-				el: selectedItemRef.current,
-				scroll: {
-					y: 'ifneeded',
-					x: 'never'
-				}
-			});
-		},
-		[selectedIndex]
-	);
+  React.useEffect(
+    function scrollSelectedItemIntoView() {
+      overlayScrollbarsRef.current?.osInstance().scroll({
+        el: selectedItemRef.current,
+        scroll: {
+          y: "ifneeded",
+          x: "never",
+        },
+      });
+    },
+    [selectedIndex],
+  );
 
-	React.useImperativeHandle(forwardedRef, () => ({
-		onKeyDown: ({ event }) => {
-			if (event.key === 'ArrowUp') {
-				setSelectedIndex((selectedIndex + items.length - 1) % items.length);
-				return true;
-			}
+  React.useImperativeHandle(forwardedRef, () => ({
+    onKeyDown: ({ event }) => {
+      if (event.key === "ArrowUp") {
+        setSelectedIndex((selectedIndex + items.length - 1) % items.length);
+        return true;
+      }
 
-			if (event.key === 'ArrowDown') {
-				setSelectedIndex((selectedIndex + 1) % items.length);
-				return true;
-			}
+      if (event.key === "ArrowDown") {
+        setSelectedIndex((selectedIndex + 1) % items.length);
+        return true;
+      }
 
-			if (event.key === 'Enter') {
-				selectItem(selectedIndex);
-				return true;
-			}
+      if (event.key === "Enter") {
+        selectItem(selectedIndex);
+        return true;
+      }
 
-			return false;
-		}
-	}));
+      return false;
+    },
+  }));
 
-	if (items.length === 0) {
-		return null;
-	}
+  if (items.length === 0) {
+    return null;
+  }
 
-	return (
-		<OverlayScrollbarsComponent className="SuggestionDropdown" ref={overlayScrollbarsRef}>
-			<ul>
-				{items.map((item, index) => (
-					<li
-						key={index}
-						className={classNames({ selected: index === selectedIndex })}
-						onClick={() => selectItem(index)}
-						ref={index === selectedIndex ? selectedItemRef : null}
-					>
-						{renderItem(item)}
-					</li>
-				))}
-			</ul>
-		</OverlayScrollbarsComponent>
-	);
+  return (
+    <OverlayScrollbarsComponent
+      className="SuggestionDropdown"
+      ref={overlayScrollbarsRef}
+    >
+      <ul>
+        {items.map((item, index) => (
+          <li
+            key={index}
+            className={classNames({ selected: index === selectedIndex })}
+            onClick={() => selectItem(index)}
+            ref={index === selectedIndex ? selectedItemRef : null}
+          >
+            {renderItem(item)}
+          </li>
+        ))}
+      </ul>
+    </OverlayScrollbarsComponent>
+  );
 }
 
 export { SuggestionDropdown };

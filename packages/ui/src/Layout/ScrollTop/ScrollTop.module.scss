@@ -1,17 +1,22 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .scrolltop_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: 0 );
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    height: 30px;
-    width: 30px;
-    z-index: 11;
-    cursor: pointer;
-    background-color: constants.$primary;
-    border-radius: 50%;
-    padding: 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: center,
+    $gap: 0
+  );
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  height: 30px;
+  width: 30px;
+  z-index: 11;
+  cursor: pointer;
+  background-color: constants.$primary;
+  border-radius: 50%;
+  padding: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
 }

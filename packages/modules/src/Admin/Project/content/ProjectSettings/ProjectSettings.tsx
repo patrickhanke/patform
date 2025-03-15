@@ -1,68 +1,77 @@
-'use client';
+"use client";
 
-import { useQuery } from '@apollo/client';
-import get_project_settings from './constants/get_project_settings';
-import {Field, Form} from '@repo/ui';
-import { useDataHandler } from '@repo/provider';
-import { useMemo } from 'react';
+import { useQuery } from "@apollo/client";
+import get_project_settings from "./constants/get_project_settings";
+import { Field, Form } from "@repo/ui";
+import { useDataHandler } from "@repo/provider";
+import { useMemo } from "react";
 
-const ProjectSettings = ({projectId}: {projectId: string}) => {
-	const {data, loading, error, refetch} = useQuery(get_project_settings,{variables: {id: projectId}});
-	const {updateData} = useDataHandler();
+const ProjectSettings = ({ projectId }: { projectId: string }) => {
+  const { data, loading, error, refetch } = useQuery(get_project_settings, {
+    variables: { id: projectId },
+  });
+  const { updateData } = useDataHandler();
 
-	const settingsFields: Field[] = useMemo(() => {
-		if (data) {
-			const project = data?.objects.getProject;
-		
-			return [{
-				id: 'name',
-				position: 1,
-				name: 'name',
-				type: 'input',
-				label: 'Name',
-				value: project.name,
-				validation: {required: 'Pflichtfeld', min_length: 5, max_length: 36}
-			}, {
-				id: 'logo',
-				position: 1,
-				name: 'logo',
-				type: 'image',
-				label: 'Logo',
-				value: project.logo,
-				options: {max_file_count: 1, return_type: 'string'}
-			}];
-		} else {
-			return []
-		}
-	}, [data]);
+  const settingsFields: Field[] = useMemo(() => {
+    if (data) {
+      const project = data?.objects.getProject;
 
-	if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error...</p>;
+      return [
+        {
+          id: "name",
+          position: 1,
+          name: "name",
+          type: "input",
+          label: "Name",
+          value: project.name,
+          validation: {
+            required: "Pflichtfeld",
+            min_length: 5,
+            max_length: 36,
+          },
+        },
+        {
+          id: "logo",
+          position: 1,
+          name: "logo",
+          type: "image",
+          label: "Logo",
+          value: project.logo,
+          options: { max_file_count: 1, return_type: "string" },
+        },
+      ];
+    } else {
+      return [];
+    }
+  }, [data]);
 
-	const project = data?.objects.getProject;
-    
-	return (
-		<Form 
-			fields={settingsFields}
-			data={project}
-			formSubmitHandler={async (values) => {
-				console.log(values);
-				
-				await updateData({
-					className: 'Project',
-					objectId: project?.objectId,
-					updateObject: {
-						name: values.name,
-						logo: values.logo
-					},
-					feedback: 'Projekt aktualisiert'
-				});
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error...</p>;
 
-				refetch();
-			}}
-			useWithDebounce
-		/>
-	);
+  const project = data?.objects.getProject;
+
+  return (
+    <Form
+      fields={settingsFields}
+      data={project}
+      formSubmitHandler={async (values) => {
+        console.log(values);
+
+        await updateData({
+          className: "Project",
+          objectId: project?.objectId,
+          updateObject: {
+            name: values.name,
+            logo: values.logo,
+          },
+          feedback: "Projekt aktualisiert",
+        });
+
+        refetch();
+      }}
+      useWithDebounce
+    />
+  );
 };
 
 export default ProjectSettings;

@@ -1,20 +1,24 @@
 const interval_elements = [
     {
         label: 'Egal',
-        value: 'any'
-    }, {
+        value: 'any',
+    },
+    {
         label: 'Vormittag',
-        value: 'morning'
-    }, {
+        value: 'morning',
+    },
+    {
         label: 'Nachmittag',
-        value: 'afternoon'
-    }, {
+        value: 'afternoon',
+    },
+    {
         label: 'Abend',
-        value: 'evening'
-    },{
+        value: 'evening',
+    },
+    {
         label: 'Uhrzeit',
-        value: 'time'
-    }
-]
+        value: 'time',
+    },
+];
 
 export default interval_elements;

@@ -1,292 +1,355 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
-.question_container[data-labelbefore='false'] {
-	@include constants.flexbox($direction: column, $align: flex-start, $justify: space-between, $gap: 0);
-	padding: map-get($map: constants.$padding, $key: 'md' );
+.question_container[data-labelbefore="false"] {
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: space-between,
+    $gap: 0
+  );
+  padding: map-get($map: constants.$padding, $key: "md");
 }
 
-.question_container[data-labelbefore='true'] {
-	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
-	padding: map-get($map: constants.$padding, $key: 'md' );
-	box-shadow: none;
-	// label {
-	// 	width: 80%;
-	// }
+.question_container[data-labelbefore="true"] {
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$sm
+  );
+  padding: map-get($map: constants.$padding, $key: "md");
+  box-shadow: none;
+  // label {
+  // 	width: 80%;
+  // }
 }
 
-.question_container[data-isconditionalfield='true'] {
-	padding: map-get($map: constants.$padding, $key: 'md' );
-	background-color: constants.$light;
+.question_container[data-isconditionalfield="true"] {
+  padding: map-get($map: constants.$padding, $key: "md");
+  background-color: constants.$light;
 }
 
 .page_container {
-	@include constants.elements_container;
-	width: 100%;
-	box-sizing: border-box;
-	background-color: constants.$light;
-	margin-top: constants.$md;
-	margin-bottom: constants.$md;
+  @include constants.elements_container;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: constants.$light;
+  margin-top: constants.$md;
+  margin-bottom: constants.$md;
 }
 
 .fields_container {
-	@include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$md);
-	width: 100%;
-	box-sizing: border-box;
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: space-between,
+    $gap: constants.$md
+  );
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .diagnostic_content {
-	padding-left: constants.$md;
-	margin-left: constants.$md;
-	border-left: 1px solid constants.$grey;
-	display: inline;
-	font-weight: 600;
+  padding-left: constants.$md;
+  margin-left: constants.$md;
+  border-left: 1px solid constants.$grey;
+  display: inline;
+  font-weight: 600;
 }
 
 .toggle_content {
-    display: flex; 
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-.toggle_content[data-labelbefore ='true'] {
-    flex-direction: row;
+.toggle_content[data-labelbefore="true"] {
+  flex-direction: row;
 }
 
 .toggle_container {
-	box-sizing: content-box;
-    border: 2px solid constants.$primary;
-	position: relative; 
-	width: 40px; 
-	height: 20px; 
-	border-radius: 15px; 
-	overflow: hidden; 
-	cursor: pointer;
+  box-sizing: content-box;
+  border: 2px solid constants.$primary;
+  position: relative;
+  width: 40px;
+  height: 20px;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.toggle_container[data-disabled='true'] {
-    border: 2px solid constants.$grey 
+.toggle_container[data-disabled="true"] {
+  border: 2px solid constants.$grey;
 }
 
 .toggle_container_background {
-    position: relative;
-	width: 100%;
-	height: 100%;
-	transition: opacity 0.4s ease;
-    background-color: transparent;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.4s ease;
+  background-color: transparent;
 }
 
-.toggle_container_background[data-disabled='true'] {
-    background-color: constants.$grey; 
+.toggle_container_background[data-disabled="true"] {
+  background-color: constants.$grey;
 }
 
-.toggle_container_background[data-togglestate='true'] {
-	background-color: constants.$primary;
+.toggle_container_background[data-togglestate="true"] {
+  background-color: constants.$primary;
 }
 
 .toggle_container_circle {
-    border-radius: 50%;
-	width: 16px;
-	height: 16px;
-	top: 2px;
-	left: 4px;
-	position: absolute;
-    background-color: constants.$primary;
-	transition: transform 0.4s ease, background-color 0.4s ease;
-    transform: translateX(0);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  top: 2px;
+  left: 4px;
+  position: absolute;
+  background-color: constants.$primary;
+  transition:
+    transform 0.4s ease,
+    background-color 0.4s ease;
+  transform: translateX(0);
 }
 
-.toggle_container_circle[data-disabled='true'] {
-    background-color: constants.$grey;
+.toggle_container_circle[data-disabled="true"] {
+  background-color: constants.$grey;
 }
 
-.toggle_container_circle[data-togglestate='true'] {
-    background-color: constants.$white;
-    transform: translateX(18px)
+.toggle_container_circle[data-togglestate="true"] {
+  background-color: constants.$white;
+  transform: translateX(18px);
 }
 
 .error_message {
-	color: constants.$red;
-	font-weight: 500;
-	font-size: constants.$sm;
-	font-family: Geist, sans-serif;
-};
+  color: constants.$red;
+  font-weight: 500;
+  font-size: constants.$sm;
+  font-family: Geist, sans-serif;
+}
 
 .warning_message {
-	color: orange;
-	font-weight: 500;
-	font-size: constants.$sm;
-	font-family: Geist, sans-serif;
-};
+  color: orange;
+  font-weight: 500;
+  font-size: constants.$sm;
+  font-family: Geist, sans-serif;
+}
 
 .create_option_container {
-	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
-	width: 100%;
-	margin-top: constants.$xs;
-	margin-bottom: constants.$xs;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$sm
+  );
+  width: 100%;
+  margin-top: constants.$xs;
+  margin-bottom: constants.$xs;
 }
 
 .datepicker_content {
-    display: flex; 
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-.datepicker_content[data-labelbefore ='true'] {
-    flex-direction: row;
+.datepicker_content[data-labelbefore="true"] {
+  flex-direction: row;
 }
 
 .slider_container {
-	width: 100%;
+  width: 100%;
 }
 
 .slider_container_bottom {
-	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
-	width: 100%;
-	padding: map-get($map: constants.$padding, $key: 'xs' );
-	box-sizing: border-box;
-	p {
-		text-transform: uppercase;
-		font-weight: 500;
-		font-size: map-get($map: constants.$font-size, $key:  'xs');
-		color: constants.$grey_shaded;
-	}
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$sm
+  );
+  width: 100%;
+  padding: map-get($map: constants.$padding, $key: "xs");
+  box-sizing: border-box;
+  p {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: map-get($map: constants.$font-size, $key: "xs");
+    color: constants.$grey_shaded;
+  }
 }
 
 .select_and_scale_container {
-	@include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: constants.$sm);
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: flex-start,
+    $gap: constants.$sm
+  );
 }
 
 .select_container {
-	@include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: constants.$sm);
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: flex-start,
+    $gap: constants.$sm
+  );
 }
 
 .scale_container {
-	@include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$sm);
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-start,
+    $gap: constants.$sm
+  );
 }
 
 .scale_number {
-	@include constants.icon_button_container;
+  @include constants.icon_button_container;
 }
 
 .scale_number[data-selected="true"] {
-	@include constants.icon_button_container($isactive: 'true')
+  @include constants.icon_button_container($isactive: "true");
 }
 
 .slider {
-	padding: 0 !important;
+  padding: 0 !important;
 }
 
 .editor_container {
-	position: relative;
-	width: 100%;
-	box-sizing: border-box;	
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .checkbox_container {
-	@include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: constants.$sm);
-	cursor: pointer;
-	background-color: transparent;
-	border: none;
-	p {
-		margin-bottom: 0;
-		text-align: left;
-	}
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-start,
+    $gap: constants.$sm
+  );
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  p {
+    margin-bottom: 0;
+    text-align: left;
+  }
 }
 
 .checkbox {
-	@include constants.icon_button_container;
-	svg {
-		visibility: hidden;
-	}
+  @include constants.icon_button_container;
+  svg {
+    visibility: hidden;
+  }
 }
 
-.checkbox[data-active='true'] {
-	@include constants.icon_button_container($isactive: 'true');
-	svg {
-		visibility: visible;
-	}
+.checkbox[data-active="true"] {
+  @include constants.icon_button_container($isactive: "true");
+  svg {
+    visibility: visible;
+  }
 }
 
 .select_toggle_content {
-	@include constants.flexbox($direction: row, $align: stretch, $justify: flex-start, $gap: 0);
-	overflow: hidden;
-	border: 1px solid constants.$grey;	
-	border-radius: map-get($map: constants.$border-radius, $key: 'sm' )
+  @include constants.flexbox(
+    $direction: row,
+    $align: stretch,
+    $justify: flex-start,
+    $gap: 0
+  );
+  overflow: hidden;
+  border: 1px solid constants.$grey;
+  border-radius: map-get($map: constants.$border-radius, $key: "sm");
 }
 
 .select_toggle_button {
-	font-weight: 500;	
-	letter-spacing: 1px;
-	font-size: map-get($map: constants.$font_size, $key: 'md' );
-	background-color: transparent;
-	border: none;
-	width: 40px;
-	cursor: pointer;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  background-color: transparent;
+  border: none;
+  width: 40px;
+  cursor: pointer;
 }
 
 .select_toggle_button:disabled {
-	cursor: default;
+  cursor: default;
 }
 
 .select_toggle_button[data-isactive="true"] {
-	background-color: constants.$light;
+  background-color: constants.$light;
 }
 
 .select_toggle_divider {
-	height: 18px;	
-	width: 
-	.6px;
-	background-color: constants.$grey_shaded;
+  height: 18px;
+  width: 0.6px;
+  background-color: constants.$grey_shaded;
 }
 
-.files_interface_container{
-	@include constants.flexbox($direction: column, $align: stretch, $justify: flex-start, $gap: constants.$md);
-	margin-bottom: constants.$lg;
-	width: 100%;
+.files_interface_container {
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: flex-start,
+    $gap: constants.$md
+  );
+  margin-bottom: constants.$lg;
+  width: 100%;
 }
 
 .file_interface_element {
-	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
-	position: relative;
-	padding: map-get($map: constants.$padding, $key: 'sm' );
-	background-color: constants.$light;
-	border: .5px solid constants.$grey_shaded;
-
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$sm
+  );
+  position: relative;
+  padding: map-get($map: constants.$padding, $key: "sm");
+  background-color: constants.$light;
+  border: 0.5px solid constants.$grey_shaded;
 }
 
 .file_interface_element_buttoncontainer {
-	@include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: constants.$sm
+  );
 }
 
 .picker {
-    position: relative;
+  position: relative;
 }
-  
+
 .swatch {
-	position: relative;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    border: 3px solid #fff;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 3px solid #fff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .popover {
-    position: absolute;
-    top: calc(100% + 2px);
-    right: 0;
-    z-index: 3;
-    border-radius: 9px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    background-color: white;
+  position: absolute;
+  top: calc(100% + 2px);
+  right: 0;
+  z-index: 3;
+  border-radius: 9px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: white;
 }
 
 .description_container {
-	width: 100%;
-	background-color: constants.$light;
-	padding: map-get($map: constants.$padding, $key: 'sm' );
-	margin-top: constants.$md;
+  width: 100%;
+  background-color: constants.$light;
+  padding: map-get($map: constants.$padding, $key: "sm");
+  margin-top: constants.$md;
 }
-
-
-
-

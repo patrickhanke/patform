@@ -1,3 +1,3 @@
-export {default} from './SiteHeader';
+export { default } from "./SiteHeader";
 
-export type {SiteHeaderButton, SiteHeaderButtons} from './types';
+export type { SiteHeaderButton, SiteHeaderButtons } from "./types";

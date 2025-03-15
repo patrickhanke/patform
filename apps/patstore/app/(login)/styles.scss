@@ -1,48 +1,71 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .login_layout {
-    @include constants.flexbox($direction: column, $align: center, $justify: center, $gap: 0);
-    background-color: constants.$white;
-    height: 100vh;
-    width: 100%;
-    overflow: auto;
-    position: relative;
+  @include constants.flexbox(
+    $direction: column,
+    $align: center,
+    $justify: center,
+    $gap: 0
+  );
+  background-color: constants.$white;
+  height: 100vh;
+  width: 100%;
+  overflow: auto;
+  position: relative;
 }
 
 .login_content {
-    @include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: 12px);
-    max-width: 840px;
-    padding: map-get($map: constants.$padding, $key: 'md' );
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: flex-start,
+    $gap: 12px
+  );
+  max-width: 840px;
+  padding: map-get($map: constants.$padding, $key: "md");
 }
 
 .login_logo_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: flex-start, $gap: 12px);
-    position: fixed;
-    top: 30px;
-    left: 30px;
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-start,
+    $gap: 12px
+  );
+  position: fixed;
+  top: 30px;
+  left: 30px;
 }
 
 .login_footer_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: center, $gap: 24px);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: map-get($map: constants.$padding, $key: 'md' )
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: center,
+    $gap: 24px
+  );
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: map-get($map: constants.$padding, $key: "md");
 }
 
 .login_form_container {
-    @include constants.flexbox($direction: column, $align: flex-start, $justify: center, $gap: 12px);
+  @include constants.flexbox(
+    $direction: column,
+    $align: flex-start,
+    $justify: center,
+    $gap: 12px
+  );
 }
 
 .divider {
-    background-color: constants.$primary;
-    height: 1px;
-    width: 30px;
-    position: relative;
-    box-sizing: border-box;
-    margin-bottom: constants.$xl;
-    margin-top: constants.$xl;
+  background-color: constants.$primary;
+  height: 1px;
+  width: 30px;
+  position: relative;
+  box-sizing: border-box;
+  margin-bottom: constants.$xl;
+  margin-top: constants.$xl;
 }
-
-

@@ -1,31 +1,30 @@
 {
-  "extends": "@repo/typescript/nextjs.json",
-  "compilerOptions": {
-    "plugins": [
-      {
-        "name": "next"
-      }
+    "extends": "@repo/typescript/nextjs.json",
+    "compilerOptions": {
+        "plugins": [
+            {
+                "name": "next"
+            }
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*"],
+            "@provider": ["./provider/index.ts"],
+            "@settings/*": ["./settings/*"],
+            "@styles/*": ["./styles/*"],
+            "@content": ["./content/index.ts"],
+            "@queries": ["./queries/index.ts"],
+            "@types": ["./types/index.ts"]
+        }
+    },
+    "include": [
+        "next-env.d.ts",
+        "next.config.js",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        "../../packages/ui/src/Inputs/DatePicker/functions/getDateFromWeek.ts"
+        // "./public/firebase-messaging-sw.js"
     ],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@provider": ["./provider/index.ts"],
-      "@settings/*": ["./settings/*"],
-      "@styles/*": ["./styles/*"],
-      "@content": ["./content/index.ts"],
-      "@queries": ["./queries/index.ts"],
-      "@types": ["./types/index.ts"]
-    }
-  },
-  "include": [
-    "next-env.d.ts",
-    "next.config.js",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts", 
-    "../../packages/ui/src/Inputs/DatePicker/functions/getDateFromWeek.ts"
-    // "./public/firebase-messaging-sw.js"  
-  ],
-  "exclude": ["node_modules"],
-  
+    "exclude": ["node_modules"]
 }

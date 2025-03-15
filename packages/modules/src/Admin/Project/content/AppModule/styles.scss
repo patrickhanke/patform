@@ -1,5 +1,9 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .app_module_container {
-    @include constants.flexbox($direction: row, $align: center, $justify: space-between);
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between
+  );
 }

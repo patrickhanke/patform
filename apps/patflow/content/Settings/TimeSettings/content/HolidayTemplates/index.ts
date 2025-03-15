@@ -1,1 +1,1 @@
-export {default} from './HolidayTemplates';
+export { default } from './HolidayTemplates';

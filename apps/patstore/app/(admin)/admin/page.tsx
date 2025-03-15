@@ -1,1 +1,1 @@
-export {AdminDashboard as default} from '@repo/modules';
+export { AdminDashboard as default } from "@repo/modules";

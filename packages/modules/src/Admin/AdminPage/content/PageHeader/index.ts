@@ -1,3 +1,3 @@
-export {default as PageHeader} from './PageHeader';
+export { default as PageHeader } from "./PageHeader";
 
-export type {PageHeaderButtons} from './types';
+export type { PageHeaderButtons } from "./types";

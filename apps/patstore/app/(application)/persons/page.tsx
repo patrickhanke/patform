@@ -1,1 +1,1 @@
-export {PersonsOverview as default} from '@repo/modules';
+export { PersonsOverview as default } from "@repo/modules";

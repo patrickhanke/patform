@@ -5,6 +5,9 @@
 }
 
 .surcharge_content {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: center
+    );
 }
-

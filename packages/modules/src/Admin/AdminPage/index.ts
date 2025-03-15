@@ -1,3 +1,3 @@
-export {default as AdminPage} from './AdminPage';
+export { default as AdminPage } from "./AdminPage";
 
-export type * from './types';
+export type * from "./types";

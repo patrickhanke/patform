@@ -1,3 +1,3 @@
-export {default} from './AppModuleEditFields'
+export { default } from "./AppModuleEditFields";
 
-export {default as initialFieldValues} from './constants/initialFieldValues'
+export { default as initialFieldValues } from "./constants/initialFieldValues";

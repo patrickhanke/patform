@@ -1,1 +1,1 @@
-export {default as PersonDisplay} from './PersonDisplay';
+export { default as PersonDisplay } from "./PersonDisplay";

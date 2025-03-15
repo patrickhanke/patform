@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const get_task_comments  = gql`
+const get_task_comments = gql`
     query getTaskComments($id: ID!) {
         objects {
             getTask(objectId: $id) {

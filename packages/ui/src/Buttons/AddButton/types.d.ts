@@ -1,3 +1,3 @@
 export type AddButtonProps = {
-    items: Array<{title: string, icon: React.ReactNode}>
-}
+  items: Array<{ title: string; icon: React.ReactNode }>;
+};

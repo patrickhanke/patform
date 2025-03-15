@@ -1,1 +1,1 @@
-export {default} from './WebsitePages';
+export { default } from "./WebsitePages";

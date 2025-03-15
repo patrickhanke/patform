@@ -1,1 +1,1 @@
-export {default} from './TaskIndicator';
+export { default } from './TaskIndicator';

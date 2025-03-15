@@ -1,81 +1,91 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .overlay_container {
-    background-color: constants.$dark;
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
-    z-index: 4;
-    left: 0;
-    top: 0;
-    visibility: hidden;
-    opacity: 0;
-    cursor: pointer;
-    transition: width .4s, visibility 1s, opacity 0.5s ease;
+  background-color: constants.$dark;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 4;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  opacity: 0;
+  cursor: pointer;
+  transition:
+    width 0.4s,
+    visibility 1s,
+    opacity 0.5s ease;
 }
 
-.overlay_container[data-isopen = 'true'] {
-    width: 100%;
-    visibility: visible;
-    opacity: 0.05;
+.overlay_container[data-isopen="true"] {
+  width: 100%;
+  visibility: visible;
+  opacity: 0.05;
 }
 
 .slidein_container {
-    @include constants.flexbox($direction: column, $align: stretch, $gap: constants.$xs);
-    width: 0;
-    top: 0;
-    right: -60px;
-    height: 100vh;
-    z-index: 5;
-    box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
-    position: fixed;
-    box-sizing: border-box;
-    overflow: visible;
-    background-color: constants.$white;
-    padding: 0;
-    visibility: hidden;
-    transition-property: visibility;
-    // transition-delay: 1s;
-    transition: width .4s ease, visibility .5s ease;
-    
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $gap: constants.$xs
+  );
+  width: 0;
+  top: 0;
+  right: -60px;
+  height: 100vh;
+  z-index: 5;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
+  position: fixed;
+  box-sizing: border-box;
+  overflow: visible;
+  background-color: constants.$white;
+  padding: 0;
+  visibility: hidden;
+  transition-property: visibility;
+  // transition-delay: 1s;
+  transition:
+    width 0.4s ease,
+    visibility 0.5s ease;
 }
 
-.is_open[data-size='small'] {
-    right: 0;
-    width: 420px !important;
-    visibility: visible;
-   
+.is_open[data-size="small"] {
+  right: 0;
+  width: 420px !important;
+  visibility: visible;
 }
 
-.is_open[data-size='medium'] {
-    right: 0;
-    width: 60% !important;
-    visibility: visible;
-   
+.is_open[data-size="medium"] {
+  right: 0;
+  width: 60% !important;
+  visibility: visible;
 }
-.is_open[data-size='large'] {
-    right: 0;
-    width: 90% !important;
-    visibility: visible;
-   
+.is_open[data-size="large"] {
+  right: 0;
+  width: 90% !important;
+  visibility: visible;
 }
 
 .slidein_header {
-    @include constants.flexbox($align: center, $justify: flex-start);
-    width: 100%;
-    box-sizing: border-box;
-    height: 42px;
-    border-bottom: 1px solid constants.$grey;
-    padding: map-get(constants.$padding, 'sm');
+  @include constants.flexbox($align: center, $justify: flex-start);
+  width: 100%;
+  box-sizing: border-box;
+  height: 42px;
+  border-bottom: 1px solid constants.$grey;
+  padding: map-get(constants.$padding, "sm");
 }
 
 .slidein_content {
-    @include constants.flexbox($direction: column, $align: stretch, $justify: space-between, $gap: constants.$xs);
-    flex: 1 1;
-    position: relative;
-    box-sizing: border-box;
-    width: 100%;
-    height: calc(100% - 42px);
-    overflow:  auto;
-    padding: map-get(constants.$padding, 'md');
+  @include constants.flexbox(
+    $direction: column,
+    $align: stretch,
+    $justify: space-between,
+    $gap: constants.$xs
+  );
+  flex: 1 1;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 42px);
+  overflow: auto;
+  padding: map-get(constants.$padding, "md");
 }

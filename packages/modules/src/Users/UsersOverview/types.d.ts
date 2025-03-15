@@ -2,27 +2,27 @@ import { Dispatch, SetStateAction } from "react";
 import { ApolloRefetch } from "@repo/types";
 
 export type UsersOverviewProps = {
-    projectId: string;
-    createUser: boolean;
-    setCreateUser: Dispatch<SetStateAction<boolean>>;
-    addUser: boolean;
-    setAddUser: Dispatch<SetStateAction<boolean>>;
-}
+  projectId: string;
+  createUser: boolean;
+  setCreateUser: Dispatch<SetStateAction<boolean>>;
+  addUser: boolean;
+  setAddUser: Dispatch<SetStateAction<boolean>>;
+};
 
 export type CreateUserProps = {
-    user: UserObject,
-    setUser: Dispatch<SetStateAction<UserObject | undefined>>
-}
+  user: UserObject;
+  setUser: Dispatch<SetStateAction<UserObject | undefined>>;
+};
 
 export type UserObject = {
-    username: string,
-    projects: string[],
-    value: string,
-    name: string
-}
+  username: string;
+  projects: string[];
+  value: string;
+  name: string;
+};
 
 export type AddUserProps = {
-    user?: UserObject,
-    setUser: Dispatch<SetStateAction<UserObject | undefined>>,
-    projectId: string
-}
+  user?: UserObject;
+  setUser: Dispatch<SetStateAction<UserObject | undefined>>;
+  projectId: string;
+};

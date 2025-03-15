@@ -1,1 +1,1 @@
-export {default as TasksOverview} from './TasksOverview';
+export { default as TasksOverview } from './TasksOverview';

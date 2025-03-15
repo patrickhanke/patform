@@ -1,1 +1,1 @@
-export {ArticlesOverview as default} from '@repo/modules'
+export { ArticlesOverview as default } from "@repo/modules";

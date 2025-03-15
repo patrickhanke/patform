@@ -1,1 +1,1 @@
-export {default} from './AppUsers';
+export { default } from "./AppUsers";

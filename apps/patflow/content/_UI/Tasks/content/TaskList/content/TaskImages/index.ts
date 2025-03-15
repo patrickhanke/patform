@@ -1,1 +1,1 @@
-export {default} from './TaskImages';
+export { default } from './TaskImages';

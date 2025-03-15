@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const find_day  = gql`
+const find_day = gql`
     query findDay($params: DayConstraints) {
         objects {
-            findDay (where: $params) {
+            findDay(where: $params) {
                 results {
                     objectId
                     year

@@ -1,14 +1,23 @@
-@use '@repo/styles/constants';
+@use "@repo/styles/constants";
 
 .calendar_container {
-    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: 0, $wrap: wrap);
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: 0,
+    $wrap: wrap
+  );
 }
 
 .calendar_header_container {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: stretch, $wrap: no-wrap);
-    width: 100%;
-    border-bottom: 1px solid constants.$grey;
-    padding-bottom: constants.$sm;
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: stretch,
+    $wrap: no-wrap
+  );
+  width: 100%;
+  border-bottom: 1px solid constants.$grey;
+  padding-bottom: constants.$sm;
 }
-
-

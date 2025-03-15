@@ -1,18 +1,24 @@
-const select_types = [{
-    label: 'Text',
-    value: 'text'
-},{
-    label: 'Textfeld',
-    value: 'textarea'
-},{
-    label: 'Datei',
-    value: 'file'
-},{
-    label: 'Auswahl',
-    value: 'select'
-},{
-    label: 'Checkbox',
-    value: 'checkbox'
-}]
+const select_types = [
+  {
+    label: "Text",
+    value: "text",
+  },
+  {
+    label: "Textfeld",
+    value: "textarea",
+  },
+  {
+    label: "Datei",
+    value: "file",
+  },
+  {
+    label: "Auswahl",
+    value: "select",
+  },
+  {
+    label: "Checkbox",
+    value: "checkbox",
+  },
+];
 
-export default select_types
+export default select_types;

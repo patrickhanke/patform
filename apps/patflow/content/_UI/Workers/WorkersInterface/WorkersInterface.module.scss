@@ -1,17 +1,26 @@
 @use '@repo/styles/constants';
 
 .worker_interface_container {
-    @include constants.flexbox($direction: column, $justify: flex-start, $align: stretch, $gap: constants.$xs);
-    padding: map-get($map: constants.$padding, $key: 'sm' )
+    @include constants.flexbox(
+        $direction: column,
+        $justify: flex-start,
+        $align: stretch,
+        $gap: constants.$xs
+    );
+    padding: map-get($map: constants.$padding, $key: 'sm');
 }
 
 .display_worker_container {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: center);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: center
+    );
     width: 100%;
     border: none;
     border-radius: map-get($map: constants.$border_radius, $key: 'sm');
     cursor: pointer;
-    transition: background-color .2s ease;
+    transition: background-color 0.2s ease;
     padding-right: constants.$md;
     padding-left: 0;
     box-shadow: constants.$shadow_regular;
@@ -19,11 +28,11 @@
     height: 24px;
 }
 
-.display_worker_container[data-isabsent="true"] {
+.display_worker_container[data-isabsent='true'] {
     cursor: default;
 }
 
-.display_worker_container[data-isselected="true"] {
+.display_worker_container[data-isselected='true'] {
     background-color: constants.$light;
     color: constants.$dark;
     // &:hover {
@@ -32,7 +41,7 @@
     // }
 }
 
-.display_worker_container[data-isselected="false"] {
+.display_worker_container[data-isselected='false'] {
     background-color: constants.$white;
     &:hover {
         background-color: constants.$light;
@@ -50,7 +59,12 @@
 }
 
 .display_worker_container_pers_data {
-    @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: constants.$xs);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: flex-start,
+        $align: center,
+        $gap: constants.$xs
+    );
     font-family: Geist, sans-serif;
     font-weight: 500;
 }

@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 
-const get_property_settings  = gql`
+const get_property_settings = gql`
     query getObjectSettings($id: ID!) {
         objects {
-            getProperty (objectId: $id) {
+            getProperty(objectId: $id) {
                 objectId
                 name
                 settings
@@ -11,6 +11,5 @@ const get_property_settings  = gql`
         }
     }
 `;
-
 
 export default get_property_settings;

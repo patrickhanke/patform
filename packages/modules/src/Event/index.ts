@@ -1,1 +1,1 @@
-export {EventOverview} from './EventOverview';
+export { EventOverview } from "./EventOverview";

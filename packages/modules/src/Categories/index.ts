@@ -1,1 +1,1 @@
-export {default as CategoriesOverview} from './CategoriesOverview';
+export { default as CategoriesOverview } from "./CategoriesOverview";

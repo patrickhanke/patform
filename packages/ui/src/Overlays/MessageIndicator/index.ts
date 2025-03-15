@@ -1,1 +1,1 @@
-export {default as MessageIndicator} from './MessageIndicator';
+export { default as MessageIndicator } from "./MessageIndicator";

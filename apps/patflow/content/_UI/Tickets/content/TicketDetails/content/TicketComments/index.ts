@@ -1,1 +1,1 @@
-export {default} from './TicketComments';
+export { default } from './TicketComments';

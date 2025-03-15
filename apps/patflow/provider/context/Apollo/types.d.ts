@@ -2,25 +2,22 @@ import { DocumentNode } from '@apollo/client';
 import { Day, DefaultDay } from '@types';
 
 interface GetProjectsResponse {
-	objects: any
+    objects: any;
 }
 
 export type GenerateGraphQLQuery = ({
-	type, 
-	objectName, 
-	fields
+    type,
+    objectName,
+    fields,
 }: {
-    type: 'find' | 'get',
-    objectName: string,
-    fields: string[]
+    type: 'find' | 'get';
+    objectName: string;
+    fields: string[];
 }) => DocumentNode;
 
-
 type CreateTimeProps = (DefaultDay | Day) & {
-    record_id: string, 
-    user_id: string 
-}
+    record_id: string;
+    user_id: string;
+};
 
-export type CreateTime = (
-    data: CreateTimeProps
-) => Promise<void>;
+export type CreateTime = (data: CreateTimeProps) => Promise<void>;

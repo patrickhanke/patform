@@ -1,1 +1,1 @@
-export {default} from './RenderFields';
+export { default } from "./RenderFields";

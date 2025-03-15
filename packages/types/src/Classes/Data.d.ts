@@ -1,7 +1,6 @@
-import { ClassProperties } from './Classes';
-
+import { ClassProperties } from "./Classes";
 
 export type FormDataClass = ClassProperties & {
-    data: {[key: string]: any};
-    reference: string;
-}
+  data: { [key: string]: any };
+  reference: string;
+};

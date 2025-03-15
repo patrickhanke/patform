@@ -1,1 +1,1 @@
-export {default} from './CreateField';
+export { default } from "./CreateField";

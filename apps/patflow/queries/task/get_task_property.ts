@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const get_task_property  = gql`
+const get_task_property = gql`
     query getTaskProperty($id: ID!) {
         objects {
             getTask(objectId: $id) {

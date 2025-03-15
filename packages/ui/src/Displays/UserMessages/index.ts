@@ -1,1 +1,1 @@
-export {default as UserMessages} from './UserMessages';
+export { default as UserMessages } from "./UserMessages";

@@ -1,147 +1,182 @@
- /* open-sans-300 - latin */
-  @font-face {
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 300;
-    src: url('./open-sans-v17-latin-300.eot'); /* IE9 Compat Modes */
-    src: local('Open Sans Light'), local('OpenSans-Light'),
-         url('./open-sans-v17-latin-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('./open-sans-v17-latin-300.woff2') format('woff2'), /* Super Modern Browsers */
-         url('./open-sans-v17-latin-300.woff') format('woff'), /* Modern Browsers */
-         url('./open-sans-v17-latin-300.ttf') format('truetype'), /* Safari, Android, iOS */
-         url('./open-sans-v17-latin-300.svg#OpenSans') format('svg'); /* Legacy iOS */
-    font-display: swap;
-  }
-  /* open-sans-regular - latin */
-  @font-face {
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 400;
-    src: url('./open-sans-v17-latin-regular.eot'); /* IE9 Compat Modes */
-    src: local('Open Sans Regular'), local('OpenSans-Regular'),
-         url('./open-sans-v17-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('./open-sans-v17-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
-         url('./open-sans-v17-latin-regular.woff') format('woff'), /* Modern Browsers */
-         url('./open-sans-v17-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-         url('./open-sans-v17-latin-regular.svg#OpenSans') format('svg'); /* Legacy iOS */
-    font-display: swap;
-  }
-  /* open-sans-600 - latin */
-  @font-face {
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 600;
-    src: url('./open-sans-v17-latin-600.eot'); /* IE9 Compat Modes */
-    src: local('Open Sans SemiBold'), local('OpenSans-SemiBold'),
-         url('./open-sans-v17-latin-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-         url('./open-sans-v17-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
-         url('./open-sans-v17-latin-600.woff') format('woff'), /* Modern Browsers */
-         url('./open-sans-v17-latin-600.ttf') format('truetype'), /* Safari, Android, iOS */
-         url('./open-sans-v17-latin-600.svg#OpenSans') format('svg'); /* Legacy iOS */
-    font-display: swap;
-  }
-  
-  @font-face {
-      font-family: 'Open Sans Light';
-      src: url('./OpenSans-Light.ttf') format('truetype'), local('OpenSans-Light');
-      font-weight: 400;
-      font-display: swap;
-  }
-  
-  @font-face {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      src: local('Sergeor-UI');
-  }
+/* open-sans-300 - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  src: url("./open-sans-v17-latin-300.eot"); /* IE9 Compat Modes */
+  src:
+    local("Open Sans Light"),
+    local("OpenSans-Light"),
+    url("./open-sans-v17-latin-300.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("./open-sans-v17-latin-300.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("./open-sans-v17-latin-300.woff")
+      format("woff"),
+    /* Modern Browsers */ url("./open-sans-v17-latin-300.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */ url("./open-sans-v17-latin-300.svg#OpenSans")
+      format("svg"); /* Legacy iOS */
+  font-display: swap;
+}
+/* open-sans-regular - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./open-sans-v17-latin-regular.eot"); /* IE9 Compat Modes */
+  src:
+    local("Open Sans Regular"),
+    local("OpenSans-Regular"),
+    url("./open-sans-v17-latin-regular.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("./open-sans-v17-latin-regular.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("./open-sans-v17-latin-regular.woff")
+      format("woff"),
+    /* Modern Browsers */ url("./open-sans-v17-latin-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */ url("./open-sans-v17-latin-regular.svg#OpenSans")
+      format("svg"); /* Legacy iOS */
+  font-display: swap;
+}
+/* open-sans-600 - latin */
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 600;
+  src: url("./open-sans-v17-latin-600.eot"); /* IE9 Compat Modes */
+  src:
+    local("Open Sans SemiBold"),
+    local("OpenSans-SemiBold"),
+    url("./open-sans-v17-latin-600.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("./open-sans-v17-latin-600.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("./open-sans-v17-latin-600.woff")
+      format("woff"),
+    /* Modern Browsers */ url("./open-sans-v17-latin-600.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */ url("./open-sans-v17-latin-600.svg#OpenSans")
+      format("svg"); /* Legacy iOS */
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Open Sans Light";
+  src:
+    url("./OpenSans-Light.ttf") format("truetype"),
+    local("OpenSans-Light");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  src: local("Sergeor-UI");
+}
 
 /* geist-regular - latin */
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 400;
-     src: local('Geist Regular'), local('Geist-Regular'),
-            url('./Geist-Regular.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local("Geist Regular"),
+    local("Geist-Regular"),
+    url("./Geist-Regular.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 900;
-     src: local('Geist Black'), local('Geist-Black'),
-            url('./Geist-Black.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 900;
+  src:
+    local("Geist Black"),
+    local("Geist-Black"),
+    url("./Geist-Black.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 700;
-     src: local('Geist Bold'), local('Geist-Bold'),
-            url('./Geist-Bold.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 700;
+  src:
+    local("Geist Bold"),
+    local("Geist-Bold"),
+    url("./Geist-Bold.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 800;
-     src: local('Geist ExtraBold'), local('Geist-ExtraBold'),
-            url('./Geist-ExtraBold.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 800;
+  src:
+    local("Geist ExtraBold"),
+    local("Geist-ExtraBold"),
+    url("./Geist-ExtraBold.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 200;
-     src: local('Geist ExtraLight'), local('Geist-ExtraLight'),
-            url('./Geist-ExtraLight.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 200;
+  src:
+    local("Geist ExtraLight"),
+    local("Geist-ExtraLight"),
+    url("./Geist-ExtraLight.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 300;
-     src: local('Geist Light'), local('Geist-Light'),
-            url('./Geist-Light.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 300;
+  src:
+    local("Geist Light"),
+    local("Geist-Light"),
+    url("./Geist-Light.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 500;
-     src: local('Geist Medium'), local('Geist-Medium'),
-            url('./Geist-Medium.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 500;
+  src:
+    local("Geist Medium"),
+    local("Geist-Medium"),
+    url("./Geist-Medium.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 600;
-     src: local('Geist SemiBold'), local('Geist-SemiBold'),
-            url('./Geist-SemiBold.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 600;
+  src:
+    local("Geist SemiBold"),
+    local("Geist-SemiBold"),
+    url("./Geist-SemiBold.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 100;
-     src: local('Geist Thin'), local('Geist-Thin'),
-            url('./Geist-Thin.woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100;
+  src:
+    local("Geist Thin"),
+    local("Geist-Thin"),
+    url("./Geist-Thin.woff2") format("woff2");
+  font-display: swap;
 }
 
 @font-face {
-     font-family: 'Geist';
-     font-style: normal;
-     font-weight: 100 900;
-     src: local('Geist'), local('Geist[wght]'),
-            url('./Geist[wght].woff2') format('woff2');
-     font-display: swap;
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  src:
+    local("Geist"),
+    local("Geist[wght]"),
+    url("./Geist[wght].woff2") format("woff2");
+  font-display: swap;
 }
-
-

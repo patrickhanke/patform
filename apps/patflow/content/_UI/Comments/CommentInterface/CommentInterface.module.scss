@@ -1,7 +1,12 @@
 @use '@repo/styles/constants';
 
 .comment_interface {
-    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch, $gap: 0);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: space-between,
+        $align: stretch,
+        $gap: 0
+    );
     height: 100%;
 }
 
@@ -16,38 +21,54 @@
 }
 
 .comment_container {
-    @include constants.flexbox($direction: column, $justify: space-between, $align: stretch);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: space-between,
+        $align: stretch
+    );
     margin-top: constants.$lg;
     p {
         line-height: 1.4;
     }
-};
+}
 
 .comment_header {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-end);
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: flex-end
+    );
     padding-bottom: constants.$xs;
-    border-bottom: 1px solid constants.$grey
-};
+    border-bottom: 1px solid constants.$grey;
+}
 
- .comment_content {
-    @include constants.flexbox($direction: row, $justify: space-between, $align: flex-start);
-};
+.comment_content {
+    @include constants.flexbox(
+        $direction: row,
+        $justify: space-between,
+        $align: flex-start
+    );
+}
 
 .comment_content_icon {
     width: 24px;
-};
+}
 
 .comment_content_text {
     background-color: constants.$light;
-    padding: map-get($map: constants.$padding, $key: 'sm' );
+    padding: map-get($map: constants.$padding, $key: 'sm');
     flex: 1 1 calc(100% - 24px);
-    border-radius: map-get($map: constants.$border_radius, $key: 'sm' );
-};
+    border-radius: map-get($map: constants.$border_radius, $key: 'sm');
+}
 
 .create_comment_container {
-    @include constants.flexbox($direction: column, $justify: center, $align: flex-start, $gap: constants.$xs);
+    @include constants.flexbox(
+        $direction: column,
+        $justify: center,
+        $align: flex-start,
+        $gap: constants.$xs
+    );
     background-color: constants.$lightest;
-    padding: map-get($map: constants.$padding, $key: 'md' );
+    padding: map-get($map: constants.$padding, $key: 'md');
     height: 100%;
-};
-
+}
