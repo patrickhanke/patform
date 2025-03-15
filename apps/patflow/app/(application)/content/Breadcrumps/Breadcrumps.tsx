@@ -1,26 +1,26 @@
-'use client'
+'use client';
 
-import React, { ReactNode, useEffect, useState } from 'react'
-import styles from './Breadcrumps.module.scss'
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
-import useFindItem from './hooks/useFindItem'
+import React, { ReactNode, useEffect, useState } from 'react';
+import styles from './Breadcrumps.module.scss';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import useFindItem from './hooks/useFindItem';
 
 interface PathElement {
-    value: string
-    label: string
+    value: string;
+    label: string;
 }
 
 const Breadcrumps = () => {
-    const [path, setPath] = useState([] as Array<PathElement>)
-    const pathname = usePathname()
-    const findItemLabel = useFindItem()
+    const [path, setPath] = useState([] as Array<PathElement>);
+    const pathname = usePathname();
+    const findItemLabel = useFindItem();
 
     useEffect(() => {
-        const windowPath = pathname
-        const pathArray = windowPath !== null ? windowPath.split('/') : []
+        const windowPath = pathname;
+        const pathArray = windowPath !== null ? windowPath.split('/') : [];
 
-        const pathCopy: Array<PathElement> = [{ value: '/', label: 'App' }]
+        const pathCopy: Array<PathElement> = [{ value: '/', label: 'App' }];
         pathArray.forEach(pathArrayElement => {
             if (pathArrayElement) {
                 pathCopy.push({
@@ -33,12 +33,12 @@ const Breadcrumps = () => {
                               pathArrayElement
                             : pathCopy[pathCopy.length - 1].value +
                               `/${pathArrayElement}`,
-                })
+                });
             }
-        })
+        });
 
-        setPath(pathCopy)
-    }, [pathname])
+        setPath(pathCopy);
+    }, [pathname]);
 
     return (
         <div
@@ -58,10 +58,10 @@ const Breadcrumps = () => {
                             {pathElement?.label}
                         </Link>
                     </React.Fragment>
-                )
+                );
             })}
         </div>
-    )
-}
+    );
+};
 
-export default Breadcrumps
+export default Breadcrumps;

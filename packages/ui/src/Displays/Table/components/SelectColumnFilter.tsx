@@ -25,7 +25,7 @@ const SelectColumnFilter = ({
         return setFilter("");
       }}
       options={all.concat(
-        options.map((option) => ({ value: option, label: option })),
+        options.map((option) => ({ value: option, label: option }))
       )}
       width="200px"
     />

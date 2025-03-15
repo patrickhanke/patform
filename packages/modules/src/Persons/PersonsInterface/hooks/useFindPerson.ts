@@ -13,7 +13,7 @@ const useFindPerson: UseFindPersonsHook = ({ moduleId, filters }) => {
       variables: { params: paramsHandler({ moduleId }) },
       notifyOnNetworkStatusChange: true,
       skip: !moduleId,
-    },
+    }
   );
 
   const { data: filteredData } = useQuery(
@@ -26,7 +26,7 @@ const useFindPerson: UseFindPersonsHook = ({ moduleId, filters }) => {
       variables: { params: paramsHandler({ moduleId, filters }) },
       notifyOnNetworkStatusChange: true,
       skip: !moduleId || filters.length === 0,
-    },
+    }
   );
 
   return {

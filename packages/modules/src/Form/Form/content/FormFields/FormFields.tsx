@@ -19,7 +19,7 @@ const FormFields: FC<FormFieldsProps> = ({
     }),
     {
       variables: { id: formId },
-    },
+    }
   );
 
   if (!data) {

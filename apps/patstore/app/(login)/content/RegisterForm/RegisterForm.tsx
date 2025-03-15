@@ -16,12 +16,12 @@ const SignupSchema = Yup.object().shape({
     .min(8, "Passwort muss mindestens 8 Zeichen lang sein")
     .matches(
       /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&_*])/,
-      "Passwort muss einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten",
+      "Passwort muss einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten"
     )
     .required("Pflichtfeld"),
   passwordConfirmation: Yup.string().oneOf(
     [Yup.ref("password"), undefined],
-    "Passwörter müssen übereinstimmen",
+    "Passwörter müssen übereinstimmen"
   ),
 });
 
@@ -83,7 +83,7 @@ const RegisterForm = ({
           .catch((error) => {
             if (error.response.data.code === 202) {
               setError(
-                "Für diesen Nutzernamen besteht bereits ein Account. Bitte wählen Sie einen anderen.",
+                "Für diesen Nutzernamen besteht bereits ein Account. Bitte wählen Sie einen anderen."
               );
               setDisabled(false);
             }

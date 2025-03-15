@@ -13,7 +13,7 @@ const FormRecipients: React.FC<FormRecipientsProps> = ({
   updateSettings,
 }) => {
   const [recipients, setRecipients] = useState<Recipient[]>(
-    settings[settingsKey] || [],
+    settings[settingsKey] || []
   );
 
   const updateRecipients = useCallback(
@@ -30,7 +30,7 @@ const FormRecipients: React.FC<FormRecipientsProps> = ({
         [settingsKey]: recipientsCopy,
       });
     },
-    [recipients],
+    [recipients]
   );
 
   const isDisabled = () => {

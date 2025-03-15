@@ -17,7 +17,7 @@ const AppContextProvider = ({
 
   const currentModule = useMemo(() => {
     return project.modules.results.find(
-      (module) => module.path === pathname,
+      (module) => module.path === pathname
     ) as Module;
   }, [pathname, project]);
 
@@ -28,7 +28,7 @@ const AppContextProvider = ({
       currentModule,
       modules: project.modules.results,
     }),
-    [pageTitle, project, currentModule],
+    [pageTitle, project, currentModule]
   );
 
   return (

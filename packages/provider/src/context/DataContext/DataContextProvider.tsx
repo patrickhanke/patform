@@ -33,7 +33,7 @@ export const DataContextProvider = ({
         }, 10000);
       }
     },
-    [loading],
+    [loading]
   );
 
   const appContextObject: DataContextProps = useMemo(
@@ -41,7 +41,7 @@ export const DataContextProvider = ({
       feedbackHandler,
       loadingHandler,
     }),
-    [feedbackHandler, loadingHandler],
+    [feedbackHandler, loadingHandler]
   );
 
   return (

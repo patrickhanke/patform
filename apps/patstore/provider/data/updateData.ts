@@ -23,13 +23,13 @@ const updateData = async ({
   await axiosapi()
     .put(
       `classes/${className}/${objectId}`,
-      query || (updateObject as AxiosRequestConfig<any>),
+      query || (updateObject as AxiosRequestConfig<any>)
     )
     .then((response: AxiosResponse<any, any>) => {
       data = response.data.results;
       if (feedback) {
         setFeedback.setState((state) =>
-          state.setFeedback(feedback, "success", new Date()),
+          state.setFeedback(feedback, "success", new Date())
         );
       }
       if (afterSaveHandler) {
@@ -40,7 +40,7 @@ const updateData = async ({
       console.log(error.message);
       if (feedback) {
         setFeedback((state) =>
-          state.setFeedback("Fehler", "error", new Date()),
+          state.setFeedback("Fehler", "error", new Date())
         );
       }
     });

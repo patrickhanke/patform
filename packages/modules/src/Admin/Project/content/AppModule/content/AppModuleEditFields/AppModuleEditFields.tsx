@@ -42,7 +42,7 @@ const AppModuleEditFields = ({
     (id: string) => {
       return fields.find((field) => field.id === id);
     },
-    [fields, editFields, activeField],
+    [fields, editFields, activeField]
   );
 
   return (

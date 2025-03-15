@@ -14,7 +14,7 @@ const Form = ({ params }: { params: Params }) => {
   const formId = params.form_id;
   const { form, refetch } = useGetForm({ formId });
   const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
-    siteStates[0] as { value: string; label: string },
+    siteStates[0] as { value: string; label: string }
   );
   const [createField, setCreateField] = useState(false);
 

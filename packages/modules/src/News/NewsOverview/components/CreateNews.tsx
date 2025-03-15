@@ -61,7 +61,7 @@ const CreateNews = ({ refetch }: { refetch: () => void }) => {
           ] = field.initialValue;
           return acc;
         },
-        {},
+        {}
       ),
     };
 

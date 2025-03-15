@@ -15,7 +15,7 @@ const ImagesDisplay: FC<ImageGalleryProps> = ({ images, height = "240px" }) => {
         original: getImageUrl({ filePath: image }),
         thumbnail: getImageUrl({ filePath: image, width: 80 }),
       })),
-    [images],
+    [images]
   );
 
   return (

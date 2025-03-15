@@ -3,7 +3,7 @@
 import { getToken, Messaging } from "firebase/messaging";
 
 const getFcmToken: (messaging: Messaging) => Promise<string | void> = async (
-  messaging,
+  messaging
 ) => {
   try {
     const vapidKey =

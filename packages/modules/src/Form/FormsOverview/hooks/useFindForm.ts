@@ -12,7 +12,7 @@ const useFindForm: UserFindFormHook = ({ moduleId, filters }) => {
     {
       variables: { params: paramsHandler({ moduleId, filters }) },
       notifyOnNetworkStatusChange: true,
-    },
+    }
   );
 
   console.log(data);

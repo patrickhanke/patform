@@ -21,12 +21,12 @@ const AppModuleEditSettingsCategories = ({
         //     draft = draftCopy
         // }
         const categoryIndex = draft.categories.findIndex(
-          (category) => category.id === value.id,
+          (category) => category.id === value.id
         );
         draft.categories[categoryIndex] = value;
       });
     },
-    [setSettings],
+    [setSettings]
   );
 
   console.log(categories);

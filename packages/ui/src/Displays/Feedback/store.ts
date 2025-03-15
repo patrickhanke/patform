@@ -7,7 +7,7 @@ type FeedbackStore = {
   setFeedback: (
     a: FeedbackStore["feedback"],
     b: FeedbackStore["type"],
-    c?: FeedbackStore["date"],
+    c?: FeedbackStore["date"]
   ) => void;
 };
 

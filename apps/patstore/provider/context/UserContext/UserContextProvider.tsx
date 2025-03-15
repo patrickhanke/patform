@@ -88,7 +88,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
       userMessages,
       refetchMessages: refetch,
     }),
-    [token, getItem("user", "session", "object"), messageData],
+    [token, getItem("user", "session", "object"), messageData]
   );
 
   useEffect(() => {

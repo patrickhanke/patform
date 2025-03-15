@@ -16,7 +16,7 @@ import DatePickerField from "./components/DatePickerField";
 
 const fieldDisabledHandler = (
   field: Field,
-  values: RenderFieldsType["values"],
+  values: RenderFieldsType["values"]
 ) => {
   if (field.disabled) {
     if (typeof field.disabled === "boolean") {
@@ -148,7 +148,7 @@ const RenderFields: FC<RenderFieldsType> = ({
               setFieldValue(
                 field.name,
                 field.dataType === "string" ? value.value : value,
-                true,
+                true
               )
             }
             value={getSelectValue(values, field)}
@@ -166,12 +166,12 @@ const RenderFields: FC<RenderFieldsType> = ({
                   className: field?.options?.pointer_class,
                   objectId: value.value,
                 },
-                true,
+                true
               )
             }
             value={getPointerValue(
               values[field.name],
-              field.select_options || [],
+              field.select_options || []
             )}
             options={field.select_options}
             key={field.name}

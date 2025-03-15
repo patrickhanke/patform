@@ -211,12 +211,12 @@ export type FieldValidationArray = Array<
 >;
 
 export type getFieldsWithValidationFunction = (
-  fields: Field[],
+  fields: Field[]
 ) => FieldValidationArray;
 
 export type CreateYupSchemaFunction = (
   type: Field["type"],
-  validation: Field["validation"],
+  validation: Field["validation"]
 ) => Yup.ISchema<any, any, any, any> | Yup.Reference<unknown>;
 
 export type FormDataElement = { [key: string]: any };

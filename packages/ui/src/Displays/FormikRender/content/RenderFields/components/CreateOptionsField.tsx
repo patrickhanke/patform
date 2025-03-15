@@ -26,7 +26,7 @@ const CreateOptions = ({ field, values, setFieldValue }: CreateOptions) => {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number,
+    index: number
   ) => {
     setFieldValue(`${field.name}[${index}].label`, e.target.value);
   };

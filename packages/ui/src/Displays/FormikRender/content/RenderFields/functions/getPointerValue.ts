@@ -1,6 +1,6 @@
 const getPointerValue = (
   value: { __type: "Pointer"; className: string; objectId: string } | undefined,
-  options: { value: string; label: string }[],
+  options: { value: string; label: string }[]
 ) => {
   let returnValue = undefined;
   if (value?.objectId) {

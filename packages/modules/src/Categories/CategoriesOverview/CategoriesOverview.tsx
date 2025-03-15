@@ -12,7 +12,7 @@ const Categories = () => {
   const { currentModule } = useContext(AppContext);
   const pageStates = useMemo(
     () => currentModule?.settings?.categories,
-    [currentModule],
+    [currentModule]
   );
   const [activeState, setActiveState] = useState(pageStates[0]);
   const { categories, refetch } = useFindCategory({

@@ -15,7 +15,7 @@ const AppModuleEditField = ({ field, setFields }: AppModuleEditFieldProps) => {
     (key: keyof Field, value: Field[keyof Field]) => {
       setFields((draft) => {
         const index: number = draft.findIndex(
-          (fieldToFind: Field) => fieldToFind.id === field.id,
+          (fieldToFind: Field) => fieldToFind.id === field.id
         );
         let fieldCopy: typeof field = { ...field };
         if (index !== -1) {
@@ -23,7 +23,7 @@ const AppModuleEditField = ({ field, setFields }: AppModuleEditFieldProps) => {
         }
       });
     },
-    [field, setFields],
+    [field, setFields]
   );
 
   const changeHandler = useDebounceCallback(fieldChangeHandler, 2000);

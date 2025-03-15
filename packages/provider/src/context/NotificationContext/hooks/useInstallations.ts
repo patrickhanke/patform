@@ -27,7 +27,7 @@ const useInstallations = ({
         params: { user: { _eq: user?.objectId }, deviceType: { _eq: "web" } },
       },
       skip: !user || !hasInstallation,
-    },
+    }
   );
 
   const installationHandler = useCallback(async () => {

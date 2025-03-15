@@ -27,7 +27,7 @@ export type CustomOptions = {
 export type UseGetState = <T extends TypeSelection>(
   type: T,
   state: State<T>,
-  roles: UserTypes.UserRole[],
+  roles: UserTypes.UserRole[]
 ) => {
   stateObject: Options<T>[number];
   options: Options<T>;

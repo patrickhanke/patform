@@ -21,7 +21,7 @@ const useFindLocation: UseFindLocationHook = ({ moduleId, filters }) => {
     {
       variables: { params: paramsHandler({ moduleId, filters }) },
       notifyOnNetworkStatusChange: true,
-    },
+    }
   );
 
   return {

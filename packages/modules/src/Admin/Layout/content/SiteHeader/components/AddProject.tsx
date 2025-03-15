@@ -47,7 +47,7 @@ const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
         },
       },
     ],
-    [project],
+    [project]
   );
 
   const createProjectHandler = useCallback(async () => {

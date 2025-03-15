@@ -66,7 +66,7 @@ const MenuItem = ({
             data-disabled={disabled}
             onClick={() => setShowSubMenu(!showSubMenu)}
             className={clsx(
-              link === path ? ["menu_item", "menu_item_active"] : "menu_item",
+              link === path ? ["menu_item", "menu_item_active"] : "menu_item"
             )}
           >
             <Icons icon={icon} />
@@ -82,7 +82,7 @@ const MenuItem = ({
             aria-disabled={disabled}
             as={link}
             className={clsx(
-              link === path ? ["menu_item", "menu_item_active"] : "menu_item",
+              link === path ? ["menu_item", "menu_item_active"] : "menu_item"
             )}
             href={link}
           >
@@ -105,7 +105,7 @@ const MenuItem = ({
                     className={clsx(
                       subMenuHandler(subMenuItem.value, pathname)
                         ? ["menu_item", "menu_item_active"]
-                        : "menu_item",
+                        : "menu_item"
                     )}
                     href={`${link}${subMenuItem.value}`}
                   >
@@ -118,7 +118,7 @@ const MenuItem = ({
                     className={clsx(
                       subMenuHandler(subMenuItem.value, pathname)
                         ? ["menu_item", "menu_item_active"]
-                        : "menu_item",
+                        : "menu_item"
                     )}
                   >
                     <Icons icon={icon} />

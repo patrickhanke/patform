@@ -18,7 +18,7 @@ const AppModuleEditCategory = ({
     }),
     {
       variables: { params: paramsHandler({ projectId }) },
-    },
+    }
   );
 
   const changeHandler = useCallback(
@@ -26,7 +26,7 @@ const AppModuleEditCategory = ({
       if (category) {
         setCategory((draft: ModuleCategory[]) => {
           const index: number = draft.findIndex(
-            (categoryToFind) => categoryToFind.id === category.id,
+            (categoryToFind) => categoryToFind.id === category.id
           );
           const fieldCopy: typeof category = { ...category };
           if (index !== -1) {
@@ -35,7 +35,7 @@ const AppModuleEditCategory = ({
         });
       }
     },
-    [category, setCategory],
+    [category, setCategory]
   );
 
   const categorySelectOptions = useMemo(() => {

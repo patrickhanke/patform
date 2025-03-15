@@ -133,5 +133,5 @@ export type ColumnClasses =
   | EventClass;
 
 export type UseCreateColumnsHook<Class> = (
-  params: CreateColumnHookProps<Class>,
+  params: CreateColumnHookProps<Class>
 ) => ColumnDef<Class>[];

@@ -40,7 +40,7 @@ const useFileDataHandler = ({
           apiKey: process.env.BYTESCALE_SECRET_KEY as string,
           filePath: image,
         }).then((error) => console.error(error));
-      }),
+      })
     );
 
     if (afterCancelFunction) {

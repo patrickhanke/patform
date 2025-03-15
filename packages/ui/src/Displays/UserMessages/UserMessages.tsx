@@ -41,7 +41,7 @@ const UserMessages: FC<UserMessagesProps> = ({
         className={clsx(
           "content_element",
           "no_padding",
-          styles.user_messages_container,
+          styles.user_messages_container
         )}
       >
         {notifications &&
@@ -58,7 +58,7 @@ const UserMessages: FC<UserMessagesProps> = ({
                 deleteNotification={deleteNotification}
                 data={notification.data}
               />
-            ),
+            )
           )}
       </div>
     </>

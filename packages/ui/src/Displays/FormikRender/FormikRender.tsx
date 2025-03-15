@@ -31,7 +31,7 @@ const FormikRender: FC<FormikRenderProps> = ({
         data
           ? data
           : Object.fromEntries(
-              fields.map((field) => [field.name, field.initialValue]),
+              fields.map((field) => [field.name, field.initialValue])
             )
       }
       onSubmit={(values) => {
@@ -44,8 +44,8 @@ const FormikRender: FC<FormikRenderProps> = ({
           getFieldsWithValidation(fields).map((field) => [
             field.name,
             createYupSchema(field.type, field.validation),
-          ]),
-        ),
+          ])
+        )
       )}
       validateOnMount
       enableReinitialize

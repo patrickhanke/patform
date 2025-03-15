@@ -18,7 +18,7 @@ export const useGetForm = ({ formId }: { formId: string }) => {
     }),
     {
       variables: { id: formId },
-    },
+    }
   );
 
   return {

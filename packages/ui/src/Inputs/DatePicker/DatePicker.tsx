@@ -20,7 +20,7 @@ const DatePicker: FC<DatePickerProps> = ({
 }) => {
   const [debouncedValue, setDateValue] = useDebounceValue(
     defaultValue || "",
-    900,
+    900
   );
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const DatePicker: FC<DatePickerProps> = ({
           : setDateValue(`${debouncedValue.split("T")[0]}`);
       }
     },
-    [debouncedValue],
+    [debouncedValue]
   );
 
   return (
@@ -75,7 +75,7 @@ const DatePicker: FC<DatePickerProps> = ({
               setDateValue(
                 formatISO9075(getDateFromWeek(week, 0, year), {
                   representation: "date",
-                }),
+                })
               );
             } else {
               setDateValue("");

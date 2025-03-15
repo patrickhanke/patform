@@ -14,7 +14,7 @@ type Option =
 export type SelectType = {
   onChange: (
     values: MultiValue<Option> | SingleValue<Option>,
-    action?: ActionMeta<Option>,
+    action?: ActionMeta<Option>
   ) => void;
   value?: MultiValue<Option> | SingleValue<Option>;
   placeholder?: string;

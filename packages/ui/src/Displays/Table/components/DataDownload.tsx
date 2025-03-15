@@ -30,7 +30,7 @@ const DataDownload = ({ data, title }) => {
     XLSX.utils.book_append_sheet(wb, ws, "Spieler_innen");
     XLSX.writeFile(
       wb,
-      `${title}_${new Date().getDate().toString()}-${new Date().getMonth().toString()}-${new Date().getFullYear().toString()}.xlsx`,
+      `${title}_${new Date().getDate().toString()}-${new Date().getMonth().toString()}-${new Date().getFullYear().toString()}.xlsx`
     );
   };
 

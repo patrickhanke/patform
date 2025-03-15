@@ -45,7 +45,7 @@ const PageHeader = ({
                 "full_button",
                 "md",
                 "primary",
-                "pageheader_createbutton",
+                "pageheader_createbutton"
               )}
               onClick={() => button.onClick()}
               disabled={button.disabled}

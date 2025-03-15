@@ -33,11 +33,11 @@ const RenderFilters = ({
                   field.key,
                   e.target.value,
                   "_regex",
-                  filters,
-                ),
+                  filters
+                )
               )
             }
-          />,
+          />
         );
       } else if (field.type === "select") {
         filterArray.push(
@@ -49,12 +49,12 @@ const RenderFilters = ({
             value={field?.value || null}
             onChange={(value) =>
               setFilters(
-                filterChangeHandler(field.key, value.value, "_in", filters),
+                filterChangeHandler(field.key, value.value, "_in", filters)
               )
             }
             placeholder={field.placeholder}
             isClearable={false}
-          />,
+          />
         );
       }
     });
@@ -65,7 +65,7 @@ const RenderFilters = ({
             category={category}
             filters={filters}
             setFilters={setFilters}
-          />,
+          />
         );
       }
     });

@@ -22,7 +22,7 @@ const CreateUser: FC<CreateUserProps> = ({ user, setUser }) => {
         placeholder: "Vor- und Nachname",
       },
     ],
-    [user],
+    [user]
   );
 
   return (

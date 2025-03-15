@@ -33,7 +33,7 @@ export const ArrowContainer = styled.div(
     color: props.isSortedDesc
       ? settings.constants.grey
       : settings.constants.dark,
-  }),
+  })
 );
 
 export const arrowIcon = {

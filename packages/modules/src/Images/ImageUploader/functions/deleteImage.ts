@@ -22,7 +22,7 @@ async function deleteImageHandler({
       headers: {
         Authorization: `Bearer ${apiKey}`,
       },
-    },
+    }
   );
 
   if (Math.floor(response.status / 100) !== 2) {

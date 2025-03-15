@@ -7,7 +7,7 @@ const useMessageHandler = () => {
   const createMessageHandler = async (
     type: MessageTypes.MessageTypes,
     id: string,
-    users: string[],
+    users: string[]
   ) => {
     const updateObject: MessageTypes.MessageUpdateObject = {
       is_read: false,

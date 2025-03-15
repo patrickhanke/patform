@@ -12,12 +12,12 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [project, setProject] = useSessionStorage<string | undefined>(
     "project",
     undefined,
-    { initializeWithValue: true },
+    { initializeWithValue: true }
   );
   const [user, setUser] = useSessionStorage<User | undefined>(
     "user",
     undefined,
-    { initializeWithValue: true },
+    { initializeWithValue: true }
   );
 
   const changeProject = (id: string) => {
@@ -46,7 +46,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
       changeProject,
       getUserData,
     }),
-    [token, user],
+    [token, user]
   );
 
   useEffect(() => {

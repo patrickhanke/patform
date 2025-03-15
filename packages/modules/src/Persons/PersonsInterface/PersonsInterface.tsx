@@ -35,7 +35,7 @@ const PersonsInterface = ({
         setSelectedPersons(valueCopy.filter((personId) => personId !== id));
       }
     },
-    [persons, selectedPersons],
+    [persons, selectedPersons]
   );
 
   const displayPersons = useMemo(() => {
@@ -65,7 +65,7 @@ const PersonsInterface = ({
             <PersonDisplay
               key={person}
               person={personData.find(
-                (ps: PersonClass) => ps.objectId === person,
+                (ps: PersonClass) => ps.objectId === person
               )}
               onlyImage={persons.length > 1}
             />

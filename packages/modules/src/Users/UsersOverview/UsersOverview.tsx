@@ -45,7 +45,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
         }),
       },
       skip: !project?.objectId,
-    },
+    }
   );
   const columns = useUserColumns();
 
@@ -90,7 +90,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
         is_add_button: true,
       },
     ],
-    [],
+    []
   );
 
   return (

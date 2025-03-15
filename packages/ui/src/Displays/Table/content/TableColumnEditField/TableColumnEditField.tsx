@@ -41,7 +41,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
         setData(newData);
       },
       skip: !isOpen,
-    },
+    }
   );
   const [disabled, setDisabled] = useState<[boolean, boolean]>([false, false]);
 

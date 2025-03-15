@@ -15,7 +15,7 @@ const Dashboard = () => {
         onClick: () => setCreateProject(true),
       },
     ],
-    [],
+    []
   );
 
   return (

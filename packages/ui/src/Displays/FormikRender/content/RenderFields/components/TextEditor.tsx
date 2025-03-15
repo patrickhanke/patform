@@ -55,7 +55,7 @@ const TextEditor: React.FC<TextEditorProps> = ({
                   content={values[name] || ""}
                   onChange={onChange}
                   placeholder={placeholder}
-                />,
+                />
               )
             }
           >

@@ -20,7 +20,7 @@ const CreateField: FC<CreateFieldProps> = ({
   const { updateData } = useDataHandler();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FormField>(
-    field ? field : default_field_data,
+    field ? field : default_field_data
   );
 
   const [secContent, setSecContent] = useState<string | null>(null);
@@ -63,7 +63,7 @@ const CreateField: FC<CreateFieldProps> = ({
       // set(dataCopy, key, value)
       setData(dataCopy);
     },
-    [data],
+    [data]
   );
 
   const dataSaveHandler = useCallback(async () => {
@@ -175,7 +175,7 @@ const CreateField: FC<CreateFieldProps> = ({
                   {
                     select_types.find(
                       (type: (typeof select_types)[number]) =>
-                        type.value === data.type,
+                        type.value === data.type
                     )?.label
                   }
                 </p>

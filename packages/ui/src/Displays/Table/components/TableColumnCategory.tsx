@@ -26,7 +26,7 @@ const TableColumnCategory = ({
     }),
     {
       variables: { module: { _eq: category.moduleId } },
-    },
+    }
   );
 
   const selectOptions = useMemo(() => {
@@ -41,7 +41,7 @@ const TableColumnCategory = ({
             value: field.objectId,
             label: field.label as string,
           });
-        },
+        }
       );
     }
 
@@ -81,7 +81,7 @@ const TableColumnCategory = ({
 
       refetch();
     },
-    [category, categories, data],
+    [category, categories, data]
   );
 
   return (
@@ -92,7 +92,7 @@ const TableColumnCategory = ({
           onChange={(options: SelectOption[] | SelectOption) => {
             if (isArray(options)) {
               categoryChangeHandler(
-                options.map((option: SelectOption) => option.value),
+                options.map((option: SelectOption) => option.value)
               );
               return;
             } else {

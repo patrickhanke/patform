@@ -46,7 +46,7 @@ function Editor({
 }: EditorComponent) {
   const [debouncedValue, setEditorHtmlContent] = useDebounceValue(
     content,
-    1000,
+    1000
   );
   const editorRef = useRef(null);
 
@@ -67,7 +67,7 @@ function Editor({
       Link.configure({
         linkOnPaste: false,
         openOnClick: false,
-      }),
+      })
     );
   }
 
@@ -75,7 +75,7 @@ function Editor({
     extensions.push(
       CodeBlockLowlight.configure({
         lowlight,
-      }),
+      })
     );
   }
 
@@ -87,7 +87,7 @@ function Editor({
     extensions.push(
       Placeholder.configure({
         placeholder,
-      }),
+      })
     );
   }
 
@@ -108,7 +108,7 @@ function Editor({
         setEditorHtmlContent(editor.getHTML());
       },
     },
-    [disabled],
+    [disabled]
   );
 
   useEffect(() => {

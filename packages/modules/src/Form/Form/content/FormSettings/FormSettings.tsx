@@ -21,7 +21,7 @@ const FormSettings = ({ formId }: { formId: string }) => {
       variables: {
         id: formId,
       },
-    },
+    }
   );
 
   const [loading, setLoading] = useState(false);
@@ -46,7 +46,7 @@ const FormSettings = ({ formId }: { formId: string }) => {
       await refetch();
       setLoading(false);
     },
-    [settings, data, loading],
+    [settings, data, loading]
   );
 
   if (!settings) {
@@ -118,7 +118,7 @@ const FormSettings = ({ formId }: { formId: string }) => {
               </div>
             );
           }
-        },
+        }
       )}
     </div>
   );

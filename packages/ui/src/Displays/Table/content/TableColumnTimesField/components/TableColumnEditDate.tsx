@@ -33,7 +33,7 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
           },
         ],
       }),
-    },
+    }
   );
 
   const locationOptions = useMemo(() => {
@@ -43,7 +43,7 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
       (location: LocationClass) => ({
         label: location.label,
         value: location.objectId,
-      }),
+      })
     );
   }, [locationData]);
 
@@ -52,12 +52,12 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
       key: string,
       value:
         | EventTime[keyof EventTime]
-        | EventTime["place"][keyof EventTime["place"]],
+        | EventTime["place"][keyof EventTime["place"]]
     ) => {
       if (time) {
         setTimes((draft: EventTime[]) => {
           const index: number = draft.findIndex(
-            (dateToFind) => dateToFind.id === time.id,
+            (dateToFind) => dateToFind.id === time.id
           );
           const dateCopy: typeof time = cloneDeep(time);
           set(dateCopy, key, value);
@@ -68,7 +68,7 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
         });
       }
     },
-    [time, setTimes],
+    [time, setTimes]
   );
 
   if (!time) {
@@ -110,7 +110,7 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
           buttonStates={locationButtonStates}
           currentStates={
             locationButtonStates.find(
-              (button) => button.value === time.place.type,
+              (button) => button.value === time.place.type
             ) as { label: string; value: string }
           }
           changeHandler={(value) => changeHandler("place.type", value.value)}
@@ -134,7 +134,7 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
                 options={locationOptions}
                 value={locationOptions.find(
                   (location: { value: string; label: string }) =>
-                    location.value === time.place.location,
+                    location.value === time.place.location
                 )}
                 onChange={(loc) => changeHandler("place.location", loc.value)}
               />

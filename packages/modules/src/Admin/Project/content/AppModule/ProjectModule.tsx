@@ -27,7 +27,7 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
     }),
     {
       variables: { id },
-    },
+    }
   );
 
   if (loading) return <Loader width="100%" height="30px" />;

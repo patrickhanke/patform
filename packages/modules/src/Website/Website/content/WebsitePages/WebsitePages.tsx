@@ -11,7 +11,7 @@ const WebsitePages = ({ moduleId }: WebsitePagesProps) => {
       objectName: "Webpage",
       fields: ["title", "objectId", "name", "title", "subtitle"],
     }),
-    { variables: { where: { module: moduleId } } },
+    { variables: { where: { module: moduleId } } }
   );
 
   const columns = useCreateColumns<PageClass>({

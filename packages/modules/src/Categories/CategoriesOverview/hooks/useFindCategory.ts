@@ -12,7 +12,7 @@ const useFindCategory: UseFindCategoryHook = ({ moduleId, filters }) => {
     {
       variables: { params: paramsHandler({ moduleId, filters }) },
       notifyOnNetworkStatusChange: true,
-    },
+    }
   );
 
   return {

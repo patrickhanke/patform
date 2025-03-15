@@ -125,7 +125,7 @@ const ImageUploader = ({
           options={options}
           onComplete={(uploadedFiles) => {
             onChange(uploadedFiles.map((file) => file.filePath)) as unknown as (
-              F: Image[],
+              F: Image[]
             ) => void;
             reinitializeHandler();
           }}

@@ -6,7 +6,7 @@ const stringreplace = (str: string, find?: string, replace?: string) => {
 
   letStringCopy.replace(
     new RegExp("author", "g"),
-    "author {objectId label portrait}",
+    "author {objectId label portrait}"
   );
   return letStringCopy;
 };

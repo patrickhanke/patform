@@ -51,7 +51,7 @@ const CreateOptions: FC<CreateOptionsProps> = ({ options, setOptions }) => {
             onChange={(key, value) => {
               const optionsCopy = [...options];
               const index = optionsCopy.findIndex(
-                (option) => option.id === item.id,
+                (option) => option.id === item.id
               );
               if (key === "label" && index !== -1 && optionsCopy[index]) {
                 optionsCopy[index].label = value;

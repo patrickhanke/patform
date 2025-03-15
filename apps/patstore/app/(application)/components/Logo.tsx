@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { getImageUrl } from '@repo/provider'
-import Image from 'next/image'
-import React from 'react'
-import { patstoreLogo } from '@repo/assets'
+import { getImageUrl } from "@repo/provider";
+import Image from "next/image";
+import React from "react";
+import { patstoreLogo } from "@repo/assets";
 
-const Logo = ({ logo, alt = 'patwork' }: { logo: string; alt?: string }) => {
-  console.log({ logo })
+const Logo = ({ logo, alt = "patwork" }: { logo: string; alt?: string }) => {
+  console.log({ logo });
 
   return logo ? (
     <Image
@@ -17,7 +17,7 @@ const Logo = ({ logo, alt = 'patwork' }: { logo: string; alt?: string }) => {
     />
   ) : (
     <Image src={patstoreLogo} width={21} height={21} alt={alt} />
-  )
-}
+  );
+};
 
-export default Logo
+export default Logo;

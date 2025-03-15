@@ -34,7 +34,7 @@ const AddUser: FC<AddUserProps> = ({ user, setUser, projectId }) => {
       },
       notifyOnNetworkStatusChange: true,
       skip: !searchValue,
-    },
+    }
   );
 
   console.log(data);

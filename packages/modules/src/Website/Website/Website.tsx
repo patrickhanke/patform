@@ -18,10 +18,10 @@ const Website = () => {
       objectName: "Module",
       fields: ["settings", "objectId"],
     }),
-    { variables: { id: currentModule.objectId } },
+    { variables: { id: currentModule.objectId } }
   );
   const [activeState, setActiveState] = useState<(typeof pages_states)[number]>(
-    pages_states[0] as PageState,
+    pages_states[0] as PageState
   );
 
   const createClass = useMemo(() => {

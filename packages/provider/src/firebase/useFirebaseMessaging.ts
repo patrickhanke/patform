@@ -41,7 +41,7 @@ const useFirebaseMessaging = ({
           if (registration) {
             customLog(
               "Service Worker already registered with scope:",
-              registration.scope,
+              registration.scope
             );
           } else {
             navigator.serviceWorker
@@ -49,7 +49,7 @@ const useFirebaseMessaging = ({
               .then((registration) => {
                 customLog(
                   "Service Worker registered with scope:",
-                  registration.scope,
+                  registration.scope
                 );
               })
               .catch((error) => {
