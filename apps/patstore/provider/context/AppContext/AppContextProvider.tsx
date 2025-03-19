@@ -25,6 +25,7 @@ const AppContextProvider = ({
     () => ({
       pageTitle,
       setPageTitle,
+      project,
       currentModule,
       modules: project.modules.results,
     }),

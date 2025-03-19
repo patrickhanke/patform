@@ -17,7 +17,7 @@ import TaskList from "./content/TaskList";
 import { Divider, Page } from "@repo/ui";
 import site_states from "./constants/site_states";
 import { AppContext } from "@provider";
-import { NotificationContext } from "@repo/provider";
+import { NotificationContext } from "@provider";
 
 const Tasks = ({ id, className, pageState }: TasksComponent) => {
   const [filters, setFilters] = React.useState([] as Filter[]);

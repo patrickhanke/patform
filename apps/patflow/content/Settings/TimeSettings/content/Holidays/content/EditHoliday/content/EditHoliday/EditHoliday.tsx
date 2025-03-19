@@ -12,10 +12,10 @@ import { ErrorMessage, Holiday, HolidayTemplate } from "@types";
 import {
   generateGraphQLQuery,
   useDataHandler,
-  UserContext,
 } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { EditHolidayProps } from "./types";
+import { UserContext } from "@provider";
 
 const EditHoliday: React.FC<EditHolidayProps> = ({
   template,

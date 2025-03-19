@@ -8,6 +8,8 @@ const nextConfig = {
     SASHIDO_API_URL:
       "https://pg-app-ks588wtqbcwvgvbc096gr40cedytjy.scalabl.cloud/1/",
     SASHIDO_APP_ID: "6Soqn6XEf2By4YAa2WN9YV9pNk3hT7dTNFOAVYaQ",
+    SASHIDO_GQL_URL:
+      "https://pg-app-ks588wtqbcwvgvbc096gr40cedytjy.scalabl.cloud/graphql/",
     SASHIDO_REST_KEY: "ARh0DqKEdWYDXb0mVNM50W5nQhNb7TVA9fpNF3dk",
     SASHIDO_MASTER_KEY: "ya02fyyVMVoqFC3rtzgrckdF3VrQN3hk9TNpPdRA",
     SASHIDO_FILE_URL:

@@ -3,7 +3,7 @@
 import { axiosclient } from "../data";
 import { User } from "@repo/types";
 import Cookies from "js-cookie";
-import { generateUuid } from "@repo/provider";
+import { v4 as generateUuid } from "uuid";
 import axios from "axios";
 
 type LoginUser = (T: {

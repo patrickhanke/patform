@@ -44,6 +44,12 @@ module.exports = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "upcdn.io",
+        port: "",
+        pathname: "/**",
+      }
     ],
   },
 };

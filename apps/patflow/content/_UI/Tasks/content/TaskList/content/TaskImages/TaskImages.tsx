@@ -1,8 +1,9 @@
-import { useDataHandler, UserContext } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import React, { useCallback, useContext } from "react";
 import styles from "./TaskImages.module.scss";
 import { Image } from "@types";
 import { ImageUploader, ImagesDisplay } from "@repo/ui";
+import { UserContext } from "@provider";
 
 const TaskImages = ({
   taskId,

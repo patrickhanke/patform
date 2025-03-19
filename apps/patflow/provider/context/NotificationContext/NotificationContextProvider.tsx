@@ -11,13 +11,14 @@ import {
   deleteNotification,
   getNotifications,
   useFirebaseMessaging,
-  UserContext,
 } from "@repo/provider";
-import { setNotificationsToRead as snr, Notification } from "@repo/provider";
+import { setNotificationsToRead as snr } from "@repo/provider";
 import NotificationContext from "./NotificationContext";
 import useInstallations from "./hooks/useInstallations";
 import { MessagePayload } from "firebase/messaging";
 import { isEqual } from "lodash-es";
+import { Notification } from "@repo/types";
+import { UserContext } from "../UserContext";
 
 const NotificationContextProvider = ({
   children,
@@ -28,7 +29,7 @@ const NotificationContextProvider = ({
 
   const { user } = useContext(UserContext);
   const [newNotification, setNewNotification] = useState<string | undefined>(
-    undefined,
+    undefined
   );
 
   const messageChangeHanlder = useCallback(
@@ -40,7 +41,7 @@ const NotificationContextProvider = ({
         setNewNotification(notification.messageId);
       }
     },
-    [newNotification],
+    [newNotification]
   );
 
   const { token } = useFirebaseMessaging({
@@ -75,16 +76,16 @@ const NotificationContextProvider = ({
       setNotifications(
         notificationArray.sort(
           (a, b) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-        ),
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        )
       );
     }
     if (!isEqual(unreadNotifications, unreadNotificationArray)) {
       setUnreadNotifications(
         unreadNotificationArray.sort(
           (a, b) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-        ),
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        )
       );
     }
   }, [notifications, unreadNotifications]);
@@ -94,7 +95,7 @@ const NotificationContextProvider = ({
       await deleteNotification(id);
       await getNotificationCallback();
     },
-    [notifications],
+    [notifications]
   );
 
   useEffect(() => {
@@ -121,7 +122,7 @@ const NotificationContextProvider = ({
       deleteNotification: deleteNotificationCallaback,
       reloadNotifications: getNotificationCallback,
     }),
-    [notifications, unreadNotifications],
+    [notifications, unreadNotifications]
   );
 
   return (

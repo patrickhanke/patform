@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { ServiceCellProps } from "./types";
-import { generateUuid } from "@repo/provider";
+import { v4 as generateUuid } from "uuid";
 import CellContent from "./components/CellContent";
 import { PropertyService } from "@types";
 import { ServiceData } from "../../types";

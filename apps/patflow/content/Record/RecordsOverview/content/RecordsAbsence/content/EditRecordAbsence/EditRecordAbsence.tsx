@@ -8,6 +8,7 @@ import {
   absence_type_options,
   AppContext,
   useGetActiveRecord,
+  UserContext,
 } from "@provider";
 import { useDataHandler, generateGraphQLQuery } from "@repo/provider";
 import React, {
@@ -28,7 +29,6 @@ import { cloneDeep } from "lodash-es";
 import initialAbsence from "./constants/initialAbsence";
 import checkForAbsenceConflicts from "./functions/checkForAbsenceConflicts";
 import { SlideIn, TextInput } from "@repo/ui";
-import { UserContext } from "@repo/provider";
 
 const EditRecordAbsence = ({
   refetch,

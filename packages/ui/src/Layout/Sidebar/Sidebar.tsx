@@ -12,7 +12,6 @@ const Sidebar: FC<SidebarProps> = ({
   user,
   children,
   appVersion = "1.0.0",
-  appName = "patstore",
 }) => {
   return (
     <div className="sidebar_container">
@@ -76,12 +75,7 @@ const Sidebar: FC<SidebarProps> = ({
       <ul className="menu_item_container">
         {user?.is_superuser && (
           <li>
-            <MenuItem
-              link="/admin"
-              label="Admin"
-              icon="admin"
-              subMenu={false}
-            />
+            <MenuItem link="/admin" label="Admin" icon="admin" subMenu={[]} />
           </li>
         )}
 

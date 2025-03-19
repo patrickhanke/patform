@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  UserContext,
   generateGraphQLQuery,
   useDataHandler,
 } from "@repo/provider";
@@ -12,6 +11,7 @@ import CreatePropterty from "./components/CreateProperty";
 import initialData from "./constants/initialData";
 import { Property } from "@types";
 import { Page, Table } from "@repo/ui";
+import { UserContext } from "@provider";
 
 const PropertyOverview = () => {
   const [isOpen, setIsOpen] = React.useState(false);

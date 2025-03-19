@@ -1,11 +1,11 @@
 "use client";
 
-import { UserContext } from "@repo/provider";
 import React, { useContext, useState } from "react";
 import styles from "../CommentInterface.module.scss";
 import clsx from "clsx";
 import { CreateCommentProps } from "../types";
 import { TextInput } from "@repo/ui";
+import { UserContext } from "@provider";
 
 const CreateComment = ({ addCommentHandler }: CreateCommentProps) => {
   const { user } = useContext(UserContext);

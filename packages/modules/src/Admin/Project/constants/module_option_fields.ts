@@ -1,5 +1,5 @@
 import { ModuleOptionsField } from "../types";
-import { generateUuid } from "@repo/provider";
+import { v4 as generateUuid } from "uuid";
 
 export const module_option_fields: ModuleOptionsField = {
   "/website": {

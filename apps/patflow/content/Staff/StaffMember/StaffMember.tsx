@@ -8,9 +8,9 @@ import UserSettings from "./content/UserSettings";
 import StaffMemberOverview from "./content/StaffMemberOverview";
 import { Params } from "@types";
 import StaffMemberTimes from "./content/StaffMemberTimes";
-import { UserContext } from "@repo/provider";
 import { SiteState } from "@repo/types";
 import { Page } from "@repo/ui";
+import { UserContext } from "@provider";
 
 const StaffMember = ({ params }: { params: Params }) => {
   const { data, loading } = useQuery(GET_USER, {

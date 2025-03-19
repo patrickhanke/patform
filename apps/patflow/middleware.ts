@@ -10,9 +10,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/api") || //  exclude all API routes
     pathname.startsWith("/static") || // exclude static files
-    pathname.startsWith("/survey") || // exclude static files
-    pathname.startsWith("/portal") || // exclude static files
-    pathname.startsWith("/pdf") || // exclude static files
     pathname === "/firebase-messaging-sw.js" ||
     PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
@@ -67,7 +64,3 @@ export async function middleware(request: NextRequest) {
 
   return response;
 }
-
-// export const config = {
-// 	matcher:[ '/app/(application)/:path*']
-// }

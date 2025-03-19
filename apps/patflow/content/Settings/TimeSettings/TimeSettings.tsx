@@ -5,7 +5,6 @@ import site_states from "./constants/site_states";
 import {
   generateGraphQLQuery,
   useDataHandler,
-  UserContext,
 } from "@repo/provider";
 import SurchargeSettings from "./content/SurchargeSettings";
 import HolidayTemplates from "./content/HolidayTemplates";
@@ -14,9 +13,10 @@ import { useQuery } from "@apollo/client";
 import { Holiday } from "@types";
 import { cloneDeep, set } from "lodash-es";
 import axios from "axios";
-import { Page, SiteHeaderButtons } from "@repo/ui";
+import { Page, PageHeaderButtons } from "@repo/ui";
 import { SiteState } from "@repo/types";
 import EditRecords from "./content/EditRecords";
+import { UserContext } from "@provider";
 
 const TimeSettings = () => {
   const [siteState, setSiteState] = useState<SiteState>(
@@ -102,7 +102,7 @@ const TimeSettings = () => {
     return returnObject;
   }, [refetchHolidays]);
 
-  const siteHeaderButtons: SiteHeaderButtons = useMemo(() => {
+  const siteHeaderButtons: PageHeaderButtons = useMemo(() => {
     if (siteState.value === "holiday-templates") {
       return [
         {

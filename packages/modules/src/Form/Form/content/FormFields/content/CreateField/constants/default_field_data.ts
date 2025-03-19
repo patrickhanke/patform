@@ -1,4 +1,4 @@
-import { generateUuid } from "@repo/provider";
+import { v4 as generateUuid } from "uuid";
 import { FormField } from "../types";
 
 const default_field_data: FormField = {

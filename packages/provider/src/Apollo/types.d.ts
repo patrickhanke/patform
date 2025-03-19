@@ -5,6 +5,7 @@ import {
   NormalizedCacheObject,
 } from "@apollo/client";
 import { Filter } from "@repo/types";
+import React from "react";
 
 type type = "find" | "get";
 type objectName = "Person" | "Module";
@@ -32,14 +33,16 @@ export type ParamsHandlerType = (
 ) => ReturnType<typeof paramsHandler>;
 
 export type ApolloAppProviderProps = {
+  uri: string;
   appId: string;
-  masterKey: string;
+  restKey: string;
   children: React.ReactNode;
 };
 
 export type makeClientProps = (
+  uri: string,
   appId: string,
-  masterKey: string,
+  restKey: string,
 ) => ApolloClient<NormalizedCacheObject>;
 
 export type ApolloRefetch = () => Promise<ApolloQueryResult<any>>;

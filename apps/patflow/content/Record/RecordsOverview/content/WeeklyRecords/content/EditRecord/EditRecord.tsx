@@ -20,7 +20,7 @@ import { useDataHandler } from "@repo/provider";
 import EditTime from "./components/EditTime";
 import { cloneDeep, pullAllBy, set } from "lodash-es";
 import { CreateButton, IconButton, SlideIn } from "@repo/ui";
-import { generateUuid } from "@repo/provider";
+import { v4 as generateUuid } from "uuid";
 
 const EditRecord = ({
   userId,

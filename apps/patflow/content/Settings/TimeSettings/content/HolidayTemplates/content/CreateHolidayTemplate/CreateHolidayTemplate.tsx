@@ -9,9 +9,10 @@ import SurchargeDaySelect from "./components/HolidayTemplateDaySelect";
 import { cloneDeep, set } from "lodash-es";
 import { ErrorMessage, HolidayTemplate } from "@types";
 import default_holiday_template from "./constants/default_holiday_template";
-import { useDataHandler, UserContext } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import { CreateHolidayTemplateProps } from "./types";
 import { Divider, SlideIn } from "@repo/ui";
+import { UserContext } from "@provider";
 
 const CreateHolidayTemplate: React.FC<CreateHolidayTemplateProps> = ({
   templates = [],

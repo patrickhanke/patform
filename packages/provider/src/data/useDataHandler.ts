@@ -2,10 +2,9 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import axiosapi from "./axios.ts";
-import axiosclient from "./axios.ts";
-import { useDataContext } from "../context/index.ts";
-import compileAxiosError from "./compileAxiosError.ts";
+import axiosclient from "./axios";
+import { useDataContext } from "./DataContext";
+import compileAxiosError from "./compileAxiosError";
 
 const useDataHandler = () => {
   const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
@@ -31,10 +30,10 @@ const useDataHandler = () => {
       let data: Array<any> = [];
       setLoading(true);
 
-      await axiosapi()
+      await axiosclient()
         .put(
           `classes/${className}/${objectId}`,
-          updateObject as AxiosRequestConfig<any>,
+          updateObject as AxiosRequestConfig<any>
         )
         .then((response: AxiosResponse<any, any>) => {
           data = response.data.results;
@@ -61,7 +60,7 @@ const useDataHandler = () => {
 
       return data;
     },
-    [],
+    []
   );
 
   const deleteData = useCallback(
@@ -100,7 +99,7 @@ const useDataHandler = () => {
       setLoading(false);
       setFeedback("", "", new Date());
     },
-    [],
+    []
   );
 
   const createData = useCallback(
@@ -119,10 +118,10 @@ const useDataHandler = () => {
     }) => {
       const data: Array<any> = [];
       setLoading(true);
-      await axiosapi()
+      await axiosclient()
         .post(
           `classes/${className}`,
-          query || (updateObject as AxiosRequestConfig<any>),
+          query || (updateObject as AxiosRequestConfig<any>)
         )
         .then((response: AxiosResponse<any, any>) => {
           if (feedback) {
@@ -142,7 +141,7 @@ const useDataHandler = () => {
       setLoading(false);
       return data;
     },
-    [],
+    []
   );
 
   const getData = useCallback(
@@ -150,7 +149,7 @@ const useDataHandler = () => {
       let data: Array<any> = [];
       setLoading(true);
       if (query) {
-        await axiosapi()
+        await axiosclient()
           .get(`classes/${className}?where={${query}}`)
           .then((response: AxiosResponse<any, any>) => {
             data = response.data.results;
@@ -160,7 +159,7 @@ const useDataHandler = () => {
           });
       }
       if (!query) {
-        await axiosapi()
+        await axiosclient()
           .get(`classes/${className}`)
           .then((response: AxiosResponse<any, any>) => {
             data = response.data.results;
@@ -172,7 +171,7 @@ const useDataHandler = () => {
       setLoading(false);
       return data;
     },
-    [],
+    []
   );
 
   const returnFunctions = useMemo(() => {

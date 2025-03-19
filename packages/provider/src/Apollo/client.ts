@@ -8,20 +8,20 @@ import {
   InMemoryCache,
   SSRMultipartLink,
 } from "@apollo/experimental-nextjs-app-support";
-import { makeClientProps } from "./types.js";
+import { makeClientProps } from "./types";
 // import { InMemoryCache } from '@apollo/client-react-streaming';
 
-const makeClient: makeClientProps = (appId, masterKey) => {
+const makeClient: makeClientProps = (uri, appId, restKey) => {
   const localToken = Cookies.get(process.env.SESSION_TOKEN as string);
 
   const token = localToken || "";
 
   const httpLink = new HttpLink({
-    uri: "https://pg-app-uefbsna5l6ijyse42wipewpjwu804d.scalabl.cloud/graphql/",
+    uri,
     headers: {
       "X-Parse-Application-Id": appId || "",
-      // 'X-Parse-REST-API-Key': process.env.SASHIDO_REST_KEY || '',
-      "X-Parse-Master-Key": masterKey || "",
+      "X-Parse-REST-API-Key": restKey || "",
+      // "X-Parse-Master-Key": restKey || "",
       "X-Parse-Session-Token": token,
     },
   });

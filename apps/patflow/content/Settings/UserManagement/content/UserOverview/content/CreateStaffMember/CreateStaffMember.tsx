@@ -1,17 +1,13 @@
 import React, {
   useState,
   useEffect,
-  Dispatch,
-  SetStateAction,
   FC,
   useContext,
 } from "react";
-import clsx from "clsx";
-import styles from "../UserOverview.module.scss";
 import { useImmer } from "use-immer";
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_ROLES } from "@queries";
-import { generateColor, useDataHandler, UserContext } from "@repo/provider";
+import { generateColor, useDataHandler } from "@repo/provider";
 import { ErrorMessage, Worker } from "@types";
 import { SlideIn } from "@repo/ui";
 import { CreateStaffMemberProps } from "./types";
@@ -19,6 +15,7 @@ import EditStaffData from "./components/EditStaffData";
 import EditStaffSecondaryData from "./components/EditStaffSecondaryData";
 import { formatISO } from "date-fns";
 import { CreateUser } from "@repo/types";
+import { UserContext } from "@provider";
 
 const CreateStaffMember: FC<CreateStaffMemberProps> = ({
   workers = [],

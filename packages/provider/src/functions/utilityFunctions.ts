@@ -1,6 +1,3 @@
-import { Field } from "../../../ui/src/Displays";
-import { v4 as uuidv4 } from "uuid";
-
 export function slugify(string: string) {
   const a =
     "àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;";
@@ -44,18 +41,6 @@ export function shadeColor(color: string, percent: number) {
   return "#" + RR + GG + BB;
 }
 
-export const getInitialData = (fields: Field[]) => {
-  const dataFields = fields.reduce(
-    (acc: { [key: string]: Field["initialValue"] }, field) => {
-      acc[field.name.slice(field.name.lastIndexOf(".") + 1) as keyof Field] =
-        field.initialValue;
-      return acc;
-    },
-  );
-
-  return dataFields;
-};
-
 export const generateColor = () => {
   const newColor =
     "#" +
@@ -65,5 +50,3 @@ export const generateColor = () => {
 
   return newColor;
 };
-
-export const generateUuid: () => string = () => uuidv4();

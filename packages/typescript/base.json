@@ -7,6 +7,13 @@
     "incremental": false,
     "isolatedModules": true,
     "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@repo/ui/*": ["./packages/ui/*"],
+      "@repo/provider/*": ["./packages/provider/*"],
+      "@repo/types/*": ["./packages/types/*"],
+      "@repo/styles/*": ["./packages/styles/*"],
+      "@repo/typescript/*": ["./packages/typescript/*"],
+    },
     "module": "NodeNext",
     "moduleDetection": "force",
     "moduleResolution": "NodeNext",

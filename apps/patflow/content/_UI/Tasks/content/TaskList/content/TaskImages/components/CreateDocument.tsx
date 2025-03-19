@@ -1,10 +1,10 @@
 import { TextInput } from "@repo/ui";
-import { UserContext } from "@repo/provider";
 import React, { useContext, useState } from "react";
 import styles from "../TaskDocuments.module.scss";
 import clsx from "clsx";
-import { Application } from "@types";
 import { DocumentUploader } from "@content";
+import { Document } from "@repo/types";
+import { UserContext } from "@provider";
 
 const CreateDocument = ({
   addDocumentHandler,
@@ -13,14 +13,14 @@ const CreateDocument = ({
   disabled: boolean;
   addDocumentHandler: (content: {
     user: string;
-    file: ApplicationTypes.Document["file"];
+    file: Document["file"];
     name: string;
   }) => void;
 }) => {
   const { user } = useContext(UserContext);
   const [name, setName] = useState("");
   const [file, setFile] = useState(
-    null as unknown as Application.Document["file"],
+    null as unknown as Document["file"],
   );
 
   return (
@@ -49,7 +49,7 @@ const CreateDocument = ({
               file: file,
             });
             setName("");
-            setFile(undefined as unknown as ApplicationTypes.Document["file"]);
+            setFile(undefined as unknown as Document["file"]);
           }}
         >
           Dokument hinzufügen
@@ -58,7 +58,7 @@ const CreateDocument = ({
           className={clsx("full_button", "sm", "light")}
           onClick={() => {
             setName("");
-            setFile(null as unknown as ApplicationTypes.Document["file"]);
+            setFile(null as unknown as Document["file"]);
           }}
         >
           Abbrechen

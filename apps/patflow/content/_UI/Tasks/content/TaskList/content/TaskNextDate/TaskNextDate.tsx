@@ -44,7 +44,7 @@ const TaskNextDate = ({
           (dateToFind: string) =>
             formatISO9075(dateToFind, {
               representation: "date",
-            }) === datesCopy[0],
+            }) === datesCopy[0]
         );
         if (date) {
           if (new Date(date).getTime() < new Date().getTime()) {

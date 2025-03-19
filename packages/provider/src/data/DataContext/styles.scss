@@ -1,0 +1,24 @@
+@use "@repo/styles/constants";
+
+.feedback_container {
+  font-family: Geist;
+  height: auto;
+  width: auto;
+  position: fixed;
+  bottom: 30px;
+  left: 18px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  z-index: 10;
+  box-shadow: constants.$shadow_large_regular;
+}
+
+.feedback_container.positive {
+  background-color: green;
+}
+
+.feedback_container.negative {
+  background-color: red;
+}

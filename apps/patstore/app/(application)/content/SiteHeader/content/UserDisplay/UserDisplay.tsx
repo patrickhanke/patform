@@ -1,37 +1,23 @@
 "use client";
 
 import styles from "./UserDisplay.module.scss";
-
-import { Icon, MessageIndicator } from "@repo/ui";
-
+import { Icon } from "@repo/ui";
 import { FC, useCallback, useEffect, useState } from "react";
-
 import { axiosclient, getImageUrl } from "@repo/provider";
-
 import { UserDisplayProps } from "./types";
-
 import UserSettings from "./components/UserSettings";
-
 import { PatstoreUser } from "@repo/types";
-
 import { AnimatePresence } from "motion/react";
-
 import UserMenu from "./content/UserMenu/UserMenu";
-
 import UserPassword from "./components/UserPassword";
-
 import ProjectSelection from "./components/ProjectSelection";
 import Image from "next/image";
 
 const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
   const [userSettings, setUserSettings] = useState(false);
-
   const [userPassword, setUserPassword] = useState(false);
-
   const [selectProject, setSelectProject] = useState(false);
-
   const [userMenu, setUserMenu] = useState(false);
-
   const [user, setUser] = useState<PatstoreUser | null>(null);
 
   const getUser = useCallback(async () => {
@@ -114,8 +100,6 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
         </div>
 
         <Icon type="arrow-down" size={15} strokeWidth={2} />
-
-        {userMessages && <MessageIndicator />}
 
         <AnimatePresence initial={false}>
           {userMenu && (

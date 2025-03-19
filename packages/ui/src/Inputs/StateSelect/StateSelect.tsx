@@ -42,7 +42,7 @@ const StateSelect: FC<StateSelectProps> = ({
   useEffect(() => {
     const element = document?.body;
     setDoc(element);
-  });
+  }, []);
 
   const customComponent = useMemo(() => {
     if (state) {
@@ -83,9 +83,9 @@ const StateSelect: FC<StateSelectProps> = ({
       Option: (props: any) => {
         const option = props.data;
         return (
-          <components.Option {...props}>
-            <div onClick={() => option.onClick()}>{option.label}</div>
-          </components.Option>
+          <div onClick={() => option.onClick()}>
+            <components.Option {...props}>{option.label}</components.Option>
+          </div>
         );
       },
       Input: (props: any) => {

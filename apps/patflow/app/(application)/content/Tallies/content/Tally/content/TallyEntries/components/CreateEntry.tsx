@@ -1,15 +1,15 @@
-import TextInput from "@/_UI/interfaces/TextInput";
-import { UserContext } from "@repo/provider";
+import {TextInput} from "@repo/ui";
 import React, { useContext, useState } from "react";
 import styles from "../TallyEntries.module.scss";
 import clsx from "clsx";
-import { TallyTypes } from "@types";
+import { Entry } from "@types";
 import { v4 as uuidv4 } from "uuid";
+import { UserContext } from "@provider";
 
 const CreateEntry = ({
   addEntryHandler,
 }: {
-  addEntryHandler: (newEntry: TallyTypes.Entry) => void;
+  addEntryHandler: (newEntry: Entry) => void;
 }) => {
   const { user } = useContext(UserContext);
   const [comment, setComment] = useState("");

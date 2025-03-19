@@ -12,7 +12,7 @@ import prettier from "eslint-plugin-prettier";
  * */
 export const config = [
   js.configs.recommended,
-  eslintConfigPrettier,
+  // eslintConfigPrettier,
   ...tseslint.configs.recommended,
   {
     plugins: {
@@ -29,8 +29,8 @@ export const config = [
           singleQuote: false,
           semi: true,
           trailingComma: "es5",
-          endOfLine: "crlf",
-          linebreakStyle: "windows",
+          endOfLine: "lf",
+          linebreakStyle: "unix",
         },
       ],
     },

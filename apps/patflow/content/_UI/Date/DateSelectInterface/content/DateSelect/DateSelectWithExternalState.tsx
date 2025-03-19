@@ -9,7 +9,6 @@ import SingleDateSelectInterface from "./components/SingleDateSelectInterface";
 import MultiDateSelectInterface from "./components/MultiDateSelectInterface";
 import IntervalDateSelectInterface from "./components/IntervalDateSelectInterface";
 import { DateSelectExternalStateProps } from "./types";
-import IntervalInfo from "./components/IntervalInfo";
 import { Divider } from "@repo/ui";
 
 const DateSelectWithExternalState = ({

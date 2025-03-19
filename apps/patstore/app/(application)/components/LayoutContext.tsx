@@ -2,12 +2,9 @@
 
 import {
   ApolloAppProvider,
-  AppContextProvider,
-  DataContextProvider,
-  ProjectContext,
 } from "@repo/provider";
-import { ProjectContextProvider } from "@repo/provider";
 import { PatstoreUser } from "@repo/types";
+import { AppContextProvider, DataContextProvider, ProjectContext, ProjectContextProvider } from "../../../provider";
 
 const LayoutContext = ({
   user,
@@ -18,8 +15,9 @@ const LayoutContext = ({
 }) => {
   return (
     <ApolloAppProvider
+      uri={process.env.SASHIDO_GQL_URL as string}
       appId={process.env.SASHIDO_APP_ID as string}
-      masterKey={process.env.SASHIDO_MASTER_KEY as string}
+      restKey={process.env.SASHIDO_REST_KEY as string}
     >
       <ProjectContextProvider projects={user.projects}>
         <ProjectContext.Consumer>

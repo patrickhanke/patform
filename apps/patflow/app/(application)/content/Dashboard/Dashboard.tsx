@@ -3,7 +3,7 @@
 import { Page, UserMessages } from "@repo/ui";
 import { deleteAllNotifications } from "@repo/provider";
 import { useContext, useMemo } from "react";
-import { NotificationContext } from "@repo/provider";
+import { NotificationContext } from "@provider";
 
 const Dashboard = () => {
   const {

@@ -1,15 +1,16 @@
 "use client";
 
-import { ApolloAppProvider, AppContextProvider } from "@provider";
-import {
-  UserContextProvider,
-  NotificationContextProvider,
-} from "@repo/provider";
+import { ApolloAppProvider } from "@repo/provider";
+import { UserContextProvider, NotificationContextProvider, AppContextProvider } from "@provider";
 import React from "react";
 
 const LayoutContext = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ApolloAppProvider>
+    <ApolloAppProvider
+      uri={process.env.SASHIDO_GQL_URL as string}
+      appId={process.env.SASHIDO_APP_ID as string}
+      restKey={process.env.SASHIDO_REST_KEY as string}
+    >
       <UserContextProvider>
         <AppContextProvider>
           <NotificationContextProvider>

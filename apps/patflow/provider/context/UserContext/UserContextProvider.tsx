@@ -82,7 +82,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
     () => ({
       user: getItem("user", "session", "object") || ({} as User),
       loginUser,
-      project: "B2vfHKzxqE",
+      projectId: "B2vfHKzxqE",
       changeProject,
       getUserData,
       userMessages,

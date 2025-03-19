@@ -23,8 +23,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../../packages/ui/src/Inputs/DatePicker/functions/getDateFromWeek.ts"
-    // "./public/firebase-messaging-sw.js"
+    "custom.d.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules","next.config.js", "eslint.config.mjs", "jest.config.js"]
 }

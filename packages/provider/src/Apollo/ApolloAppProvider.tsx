@@ -6,11 +6,12 @@ import { ApolloAppProviderProps } from "./types";
 
 function ApolloAppProvider({
   children,
+  uri,
   appId,
-  masterKey,
+  restKey,
 }: ApolloAppProviderProps) {
   return (
-    <ApolloNextAppProvider makeClient={() => makeClient(appId, masterKey)}>
+    <ApolloNextAppProvider makeClient={() => makeClient(uri, appId, restKey)}>
       {children}
     </ApolloNextAppProvider>
   );

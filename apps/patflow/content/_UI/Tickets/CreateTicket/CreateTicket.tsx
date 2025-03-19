@@ -20,7 +20,8 @@ import { Plus } from "lucide-react";
 import initial_ticket from "./constants/initial_ticket";
 import { ImageUploader, Modal } from "@repo/ui";
 import { ObjectSelectWithState } from "@content";
-import { useDataHandler, UserContext } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
+import { UserContext } from "@provider";
 
 const CreateTicket = ({
   setRefetchTicket,

@@ -3,6 +3,7 @@
 import React from "react";
 import Logo from "./Logo";
 import { Sidebar } from "@repo/ui";
+import { PatflowUser } from "@repo/types";
 
 const menu_items = [
   {
@@ -90,13 +91,13 @@ const menu_items = [
   },
 ];
 
-const RenderSidebar = () => {
+const RenderSidebar = ({ user }: { user: PatflowUser }) => {
   return (
     <div className="layout_sidebar_container" id="sidebar">
       <div className="layout_sidebar_header">
         <Logo />
       </div>
-      <Sidebar menuItems={menu_items} />
+      <Sidebar menuItems={menu_items} user={user} />
     </div>
   );
 };

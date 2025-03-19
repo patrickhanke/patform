@@ -24,7 +24,7 @@ const ProjectContextProvider = ({
   }, [projects]);
 
   const [projectId, setProjectId] = useState<string | null | undefined>(
-    initialProjectId,
+    initialProjectId
   );
 
   const { data, loading, error } = useQuery(
@@ -44,7 +44,7 @@ const ProjectContextProvider = ({
         id: projectId,
       },
       skip: !projectId,
-    },
+    }
   );
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const ProjectContextProvider = ({
       project: currentProject,
       loadProject,
     }),
-    [currentProject],
+    [currentProject]
   );
 
   return (

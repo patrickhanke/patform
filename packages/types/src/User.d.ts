@@ -44,6 +44,20 @@ export type PatstoreUser = {
   projects: string[];
 };
 
+export type PatflowUser = {
+  objectId: string;
+  email: string;
+  username: string;
+  first_name: string;
+  family_name: string;
+  is_superuser: boolean;
+  type: string;
+  color: string;
+  role: UserRole;
+  is_worker: boolean;
+  portrait: string;
+};
+
 export type UserDisplayData = Pick<
   User,
   "objectId" | "family_name" | "first_name" | "email" | "portrait"

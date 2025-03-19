@@ -1,10 +1,10 @@
-import { UserContext } from "@repo/provider";
 import React, { useContext, useState } from "react";
 import styles from "../ProperyDocument.module.scss";
 import { Modal, TextInput } from "@repo/ui";
 import { Document } from "@types";
 import { CreateDocumentProps } from "../types";
 import { DocumentUploader } from "@content";
+import { UserContext } from "@provider";
 
 const CreateDocument: React.FC<CreateDocumentProps> = ({
   open,

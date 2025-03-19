@@ -25,5 +25,5 @@
     ".next/types/**/*.ts",
     "custom.d.ts"
   ],
-  "exclude": ["node_modules", "eslint.config.js", "jest.config.js"]
+  "exclude": ["node_modules","next.config.js", "eslint.config.mjs", "jest.config.js"]
 }
