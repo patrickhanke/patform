@@ -3,9 +3,9 @@
 import React, { useContext, useMemo } from "react";
 import Logo from "./Logo";
 import { Sidebar } from "@repo/ui";
-import { ProjectContext } from "@repo/provider";
 import { Module, PatstoreUser } from "@repo/types";
 import packageJson from "../../../package.json";
+import { ProjectContext } from "../../../provider";
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const { project } = useContext(ProjectContext);

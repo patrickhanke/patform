@@ -3,7 +3,7 @@
 import React, { Suspense, useContext, useEffect, useMemo } from "react";
 import useGetTickets from "./hooks/useGetTickets";
 import styles from "./Tickets.module.scss";
-import { NotificationContext, useDataHandler } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import { TicketsComponent } from "./types";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
@@ -12,7 +12,7 @@ import { Filter } from "@types";
 import { useCallback } from "react";
 import useTicketColumns from "./hooks/useTicketColumns";
 import { Page, Table } from "@repo/ui";
-import { AppContext } from "@provider";
+import { AppContext, NotificationContext } from "@provider";
 
 const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
   const [filters, setFilters] = React.useState([] as Filter[]);

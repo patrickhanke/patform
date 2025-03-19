@@ -3,8 +3,8 @@
 import { useContext } from "react";
 import styles from "./SiteHeader.module.scss";
 import { SiteHeaderComponent } from "./types";
-import { AppContext } from "@repo/provider";
 import { UserDisplay } from "./content/UserDisplay";
+import { AppContext } from "../../../../provider";
 
 const SiteHeader = ({ title }: SiteHeaderComponent) => {
   const { pageTitle } = useContext(AppContext);
