@@ -5,7 +5,7 @@ import styles from "../CommentInterface.module.scss";
 import clsx from "clsx";
 import { CreateCommentProps } from "../types";
 import { TextInput } from "@repo/ui";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const CreateComment = ({ addCommentHandler }: CreateCommentProps) => {
   const { user } = useContext(UserContext);

@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { Task } from "@types";
+import { Task } from "@repo/types";
 import TaskTitle from "../components/TaskTitle";
 import TaskNextDate from "../content/TaskNextDate";
 import DisplayProperty from "../content/DisplayPropery";
@@ -8,7 +8,7 @@ import DisplayTaskState from "../content/DisplayTaskState";
 import TeamAssignments from "../content/TeamAssignment";
 import TaskSlideIn from "../content/TaskSlideIn";
 import { UseTaskColumnsProps } from "../types";
-import { getDateString } from "@provider";
+import { getDateString } from "@repo/provider";
 
 const useTableColumns = ({
   refetch,

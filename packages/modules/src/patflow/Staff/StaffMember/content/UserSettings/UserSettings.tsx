@@ -1,6 +1,6 @@
 import { getIsoFromDate } from "@repo/provider";
 import { GET_USER_SETTINGS } from "@queries";
-import { fieldsType } from "@types";
+import { fieldsType } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import { Form, Loader } from "@repo/ui";
 import React, { useMemo } from "react";

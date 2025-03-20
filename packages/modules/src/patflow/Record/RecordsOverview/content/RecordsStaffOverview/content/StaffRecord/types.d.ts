@@ -1,5 +1,5 @@
-import { months } from "@provider";
-import { UserDisplayData } from "@types";
+import { months } from "@repo/provider";
+import { UserDisplayData } from "@repo/types";
 
 export type StaffRecordProps = {
   days: RecordData;

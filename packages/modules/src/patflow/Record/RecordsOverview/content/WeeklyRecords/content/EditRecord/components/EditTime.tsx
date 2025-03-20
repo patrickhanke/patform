@@ -4,7 +4,7 @@ import {
   getDateStringsFromIso,
   useGetActiveRecord,
   weekdays,
-} from "@provider";
+} from "@repo/provider";
 import {
   format,
   formatISO9075,
@@ -17,8 +17,8 @@ import { EditTimeProps, WorkingTime } from "../types";
 import styles from "../EditRecord.module.scss";
 import { useDebounceCallback } from "usehooks-ts";
 import { cloneDeep } from "lodash-es";
-import { SwitchButton as SwitchButtonType } from "@types";
-import { Select } from "@content";
+import { SwitchButton as SwitchButtonType } from "@repo/types";
+import { Select } from "@repo/ui";
 import { Modal } from "@repo/ui";
 
 const EditTime = ({

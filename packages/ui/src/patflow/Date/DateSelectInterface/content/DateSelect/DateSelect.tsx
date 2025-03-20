@@ -14,7 +14,7 @@ import styles from "./DateSelect.module.scss";
 import IntervalInfo from "./components/IntervalInfo";
 import { formatISO9075 } from "date-fns";
 import { isArray } from "lodash-es";
-import { DateObjectWithNextDates, ErrorMessage } from "@types";
+import { DateObjectWithNextDates, ErrorMessage } from "@repo/types";
 import { ErrorDisplay, Select } from "@repo/ui";
 
 const DateSelect = ({

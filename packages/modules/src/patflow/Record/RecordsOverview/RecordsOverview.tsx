@@ -8,8 +8,8 @@ import siteStates from "./constants/site_states";
 import RecordsCalendar from "./content/RecordsCalendar";
 import RecordsAbsence from "./content/RecordsAbsence";
 import RecordsStaffOverview from "./content/RecordsStaffOverview";
-import { AppContext } from "@provider";
-import { Filter } from "@types";
+import { AppContext } from "@repo/provider";
+import { Filter } from "@repo/types";
 import RecordsSettings from "./content/RecordsSettings";
 import { Page } from "@repo/ui";
 

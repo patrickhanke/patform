@@ -3,7 +3,7 @@ import CreateComment from "./components/CreateComment";
 import Comment from "./components/Comment";
 import { CommentInterfaceProps } from "./types";
 import styles from "./CommentInterface.module.scss";
-import { Comment as CommentType } from "@types";
+import { Comment as CommentType } from "@repo/types";
 import { Loader } from "@repo/ui";
 
 function sortCommentsByCreatedAt(comments: CommentType[]): CommentType[] {

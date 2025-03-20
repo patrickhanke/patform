@@ -1,6 +1,6 @@
-import { CommentInterface } from "@content";
+import { CommentInterface } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
-import { Comment } from "@types";
+import { Comment } from "@repo/types";
 import { Loader } from "@repo/ui";
 import React from "react";
 

@@ -10,7 +10,7 @@ import DisplayTaskState from "../DisplayTaskState";
 import TaskNextDate from "../TaskNextDate";
 import DisplayPropery from "../DisplayPropery";
 import TeamAssignment from "../TeamAssignment";
-import { findTicketRoute } from "@provider";
+import { findTicketRoute } from "@repo/provider";
 import { useRouter } from "next/navigation";
 import { IconButton, SlideInRight, StateSelect, SwitchButtons } from "@repo/ui";
 import buttonStates from "./constants/buttonStates";

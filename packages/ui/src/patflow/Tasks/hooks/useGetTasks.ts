@@ -1,5 +1,5 @@
 import { FIND_ALL_TASKS } from "@queries";
-import { ApolloRefetch, Filter, Task } from "@types";
+import { ApolloRefetch, Filter, Task } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import { useGetTasksHook } from "../types";
 

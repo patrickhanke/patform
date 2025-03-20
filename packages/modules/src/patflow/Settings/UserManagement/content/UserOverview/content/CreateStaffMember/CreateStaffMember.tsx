@@ -8,14 +8,14 @@ import { useImmer } from "use-immer";
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_ROLES } from "@queries";
 import { generateColor, useDataHandler } from "@repo/provider";
-import { ErrorMessage, Worker } from "@types";
+import { ErrorMessage, Worker } from "@repo/types";
 import { SlideIn } from "@repo/ui";
 import { CreateStaffMemberProps } from "./types";
 import EditStaffData from "./components/EditStaffData";
 import EditStaffSecondaryData from "./components/EditStaffSecondaryData";
 import { formatISO } from "date-fns";
 import { CreateUser } from "@repo/types";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const CreateStaffMember: FC<CreateStaffMemberProps> = ({
   workers = [],

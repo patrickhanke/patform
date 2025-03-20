@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import useGetTasks from "./hooks/useGetTasks";
-import { Filter } from "@types";
+import { Filter } from "@repo/types";
 import { SiteType, TasksComponent } from "./types";
 import { useSearchParams } from "next/navigation";
 import SiteHeaderContent from "./components/SiteHeaderContent";
@@ -16,8 +16,8 @@ import sortTasksForList from "./functions/sortTasksForList";
 import TaskList from "./content/TaskList";
 import { Divider, Page } from "@repo/ui";
 import site_states from "./constants/site_states";
-import { AppContext } from "@provider";
-import { NotificationContext } from "@provider";
+import { AppContext } from "@repo/provider";
+import { NotificationContext } from "@repo/provider";
 
 const Tasks = ({ id, className, pageState }: TasksComponent) => {
   const [filters, setFilters] = React.useState([] as Filter[]);

@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { MultiDateSelectInterfaceProps } from "../types";
 import { formatISO9075 } from "date-fns";
 import getUpcomingDates from "../functions/getUpcomingDates";
-import { DateObjectWithNextDates } from "@types";
+import { DateObjectWithNextDates } from "@repo/types";
 import { CreateButton, DatePicker } from "@repo/ui";
 
 const MultiDateSelectInterface = ({

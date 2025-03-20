@@ -10,13 +10,13 @@ import SurchargeSettings from "./content/SurchargeSettings";
 import HolidayTemplates from "./content/HolidayTemplates";
 import Holidays from "./content/Holidays";
 import { useQuery } from "@apollo/client";
-import { Holiday } from "@types";
+import { Holiday } from "@repo/types";
 import { cloneDeep, set } from "lodash-es";
 import axios from "axios";
 import { Page, PageHeaderButtons } from "@repo/ui";
 import { SiteState } from "@repo/types";
 import EditRecords from "./content/EditRecords";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const TimeSettings = () => {
   const [siteState, setSiteState] = useState<SiteState>(

@@ -1,4 +1,4 @@
-import { ApolloRefetch, PropertyService } from "@types";
+import { ApolloRefetch, PropertyService } from "@repo/types";
 
 export type ServiceData = {
   objectId: string;

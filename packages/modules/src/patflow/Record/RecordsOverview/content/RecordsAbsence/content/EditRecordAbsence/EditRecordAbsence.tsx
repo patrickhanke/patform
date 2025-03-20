@@ -9,7 +9,7 @@ import {
   AppContext,
   useGetActiveRecord,
   UserContext,
-} from "@provider";
+} from "@repo/provider";
 import { useDataHandler, generateGraphQLQuery } from "@repo/provider";
 import React, {
   useCallback,
@@ -19,9 +19,9 @@ import React, {
   useState,
 } from "react";
 import styles from "./EditRecordsAbsence.module.scss";
-import { DatePicker, DisplayWorker, Select } from "@content";
+import { DatePicker, DisplayWorker, Select } from "@repo/ui";
 import { EditRecordAbsenceComponent } from "./types";
-import { Day, ErrorMessage, StaffMember } from "@types";
+import { Day, ErrorMessage, StaffMember } from "@repo/types";
 import { FIND_ALL_STAFF, find_day } from "@queries";
 import { useQuery } from "@apollo/client";
 import checkForConflicts from "./functions/checkForConflicts";

@@ -6,11 +6,11 @@ import React, { Suspense, useContext, useMemo, useState } from "react";
 import useWorkerSiteStates from "./hooks/useWorkerSiteStates";
 import UserSettings from "./content/UserSettings";
 import StaffMemberOverview from "./content/StaffMemberOverview";
-import { Params } from "@types";
+import { Params } from "@repo/types";
 import StaffMemberTimes from "./content/StaffMemberTimes";
 import { SiteState } from "@repo/types";
 import { Page } from "@repo/ui";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const StaffMember = ({ params }: { params: Params }) => {
   const { data, loading } = useQuery(GET_USER, {

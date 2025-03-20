@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { ServiceCellProps } from "./types";
 import { v4 as generateUuid } from "uuid";
 import CellContent from "./components/CellContent";
-import { PropertyService } from "@types";
+import { PropertyService } from "@repo/types";
 import { ServiceData } from "../../types";
 
 const ServiceCell: FC<ServiceCellProps> = ({

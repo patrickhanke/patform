@@ -1,6 +1,6 @@
 "use client";
 
-import { DateSelectWithExternalState, DisplayWorker } from "@content";
+import { DateSelectWithExternalState, DisplayWorker } from "@repo/ui";
 import clsx from "clsx";
 import React, {
   useCallback,
@@ -17,15 +17,15 @@ import {
   DateObjectWithNextDates,
   ErrorMessage,
   CreateTaskUpdateObject,
-} from "@types";
+} from "@repo/types";
 import initial_task from "./constants/initial_task";
 import { Icon, ImageUploader, SlideIn, TextInput } from "@repo/ui";
-import { modi_options, date_category_options } from "@content";
+import { modi_options, date_category_options } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
 import SelectTicket from "./components/SelectTicket";
 import SelectProperty from "./components/SelectProperty";
 import SelectWorker from "./components/SelectWorker";
-import { getDateString, UserContext } from "@provider";
+import { getDateString, UserContext } from "@repo/provider";
 
 const CreateTask = ({
   setRefetchTask,

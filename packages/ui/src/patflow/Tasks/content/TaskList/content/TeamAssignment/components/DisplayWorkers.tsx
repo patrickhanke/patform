@@ -1,7 +1,7 @@
-import { DisplayWorker } from "@content";
+import { DisplayWorker } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
 import { FIND_ALL_STAFF, GET_TASK_WORKERS } from "@queries";
-import { Task, Worker } from "@types";
+import { Task, Worker } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { cloneDeep } from "lodash-es";

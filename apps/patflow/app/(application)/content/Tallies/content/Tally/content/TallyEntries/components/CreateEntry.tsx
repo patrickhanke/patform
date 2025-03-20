@@ -2,9 +2,9 @@ import {TextInput} from "@repo/ui";
 import React, { useContext, useState } from "react";
 import styles from "../TallyEntries.module.scss";
 import clsx from "clsx";
-import { Entry } from "@types";
+import { Entry } from "@repo/types";
 import { v4 as uuidv4 } from "uuid";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const CreateEntry = ({
   addEntryHandler,

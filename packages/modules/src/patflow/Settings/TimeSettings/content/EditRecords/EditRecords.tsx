@@ -5,8 +5,8 @@ import { EditRecordsProps } from "./types";
 import CreateRecord from "./content/CreateRecord";
 import useRecordsTableColumns from "./hooks/useRecordsTableColumns";
 import { Modal, Table } from "@repo/ui";
-import { AppContext } from "@provider";
-import { Worker } from "@types";
+import { AppContext } from "@repo/provider";
+import { Worker } from "@repo/types";
 import SelectUser from "./components/SelectUser";
 
 const EditRecords: FC<EditRecordsProps> = ({

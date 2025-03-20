@@ -1,7 +1,7 @@
 import React from "react";
 import { SurchargeDayEditProps } from "../types";
-import { weekdays } from "@provider";
-import { Holiday, Weekdays } from "@types";
+import { weekdays } from "@repo/provider";
+import { Holiday, Weekdays } from "@repo/types";
 import { Divider } from "@repo/ui";
 
 const SurchargeDayEdit: React.FC<SurchargeDayEditProps> = ({

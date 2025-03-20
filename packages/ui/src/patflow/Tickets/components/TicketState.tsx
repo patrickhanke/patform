@@ -3,7 +3,7 @@ import styles from "../Tickets.module.scss";
 import { useDataHandler } from "@repo/provider";
 import { TicketStateProps } from "../types";
 import { StateSelect } from "@repo/ui";
-import { ticket_state_options } from "@provider";
+import { ticket_state_options } from "@repo/provider";
 
 const TicketState = ({ ticketId, ticketState, refetch }: TicketStateProps) => {
   const { updateData } = useDataHandler();

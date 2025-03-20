@@ -1,6 +1,6 @@
-import { RoleUsers } from "@provider";
+import { RoleUsers } from "@repo/provider";
 import { CreateUser, ErrorMessage, User, UserRole } from "@repo/types";
-import { Worker } from "@types";
+import { Worker } from "@repo/types";
 import { DraftFunction, ImmerHook, Updater } from "use-immer";
 
 type EditUser = User & { repeat_password: string };

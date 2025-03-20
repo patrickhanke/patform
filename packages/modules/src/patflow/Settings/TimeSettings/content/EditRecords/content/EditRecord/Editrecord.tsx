@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { EditRecordProps } from "./types";
-import { Holiday, RecordTimeSettings } from "@types";
+import { Holiday, RecordTimeSettings } from "@repo/types";
 import {
   createInitialTimes,
   generateGraphQLQuery,
   getHolidayDates,
   months,
-} from "@provider";
+} from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { formatISO9075 } from "date-fns";

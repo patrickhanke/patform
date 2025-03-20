@@ -14,9 +14,9 @@ import {
   HolidayTemplate,
   Record,
   RecordTimeSettings,
-} from "@types";
+} from "@repo/types";
 import styles from "./CreateRecord.module.scss";
-import { createInitialTimes, getHolidayDates } from "@provider";
+import { createInitialTimes, getHolidayDates } from "@repo/provider";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import RecordSettings from "./components/RecordSettings";
 import defaultRecord from "./constants/defaultRecord";

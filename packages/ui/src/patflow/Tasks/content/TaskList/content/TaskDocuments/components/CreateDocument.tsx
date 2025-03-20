@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import styles from "../TaskDocuments.module.scss";
 import clsx from "clsx";
-import { DocumentUploader } from "@content";
-import { Document } from "@types";
+import { DocumentUploader } from "@repo/ui";
+import { Document } from "@repo/types";
 import { TextInput } from "@repo/ui";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const CreateDocument = ({
   addDocumentHandler,

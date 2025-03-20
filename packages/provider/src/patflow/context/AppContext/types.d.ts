@@ -1,4 +1,4 @@
-import { UserTypes } from "@types";
+import { UserTypes } from "@repo/types";
 
 export type dynamicItem = {
   value: string;

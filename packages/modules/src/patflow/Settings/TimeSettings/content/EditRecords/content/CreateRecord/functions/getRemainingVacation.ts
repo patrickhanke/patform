@@ -1,4 +1,4 @@
-import { Day, Record } from "@types";
+import { Day, Record } from "@repo/types";
 import { differenceInMonths } from "date-fns";
 
 const getRemainingVacation: (

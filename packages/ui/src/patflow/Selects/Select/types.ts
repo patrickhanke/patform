@@ -1,4 +1,4 @@
-import { ErrorMessage } from "@types";
+import { ErrorMessage } from "@repo/types";
 import {
   ActionMeta,
   GroupBase,

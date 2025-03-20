@@ -1,6 +1,6 @@
 "use client";
 
-import { TaskPageState, Tasks } from "@content";
+import { TaskPageState, Tasks } from "@repo/ui";
 import React, { Suspense } from "react";
 
 const TasksOverview = ({ pageState }: { pageState: TaskPageState }) => {

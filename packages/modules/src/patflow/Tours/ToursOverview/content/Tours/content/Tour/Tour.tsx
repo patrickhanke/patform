@@ -3,7 +3,7 @@ import useTourTableColumns from "./hooks/useTourTableColumns";
 import { useQuery } from "@apollo/client";
 import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
 import { ServiceData, TourProps } from "./types";
-import { Property } from "@types";
+import { Property } from "@repo/types";
 import { Table } from "@repo/ui";
 
 const Tour: FC<TourProps> = ({ projectId, workerId, year }) => {

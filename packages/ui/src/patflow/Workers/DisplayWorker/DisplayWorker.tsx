@@ -3,12 +3,12 @@ import styles from "./DisplayWorker.module.scss";
 import { GrClose } from "react-icons/gr";
 import { useQuery } from "@apollo/client";
 import { find_day, GET_USER_DISPLAY_DATA } from "@queries";
-import { absence_type_options, AppContext } from "@provider";
+import { absence_type_options, AppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
 import { getImageUrl, shadeColor } from "@repo/provider";
 import { Loader, StateDisplay } from "@repo/ui";
-import { Absence, Day } from "@types";
+import { Absence, Day } from "@repo/types";
 
 const DisplayWorker = ({
   workerId,

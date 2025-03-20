@@ -1,10 +1,10 @@
 import React, { Suspense, useMemo } from "react";
-import { Property, StaffMember } from "@types";
+import { Property, StaffMember } from "@repo/types";
 import { FIND_ALL_PROPERTY, FIND_ALL_STAFF } from "@queries";
 import { useQuery } from "@apollo/client";
 import { SiteHeaderContentComponent } from "../types";
 import styles from "../Tasks.module.scss";
-import { filterChangeHandler } from "@provider";
+import { filterChangeHandler } from "@repo/provider";
 import { Select, TextInput } from "@repo/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 

@@ -4,7 +4,7 @@ import EditStaffMember from "../components/EditStaffMember";
 import SetStaffMemberPassword from "../components/SetStaffMemberPassword";
 import { ApolloRefetch, User } from "@repo/types";
 import { StateDisplay, StateSelect, StatelessToggle, Toggle } from "@repo/ui";
-import { AppContext } from "@provider";
+import { AppContext } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 
 const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { getDateStringsFromIso, useDataHandler } from "@repo/provider";
 import CreateDocument from "./components/CreateDocument";
 import { FileDisplay, IconButton, Select, SiteHeader, Table } from "@repo/ui";
-import { Document } from "@types";
+import { Document } from "@repo/types";
 
 const ProperyDocuments = ({ id }: { id: string }) => {
   const [type, setType] = useState({

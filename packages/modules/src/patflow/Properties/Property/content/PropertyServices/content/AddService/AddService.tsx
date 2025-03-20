@@ -13,9 +13,9 @@ import {
   CreateService as CreateServiceType,
   DateObjectWithNextDates,
   ErrorMessage,
-} from "@types";
+} from "@repo/types";
 import { SlideIn, TextInput, ImageUploader } from "@repo/ui";
-import { getDateString, UserContext } from "@provider";
+import { getDateString, UserContext } from "@repo/provider";
 import {
   date_category_options,
   DateSelectWithExternalState,

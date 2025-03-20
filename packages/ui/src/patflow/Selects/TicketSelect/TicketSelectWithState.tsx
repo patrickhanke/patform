@@ -3,7 +3,7 @@ import { Select } from "../Select";
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_TICKETS } from "@queries";
 import { SelectOption } from "./types";
-import { Ticket } from "@types";
+import { Ticket } from "@repo/types";
 
 const TicketSelectWithState = ({
   selectedTicket,

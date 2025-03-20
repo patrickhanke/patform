@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
-import { Property, StaffMember } from "@types";
+import { Property, StaffMember } from "@repo/types";
 import { FIND_ALL_PROPERTY, FIND_ALL_STAFF } from "@queries";
 import { useQuery } from "@apollo/client";
 import { SiteHeaderContentComponent } from "../types";
 import styles from "../WeeklyRecords.module.scss";
-import { filterChangeHandler } from "@provider";
-import { Select } from "@content";
+import { filterChangeHandler } from "@repo/provider";
+import { Select } from "@repo/ui";
 import { differenceInCalendarWeeks } from "date-fns";
 
 const SiteHeaderContent = ({

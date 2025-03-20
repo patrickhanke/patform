@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_STAFF } from "@queries";
 import { ElementSelectInterface, StateDisplay } from "@repo/ui";
-import { Task, Worker } from "@types";
+import { Task, Worker } from "@repo/types";
 import React, { FC, useMemo } from "react";
 import { PropertyOptions, SelectWorkerProps } from "../types";
 import { DisplayWorker } from "content/_UI/Workers";

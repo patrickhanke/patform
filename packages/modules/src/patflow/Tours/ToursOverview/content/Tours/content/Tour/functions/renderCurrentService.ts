@@ -1,4 +1,4 @@
-import { PropertyService } from "@types";
+import { PropertyService } from "@repo/types";
 import { eachMonthOfInterval, eachWeekOfInterval, getWeek } from "date-fns";
 
 type RenderCurrentServiceFunction = (props: {

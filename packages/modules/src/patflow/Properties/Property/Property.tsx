@@ -10,7 +10,7 @@ import PropertyServices from "./content/PropertyServices";
 import PropertyTallies from "./content/PropertyTallies";
 import PropertyDocuments from "./content/PropertyDocuments";
 import PropertyTickets from "./content/PropertyTickets";
-import { Params, Property as PropertyType } from "@types";
+import { Params, Property as PropertyType } from "@repo/types";
 import { Page, PageHeaderButton } from "@repo/ui";
 import { generateGraphQLQuery } from "@repo/provider";
 

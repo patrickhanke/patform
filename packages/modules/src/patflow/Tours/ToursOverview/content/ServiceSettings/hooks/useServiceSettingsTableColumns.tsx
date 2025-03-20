@@ -1,6 +1,6 @@
 import { StatelessToggle, TableColumnTextfield, Toggle } from "@repo/ui";
 import { ColumnDef } from "@tanstack/react-table";
-import { Service } from "@types";
+import { Service } from "@repo/types";
 import React, { useMemo } from "react";
 import { UseServiceSettingsTableColumns } from "../types";
 

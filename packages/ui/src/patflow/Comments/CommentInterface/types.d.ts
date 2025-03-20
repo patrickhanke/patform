@@ -1,4 +1,4 @@
-import { ApplicationTypes } from "@types";
+import { ApplicationTypes } from "@repo/types";
 
 export type CommentInterfaceProps = {
   comments: ApplicationTypes.Comment[];

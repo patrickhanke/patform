@@ -1,6 +1,6 @@
 import { IconTypes } from "../Icon";
 import { TypeSelection } from "./types.d";
-import { UserTypes } from "@types";
+import { UserTypes } from "@repo/types";
 
 type Options<T> = T extends "Absence"
   ? typeof absence_state_options

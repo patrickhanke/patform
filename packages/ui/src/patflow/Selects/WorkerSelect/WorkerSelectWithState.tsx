@@ -2,7 +2,7 @@ import React, { FC, useMemo } from "react";
 import { Select } from "../Select";
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_STAFF } from "@queries";
-import { Worker } from "@types";
+import { Worker } from "@repo/types";
 import { Image } from "@repo/types";
 import { WorkerSelectWithStateProps } from "./types";
 import { isArray } from "lodash-es";

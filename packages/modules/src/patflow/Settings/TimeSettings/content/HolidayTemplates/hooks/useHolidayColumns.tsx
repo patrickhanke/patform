@@ -1,4 +1,4 @@
-import { ApolloRefetch, Holiday, HolidayTemplate } from "@types";
+import { ApolloRefetch, Holiday, HolidayTemplate } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import EditHolidayTemplate from "../content/EditHolidayTemplate";

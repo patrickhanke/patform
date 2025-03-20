@@ -8,11 +8,11 @@ import { TicketsComponent } from "./types";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
 import SiteHeaderContent from "./components/SiteHeaderContent";
-import { Filter } from "@types";
+import { Filter } from "@repo/types";
 import { useCallback } from "react";
 import useTicketColumns from "./hooks/useTicketColumns";
 import { Page, Table } from "@repo/ui";
-import { AppContext, NotificationContext } from "@provider";
+import { AppContext, NotificationContext } from "@repo/provider";
 
 const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
   const [filters, setFilters] = React.useState([] as Filter[]);

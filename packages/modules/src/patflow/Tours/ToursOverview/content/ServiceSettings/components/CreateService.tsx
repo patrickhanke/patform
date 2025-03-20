@@ -1,6 +1,6 @@
 import { useDataHandler } from "@repo/provider";
 import { Modal, StatelessToggle, TextInput } from "@repo/ui";
-import { ErrorMessage } from "@types";
+import { ErrorMessage } from "@repo/types";
 import React, { FC, use, useCallback, useEffect, useState } from "react";
 import { CreateServiceProps } from "../types";
 

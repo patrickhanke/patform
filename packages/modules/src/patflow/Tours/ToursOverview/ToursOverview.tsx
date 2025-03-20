@@ -7,7 +7,7 @@ import page_states from "./constants/page_states";
 import ServiceSettings from "./content/ServiceSettings";
 import Services from "./content/Services";
 import Tours from "./content/Tours";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const ToursOverview = () => {
   const { projectId } = useContext(UserContext);

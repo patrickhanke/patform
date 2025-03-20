@@ -1,5 +1,5 @@
-import { generateGraphQLQuery } from "@provider";
-import { Service } from "@types";
+import { generateGraphQLQuery } from "@repo/provider";
+import { Service } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { useQuery } from "@apollo/client";

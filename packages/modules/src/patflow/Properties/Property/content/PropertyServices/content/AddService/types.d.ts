@@ -1,4 +1,4 @@
-import { CreateService } from "@types";
+import { CreateService } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type AddServiceProps = {

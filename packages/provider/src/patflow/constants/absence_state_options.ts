@@ -1,4 +1,4 @@
-import { AbsenceStateOptions } from "@types";
+import { AbsenceStateOptions } from "@repo/types";
 
 const absence_state_options = [
   {

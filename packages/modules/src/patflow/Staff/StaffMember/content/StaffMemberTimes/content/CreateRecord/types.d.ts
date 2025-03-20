@@ -1,4 +1,4 @@
-import { Day, Record, StaffMember } from "@types";
+import { Day, Record, StaffMember } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type CreateRecordProps = {

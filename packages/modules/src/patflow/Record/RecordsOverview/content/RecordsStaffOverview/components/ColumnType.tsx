@@ -1,8 +1,8 @@
 import React from "react";
 import { TableData } from "../types";
-import { Absence } from "@types";
+import { Absence } from "@repo/types";
 import { StateDisplay } from "@repo/ui";
-import { absence_type_options } from "@provider";
+import { absence_type_options } from "@repo/provider";
 
 const ColumnType = ({
   type,

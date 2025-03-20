@@ -1,4 +1,4 @@
-import { TaskState } from "@types";
+import { TaskState } from "@repo/types";
 
 const initial_task = {
   state: "created" as TaskState,

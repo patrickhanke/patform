@@ -1,7 +1,7 @@
 import { HolidayTemplate, User, UserDisplayData } from "@/types/General";
 import { Absence } from "../Worker";
 import { DayTime, TimeObject } from "./Times";
-import { AbsenceStateOptions } from "@types";
+import { AbsenceStateOptions } from "@repo/types";
 
 export type RecordTimeSettings = {
   hours: number;

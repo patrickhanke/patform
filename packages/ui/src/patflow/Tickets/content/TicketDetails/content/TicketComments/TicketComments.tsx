@@ -1,8 +1,8 @@
 import { Loader } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
-import { ApplicationTypes, TicketTypes } from "@types";
+import { ApplicationTypes, TicketTypes } from "@repo/types";
 import React from "react";
-import { CommentInterface } from "@content";
+import { CommentInterface } from "@repo/ui";
 
 const TicketComments = ({
   ticketId,

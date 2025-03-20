@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Absence, StaffMember } from "@types";
-import { AppContext } from "@provider";
+import { Absence, StaffMember } from "@repo/types";
+import { AppContext } from "@repo/provider";
 import { generateGraphQLQuery } from "@repo/provider";
-import { Select } from "@content";
+import { Select } from "@repo/ui";
 import { RecordAbsenceProps } from "./types";
 import styles from "./RecordsAbsence.module.scss";
 import { useQuery } from "@apollo/client";

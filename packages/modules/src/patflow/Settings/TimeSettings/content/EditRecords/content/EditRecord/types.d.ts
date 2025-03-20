@@ -1,4 +1,4 @@
-import { ApolloRefetch, Record } from "@types";
+import { ApolloRefetch, Record } from "@repo/types";
 
 export type EditRecordProps = {
   record: Record;

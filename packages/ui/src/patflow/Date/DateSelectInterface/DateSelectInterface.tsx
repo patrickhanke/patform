@@ -7,7 +7,7 @@ import TimeDisplay from "./content/TimeDisplay";
 import { useQuery } from "@apollo/client";
 import { GET_SERVICE_TIME } from "@queries";
 import { date_select_options } from "./constants/date_select_options";
-import { DateObject } from "@types";
+import { DateObject } from "@repo/types";
 import { SlideInRight } from "@repo/ui";
 
 const DateSelectInterface = ({ objectId }: { objectId: string }) => {

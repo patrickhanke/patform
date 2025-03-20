@@ -1,4 +1,4 @@
-import { ApolloRefetch, Task } from "@types";
+import { ApolloRefetch, Task } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type TaskListComponent = {

@@ -1,4 +1,4 @@
-import { CreateTask, Task } from "@types";
+import { CreateTask, Task } from "@repo/types";
 import { ReactNode, SetStateAction } from "react";
 
 export type SelectTicketProps = {

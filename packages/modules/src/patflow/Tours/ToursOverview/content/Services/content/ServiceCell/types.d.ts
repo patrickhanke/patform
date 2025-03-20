@@ -1,4 +1,4 @@
-import { ApolloRefetch, PropertyService } from "@types";
+import { ApolloRefetch, PropertyService } from "@repo/types";
 import { AddEditServiceState, ServiceData } from "../../types";
 import { set } from "lodash-es";
 import { Dispatch, SetStateAction } from "react";

@@ -29,9 +29,9 @@
     "@repo/ui": "*",
     "@repo/modules": "*",
     "@turbo/gen": "^1.12.4",
-    "@types/node": "^20.11.24",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
+    "@repo/types/node": "^20.11.24",
+    "@repo/types/react": "^18.2.61",
+    "@repo/types/react-dom": "^18.2.19",
     "eslint": "^9.22.0",
     "typescript": "^5.4.3"
   }

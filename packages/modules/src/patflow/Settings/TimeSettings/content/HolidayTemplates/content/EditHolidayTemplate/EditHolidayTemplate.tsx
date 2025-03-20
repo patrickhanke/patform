@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ErrorMessage } from "@types";
+import { ErrorMessage } from "@repo/types";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { EditHolidayTemplateProps } from "./types";

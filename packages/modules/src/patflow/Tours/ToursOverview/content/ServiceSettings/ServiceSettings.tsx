@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery } from "@provider";
+import { generateGraphQLQuery } from "@repo/provider";
 import React, { FC, useCallback } from "react";
 import { ServiceSettingsProps, UpdateHandler } from "./types";
 import { Table } from "@repo/ui";

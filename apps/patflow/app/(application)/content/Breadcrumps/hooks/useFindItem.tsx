@@ -1,5 +1,5 @@
-import { menu_items } from "@provider";
-import { menuItem } from "@types";
+import { menu_items } from "@repo/provider";
+import { menuItem } from "@repo/types";
 import { useCallback } from "react";
 
 const useFindItem = () => {

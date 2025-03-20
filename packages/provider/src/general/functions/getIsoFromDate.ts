@@ -1,4 +1,4 @@
-import { DateTypes } from "@types";
+import { DateTypes } from "@repo/types";
 
 const getIsoFromDate = (date: Date) => {
   const datum = date || new Date();

@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
 import React, { useMemo } from "react";
 import { AbsenceWithRecordIs, UseRecordAbsenceColumnsProps } from "../types";
-import { DisplayWorker } from "@content";
+import { DisplayWorker } from "@repo/ui";
 import {
   absence_state_options,
   absence_type_options,
   getDateStringsFromIso,
-} from "@provider";
+} from "@repo/provider";
 import EditAbsence from "../components/EditAbsence";
 import { StateSelect } from "@repo/ui";
 

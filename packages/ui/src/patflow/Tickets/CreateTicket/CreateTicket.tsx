@@ -4,7 +4,7 @@ import {
   CreateTicket as CreateTickeType,
   ErrorMessage,
   TicketUpdateObject,
-} from "@types";
+} from "@repo/types";
 import clsx from "clsx";
 import React, {
   Dispatch,
@@ -19,9 +19,9 @@ import styles from "./CreateTicket.module.scss";
 import { Plus } from "lucide-react";
 import initial_ticket from "./constants/initial_ticket";
 import { ImageUploader, Modal } from "@repo/ui";
-import { ObjectSelectWithState } from "@content";
+import { ObjectSelectWithState } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const CreateTicket = ({
   setRefetchTicket,

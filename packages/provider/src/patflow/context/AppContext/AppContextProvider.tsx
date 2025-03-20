@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client";
 import { FIND_ALL_ROLES } from "@queries";
 import { RoleUsers } from "./types";
 import { UserRole } from "@repo/types";
-import { CreateTask, CreateTicket } from "@content";
+import { CreateTask, CreateTicket } from "@repo/ui";
 import dynamic from "next/dynamic";
 
 const SelectYear = dynamic(() => import("./components/SelectYear"), {

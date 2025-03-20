@@ -5,7 +5,7 @@ import React, { useCallback, useState } from "react";
 import { useDataHandler } from "@repo/provider";
 import { TaskListComponent } from "./types";
 import useTableColumns from "./hooks/useTableColumns";
-import { Task } from "@types";
+import { Task } from "@repo/types";
 import { Modal, Table } from "@repo/ui";
 
 const TaskList = ({ taskList, refetch, pageState }: TaskListComponent) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../TaskDocuments.module.scss";
-import { Document } from "@types";
+import { Document } from "@repo/types";
 import { FileDisplay, IconButton } from "@repo/ui";
 
 const TaskDocument = ({ document }: { document: Document }) => {

@@ -1,4 +1,4 @@
-import { ApolloRefetch, PropertyService } from "@types";
+import { ApolloRefetch, PropertyService } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 import { AddEditServiceState } from "../../types";
 

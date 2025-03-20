@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { HolidayElementProps } from "../types";
 import styles from "../Holiday.module.scss";
-import { IconButton, StatelessToggle } from "@content";
+import { IconButton, StatelessToggle } from "@repo/ui";
 import { useImmer } from "use-immer";
 
 const HolidayElement = ({

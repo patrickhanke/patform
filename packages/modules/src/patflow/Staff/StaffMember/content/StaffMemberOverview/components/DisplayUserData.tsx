@@ -1,4 +1,4 @@
-import { DisplayUserDataProps } from "@types";
+import { DisplayUserDataProps } from "@repo/types";
 import React from "react";
 import styles from "../StaffMemberOverview.module.scss";
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import SurchargeDaySelect from "./components/HolidayTemplateDaySelect";
 import { cloneDeep, set } from "lodash-es";
-import { ErrorMessage, HolidayTemplate } from "@types";
+import { ErrorMessage, HolidayTemplate } from "@repo/types";
 import { useDataHandler } from "@repo/provider";
 import { EditHolidayProps } from "./types";
 import { Divider, SlideIn } from "@repo/ui";

@@ -1,5 +1,5 @@
-import { months } from "@provider";
-import { Record } from "@types";
+import { months } from "@repo/provider";
+import { Record } from "@repo/types";
 
 type Month = (typeof months)[number];
 

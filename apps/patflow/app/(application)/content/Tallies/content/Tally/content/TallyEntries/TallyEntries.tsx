@@ -1,5 +1,5 @@
 import { useDataHandler } from "@repo/provider";
-import { TallyTypes, TaskTypes } from "@types";
+import { TallyTypes, TaskTypes } from "@repo/types";
 import React, { useCallback } from "react";
 import styles from "./TallyEntries.module.scss";
 import CreateEntry from "./components/CreateEntry";

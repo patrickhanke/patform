@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_PROPERTY } from "@queries";
 import { ElementSelectInterface } from "@repo/ui";
-import { Property, Task } from "@types";
+import { Property, Task } from "@repo/types";
 import React, { FC, useMemo } from "react";
 import { PropertyOptions, SelectPropertyProps } from "../types";
 import styles from "../CreateTask.module.scss";

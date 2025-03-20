@@ -3,9 +3,9 @@ import styles from "../WorkersInterface.module.scss";
 import { DisplayWorkerInterfaceComponent } from "../types";
 import { useQuery } from "@apollo/client";
 import { find_day } from "@queries";
-import { absence_type_options, AppContext } from "@provider";
+import { absence_type_options, AppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
-import { Absence, Day } from "@types";
+import { Absence, Day } from "@repo/types";
 import { StateDisplay } from "@repo/ui";
 import { getImageUrl } from "@repo/provider";
 

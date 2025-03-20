@@ -1,4 +1,4 @@
-import { AppContext } from "@provider";
+import { AppContext } from "@repo/provider";
 import { WorkerSelectWithState } from "content/_UI";
 import React, { FC, useContext, useEffect, useMemo } from "react";
 import Tour from "./content/Tour";

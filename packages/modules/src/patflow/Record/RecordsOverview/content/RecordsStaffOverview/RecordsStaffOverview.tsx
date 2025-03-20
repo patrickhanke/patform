@@ -11,7 +11,7 @@ import useTableColumns from "./hooks/useTableColumns";
 import { Row } from "@tanstack/react-table";
 import site_states from "./constants/site_states";
 import StaffRecord from "./content/StaffRecord";
-import { months } from "@provider";
+import { months } from "@repo/provider";
 import useGetDay from "./hooks/useGetDay";
 import { Divider, Table } from "@repo/ui";
 import { SiteState } from "@repo/types";

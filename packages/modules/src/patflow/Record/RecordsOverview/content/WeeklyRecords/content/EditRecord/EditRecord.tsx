@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import { EditRecordProps, WorkingTime, WorkingTimes } from "./types";
-import { DefaultDay, ErrorMessage } from "@types";
+import { DefaultDay, ErrorMessage } from "@repo/types";
 import RecordTimeDisplay from "./components/RecordTimeDisplay";
 import styles from "./EditRecord.module.scss";
 import {
@@ -15,7 +15,7 @@ import {
   findDefaultTimeForDate,
   getWorktimeDuration,
   useGetActiveRecord,
-} from "@provider";
+} from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import EditTime from "./components/EditTime";
 import { cloneDeep, pullAllBy, set } from "lodash-es";

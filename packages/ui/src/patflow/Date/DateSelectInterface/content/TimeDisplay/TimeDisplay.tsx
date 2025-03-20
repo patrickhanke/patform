@@ -2,7 +2,7 @@ import React from "react";
 import { MdEventRepeat } from "react-icons/md";
 import styles from "./TimeDisplay.module.scss";
 import clsx from "clsx";
-import { DateObject } from "@types";
+import { DateObject } from "@repo/types";
 
 const TimeDisplay = ({
   date,

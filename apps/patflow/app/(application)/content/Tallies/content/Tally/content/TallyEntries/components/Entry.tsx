@@ -1,7 +1,7 @@
-import { TallyTypes } from "@types";
+import { TallyTypes } from "@repo/types";
 import React from "react";
 import styles from "../TallyEntries.module.scss";
-import { DateDisplay, DisplayWorker } from "@content";
+import { DateDisplay, DisplayWorker } from "@repo/ui";
 import { PiClockCountdown } from "react-icons/pi";
 import { useQuery } from "@apollo/client";
 import { GET_USER_DISPLAY_DATA } from "@queries";

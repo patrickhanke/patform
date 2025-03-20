@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./SiteNavigation.module.scss";
-import SwitchButtons from "@/_UI/surfaces/SwitchButtons";
+import { SwitchButtons } from "@repo/ui";
 import { SiteNavigationComponent } from "../../types";
 
 const SiteNavigation = ({

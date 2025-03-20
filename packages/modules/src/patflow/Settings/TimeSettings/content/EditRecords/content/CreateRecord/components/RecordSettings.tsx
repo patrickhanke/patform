@@ -1,4 +1,4 @@
-import { convertMillisecondsToString, getDateString } from "@provider";
+import { convertMillisecondsToString, getDateString } from "@repo/provider";
 import React, { useMemo } from "react";
 import getRemainingVacation from "../functions/getRemainingVacation";
 import getRecordSaldo from "../functions/getRecordSaldo";

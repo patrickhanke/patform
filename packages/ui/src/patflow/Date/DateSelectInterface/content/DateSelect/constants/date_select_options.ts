@@ -1,4 +1,4 @@
-export const date_select_options = [
+const date_select_options = [
   {
     value: "weekly",
     id: "weekly",
@@ -20,3 +20,5 @@ export const date_select_options = [
     label: "Individuell",
   },
 ];
+
+export default date_select_options;

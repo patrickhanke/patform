@@ -1,4 +1,4 @@
-import { AppContext } from "@provider";
+import { AppContext } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useImmer } from "use-immer";
@@ -6,7 +6,7 @@ import styles from "../UserOverview.module.scss";
 import clsx from "clsx";
 import { useQuery } from "@apollo/client";
 import { GET_USER_DISPLAY_DATA } from "@queries";
-import { ErrorMessage, Image } from "@types";
+import { ErrorMessage, Image } from "@repo/types";
 import {
   IconButton,
   ImageUploader,

@@ -1,4 +1,4 @@
-import { DateObjectWithNextDates } from "@types";
+import { DateObjectWithNextDates } from "@repo/types";
 import {
   Day,
   eachMonthOfInterval,

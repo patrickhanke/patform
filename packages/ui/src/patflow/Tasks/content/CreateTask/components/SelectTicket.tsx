@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { ElementSelectInterface } from "@repo/ui";
-import { Task, Ticket } from "@types";
+import { Task, Ticket } from "@repo/types";
 import React, { FC, useMemo } from "react";
 import { SelectTicketProps, TicketOption } from "../types";
 import styles from "../CreateTask.module.scss";

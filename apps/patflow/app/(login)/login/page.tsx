@@ -1,1 +1,1 @@
-export { Login as default } from "@content";
+export { Login as default } from "@repo/ui";

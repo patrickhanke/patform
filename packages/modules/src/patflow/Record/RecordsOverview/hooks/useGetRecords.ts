@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { useMemo } from "react";
 import { GetRecordObject } from "../types";
 import { find_record } from "@queries";
-import { Filter } from "@types";
+import { Filter } from "@repo/types";
 
 const paramsHandler = (filters?: Filter[]) => {
   if (filters && filters?.length > 0) {

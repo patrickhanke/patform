@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import clsx from "clsx";
 import styles from "../Login.module.scss";
-import { User } from "@types";
+import { User } from "@repo/types";
 import { loginUser } from "@repo/provider";
 
 const LoginSchema = Yup.object().shape({

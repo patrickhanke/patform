@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { AddEditServiceProps, ButtonStates } from "./types";
 import { Divider, Modal, SwitchButtons } from "@repo/ui";
 import ServiceDaySelect from "./components/ServiceDaySelect";
-import { ErrorMessage, PropertyService } from "@types";
+import { ErrorMessage, PropertyService } from "@repo/types";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import ServiceIntervalSelect from "./components/ServiceTimeSelect.tsx ";
 import styles from "./AddEditService.module.scss";

@@ -5,7 +5,7 @@ import {
   User,
   StateColors,
   Absence,
-} from "@types";
+} from "@repo/types";
 
 export type AbsenceStateOptions = [
   {

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { IntervalDateSelectInterfaceProps } from "../types";
-import { DateObjectWithNextDates } from "@types";
+import { DateObjectWithNextDates } from "@repo/types";
 import { Select, DatePicker } from "@repo/ui";
 import { cloneDeep, set } from "lodash-es";
 import { formatISO9075 } from "date-fns";

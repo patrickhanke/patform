@@ -1,4 +1,4 @@
-import { DateTypes, Task } from "@types";
+import { DateTypes, Task } from "@repo/types";
 import date_category_options from "./constants/date_category_options";
 
 export type DateSelectProps = {

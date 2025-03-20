@@ -4,7 +4,6 @@ import { FormikHandlers, FormikHelpers, FormikValues } from "formik";
 import { Field } from "../../types";
 import { Dispatch, SetStateAction } from "react";
 import { DatePickerTypes } from "@repo/ui";
-import SelectToggle from "./components/SelectToggle";
 
 export type RenderFieldsType = {
   fields: Field[];

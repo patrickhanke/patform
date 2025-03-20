@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery } from "@provider";
+import { generateGraphQLQuery } from "@repo/provider";
 import React, { useMemo, useState } from "react";
 import { AddEditServiceState, ServiceData } from "./types";
-import { Property } from "@types";
+import { Property } from "@repo/types";
 import AddEditService from "./content/AddEditService";
 import useServiceTableColumns from "./hooks/useServiceTableColumns";
 import { Table } from "@repo/ui";

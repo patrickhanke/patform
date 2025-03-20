@@ -1,5 +1,5 @@
 import { DateTypes, UserTypes } from "@/types/General";
-import { DateObject, User } from "@types";
+import { DateObject, User } from "@repo/types";
 
 export type Property = {
   objectId: string;

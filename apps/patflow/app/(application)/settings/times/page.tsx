@@ -1,1 +1,1 @@
-export { TimeSettings as default } from "@content";
+export { TimeSettings as default } from "@repo/ui";

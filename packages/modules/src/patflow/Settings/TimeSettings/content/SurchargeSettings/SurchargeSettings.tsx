@@ -3,7 +3,7 @@ import {
   paramsHandler,
   useDataHandler,
 } from "@repo/provider";
-import { Surcharge as SurchargeType } from "@types";
+import { Surcharge as SurchargeType } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import React, { useCallback, useState } from "react";
 import Surcharge from "./content/Surcharge";

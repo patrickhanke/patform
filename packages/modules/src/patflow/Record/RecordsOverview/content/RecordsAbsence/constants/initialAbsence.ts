@@ -1,4 +1,4 @@
-import { Absence } from "@types";
+import { Absence } from "@repo/types";
 
 const initialAbsence: Absence = {
   id: "",

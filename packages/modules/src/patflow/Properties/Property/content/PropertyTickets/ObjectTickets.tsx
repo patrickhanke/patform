@@ -1,4 +1,4 @@
-import { Tickets } from "@content";
+import { Tickets } from "@repo/ui";
 import React from "react";
 
 const PropertyTickets = ({ id }: { id: string }) => {

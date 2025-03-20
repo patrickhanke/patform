@@ -1,5 +1,5 @@
 import { FIND_ALL_TICKETS } from "@queries";
-import { ApolloRefetch, Filter, FilterOperator, Ticket } from "@types";
+import { ApolloRefetch, Filter, FilterOperator, Ticket } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import { useGetTicketsHook } from "../types";
 

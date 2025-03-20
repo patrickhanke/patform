@@ -1,4 +1,4 @@
-import { Absence, ApolloRefetch, Record } from "@types";
+import { Absence, ApolloRefetch, Record } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 import EditAbsence from "./components/EditAbsence";
 

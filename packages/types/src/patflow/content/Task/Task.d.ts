@@ -1,4 +1,4 @@
-import { DateObject, DateTypes, Document, TDateISO, UserTypes } from "@types";
+import { DateObject, DateTypes, Document, TDateISO, UserTypes } from "@repo/types";
 import { PropertyTypes } from "../Property";
 
 export type TaskState =

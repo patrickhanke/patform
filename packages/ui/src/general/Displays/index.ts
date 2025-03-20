@@ -15,3 +15,4 @@ export * from "./UserMessages";
 export * from "./StateDisplay";
 export * from "./ImagesDisplay";
 export * from "./LoadingIndicator";
+export * from "./Feedback";

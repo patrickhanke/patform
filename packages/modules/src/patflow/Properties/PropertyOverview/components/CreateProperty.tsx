@@ -3,7 +3,7 @@ import styles from "../ProperyOverview.module.scss";
 import { useImmer } from "use-immer";
 import initialData from "../constants/initialData";
 import { SlideIn } from "@repo/ui";
-import { Property } from "@types";
+import { Property } from "@repo/types";
 
 const CreatePropterty = ({
   objects = [],

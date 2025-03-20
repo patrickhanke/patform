@@ -1,5 +1,5 @@
 import { getDateFromIso } from "@repo/provider";
-import { TallyTypes } from "@types";
+import { TallyTypes } from "@repo/types";
 import { isArray } from "lodash-es";
 
 function getLastEntry(

@@ -4,7 +4,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { Select } from "../Select";
 import { useQuery } from "@apollo/client";
 import { useDataHandler } from "@repo/provider";
-import { ApplicationTypes, UserTypes } from "@types";
+import { ApplicationTypes, UserTypes } from "@repo/types";
 import { FIND_ALL_STAFF, GET_SERVICE_WORKERS } from "@queries";
 
 type WorkerSelect = {

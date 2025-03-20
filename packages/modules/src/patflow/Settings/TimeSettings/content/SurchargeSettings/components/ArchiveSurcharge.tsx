@@ -1,4 +1,4 @@
-import { DatePicker } from "@content";
+import { DatePicker } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
 import React, { useState } from "react";
 import { ArchiveSurchargeProps } from "../types";

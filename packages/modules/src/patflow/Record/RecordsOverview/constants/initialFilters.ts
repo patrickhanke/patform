@@ -1,4 +1,4 @@
-import { Filter } from "@types";
+import { Filter } from "@repo/types";
 
 const initialFilters: (year?: number) => Filter[] = (year) => [
   {

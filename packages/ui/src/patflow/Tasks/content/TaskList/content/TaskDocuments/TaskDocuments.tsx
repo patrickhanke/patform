@@ -5,7 +5,7 @@ import styles from "./TaskDocuments.module.scss";
 import { useQuery } from "@apollo/client";
 import TaskDocument from "./components/TaskDocument";
 import { GET_TASK_PROPERTY } from "@queries";
-import { Document } from "@types";
+import { Document } from "@repo/types";
 
 const TaskDocuments = ({
   taskId,

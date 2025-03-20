@@ -1,5 +1,5 @@
-import date_category_options from "@/_UI/interfaces/Date/DateSelectInterface/content/DateSelect/constants/date_category_options";
-import { weekdays } from "@provider";
+import {date_category_options} from "@repo/ui";
+import { weekdays } from "@repo/provider";
 
 export interface Date {
   /**

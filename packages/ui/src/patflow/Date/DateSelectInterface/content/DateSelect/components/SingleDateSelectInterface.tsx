@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { SingleDateSelectInterfaceProps } from "../types";
 import { formatISO9075 } from "date-fns";
-import { DateObjectWithNextDates } from "@types";
+import { DateObjectWithNextDates } from "@repo/types";
 import { DatePicker } from "@repo/ui";
 import { get } from "lodash-es";
 

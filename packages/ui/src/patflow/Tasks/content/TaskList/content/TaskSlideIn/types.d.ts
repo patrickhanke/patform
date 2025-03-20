@@ -1,4 +1,4 @@
-import { Task } from "@types";
+import { Task } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type TaskSlideInProps = {

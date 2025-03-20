@@ -1,6 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import axiosapi from "./axios";
-import { useFeedbackStore } from "@/_UI/surfaces/Feedback";
+import { useFeedbackStore } from "@repo/ui";
 
 const updateData = async ({
   className,

@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { Select } from "@content";
-import { DateObjectWithNextDates } from "@types";
+import { Select } from "@repo/ui";
+import { DateObjectWithNextDates } from "@repo/types";
 import modi_options from "./constants/modi_options";
 import DateCategories from "./components/DateCategories";
 import SingleDateSelectInterface from "./components/SingleDateSelectInterface";

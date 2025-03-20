@@ -1,4 +1,4 @@
-import { Holiday } from "@types";
+import { Holiday } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ReactNode, useMemo } from "react";
 import { getDateStringsFromIso } from "@repo/provider";

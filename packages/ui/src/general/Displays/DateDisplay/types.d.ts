@@ -1,4 +1,4 @@
-import { DateTypes } from "@types";
+import { DateTypes } from "@repo/types";
 
 export type DisplayType = "date" | "time" | "date-and-time";
 

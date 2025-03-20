@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { SurchargeDaySelectProps } from "../types";
 import "../CreateSurcharge.scss";
-import { weekdays } from "@provider";
+import { weekdays } from "@repo/provider";
 
 const SurchargeDaySelect: React.FC<SurchargeDaySelectProps> = ({
   surchargeChangeHandler,

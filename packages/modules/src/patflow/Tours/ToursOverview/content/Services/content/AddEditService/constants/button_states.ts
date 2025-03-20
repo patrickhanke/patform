@@ -1,4 +1,4 @@
-import { PropertyService } from "@types";
+import { PropertyService } from "@repo/types";
 import { ButtonStates } from "../types";
 
 const getButtonStates: (T: PropertyService["type"]) => ButtonStates = (

@@ -1,4 +1,4 @@
-import { ApolloRefetch, HolidayTemplate } from "@types";
+import { ApolloRefetch, HolidayTemplate } from "@repo/types";
 
 export type EditHolidayTemplateProps = {
   template: HolidayTemplate;

@@ -1,12 +1,12 @@
 import React, { Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import styles from "./TaskNextDate.module.scss";
-import { DateSelectInterfaceTask } from "@content";
+import { DateSelectInterfaceTask } from "@repo/ui";
 import { useQuery } from "@apollo/client";
 import { GET_TASK_TIME } from "@queries";
-import { getDateString } from "@provider";
+import { getDateString } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
-import { Task } from "@types";
+import { Task } from "@repo/types";
 import { Icon, Loader, Modal, StateSelect } from "@repo/ui";
 
 type TaskNextDateProps = {

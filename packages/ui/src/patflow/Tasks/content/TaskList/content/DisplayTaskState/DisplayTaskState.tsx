@@ -2,9 +2,9 @@ import { GET_TASK_STATE } from "@queries";
 import { useQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import styles from "./DisplayTaskState.module.scss";
-import { TaskState } from "@types";
+import { TaskState } from "@repo/types";
 import { Loader, StateSelect } from "@repo/ui";
-import { task_state_options } from "@provider";
+import { task_state_options } from "@repo/provider";
 
 const DisplayTaskState = ({
   taskId,

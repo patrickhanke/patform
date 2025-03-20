@@ -1,10 +1,10 @@
-import { DisplayWorker } from "@content";
+import { DisplayWorker } from "@repo/ui";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { WeekObject } from "../types";
-import { convertMillisecondsToString } from "@provider";
+import { convertMillisecondsToString } from "@repo/provider";
 import EditRecord from "../content/EditRecord";
-import { ApolloRefetch } from "@types";
+import { ApolloRefetch } from "@repo/types";
 
 const useTableColumns = ({
   selectedWeek,

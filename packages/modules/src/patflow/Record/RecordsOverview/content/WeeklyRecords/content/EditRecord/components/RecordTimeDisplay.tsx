@@ -4,7 +4,7 @@ import {
   convertMillisecondsToString,
   getDateStringsFromIso,
   weekdays,
-} from "@provider";
+} from "@repo/provider";
 import { RecordTimeDisplayProps } from "../types";
 import clsx from "clsx";
 import { getDay } from "date-fns";

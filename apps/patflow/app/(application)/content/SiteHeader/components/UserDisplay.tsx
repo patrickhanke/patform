@@ -5,7 +5,7 @@ import { MessageIndicator } from "@repo/ui";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { getImageUrl } from "@repo/provider";
 import Image from "next/image";
-import { NotificationContext, UserContext } from "@provider";
+import { NotificationContext, UserContext } from "@repo/provider";
 
 const UserDisplay = ({ userMessages = false }: { userMessages: boolean }) => {
   const { user } = useContext(UserContext);

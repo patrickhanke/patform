@@ -1,4 +1,4 @@
-import { Absence, Record } from "@types";
+import { Absence, Record } from "@repo/types";
 import { getDayOfYear, setDayOfYear } from "date-fns";
 import getIsoFromDate from "./getIsoFromDate";
 

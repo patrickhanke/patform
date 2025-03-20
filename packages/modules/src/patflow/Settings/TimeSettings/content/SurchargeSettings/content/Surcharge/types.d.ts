@@ -1,4 +1,4 @@
-import { Surcharge } from "@types";
+import { Surcharge } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type SurchargeComponentProps = {

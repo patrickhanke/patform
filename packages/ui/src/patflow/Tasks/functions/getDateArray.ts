@@ -1,5 +1,5 @@
-import { task_date_options } from "@provider";
-import { ApplicationTypes } from "@types";
+import { task_date_options } from "@repo/provider";
+import { ApplicationTypes } from "@repo/types";
 import { addWeeks, formatISO9075, getISODay, setISODay } from "date-fns";
 export const getDateArray = (
   value: (typeof task_date_options)[number]["value"],

@@ -1,6 +1,6 @@
 import { ApolloRefetch } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { Service } from "@types";
+import { Service } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type ServiceSettingsProps = {

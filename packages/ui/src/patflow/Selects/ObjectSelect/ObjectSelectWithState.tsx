@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Select } from "../Select";
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_PROPERTY } from "@queries";
-import { Property, PropertySelect } from "@types";
+import { Property, PropertySelect } from "@repo/types";
 
 const ObjectSelectWithState = ({
   selectedObject,

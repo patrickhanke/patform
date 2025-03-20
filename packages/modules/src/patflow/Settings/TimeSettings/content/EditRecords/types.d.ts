@@ -1,4 +1,4 @@
-import { ApolloRefetch, Record, User, Worker } from "@types";
+import { ApolloRefetch, Record, User, Worker } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 

@@ -1,4 +1,4 @@
-import { HolidayTemplate } from "@types";
+import { HolidayTemplate } from "@repo/types";
 
 const default_holiday_template: HolidayTemplate = {
   name: "",

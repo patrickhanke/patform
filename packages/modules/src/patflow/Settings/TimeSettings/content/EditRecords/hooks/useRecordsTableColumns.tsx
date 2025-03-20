@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { Record } from "@types";
-import { convertMillisecondsToString, getDateStringsFromIso } from "@provider";
+import { Record } from "@repo/types";
+import { convertMillisecondsToString, getDateStringsFromIso } from "@repo/provider";
 import { UseRecordTableColumns } from "../types";
 import Editrecord from "../content/EditRecord";
 import { DisplayWorker } from "content/_UI";

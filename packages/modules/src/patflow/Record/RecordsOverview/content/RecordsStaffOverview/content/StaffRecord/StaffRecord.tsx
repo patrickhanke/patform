@@ -5,8 +5,8 @@ import {
   createDateIntervalForMonth,
   findDefaultTimeForDate,
   months,
-} from "@provider";
-import { Day } from "@types";
+} from "@repo/provider";
+import { Day } from "@repo/types";
 import { find_record } from "@queries";
 import { useQuery } from "@apollo/client";
 import styles from "./StaffRecord.module.scss";

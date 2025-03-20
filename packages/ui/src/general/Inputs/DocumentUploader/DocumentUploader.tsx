@@ -1,8 +1,7 @@
 import React from "react";
 import { uploadFile } from "@repo/provider";
 import styles from "./DocumentUploader.module.scss";
-import { ErrorDisplay } from "@/_UI/surfaces";
-import { ApplicationTypes } from "@types";
+import { ErrorDisplay } from "@repo/ui";
 
 const DocumentUploader = ({
   name,

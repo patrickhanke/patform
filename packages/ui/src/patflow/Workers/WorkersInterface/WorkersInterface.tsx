@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 import styles from "./WorkersInterface.module.scss";
 import DisplayWorkerInterface from "./components/DisplayWorkerInterface";
 import { WorkersInterfaceComponent } from "./types";
-import { Worker } from "@types";
+import { Worker } from "@repo/types";
 
 const WorkersInterface = ({
   workers,

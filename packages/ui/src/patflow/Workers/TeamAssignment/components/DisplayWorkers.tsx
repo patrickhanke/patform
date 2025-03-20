@@ -1,6 +1,6 @@
 "use client";
 
-import { DisplayWorker } from "@content";
+import { DisplayWorker } from "@repo/ui";
 import { FIND_ALL_STAFF } from "@queries";
 import { useQuery } from "@apollo/client";
 import React, { FC, useMemo, useState } from "react";
@@ -8,7 +8,7 @@ import React, { FC, useMemo, useState } from "react";
 import styles from "../TeamAssignment.module.scss";
 import { ElementSelectInterface, SlideInRight } from "@repo/ui";
 import { DisplayWorkersProps, WorkerOption } from "../types";
-import { Worker } from "@types";
+import { Worker } from "@repo/types";
 
 const DisplayWorkers: FC<DisplayWorkersProps> = ({
   workers,

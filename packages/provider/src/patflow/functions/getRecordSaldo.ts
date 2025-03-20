@@ -1,5 +1,5 @@
-import { getSaldo } from "@provider";
-import { Day, Record } from "@types";
+import { getSaldo } from "@repo/provider";
+import { Day, Record } from "@repo/types";
 
 const getRecordSaldo: (
   start_date: string,

@@ -8,14 +8,14 @@ import React, {
 import { Divider, SlideIn } from "@repo/ui";
 import SurchargeDaySelect from "./components/HolidayTemplateDaySelect";
 import { cloneDeep, set } from "lodash-es";
-import { ErrorMessage, Holiday, HolidayTemplate } from "@types";
+import { ErrorMessage, Holiday, HolidayTemplate } from "@repo/types";
 import {
   generateGraphQLQuery,
   useDataHandler,
 } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { EditHolidayProps } from "./types";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const EditHoliday: React.FC<EditHolidayProps> = ({
   template,

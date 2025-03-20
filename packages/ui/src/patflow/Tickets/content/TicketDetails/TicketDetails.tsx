@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from "react";
 import styles from "./TicketDetails.module.scss";
 import clsx from "clsx";
-import { TicketDetailsProps } from "@types";
+import { TicketDetailsProps } from "@repo/types";
 import {
   Icon,
   ImageDisplay,

@@ -9,7 +9,7 @@ import modi_options from "./content/DateSelect/constants/modi_options";
 import date_category_options from "./content/DateSelect/constants/date_category_options";
 import { DateSelectInterfaceTaskProps } from "./types";
 import { formatISO9075 } from "date-fns";
-import { DateInterval, DateObjectWithNextDates, Task } from "@types";
+import { DateInterval, DateObjectWithNextDates, Task } from "@repo/types";
 import { SlideInRight } from "@repo/ui";
 
 const DateSelectInterfaceTask = ({

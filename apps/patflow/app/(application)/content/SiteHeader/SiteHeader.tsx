@@ -3,7 +3,7 @@
 import React, { Suspense, useContext, useEffect } from "react";
 import styles from "./SiteHeader.module.scss";
 import { SiteHeaderComponent } from "./types";
-import { AppContext } from "@provider";
+import { AppContext } from "@repo/provider";
 import CalendarWeek from "./components/CalendarWeek";
 import UserDisplay from "./components/UserDisplay";
 

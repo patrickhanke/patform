@@ -4,7 +4,7 @@ import {
   Holiday,
   Record,
   TimeObject,
-} from "@types";
+} from "@repo/types";
 import {
   eachDayOfInterval,
   formatISO9075,

@@ -4,8 +4,8 @@ import { FIND_ALL_PROPERTY } from "@queries";
 import { useQuery } from "@apollo/client";
 import { SiteHeaderContentComponent } from "../types";
 import styles from "../Tickets.module.scss";
-import { filterChangeHandler, getDateStringsFromIso } from "@provider";
-import { Property, Ticket } from "@types";
+import { filterChangeHandler, getDateStringsFromIso } from "@repo/provider";
+import { Property, Ticket } from "@repo/types";
 import { TextInput } from "@repo/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 

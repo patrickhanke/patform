@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useMemo } from "react";
 import { useQuery } from "@apollo/client";
-import { fieldsType } from "@types";
+import { fieldsType } from "@repo/types";
 import { GET_PROPERTY_SETTINGS } from "@queries";
 import { Form, Loader } from "@repo/ui";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";

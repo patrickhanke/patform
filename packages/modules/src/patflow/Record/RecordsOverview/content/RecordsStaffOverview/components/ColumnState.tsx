@@ -1,8 +1,8 @@
 import React from "react";
 import { TableData } from "../types";
-import { Absence, DayTime } from "@types";
+import { Absence, DayTime } from "@repo/types";
 import { StateSelect } from "@repo/ui";
-import { absence_state_options } from "@provider";
+import { absence_state_options } from "@repo/provider";
 
 const ColumnState = ({
   type,

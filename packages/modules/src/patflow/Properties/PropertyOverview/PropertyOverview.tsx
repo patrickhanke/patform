@@ -9,9 +9,9 @@ import useTableColumns from "./hooks/useTableColumns";
 import { useQuery } from "@apollo/client";
 import CreatePropterty from "./components/CreateProperty";
 import initialData from "./constants/initialData";
-import { Property } from "@types";
+import { Property } from "@repo/types";
 import { Page, Table } from "@repo/ui";
-import { UserContext } from "@provider";
+import { UserContext } from "@repo/provider";
 
 const PropertyOverview = () => {
   const [isOpen, setIsOpen] = React.useState(false);
