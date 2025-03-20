@@ -4,10 +4,10 @@ import { useContext } from "react";
 import styles from "./SiteHeader.module.scss";
 import { SiteHeaderComponent } from "./types";
 import { UserDisplay } from "./content/UserDisplay";
-import { AppContext } from "../../../../provider";
+import { PatstoreAppContext } from "@repo/provider";
 
 const SiteHeader = ({ title }: SiteHeaderComponent) => {
-  const { pageTitle } = useContext(AppContext);
+  const { pageTitle } = useContext(PatstoreAppContext);
 
   return (
     <>

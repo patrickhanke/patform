@@ -7,15 +7,6 @@
       }
     ],
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@provider": ["./provider/index.ts"],
-      "@settings/*": ["./settings/*"],
-      "@styles/*": ["./styles/*"],
-      "@content": ["./content/index.ts"],
-      "@queries": ["./queries/index.ts"],
-      "@types": ["./types/index.ts"]
-    }
   },
   "include": [
     "next-env.d.ts",
