@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useMemo } from "react";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import useFindPerson from "./hooks/useFindPerson";
 import { PersonClass } from "@repo/types";
 import { PersonOption, PersonSelectProps } from "./types";
@@ -14,7 +14,7 @@ const PersonsSelect = ({
   isMulti = true,
   onChange,
 }: PersonSelectProps) => {
-  const { modules } = useContext(AppContext);
+  const { modules } = useContext(PatstoreAppContext);
   const { persons: personData } = useFindPerson({
     moduleId: modules.find((module) => module.path === "/persons")?.objectId,
     filters: [],

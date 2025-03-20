@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { Select } from "../Select";
+import { useMemo } from "react";
+import { Select } from "@repo/ui";
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_PROPERTY } from "@queries";
+import { FIND_ALL_PROPERTY } from "@repo/provider";
 import { Property, PropertySelect } from "@repo/types";
 
 const ObjectSelectWithState = ({

@@ -1,6 +1,6 @@
 import { DisplayWorker } from "@repo/ui";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { DisplayWorkersProps, Worker } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import React, { useMemo, useState } from "react";

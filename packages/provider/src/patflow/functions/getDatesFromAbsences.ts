@@ -1,6 +1,6 @@
 import { Absence, Record } from "@repo/types";
 import { getDayOfYear, setDayOfYear } from "date-fns";
-import getIsoFromDate from "./getIsoFromDate";
+import { getIsoFromDate } from "@repo/provider";
 
 const getDatesFromAbsences = (records: Record[]) => {
   const absenceDates: string[] = [];

@@ -1,4 +1,4 @@
-import { find_record } from "@queries";
+import { find_record } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import React from "react";
 import { StaffMemberTimesProps } from "./types";

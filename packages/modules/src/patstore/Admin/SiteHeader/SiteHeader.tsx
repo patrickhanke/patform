@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 import styles from "./SiteHeader.module.scss";
 import { SiteHeaderComponent } from "./types";
-import { AppContext, UserContext } from "@repo/provider";
-import { UserDisplay } from "@repo/ui";
+import { PatstoreAppContext } from "@repo/provider";
 
 const SiteHeader = ({ title }: SiteHeaderComponent) => {
-  const { pageTitle } = useContext(AppContext);
-  const { user } = useContext(UserContext);
+  const { pageTitle } = useContext(PatstoreAppContext);
 
   return (
     <div className={styles.main_container}>
@@ -16,7 +14,6 @@ const SiteHeader = ({ title }: SiteHeaderComponent) => {
         <h1>{pageTitle || title}</h1>
         <div className={styles.siteheader_right_container}>
           <div className="vertical_line" />
-          <UserDisplay user={user} />
         </div>
       </div>
     </div>

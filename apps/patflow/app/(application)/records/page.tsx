@@ -1,1 +1,1 @@
-export { Records as default } from "@repo/ui";
+export { Records as default } from "@repo/modules";

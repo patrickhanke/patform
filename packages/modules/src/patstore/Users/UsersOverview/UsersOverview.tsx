@@ -3,7 +3,7 @@
 import { useCallback, useContext, useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import {
-  AppContext,
+  PatstoreAppContext,
   axiosclient,
   generateGraphQLQuery,
   paramsHandler,

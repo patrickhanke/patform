@@ -3,7 +3,7 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
 import useTableColumns from "./hooks/useTableColumns";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { Page, SiteHeader } from "@repo/ui";
 import { Table } from "@repo/ui";
 

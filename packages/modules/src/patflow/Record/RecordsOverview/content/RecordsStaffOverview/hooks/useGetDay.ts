@@ -1,4 +1,4 @@
-import { find_day } from "@queries";
+import { find_day } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { UseGetDay } from "../types";
 

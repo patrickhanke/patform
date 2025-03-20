@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useMemo, useState } from "react";
-import { AppContext, generateGraphQLQuery } from "@repo/provider";
+import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
 import { Page } from "@repo/ui";
 import pages_states from "./constants/page_states";
 import WebsiteSettings from "./content/WebsiteSettings";
@@ -11,7 +11,7 @@ import { useQuery } from "@apollo/client";
 import createPage from "./constants/createPage";
 
 const Website = () => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const { data: moduleData } = useQuery(
     generateGraphQLQuery({
       type: "get",

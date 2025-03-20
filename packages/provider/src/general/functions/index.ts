@@ -1,4 +1,4 @@
-export { default as getDateStringsFromIso } from "./getDateStringsFromIso";
+export { default as getDateString } from "./getDateString";
 export { default as getDateFromIso } from "./getDateFromIso";
 export * from "./getImageUrl";
 export { findModuleFields } from "./moduleHandlers";

@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import DateSelect from "./content/DateSelect";
 import { useDataHandler } from "@repo/provider";
 import { useQuery } from "@apollo/client";
-import { GET_TASK_TIME } from "@queries";
+import { GET_TASK_TIME } from "@repo/provider";
 import modi_options from "./content/DateSelect/constants/modi_options";
 import date_category_options from "./content/DateSelect/constants/date_category_options";
 import { DateSelectInterfaceTaskProps } from "./types";

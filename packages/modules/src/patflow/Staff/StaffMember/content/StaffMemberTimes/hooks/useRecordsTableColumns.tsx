@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { Record } from "@repo/types";
-import { convertMillisecondsToString, getDateStringsFromIso } from "@repo/provider";
+import { convertMillisecondsToString, getDateString } from "@repo/provider";
 import { UseRecordTableColumns } from "../types";
 import Editrecord from "../content/EditRecord";
 
@@ -19,14 +19,14 @@ const useRecordsTableColumns: UseRecordTableColumns = ({
         footer: (info) => info.column.id,
       },
       {
-        accessorFn: (row) => getDateStringsFromIso(row.start_date).date,
+        accessorFn: (row) => getDateString(row.start_date).date,
         header: () => <span>Start</span>,
         id: "start_time",
         cell: (info) => info.getValue(),
         footer: (info) => info.column.id,
       },
       {
-        accessorFn: (row) => getDateStringsFromIso(row.end_date).date,
+        accessorFn: (row) => getDateString(row.end_date).date,
         header: () => <span>Ende</span>,
         id: "end_time",
         cell: (info) => info.getValue(),

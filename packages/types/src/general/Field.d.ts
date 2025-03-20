@@ -70,7 +70,7 @@ type FieldBasic = {
 type SelectOption = {
   id: string;
   label: string;
-  value: string;
+  value: string | number;
 };
 
 type SelectValues<

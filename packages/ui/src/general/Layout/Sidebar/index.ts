@@ -1,3 +1,3 @@
 export { default as Sidebar } from "./Sidebar";
 
-export type * from "./types";
+export type { MenuItem } from "./types";

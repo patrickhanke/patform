@@ -1,4 +1,4 @@
-import { find_record } from "@queries";
+import { find_record } from "@repo/provider";
 import { Record } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import { useMemo } from "react";

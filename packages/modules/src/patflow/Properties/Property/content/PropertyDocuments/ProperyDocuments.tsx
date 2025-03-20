@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import useFindObjectsDocuments from "./hooks/useFindObjectDocuments";
 import { ColumnDef } from "@tanstack/react-table";
-import { getDateStringsFromIso, useDataHandler } from "@repo/provider";
+import { getDateString, useDataHandler } from "@repo/provider";
 import CreateDocument from "./components/CreateDocument";
 import { FileDisplay, IconButton, Select, SiteHeader, Table } from "@repo/ui";
 import { Document } from "@repo/types";
@@ -47,7 +47,7 @@ const ProperyDocuments = ({ id }: { id: string }) => {
         footer: (info) => info.column.id,
       },
       {
-        accessorFn: (row) => getDateStringsFromIso(row.createdAt).date,
+        accessorFn: (row) => getDateString(row.createdAt).date,
         header: () => <span>Erstellt</span>,
         id: "created_at",
         cell: (info) => info.getValue(),

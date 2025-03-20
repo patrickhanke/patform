@@ -1,11 +1,11 @@
 import { useCallback, useContext, useMemo, useState, useEffect } from "react";
 import { Field, SlideIn } from "@repo/ui";
-import { AppContext, useDataHandler } from "@repo/provider";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import { Form } from "@repo/ui";
 
 const CreatePerson = ({ refetch }: { refetch: () => void }) => {
   const { createData } = useDataHandler();
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState({} as { [key: string]: any });
 

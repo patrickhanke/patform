@@ -5,7 +5,7 @@ import { DisplayWorker } from "@repo/ui";
 import {
   absence_state_options,
   absence_type_options,
-  getDateStringsFromIso,
+  getDateString,
 } from "@repo/provider";
 import EditAbsence from "../components/EditAbsence";
 import { StateSelect } from "@repo/ui";
@@ -23,7 +23,7 @@ const useRecordAbsenceColumns = ({ refetch }: UseRecordAbsenceColumnsProps) => {
       },
       {
         accessorFn: (row) =>
-          `${getDateStringsFromIso(row.start_date).date} - ${getDateStringsFromIso(row.end_date).date}`,
+          `${getDateString(row.start_date).date} - ${getDateString(row.end_date).date}`,
         header: () => <span>Datum</span>,
         id: "date",
         cell: (info) => info.getValue(),

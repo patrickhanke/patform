@@ -1,17 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import EditStaffMember from "../components/EditStaffMember";
 import SetStaffMemberPassword from "../components/SetStaffMemberPassword";
-import { ApolloRefetch, User } from "@repo/types";
-import { StateDisplay, StateSelect, StatelessToggle, Toggle } from "@repo/ui";
-import { AppContext } from "@repo/provider";
+import { ApolloRefetch, PatflowUser } from "@repo/types";
+import { StateDisplay, Toggle } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
 
 const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
-  const { roles } = useContext(AppContext);
   const { updateData } = useDataHandler();
 
-  const columns = useMemo<ColumnDef<User>[]>(
+  const columns = useMemo<ColumnDef<PatflowUser>[]>(
     () => [
       {
         accessorFn: (row) => `${row.first_name} ${row.family_name}`,
@@ -71,7 +69,7 @@ const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
         enableSorting: false,
       },
     ],
-    [],
+    []
   );
 
   return columns;

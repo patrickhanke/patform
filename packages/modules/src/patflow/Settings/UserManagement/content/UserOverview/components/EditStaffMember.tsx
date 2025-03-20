@@ -1,11 +1,11 @@
-import { AppContext } from "@repo/provider";
+import { PatflowAppContext } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useImmer } from "use-immer";
 import styles from "../UserOverview.module.scss";
 import clsx from "clsx";
 import { useQuery } from "@apollo/client";
-import { GET_USER_DISPLAY_DATA } from "@queries";
+import { GET_USER_DISPLAY_DATA } from "@repo/provider";
 import { ErrorMessage, Image } from "@repo/types";
 import {
   IconButton,
@@ -18,7 +18,7 @@ import {
 const EditStaffMember = ({ userId }: { userId: string }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { roles } = useContext(AppContext);
+  const { roles } = useContext(PatflowAppContext);
   const { updateData } = useDataHandler();
 
   const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);

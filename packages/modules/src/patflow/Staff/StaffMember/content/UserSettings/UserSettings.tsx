@@ -1,5 +1,5 @@
 import { getIsoFromDate } from "@repo/provider";
-import { GET_USER_SETTINGS } from "@queries";
+import { GET_USER_SETTINGS } from "@repo/provider";
 import { fieldsType } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import { Form, Loader } from "@repo/ui";

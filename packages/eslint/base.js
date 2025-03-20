@@ -24,7 +24,7 @@ export const config = [
       "prettier/prettier": "error",
       "react-hooks/exhaustive-deps": "off",
       "prettier/prettier": [
-        "error",
+        "warn",
         {
           singleQuote: false,
           semi: true,

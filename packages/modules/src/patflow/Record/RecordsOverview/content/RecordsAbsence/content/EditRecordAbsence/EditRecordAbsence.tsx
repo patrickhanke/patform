@@ -6,7 +6,7 @@ import {
   getDefaultTime,
   getDateString,
   absence_type_options,
-  AppContext,
+  PatflowAppContext,
   useGetActiveRecord,
   UserContext,
 } from "@repo/provider";
@@ -22,7 +22,7 @@ import styles from "./EditRecordsAbsence.module.scss";
 import { DatePicker, DisplayWorker, Select } from "@repo/ui";
 import { EditRecordAbsenceComponent } from "./types";
 import { Day, ErrorMessage, StaffMember } from "@repo/types";
-import { FIND_ALL_STAFF, find_day } from "@queries";
+import { FIND_ALL_STAFF, find_day } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import checkForConflicts from "./functions/checkForConflicts";
 import { cloneDeep } from "lodash-es";
@@ -43,7 +43,7 @@ const EditRecordAbsence = ({
   );
   const { data: staffData } = useQuery(FIND_ALL_STAFF);
   const { user } = useContext(UserContext);
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
   const { record } = useGetActiveRecord({
     year,
     userId: absenceState?.user?.objectId as string,

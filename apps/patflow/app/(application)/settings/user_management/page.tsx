@@ -1,1 +1,1 @@
-export { UserManagement as default } from "@repo/ui";
+export { UserManagement as default } from "@repo/modules";

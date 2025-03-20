@@ -21,10 +21,8 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
       pageState,
       setPageState,
     },
-    ref,
+    ref
   ) => {
-    console.log(pageHeaderButtons);
-
     return (
       <div ref={ref} className="pageheader_content">
         <div className={"pageheader_content_container"}>
@@ -43,7 +41,7 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
                       "full_button",
                       "md",
                       "primary",
-                      "pageheader_createbutton",
+                      "pageheader_createbutton"
                     )}
                     onClick={() => button.onClick()}
                     disabled={button.disabled}
@@ -87,7 +85,7 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
         )}
       </div>
     );
-  },
+  }
 );
 
 PageHeaderRegular.displayName = "PageHeaderRegular";

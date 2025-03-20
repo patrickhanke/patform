@@ -1,17 +1,17 @@
 "use client";
 
 import React, { useCallback, useMemo, useState } from "react";
-import { Select } from "../Select";
+import { Select } from "@repo/ui";
 import { useQuery } from "@apollo/client";
 import { useDataHandler } from "@repo/provider";
-import { ApplicationTypes, UserTypes } from "@repo/types";
-import { FIND_ALL_STAFF, GET_SERVICE_WORKERS } from "@queries";
+import { FIND_ALL_STAFF, GET_SERVICE_WORKERS } from "@repo/provider";
+import { Image, PatflowUser } from "@repo/types";
 
 type WorkerSelect = {
   value: string;
   id: string;
   label: string;
-  portrait?: ApplicationTypes.Image;
+  portrait?: Image;
 };
 
 const queryHandler = (className: "Service") => {
@@ -37,14 +37,12 @@ const WorkerSelect = ({
     notifyOnNetworkStatusChange: true,
     onCompleted(data) {
       setSelectedWorkers(
-        data.objects.getService.workers.results.map(
-          (worker: UserTypes.User) => ({
-            value: worker.objectId,
-            id: worker.objectId,
-            portrait: worker.portrait,
-            label: `${worker.first_name} ${worker.family_name}`,
-          }),
-        ),
+        data.objects.getService.workers.results.map((worker: PatflowUser) => ({
+          value: worker.objectId,
+          id: worker.objectId,
+          portrait: worker.portrait,
+          label: `${worker.first_name} ${worker.family_name}`,
+        }))
       );
     },
   });
@@ -52,7 +50,7 @@ const WorkerSelect = ({
   const workerOptions = useMemo(() => {
     const workerOptionsArray: WorkerSelect[] = [];
     if (workerData) {
-      workerData.objects.find_User.results.forEach((worker: UserTypes.User) => {
+      workerData.objects.find_User.results.forEach((worker: PatflowUser) => {
         if (worker.is_worker) {
           workerOptionsArray.push({
             value: worker.objectId,
@@ -70,7 +68,7 @@ const WorkerSelect = ({
     async (key: "add" | "clear" | "remove", id?: string) => {
       const getWorkerUpdate = (
         key: "add" | "clear" | "remove",
-        id?: string,
+        id?: string
       ) => {
         if (key === "add") {
           return {
@@ -109,7 +107,7 @@ const WorkerSelect = ({
       });
       refetch();
     },
-    [],
+    []
   );
 
   return (

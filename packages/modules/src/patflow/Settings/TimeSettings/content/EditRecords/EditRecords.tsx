@@ -1,11 +1,11 @@
-import { find_record } from "@queries";
+import { find_record } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import React, { FC, useContext, useState } from "react";
 import { EditRecordsProps } from "./types";
 import CreateRecord from "./content/CreateRecord";
 import useRecordsTableColumns from "./hooks/useRecordsTableColumns";
 import { Modal, Table } from "@repo/ui";
-import { AppContext } from "@repo/provider";
+import { PatflowAppContext } from "@repo/provider";
 import { Worker } from "@repo/types";
 import SelectUser from "./components/SelectUser";
 
@@ -14,7 +14,7 @@ const EditRecords: FC<EditRecordsProps> = ({
   setCreateRecord,
   projectId,
 }) => {
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
   const { data, loading, refetch } = useQuery(find_record, {
     variables: { params: { year: { _eq: year } } },
   });

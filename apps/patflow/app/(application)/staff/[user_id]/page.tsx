@@ -1,1 +1,1 @@
-export { StaffMember as default } from "@repo/ui";
+export { StaffMember as default } from "@repo/modules";

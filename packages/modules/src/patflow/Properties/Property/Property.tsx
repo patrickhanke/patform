@@ -3,7 +3,7 @@
 import React, { use, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import useSiteStates from "./constants/siteStates";
-import { GET_PROPERTY } from "@queries";
+import { GET_PROPERTY } from "@repo/provider";
 import PropertyTasks from "./content/PropertyTasks";
 import PropertySettings from "./content/PropertySettings";
 import PropertyServices from "./content/PropertyServices";

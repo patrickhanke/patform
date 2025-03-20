@@ -1,1 +1,1 @@
-export { Property as default } from "@repo/ui";
+export { Property as default } from "@repo/modules";

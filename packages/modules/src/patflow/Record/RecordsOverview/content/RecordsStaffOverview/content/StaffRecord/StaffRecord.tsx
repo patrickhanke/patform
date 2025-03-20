@@ -7,7 +7,7 @@ import {
   months,
 } from "@repo/provider";
 import { Day } from "@repo/types";
-import { find_record } from "@queries";
+import { find_record } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import styles from "./StaffRecord.module.scss";
 import useTableColumns from "./hooks/useTableColumns";

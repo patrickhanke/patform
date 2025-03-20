@@ -8,13 +8,13 @@ import {
   Table,
   useCreateColumns,
 } from "@repo/ui";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import { Filter, GroupClass } from "@repo/types";
 import useFindGroup from "./hooks/useFindGroup";
 import createGroup from "./constants/createGroup";
 
 const GroupOverview = () => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
 
   const [filters, setFilters] = useState<Filter[]>([]);
   const { groups, refetch } = useFindGroup({

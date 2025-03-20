@@ -10,13 +10,6 @@
   "globalDependencies": [".env"],
   "tasks": {
     "build": {
-      "env": [
-        "BYTESCALE_ACCOUNT_ID",
-        "BYTESCALE_PUBLIC_KEY",
-        "BYTESCALE_SECRET_KEY",
-        "SESSION_TOKEN",
-        "SASHIDO_APP_ID"
-      ],
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**"],
       "inputs": ["$TURBO_DEFAULT$", ".env"],

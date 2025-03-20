@@ -1,7 +1,7 @@
 "use client";
 
 import { DisplayWorker } from "@repo/ui";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import React, { FC, useMemo, useState } from "react";
 

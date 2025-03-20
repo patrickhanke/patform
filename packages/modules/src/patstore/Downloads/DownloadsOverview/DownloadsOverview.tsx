@@ -8,13 +8,13 @@ import {
   Table,
   useCreateColumns,
 } from "@repo/ui";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import useFindDownload from "./hooks/useFindDownload";
 import { DownloadClass, Filter } from "@repo/types";
 import createDownload from "./constants/createDownload";
 
 const DownloadsOverview = () => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
 
   const [filters, setFilters] = useState<Filter[]>([]);
   const { downloads, refetch } = useFindDownload({

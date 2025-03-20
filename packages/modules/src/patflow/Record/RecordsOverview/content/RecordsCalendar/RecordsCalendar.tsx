@@ -4,7 +4,7 @@ import { eachDayOfInterval, formatISO9075 } from "date-fns";
 import { get, set } from "lodash-es";
 import { absence_type_options } from "@repo/provider";
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { Absence, User } from "@repo/types";
 import { Calendar, CalendarData } from "@repo/ui";
 

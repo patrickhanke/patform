@@ -1,10 +1,10 @@
 export { PropertyOverview, Property } from "./Properties";
 export { ServiceTemplatesOverview } from "./ServiceTemplates";
-export { TasksOverview } from "./Tasks";
+export * from "./Tasks";
+export * from "./Tickets";
 export { ToursOverview } from "./Tours";
 export { StaffOverview, StaffMember } from "./Staff";
 export { WasteOverview } from "./Waste";
 export * from "./Settings";
 export * from "./Record";
-export * from "./_UI";
 export * from "./Login";

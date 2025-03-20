@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { StaffMember } from "@repo/types";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { SiteHeaderContentProps } from "../types";
 import styles from "../RecordsStaffOverview.module.scss";

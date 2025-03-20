@@ -1,7 +1,7 @@
 import React from "react";
 import { DateDisplayComponent } from "./types";
 import styles from "./DateDisplay.module.scss";
-import { getDateStringsFromIso } from "@repo/provider";
+import { getDateString } from "@repo/provider";
 import { IoCalendarOutline } from "react-icons/io5";
 import { CiClock2 } from "react-icons/ci";
 
@@ -11,13 +11,13 @@ const DateDisplay = ({ date, displayType }: DateDisplayComponent) => {
       {displayType === "date" ||
         (displayType === "date-and-time" && (
           <div className={styles.date_element}>
-            <IoCalendarOutline /> {getDateStringsFromIso(date).date}
+            <IoCalendarOutline /> {getDateString(date).date}
           </div>
         ))}
       {displayType === "time" ||
         (displayType === "date-and-time" && (
           <div className={styles.date_element}>
-            <CiClock2 /> {getDateStringsFromIso(date).time}
+            <CiClock2 /> {getDateString(date).time}
           </div>
         ))}
     </div>

@@ -8,13 +8,13 @@ import siteStates from "./constants/site_states";
 import RecordsCalendar from "./content/RecordsCalendar";
 import RecordsAbsence from "./content/RecordsAbsence";
 import RecordsStaffOverview from "./content/RecordsStaffOverview";
-import { AppContext } from "@repo/provider";
+import { PatflowAppContext } from "@repo/provider";
 import { Filter } from "@repo/types";
 import RecordsSettings from "./content/RecordsSettings";
 import { Page } from "@repo/ui";
 
 const RecordsOverview = () => {
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
   const [filters, setFilters] = React.useState(
     initialFilters(year) as Filter[],
   );

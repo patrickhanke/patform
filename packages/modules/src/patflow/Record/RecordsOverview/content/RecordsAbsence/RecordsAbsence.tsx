@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Absence, StaffMember } from "@repo/types";
-import { AppContext } from "@repo/provider";
+import { PatflowAppContext } from "@repo/provider";
 import { generateGraphQLQuery } from "@repo/provider";
 import { Select } from "@repo/ui";
 import { RecordAbsenceProps } from "./types";
 import styles from "./RecordsAbsence.module.scss";
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import useRecordAbsenceColumns from "./hooks/useRecordAbsenceColumns";
 import EditRecordAbsence from "./content/EditRecordAbsence";
 import { Divider, Table } from "@repo/ui";
@@ -16,7 +16,7 @@ const RecordAbsence = ({
   editAbsence,
   setEditAbsence,
 }: RecordAbsenceProps) => {
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
   const { data: staffData } = useQuery(FIND_ALL_STAFF);
   const [selectedStaff, setSelectedStaff] = useState<{
     value: string;

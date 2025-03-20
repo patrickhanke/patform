@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import { fieldsType } from "@repo/types";
-import { GET_PROPERTY_SETTINGS } from "@queries";
+import { GET_PROPERTY_SETTINGS } from "@repo/provider";
 import { Form, Loader } from "@repo/ui";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import { PropertySettingsProps } from "./types";

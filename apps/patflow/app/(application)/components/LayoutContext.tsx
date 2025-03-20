@@ -1,7 +1,7 @@
 "use client";
 
 import { ApolloAppProvider } from "@repo/provider";
-import { UserContextProvider, NotificationContextProvider, AppContextProvider } from "@repo/provider";
+import { UserContextProvider, NotificationContextProvider, PatflowAppContextProvider } from "@repo/provider";
 import React from "react";
 
 const LayoutContext = ({ children }: { children: React.ReactNode }) => {
@@ -12,11 +12,11 @@ const LayoutContext = ({ children }: { children: React.ReactNode }) => {
       restKey={process.env.SASHIDO_REST_KEY as string}
     >
       <UserContextProvider>
-        <AppContextProvider>
+        <PatflowAppContextProvider>
           <NotificationContextProvider>
             <React.StrictMode>{children}</React.StrictMode>
           </NotificationContextProvider>
-        </AppContextProvider>
+        </PatflowAppContextProvider>
       </UserContextProvider>
     </ApolloAppProvider>
   );

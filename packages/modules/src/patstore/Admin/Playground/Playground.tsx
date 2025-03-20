@@ -1,16 +1,10 @@
 "use client";
 
-import React, { useContext } from "react";
-import { AppContext } from "@repo/provider";
 import { AdminPage } from "@repo/modules";
 
-const Playground = ({ params }: { params: { project_id: string } }) => {
-  const { getCurrentProject } = useContext(AppContext);
+const Playground = () => {
   return (
-    <AdminPage
-      title={`${getCurrentProject(params.project_id)?.name} - Playground`}
-      emptyContent={true}
-    >
+    <AdminPage title={"Playground"} emptyContent={true}>
       <p>Playground</p>
     </AdminPage>
   );

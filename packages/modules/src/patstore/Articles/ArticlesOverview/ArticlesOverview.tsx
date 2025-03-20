@@ -2,7 +2,7 @@
 
 import { useContext, useState } from "react";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
-import { AppContext, generateGraphQLQuery } from "@repo/provider";
+import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import useFindArticles from "./hooks/useFindArticles";
 import { ArticleClass, PersonClass } from "@repo/types";
@@ -11,7 +11,7 @@ import { useQuery } from "@apollo/client";
 import state from "./constants/articleState";
 
 const ArticlesOverview = () => {
-  const { currentModule, modules } = useContext(AppContext);
+  const { currentModule, modules } = useContext(PatstoreAppContext);
   const [filters] = useState([]);
   const { articles, refetch } = useFindArticles({
     moduleId: currentModule.objectId,
@@ -32,7 +32,7 @@ const ArticlesOverview = () => {
           },
         },
       },
-    },
+    }
   );
 
   const columns = useCreateColumns<ArticleClass>({
@@ -59,7 +59,7 @@ const ArticlesOverview = () => {
         personData?.objects.findPerson.results.map((person: PersonClass) => ({
           value: person.objectId,
           label: person.label,
-        })) || [],
+        })) || []
       )}
       refetch={refetch}
     >

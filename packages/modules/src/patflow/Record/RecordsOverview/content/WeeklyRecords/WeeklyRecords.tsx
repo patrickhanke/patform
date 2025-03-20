@@ -1,14 +1,14 @@
 import React, { useContext, useMemo, useState } from "react";
 import { WeeklyRecordProps, WeekObject } from "./types";
-import { AppContext, getWeekDayKeys } from "@repo/provider";
+import { PatflowAppContext, getWeekDayKeys } from "@repo/provider";
 import useTableColumns from "./hooks/useTableColumns";
 import SiteHeaderContent from "./components/SiteHeaderContent";
 import { getWeek, hoursToMilliseconds } from "date-fns";
 import initialFilters from "./constants/initialFilters";
 import { Day, StaffMember } from "@repo/types";
 import { useQuery } from "@apollo/client";
-import { find_day } from "@queries";
-import { FIND_ALL_STAFF } from "@queries";
+import { find_day } from "@repo/provider";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { cloneDeep } from "lodash-es";
 import { Divider, Table } from "@repo/ui";
 
@@ -26,7 +26,7 @@ const WeeklyRecords = ({
   });
   const { data: staffData } = useQuery(FIND_ALL_STAFF);
   const columns = useTableColumns({ selectedWeek, refetch });
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
 
   const weekData = useMemo(() => {
     const weekArray: WeekObject[] = [];

@@ -1,1 +1,1 @@
-export { StaffOverview as default } from "@repo/ui";
+export { StaffOverview as default } from "@repo/modules";

@@ -13,7 +13,7 @@ import useGetImages from "./hooks/useGetImages";
 import { Filter, ImageClass, PageState } from "@repo/types";
 import { ImageUploader, useImageDataHandler } from "../ImageUploader";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 
 const pageStates: PageState[] = [
   { value: "all", label: "Alle" },
@@ -22,7 +22,7 @@ const pageStates: PageState[] = [
 ];
 
 const ImagesOverview = () => {
-  const { project, currentModule } = useContext(AppContext);
+  const { project, currentModule } = useContext(PatstoreAppContext);
   const [uploadImages, setUploadImages] = useState(false);
   const [newImages, setNewImages] = useState<string[]>([]);
   const [activeState, setActiveState] = useState(pageStates[0]);

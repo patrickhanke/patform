@@ -1,8 +1,8 @@
 "use client";
 
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { useQuery } from "@apollo/client";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import styles from "./WorkersInterface.module.scss";
 import DisplayWorkerInterface from "./components/DisplayWorkerInterface";
 import { WorkersInterfaceComponent } from "./types";

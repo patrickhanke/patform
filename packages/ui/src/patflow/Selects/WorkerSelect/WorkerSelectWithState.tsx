@@ -1,7 +1,7 @@
-import React, { FC, useMemo } from "react";
-import { Select } from "../Select";
+import { FC, useMemo } from "react";
+import { Select } from "@repo/ui";
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { Worker } from "@repo/types";
 import { Image } from "@repo/types";
 import { WorkerSelectWithStateProps } from "./types";
@@ -48,7 +48,7 @@ const WorkerSelect: FC<WorkerSelectWithStateProps> = ({
         value={
           isArray(selectedWorkers)
             ? selectedWorkers.map((worker) =>
-                workerOptions.find((option) => option.value === worker),
+                workerOptions.find((option) => option.value === worker)
               )
             : selectedWorkers
               ? workerOptions.find((option) => option.value === selectedWorkers)

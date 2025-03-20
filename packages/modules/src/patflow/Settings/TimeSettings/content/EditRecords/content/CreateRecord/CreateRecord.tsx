@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { CreateRecordProps } from "./types";
 import { useQuery } from "@apollo/client";
-import { find_records_for_user } from "@queries";
+import { find_records_for_user } from "@repo/provider";
 import {
   ErrorMessage,
   Holiday,

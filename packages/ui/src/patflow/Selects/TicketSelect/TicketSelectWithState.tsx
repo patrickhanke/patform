@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import { Select } from "../Select";
+import { useMemo } from "react";
+import { Select } from "@repo/ui";
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_TICKETS } from "@queries";
+import { FIND_ALL_TICKETS } from "@repo/provider";
 import { SelectOption } from "./types";
 import { Ticket } from "@repo/types";
 

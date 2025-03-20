@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import styles from "../EditRecord.module.scss";
 import {
   convertMillisecondsToString,
-  getDateStringsFromIso,
+  getDateString,
   weekdays,
 } from "@repo/provider";
 import { RecordTimeDisplayProps } from "../types";
@@ -25,7 +25,7 @@ const RecordTimeDisplay = ({
   const dayLabel = (date: string) => {
     let label = "-";
     if (date) {
-      label = `${weekdays.find((weekday) => weekday.day === getDay(new Date(day.date)))?.label} - ${getDateStringsFromIso(date).date}`;
+      label = `${weekdays.find((weekday) => weekday.day === getDay(new Date(day.date)))?.label} - ${getDateString(date).date}`;
     }
 
     return label;
@@ -48,13 +48,13 @@ const RecordTimeDisplay = ({
             <div className="time_display_element">
               <div className="label">Start</div>
               <div className="time_display_element_content">
-                {getDateStringsFromIso(day.time?.start).date}
+                {getDateString(day.time?.start).date}
               </div>
             </div>
             <div className="time_display_element">
               <div className="label">Ende</div>
               <div className="time_display_element_content">
-                {getDateStringsFromIso(day.time?.end).time}
+                {getDateString(day.time?.end).time}
               </div>
             </div>
             <div className="time_display_element">

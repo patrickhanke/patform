@@ -10,7 +10,7 @@ import { DefaultDay, ErrorMessage } from "@repo/types";
 import RecordTimeDisplay from "./components/RecordTimeDisplay";
 import styles from "./EditRecord.module.scss";
 import {
-  AppContext,
+  PatflowAppContext,
   createTime,
   findDefaultTimeForDate,
   getWorktimeDuration,
@@ -34,7 +34,7 @@ const EditRecord = ({
   const { deleteData } = useDataHandler();
   const [disabled, setDisabled] = useState<[boolean, boolean]>([false, false]);
   const [errors, setErrors] = useState<ErrorMessage[]>([]);
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
 
   const { record } = useGetActiveRecord({ year, userId });
 

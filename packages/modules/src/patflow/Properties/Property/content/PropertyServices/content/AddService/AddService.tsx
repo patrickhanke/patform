@@ -21,7 +21,7 @@ import {
   DateSelectWithExternalState,
   DisplayWorker,
   modi_options,
-} from "content/_UI";
+} from "@repo/ui";
 import SelectWorker from "./components/SelectWorker";
 import clsx from "clsx";
 import styles from "./AddService.module.scss";

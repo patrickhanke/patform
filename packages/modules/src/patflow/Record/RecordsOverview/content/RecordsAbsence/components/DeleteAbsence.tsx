@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import React, { useCallback } from "react";
 import { DeleteAbsenceProps } from "../types";
 import { useDataHandler } from "@repo/provider";
-import { find_day } from "@queries";
+import { find_day } from "@repo/provider";
 import { Day } from "@repo/types";
 import { Modal } from "@repo/ui";
 

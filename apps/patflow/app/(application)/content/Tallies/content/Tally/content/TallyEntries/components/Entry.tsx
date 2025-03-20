@@ -4,7 +4,7 @@ import styles from "../TallyEntries.module.scss";
 import { DateDisplay, DisplayWorker } from "@repo/ui";
 import { PiClockCountdown } from "react-icons/pi";
 import { useQuery } from "@apollo/client";
-import { GET_USER_DISPLAY_DATA } from "@queries";
+import { GET_USER_DISPLAY_DATA } from "@repo/provider";
 import { LiaCommentDots } from "react-icons/lia";
 
 const Entry = ({ entry }: { entry: TallyTypes.Entry }) => {

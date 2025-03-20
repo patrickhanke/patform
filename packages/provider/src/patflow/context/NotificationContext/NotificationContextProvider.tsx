@@ -25,8 +25,6 @@ const NotificationContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  console.log("NotificationContextProvider");
-
   const { user } = useContext(UserContext);
   const [newNotification, setNewNotification] = useState<string | undefined>(
     undefined

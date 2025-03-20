@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from "react";
 import { Field, SlideIn } from "@repo/ui";
-import { AppContext, useDataHandler } from "@repo/provider";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import { Form } from "@repo/ui";
 import { CreateCategoryProps } from "../types";
 
@@ -10,7 +10,7 @@ const CreateCategory = ({
   typeLabel,
 }: CreateCategoryProps) => {
   const { createData } = useDataHandler();
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState({} as { [key: string]: any });
   const [disabled, setDisabled] = useState<[boolean, boolean]>([false, false]);

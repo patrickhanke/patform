@@ -1,9 +1,9 @@
-import React, { useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import styles from "../WorkersInterface.module.scss";
 import { DisplayWorkerInterfaceComponent } from "../types";
 import { useQuery } from "@apollo/client";
-import { find_day } from "@queries";
-import { absence_type_options, AppContext } from "@repo/provider";
+import { find_day } from "@repo/provider";
+import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { Absence, Day } from "@repo/types";
 import { StateDisplay } from "@repo/ui";
@@ -16,7 +16,7 @@ const DisplayWorkerInterface = ({
   nextDate,
   showAvailability = true,
 }: DisplayWorkerInterfaceComponent) => {
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
   const { data } = useQuery(find_day, {
     variables: {
       params: {

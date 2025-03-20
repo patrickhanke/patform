@@ -3,7 +3,7 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
 import { ProjectContext } from "./ProjectContext";
 import { PatstoreProject } from "@repo/types";
-import { generateGraphQLQuery } from "../../Apollo";
+import { generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import ProjectLoader from "./components/ProjectLoader";
 

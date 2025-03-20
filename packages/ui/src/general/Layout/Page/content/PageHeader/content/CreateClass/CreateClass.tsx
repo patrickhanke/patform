@@ -2,7 +2,7 @@
 
 import { useCallback, useContext, useState } from "react";
 import { SlideIn } from "@repo/ui";
-import { AppContext, useDataHandler } from "@repo/provider";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import { Form } from "@repo/ui";
 import { CreateClassProps } from "./types";
 import { Classes } from "@repo/types";
@@ -15,7 +15,7 @@ const CreateClass = <T extends Classes>({
   refetch,
 }: CreateClassProps<T>) => {
   const { createData } = useDataHandler();
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] =
     useState<CreateClassProps<T>["initialData"]>(initialData);

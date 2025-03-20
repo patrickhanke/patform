@@ -1,6 +1,5 @@
 "use client";
 
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useMemo, useState } from "react";
 import "./styles.scss";
 import {
@@ -65,7 +64,7 @@ const Table: React.FC<TableTypes> = ({
 
       return <ChevronsUpDown size={10} />;
     },
-    [sorting],
+    [sorting]
   );
 
   const handleRowSelection = (rowId: string) => {
@@ -96,9 +95,9 @@ const Table: React.FC<TableTypes> = ({
                         setSelectedRows(
                           isChecked
                             ? new Set(
-                                table.getRowModel().rows.map((row) => row.id),
+                                table.getRowModel().rows.map((row) => row.id)
                               )
-                            : new Set(),
+                            : new Set()
                         );
                       }}
                       checked={
@@ -122,7 +121,7 @@ const Table: React.FC<TableTypes> = ({
                           >
                             {flexRender(
                               header.column.columnDef.header,
-                              header.getContext(),
+                              header.getContext()
                             )}
                             {getSortIcon(header.column)}
                           </div>
@@ -159,7 +158,7 @@ const Table: React.FC<TableTypes> = ({
                       <td key={cell.id} data-cell_borders={cellBorders}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext(),
+                          cell.getContext()
                         )}
                       </td>
                     );

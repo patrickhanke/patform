@@ -66,11 +66,13 @@ const menu_items = [
     label: "Touren",
     value: "/tours",
     icon: "tours",
+     sub_menu: [],
   },
   {
     label: "Zeiterfassung",
     value: "/records",
     icon: "time",
+     sub_menu: [],
   },
   {
     label: "Mitarbeiter",
@@ -83,11 +85,13 @@ const menu_items = [
     value: "/settings/user_management",
     icon: "users",
     divider: "Einstellungen",
+     sub_menu: [],
   },
   {
     label: "Zeiten und Zuschläge",
     value: "/settings/times",
     icon: "calendar",
+     sub_menu: [],
   },
 ];
 

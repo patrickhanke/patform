@@ -1,5 +1,5 @@
-import { AppContext } from "@repo/provider";
-import { WorkerSelectWithState } from "content/_UI";
+import { PatflowAppContext } from "@repo/provider";
+import { WorkerSelectWithState } from "@repo/ui";
 import React, { FC, useContext, useEffect, useMemo } from "react";
 import Tour from "./content/Tour";
 import { ToursProps } from "./types";
@@ -9,7 +9,7 @@ import { SelectOption } from "@repo/types";
 import useTourStore from "./hooks/useTourStore";
 
 const Tours: FC<ToursProps> = ({ projectId, setPageHeaderContent }) => {
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
 
   const week = useTourStore((state) => state.week);
   const worker = useTourStore((state) => state.worker);
@@ -19,14 +19,14 @@ const Tours: FC<ToursProps> = ({ projectId, setPageHeaderContent }) => {
   const weekOptions: SelectOption[] = useMemo(() => {
     const weeks = differenceInCalendarISOWeeks(
       new Date(year, 11, 31),
-      new Date(year, 0, 1),
+      new Date(year, 0, 1)
     );
     const weekOptions = [];
     for (let i = 0; i <= weeks; i += 1) {
       if (i === 0) {
-        weekOptions.push({ label: "Übersicht", value: 0 });
+        weekOptions.push({ label: "Übersicht", value: 0, id: "0" });
       } else {
-        weekOptions.push({ label: `KW ${i}`, value: i });
+        weekOptions.push({ label: `KW ${i}`, value: i, id: i.toString() });
       }
     }
     return weekOptions;

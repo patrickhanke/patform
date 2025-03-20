@@ -1,25 +1,14 @@
 "use client";
 
-import React, { useMemo } from "react";
-import styles from "./Feedback.module.scss";
+import { useMemo } from "react";
 import useFeedbackStore from "./store";
 import { BsCheck2All } from "react-icons/bs";
 import { VscError } from "react-icons/vsc";
 import { TbLineDotted } from "react-icons/tb";
-import { UserDisplay } from "../UserDisplay";
+import "./styles.scss";
 
 const Feedback = () => {
   const { feedback, type } = useFeedbackStore();
-
-  // useEffect(() => {
-  // 	if (showFeedback === false) {
-  // 		setShowFeedback(true);
-  // 		setTimeout(() => {
-  // 			setShowFeedback(false);
-  // 		}, 2800);
-  // 	}
-
-  // }, [feedback, date]);
 
   const IconRender = useMemo(() => {
     if (type === "success") {
@@ -57,10 +46,9 @@ const Feedback = () => {
   }, [type, feedback]);
 
   return (
-    <div data-type={type} className={styles.feedback_container}>
+    <div data-type={type} className="feedback_container">
       {IconRender}
       {TextRender}
-      <UserDisplay />
     </div>
   );
 };

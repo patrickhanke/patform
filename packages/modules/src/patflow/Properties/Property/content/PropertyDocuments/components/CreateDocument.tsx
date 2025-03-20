@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
-import styles from "../ProperyDocument.module.scss";
 import { Modal, TextInput } from "@repo/ui";
 import { Document } from "@repo/types";
 import { CreateDocumentProps } from "../types";
 import { DocumentUploader } from "@repo/ui";
 import { UserContext } from "@repo/provider";
+import "../styles.scss";
 
 const CreateDocument: React.FC<CreateDocumentProps> = ({
   open,
@@ -30,7 +30,7 @@ const CreateDocument: React.FC<CreateDocumentProps> = ({
       isOpen={open}
       header="Neues Dokument hochladen"
     >
-      <div className={styles.create_document_container}>
+      <div className="create_document_container">
         <DocumentUploader
           label="Neues Dokument"
           name="upload"

@@ -1,4 +1,4 @@
-import { Tickets } from "@repo/ui";
+import { Tickets } from "@repo/modules";
 import { Suspense } from "react";
 
 const TicketsPage = () => {

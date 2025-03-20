@@ -3,12 +3,12 @@
 import { useContext, useState } from "react";
 import { Page, Table, useCreateColumns } from "@repo/ui";
 import { EventClass } from "@repo/types";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import createEvent from "./constants/createEvent";
 import useFindEvent from "./hooks/useFindEvent";
 
 const EventOverview = () => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [filters] = useState([]);
   const { events, refetch } = useFindEvent({
     moduleId: currentModule.objectId,

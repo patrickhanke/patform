@@ -6,13 +6,13 @@ import locationButtonStates from "../constants/locationButtonStates";
 import { set, cloneDeep } from "lodash-es";
 import { useQuery } from "@apollo/client";
 import {
-  AppContext,
+  PatstoreAppContext,
   generateGraphQLQuery,
   paramsHandler,
 } from "@repo/provider";
 
 const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
-  const { modules } = useContext(AppContext);
+  const { modules } = useContext(PatstoreAppContext);
   const { data: locationData } = useQuery(
     generateGraphQLQuery({
       type: "find",

@@ -1,6 +1,6 @@
 import { Loader, Editor } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
-import { GET_TALLY_DESCRIPTION } from "@queries";
+import { GET_TALLY_DESCRIPTION } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";

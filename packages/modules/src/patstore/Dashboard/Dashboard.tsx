@@ -1,7 +1,7 @@
 "use client";
 
 import { Page, UserMessages } from "@repo/ui";
-import { deleteAllNotifications } from "../../../provider/src/functions";
+import { deleteAllNotifications } from "@repo/provider";
 import { useMemo } from "react";
 
 const Dashboard = () => {
@@ -13,7 +13,7 @@ const Dashboard = () => {
         value: "new_message",
       },
     ],
-    [],
+    []
   );
 
   return (

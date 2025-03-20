@@ -1,6 +1,6 @@
 "use client";
 
-import { AppContext, getImageUrl } from "@repo/provider";
+import { PatstoreAppContext, getImageUrl } from "@repo/provider";
 import { TableColumnGalleryProps } from "../types";
 import { Modal } from "@repo/ui";
 import { useContext, useState } from "react";
@@ -13,7 +13,7 @@ const TableColumnGallery = ({
   onChange,
   maxFileCount = 0,
 }: TableColumnGalleryProps) => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [isOpen, setIsOpen] = useState(false);
   const [image, setImage] = useState<string[]>([]);
 

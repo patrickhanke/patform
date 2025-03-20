@@ -1,3 +1,2 @@
-export * from "./AppContext";
+export * from "./PatstoreAppContext";
 export * from "./ProjectContext";
-export * from "./DataContext";

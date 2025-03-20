@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useMemo } from "react";
 import { GetRecordObject } from "../types";
-import { find_record } from "@queries";
+import { find_record } from "@repo/provider";
 import { Filter } from "@repo/types";
 
 const paramsHandler = (filters?: Filter[]) => {

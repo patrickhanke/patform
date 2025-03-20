@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import TallyDescription from "../content/TallyDescription";
 import styles from "../Tally.module.scss";
 import { useQuery } from "@apollo/client";
-import { GET_TALLY_DESCRIPTION, GET_TALLY_ENTRIES } from "@queries";
+import { GET_TALLY_DESCRIPTION, GET_TALLY_ENTRIES } from "@repo/provider";
 import getLastEntry from "../functions/getLastEntry";
-import { getDateStringsFromIso } from "@repo/provider";
+import { getDateString } from "@repo/provider";
 import TallyEntries from "../content/TallyEntries";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { PiClockCountdown } from "react-icons/pi";
@@ -84,7 +84,7 @@ const SlideInContent = ({
         <div className={styles.description_preview_content}>
           {entriesData && entriesData.objects.getTally.entries ? (
             <p>
-              {`${getLastEntry(entriesData.objects.getTally.entries)?.value?.toString()}  (${getDateStringsFromIso(getLastEntry(entriesData.objects.getTally.entries)?.date).date})`}
+              {`${getLastEntry(entriesData.objects.getTally.entries)?.value?.toString()}  (${getDateString(getLastEntry(entriesData.objects.getTally.entries)?.date).date})`}
             </p>
           ) : (
             <p>-</p>

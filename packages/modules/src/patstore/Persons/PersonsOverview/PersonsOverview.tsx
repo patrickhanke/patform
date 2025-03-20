@@ -3,13 +3,13 @@
 import { useContext, useState } from "react";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
 import { PersonClass } from "@repo/types";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import useFindPerson from "./hooks/useFindPerson";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import CreatePerson from "./components/CreatePerson";
 
 const PersonsOverview = () => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [filters] = useState([]);
   const { persons, refetch } = useFindPerson({
     moduleId: currentModule.objectId,

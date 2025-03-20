@@ -2,7 +2,7 @@ import { ElementSelectInterface, PersonDisplay } from "@repo/ui";
 import { Worker } from "@repo/types";
 import React, { FC, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { SelectUserProps } from "../types";
 
 const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {

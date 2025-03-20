@@ -1,4 +1,4 @@
-import { GET_USER_DISPLAY_DATA } from "@queries";
+import { GET_USER_DISPLAY_DATA } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import React, { useMemo } from "react";
 import DisplayUserData from "./components/DisplayUserData";

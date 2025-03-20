@@ -1,6 +1,6 @@
 "use client";
 
-import { GET_USER } from "@queries";
+import { GET_USER } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import React, { Suspense, useContext, useMemo, useState } from "react";
 import useWorkerSiteStates from "./hooks/useWorkerSiteStates";

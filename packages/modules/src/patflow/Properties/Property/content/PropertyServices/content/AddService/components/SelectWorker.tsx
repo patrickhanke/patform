@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 import { ElementSelectInterface, StateDisplay } from "@repo/ui";
-import { CreateService, Service, Worker } from "@repo/types";
-import React, { FC, useMemo } from "react";
+import { CreateService, Worker } from "@repo/types";
+import { FC, useMemo } from "react";
 import { PropertyOptions, SelectWorkerProps } from "../types";
-import { DisplayWorker } from "content/_UI/Workers";
+import { DisplayWorker } from "@repo/ui";
 import { generateGraphQLQuery } from "@repo/provider";
 import styles from "../AddService.module.scss";
 

@@ -1,1 +1,1 @@
-export { WasteOverview as default } from "@repo/ui";
+export { WasteOverview as default } from "@repo/modules";

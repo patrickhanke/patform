@@ -1,7 +1,7 @@
 import {
-  AppContext,
+  PatflowAppContext,
   getDateFromWeek,
-  getDateStringsFromIso,
+  getDateString,
   useGetActiveRecord,
   weekdays,
 } from "@repo/provider";
@@ -29,7 +29,7 @@ const EditTime = ({
   deleteDay,
   userId,
 }: EditTimeProps) => {
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
   const { record } = useGetActiveRecord({ year, userId });
   const [deleteModal, setDeleteModal] = useState(false);
 
@@ -101,7 +101,7 @@ const EditTime = ({
       <div>
         <h3>
           {day.date
-            ? `${weekdays.find((weekday) => weekday.day === getDay(new Date(day.date)))?.label} - ${getDateStringsFromIso(formatISO9075(new Date(day.date))).date} `
+            ? `${weekdays.find((weekday) => weekday.day === getDay(new Date(day.date)))?.label} - ${getDateString(formatISO9075(new Date(day.date))).date} `
             : "Bitte Datum auswählen"}
         </h3>
       </div>

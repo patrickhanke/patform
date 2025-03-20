@@ -1,1 +1,1 @@
-export { ToursOverview as default } from "@repo/ui";
+export { ToursOverview as default } from "@repo/modules";

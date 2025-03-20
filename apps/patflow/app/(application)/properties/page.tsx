@@ -1,1 +1,1 @@
-export { PropertyOverview as default } from "@repo/ui";
+export { PropertyOverview as default } from "@repo/modules";

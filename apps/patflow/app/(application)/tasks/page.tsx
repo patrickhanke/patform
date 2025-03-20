@@ -1,4 +1,4 @@
-import { Tasks } from "@repo/ui";
+import { Tasks } from "@repo/modules";
 import { Suspense } from "react";
 
 const TaksPage = () => (

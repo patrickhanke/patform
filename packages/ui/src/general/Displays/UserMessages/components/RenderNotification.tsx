@@ -2,7 +2,7 @@ import styles from "../UserMessage.module.scss";
 import clsx from "clsx";
 import { IconButton, StateDisplay } from "@repo/ui";
 import { NotificationStateDisplay, RenderNotificationProps } from "../types";
-import { axiosclient, getDateStringsFromIso } from "@repo/provider";
+import { axiosclient, getDateString } from "@repo/provider";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import createLabelLinks from "../functions/createLabelLinks";
 
@@ -114,7 +114,7 @@ const RenderNotification: FC<RenderNotificationProps> = ({
                 {timestamp && (
                   <span
                     className={styles.time}
-                  >{`/ ${getDateStringsFromIso(new Date(timestamp)).dateTime}`}</span>
+                  >{`/ ${getDateString(new Date(timestamp)).dateTime}`}</span>
                 )}
               </h3>
               {link && link !== "no_link" && (

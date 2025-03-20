@@ -2,22 +2,23 @@
 
 import React, { useContext, useMemo } from "react";
 import Logo from "./Logo";
-import { Sidebar } from "@repo/ui";
+import { MenuItem, Sidebar } from "@repo/ui";
 import { Module, PatstoreUser } from "@repo/types";
 import packageJson from "../../../package.json";
-import { ProjectContext } from "../../../provider";
+import { ProjectContext } from "@repo/provider";
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const { project } = useContext(ProjectContext);
 
   const menuItems = useMemo(() => {
-    const menuItemsArray: { value: string; label: string; icon: string }[] = [];
+    const menuItemsArray: MenuItem[] = [];
     if (project) {
       project.modules.results.forEach((module: Module) => {
         menuItemsArray.push({
           label: module.name,
           icon: module.icon,
           value: module.path,
+          sub_menu: []
         });
       });
     }

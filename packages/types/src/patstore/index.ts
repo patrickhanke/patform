@@ -13,3 +13,4 @@ export type * from "./Download";
 export type * from "./Form";
 export type * from "./Data";
 export type * from "./Message";
+export type * from "./User";

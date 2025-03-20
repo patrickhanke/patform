@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import { useImmer } from "use-immer";
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_ROLES } from "@queries";
+import { FIND_ALL_ROLES } from "@repo/provider";
 import { generateColor, useDataHandler } from "@repo/provider";
 import { ErrorMessage, Worker } from "@repo/types";
 import { SlideIn } from "@repo/ui";

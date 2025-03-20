@@ -3,7 +3,7 @@ import { PersonDisplay } from "@repo/ui";
 import { useContext, useMemo } from "react";
 import ReactSelect, { components } from "react-select";
 import { StylesConfig } from "react-select";
-import { AppContext, generateGraphQLQuery } from "@repo/provider";
+import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { PersonClass } from "@repo/types";
 import { PersonsInterface } from "@repo/modules";
@@ -14,7 +14,7 @@ const TableColumnPersons = ({
   isEditable,
   onChange,
 }: TableColumnPersonsProps) => {
-  const { modules } = useContext(AppContext);
+  const { modules } = useContext(PatstoreAppContext);
   const { data: personData } = useQuery(
     generateGraphQLQuery({
       type: "find",

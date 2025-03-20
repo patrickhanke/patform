@@ -1,1 +1,1 @@
-export { ServiceTemplatesOverview as default } from "@repo/ui";
+export { ServiceTemplatesOverview as default } from "@repo/modules";

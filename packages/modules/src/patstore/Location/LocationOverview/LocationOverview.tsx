@@ -1,14 +1,14 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import useFindLocation from "./hooks/useFindLocation";
 import { Page, Table, useCreateColumns } from "@repo/ui";
 import { LocationClass } from "@repo/types";
 import createLocation from "./constants/createLocation";
 
 const LocationOverview = () => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [filters] = useState([]);
   const { locations, refetch } = useFindLocation({
     moduleId: currentModule.objectId,

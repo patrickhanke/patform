@@ -1,0 +1,42 @@
+@use "@repo/styles/constants";
+
+.feedback_container {
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-end
+  );
+  font-family: Geist;
+  width: auto;
+  font-size: map-get($map: constants.$font_size, $key: "md");
+  animation-name: example;
+  animation-duration: 3s;
+  color: constants.$dark;
+}
+
+.feedback_container[data-type="success"] {
+  color: constants.$green_shaded;
+}
+
+.feedback_container[data-type="error"] {
+  color: constants.$red_shaded;
+}
+
+.feedback_container[data-type="loading"] {
+  color: constants.$yellow_shaded;
+}
+
+@keyframes example {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.25;
+  }
+  75% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 1;
+  }
+}

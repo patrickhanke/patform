@@ -2,7 +2,7 @@ import { ElementSelectInterface, PersonDisplay } from "@repo/ui";
 import { Worker } from "@repo/types";
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@queries";
+import { FIND_ALL_STAFF } from "@repo/provider";
 
 const SelectUser = () => {
   const { loading, error, data } = useQuery(FIND_ALL_STAFF);

@@ -1,5 +1,5 @@
 import { useDataHandler } from "@repo/provider";
-import { GET_TALLY_NAME } from "@queries";
+import { GET_TALLY_NAME } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { Loader, TextInput } from "@repo/ui";
 import React, { useState } from "react";

@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import React, { FC } from "react";
 import useTableColumns from "./hooks/useTableColumns";
-import { FIND_PROPERTY_SERVICES } from "@queries";
+import { FIND_PROPERTY_SERVICES } from "@repo/provider";
 import { Table } from "@repo/ui";
 import { PropertyServicesProps } from "./types";
 import AddService from "./content/AddService";

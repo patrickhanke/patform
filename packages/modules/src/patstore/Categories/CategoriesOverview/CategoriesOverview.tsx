@@ -3,13 +3,13 @@
 import { useContext, useMemo, useState } from "react";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
 import { CategoryClass } from "@repo/types";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import useFindCategory from "./hooks/useFindCategory";
 import CreateCategory from "./components/CreateCategory";
 
 const Categories = () => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const pageStates = useMemo(
     () => currentModule?.settings?.categories,
     [currentModule],

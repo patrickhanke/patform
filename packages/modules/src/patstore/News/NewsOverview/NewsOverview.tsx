@@ -3,14 +3,14 @@
 import { useContext, useState } from "react";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
 import { NewsClass } from "@repo/types";
-import { AppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import useFindNews from "./hooks/useFindNews";
 import createClass from "./constants/createClass";
 import CreateNews from "./components/CreateNews";
 
 const NewsOverview = () => {
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [filters] = useState([]);
   const { news, refetch } = useFindNews({
     moduleId: currentModule.objectId,

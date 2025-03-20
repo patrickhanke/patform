@@ -4,7 +4,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { IconButton, SlideIn } from "@repo/ui";
 import {
-  AppContext,
+  PatstoreAppContext,
   generateGraphQLQuery,
   useDataHandler,
 } from "@repo/provider";
@@ -23,7 +23,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
   className,
 }: TableColumnEditFieldProps) => {
   const { updateData } = useDataHandler();
-  const { currentModule } = useContext(AppContext);
+  const { currentModule } = useContext(PatstoreAppContext);
   const [data, setData] = useState(null as unknown as Class["data"]);
   const [isOpen, setIsOpen] = useState(false);
   const [secondaryContent, setSecondaryContent] =

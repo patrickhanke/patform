@@ -1,9 +1,8 @@
-import React, { useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import styles from "./DisplayWorker.module.scss";
-import { GrClose } from "react-icons/gr";
 import { useQuery } from "@apollo/client";
-import { find_day, GET_USER_DISPLAY_DATA } from "@queries";
-import { absence_type_options, AppContext } from "@repo/provider";
+import { find_day, GET_USER_DISPLAY_DATA } from "@repo/provider";
+import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
 import { getImageUrl, shadeColor } from "@repo/provider";
@@ -17,13 +16,13 @@ const DisplayWorker = ({
   showAvailability = false,
   onlyImage = false,
 }: DisplayWorkersProps) => {
-  const { year } = useContext(AppContext);
+  const { year } = useContext(PatflowAppContext);
 
   const { data: workerData, loading: wokerLoading } = useQuery(
     GET_USER_DISPLAY_DATA,
     {
       variables: { id: workerId },
-    },
+    }
   );
 
   const { data, loading: dayLoading } = useQuery(find_day, {
