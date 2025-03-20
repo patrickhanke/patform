@@ -1,1 +1,0 @@
-export type ToggleType = "get_service_active" | "is_worker";
