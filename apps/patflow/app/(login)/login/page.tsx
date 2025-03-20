@@ -1,1 +1,1 @@
-export { Login as default } from "@repo/ui";
+export { Login as default } from "@repo/modules";

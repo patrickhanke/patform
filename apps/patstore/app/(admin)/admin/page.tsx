@@ -1,1 +1,5 @@
-export { AdminDashboard as default } from "@repo/modules";
+import { AdminDashboard } from "@repo/modules";
+
+const AdminPage = () => AdminDashboard;
+
+export default AdminPage;

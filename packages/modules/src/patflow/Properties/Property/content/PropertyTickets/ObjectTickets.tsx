@@ -1,10 +1,10 @@
-import { Tickets } from "@repo/ui";
+import { Tickets } from "@repo/modules";
 import React from "react";
 
 const PropertyTickets = ({ id }: { id: string }) => {
   return (
     <>
-      <Tickets id={id} className="Property" />
+      <Tickets pageState="open" id={id} className="Property" />
     </>
   );
 };
