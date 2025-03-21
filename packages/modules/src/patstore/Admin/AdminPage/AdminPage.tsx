@@ -1,3 +1,5 @@
+"use client";
+
 import { PageHeader } from "./content/PageHeader";
 import { AdminPageProps } from "./types";
 import "./styles.scss";
