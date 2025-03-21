@@ -1,4 +1,4 @@
-import { Tasks } from "@repo/ui";
+import { Tasks } from "@repo/modules";
 import React, { Suspense } from "react";
 
 const PropertyTasks = ({ objectId }: { objectId: string }) => {
