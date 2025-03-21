@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AdminPage } from "@repo/modules";
 import CreateProject from "./content/CreateProject";
 
@@ -15,7 +15,7 @@ const Dashboard = () => {
         onClick: () => setCreateProject(true),
       },
     ],
-    [],
+    []
   );
 
   return (
