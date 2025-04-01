@@ -33,7 +33,7 @@ export const config = [
           linebreakStyle: "unix",
           tabWidth: 4,
           useTabs: true,
-          semi: false,
+          trailingComma: "none",
         },
       ],
     },
