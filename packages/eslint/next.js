@@ -5,7 +5,7 @@ import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
 import { config as baseConfig } from "./base.js";
-import pluginTS from '@typescript-eslint/eslint-plugin'
+import pluginTS from "@typescript-eslint/eslint-plugin";
 /**
  * A custom ESLint configuration for libraries that use Next.js.
  *
@@ -29,7 +29,6 @@ export const nextJsConfig = [
     plugins: {
       "@next/next": pluginNext,
       "@typescript-eslint": pluginTS,
-
     },
     rules: {
       ...pluginNext.configs.recommended.rules,

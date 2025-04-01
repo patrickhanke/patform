@@ -1,4 +1,4 @@
-import {TextInput} from "@repo/ui";
+import { TextInput } from "@repo/ui";
 import React, { useContext, useState } from "react";
 import styles from "../TallyEntries.module.scss";
 import clsx from "clsx";

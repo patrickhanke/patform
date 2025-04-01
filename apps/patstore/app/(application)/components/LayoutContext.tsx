@@ -1,10 +1,13 @@
 "use client";
 
-import {
-  ApolloAppProvider,
-} from "@repo/provider";
+import { ApolloAppProvider } from "@repo/provider";
 import { PatstoreUser } from "@repo/types";
-import { PatstoreAppContextProvider, DataContextProvider, ProjectContext, ProjectContextProvider } from "@repo/provider";
+import {
+  PatstoreAppContextProvider,
+  DataContextProvider,
+  ProjectContext,
+  ProjectContextProvider,
+} from "@repo/provider";
 
 const LayoutContext = ({
   user,

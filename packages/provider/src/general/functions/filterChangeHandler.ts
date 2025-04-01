@@ -6,7 +6,7 @@ const filterChangeHandler = (
   value: Filter["value"],
   operator: Filter["operator"],
   filters: Filter[],
-  id?: string
+  id?: string,
 ) => {
   const filterIndex = filters.findIndex((filter) => filter.key === key);
   if (filterIndex === -1) {

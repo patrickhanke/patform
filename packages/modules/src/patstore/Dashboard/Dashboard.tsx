@@ -13,7 +13,7 @@ const Dashboard = () => {
         value: "new_message",
       },
     ],
-    []
+    [],
   );
 
   return (

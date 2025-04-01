@@ -3,7 +3,10 @@ import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
 import styles from "./TaskSlideIn.module.scss";
 import { useQuery } from "@apollo/client";
-import { FIND_DOCUMENTS_FOR_TASK, GET_TASK_SLIDEIN_CONTENT } from "@repo/provider";
+import {
+  FIND_DOCUMENTS_FOR_TASK,
+  GET_TASK_SLIDEIN_CONTENT,
+} from "@repo/provider";
 import TaskDocuments from "../TaskDocuments";
 import TaskImages from "../TaskImages";
 import DisplayTaskState from "../DisplayTaskState";

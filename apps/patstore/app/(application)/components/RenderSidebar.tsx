@@ -18,7 +18,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
           label: module.name,
           icon: module.icon,
           value: module.path,
-          sub_menu: []
+          sub_menu: [],
         });
       });
     }

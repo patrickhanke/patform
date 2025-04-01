@@ -39,8 +39,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const user = await getData();
-  console.log({'patflow user': user});
-  
+  console.log({ "patflow user": user });
 
   return (
     <html lang="de">

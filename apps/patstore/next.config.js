@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const dotenv = require("dotenv");
-dotenv.config({ path: "../../.env" }); 
+dotenv.config({ path: "../../.env" });
 
 module.exports = {
   transpilePackages: [
@@ -52,7 +52,7 @@ module.exports = {
         hostname: "upcdn.io",
         port: "",
         pathname: "/**",
-      }
+      },
     ],
   },
 };

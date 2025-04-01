@@ -42,7 +42,7 @@ const WorkerSelect = ({
           id: worker.objectId,
           portrait: worker.portrait,
           label: `${worker.first_name} ${worker.family_name}`,
-        }))
+        })),
       );
     },
   });
@@ -68,7 +68,7 @@ const WorkerSelect = ({
     async (key: "add" | "clear" | "remove", id?: string) => {
       const getWorkerUpdate = (
         key: "add" | "clear" | "remove",
-        id?: string
+        id?: string,
       ) => {
         if (key === "add") {
           return {
@@ -107,7 +107,7 @@ const WorkerSelect = ({
       });
       refetch();
     },
-    []
+    [],
   );
 
   return (

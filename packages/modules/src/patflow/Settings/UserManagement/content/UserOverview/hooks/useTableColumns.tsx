@@ -69,7 +69,7 @@ const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
         enableSorting: false,
       },
     ],
-    []
+    [],
   );
 
   return columns;

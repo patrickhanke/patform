@@ -19,7 +19,7 @@ const Tours: FC<ToursProps> = ({ projectId, setPageHeaderContent }) => {
   const weekOptions: SelectOption[] = useMemo(() => {
     const weeks = differenceInCalendarISOWeeks(
       new Date(year, 11, 31),
-      new Date(year, 0, 1)
+      new Date(year, 0, 1),
     );
     const weekOptions = [];
     for (let i = 0; i <= weeks; i += 1) {

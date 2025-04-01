@@ -1,7 +1,11 @@
 "use client";
 
 import { ApolloAppProvider } from "@repo/provider";
-import { UserContextProvider, NotificationContextProvider, PatflowAppContextProvider } from "@repo/provider";
+import {
+  UserContextProvider,
+  NotificationContextProvider,
+  PatflowAppContextProvider,
+} from "@repo/provider";
 import React from "react";
 
 const LayoutContext = ({ children }: { children: React.ReactNode }) => {

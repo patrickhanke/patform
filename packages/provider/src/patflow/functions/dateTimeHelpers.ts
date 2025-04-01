@@ -6,7 +6,7 @@ export function convertMillisecondsToString(ms: number | undefined): string {
     const milsec = ms < 0 ? -ms : ms;
     const hours = Math.floor(milsec / (1000 * 60 * 60));
     let minutes: string | number = Math.floor(
-      (milsec % (1000 * 60 * 60)) / (1000 * 60)
+      (milsec % (1000 * 60 * 60)) / (1000 * 60),
     );
     minutes = minutes < 10 ? "0" + minutes : minutes;
     if (ms < 0) {
@@ -19,7 +19,7 @@ export function convertMillisecondsToString(ms: number | undefined): string {
 
 export function convertMillisecondsAndHours(
   type: "mth" | "htm",
-  value: number | undefined
+  value: number | undefined,
 ): number {
   if (type === "mth") {
     return value ? value / (1000 * 60 * 60) : 0;
@@ -34,7 +34,7 @@ export function convertMillisecondsAndHours(
 export function getDateFromWeek(
   weekNumber: number,
   dayIndex: number,
-  year?: number
+  year?: number,
 ) {
   const date = new Date(year || new Date().getFullYear(), 0, 1);
   const days = (weekNumber - 1) * 7 + dayIndex;
@@ -46,7 +46,7 @@ export function getDateFromWeek(
 export const getWeekDayKeys: (
   weekNumber: number,
   start?: string,
-  end?: string
+  end?: string,
 ) => string[] = (weekNumber, start, end) => {
   if (start && end) {
     const weekArray: string[] = [];
@@ -80,7 +80,7 @@ export const getWorktimeDuration = (start: string, end: string): number => {
 
 export const createIntervalFromTimes = (
   start: Date | string,
-  end: Date | string
+  end: Date | string,
 ): string[] => {
   const interval: string[] = [];
   const startDay = new Date(start);
@@ -90,7 +90,7 @@ export const createIntervalFromTimes = (
       start: startDay,
       end: endDay,
     },
-    { step: 1 }
+    { step: 1 },
   );
 
   dayInterval.forEach((day) => {

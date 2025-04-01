@@ -129,7 +129,7 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
         />
       </Suspense>
     ),
-    [filters, tickets]
+    [filters, tickets],
   );
 
   if (id && className) {

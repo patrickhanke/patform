@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  FC,
-  useContext,
-} from "react";
+import React, { useState, useEffect, FC, useContext } from "react";
 import { useImmer } from "use-immer";
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_ROLES } from "@repo/provider";

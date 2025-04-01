@@ -60,7 +60,7 @@ const PatflowAppContextProvider = ({
         : [],
       roleUsers,
     }),
-    [refetchTask, refetchTicket, roleUsers, year, roleData]
+    [refetchTask, refetchTicket, roleUsers, year, roleData],
   );
 
   return (

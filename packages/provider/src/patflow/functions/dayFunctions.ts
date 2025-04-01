@@ -2,7 +2,7 @@ import { Day } from "@repo/types";
 
 export const getSaldo: (
   time: Day["time"],
-  default_time: Day["default_time"]
+  default_time: Day["default_time"],
 ) => number = (time, default_time) => {
   let saldo = 0;
 

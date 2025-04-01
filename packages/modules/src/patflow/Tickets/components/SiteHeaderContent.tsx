@@ -33,7 +33,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
         (property: Property) => ({
           value: property.objectId,
           label: property.name,
-        })
+        }),
       );
     }
 
@@ -41,7 +41,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
       tickets.forEach((ticket: Ticket) => {
         if (
           !dateOptions.find(
-            (option) => option.label === getDateString(ticket.createdAt).date
+            (option) => option.label === getDateString(ticket.createdAt).date,
           )
         )
           dateOptions.push({
@@ -80,7 +80,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
             }
             onChange={(value) =>
               setFilters(
-                filterChangeHandler("property", value.value, "_eq", filters)
+                filterChangeHandler("property", value.value, "_eq", filters),
               )
             }
             placeholder="Objekt..."
@@ -96,7 +96,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
           }
           onChange={(value) =>
             setFilters(
-              filterChangeHandler("createdAt", value.value, "_gte", filters)
+              filterChangeHandler("createdAt", value.value, "_gte", filters),
             )
           }
           placeholder="Von..."
@@ -111,7 +111,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
           }
           onChange={(value) =>
             setFilters(
-              filterChangeHandler("createdAt", value.value, "_lte", filters)
+              filterChangeHandler("createdAt", value.value, "_lte", filters),
             )
           }
           placeholder="Bis..."

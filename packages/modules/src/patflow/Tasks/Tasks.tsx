@@ -22,7 +22,7 @@ import { NotificationContext } from "@repo/provider";
 const Tasks = ({ id, className, pageState }: TasksComponent) => {
   const [filters, setFilters] = React.useState([] as Filter[]);
   const [siteState, setSiteState] = useState<(typeof site_states)[number]>(
-    site_states[0] as (typeof site_states)[0]
+    site_states[0] as (typeof site_states)[0],
   );
   const searchParams = useSearchParams();
   const { tasks, refetch } = useGetTasks({
@@ -169,7 +169,7 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
         <TaskList
           taskList={
             sortTasksForList(tasks || []).find(
-              (taskList) => taskList.value === siteState.value
+              (taskList) => taskList.value === siteState.value,
             )?.data || []
           }
           refetch={refetch}

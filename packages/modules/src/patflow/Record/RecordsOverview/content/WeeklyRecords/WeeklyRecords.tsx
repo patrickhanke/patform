@@ -19,7 +19,7 @@ const WeeklyRecords = ({
   loading,
 }: WeeklyRecordProps) => {
   const [selectedWeek, setSelectedWeek] = useState(
-    getWeek(new Date(), { weekStartsOn: 1 })
+    getWeek(new Date(), { weekStartsOn: 1 }),
   );
   const { data: dayData, refetch } = useQuery(find_day, {
     variables: { params: { date: { _in: getWeekDayKeys(selectedWeek) } } },
@@ -105,7 +105,7 @@ const WeeklyRecords = ({
         selectedWeek={selectedWeek}
       />
     ),
-    [records, filters, selectedWeek]
+    [records, filters, selectedWeek],
   );
 
   return (

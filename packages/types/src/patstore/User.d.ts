@@ -25,6 +25,3 @@ export type PatstoreUser = {
   password: string;
   projects: string[];
 };
-
-
-

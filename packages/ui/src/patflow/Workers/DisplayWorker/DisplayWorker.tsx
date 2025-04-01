@@ -22,7 +22,7 @@ const DisplayWorker = ({
     GET_USER_DISPLAY_DATA,
     {
       variables: { id: workerId },
-    }
+    },
   );
 
   const { data, loading: dayLoading } = useQuery(find_day, {

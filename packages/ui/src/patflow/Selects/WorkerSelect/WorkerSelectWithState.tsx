@@ -48,7 +48,7 @@ const WorkerSelect: FC<WorkerSelectWithStateProps> = ({
         value={
           isArray(selectedWorkers)
             ? selectedWorkers.map((worker) =>
-                workerOptions.find((option) => option.value === worker)
+                workerOptions.find((option) => option.value === worker),
               )
             : selectedWorkers
               ? workerOptions.find((option) => option.value === selectedWorkers)

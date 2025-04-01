@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Logo from "./Logo";
 import { MenuItem, Sidebar } from "@repo/ui";
 

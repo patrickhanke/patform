@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  generateGraphQLQuery,
-  useDataHandler,
-} from "@repo/provider";
+import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import React, { useCallback, useContext } from "react";
 import useTableColumns from "./hooks/useTableColumns";
 import { useQuery } from "@apollo/client";

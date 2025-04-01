@@ -2,10 +2,7 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import site_states from "./constants/site_states";
-import {
-  generateGraphQLQuery,
-  useDataHandler,
-} from "@repo/provider";
+import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import SurchargeSettings from "./content/SurchargeSettings";
 import HolidayTemplates from "./content/HolidayTemplates";
 import Holidays from "./content/Holidays";

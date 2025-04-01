@@ -73,6 +73,7 @@ const CreateTask = ({
 
   useEffect(() => {
     console.log("effect");
+    console.log(taskId);
 
     if (!taskId && isOpen) {
       createData({
@@ -145,6 +146,8 @@ const CreateTask = ({
   }, [task, date]);
 
   const createTask = useCallback(async () => {
+    console.log(task);
+
     if (!taskId) {
       return;
     }

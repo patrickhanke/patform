@@ -10,7 +10,7 @@ import { NotificationContext, UserContext } from "@repo/provider";
 const UserDisplay = ({ userMessages = false }: { userMessages: boolean }) => {
   const { user } = useContext(UserContext);
   const [client, setClient] = useState(false);
-  const {unreadNotifications} = useContext(NotificationContext);
+  const { unreadNotifications } = useContext(NotificationContext);
 
   const userData = useMemo(() => {
     if (user && user.portrait) {

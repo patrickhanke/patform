@@ -2,8 +2,8 @@ import { useCallback, useState } from "react";
 import styles from "../RenderFields.module.scss";
 import { IconButton, Modal } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
-import { FormComponents, FormikRenderTypes } from '../types';
-import { FilesInterfaceComponent } from '@repo/types';
+import { FormComponents, FormikRenderTypes } from "../types";
+import { FilesInterfaceComponent } from "@repo/types";
 
 const FilesInterface = ({
   files = [],
@@ -22,7 +22,7 @@ const FilesInterface = ({
       const filesCopy = [...files];
 
       const fileToDelete = filesCopy.findIndex(
-        (fileToFind) => fileToFind.url === file.url
+        (fileToFind) => fileToFind.url === file.url,
       );
       filesCopy.splice(fileToDelete, 1);
 
@@ -37,7 +37,7 @@ const FilesInterface = ({
         afterSaveHandler();
       }
     },
-    [files]
+    [files],
   );
 
   if (files) {
@@ -69,7 +69,7 @@ const FilesInterface = ({
                 const filesCopy = [...files];
                 setEdit([false, ""]);
                 const fileToUpdate = filesCopy.findIndex(
-                  (fileToFind) => fileToFind.url === file.url
+                  (fileToFind) => fileToFind.url === file.url,
                 );
                 filesCopy[fileToUpdate].name = fileName;
 

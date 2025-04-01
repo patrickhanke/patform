@@ -19,9 +19,7 @@ const CreateDocument = ({
 }) => {
   const { user } = useContext(UserContext);
   const [name, setName] = useState("");
-  const [file, setFile] = useState(
-    null as unknown as Document["file"],
-  );
+  const [file, setFile] = useState(null as unknown as Document["file"]);
 
   return (
     <div className={styles.create_document_container}>

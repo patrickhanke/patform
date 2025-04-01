@@ -1,4 +1,4 @@
-import {date_category_options} from "@repo/ui";
+import { date_category_options } from "@repo/ui";
 import { weekdays } from "@repo/provider";
 
 export interface Date {

@@ -19,7 +19,7 @@ const StaffMember = ({ params }: { params: Params }) => {
   });
   const siteStates = useWorkerSiteStates();
   const [siteState, setSiteState] = useState<SiteState>(
-    siteStates[0] as SiteState
+    siteStates[0] as SiteState,
   );
   const [createRecord, setCreateRecord] = useState(false);
   const { projectId } = useContext(UserContext);
@@ -34,7 +34,7 @@ const StaffMember = ({ params }: { params: Params }) => {
             },
           ]
         : [],
-    [siteState]
+    [siteState],
   );
 
   if (loading || !projectId) {

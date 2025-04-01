@@ -27,7 +27,7 @@ const NotificationContextProvider = ({
 }) => {
   const { user } = useContext(UserContext);
   const [newNotification, setNewNotification] = useState<string | undefined>(
-    undefined
+    undefined,
   );
 
   const messageChangeHanlder = useCallback(
@@ -39,7 +39,7 @@ const NotificationContextProvider = ({
         setNewNotification(notification.messageId);
       }
     },
-    [newNotification]
+    [newNotification],
   );
 
   const { token } = useFirebaseMessaging({
@@ -74,16 +74,16 @@ const NotificationContextProvider = ({
       setNotifications(
         notificationArray.sort(
           (a, b) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-        )
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+        ),
       );
     }
     if (!isEqual(unreadNotifications, unreadNotificationArray)) {
       setUnreadNotifications(
         unreadNotificationArray.sort(
           (a, b) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-        )
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+        ),
       );
     }
   }, [notifications, unreadNotifications]);
@@ -93,7 +93,7 @@ const NotificationContextProvider = ({
       await deleteNotification(id);
       await getNotificationCallback();
     },
-    [notifications]
+    [notifications],
   );
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const NotificationContextProvider = ({
       deleteNotification: deleteNotificationCallaback,
       reloadNotifications: getNotificationCallback,
     }),
-    [notifications, unreadNotifications]
+    [notifications, unreadNotifications],
   );
 
   return (

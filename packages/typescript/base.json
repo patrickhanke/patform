@@ -12,7 +12,7 @@
       "@repo/provider/*": ["./packages/provider/*"],
       "@repo/types/*": ["./packages/types/*"],
       "@repo/styles/*": ["./packages/styles/*"],
-      "@repo/typescript/*": ["./packages/typescript/*"],
+      "@repo/typescript/*": ["./packages/typescript/*"]
     },
     "module": "NodeNext",
     "moduleDetection": "force",

@@ -8,3 +8,4 @@ export * from "./indexedDb";
 export { default as getIsoFromDate } from "./getIsoFromDate";
 export { sortArrayForDivider } from "./sortArrayForDivider";
 export { default as filterChangeHandler } from "./filterChangeHandler";
+export { default as dataTransporter } from "./dataTransporter";

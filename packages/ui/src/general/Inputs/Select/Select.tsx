@@ -23,7 +23,8 @@ const Select = ({
   const valueBoundryHandler = (value: object | string | null) => {
     if (isArray(value)) {
       return value.map(
-        (val: string) => options?.find((option) => option.value === val) || null
+        (val: string) =>
+          options?.find((option) => option.value === val) || null,
       );
     } else {
       if (typeof value === "object" && value !== null) {
