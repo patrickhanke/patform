@@ -45,7 +45,7 @@ export async function middleware(request: NextRequest) {
     if (data.ok) {
       const projects = await data.json();
       projects.results.forEach((project: any) => {
-        projectArray.push(project.path);
+        projectArray.push(`/${project.path}`);
       });
     } else {
       console.error("Failed to fetch projects:", data.status, data.statusText);

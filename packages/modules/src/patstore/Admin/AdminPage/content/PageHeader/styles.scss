@@ -1,6 +1,6 @@
 @use "@repo/styles/constants";
 
-.main_container {
+.admin_main_container {
   @include constants.flexbox(
     $direction: column,
     $align: flex-end,
@@ -13,7 +13,7 @@
   background-color: constants.$white;
 }
 
-.pageheader_container {
+.admin_pageheader_container {
   @include constants.flexbox(
     $direction: row,
     $align: center,
@@ -27,7 +27,7 @@
   padding: map-get($map: constants.$padding, $key: "md");
 }
 
-.nav_container {
+.admin_nav_container {
   @include constants.flexbox(
     $direction: row,
     $align: center,
@@ -42,7 +42,7 @@
   padding: map-get($map: constants.$padding, $key: "md");
 }
 
-.nav_container_underline {
+.admin_nav_container_underline {
   @include constants.flexbox(
     $direction: row,
     $align: flex-end,
@@ -57,11 +57,11 @@
   padding-bottom: 0;
 }
 
-.pageheader_container[data-haspagenav="true"] {
+.admin_pageheader_container[data-haspagenav="true"] {
   top: 0;
 }
 
-.pageheader_content_container {
+.admin_pageheader_content_container {
   @include constants.flexbox(
     $direction: row,
     $align: flex-end,
@@ -77,7 +77,7 @@
   background-color: constants.$white;
 }
 
-.pageheader_button_container {
+.admin_pageheader_button_container {
   @include constants.flexbox(
     $direction: row,
     $align: flex-end,
@@ -86,7 +86,7 @@
   );
 }
 
-.pageheader_createbutton {
+.admin_pageheader_createbutton {
   @include constants.flexbox(
     $direction: row,
     $align: center,
@@ -96,7 +96,7 @@
   white-space: nowrap;
 }
 
-.add_icon {
+.admin_add_icon {
   display: inline-block;
   position: relative;
   height: 12px;
@@ -108,7 +108,7 @@
   }
 }
 
-.pageheader_right_container {
+.admin_pageheader_right_container {
   @include constants.flexbox(
     $direction: row,
     $align: center,
@@ -117,7 +117,7 @@
   );
 }
 
-.week_container {
+.admin_week_container {
   @include constants.flexbox($align: center, $gap: constants.$xs);
   color: constants.$dark;
 }
