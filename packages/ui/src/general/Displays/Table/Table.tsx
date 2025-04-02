@@ -5,7 +5,6 @@ import "./styles.scss";
 import {
 	useReactTable,
 	getCoreRowModel,
-	getPaginationRowModel,
 	getSortedRowModel,
 	flexRender,
 	SortingState,
@@ -14,35 +13,37 @@ import {
 import { TableTypes } from "./types";
 import clsx from "clsx";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
+import PaginationHandlers from "./content/PaginationHandlers";
+import { Divider } from "../../Layout";
 
 const Table: React.FC<TableTypes> = ({
 	data,
 	columns,
 	rowStyles,
 	cellBorders = false,
-	enableRowSelection = false
+	enableRowSelection = false,
+	rowCount,
+	pagination,
+	setPagination
 }) => {
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
-	const [pagination, setPagination] = useState({
-		pageIndex: 0,
-		pageSize: 200
-	});
+
 	const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
 
 	const table = useReactTable({
 		data: tableData,
 		columns,
+		onPaginationChange: setPagination,
 		state: {
 			sorting,
 			pagination
 		},
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		onPaginationChange: setPagination,
+		manualPagination: true,
+		rowCount: rowCount || tableData.length,
 		onSortingChange: setSorting,
-		rowCount: tableData.length,
 		debugTable: false,
 		debugHeaders: false,
 		debugColumns: false
@@ -79,120 +80,151 @@ const Table: React.FC<TableTypes> = ({
 		});
 	};
 
+	console.log(pagination);
+
 	return (
-		<div className="content_element no_padding">
-			<div className={clsx("table_container")}>
-				<table>
-					<thead>
-						{table.getHeaderGroups().map((headerGroup) => (
-							<tr key={headerGroup.id}>
-								{enableRowSelection && (
-									<th>
-										<input
-											type="checkbox"
-											onChange={(e) => {
-												const isChecked =
-													e.target.checked;
-												setSelectedRows(
-													isChecked
-														? new Set(
-																table
-																	.getRowModel()
-																	.rows.map(
-																		(row) =>
-																			row.id
-																	)
-															)
-														: new Set()
-												);
-											}}
-											checked={
-												selectedRows.size ===
-												table.getRowModel().rows.length
-											}
-										/>
-									</th>
-								)}
-								{headerGroup.headers.map((header) => {
-									return (
-										<th
-											key={header.id}
-											colSpan={header.colSpan}
-										>
-											{header.isPlaceholder ? null : (
-												<>
-													<div
-														{...{
-															className:
-																header.column.getCanSort()
-																	? "sortable"
-																	: "",
-															onClick:
-																header.column.getToggleSortingHandler()
-														}}
-													>
-														{flexRender(
-															header.column
-																.columnDef
-																.header,
-															header.getContext()
-														)}
-														{getSortIcon(
-															header.column
-														)}
-													</div>
-												</>
-											)}
-										</th>
-									);
-								})}
-							</tr>
-						))}
-					</thead>
-					<tbody>
-						{table.getRowModel().rows.map((row) => {
-							const isSelected = selectedRows.has(row.id);
-							return (
-								<tr
-									key={row.id}
-									style={{
-										...(rowStyles ? rowStyles(row) : {}),
-										backgroundColor: isSelected
-											? "#e0f7fa"
-											: "transparent"
-									}}
-								>
+		<>
+			{pagination && setPagination && (
+				<>
+					<PaginationHandlers
+						pagination={pagination}
+						setPagination={setPagination}
+						previousPage={table.previousPage}
+						nextPage={table.nextPage}
+						firstPage={table.firstPage}
+						lastPage={table.lastPage}
+						pageCount={table.getPageCount()}
+						pageIndex={table.getState().pagination.pageIndex}
+						canGetPreviousPage={table.getCanPreviousPage()}
+						canGetNextPage={table.getCanNextPage()}
+					/>
+					<Divider size="large" />
+				</>
+			)}
+			<div className="content_element no_padding">
+				<div className={clsx("table_container")}>
+					<table>
+						<thead>
+							{table.getHeaderGroups().map((headerGroup) => (
+								<tr key={headerGroup.id}>
 									{enableRowSelection && (
-										<td>
+										<th>
 											<input
 												type="checkbox"
-												checked={isSelected}
-												onChange={() =>
-													handleRowSelection(row.id)
+												onChange={(e) => {
+													const isChecked =
+														e.target.checked;
+													setSelectedRows(
+														isChecked
+															? new Set(
+																	table
+																		.getRowModel()
+																		.rows.map(
+																			(
+																				row
+																			) =>
+																				row.id
+																		)
+																)
+															: new Set()
+													);
+												}}
+												checked={
+													selectedRows.size ===
+													table.getRowModel().rows
+														.length
 												}
 											/>
-										</td>
+										</th>
 									)}
-									{row.getVisibleCells().map((cell) => {
+									{headerGroup.headers.map((header) => {
 										return (
-											<td
-												key={cell.id}
-												data-cell_borders={cellBorders}
+											<th
+												key={header.id}
+												colSpan={header.colSpan}
 											>
-												{flexRender(
-													cell.column.columnDef.cell,
-													cell.getContext()
+												{header.isPlaceholder ? null : (
+													<>
+														<div
+															{...{
+																className:
+																	header.column.getCanSort()
+																		? "sortable"
+																		: "",
+																onClick:
+																	header.column.getToggleSortingHandler()
+															}}
+														>
+															{flexRender(
+																header.column
+																	.columnDef
+																	.header,
+																header.getContext()
+															)}
+															{getSortIcon(
+																header.column
+															)}
+														</div>
+													</>
 												)}
-											</td>
+											</th>
 										);
 									})}
 								</tr>
-							);
-						})}
-					</tbody>
-				</table>
+							))}
+						</thead>
+						<tbody>
+							{table.getRowModel().rows.map((row) => {
+								const isSelected = selectedRows.has(row.id);
+								return (
+									<tr
+										key={row.id}
+										style={{
+											...(rowStyles
+												? rowStyles(row)
+												: {}),
+											backgroundColor: isSelected
+												? "#e0f7fa"
+												: "transparent"
+										}}
+									>
+										{enableRowSelection && (
+											<td>
+												<input
+													type="checkbox"
+													checked={isSelected}
+													onChange={() =>
+														handleRowSelection(
+															row.id
+														)
+													}
+												/>
+											</td>
+										)}
+										{row.getVisibleCells().map((cell) => {
+											return (
+												<td
+													key={cell.id}
+													data-cell_borders={
+														cellBorders
+													}
+												>
+													{flexRender(
+														cell.column.columnDef
+															.cell,
+														cell.getContext()
+													)}
+												</td>
+											);
+										})}
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

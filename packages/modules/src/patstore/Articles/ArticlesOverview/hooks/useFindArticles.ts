@@ -2,7 +2,12 @@ import { useQuery } from "@apollo/client";
 import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
 import { UseFindArticlesHook } from "../types";
 
-const useFindArticles: UseFindArticlesHook = ({ moduleId, filters }) => {
+const useFindArticles: UseFindArticlesHook = ({
+	moduleId,
+	filters,
+	limit,
+	skip
+}) => {
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
@@ -22,7 +27,12 @@ const useFindArticles: UseFindArticlesHook = ({ moduleId, filters }) => {
 			]
 		}),
 		{
-			variables: { params: paramsHandler({ moduleId, filters }) },
+			variables: {
+				order: "date_DESC",
+				params: paramsHandler({ moduleId, filters }),
+				limit,
+				skip,
+			},
 			notifyOnNetworkStatusChange: true
 		}
 	);
@@ -30,6 +40,7 @@ const useFindArticles: UseFindArticlesHook = ({ moduleId, filters }) => {
 	return {
 		loading,
 		articles: data ? data.objects.findArticle.results : undefined,
+		count: data ? data.objects.findArticle.count : 0,
 		refetch
 	};
 };

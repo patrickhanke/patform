@@ -20,9 +20,10 @@ const generateGraphQLQuery: GenerateGraphQLQueryFunction = ({
 
 	if (type === "find") {
 		return gql`
-            query ${type}${objectName}($params: ${objectName}Constraints ) {
+            query ${type}${objectName}($params: ${objectName}Constraints, $limit: Int, $skip: Int, $order: [${objectName}Order!]  ) {
                 objects {
-                    ${type}${objectName}(where: $params ) {
+                    ${type}${objectName}(where: $params, limit: $limit, skip: $skip, order: $order) {
+                        count
                         results {
                             ${stringreplace(fieldsString)}
                         }

@@ -3,21 +3,24 @@ import { PageCreateClassObject } from "@repo/ui";
 
 type FilterArray = Filter[];
 
-export type UseFindArticlesHook = ({
-  moduleId: string,
-  filters: FilterArray,
+export type UseFindArticlesHook = (T: {
+	moduleId: string;
+	filters: FilterArray;
+	limit?: number;
+	skip?: number;
 }) => {
-  loading: boolean;
-  articles?: ArticleClass[];
-  refetch: () => void;
+	loading: boolean;
+	articles?: ArticleClass[];
+	refetch: () => void;
+	count: number;
 };
 
 export type CreateArticle = (
-  persons: { value: string; label: string }[],
+	persons: { value: string; label: string }[]
 ) => PageCreateClassObject;
 
 export type DeleteModalProps = {
-  isOpen: boolean;
-  confirmButtonHandler: () => void;
-  header: "Bericht löschen";
+	isOpen: boolean;
+	confirmButtonHandler: () => void;
+	header: "Bericht löschen";
 };
