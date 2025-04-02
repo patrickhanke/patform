@@ -1,12 +1,11 @@
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_STAFF } from "@repo/provider";
-import { ElementSelectInterface, StateDisplay } from "@repo/ui";
+import { ElementSelectInterface, SelectElement, StateDisplay } from "@repo/ui";
 import { Task, Worker } from "@repo/types";
-import React, { FC, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { PropertyOptions, SelectWorkerProps } from "../types";
 import { DisplayWorker } from "@repo/ui";
 import { generateGraphQLQuery } from "@repo/provider";
-import styles from "../CreateTask.module.scss";
 
 const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
 	const { data: workerData } = useQuery(FIND_ALL_STAFF);
@@ -36,7 +35,7 @@ const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
 						id: worker.objectId,
 						label: `${worker.first_name} ${worker.family_name}`,
 						element: (
-							<div className={styles.worker_display_container}>
+							<div className={"worker_display_container"}>
 								<DisplayWorker workerId={worker.objectId} />
 								{propertyData &&
 									propertyStaff.includes(worker.objectId) && (
@@ -63,9 +62,11 @@ const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
 		<ElementSelectInterface
 			title="Arbeiter auswählen"
 			elements={elements}
-			selectedElements={task.assigned_staff.map((element) =>
-				elements.find((el) => el.value === element)
-			)}
+			selectedElements={
+				task.assigned_staff.map((element) =>
+					elements.find((el) => el.value === element)
+				) as SelectElement[]
+			}
 			onSelect={(values) => {
 				if (values.length > 0) {
 					setTask((task: Task) => ({

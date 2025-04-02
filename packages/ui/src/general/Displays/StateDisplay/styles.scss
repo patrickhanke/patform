@@ -8,19 +8,21 @@
     $gap: constants.$xxs
   );
   position: relative;
+  overflow: hidden;
   font-family: Geist, sans-serif;
   padding: map-get($map: constants.$padding, $key: "sm");
   width: fit-content;
   font-weight: 500;
   letter-spacing: 1.2px;
   border-radius: map-get($map: constants.$border_radius, $key: "sm");
-  font-size: map-get($map: constants.$font_size, $key: "sm");
   border: none;
   text-wrap: nowrap;
   white-space: nowrap;
   text-overflow: ellipsis;
+  font-size: map-get($map: constants.$font_size, $key: "sm");
   max-width: 100%;
 }
+
 
 .state_display_container[data-click] {
   cursor: pointer;

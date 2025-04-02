@@ -9,7 +9,7 @@
   width: 100%;
 }
 
-.main_inputs_container {
+.main_create_task_inputs_container {
   @include constants.flexbox(
     $direction: row,
     $justify: space-between,
@@ -18,7 +18,7 @@
   width: 100%;
 }
 
-.inputs_container {
+.create_task_inputs_container {
   @include constants.flexbox(
     $direction: column,
     $justify: space-between,
@@ -39,39 +39,11 @@
   white-space: nowrap;
 }
 
-.ticket_container {
-  @include constants.flexbox(
-    $direction: column,
-    $align: flex-start,
-    $justify: space-between,
-    $gap: constants.$xs
-  );
-}
-
-.property_container {
-  @include constants.flexbox(
-    $direction: column,
-    $align: flex-start,
-    $justify: space-between,
-    $gap: constants.$xs
-  );
-}
-
-.worker_container {
+.create_task_worker_container {
   @include constants.flexbox(
     $direction: column,
     $align: stretch,
     $justify: space-between,
     $gap: constants.$xxs
   );
-}
-
-.worker_display_container {
-  @include constants.flexbox(
-    $direction: row,
-    $align: center,
-    $justify: space-between,
-    $gap: constants.$xs
-  );
-  width: 100%;
 }

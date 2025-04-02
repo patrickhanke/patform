@@ -1,12 +1,12 @@
 import { Tasks } from "@repo/modules";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 
 const PropertyTasks = ({ objectId }: { objectId: string }) => {
-  return (
-    <Suspense>
-      <Tasks pageState="active" id={objectId} className={"Property"} />
-    </Suspense>
-  );
+	return (
+		<Suspense>
+			<Tasks pageState="active" id={objectId} className={"Property"} />
+		</Suspense>
+	);
 };
 
 export default PropertyTasks;

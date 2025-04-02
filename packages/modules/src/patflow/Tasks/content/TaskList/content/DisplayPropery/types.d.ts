@@ -1,5 +1,5 @@
 import { CreateTask } from "@repo/types";
-import { ReactNode, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export type SelectTicketProps = {
 	projectId: string;
@@ -8,10 +8,9 @@ export type SelectTicketProps = {
 	showTicketOnly?: boolean;
 };
 
-export type SelectPropertyProps = {
-	setTask: Dispatch<SetStateAction<CreateTask>>;
-	task: CreateTask;
-	showPropertyOnly?: boolean;
+export type TaskSelectPropertyProps = {
+	selectedProperty: string;
+	setSelectedProperty: Dispatch<SetStateAction<string>>;
 };
 
 export type SelectWorkerProps = {

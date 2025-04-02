@@ -1,23 +1,13 @@
 @use "@repo/styles/constants";
 
-.main_inputs_container {
+.create_ticket_main_inputs_container {
   @include constants.flexbox(
     $direction: column,
     $justify: space-between,
     $align: stretch
   );
   width: 100%;
-}
-
-.inputs_container {
-  @include constants.flexbox(
-    $direction: column,
-    $justify: space-between,
-    $align: stretch,
-    $gap: 0
-  );
-  flex: 1 1 50%;
-  min-width: 300px;
+  position: relative;
 }
 
 .create_ticket_button {

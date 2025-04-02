@@ -7,11 +7,11 @@ input {
   border: 1px solid constants.$grey_shaded;
   padding: map-get($map: constants.$padding, $key: "md");
   outline: none;
+  box-sizing: border-box;
   transition:
     border 0.2s ease,
     box-shadow 0.2s ease;
   letter-spacing: 0.6px;
-  // box-sizing: inline-box;
   border-radius: map-get($map: constants.$border_radius, $key: "xs");
   &:focus {
     // border: 1px solid constants.$secondary;

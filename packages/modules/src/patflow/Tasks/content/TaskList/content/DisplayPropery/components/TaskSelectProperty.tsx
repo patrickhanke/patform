@@ -1,9 +1,9 @@
 import { useQuery } from "@apollo/client";
 import { FIND_ALL_PROPERTY } from "@repo/provider";
 import { ElementSelectInterface } from "@repo/ui";
-import { Property, Task } from "@repo/types";
+import { Property } from "@repo/types";
 import { FC, useMemo } from "react";
-import { PropertyOptions, SelectPropertyProps } from "../types";
+import { PropertyOptions, TaskSelectPropertyProps } from "../types";
 
 export const DisplayProperty = ({ title }: { title: string }) => (
 	<div className={"property_container"}>
@@ -11,10 +11,9 @@ export const DisplayProperty = ({ title }: { title: string }) => (
 	</div>
 );
 
-const SelectProperty: FC<SelectPropertyProps> = ({
-	setTask,
-	task,
-	showPropertyOnly = false
+const TaskSelectPropery: FC<TaskSelectPropertyProps> = ({
+	selectedProperty,
+	setSelectedProperty
 }) => {
 	const { data: objectData } = useQuery(FIND_ALL_PROPERTY);
 
@@ -39,36 +38,23 @@ const SelectProperty: FC<SelectPropertyProps> = ({
 		return objectOptionsArray;
 	}, [objectData]);
 
-	if (showPropertyOnly) {
-		const property = elements.find((el) => el.value === task.property);
-		if (!property) {
-			return null;
-		}
-		return <DisplayProperty title={property?.label} />;
-	}
 	return (
 		<ElementSelectInterface
 			title="Objekt auswählen"
 			elements={elements}
 			isSearchable
+			min={1}
+			max={1}
 			selectedElements={elements.filter(
-				(el) => el.value === task.property
+				(el) => el.value === selectedProperty
 			)}
 			onSelect={(values) => {
 				if (values.length > 0) {
-					setTask((task: Task) => ({
-						...task,
-						property: values[0]?.value
-					}));
-				} else if (values.length === 0 && task.property) {
-					setTask((task: Task) => ({
-						...task,
-						property: undefined
-					}));
+					setSelectedProperty(values[0]?.value as string);
 				}
 			}}
 		/>
 	);
 };
 
-export default SelectProperty;
+export default TaskSelectPropery;

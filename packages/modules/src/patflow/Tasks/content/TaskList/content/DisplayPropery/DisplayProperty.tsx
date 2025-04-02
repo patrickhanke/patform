@@ -1,30 +1,91 @@
-import React from "react";
-import styles from "./DisplayProperty.module.scss";
 import { useQuery } from "@apollo/client";
-import { GET_TASK_PROPERTY } from "@repo/provider";
-import { Loader, StateSelect } from "@repo/ui";
+import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { Loader, Modal, StateDisplay } from "@repo/ui";
+import "./styles.scss";
+import TaskSelectPropery from "./components/TaskSelectProperty";
+import { useEffect, useState } from "react";
 
 const DisplayProperty = ({ taskId }: { taskId: string }) => {
-  const { data } = useQuery(GET_TASK_PROPERTY, {
-    variables: { id: taskId },
-  });
+	const { updateData } = useDataHandler();
+	const [selectProperty, setSelectProperty] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-  if (data)
-    return (
-      <div className={styles.object_container}>
-        <StateSelect
-          type="label"
-          color="light"
-          label={
-            data.objects.getTask.property?.name || "Kein Objekt zugewiesen"
-          }
-          icon="house"
-          noBackground
-        />
-      </div>
-    );
+	const [selectedProperty, setSelectedProperty] = useState<string>("");
 
-  return <Loader width="30px" height="18px" />;
+	const { data, refetch } = useQuery(
+		generateGraphQLQuery({
+			type: "get",
+			objectName: "Task",
+			fields: ["objectId", "property { name objectId }"]
+		}),
+		{
+			variables: { id: taskId }
+		}
+	);
+
+	useEffect(() => {
+		if (data) {
+			setSelectedProperty(data.objects.getTask.property.objectId);
+		}
+	}, [data]);
+
+	console.log(data);
+
+	if (data)
+		return (
+			<>
+				<div
+					className="task_property_object_container"
+					onClick={() => setSelectProperty(true)}
+				>
+					<StateDisplay
+						// type="label"
+						color="light"
+						label={
+							data.objects.getTask.property?.name ||
+							"Kein Objekt zugewiesen"
+						}
+						icon="house"
+						// noBackground
+					/>
+				</div>
+
+				<Modal
+					cancelButtonHandler={() => {
+						setSelectedProperty("");
+						setSelectProperty(false);
+					}}
+					confirmButtonHandler={async () => {
+						setLoading(true);
+						await updateData({
+							className: "Task",
+							objectId: taskId,
+							updateObject: {
+								property: {
+									__type: "Pointer",
+									className: "Property",
+									objectId: selectedProperty
+								}
+							},
+							feedback: "Objekt erfolgreich zugewiesen"
+						});
+						await refetch();
+						setLoading(false);
+						setSelectProperty(false);
+					}}
+					isOpen={selectProperty}
+					header="Objekt auswählen"
+					buttonDisabled={[loading, loading]}
+				>
+					<TaskSelectPropery
+						selectedProperty={selectedProperty}
+						setSelectedProperty={setSelectedProperty}
+					/>
+				</Modal>
+			</>
+		);
+
+	return <Loader width="30px" height="18px" />;
 };
 
 export default DisplayProperty;

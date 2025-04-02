@@ -1,22 +1,22 @@
 "use client";
 
 import React from "react";
-import { Message, User } from "@repo/types";
+import { Message, PatflowProject, PatflowUser } from "@repo/types";
 
 interface ContextValues {
-  user: User;
-  loginUser: ({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => Promise<void>;
-  projectId: string;
-  changeProject: (id: string) => void;
-  getUserData: () => void;
-  userMessages: Message[];
-  refetchMessages: () => void;
+	user: PatflowUser;
+	loginUser: ({
+		username,
+		password
+	}: {
+		username: string;
+		password: string;
+	}) => Promise<void>;
+	projectId: string;
+	project: PatflowProject;
+	getUserData: () => void;
+	userMessages: Message[];
+	refetchMessages: () => void;
 }
 
 const UserContext = React.createContext({} as ContextValues);

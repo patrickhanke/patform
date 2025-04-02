@@ -1,6 +1,7 @@
 export type PatflowProject = {
   objectId: string;
   name: string;
+  path: string;
   time_settings: TimeSettings;
   record_settings: RecordSettings;
 };

@@ -15,11 +15,11 @@
     border: 1px solid constants.$darkgrey;
     padding: map-get($map: constants.$padding, $key: "sm");
     outline: none;
+    box-sizing: border-box;
     transition:
       border 0.2s ease,
       box-shadow 0.2s ease;
-    letter-spacing: 0.6px;
-    box-sizing: border-box;
+      letter-spacing: 0.6px;
     &:focus {
       border: 1px solid constants.$secondary;
       box-shadow: 0px 0px 1px 1px constants.$secondary_light;
