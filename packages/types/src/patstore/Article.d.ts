@@ -1,5 +1,5 @@
-import { ClassProperties, ClassState } from "../patflow/Classes";
-import { PersonClass } from "../patflow/Person";
+import { ClassProperties, ClassState } from "./Classes";
+import { PersonClass } from "./Person";
 
 export type ArticleClass = ClassProperties & {
   title: string;

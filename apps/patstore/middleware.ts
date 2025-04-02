@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { User } from "@repo/types";
+import { PatstoreUser } from "@repo/types";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -30,7 +30,7 @@ export async function middleware(request: NextRequest) {
   };
 
   const headers = new Headers(httpHeaders);
-  let user: User | null = null as User | null;
+  let user: PatstoreUser | null = null as PatstoreUser | null;
 
   let projectArray: string[] = [];
   try {
@@ -88,7 +88,7 @@ export async function middleware(request: NextRequest) {
       headers,
     })
       .then((response) => response.json())
-      .then((actualData: User & { sessionToken: string }) => {
+      .then((actualData: PatstoreUser & { sessionToken: string }) => {
         if (actualData.sessionToken === token && !loggedIn) {
           loggedIn = true;
         }

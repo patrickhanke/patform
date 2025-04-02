@@ -24,7 +24,7 @@ export type ClassState = {
 export type ClassProperties = {
   objectId: string;
   createdAt: string;
-  data: FormDataElement;
+  data?: FormDataElement;
   module: Module;
   categories: ClassCategories;
   label: string;

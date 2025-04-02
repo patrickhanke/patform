@@ -1,14 +1,14 @@
 "use client";
 
-import React, { FC, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useCallback } from "react";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { DataObject, DataTranferProps } from "./types";
+import { DataObject, DataTranferProps, DataValue } from "./types";
 import { get } from "lodash-es";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import checkDataElement from "./functions/checkDataEements";
 
-const DataTransfer: FC<DataTranferProps> = ({
+const DataTransfer = <T extends Record<string, DataValue>>({
 	sourceClassName,
 	targetClassName,
 	moduleId,
@@ -17,10 +17,10 @@ const DataTransfer: FC<DataTranferProps> = ({
 	appId,
 	masterKey,
 	propertyMapping
-}) => {
+}: DataTranferProps<T>) => {
 	const { project } = useContext(PatstoreAppContext);
 	const { createData } = useDataHandler();
-	const [data, setData] = useState(null);
+	const [data, setData] = useState<T | null>(null);
 	const client = new ApolloClient({
 		uri: url,
 		headers: {
@@ -30,74 +30,92 @@ const DataTransfer: FC<DataTranferProps> = ({
 		cache: new InMemoryCache()
 	});
 
-	const fetchQuery = useCallback(async () => {
-		let dataObjects;
-		try {
-			const response = await client.query({
-				query: gql`
-					${query}
-				`
+	const fetchQuery = useCallback(
+		async (preview: boolean) => {
+			let dataObjects;
+			try {
+				const response = await client.query({
+					query: gql`
+						${query}
+					`
+				});
+				dataObjects = get(
+					response,
+					`data.objects.find${sourceClassName}.results`,
+					[]
+				);
+
+				setData(response.data);
+			} catch (error) {
+				console.error("Error fetching data:", error);
+			}
+
+			const transformedData = dataObjects.map((dataObject: T) => {
+				const transformedObject = propertyMapping(dataObject) as T;
+				// for (const [inputKey] of Object.entries(propertyMapping)) {
+				// 	if (typeof propertyMapping[inputKey] === "function") {
+				// 		transformedObject[inputKey] =
+				// 			propertyMapping[inputKey](dataObject);
+				// 	} else {
+				// 		transformedObject[inputKey] = dataObject[inputKey];
+				// 	}
+				// }
+				return transformedObject;
 			});
-			dataObjects = get(
-				response,
-				`data.objects.find${sourceClassName}.results`,
-				[]
+			if (preview) {
+				console.log("Preview Data:", transformedData);
+				return transformedData;
+			}
+
+			const updateTransformedData = await Promise.all(
+				transformedData.map(async (dataElement: DataObject) => {
+					const dataElementCopy = await checkDataElement({
+						dataElement,
+						projectPath: project.path
+					});
+					return dataElementCopy;
+				})
+			);
+			console.log({ updateTransformedData });
+
+			await Promise.all(
+				updateTransformedData.map(async (dataElement) => {
+					const dataElementCopy = await createData({
+						className: targetClassName,
+						updateObject: {
+							...dataElement,
+							module: {
+								__type: "Pointer",
+								className: "Module",
+								objectId: moduleId
+							}
+						}
+					});
+					return dataElementCopy;
+				})
 			);
 
-			setData(response.data);
-		} catch (error) {
-			console.error("Error fetching data:", error);
-		}
-
-		const transformedData: DataObject[] = dataObjects.map(
-			(dataObject: DataObject) => {
-				const transformedObject: DataObject = {};
-				for (const [inputKey, outputKey] of Object.entries(
-					propertyMapping
-				)) {
-					transformedObject[outputKey] = dataObject[inputKey];
-				}
-				return transformedObject;
-			}
-		);
-		console.log("Transformed Data:", transformedData);
-		const updateTransformedData = await Promise.all(
-			transformedData.map(async (dataElement) => {
-				const dataElementCopy = await checkDataElement({
-					dataElement,
-					projectPath: project.path
-				});
-				return dataElementCopy;
-			})
-		);
-		console.log({ updateTransformedData });
-
-		await Promise.all(
-			updateTransformedData.map(async (dataElement) => {
-				const dataElementCopy = await createData({
-					className: targetClassName,
-					updateObject: {
-						...dataElement,
-						module: {
-							__type: "Pointer",
-							className: "Module",
-							objectId: moduleId
-						}
-					}
-				});
-				return dataElementCopy;
-			})
-		);
-
-		return updateTransformedData;
-	}, [query, url, appId, masterKey]);
+			return updateTransformedData;
+		},
+		[query, url, appId, masterKey]
+	);
 
 	console.log(data);
 
 	return (
 		<div>
-			<button onClick={() => fetchQuery()}>Preview</button>
-			<button>Transport</button>
+			<button
+				className="button_full md light"
+				onClick={() => fetchQuery(true)}
+			>
+				Preview
+			</button>
+			<button
+				className="button_full md dark"
+				onClick={() => fetchQuery(false)}
+			>
+				Transport
+			</button>
 		</div>
 	);
 };

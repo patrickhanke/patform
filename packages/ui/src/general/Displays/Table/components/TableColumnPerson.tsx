@@ -1,164 +1,116 @@
 import { TableColumnPersonProps } from "../types";
-import { PersonDisplay } from "@repo/ui";
-import { useContext, useMemo } from "react";
-import ReactSelect, { components } from "react-select";
-import { StylesConfig } from "react-select";
+import {
+	ElementSelectInterface,
+	PersonDisplay,
+	SelectElement,
+	SlideInRight
+} from "@repo/ui";
+import { useContext, useMemo, useState } from "react";
 import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { PersonClass } from "@repo/types";
 
-type PersonOption = { value: string; label: string; person: PersonClass };
-
 const TableColumnPerson = ({
-  value,
-  isEditable,
-  onChange,
+	value,
+	isEditable,
+	onChange
 }: TableColumnPersonProps) => {
-  const { modules } = useContext(PatstoreAppContext);
-  const { data: personData } = useQuery(
-    generateGraphQLQuery({
-      type: "find",
-      objectName: "Person",
-      fields: ["objectId", "label", "portrait"],
-    }),
-    {
-      variables: {
-        params: {
-          module: {
-            _eq: modules.find((module) => module.path === "/persons")?.objectId,
-          },
-        },
-      },
-    },
-  );
+	const { modules } = useContext(PatstoreAppContext);
+	const [isOpen, setIsOpen] = useState(false);
 
-  const customComponent = useMemo(() => {
-    return {
-      Option: (props: any) => {
-        return (
-          <components.Option {...props}>
-            {props.data.person ? (
-              <PersonDisplay person={props.data.person} />
-            ) : (
-              props.data.label
-            )}
-          </components.Option>
-        );
-      },
-      SingleValue: (props: any) => {
-        return (
-          <components.SingleValue {...props}>
-            {props.data.person ? (
-              <PersonDisplay person={props.data.person} />
-            ) : (
-              props.data.label
-            )}
-          </components.SingleValue>
-        );
-      },
-    };
-  }, []);
+	const { data: personData } = useQuery(
+		generateGraphQLQuery({
+			type: "find",
+			objectName: "Person",
+			fields: ["objectId", "label", "portrait"]
+		}),
+		{
+			variables: {
+				params: {
+					module: {
+						_eq: modules.find(
+							(module) => module.path === "/persons"
+						)?.objectId
+					}
+				}
+			}
+		}
+	);
 
-  const options: PersonOption[] = useMemo(() => {
-    const personOptions: PersonOption[] = [];
-    if (personData) {
-      personData.objects.findPerson.results.forEach((person: PersonClass) => {
-        personOptions.push({
-          value: person.objectId,
-          label: person.label,
-          person,
-        });
-      });
-    }
-    return personOptions;
-  }, [personData]);
+	const elements = useMemo(() => {
+		const personOptionsArray: SelectElement[] = [];
+		if (personData) {
+			personData.objects.findPerson.results.forEach(
+				(person: PersonClass) => {
+					if (person) {
+						personOptionsArray.push({
+							value: person.objectId,
+							id: person.objectId,
+							label: `${person.label}`,
+							element: <PersonDisplay person={person} />
+						});
+					}
+				}
+			);
+		}
+		personOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
-  return (
-    <div>
-      {isEditable ? (
-        <ReactSelect
-          value={options.find((option) => option.value === value.objectId)}
-          onChange={(inputValue) => onChange(inputValue.value as string)}
-          options={options}
-          isMulti={false}
-          // isDisabled={isDisabled}
-          // isClearable={isClearable}
-          className={"react_select_container"}
-          classNamePrefix="react-select"
-          styles={customStyles({ width: 180 })}
-          menuPosition="fixed"
-          menuPlacement="auto"
-          components={customComponent}
-        />
-      ) : (
-        <div>
-          <PersonDisplay person={value || null} />
-        </div>
-      )}
-    </div>
-  );
+		return personOptionsArray;
+	}, [personData]);
+
+	const currentPerson: SelectElement | undefined = useMemo(() => {
+		return elements.find((element) => element.id === value?.objectId);
+	}, [elements, value]);
+
+	const selectPerson = useMemo(
+		() => (
+			<ElementSelectInterface
+				elements={elements}
+				selectedElements={currentPerson ? [currentPerson] : []}
+				onSelect={(selectValue) => {
+					console.log(selectValue);
+
+					if (!selectValue || selectValue.length === 0) {
+						onChange("");
+					} else if (selectValue.length > 0) {
+						onChange((selectValue[0]?.id as string) || "");
+					}
+				}}
+				max={1}
+				isSearchable
+			/>
+		),
+		[elements, value]
+	);
+
+	return (
+		<div>
+			<button
+				className={"full_button sm light"}
+				onClick={() => {
+					if (isEditable) {
+						setIsOpen(true);
+					}
+				}}
+			>
+				{/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
+				<div>
+					{currentPerson ? (
+						<PersonDisplay person={value} onlyImage={false} />
+					) : (
+						<span>+ Person hinzufügen</span>
+					)}
+				</div>
+			</button>
+			<SlideInRight
+				isOpen={isOpen}
+				setIsOpen={setIsOpen}
+				header="Arbeiter auswählen"
+			>
+				{selectPerson}
+			</SlideInRight>
+		</div>
+	);
 };
-
-const customStyles = ({ width }: { width: string | number }): StylesConfig => ({
-  control: (provided: Record<string, unknown>, state: any) => ({
-    ...provided,
-    minHeight: 0,
-    // border: state.isFocused ? '1px solid #3F9A82' : '1px solid #99999',
-    outline: "none",
-    boxShadow: "none",
-    border: "none",
-    // "&": {
-    //   border: "1px solid #cccccc",
-    //   boxShadow: "none"
-    // },
-    "&:hover": {
-      // border: '1px solid #3F9A82',
-      border: "none",
-    },
-    width,
-  }),
-  container: (provided) => ({
-    ...provided,
-    position: "relative",
-    minWidth: "120px",
-  }),
-  clearIndicator: (provided) => ({
-    ...provided,
-    padding: "4px",
-  }),
-
-  menu: (provided) => ({
-    ...provided,
-    zIndex: 9999,
-    fontFamily: "Geist",
-    fontWeight: 400,
-    fontSize: "12px",
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    fontFamily: "Geist",
-    fontWeight: 400,
-    fontSize: "12px",
-  }),
-  multiValueLabel: (provided) => ({
-    ...provided,
-    fontFamily: "Geist",
-    fontWeight: 400,
-    fontSize: "12px",
-  }),
-  dropdownIndicator: (provided) => ({
-    ...provided,
-    padding: "4px",
-  }),
-  placeholder: (provided) => ({
-    ...provided,
-    fontFamily: "Geist",
-    color: "#999999",
-  }),
-  input: (provided) => ({
-    ...provided,
-    margin: 0,
-  }),
-});
 
 export default TableColumnPerson;

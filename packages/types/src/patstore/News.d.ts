@@ -4,6 +4,6 @@ export type NewsClass = ClassProperties & {
   title: string;
   image: string;
   text: string;
-  autor: string;
+  author: string;
   date: string;
 };

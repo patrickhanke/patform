@@ -1,6 +1,6 @@
 import { DocumentNode } from "@apollo/client";
 
-export type DataTranferProps = {
+export type DataTranferProps<T> = {
 	sourceClassName: string;
 	targetClassName: string;
 	moduleId: string;
@@ -8,7 +8,7 @@ export type DataTranferProps = {
 	url: string;
 	appId: string;
 	masterKey: string;
-	propertyMapping: PropertyMapping;
+	propertyMapping: (D: DataObject) => T;
 };
 
 export type GenerateQuery = (T: {
@@ -16,12 +16,20 @@ export type GenerateQuery = (T: {
 	fields: string[];
 }) => DocumentNode;
 
+export type DataValue =
+	| string
+	| object
+	| number
+	| boolean
+	| Array<string | object>;
+
 export type DataObject = {
-	[key: string]: any; // Represents a generic data object
+	[key: string]: DataValue; // Represents a generic data object
 };
 
-export type PropertyMapping = {
-	[key: string]: string; // Maps input property names to output property names
+export type PropertyMapping<T> = {
+	
+	[key in keyof T]: (data: DataObject) => T[key]; // Maps input property names to output property values
 };
 
 export type UploadFromUrl = (t: {
@@ -30,7 +38,9 @@ export type UploadFromUrl = (t: {
 	requestBody: { url: string };
 	projectPath: string;
 }) => Promise<{
-	filePath: string, result: object };>;
+	filePath: string;
+	result: object;
+}>;
 
 export type CheckDataElements = (t: {
 	dataElement: DataObject;
