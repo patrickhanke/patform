@@ -80,8 +80,6 @@ const Table: React.FC<TableTypes> = ({
 		});
 	};
 
-	console.log(pagination);
-
 	return (
 		<>
 			{pagination && setPagination && (

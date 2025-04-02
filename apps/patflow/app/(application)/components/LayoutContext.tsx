@@ -1,6 +1,6 @@
 "use client";
 
-import { ApolloAppProvider } from "@repo/provider";
+import { ApolloAppProvider, DataContextProvider } from "@repo/provider";
 import {
   UserContextProvider,
   NotificationContextProvider,
@@ -18,7 +18,7 @@ const LayoutContext = ({ children }: { children: React.ReactNode }) => {
       <UserContextProvider>
         <PatflowAppContextProvider>
           <NotificationContextProvider>
-            <React.StrictMode>{children}</React.StrictMode>
+          <DataContextProvider>{children}</DataContextProvider>
           </NotificationContextProvider>
         </PatflowAppContextProvider>
       </UserContextProvider>

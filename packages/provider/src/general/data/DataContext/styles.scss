@@ -9,7 +9,7 @@
   left: 18px;
   padding: 10px 20px;
   border-radius: 5px;
-  color: white;
+  color: white !important;
   font-size: map-get($map: constants.$font_size, $key: "md");
   z-index: 10;
   box-shadow: constants.$shadow_large_regular;

@@ -29,8 +29,6 @@ const DisplayProperty = ({ taskId }: { taskId: string }) => {
 		}
 	}, [data]);
 
-	console.log(data);
-
 	if (data)
 		return (
 			<>
