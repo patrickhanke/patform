@@ -1,4 +1,4 @@
-import { Filter, ArticleClass } from "@repo/types";
+import { Filter, ArticleClass, ApolloRefetch } from "@repo/types";
 import { PageCreateClassObject } from "@repo/ui";
 
 type FilterArray = Filter[];
@@ -11,7 +11,7 @@ export type UseFindArticlesHook = (T: {
 }) => {
 	loading: boolean;
 	articles?: ArticleClass[];
-	refetch: () => void;
+	refetch: ApolloRefetch;
 	count: number;
 };
 

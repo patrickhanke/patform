@@ -1,18 +1,23 @@
 "use client";
 
-import { useContext, useState } from "react";
-import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
-import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
-import deleteModalInitialValues from "./constants/deleteModalInitialValues";
+import { useContext, useState, useMemo } from "react";
+import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import {
+	PatstoreAppContext,
+	generateGraphQLQuery,
+	useDataHandler
+} from "@repo/provider";
 import useFindArticles from "./hooks/useFindArticles";
-import { ArticleClass, PersonClass } from "@repo/types";
+import { ArticleClass, Filter, PersonClass } from "@repo/types";
 import createArticle from "./constants/createArticle";
 import { useQuery } from "@apollo/client";
 import state from "./constants/articleState";
 
 const ArticlesOverview = () => {
 	const { currentModule, modules } = useContext(PatstoreAppContext);
-	const [filters] = useState([]);
+	const { deleteData } = useDataHandler();
+	const [selectedRows, setSelectedRows] = useState<string[]>([]);
+	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
@@ -24,7 +29,8 @@ const ArticlesOverview = () => {
 		skip: pagination.pageIndex * pagination.pageSize
 	});
 
-	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
+	const [deleteModal, setDeleteModal] = useState<boolean>(false);
+	const [loading, setLoading] = useState(false);
 	const { data: personData } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
@@ -60,10 +66,48 @@ const ArticlesOverview = () => {
 		constants: { state }
 	});
 
+	const pageHeaderButtons = useMemo(
+		() => [
+			{
+				text: "Berichte löschen",
+				onClick: () => {
+					setDeleteModal(true);
+				},
+				icon: "delete",
+				disabled: selectedRows.length === 0
+			}
+		],
+		[selectedRows]
+	);
+
+	const renderFilters = useMemo(() => {
+		return (
+			<RenderFilters
+				filters={filters}
+				setFilters={setFilters}
+				fields={[
+					{
+						type: "input",
+						key: "title",
+						operator: "_regex",
+						value: "",
+						placeholder: "Suchwort"
+					}
+				]}
+				categories={[]}
+				initialFilters={[]}
+			/>
+		);
+	}, []);
+
+	console.log(filters);
+	
+
 	return (
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
+			pageHeaderButtons={pageHeaderButtons}
 			createClass={createArticle(
 				personData?.objects.findPerson.results.map(
 					(person: PersonClass) => ({
@@ -80,19 +124,34 @@ const ArticlesOverview = () => {
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
+				enableRowSelection
+				onRowSelection={setSelectedRows}
+				filterContent={renderFilters}
 			/>
 			<Modal
-				isOpen={deleteModal.isOpen}
-				cancelButtonHandler={() =>
-					setDeleteModal(deleteModalInitialValues)
-				}
-				confirmButtonHandler={() => {
-					deleteModal.confirmButtonHandler();
-					setDeleteModal(deleteModalInitialValues);
+				isOpen={deleteModal}
+				cancelButtonHandler={() => setDeleteModal(false)}
+				buttonDisabled={[loading, loading]}
+				confirmButtonHandler={async () => {
+					setLoading(true);
+					await Promise.all(
+						selectedRows.map(async (objectId) => {
+							await deleteData({
+								className: "Article",
+								objectId
+							});
+						})
+					);
+					await refetch();
+					setLoading(false);
+					setDeleteModal(false);
 				}}
-				header={deleteModal.header}
+				header={"Berichte löschen"}
 			>
-				<p>Sind sich Sicher, dass sie den Bericht löschen möchten?</p>
+				<p>
+					Sind sich Sicher, dass sie {selectedRows.length} Berichte
+					löschen möchten?
+				</p>
 			</Modal>
 		</Page>
 	);

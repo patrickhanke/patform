@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { RenderFiltersProps } from "./types";
 import { ModuleCategory } from "@repo/types";
 import FilterSelect from "./components/FilterSelect";
@@ -8,6 +8,7 @@ import "./styles.scss";
 import { Select } from "../../Inputs";
 import filterChangeHandler from "./functions/filterChangeHandler";
 import { RefreshCcw } from "lucide-react";
+import { useDebounceValue } from "usehooks-ts";
 
 const RenderFilters = ({
 	categories,
@@ -16,6 +17,24 @@ const RenderFilters = ({
 	initialFilters = [],
 	fields = []
 }: RenderFiltersProps) => {
+	const [textInput, setTextInput] = useDebounceValue<{
+		key: string;
+		value: string;
+	}>({ key: "", value: "" }, 1000);
+
+	useEffect(() => {
+		if (textInput.key) {
+			setFilters(
+				filterChangeHandler(
+					textInput.key,
+					textInput.value,
+					"_regex",
+					filters
+				)
+			);
+		}
+	}, [textInput, setFilters, filters]);
+
 	const renderFilters = useMemo(() => {
 		const filterArray: JSX.Element[] = [];
 		fields?.forEach((field) => {
@@ -24,19 +43,11 @@ const RenderFilters = ({
 					<input
 						key={field.key}
 						placeholder={field.placeholder || "Suchwort ..."}
-						value={
-							(filters.find((filter) => filter.key === field.key)
-								?.value as string) || ""
-						}
 						onChange={(e) =>
-							setFilters(
-								filterChangeHandler(
-									field.key,
-									e.target.value,
-									"_regex",
-									filters
-								)
-							)
+							setTextInput({
+								key: field.key,
+								value: e.target.value
+							})
 						}
 					/>
 				);

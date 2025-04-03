@@ -31,7 +31,7 @@ const useFindArticles: UseFindArticlesHook = ({
 				order: "date_DESC",
 				params: paramsHandler({ moduleId, filters }),
 				limit,
-				skip,
+				skip
 			},
 			notifyOnNetworkStatusChange: true
 		}

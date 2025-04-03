@@ -1,6 +1,5 @@
 import { Filter, FilterOperator } from "@repo/types";
 import { ParamsHandlerType } from "../types";
-import { filter } from "lodash-es";
 
 type FilterObject = { [key: string]: { [key in FilterOperator]: any } };
 
@@ -24,20 +23,31 @@ const paramsHandler: ParamsHandlerType = ({ projectId, moduleId, filters }) => {
 	if (filters && filters?.length > 0) {
 		additionalFilters = filters?.reduce(
 			(
-				acc: { [key: string]: { [key in FilterOperator]: any } },
+				acc: Record<string, { [key in FilterOperator]: any }>,
 				filter: Filter
 			) => {
-				acc[filter.key] = { [filter.operator]: filter.value } as {
-					[key in FilterOperator]: any;
-				};
+				console.log(filter);
+
+				if (filter.operator === "_regex") {
+					acc[filter.key] = {
+						[filter.operator]: filter.value,
+						_options: "i"
+					} as {
+						_regex: string;
+						_options: string;
+					};
+				} else {
+					acc[filter.key] = { [filter.operator]: filter.value } as {
+						[key in FilterOperator]: any;
+					};
+				}
 				return acc;
 			},
 			{}
 		);
 	}
-    console.log(filterObject);
-    console.log(additionalFilters);
-    
+	console.log(filterObject);
+	console.log(additionalFilters);
 
 	return { ...filterObject, ...additionalFilters };
 };
