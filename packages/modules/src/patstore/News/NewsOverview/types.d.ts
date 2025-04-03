@@ -1,15 +1,21 @@
-import { Filter, NewsClass } from "@repo/types";
+import { ApolloRefetch, Filter, NewsClass } from "@repo/types";
 
 export type FilterArray = Filter[];
 
-export type UseFindNewsHook = ({ moduleId: string, filters: FilterArray }) => {
-  loading: boolean;
-  news?: NewsClass[];
-  refetch: () => void;
+export type UseFindNewsHook = (T: {
+	moduleId: string;
+	filters: FilterArray;
+	skip: number;
+	limit: number;
+}) => {
+	loading: boolean;
+	news?: NewsClass[];
+	refetch: ApolloRefetch;
+	count: number;
 };
 
 export type DeleteModalProps = {
-  isOpen: boolean;
-  confirmButtonHandler: () => void;
-  header: string;
+	isOpen: boolean;
+	confirmButtonHandler: () => void;
+	header: string;
 };

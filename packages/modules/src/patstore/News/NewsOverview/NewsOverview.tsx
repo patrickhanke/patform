@@ -1,57 +1,142 @@
 "use client";
 
-import { useContext, useState } from "react";
-import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
-import { NewsClass } from "@repo/types";
-import { PatstoreAppContext } from "@repo/provider";
-import deleteModalInitialValues from "./constants/deleteModalInitialValues";
+import { useContext, useState, useMemo } from "react";
+import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import { Filter, NewsClass } from "@repo/types";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindNews from "./hooks/useFindNews";
 import createClass from "./constants/createClass";
 import CreateNews from "./components/CreateNews";
 
 const NewsOverview = () => {
-  const { currentModule } = useContext(PatstoreAppContext);
-  const [filters] = useState([]);
-  const { news, refetch } = useFindNews({
-    moduleId: currentModule.objectId,
-    filters,
-  });
-  const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
+	const { currentModule } = useContext(PatstoreAppContext);
+	const { deleteData } = useDataHandler();
 
-  const columns = useCreateColumns<NewsClass>({
-    data: [
-      { id: "image", type: "image", label: "Bild" },
-      { id: "title", type: "edit_string", label: "Titel" },
-      { id: "text", type: "edit_texteditor", label: "Text" },
-    ],
-    fields: currentModule.fields,
-    className: "News",
-    refetch,
-    categories: currentModule?.categories,
-  });
+	const [filters, setFilters] = useState<Filter[]>([]);
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10
+	});
+	const { news, refetch, count } = useFindNews({
+		moduleId: currentModule.objectId,
+		filters,
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize
+	});
+	const [deleteModal, setDeleteModal] = useState<boolean>(false);
+	const [selectedRows, setSelectedRows] = useState<string[]>([]);
+	const [loading, setLoading] = useState(false);
+	const columns = useCreateColumns<NewsClass>({
+		data: [
+			{ id: "image", type: "image", label: "Bild" },
+			{ id: "title", type: "edit_string", label: "Titel" },
+			{ id: "text", type: "edit_texteditor", label: "Text" }
+		],
+		fields: currentModule.fields,
+		className: "News",
+		refetch,
+		categories: currentModule?.categories
+	});
 
-  return (
-    <Page
-      title={currentModule.name}
-      pageHeaderContent={<CreateNews refetch={refetch} />}
-      emptyContent={true}
-      createClass={createClass}
-      refetch={refetch}
-    >
-      <Table columns={columns} data={news || []} />
-      <Modal
-        isOpen={deleteModal.isOpen}
-        cancelButtonHandler={() => setDeleteModal(deleteModalInitialValues)}
-        confirmButtonHandler={() => {
-          deleteModal.confirmButtonHandler();
-          setDeleteModal(deleteModalInitialValues);
-        }}
-        header={deleteModal.header}
-      >
-        <p>Sind sich Sicher, dass sie die News löschen möchten?</p>
-      </Modal>
-    </Page>
-  );
+	const renderFilters = useMemo(() => {
+		return (
+			<RenderFilters
+				filters={filters}
+				setFilters={setFilters}
+				fields={[
+					{
+						type: "input",
+						key: "title",
+						operator: "_regex",
+						value: "",
+						placeholder: "Suchwort"
+					}
+				]}
+				categories={[]}
+				initialFilters={[]}
+			/>
+		);
+	}, []);
+
+	const pageHeaderButtons = useMemo(
+		() => [
+			{
+				text: "News löschen",
+				onClick: () => {
+					setDeleteModal(true);
+				},
+				icon: "delete",
+				disabled: selectedRows.length === 0
+			}
+		],
+		[selectedRows]
+	);
+
+	return (
+		<Page
+			title={currentModule.name}
+			// pageHeaderContent={<CreateNews refetch={refetch} />}
+			pageHeaderButtons={pageHeaderButtons}
+			emptyContent={true}
+			createClass={createClass}
+			refetch={refetch}
+		>
+			{/* {process.env.NODE_ENV === "development" && (
+				<DataTransfer<NewsClass>
+					sourceClassName="News"
+					targetClassName="News"
+					moduleId={currentModule.objectId}
+					url="https://pg-app-mvx9tbt2yit00ef2pzlktzg3k81djj.scalabl.cloud/graphql/"
+					masterKey="POcP3f5vEluCLVT1txftBPf5XGTIPYSki6UR7VRH"
+					appId="E24kTRGCLBzXhUOQvwFNekgPpoMPeHRNITT67YiR"
+					query={generateQuery({
+						objectName: "News",
+						fields: ["titel", "text", "datum"]
+					})}
+					propertyMapping={(news) => ({
+						title: news.titel,
+						text: news.text,
+						date: formatISO9075(news.datum, {
+							representation: "date"
+						})
+					})}
+				/>
+			)} */}
+
+			<Table
+				columns={columns}
+				data={news || []}
+				setPagination={setPagination}
+				pagination={pagination}
+				rowCount={count}
+				filterContent={renderFilters}
+				onRowSelection={setSelectedRows}
+				enableRowSelection
+			/>
+			<Modal
+				isOpen={deleteModal}
+				cancelButtonHandler={() => setDeleteModal(false)}
+				buttonDisabled={[loading, loading]}
+				confirmButtonHandler={async () => {
+					setLoading(true);
+					await Promise.all(
+						selectedRows.map(async (objectId) => {
+							await deleteData({
+								className: "News",
+								objectId
+							});
+						})
+					);
+					await refetch();
+					setLoading(false);
+					setDeleteModal(false);
+				}}
+				header={"News löschen"}
+			>
+				<p>Sind sich Sicher, dass sie die News löschen möchten?</p>
+			</Modal>
+		</Page>
+	);
 };
 
 export default NewsOverview;

@@ -100,9 +100,6 @@ const ArticlesOverview = () => {
 		);
 	}, []);
 
-	console.log(filters);
-	
-
 	return (
 		<Page
 			title={currentModule.name}
