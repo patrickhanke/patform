@@ -68,6 +68,7 @@
     font-family: "Open Sans", sans-serif;
     td {
       border-bottom: 1px solid constants.$grey_tinted;
+      max-width: 240px;
     }
   }
   td {

@@ -1,8 +1,4 @@
-import {
-	RowSelectionState,
-	ColumnDef,
-	PaginationState
-} from "@tanstack/react-table";
+import { ColumnDef, PaginationState } from "@tanstack/react-table";
 import {
 	ClassCategories,
 	ModuleCategory,
@@ -21,6 +17,7 @@ export type TableTypes = {
 	rowStyles?: (row: TData[number]) => React.StyleHTMLAttributes;
 	cellBorders?: boolean;
 	enableRowSelection?: boolean;
+	onRowSelection?: (rowSelection: string[]) => void;
 	rowCount?: number;
 	pagination?: PaginationState;
 	setPagination?: Dispatch<SetStateAction<PaginationState>>;
@@ -126,7 +123,7 @@ export type CreateColumnHookProps<Class> = {
 	className: string;
 	fields?: Module["fields"];
 	refetch: () => void;
-	constants?: { [key: string]: any };
+	constants?: { [key: string]: object };
 	editLink?: string;
 };
 

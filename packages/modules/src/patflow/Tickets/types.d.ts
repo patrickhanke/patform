@@ -25,8 +25,8 @@ export type SiteHeaderContentComponent = {
 
 export type UseTicketColumnsProps = {
 	refetch: ApolloRefetch;
-	archiveTicket: (objectId: string) => void;
-	deleteTicket: (objectId: string) => void;
+	archiveTicket: (objectId: string) => Promise<void>;
+	deleteTicket: (objectId: string) => Promise<void>;
 };
 
 export type TicketStateProps = {

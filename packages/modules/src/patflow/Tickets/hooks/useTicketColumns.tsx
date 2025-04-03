@@ -105,6 +105,7 @@ const useTicketColumns = ({
 						ticket={ticket}
 						archiveTicket={archiveTicket}
 						deleteTicket={deleteTicket}
+						refetch={refetch}
 					/>
 				),
 				header: () => <span>Details</span>,

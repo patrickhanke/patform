@@ -2,6 +2,7 @@ import { ApplicationTypes, DateTypes, UserTypes } from "@/types/General";
 import { TaskTypes } from "../Task";
 import { PropertyTypes } from "../Property";
 import { TicketTypes } from ".";
+import { ApolloRefetch } from "@repo/types";
 
 export type TicketState = "open" | "closed" | "in_progress";
 
@@ -41,8 +42,9 @@ export type CreateTicket = Pick<
 
 export type TicketDetailsProps = {
   ticket: TicketTypes.Ticket;
-  deleteTicket: (T: Ticket["objectId"]) => void;
-  archiveTicket: (T: Ticket["objectId"]) => void;
+  deleteTicket: (T: Ticket["objectId"]) => Promise<void>;
+  archiveTicket: (T: Ticket["objectId"]) => Promise<void>;
+  refetch: ApolloRefetch
 };
 
 export type TicketStateProps = {

@@ -1,4 +1,4 @@
-import { FIND_ALL_TASKS, generateGraphQLQuery } from "@repo/provider";
+import { generateGraphQLQuery } from "@repo/provider";
 import { ApolloRefetch, Filter, Task } from "@repo/types";
 import { useQuery } from "@apollo/client";
 import { UseGetTasksHook } from "../types";

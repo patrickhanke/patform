@@ -11,7 +11,7 @@ import SiteHeaderContent from "./components/SiteHeaderContent";
 import { Filter } from "@repo/types";
 import { useCallback, useState } from "react";
 import useTicketColumns from "./hooks/useTicketColumns";
-import { Page, Table } from "@repo/ui";
+import { Modal, Page, Table } from "@repo/ui";
 import { PatflowAppContext, NotificationContext } from "@repo/provider";
 
 const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
@@ -31,7 +31,10 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 	const { updateData, deleteData } = useDataHandler();
 	const { refetchTicket } = useContext(PatflowAppContext);
 	const { newNotification } = useContext(NotificationContext);
-
+	const [selectedRows, setSelectedRows] = useState<string[]>([]);
+	const [archiveTickets, setArchiveTickets] = useState<boolean>(false);
+	const [deleteTickets, setDeleteTickets] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
 	const archiveTicket = useCallback(async (objectId: string) => {
 		await updateData({
 			className: "Ticket",
@@ -40,7 +43,6 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 				archived: true
 			}
 		});
-		refetch();
 	}, []);
 
 	const deleteTicket = useCallback(async (objectId: string) => {
@@ -48,7 +50,6 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 			className: "Ticket",
 			objectId
 		});
-		refetch();
 	}, []);
 
 	const columns = useTicketColumns({ refetch, archiveTicket, deleteTicket });
@@ -157,11 +158,85 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 		);
 	}
 
+	const pageHeaderButtons = useMemo(() => {
+		if (pageState === "closed") {
+			return [
+				{
+					text: "Tickets archivieren",
+					onClick: () => {
+						setArchiveTickets(true);
+					},
+					icon: "archive",
+					disabled: selectedRows.length === 0
+				},
+				{
+					text: "Tickets löschen",
+					onClick: () => {
+						setDeleteTickets(true);
+					},
+					icon: "delete",
+					disabled: selectedRows.length === 0
+				}
+			];
+		} else if (pageState === "in_progress") {
+			return [
+				{
+					text: "Tickets schließen",
+					onClick: async () => {
+						setLoading(true);
+						await Promise.all(
+							selectedRows.map((id) => {
+								return updateData({
+									className: "Ticket",
+									objectId: id,
+									updateObject: {
+										state: "closed"
+									}
+								});
+							})
+						);
+						await refetch();
+						setSelectedRows([]);
+						setLoading(false);
+					},
+					icon: "archive",
+					disabled: selectedRows.length === 0
+				}
+			];
+		} else if (pageState === "open") {
+			return [
+				{
+					text: "In Bearbeitung",
+					onClick: async () => {
+						setLoading(true);
+						await Promise.all(
+							selectedRows.map((id) => {
+								return updateData({
+									className: "Ticket",
+									objectId: id,
+									updateObject: {
+										state: "in_progress"
+									}
+								});
+							})
+						);
+						await refetch();
+						setSelectedRows([]);
+						setLoading(false);
+					},
+					icon: "archive",
+					disabled: selectedRows.length === 0
+				}
+			];
+		} else return [];
+	}, [loading, selectedRows]);
+
 	return (
 		<Page
 			title={siteContent.title}
 			description={siteContent.description}
 			refetch={refetch}
+			pageHeaderButtons={pageHeaderButtons}
 		>
 			<div className={clsx(styles.ticket_overview)}>
 				<Table
@@ -171,8 +246,58 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 					setPagination={setPagination}
 					rowCount={count}
 					filterContent={siteHeaderContent}
+					enableRowSelection
+					onRowSelection={setSelectedRows}
 				/>
 			</div>
+			<Modal
+				header="Tickets archivieren"
+				isOpen={archiveTickets}
+				confirmButtonText="Tickets archivieren"
+				cancelButtonHandler={() => setArchiveTickets(false)}
+				buttonDisabled={[loading, loading]}
+				confirmButtonHandler={async () => {
+					setLoading(true);
+					await Promise.all(
+						selectedRows.map((id) => {
+							return archiveTicket(id);
+						})
+					);
+					await refetch();
+					setSelectedRows([]);
+					setArchiveTickets(false);
+					setLoading(false);
+				}}
+			>
+				<p>
+					Sind Sie sicher, dass Sie {selectedRows.length} Tickets
+					archivieren möchten?
+				</p>
+			</Modal>
+			<Modal
+				header="Tickets löschen"
+				isOpen={deleteTickets}
+				confirmButtonText="Tickets archivieren"
+				cancelButtonHandler={() => setArchiveTickets(false)}
+				buttonDisabled={[loading, loading]}
+				confirmButtonHandler={async () => {
+					setLoading(true);
+					await Promise.all(
+						selectedRows.map((id) => {
+							return deleteTicket(id);
+						})
+					);
+					await refetch();
+					setSelectedRows([]);
+					setDeleteTickets(false);
+					setLoading(false);
+				}}
+			>
+				<p>
+					Sind Sie sicher, dass Sie {selectedRows.length} Tickets
+					löschen möchten?
+				</p>
+			</Modal>
 		</Page>
 	);
 };

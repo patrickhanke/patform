@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useMemo } from "react";
 import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
 import styles from "./TaskSlideIn.module.scss";
@@ -13,16 +13,9 @@ import DisplayTaskState from "../DisplayTaskState";
 import TaskNextDate from "../TaskNextDate";
 import DisplayPropery from "../DisplayPropery";
 import TeamAssignment from "../TeamAssignment";
-import { findTicketRoute } from "@repo/provider";
-import { useRouter } from "next/navigation";
-import {
-	IconButton,
-	SlideInRight,
-	StateDisplay,
-	SwitchButtons
-} from "@repo/ui";
-import buttonStates from "./constants/buttonStates";
+import { IconButton, SlideIn, StateDisplay, SwitchButtons } from "@repo/ui";
 import { TaskSlideInProps } from "./types";
+import TaskSlideInTicketDetails from "./components/TaskSlideInTicketDetails";
 
 const TaskSlideIn: FC<TaskSlideInProps> = ({
 	title,
@@ -31,7 +24,6 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 	setArchiveModal
 }) => {
 	const [showDetails, setShowDetails] = useState(false);
-	const router = useRouter();
 	const { data: dataSlidein, refetch: refetchSlideIn } = useQuery(
 		GET_TASK_SLIDEIN_CONTENT,
 		{
@@ -48,9 +40,76 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 		}
 	);
 
+	const buttonStates = useMemo(() => {
+		const buttonStates = [
+			{
+				value: "comments",
+				label: "Kommentare",
+				disabled: false
+			},
+			{
+				value: "images",
+				label: "Bilder",
+				disabled: false
+			},
+			{
+				value: "documents",
+				label: "Dokumente",
+				disabled: false
+			},
+			{
+				value: "ticket",
+				label: "Ticket",
+				disabled: !dataSlidein?.objects.getTask.ticket
+			}
+		] as const;
+		return buttonStates;
+	}, [dataSlidein]);
+
 	const [buttonState, setButtonState] = useState<
 		(typeof buttonStates)[number]
 	>(buttonStates[0]);
+
+	const secondaryContent = useMemo(() => {
+		return (
+			<div className={styles.task_slidein_bottom_content}>
+				<div className={styles.task_slidein_bottom_buttons}>
+					<SwitchButtons
+						buttonStates={[...buttonStates]}
+						currentStates={buttonState}
+						changeHandler={setButtonState}
+					/>
+				</div>
+				{buttonState.value === "documents" && dataDocuments && (
+					<TaskDocuments
+						taskId={taskId}
+						documents={dataDocuments.objects.findDocument.results}
+						refetch={refetchDocuments}
+					/>
+				)}
+				{buttonState.value === "images" && dataSlidein && (
+					<TaskImages
+						taskId={taskId}
+						taskName={title}
+						images={dataSlidein.objects.getTask.images}
+						refetch={refetchSlideIn}
+					/>
+				)}
+				{buttonState.value === "comments" && dataSlidein && (
+					<TaskComments
+						taskId={taskId}
+						comments={dataSlidein.objects.getTask.comments}
+						refetch={refetchSlideIn}
+					/>
+				)}
+				{buttonState.value === "ticket" && dataSlidein && (
+					<TaskSlideInTicketDetails
+						ticket={dataSlidein?.objects.getTask.ticket}
+					/>
+				)}
+			</div>
+		);
+	}, [buttonStates, buttonState, dataSlidein, dataDocuments]);
 
 	return (
 		<>
@@ -102,11 +161,17 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 					}}
 				/>
 			</div>
-			<SlideInRight
+			<SlideIn
 				isOpen={showDetails}
-				setIsOpen={setShowDetails}
+				cancel={() => setShowDetails(false)}
+				showCancelButton={false}
 				header={title}
 				size="small"
+				confirmText="Schließen"
+				confirm={() => setShowDetails(false)}
+				preventClickOutside
+				secondaryContent={secondaryContent}
+				showSecondaryContent={true}
 			>
 				<div className={styles.task_slidein_content}>
 					<div className={styles.task_slidein_top_content}>
@@ -207,11 +272,6 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 												.title
 										}
 										icon="ticket"
-										onClick={() =>
-											router.push(
-												`${findTicketRoute(dataSlidein.objects.getTask.ticket.state)}?ticket=${dataSlidein.objects.getTask.ticket.objectId}`
-											)
-										}
 									/>
 								) : (
 									<p>Kein Ticket verknüpft</p>
@@ -219,42 +279,8 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 							</div>
 						</div>
 					</div>
-					<div className={styles.task_slidein_bottom_content}>
-						<div className={styles.task_slidein_bottom_buttons}>
-							<SwitchButtons
-								buttonStates={[...buttonStates]}
-								currentStates={buttonState}
-								changeHandler={setButtonState}
-								underlineButtons
-							/>
-						</div>
-						{buttonState.value === "documents" && dataDocuments && (
-							<TaskDocuments
-								taskId={taskId}
-								documents={
-									dataDocuments.objects.findDocument.results
-								}
-								refetch={refetchDocuments}
-							/>
-						)}
-						{buttonState.value === "images" && dataSlidein && (
-							<TaskImages
-								taskId={taskId}
-								taskName={title}
-								images={dataSlidein.objects.getTask.images}
-								refetch={refetchSlideIn}
-							/>
-						)}
-						{buttonState.value === "comments" && dataSlidein && (
-							<TaskComments
-								taskId={taskId}
-								comments={dataSlidein.objects.getTask.comments}
-								refetch={refetchSlideIn}
-							/>
-						)}
-					</div>
 				</div>
-			</SlideInRight>
+			</SlideIn>
 		</>
 	);
 };

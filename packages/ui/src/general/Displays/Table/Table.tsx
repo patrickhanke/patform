@@ -21,6 +21,7 @@ const Table: React.FC<TableTypes> = ({
 	rowStyles,
 	cellBorders = false,
 	enableRowSelection = false,
+	onRowSelection,
 	rowCount,
 	pagination,
 	setPagination,
@@ -29,7 +30,7 @@ const Table: React.FC<TableTypes> = ({
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
 
-	const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
 	const table = useReactTable({
 		data: tableData,
@@ -39,8 +40,10 @@ const Table: React.FC<TableTypes> = ({
 			sorting,
 			pagination
 		},
+		enableRowSelection,
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
+		getRowId: (row) => row.uuid,
 		manualPagination: true,
 		rowCount: rowCount || tableData.length,
 		onSortingChange: setSorting,
@@ -50,7 +53,7 @@ const Table: React.FC<TableTypes> = ({
 	});
 
 	const getSortIcon = useCallback(
-		(column: Column<any>) => {
+		(column: Column<object>) => {
 			const isSortable = column.getCanSort() || false;
 			if (!isSortable) return null;
 			const isSorted = sorting.find((sort) => sort.id === column.id);
@@ -68,17 +71,31 @@ const Table: React.FC<TableTypes> = ({
 		[sorting]
 	);
 
-	const handleRowSelection = (rowId: string) => {
-		setSelectedRows((prev) => {
-			const newSelectedRows = new Set(prev);
-			if (newSelectedRows.has(rowId)) {
-				newSelectedRows.delete(rowId);
+	const handleRowSelection = useCallback(
+		(rowId: string) => {
+			console.log({ rowId });
+			const idIndex = selectedRows.findIndex(
+				(selectedRow) => selectedRow === rowId
+			);
+			console.log(idIndex);
+
+			if (idIndex !== -1) {
+				const newSelectedRows = selectedRows.filter(
+					(selectedRow) => selectedRow !== rowId
+				);
+				setSelectedRows(newSelectedRows);
+				if (onRowSelection) {
+					onRowSelection(newSelectedRows);
+				}
 			} else {
-				newSelectedRows.add(rowId);
+				setSelectedRows((prev) => [...prev, rowId]);
+				if (onRowSelection) {
+					onRowSelection([...selectedRows, rowId]);
+				}
 			}
-			return newSelectedRows;
-		});
-	};
+		},
+		[selectedRows, onRowSelection]
+	);
 
 	return (
 		<>
@@ -118,21 +135,19 @@ const Table: React.FC<TableTypes> = ({
 														e.target.checked;
 													setSelectedRows(
 														isChecked
-															? new Set(
-																	table
-																		.getRowModel()
-																		.rows.map(
-																			(
-																				row
-																			) =>
-																				row.id
-																		)
-																)
-															: new Set()
+															? table
+																	.getRowModel()
+																	.rows.map(
+																		(row) =>
+																			row
+																				.original
+																				.objectId
+																	)
+															: []
 													);
 												}}
 												checked={
-													selectedRows.size ===
+													selectedRows.length ===
 													table.getRowModel().rows
 														.length
 												}
@@ -177,7 +192,9 @@ const Table: React.FC<TableTypes> = ({
 						</thead>
 						<tbody>
 							{table.getRowModel().rows.map((row) => {
-								const isSelected = selectedRows.has(row.id);
+								const isSelected = selectedRows.includes(
+									row?.original?.objectId
+								);
 								return (
 									<tr
 										key={row.id}
@@ -197,7 +214,8 @@ const Table: React.FC<TableTypes> = ({
 													checked={isSelected}
 													onChange={() =>
 														handleRowSelection(
-															row.id
+															row.original
+																.objectId
 														)
 													}
 												/>

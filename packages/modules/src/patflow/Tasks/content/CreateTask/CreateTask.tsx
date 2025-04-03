@@ -34,8 +34,6 @@ const CreateTask = ({
 		undefined | "ticket" | "date" | "property" | "worker"
 	>("date");
 
-	console.log(project);
-
 	const initialDate = {
 		type: modi_options[0],
 		category: date_category_options[0],
@@ -105,8 +103,6 @@ const CreateTask = ({
 	}, [task, date]);
 
 	const createTask = useCallback(async () => {
-		console.log(task);
-
 		setLoading(true);
 		const updateObject: CreateTaskUpdateObject = {
 			title: task.title,
@@ -207,8 +203,6 @@ const CreateTask = ({
 			);
 		}
 	}, [date, setDate, secContent, task]);
-
-	console.log({ project });
 
 	return (
 		<>

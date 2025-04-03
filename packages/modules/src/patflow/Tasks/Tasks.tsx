@@ -159,8 +159,6 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		);
 	}
 
-	console.log({ pageState });
-
 	return (
 		<Page
 			title={siteContent.title}
