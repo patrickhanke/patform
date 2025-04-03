@@ -73,11 +73,9 @@ const Table: React.FC<TableTypes> = ({
 
 	const handleRowSelection = useCallback(
 		(rowId: string) => {
-			console.log({ rowId });
 			const idIndex = selectedRows.findIndex(
 				(selectedRow) => selectedRow === rowId
 			);
-			console.log(idIndex);
 
 			if (idIndex !== -1) {
 				const newSelectedRows = selectedRows.filter(
@@ -96,6 +94,28 @@ const Table: React.FC<TableTypes> = ({
 		},
 		[selectedRows, onRowSelection]
 	);
+
+	const handleSelectAll = useCallback(() => {
+		const allSelected =
+			selectedRows.length === table.getRowModel().rows.length;
+		if (allSelected) {
+			setSelectedRows([]);
+		} else {
+			const allRowIds = table
+				.getRowModel()
+				.rows.map((row) => row.original.objectId);
+			setSelectedRows(allRowIds);
+		}
+		if (onRowSelection) {
+			if (allSelected) {
+				onRowSelection([]);
+			} else {
+				onRowSelection(
+					table.getRowModel().rows.map((row) => row.original.objectId)
+				);
+			}
+		}
+	}, [selectedRows, table, onRowSelection]);
 
 	return (
 		<>
@@ -130,22 +150,9 @@ const Table: React.FC<TableTypes> = ({
 										<th>
 											<input
 												type="checkbox"
-												onChange={(e) => {
-													const isChecked =
-														e.target.checked;
-													setSelectedRows(
-														isChecked
-															? table
-																	.getRowModel()
-																	.rows.map(
-																		(row) =>
-																			row
-																				.original
-																				.objectId
-																	)
-															: []
-													);
-												}}
+												onChange={() =>
+													handleSelectAll()
+												}
 												checked={
 													selectedRows.length ===
 													table.getRowModel().rows

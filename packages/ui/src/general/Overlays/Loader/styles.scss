@@ -4,7 +4,7 @@
   background-color: rgba($color: #000000, $alpha: 0.5);
   position: relative;
   border-radius: map-get($map: constants.$border_radius, $key: "sm");
-  min-width: 120px;
+  min-width: 18px;
   min-height: 18px;
 
   /* HTML: <div class="loader"></div> */
