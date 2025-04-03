@@ -14,7 +14,7 @@ import { useSearchParams } from "next/navigation";
 import SiteHeaderContent from "./components/SiteHeaderContent";
 import sortTasksForList from "./functions/sortTasksForList";
 import TaskList from "./content/TaskList";
-import { Divider, Page } from "@repo/ui";
+import { Divider, generatePagination, Page } from "@repo/ui";
 import site_states from "./constants/site_states";
 import { PatflowAppContext } from "@repo/provider";
 import { NotificationContext } from "@repo/provider";
@@ -25,11 +25,22 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		site_states[0] as (typeof site_states)[0]
 	);
 	const searchParams = useSearchParams();
-	const { tasks, refetch } = useGetTasks({
+
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 20
+	});
+
+	const { tasks, refetch, count } = useGetTasks({
 		id,
 		className,
 		filters,
-		siteType: siteState.value as SiteType
+		siteType: siteState.value as SiteType,
+		limit: pageState !== "active" ? pagination.pageSize : 300,
+		skip:
+			pageState !== "active"
+				? pagination.pageIndex * pagination.pageSize
+				: 0
 	});
 	const { refetchTask } = useContext(PatflowAppContext);
 	const { newNotification } = useContext(NotificationContext);
@@ -127,21 +138,28 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 	if (id && className) {
 		return (
 			<>
-				<SiteHeaderContent
-					id={id}
-					filters={filters}
-					setFilters={setFilters}
-					initialFilters={initialFilters}
-				/>
 				<Divider size="small" showLine={false} />
 				<TaskList
 					taskList={tasks || []}
 					refetch={refetch}
 					pageState={pageState}
+					pagination={pagination}
+					setPagination={setPagination}
+					count={count}
+					filterContent={
+						<SiteHeaderContent
+							id={id}
+							filters={filters}
+							setFilters={setFilters}
+							initialFilters={initialFilters}
+						/>
+					}
 				/>
 			</>
 		);
 	}
+
+	console.log({ pageState });
 
 	return (
 		<Page
@@ -152,28 +170,51 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 			pageState={siteState}
 			setPageState={setSiteState}
 		>
-			<SiteHeaderContent
-				id={id}
-				filters={filters}
-				setFilters={setFilters}
-				initialFilters={initialFilters}
-			/>
-			<Divider size="small" showLine={false} />
 			{pageState !== "active" ? (
 				<TaskList
 					taskList={tasks || []}
 					refetch={refetch}
 					pageState={pageState}
+					pagination={pagination}
+					setPagination={setPagination}
+					count={count}
+					filterContent={
+						<SiteHeaderContent
+							id={id}
+							filters={filters}
+							setFilters={setFilters}
+							initialFilters={initialFilters}
+						/>
+					}
 				/>
 			) : (
 				<TaskList
-					taskList={
-						sortTasksForList(tasks || []).find(
-							(taskList) => taskList.value === siteState.value
-						)?.data || []
-					}
+					taskList={generatePagination({
+						data:
+							sortTasksForList(tasks || []).find(
+								(taskList) => taskList.value === siteState.value
+							)?.data || [],
+						pagination
+					})}
 					refetch={refetch}
 					pageState={pageState}
+					pagination={pagination}
+					setPagination={setPagination}
+					count={
+						(
+							sortTasksForList(tasks || []).find(
+								(taskList) => taskList.value === siteState.value
+							)?.data || []
+						).length || 0
+					}
+					filterContent={
+						<SiteHeaderContent
+							id={id}
+							filters={filters}
+							setFilters={setFilters}
+							initialFilters={initialFilters}
+						/>
+					}
 				/>
 			)}
 		</Page>

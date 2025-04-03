@@ -6,3 +6,4 @@ export { default as TableColumnString } from "./components/TableColumnString";
 export { default as TableColumnTextfield } from "./components/TableColumnTextfield";
 export { default as TableColumnCategory } from "./components/TableColumnCategory";
 export { default as useCreateColumns } from "./hooks/useCreateColumns";
+export { default as generatePagination } from "./functions/generatePagination";

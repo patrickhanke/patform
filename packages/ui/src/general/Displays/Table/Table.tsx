@@ -14,7 +14,6 @@ import { TableTypes } from "./types";
 import clsx from "clsx";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
 import PaginationHandlers from "./content/PaginationHandlers";
-import { Divider } from "../../Layout";
 
 const Table: React.FC<TableTypes> = ({
 	data,
@@ -24,7 +23,8 @@ const Table: React.FC<TableTypes> = ({
 	enableRowSelection = false,
 	rowCount,
 	pagination,
-	setPagination
+	setPagination,
+	filterContent
 }) => {
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
@@ -83,7 +83,12 @@ const Table: React.FC<TableTypes> = ({
 	return (
 		<>
 			{pagination && setPagination && (
-				<>
+				<div className="table_header">
+					{filterContent ? (
+						<div className="filter_content">{filterContent}</div>
+					) : (
+						<div />
+					)}
 					<PaginationHandlers
 						pagination={pagination}
 						setPagination={setPagination}
@@ -96,8 +101,7 @@ const Table: React.FC<TableTypes> = ({
 						canGetPreviousPage={table.getCanPreviousPage()}
 						canGetNextPage={table.getCanNextPage()}
 					/>
-					<Divider size="large" />
-				</>
+				</div>
 			)}
 			<div className="content_element no_padding">
 				<div className={clsx("table_container")}>

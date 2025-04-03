@@ -1,9 +1,9 @@
-import { WorkerTypes } from "@repo/types";
+import { StaffMember } from "@repo/types";
 
 export type DisplayWorkersProps = {
-  workerId: WorkerTypes.Worker["objectId"];
-  nextDate?: string;
-  showState?: boolean;
-  showAvailability?: boolean;
-  onlyImage?: boolean;
+	workerId: StaffMember["objectId"];
+	nextDate?: string;
+	showState?: boolean;
+	showAvailability?: boolean;
+	onlyImage?: boolean;
 };

@@ -1,15 +1,22 @@
 import { DisplayWorker } from "@repo/ui";
-import { useDataHandler } from "@repo/provider";
-import { FIND_ALL_STAFF, GET_TASK_WORKERS } from "@repo/provider";
+import { PatflowAppContext, useDataHandler } from "@repo/provider";
+import { GET_TASK_WORKERS } from "@repo/provider";
 import { Task, Worker } from "@repo/types";
 import { useQuery } from "@apollo/client";
-import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import {
+	FC,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState
+} from "react";
 import { cloneDeep } from "lodash-es";
 
-import styles from "../TeamAssignment.module.scss";
 import { formatISO9075 } from "date-fns";
 import { ElementSelectInterface, SlideInRight } from "@repo/ui";
 import { DisplayWorkerProps, WorkerOption } from "../types";
+import "../styles.scss";
 
 const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	taskId,
@@ -24,7 +31,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		variables: { id: taskId },
 		notifyOnNetworkStatusChange: true
 	});
-	const { data: workerData } = useQuery(FIND_ALL_STAFF);
+	const { workers } = useContext(PatflowAppContext);
 
 	const taskStateHandler = useCallback(
 		async (stateValue: Task["state"]) => {
@@ -61,20 +68,24 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	}, [data]);
 
 	useEffect(() => {
-		const workers = data?.objects.getTask.assigned_staff;
+		const taskWorkers = data?.objects.getTask.assigned_staff;
 
-		if (workers && workers?.length === 0 && taskState !== "created") {
+		if (
+			taskWorkers &&
+			taskWorkers?.length === 0 &&
+			taskState !== "created"
+		) {
 			taskStateHandler("created");
 		}
-		if (workers && workers?.length > 0 && taskState === "created") {
+		if (taskWorkers && taskWorkers?.length > 0 && taskState === "created") {
 			taskStateHandler("assigned");
 		}
 	}, [taskState, data]);
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
-		if (workerData) {
-			workerData.objects.find_User.results.forEach((worker: Worker) => {
+		if (workers.length > 0) {
+			workers.forEach((worker: Worker) => {
 				if (worker) {
 					workerOptionsArray.push({
 						value: worker.objectId,
@@ -95,7 +106,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
 		return workerOptionsArray;
-	}, [workerData]);
+	}, [workers]);
 
 	const workerComponent = useMemo(
 		() => (
@@ -110,12 +121,12 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 						: []
 				}
 				onSelect={async (values) => {
-					const workers = values.map((value) => value.value);
+					const newWorkers = values.map((value) => value.value);
 					await updateData({
 						className: "Task",
 						objectId: taskId,
 						updateObject: {
-							assigned_staff: [...workers]
+							assigned_staff: [...newWorkers]
 						}
 					});
 					refetch();
@@ -168,7 +179,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 							onClick={() => setIsOpen(true)}
 						>
 							{/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
-							<div className={styles.button_workers_container}>
+							<div className="button_workers_container">
 								{staffNumber > 0 ? (
 									data.objects.getTask.assigned_staff.map(
 										(
@@ -207,7 +218,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 						</SlideInRight>
 					</>
 				) : (
-					<div className={styles.button_workers_container}>
+					<div className="button_workers_container">
 						{data.objects.getTask.assigned_staff.map(
 							(workerId: Worker["objectId"], index: number) => (
 								<div

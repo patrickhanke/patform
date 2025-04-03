@@ -94,7 +94,7 @@ const PaginationHandlers: FC<PaginationHandlersProps> = ({
 					/>
 				</button>
 				<p>
-					Seite {pageIndex + 1} von {pageNumber}
+					{pageIndex + 1} / {pageNumber}
 				</p>
 				<button
 					className="full_button sm light"

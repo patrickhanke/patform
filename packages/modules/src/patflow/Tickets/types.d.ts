@@ -1,43 +1,45 @@
 import { ApolloRefetch, ApplicationTypes, Task, Ticket } from "@repo/types";
 
 export type TicketsComponent = {
-  id?: string;
-  className?: string;
-  pageState: Ticket["state"];
+	id?: string;
+	className?: string;
+	pageState: Ticket["state"];
 };
 
-export type useGetTicketsHook = {
-  id?: string;
-  className?: string;
-  filters: ApplicationTypes.Filter[];
-  archived?: boolean;
+export type UseGetTicketsHook = {
+	id?: string;
+	className?: string;
+	filters: ApplicationTypes.Filter[];
+	archived?: boolean;
+	limit?: number;
+	skip?: number;
 };
 
 export type SiteHeaderContentComponent = {
-  id?: string;
-  filters: ApplicationTypes.Filter[];
-  setFilters: React.Dispatch<React.SetStateAction<ApplicationTypes.Filter[]>>;
-  initialFilters: () => ApplicationTypes.Filter[];
-  tickets: ApplicationTypes.Ticket[];
+	id?: string;
+	filters: ApplicationTypes.Filter[];
+	setFilters: React.Dispatch<React.SetStateAction<ApplicationTypes.Filter[]>>;
+	initialFilters: () => ApplicationTypes.Filter[];
+	tickets: ApplicationTypes.Ticket[];
 };
 
 export type UseTicketColumnsProps = {
-  refetch: ApolloRefetch;
-  archiveTicket: (objectId: string) => void;
-  deleteTicket: (objectId: string) => void;
+	refetch: ApolloRefetch;
+	archiveTicket: (objectId: string) => void;
+	deleteTicket: (objectId: string) => void;
 };
 
 export type TicketStateProps = {
-  refetch: ApolloRefetch;
-  ticketId: string;
-  ticketState: string;
+	refetch: ApolloRefetch;
+	ticketId: string;
+	ticketState: string;
 };
 
 export type TicketTaskProps = {
-  ticketId: string;
-  ticketPropertyId: string;
-  ticketUserId: string;
-  ticketTask?: Pick<Task, "objectId" | "title" | "state">;
-  refetch: ApolloRefetch;
-  ticketState: string;
+	ticketId: string;
+	ticketPropertyId: string;
+	ticketUserId: string;
+	ticketTask?: Pick<Task, "objectId" | "title" | "state">;
+	refetch: ApolloRefetch;
+	ticketState: string;
 };

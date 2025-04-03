@@ -55,13 +55,16 @@ export const generateColor = () => {
 };
 
 export const generateImagePath = (application: string, path: string) => {
-	if (!application || !path) {
-		console.error("Project and Project ID are required");
-	}
 	const date = new Date();
 	const year = date.getFullYear().toString();
 	const month = (date.getMonth() + 1).toString().padStart(2, "0");
 	const day = date.getDate().toString().padStart(2, "0");
-
-	return `/${application}/${path}/${year}/${month}/${day}`;
+	if (application && path) {
+		return `/${application}/${path}/${year}/${month}/${day}`;
+	} else if (application) {
+		return `/${application}/unknown/${year}/${month}/${day}`;
+	} else if (path) {
+		return `/unknown/${path}/${year}/${month}/${day}`;
+	}
+	return `/unknown/${year}/${month}/${day}`;
 };

@@ -1,4 +1,9 @@
-import { UserTypes } from "@repo/types";
+import {
+	PatflowUser,
+	PatflowUserRoleTypes,
+	Property,
+	StaffMember
+} from "@repo/types";
 
 export type dynamicItem = {
 	value: string;
@@ -6,7 +11,7 @@ export type dynamicItem = {
 };
 
 export type RoleUsers = {
-	[Property in UserTypes.UserRoleTypes]: UserTypes.User["objectId"][];
+	[Property in PatflowUserRoleTypes]: PatflowUser["objectId"][];
 };
 
 export type ContextValues = {
@@ -16,6 +21,10 @@ export type ContextValues = {
 	createTask: JSX.Element;
 	selectYear: JSX.Element;
 	year: number;
+	workers: StaffMember[];
+	properties: Property[];
+	refetchWorkers: () => void;
+	refetchProperties: () => void;
 	roles: {
 		value: string;
 		type: string;

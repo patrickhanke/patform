@@ -208,6 +208,8 @@ const CreateTask = ({
 		}
 	}, [date, setDate, secContent, task]);
 
+	console.log({ project });
+
 	return (
 		<>
 			{button ? (

@@ -1,6 +1,5 @@
 import {
 	RowSelectionState,
-	Updater,
 	ColumnDef,
 	PaginationState
 } from "@tanstack/react-table";
@@ -14,6 +13,7 @@ import {
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { MapPlace } from "../Map";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 export type TableTypes = {
 	data: TData[];
@@ -23,7 +23,8 @@ export type TableTypes = {
 	enableRowSelection?: boolean;
 	rowCount?: number;
 	pagination?: PaginationState;
-	setPagination?: (updater: Updater<PaginationState>) => void;
+	setPagination?: Dispatch<SetStateAction<PaginationState>>;
+	filterContent?: ReactNode;
 };
 
 export type ColumnDef<TData> = ColumnDef<TData>;
@@ -141,4 +142,7 @@ export type UseCreateColumnsHook<Class> = (
 	params: CreateColumnHookProps<Class>
 ) => ColumnDef<Class>[];
 
-export type PaginationState = PaginationState;
+export type PaginationState = {
+	pageIndex: number;
+	pageSize: number;
+};

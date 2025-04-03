@@ -18,7 +18,7 @@ const LayoutContext = ({ children }: { children: React.ReactNode }) => {
       <UserContextProvider>
         <PatflowAppContextProvider>
           <NotificationContextProvider>
-          <DataContextProvider>{children}</DataContextProvider>
+            <DataContextProvider>{children}</DataContextProvider>
           </NotificationContextProvider>
         </PatflowAppContextProvider>
       </UserContextProvider>
