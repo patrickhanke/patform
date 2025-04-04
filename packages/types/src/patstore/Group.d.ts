@@ -9,4 +9,12 @@ export type GroupClass = ClassProperties & {
   description: string;
   persons: string[];
   times: EventTime[];
+  team?: Team;
 };
+
+export type Team = {
+  id: string,
+  image: string,
+  name: string,
+  description: string,
+}

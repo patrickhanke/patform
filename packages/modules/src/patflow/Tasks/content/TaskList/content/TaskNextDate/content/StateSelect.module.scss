@@ -1,0 +1,162 @@
+@use "@repo/styles/constants";
+
+.state_display_container {
+  position: relative;
+  font-family: Geist, sans-serif;
+  padding: map-get($map: constants.$padding, $key: "sm");
+  width: fit-content;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  font-size: map-get($map: constants.$font_size, $key: "sm");
+  border: none;
+  text-wrap: nowrap;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+@mixin state_display_container_styles {
+  background-color: transparent;
+  &:hover {
+    background-color: constants.$light;
+  }
+}
+
+.state_display_button {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.state_display_container[data-showicon="true"] {
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: center,
+    $gap: constants.$xxs
+  );
+}
+
+.state_display_container[data-color="primary"] {
+  @include constants.colorgroup("primary");
+  border: none;
+}
+
+.state_display_container[data-color="secondary"] {
+  @include constants.colorgroup("secondary");
+  border: none;
+}
+
+.state_display_container[data-color="tertiary"] {
+  @include constants.colorgroup("tertiary");
+  border: none;
+}
+
+.state_display_container[data-color="dark"] {
+  @include constants.colorgroup("dark");
+  border: none;
+}
+
+.state_display_container[data-color="light"] {
+  @include constants.colorgroup("light");
+  border: none;
+}
+
+.state_display_container[data-color="success"] {
+  @include constants.colorgroup("success");
+  border: none;
+}
+
+.state_display_container[data-color="warning"] {
+  @include constants.colorgroup("warning");
+  border: none;
+}
+
+.state_display_container[data-color="danger"] {
+  @include constants.colorgroup("danger");
+  border: none;
+}
+
+.state_display_container[data-color="info"] {
+  @include constants.colorgroup("info");
+  border: none;
+}
+
+.state_display_container[data-color="violet"] {
+  @include constants.colorgroup("violet");
+  border: none;
+}
+
+.state_display_container[data-color="green"] {
+  @include constants.colorgroup("green");
+  border: none;
+}
+
+.state_display_container[data-color="yellow"] {
+  @include constants.colorgroup("yellow");
+  border: none;
+}
+
+.state_display_container[data-color="red"] {
+  @include constants.colorgroup("red");
+  border: none;
+}
+
+.state_display_container[data-color="blue"] {
+  @include constants.colorgroup("blue");
+  border: none;
+}
+
+.state_display_container[data-color="grey"] {
+  @include constants.colorgroup("grey");
+  border: none;
+}
+
+.state_display_container[data-display_interface="true"] {
+  cursor: pointer;
+  @include state_display_container_styles;
+}
+
+.state_display_container[data-no_background="true"] {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.state-select-interface {
+  position: absolute;
+  // bottom: -5px;
+  // left: 50%;
+  background-color: constants.$white;
+  border: 1px solid constants.$grey_tinted;
+  z-index: 3;
+  // transform: translateY(100%) translateX(-50%);
+  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  box-shadow: constants.$shadow_regular;
+  width: fit-content;
+  &__list {
+    list-style: none;
+    // Styles for the list
+  }
+
+  &__item {
+    @extend .state_display_container;
+    // padding: map-get($map: constants.$padding, $key: 'xs');
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: constants.$dark;
+    padding-top: constants.$xs;
+    padding-bottom: constants.$xs;
+    &:hover {
+      background-color: constants.$light;
+    }
+  }
+
+  &__item[data-disabled="true"] {
+    cursor: not-allowed;
+    color: constants.$grey;
+  }
+}

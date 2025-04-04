@@ -5,10 +5,10 @@ import Logo from "./Logo";
 import { MenuItem, Sidebar } from "@repo/ui";
 import { Module, PatstoreUser } from "@repo/types";
 import packageJson from "../../../package.json";
-import { ProjectContext } from "@repo/provider";
+import { useAppContext } from "@repo/provider";
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
-  const { project } = useContext(ProjectContext);
+  const { project } = useAppContext();
 
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [];

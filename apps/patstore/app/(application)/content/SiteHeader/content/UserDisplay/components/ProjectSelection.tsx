@@ -1,4 +1,4 @@
-import { generateGraphQLQuery, ProjectContext } from "@repo/provider";
+import { generateGraphQLQuery, ProjectContext, useAppContext } from "@repo/provider";
 import React, { FC, useCallback, useContext, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ProjectSelectionProps } from "../types";
@@ -10,7 +10,7 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
   selectProject,
   setSelectProject,
 }) => {
-  const { project, loadProject } = useContext(ProjectContext);
+  const { project, loadProject } = useAppContext();
   const [selectedProject, setSelectedProject] = useState<SelectElement[]>([
     { value: project.objectId, label: project.name },
   ]);

@@ -11,7 +11,13 @@ import TableColumnCategory from "../components/TableColumnCategory";
 import TableColumnEditField from "../content/TableColumnEditField";
 import TableColumnDeleteField from "../content/TableColumnDeleteField/TableColumnDeleteField";
 import TableColumnDatesField from "../content/TableColumnDatesField";
-import { ClassState, EventDate, EventTime } from "@repo/types";
+import {
+	ClassState,
+	EventDate,
+	EventTime,
+	PersonClass,
+	Team
+} from "@repo/types";
 import TableColumnDate from "../components/TableColumnDate";
 import TableColumnTexteditor from "../components/TableColumnTexteditor";
 import TableColumnGeopoint from "../components/TableColumnGeopoint";
@@ -24,6 +30,7 @@ import TableColumnTimesField from "../content/TableColumnTimesField";
 import TableColumnPersons from "../components/TableColumnPersons";
 import TableColumnFiles from "../components/TableColumnFiles";
 import { IconButton } from "../../../Buttons";
+import { TableColumnEditTeam } from "../content/TableColumnEditTeam";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -199,7 +206,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnGeopoint
-							value={row[columnElement.id]}
+							value={row[columnElement.id] as MapPlace}
 							isEditable={
 								columnElement.type === "edit_geopoint"
 									? true
@@ -231,7 +238,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) =>
 						get(constants, columnElement.id, undefined) ? (
 							<TableColumnEditState
-								value={row[columnElement.id]}
+								value={row[columnElement.id] as string}
 								isEditable={
 									columnElement.type === "edit_state"
 										? true
@@ -266,7 +273,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnGallery
-							value={row[columnElement.id]}
+							value={row[columnElement.id] as string[]}
 							onChange={async (value: string[]) => {
 								await updateData({
 									className: className,
@@ -297,10 +304,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 									? true
 									: false
 							}
-							value={row[columnElement.id]}
+							value={row[columnElement.id] as PersonClass}
 							onChange={async (value: string) => {
-                                console.log(value);
-                                
+								console.log(value);
+
 								await updateData({
 									className: className,
 									objectId: row.objectId,
@@ -334,7 +341,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 									? true
 									: false
 							}
-							value={row[columnElement.id] || []}
+							value={
+								(row[columnElement.id] as string[]) ||
+								([] as string[])
+							}
 							onChange={async (values: string[]) => {
 								await updateData({
 									className: className,
@@ -359,6 +369,29 @@ const useCreateColumns = <T extends ColumnClasses>({
 						<TableColumnTimesField
 							initialTimes={row[columnElement.id] as EventTime[]}
 							onChange={async (value: EventTime[]) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: { [columnElement.id]: value }
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "edit_team") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnEditTeam
+							initialData={row[columnElement.id] as Team}
+							onChange={async (value: Team) => {
 								await updateData({
 									className: className,
 									objectId: row.objectId,

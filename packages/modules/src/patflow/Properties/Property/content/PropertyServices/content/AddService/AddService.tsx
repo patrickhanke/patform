@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { AddServiceProps } from "./types";
 import { useImmer } from "use-immer";
-import { useDataHandler } from "@repo/provider";
+import { useAppContext, useDataHandler } from "@repo/provider";
 import {
 	CreateService as CreateServiceType,
 	DateObjectWithNextDates,
@@ -31,6 +31,7 @@ const AddService: FC<AddServiceProps> = ({
 	setAddService,
 	propertyId
 }) => {
+	const { project } = useAppContext();
 	const { createData, updateData, deleteData } = useDataHandler();
 	const { user, projectId } = useContext(UserContext);
 	const [loading, setLoading] = useState(false);
@@ -299,7 +300,7 @@ const AddService: FC<AddServiceProps> = ({
 							isTextArea
 						/>
 						<ImageUploader
-							path={`/patflow/${projectId}/services/${serviceId}`}
+							path={`/patflow/${project.path}/services/${serviceId}`}
 							label="Bilder"
 							onChange={(images: string[]) =>
 								setService((draft) => {

@@ -2,7 +2,7 @@ import React from "react";
 import { ImageUploader } from "@repo/modules";
 import { ImageField, Modal } from "@repo/ui";
 import { useState } from "react";
-import { getImageUrl } from "@repo/provider";
+import { generateImagePath, getImageUrl, useAppContext } from "@repo/provider";
 
 interface ImageUploadProps {
 	fieldValues: {
@@ -20,6 +20,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 	setFieldValue,
 	isHorizontal
 }) => {
+	const { project } = useAppContext();
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState("");
 
@@ -58,25 +59,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 			>
 				<ImageUploader
 					onChange={(imgUrl) => setImage(imgUrl as string)}
-					path={process.env.BYTESCALE_IMAGE_FOLDER as string}
+					path={generateImagePath(
+						process.env.APP_NAME as string,
+						project.path
+					)}
 					returnType={field?.options?.return_type || "array"}
 					maxFileCount={field?.options?.max_file_count || 10}
 				/>
 			</Modal>
 		</>
 	);
-
-	// 	return (
-	// 		<>
-	// 			{/* <label htmlFor={fieldValues.name}>{field.label} </label> */}
-	// 			<ImageUploader
-	// 				onChange={value => setFieldValue(field.name, value)}
-	// 				path={process.env.BYTESCALE_IMAGE_FOLDER as string}
-	// 				returnType={field?.options?.return_type || 'array'}
-	// 				maxFileCount={field?.options?.max_file_count || 10}
-	// 			/>
-	// 		</>
-	// 	);
 };
 
 export default ImageUpload;

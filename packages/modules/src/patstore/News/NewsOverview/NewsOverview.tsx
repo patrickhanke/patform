@@ -6,7 +6,6 @@ import { Filter, NewsClass } from "@repo/types";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindNews from "./hooks/useFindNews";
 import createClass from "./constants/createClass";
-import CreateNews from "./components/CreateNews";
 
 const NewsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
@@ -81,28 +80,6 @@ const NewsOverview = () => {
 			createClass={createClass}
 			refetch={refetch}
 		>
-			{/* {process.env.NODE_ENV === "development" && (
-				<DataTransfer<NewsClass>
-					sourceClassName="News"
-					targetClassName="News"
-					moduleId={currentModule.objectId}
-					url="https://pg-app-mvx9tbt2yit00ef2pzlktzg3k81djj.scalabl.cloud/graphql/"
-					masterKey="POcP3f5vEluCLVT1txftBPf5XGTIPYSki6UR7VRH"
-					appId="E24kTRGCLBzXhUOQvwFNekgPpoMPeHRNITT67YiR"
-					query={generateQuery({
-						objectName: "News",
-						fields: ["titel", "text", "datum"]
-					})}
-					propertyMapping={(news) => ({
-						title: news.titel,
-						text: news.text,
-						date: formatISO9075(news.datum, {
-							representation: "date"
-						})
-					})}
-				/>
-			)} */}
-
 			<Table
 				columns={columns}
 				data={news || []}

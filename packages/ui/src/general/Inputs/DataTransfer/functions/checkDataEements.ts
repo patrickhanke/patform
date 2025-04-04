@@ -36,7 +36,7 @@ const checkDataElement: CheckDataElements = async ({
 					)
 				);
 			} else {
-				dataElementCopy[key] = null;
+				set(dataElementCopy, key, dataElement[key]);
 			}
 		}
 	});

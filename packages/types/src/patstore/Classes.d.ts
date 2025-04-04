@@ -16,7 +16,7 @@ export type PatstoreProject = {
 export type ClassCategories = string[];
 
 export type ClassState = {
-  value: string;
+  value: string | number | object;
   label: string;
   color: string;
 };
@@ -35,4 +35,6 @@ export type Classes =
   | NewsClass
   | PersonClass
   | CategoryClass
-  | EventClass;
+  | EventClass
+  | ArticleClass
+  | GroupClass;

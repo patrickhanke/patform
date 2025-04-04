@@ -26,8 +26,6 @@ const paramsHandler: ParamsHandlerType = ({ projectId, moduleId, filters }) => {
 				acc: Record<string, { [key in FilterOperator]: any }>,
 				filter: Filter
 			) => {
-				console.log(filter);
-
 				if (filter.operator === "_regex") {
 					acc[filter.key] = {
 						[filter.operator]: filter.value,
@@ -46,9 +44,6 @@ const paramsHandler: ParamsHandlerType = ({ projectId, moduleId, filters }) => {
 			{}
 		);
 	}
-	console.log(filterObject);
-	console.log(additionalFilters);
-
 	return { ...filterObject, ...additionalFilters };
 };
 

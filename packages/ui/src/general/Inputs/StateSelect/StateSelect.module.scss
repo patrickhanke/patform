@@ -16,9 +16,6 @@
   max-width: 100%;
 }
 
-.state-select-interface__item {
-}
-
 @mixin state_display_container_styles {
   background-color: transparent;
   &:hover {
@@ -118,7 +115,6 @@
 
 .state_display_container[data-display_interface="true"] {
   cursor: pointer;
-  @include state_display_container_styles;
 }
 
 .state_display_container[data-no_background="true"] {

@@ -105,7 +105,7 @@ const TableColumnPerson = ({
 			<SlideInRight
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
-				header="Arbeiter auswählen"
+				header="Person auswählen"
 			>
 				{selectPerson}
 			</SlideInRight>

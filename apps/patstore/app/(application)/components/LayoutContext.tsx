@@ -1,6 +1,6 @@
 "use client";
 
-import { ApolloAppProvider } from "@repo/provider";
+import { ApolloAppProvider, AppContext, AppContextProvider } from "@repo/provider";
 import { PatstoreUser } from "@repo/types";
 import {
   PatstoreAppContextProvider,
@@ -22,8 +22,8 @@ const LayoutContext = ({
       appId={process.env.SASHIDO_APP_ID as string}
       restKey={process.env.SASHIDO_REST_KEY as string}
     >
-      <ProjectContextProvider projects={user.projects}>
-        <ProjectContext.Consumer>
+      <AppContextProvider projects={user.projects}>
+        <AppContext.Consumer>
           {({ project }) => {
             if (!project || !project.objectId) {
               return null;
@@ -34,8 +34,8 @@ const LayoutContext = ({
               </PatstoreAppContextProvider>
             );
           }}
-        </ProjectContext.Consumer>
-      </ProjectContextProvider>
+        </AppContext.Consumer>
+      </AppContextProvider>
     </ApolloAppProvider>
   );
 };

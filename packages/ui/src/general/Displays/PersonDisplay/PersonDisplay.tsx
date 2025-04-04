@@ -31,7 +31,7 @@ const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 				>
 					<div className={"display_person_no_image_placeholder"} />
 					<div className="display_person_no_image_character">
-						{person.label
+						{person.label && person.label
 							.split(" ")
 							.map((word) => word[0])
 							.join("")}

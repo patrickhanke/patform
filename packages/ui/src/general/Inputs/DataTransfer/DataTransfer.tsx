@@ -7,8 +7,9 @@ import { DataObject, DataTranferProps, DataValue } from "./types";
 import { get } from "lodash-es";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import checkDataElement from "./functions/checkDataEements";
+import { Classes } from "@repo/types";
 
-const DataTransfer = <T extends Record<string, DataValue>>({
+const DataTransfer = <T extends Classes, D extends object>({
 	sourceClassName,
 	targetClassName,
 	moduleId,
@@ -17,7 +18,7 @@ const DataTransfer = <T extends Record<string, DataValue>>({
 	appId,
 	masterKey,
 	propertyMapping
-}: DataTranferProps<T>) => {
+}: DataTranferProps<T, D>) => {
 	const { project } = useContext(PatstoreAppContext);
 	const { createData } = useDataHandler();
 	const [data, setData] = useState<T | null>(null);

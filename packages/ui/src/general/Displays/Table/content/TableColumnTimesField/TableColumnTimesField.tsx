@@ -10,82 +10,94 @@ import TableColumnEditTime from "./components/TableColumnEditDate";
 import { getWeekday } from "@repo/provider";
 
 const TableColumnTimesField = ({
-  initialTimes,
-  onChange,
+	initialTimes,
+	onChange
 }: TableColumnTimesFieldProps) => {
-  const [loading, setLoading] = useState(false);
-  const [editDates, setEditDates] = useState(false);
-  const [times, setTimes] = useImmer<EventTime[]>(initialTimes || []);
-  const [activeDate, setActiveTime] = useState<EventTime["id"] | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [editDates, setEditDates] = useState(false);
+	const [times, setTimes] = useImmer<EventTime[]>(initialTimes || []);
+	const [activeDate, setActiveTime] = useState<EventTime["id"] | null>(null);
 
-  const slideInConfirmHandler = useCallback(async () => {
-    setLoading(true);
-    await onChange(times);
+	const slideInConfirmHandler = useCallback(async () => {
+		setLoading(true);
+		await onChange(times);
 
-    setEditDates(false);
-    setLoading(false);
-  }, [times]);
+		setEditDates(false);
+		setLoading(false);
+	}, [times]);
 
-  const findActiveTime = useCallback(
-    (id: string | null) => {
-      return times.find((field) => field.id === id);
-    },
-    [times],
-  );
+	const findActiveTime = useCallback(
+		(id: string | null) => {
+			return times.find((field) => field.id === id);
+		},
+		[times]
+	);
 
-  return (
-    <>
-      <div>
-        <button
-          type="button"
-          className="edit_text"
-          onClick={() => setEditDates(!editDates)}
-        >
-          {times.map((time) => (
-            <div
-              key={`${time.weekday}_${time.start}`}
-            >{`${getWeekday(time.weekday)?.short} - ${time.start}-${time.end}`}</div>
-          ))}
-        </button>
-      </div>
-      <SlideIn
-        cancel={() => setEditDates(false)}
-        confirm={() => slideInConfirmHandler()}
-        isOpen={editDates}
-        header="Felder bearbeiten"
-        showSecondaryContent={!!activeDate}
-        secondaryContent={
-          <TableColumnEditTime
-            time={findActiveTime(activeDate)}
-            setTimes={setTimes}
-          />
-        }
-        disabled={[loading, loading]}
-      >
-        <CreateButton
-          text="Zeit hinzufügen"
-          size="small"
-          onClick={() => {
-            setTimes((draft) => {
-              draft.push({
-                ...initialTimeValues,
-                id: v4() as string,
-              });
-            });
-          }}
-        />
-        <div className="table_columns_times_list">
-          {times.map((time) => (
-            <TableColumnTime
-              key={time.id}
-              time={time}
-              setActiveTime={setActiveTime}
-            />
-          ))}
-        </div>
-      </SlideIn>
-    </>
-  );
+	return (
+		<>
+			<div>
+				{times && times.length > 0 ? (
+					<button
+						type="button"
+						className="full_button sm light"
+						onClick={() => setEditDates(!editDates)}
+					>
+						{times.map((time) => (
+							<div key={`${time.weekday}_${time.start}`}>
+								{`${getWeekday(time.weekday)?.short} - ${time.start}-${time.end}`}
+							</div>
+						))}
+					</button>
+				) : (
+					<button
+						type="button"
+						className="full_button sm grey"
+						onClick={() => setEditDates(!editDates)}
+					>
+						+ Zeiten hinzufügen
+					</button>
+				)}
+			</div>
+			<SlideIn
+				cancel={() => setEditDates(false)}
+				confirm={() => slideInConfirmHandler()}
+				isOpen={editDates}
+				header="Felder bearbeiten"
+				showSecondaryContent={!!activeDate}
+				secondaryContent={
+					<TableColumnEditTime
+						time={findActiveTime(activeDate)}
+						setTimes={setTimes}
+					/>
+				}
+				disabled={[loading, loading]}
+			>
+				<div>
+					<CreateButton
+						text="Zeit hinzufügen"
+						size="small"
+						onClick={() => {
+							setTimes((draft) => {
+								draft.push({
+									...initialTimeValues,
+									id: v4() as string
+								});
+							});
+						}}
+					/>
+					<div className="table_columns_times_list">
+						{times.map((time) => (
+							<TableColumnTime
+								key={time.id}
+								time={time}
+								setActiveTime={setActiveTime}
+							/>
+						))}
+					</div>
+				</div>
+			</SlideIn>
+		</>
+	);
 };
 
 export default TableColumnTimesField;

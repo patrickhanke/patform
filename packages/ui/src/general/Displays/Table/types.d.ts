@@ -5,7 +5,8 @@ import {
 	Module,
 	EventClass,
 	ClassState,
-	ArticleClass
+	ArticleClass,
+	GroupClass
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { MapPlace } from "../Map";
@@ -109,6 +110,7 @@ export type ColumnDataTypes =
 	| "edit_persons"
 	| "edit_times"
 	| "file"
+	| "edit_team"
 	| "files";
 
 export type ColumnData<Class> = {
@@ -133,7 +135,8 @@ export type ColumnClasses =
 	| PersonClass
 	| CategoryClass
 	| EventClass
-	| ArticleClass;
+	| ArticleClass
+	| GroupClass;
 
 export type UseCreateColumnsHook<Class> = (
 	params: CreateColumnHookProps<Class>

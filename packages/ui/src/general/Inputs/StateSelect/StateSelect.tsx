@@ -7,164 +7,94 @@ import { Icon } from "@repo/ui";
 import ReactSelect, { components, StylesConfig } from "react-select";
 import customStyles from "./constants/customStyles";
 
-const StateSelect: FC<StateSelectProps> = ({
-  type,
-  state,
-  stateOptions,
-  label,
-  color,
-  icon,
-  displayInterface = false,
-  stateSelectHandler,
-  noBackground = false,
-  onClick,
-  customOptions,
-  width,
+const StateSelect: FC<StateSelectProps<State>> = ({
+	state,
+	stateOptions,
+	label,
+	icon,
+	isDisabled = false,
+	stateSelectHandler,
+	noBackground = false,
+	customOptions,
+	width
 }) => {
-  const [doc, setDoc] = useState<HTMLElement | null>(null);
+	const [doc, setDoc] = useState<HTMLElement | null>(null);
 
-  const handleStateSelect = (option: State | null) => {
-    if (stateSelectHandler && option) {
-      stateSelectHandler(option.value);
-    }
-  };
+	const handleStateSelect = (option: State | null) => {
+		if (stateSelectHandler && option) {
+			stateSelectHandler(option);
+		}
+	};
 
-  const buttonDisabled = useMemo(() => {
-    if (onClick) {
-      return false;
-    }
-    if (!displayInterface) {
-      return true;
-    }
-    return false;
-  }, [displayInterface, onClick]);
+	useEffect(() => {
+		const element = document?.body;
+		setDoc(element);
+	}, []);
 
-  useEffect(() => {
-    const element = document?.body;
-    setDoc(element);
-  }, []);
+	const customComponent = useMemo(() => {
+		return {
+			Input: (props: any) => {
+				return (
+					<components.Input {...props} style={{ display: "none" }} />
+				);
+			},
+			Option: (props: any) => {
+				const option = props.data;
+				return (
+					<components.Option {...props}>
+						<div>{option.label}</div>
+					</components.Option>
+				);
+			},
+			SingleValue: (props: any) => {
+				const option = props.data;
+				return (
+					<components.SingleValue {...props}>
+						<div
+							className={styles.state_display_container}
+							data-color={option.color}
+							data-display_interface={true}
+							data-showicon={!!icon}
+							data-no_background={noBackground}
+						>
+							{icon && <Icon size={10} type={icon} />}
+							<span className={styles.state_display_button}>
+								{option.label || label}
+							</span>
+						</div>
+					</components.SingleValue>
+				);
+			}
+		};
+	}, [label, state, icon]);
 
-  const customComponent = useMemo(() => {
-    if (state) {
-      return {
-        Input: (props: any) => {
-          return <components.Input {...props} style={{ display: "none" }} />;
-        },
-        Option: (props: any) => {
-          const option = props.data;
-          return (
-            <components.Option {...props}>
-              <div>{option.label}</div>
-            </components.Option>
-          );
-        },
-        SingleValue: (props: any) => {
-          const option = props.data;
-          return (
-            <components.SingleValue {...props}>
-              <div
-                className={styles.state_display_container}
-                data-color={color ? color : option.color}
-                data-display_interface={displayInterface}
-                data-showicon={!!icon}
-                data-no_background={noBackground}
-              >
-                {icon && <Icon size={10} type={icon} />}
-                <span className={styles.state_display_button}>
-                  {option.label || label}
-                </span>
-              </div>
-            </components.SingleValue>
-          );
-        },
-      };
-    }
-    return {
-      Option: (props: any) => {
-        const option = props.data;
-        return (
-          <div onClick={() => option.onClick()}>
-            <components.Option {...props}>{option.label}</components.Option>
-          </div>
-        );
-      },
-      Input: (props: any) => {
-        return <components.Input {...props} style={{ display: "none" }} />;
-      },
+	const selectValue = useMemo(() => {
+		if (stateOptions) {
+			return stateOptions.find((option) => option.value === state);
+		}
 
-      Placeholder: (props: any) => {
-        return (
-          <components.SingleValue {...props}>
-            <div
-              className={styles.state_display_container}
-              data-color={color ? color : ""}
-              data-showicon={!!icon}
-              data-no_background={noBackground}
-            >
-              {icon && <Icon size={10} type={icon} />}
-              <span style={{ width: "100%", textAlign: "left" }}>{label}</span>
-            </div>
-          </components.SingleValue>
-        );
-      },
-      SingleValue: (props: any) => {
-        return (
-          <components.SingleValue {...props}>
-            <div
-              className={styles.state_display_container}
-              data-color={color ? color : ""}
-              data-showicon={!!icon}
-              data-no_background={noBackground}
-            >
-              {icon && <Icon size={10} type={icon} />}
-              <span
-                style={{
-                  textAlign: state ? "center" : "left",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  width: "100%",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {label}
-              </span>
-            </div>
-          </components.SingleValue>
-        );
-      },
-    };
-  }, [label, state, icon, displayInterface]);
+		return null;
+	}, [state, stateOptions, customOptions, label]);
 
-  const selectValue = useMemo(() => {
-    if (customOptions) {
-      return customOptions.find((option) => option.label === label);
-    }
-    if (stateOptions) {
-      return stateOptions.find((option) => option.value === state);
-    }
-
-    return null;
-  }, [state, stateOptions, customOptions, label]);
-
-  return (
-    <ReactSelect<State, false>
-      value={selectValue}
-      options={type === "state" ? stateOptions : customOptions}
-      menuPortalTarget={doc}
-      styles={
-        customStyles({ width: width ? width : "auto" }) as StylesConfig<
-          State,
-          false
-        >
-      }
-      menuPosition="fixed"
-      menuPlacement="auto"
-      isMulti={false}
-      components={customComponent}
-      onChange={(inputValue) => handleStateSelect(inputValue)}
-      isDisabled={buttonDisabled}
-    />
-  );
+	return (
+		<ReactSelect<State, false>
+			value={selectValue}
+			options={stateOptions}
+			menuPortalTarget={doc}
+			styles={
+				customStyles({ width: width ? width : "auto" }) as StylesConfig<
+					State,
+					false
+				>
+			}
+			menuPosition="fixed"
+			menuPlacement="auto"
+			isMulti={false}
+			components={customComponent}
+			onChange={(inputValue) => handleStateSelect(inputValue)}
+			isDisabled={isDisabled}
+		/>
+	);
 };
 
 export default StateSelect;

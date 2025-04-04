@@ -5,7 +5,8 @@
     "BYTESCALE_PUBLIC_KEY",
     "BYTESCALE_SECRET_KEY",
     "SESSION_TOKEN",
-    "SASHIDO_APP_ID"
+    "SASHIDO_APP_ID",
+    "APP_NAME"
   ],
   "globalDependencies": [".env"],
   "tasks": {

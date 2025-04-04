@@ -1,20 +1,23 @@
-import { PersonOption, TableColumnPersonsProps } from "../types";
-import { PersonDisplay } from "@repo/ui";
-import { useContext, useMemo } from "react";
-import ReactSelect, { components } from "react-select";
-import { StylesConfig } from "react-select";
+import { TableColumnPersonsProps } from "../types";
+import {
+	ElementSelectInterface,
+	PersonDisplay,
+	SelectElement,
+	SlideInRight
+} from "@repo/ui";
+import { useContext, useMemo, useState } from "react";
 import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { PersonClass } from "@repo/types";
-import { PersonsInterface } from "@repo/modules";
-import { cloneDeep } from "lodash-es";
 
 const TableColumnPersons = ({
-	value = [],
+	value,
 	isEditable,
 	onChange
 }: TableColumnPersonsProps) => {
 	const { modules } = useContext(PatstoreAppContext);
+	const [isOpen, setIsOpen] = useState(false);
+
 	const { data: personData } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
@@ -34,139 +37,98 @@ const TableColumnPersons = ({
 		}
 	);
 
-	console.log(personData);
-	console.log(value);
-
-	const customComponent = useMemo(() => {
-		return {
-			Option: (props: any) => {
-				return (
-					<components.Option {...props}>
-						{props.data.person ? (
-							<PersonDisplay person={props.data.person} />
-						) : (
-							props.data.label
-						)}
-					</components.Option>
-				);
-			},
-			SingleValue: (props: any) => {
-				return (
-					<components.SingleValue {...props}>
-						{props.data.person ? (
-							<PersonDisplay person={props.data.person} />
-						) : (
-							props.data.label
-						)}
-					</components.SingleValue>
-				);
-			}
-		};
-	}, []);
-
-	const options: PersonOption[] = useMemo(() => {
-		const personOptions: PersonOption[] = [];
+	const elements = useMemo(() => {
+		const personOptionsArray: SelectElement[] = [];
 		if (personData) {
 			personData.objects.findPerson.results.forEach(
 				(person: PersonClass) => {
-					personOptions.push({
-						value: person.objectId,
-						label: person.label,
-						person
-					});
+					if (person) {
+						personOptionsArray.push({
+							value: person.objectId,
+							id: person.objectId,
+							label: `${person.label}`,
+							element: <PersonDisplay person={person} />
+						});
+					}
 				}
 			);
 		}
-		return personOptions;
+		personOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
+
+		return personOptionsArray;
 	}, [personData]);
+
+	const currentPersons: SelectElement[] = useMemo(() => {
+		const elementData: SelectElement[] = value.map((vl) =>
+			elements.find((element) => element.id === vl)
+		) as SelectElement[];
+		return elementData || [];
+	}, [elements, value]);
+
+	const selectPerson = useMemo(
+		() => (
+			<ElementSelectInterface
+				elements={elements}
+				selectedElements={currentPersons}
+				onSelect={(selectValue) => {
+					console.log(selectValue);
+
+					if (!selectValue || selectValue.length === 0) {
+						onChange([]);
+					} else if (selectValue.length > 0) {
+						onChange(selectValue.map((value) => value.id));
+					}
+				}}
+				max={6}
+				isSearchable
+			/>
+		),
+		[elements, value]
+	);
 
 	return (
 		<div>
-			{/* {isEditable ? 
-				<ReactSelect
-					value={value.map(vl => options.find(option => option.value === vl))}
-					onChange={(inputValue) => onChange(inputValue as PersonOption[]) }
-					options={options}
-					isMulti={true}
-					// isDisabled={isDisabled}
-					// isClearable={isClearable}
-					className={'react_select_container'}
-					classNamePrefix="react-select"
-					styles={customStyles({width: 180})}
-					menuPosition="fixed"
-					menuPlacement="auto"	
-					components={customComponent}
-				/>
-				:
-				<div>
-					{options.length > 0 && value.map(vl => <PersonDisplay key={vl} person={options.find(option => option.value === vl)} />)}
-				</div>
-			} */}
-			<PersonsInterface persons={value} onChange={onChange} />
+			{!value || value?.length === 0 ? (
+				<button
+					type="button"
+					onClick={() => setIsOpen(true)}
+					className="full_button sm grey"
+				>
+					<span>+ Person hinzufügen</span>
+				</button>
+			) : (
+				<button
+					type="button"
+					onClick={() => setIsOpen(true)}
+					className="full_button sm light"
+				>
+					<div className="person_display_container">
+						{value && value.length < 5 && personData ? (
+							value.map((person) => (
+								<PersonDisplay
+									key={person}
+									person={personData.objects.findPerson.results.find(
+										(ps: PersonClass) =>
+											ps.objectId === person
+									)}
+									onlyImage={value.length > 1}
+								/>
+							))
+						) : (
+							<span>{value.length} Personen</span>
+						)}
+					</div>
+				</button>
+			)}
+			<SlideInRight
+				isOpen={isOpen}
+				setIsOpen={setIsOpen}
+				header="Person auswählen"
+			>
+				{selectPerson}
+			</SlideInRight>
 		</div>
 	);
 };
-
-const customStyles = ({ width }: { width: string | number }): StylesConfig => ({
-	control: (provided: Record<string, unknown>, state: any) => ({
-		...provided,
-		minHeight: 0,
-		// border: state.isFocused ? '1px solid #3F9A82' : '1px solid #99999',
-		outline: "none",
-		boxShadow: "none",
-		border: "none",
-		// "&": {
-		//   border: "1px solid #cccccc",
-		//   boxShadow: "none"
-		// },
-		"&:hover": {
-			// border: '1px solid #3F9A82',
-			border: "none"
-		},
-		width
-	}),
-	container: (provided) => ({
-		...provided,
-		position: "relative",
-		minWidth: "120px"
-	}),
-	clearIndicator: (provided) => ({
-		...provided,
-		padding: "4px"
-	}),
-
-	menu: (provided) => ({
-		...provided,
-		zIndex: 9999,
-		fontFamily: "Geist",
-		fontWeight: 400,
-		fontSize: "12px"
-	}),
-	singleValue: (provided) => ({
-		...provided,
-		fontFamily: "Geist",
-		fontWeight: 400,
-		fontSize: "12px"
-	}),
-	multiValueLabel: (provided) => ({
-		...provided,
-		fontFamily: "Geist",
-		fontWeight: 400,
-		fontSize: "12px"
-	}),
-	dropdownIndicator: (provided) => ({
-		...provided,
-		padding: "4px"
-	}),
-	placeholder: (provided) => ({
-		...provided,
-		fontFamily: "Geist",
-		color: "#999999"
-	}),
-	input: (provided) => ({
-		...provided,
-		margin: 0
-	})
-});
 
 export default TableColumnPersons;

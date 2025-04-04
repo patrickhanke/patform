@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react";
-import { ProjectContext } from "./ProjectContext";
+import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { AppContext } from "./AppContext";
 import { PatstoreProject } from "@repo/types";
 import { generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
@@ -14,10 +14,14 @@ const ProjectContextProvider = ({
 	projects: string[];
 	children: ReactNode;
 }) => {
+	const appId = process.env.APP_NAME as string;
+	const project_id = `${appId}_project_id`;
+	const project_path = `${appId}_project_path`;
+
 	const [currentProject, setCurrentProject] = useState<PatstoreProject>();
 	const initialProjectId = useMemo(() => {
 		if (typeof window !== "undefined") {
-			const localId = localStorage.getItem("patstore_project_id");
+			const localId = localStorage.getItem(project_id);
 			return localId ? localId : projects[0];
 		}
 		return projects[0];
@@ -27,17 +31,31 @@ const ProjectContextProvider = ({
 		initialProjectId
 	);
 
-	const { data, loading, error } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "Project",
-			fields: [
+	const projectFields = useMemo(() => {
+		if (appId === "patstore") {
+			return [
 				"objectId",
 				"name",
 				"path",
 				"logo",
 				"modules {results {objectId name path icon settings fields categories connected_class}}"
-			]
+			];
+		} else if (appId === "patflow") {
+			return [
+				"name",
+				"objectId",
+				"path",
+				"time_settings",
+				"record_settings"
+			];
+		} else return [];
+	}, []);
+
+	const { data, loading, error } = useQuery(
+		generateGraphQLQuery({
+			type: "get",
+			objectName: "Project",
+			fields: projectFields
 		}),
 		{
 			variables: {
@@ -47,6 +65,8 @@ const ProjectContextProvider = ({
 		}
 	);
 
+	console.log({ currentProject });
+
 	useEffect(() => {
 		if (data) {
 			setCurrentProject(data.objects.getProject);
@@ -55,20 +75,14 @@ const ProjectContextProvider = ({
 
 	useEffect(() => {
 		if (currentProject) {
-			localStorage.setItem(
-				"patstore_project_id",
-				currentProject.objectId
-			);
-			localStorage.setItem(
-				"patstore_project_path",
-				`/${currentProject.path}`
-			);
+			localStorage.setItem(project_id, currentProject.objectId);
+			localStorage.setItem(project_path, `${currentProject.path}`);
 		}
 	}, [currentProject]);
 
 	const loadProject = useCallback((projectId: string, initial?: boolean) => {
 		if (initial) {
-			const localId = localStorage.getItem("patstore_project_id");
+			const localId = localStorage.getItem(project_id);
 			if (localId) {
 				setProjectId(localId);
 			} else {
@@ -87,15 +101,26 @@ const ProjectContextProvider = ({
 	);
 
 	return (
-		<ProjectContext.Provider value={projectContextObject}>
+		<AppContext.Provider value={projectContextObject}>
 			<ProjectLoader
 				loading={loading}
 				error={error}
 				project={currentProject}
+				appId={appId}
 			/>
 			{children}
-		</ProjectContext.Provider>
+		</AppContext.Provider>
 	);
+};
+
+export const useAppContext = () => {
+	const context = useContext(AppContext);
+	if (!context) {
+		throw new Error(
+			"useAppContext must be used within a ProjectContextProvider"
+		);
+	}
+	return context;
 };
 
 export default ProjectContextProvider;

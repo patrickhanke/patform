@@ -1,9 +1,9 @@
 "use client";
 
-import { PatstoreAppContext, getImageUrl } from "@repo/provider";
+import { generateImagePath, getImageUrl, useAppContext } from "@repo/provider";
 import { TableColumnGalleryProps } from "../types";
 import { Modal } from "@repo/ui";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { ImageUploader } from "@repo/modules";
 import "../styles.scss";
 import { isArray } from "lodash-es";
@@ -13,7 +13,7 @@ const TableColumnGallery = ({
 	onChange,
 	maxFileCount = 0
 }: TableColumnGalleryProps) => {
-	const { currentModule } = useContext(PatstoreAppContext);
+	const { project } = useAppContext();
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState<string[]>([]);
 
@@ -41,7 +41,10 @@ const TableColumnGallery = ({
 				<ImageUploader
 					label="Bild"
 					onChange={(imgUrl) => setImage(imgUrl as string[])}
-					path={`${process.env.BYTESCALE_IMAGE_FOLDER}${currentModule.path}`}
+					path={generateImagePath(
+						process.env.APP_NAME as string,
+						project.path
+					)}
 					returnType="array"
 					maxFileCount={maxFileCount}
 				/>

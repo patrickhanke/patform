@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo, useState } from "react";
 import { ImageUploader, SlideIn, TextInput } from "@repo/ui";
 import { UserSettingsProps } from "../types";
 import { ErrorMessage, PatstoreUser } from "@repo/types";
-import { useDataHandler } from "@repo/provider";
+import { generateImagePath, useAppContext, useDataHandler } from "@repo/provider";
 import * as yup from "yup";
 
 const UserSettings: FC<UserSettingsProps> = ({
@@ -13,6 +13,7 @@ const UserSettings: FC<UserSettingsProps> = ({
 }) => {
   const { updateData } = useDataHandler();
   const [data, setData] = useState<PatstoreUser>(user);
+  const { project } = useAppContext();
 
   const [loading, setLoading] = useState(false);
 
@@ -99,7 +100,10 @@ const UserSettings: FC<UserSettingsProps> = ({
           onChange={(value) => setData({ ...data, email: value })}
         />
         <ImageUploader
-          path="users"
+          path={generateImagePath(
+            process.env.APP_NAME as string,
+            project.path
+          )}
           label="Profilbild"
           onChange={(value) =>
             setData({ ...data, portrait: value.length > 0 ? value[0] : "" })

@@ -1,6 +1,6 @@
 import { DocumentNode } from "@apollo/client";
 
-export type DataTranferProps<T> = {
+export type DataTranferProps<T, D> = {
 	sourceClassName: string;
 	targetClassName: string;
 	moduleId: string;
@@ -8,7 +8,7 @@ export type DataTranferProps<T> = {
 	url: string;
 	appId: string;
 	masterKey: string;
-	propertyMapping: (D: DataObject) => T;
+	propertyMapping: (D: D) => Partial<T>;
 };
 
 export type GenerateQuery = (T: {
@@ -28,7 +28,6 @@ export type DataObject = {
 };
 
 export type PropertyMapping<T> = {
-	
 	[key in keyof T]: (data: DataObject) => T[key]; // Maps input property names to output property values
 };
 
