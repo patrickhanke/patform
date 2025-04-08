@@ -30,7 +30,8 @@ export type ModuleOptionsKeys =
 	| "/users"
 	| "/forms"
 	| "/groups"
-	| "/locations";
+	| "/locations"
+	| "/calendar";
 
 export type ModuleOptionsField = {
 	[key in ModuleOptionsKeys]: Omit<Module, "objectId" | "project">;

@@ -1,10 +1,10 @@
-import { MapPlace } from "@repo/ui";
+import { LatitudeLongitude } from "@repo/ui";
 import { ClassProperties } from "./Classes";
 
 export type EventLocation = {
   type: "address" | "map" | "online" | "location";
   address?: string;
-  map?: MapPlace | null;
+  map?: LatitudeLongitude | null;
   online?: string;
   location?: string;
 };

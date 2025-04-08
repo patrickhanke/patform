@@ -1,4 +1,5 @@
 import { ClassProperties } from "./Classes";
+import { EventTime } from "./Event";
 
 export type GroupClass = ClassProperties & {
   title: string;

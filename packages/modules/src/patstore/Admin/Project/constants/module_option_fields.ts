@@ -182,5 +182,17 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 11,
 		categories: [],
 		connected_class: "Location"
+	},
+	"/calendar": {
+		path: "/calendar",
+		name: "Kalender",
+		icon: "calendar",
+		settings: {
+			categories: []
+		},
+		fields: [],
+		position: 12,
+		categories: [],
+		connected_class: "Dates"
 	}
 };

@@ -530,7 +530,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 						/>
 					</div>
 				),
-				header: () => <span>Bearbeiten</span>,
+				header: () => <span>Bearb.</span>,
 				id: "edit",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,

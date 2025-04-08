@@ -12,3 +12,4 @@ export * from "./Dashboard";
 export * from "./Downloads";
 export * from "./Admin";
 export * from "./Users";
+export * from "./Calendar";

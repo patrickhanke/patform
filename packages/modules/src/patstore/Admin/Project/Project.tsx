@@ -38,7 +38,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 		site_states[0] as (typeof site_states)[number]
 	);
 	const { createData, updateData } = useDataHandler();
-	const { data, loading, refetch } = useQuery(
+	const { data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Module",

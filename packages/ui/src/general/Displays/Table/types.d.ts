@@ -7,7 +7,8 @@ import {
 	ClassState,
 	ArticleClass,
 	GroupClass,
-	LocationClass
+	LocationClass,
+	DateClass
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -140,7 +141,8 @@ export type ColumnClasses =
 	| EventClass
 	| ArticleClass
 	| GroupClass
-	| LocationClass;
+	| LocationClass
+	| DateClass;
 
 export type UseCreateColumnsHook<Class> = (
 	params: CreateColumnHookProps<Class>
