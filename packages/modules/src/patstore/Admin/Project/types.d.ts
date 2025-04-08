@@ -28,7 +28,9 @@ export type ModuleOptionsKeys =
 	| "/training-group"
 	| "/downloads"
 	| "/users"
-	| "/forms";
+	| "/forms"
+	| "/groups"
+	| "/locations";
 
 export type ModuleOptionsField = {
 	[key in ModuleOptionsKeys]: Omit<Module, "objectId" | "project">;

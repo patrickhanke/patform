@@ -40,7 +40,7 @@ export type State = {
 	color?: string;
 };
 
-export type StateSelectBasic = {
+export type StateSelect = {
 	color?: string;
 	icon?: IconTypes;
 	displayInterface?: boolean;
@@ -48,9 +48,6 @@ export type StateSelectBasic = {
 	noBackground?: boolean;
 	onClick?: () => void;
 	width?: number | string;
-};
-
-export type StateSelectLabel = StateSelectBasic & {
 	type: "label";
 	state?: null;
 	stateOptions?: null;
@@ -58,15 +55,14 @@ export type StateSelectLabel = StateSelectBasic & {
 	customOptions?: CustomOptions;
 };
 
-export type StateSelectOptions = StateSelectBasic & {
-	type: "state";
-	label?: null;
-	state: State["value"];
-	stateOptions: State[];
-	customOptions?: null;
+export type StateSelectProps = {
+	color?: string;
+	icon?: IconTypes;
+	noBackground?: boolean;
+	width?: number | string;
+	label: string;
+	customOptions?: CustomOptions;
 };
-
-export type StateSelectProps = StateSelectOptions | StateSelectLabel;
 
 export type UseGetState = (T: { state: State; states: State[] }) => {
 	stateObject: State;

@@ -65,7 +65,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		}
 
 		return date;
-	}, [data]);
+	}, [data, workers]);
 
 	useEffect(() => {
 		const taskWorkers = data?.objects.getTask.assigned_staff;
@@ -80,7 +80,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		if (taskWorkers && taskWorkers?.length > 0 && taskState === "created") {
 			taskStateHandler("assigned");
 		}
-	}, [taskState, data]);
+	}, [taskState, data, workers]);
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];

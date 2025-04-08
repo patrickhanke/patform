@@ -1,6 +1,13 @@
 "use client";
 
-import { ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+	ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState
+} from "react";
 import { AppContext } from "./AppContext";
 import { PatstoreProject } from "@repo/types";
 import { generateGraphQLQuery } from "@repo/provider";

@@ -4,9 +4,7 @@ import { ApolloAppProvider, AppContext, AppContextProvider } from "@repo/provide
 import { PatstoreUser } from "@repo/types";
 import {
   PatstoreAppContextProvider,
-  DataContextProvider,
-  ProjectContext,
-  ProjectContextProvider,
+  DataContextProvider
 } from "@repo/provider";
 
 const LayoutContext = ({

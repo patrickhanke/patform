@@ -25,7 +25,7 @@ const DisplayProperty = ({ taskId }: { taskId: string }) => {
 
 	useEffect(() => {
 		if (data) {
-			setSelectedProperty(data.objects.getTask.property.objectId);
+			setSelectedProperty(data?.objects?.getTask?.property?.objectId);
 		}
 	}, [data]);
 

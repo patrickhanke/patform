@@ -137,6 +137,7 @@ const TaskNextDate = ({
 		if (!data) return [];
 
 		const taskState = data.objects.getTask.state;
+
 		return [
 			{
 				value: "date_done",
@@ -202,17 +203,10 @@ const TaskNextDate = ({
 			<>
 				<div className={styles.object_container}>
 					<TaskNextDateStateSelect
-						type="label"
 						label={nextDate.value}
 						color={nextDate.color}
 						icon="calendar"
 						customOptions={nextDateSelectOptions}
-						displayInterface={
-							task.state === "completed" ||
-							task.state === "archived"
-								? false
-								: true
-						}
 						width={180}
 						noBackground
 					/>

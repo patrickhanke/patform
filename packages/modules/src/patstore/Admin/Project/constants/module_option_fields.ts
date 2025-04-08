@@ -86,6 +86,18 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Image"
 	},
+	"/groups": {
+		path: "/groups",
+		name: "Trainingsgruppe",
+		icon: "group",
+		settings: {
+			categories: []
+		},
+		fields: [],
+		position: 2,
+		categories: [],
+		connected_class: "Group"
+	},
 	"/training-group": {
 		path: "/training-group",
 		name: "Trainingsgruppe",
@@ -158,5 +170,17 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 10,
 		categories: [],
 		connected_class: "_User"
+	},
+	"/locations": {
+		path: "/locations",
+		name: "Orte",
+		icon: "location",
+		settings: {
+			categories: []
+		},
+		fields: [],
+		position: 11,
+		categories: [],
+		connected_class: "Location"
 	}
 };
