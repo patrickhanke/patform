@@ -74,7 +74,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (
@@ -105,7 +107,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (
@@ -136,7 +140,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "texteditor") {
@@ -160,7 +166,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "edit_dates") {
@@ -183,7 +191,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "date") {
@@ -196,7 +206,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (
@@ -227,7 +239,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (
@@ -266,7 +280,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "gallery") {
@@ -289,7 +305,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (
@@ -306,8 +324,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 							}
 							value={row[columnElement.id] as PersonClass}
 							onChange={async (value: string) => {
-								console.log(value);
-
 								await updateData({
 									className: className,
 									objectId: row.objectId,
@@ -328,7 +344,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "edit_persons") {
@@ -360,7 +378,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "edit_times") {
@@ -383,7 +403,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "edit_team") {
@@ -406,7 +428,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 			if (
@@ -435,7 +459,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
 		});
@@ -453,12 +479,12 @@ const useCreateColumns = <T extends ColumnClasses>({
 				header: () => <span>{category.label}</span>,
 				id: category.id,
 				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id
+				footer: (info) => info.column.id,
+				enableSorting: false,
+				sortingFn: undefined // Default sortingFn
 			} as ColumnDef<T>);
 		});
 		if (typeof editLink === "string") {
-			console.log("editLink", editLink);
-
 			columnArray.push({
 				accessorFn: (row) => (
 					<div className="button_container">
@@ -477,7 +503,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 				header: () => <span>Bearbeiten</span>,
 				id: "edit",
 				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id
+				footer: (info) => info.column.id,
+				enableSorting: false,
+				sortingFn: undefined // Default sortingFn
 			});
 		} else
 			columnArray.push({
@@ -499,7 +527,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 				header: () => <span>Bearbeiten</span>,
 				id: "edit",
 				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id
+				footer: (info) => info.column.id,
+				enableSorting: false,
+				sortingFn: undefined // Default sortingFn
 			});
 
 		return columnArray;

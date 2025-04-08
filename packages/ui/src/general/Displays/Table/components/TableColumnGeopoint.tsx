@@ -15,6 +15,9 @@ const TableColumnGeopoint = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [geopoint, setGeopoint] = useState<MapPlace | null>(value);
 
+	console.log(value);
+	
+
 	return (
 		<>
 			<div className="table_column_textfield_container">

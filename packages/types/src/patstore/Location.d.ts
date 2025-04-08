@@ -1,12 +1,10 @@
 import { MapPlace } from "@repo/ui";
+import { ClassProperties } from "./Classes";
 
-export type LocationClass = {
+export type LocationClass = ClassProperties & {
   image: string;
-  objectId: string;
   name: string;
   address: string;
-  geopoint: MapPlace;
-  address: string;
+  coordinates: MapPlace;
   description: string;
-  label: string;
 };

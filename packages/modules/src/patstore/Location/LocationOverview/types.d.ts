@@ -3,10 +3,13 @@ import { Filter, LocationClass } from "@repo/types";
 export type FilterArray = Filter[];
 
 export type UseFindLocationHook = ({
-  moduleId: string,
-  filters: FilterArray,
+	moduleId: string,
+	filters: FilterArray,
+	skip: number,
+	limit: number
 }) => {
-  loading: boolean;
-  locations?: LocationClass[];
-  refetch: () => void;
+	loading: boolean;
+	locations?: LocationClass[];
+	refetch: () => void;
+	count: number;
 };

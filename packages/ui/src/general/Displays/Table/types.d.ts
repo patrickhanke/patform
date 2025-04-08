@@ -6,7 +6,8 @@ import {
 	EventClass,
 	ClassState,
 	ArticleClass,
-	GroupClass
+	GroupClass,
+	LocationClass
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { MapPlace } from "../Map";
@@ -117,6 +118,8 @@ export type ColumnData<Class> = {
 	id: keyof Class;
 	label: string;
 	type: ColumnDataTypes;
+	enableSorting?: boolean;
+	sortingFn?: (a: Class, b: Class) => number;
 };
 
 export type CreateColumnHookProps<Class> = {
@@ -136,7 +139,8 @@ export type ColumnClasses =
 	| CategoryClass
 	| EventClass
 	| ArticleClass
-	| GroupClass;
+	| GroupClass
+	| LocationClass;
 
 export type UseCreateColumnsHook<Class> = (
 	params: CreateColumnHookProps<Class>

@@ -74,7 +74,7 @@ const GroupOverview = () => {
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
-				text: "Gruppe löschen",
+				text: "Gruppen löschen",
 				onClick: () => {
 					setDeleteModal(true);
 				},
@@ -192,7 +192,7 @@ const GroupOverview = () => {
 					setLoading(false);
 					setDeleteModal(false);
 				}}
-				header={"News löschen"}
+				header={"Gruppe löschen"}
 			>
 				<p>Sind sich Sicher, dass sie die Gruppen löschen möchten?</p>
 			</Modal>

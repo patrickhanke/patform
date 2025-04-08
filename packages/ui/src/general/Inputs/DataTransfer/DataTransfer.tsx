@@ -51,6 +51,8 @@ const DataTransfer = <T extends Classes, D extends object>({
 				console.error("Error fetching data:", error);
 			}
 
+			console.log(dataObjects);
+
 			const transformedData = dataObjects.map((dataObject: T) => {
 				const transformedObject = propertyMapping(dataObject) as T;
 				// for (const [inputKey] of Object.entries(propertyMapping)) {
@@ -63,6 +65,7 @@ const DataTransfer = <T extends Classes, D extends object>({
 				// }
 				return transformedObject;
 			});
+
 			if (preview) {
 				console.log("Preview Data:", transformedData);
 				return transformedData;
