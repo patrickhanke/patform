@@ -2,8 +2,8 @@ import { useState } from "react";
 import {
 	IconButton,
 	Map,
-	MapPlace,
 	Modal,
+	LatLng,
 	TableColumnGeopointProps
 } from "@repo/ui";
 
@@ -13,15 +13,21 @@ const TableColumnGeopoint = ({
 	onChange
 }: TableColumnGeopointProps) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [geopoint, setGeopoint] = useState<MapPlace | null>(value);
+	const [geopoint, setGeopoint] = useState<LatLng | null>({
+		lat: value?.latitude,
+		lng: value?.longitude
+	});
 
 	console.log(value);
-	
 
 	return (
 		<>
 			<div className="table_column_textfield_container">
-				{value ? value.name : "-"}
+				<span>
+					{value ? value.latitude : "-"}
+					<br />
+					{value ? value.longitude : "-"}
+				</span>
 
 				{isEditable && (
 					<>
@@ -50,12 +56,15 @@ const TableColumnGeopoint = ({
 					}
 					setIsOpen(false);
 				}}
-				header={"Beschreibung ändern"}
+				header={"KartenDaten ändern"}
 				buttonDisabled={[false, !geopoint]}
 			>
 				<div className={"table_column_textfield_textarea_container"}>
 					<Map
-						initialPlace={value}
+						initialPlace={{
+							lat: geopoint?.lat || 0,
+							lng: geopoint?.lng || 0
+						}}
 						onChange={(geopointer) => setGeopoint(geopointer)}
 						height={300}
 					/>

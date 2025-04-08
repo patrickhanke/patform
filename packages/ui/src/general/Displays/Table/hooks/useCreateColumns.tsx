@@ -21,7 +21,7 @@ import {
 import TableColumnDate from "../components/TableColumnDate";
 import TableColumnTexteditor from "../components/TableColumnTexteditor";
 import TableColumnGeopoint from "../components/TableColumnGeopoint";
-import { MapPlace } from "../../Map";
+import { LatitudeLongitude } from "@repo/ui";
 import TableColumnEditState from "../components/TableColumnEditState";
 import { get } from "lodash-es";
 import TableColumnGallery from "../components/TableColumnGallery";
@@ -218,17 +218,23 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnGeopoint
-							value={row[columnElement.id] as MapPlace}
+							value={row[columnElement.id] as LatitudeLongitude}
 							isEditable={
 								columnElement.type === "edit_geopoint"
 									? true
 									: false
 							}
-							onChange={async (value: MapPlace) => {
+							onChange={async (value: LatitudeLongitude) => {
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: {
+										[columnElement.id]: {
+											__type: "GeoPoint",
+											latitude: value.latitude,
+											longitude: value.longitude
+										}
+									}
 								});
 								if (refetch) {
 									refetch();

@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@bytescale/sdk": "^3.39.0",
-    "@bytescale/upload-widget-react": "^4.19.0"
+    "@bytescale/upload-widget-react": "^4.19.0",
+    "react-select": "^5.10.1"
   },
   "devDependencies": {
     "@repo/eslint": "1.0.0",
@@ -21,7 +22,6 @@
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "eslint": "^9.22.0",
-    "react": "^18.2.0",
     "typescript": "^5.4.3"
   }
 }

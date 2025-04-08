@@ -10,8 +10,8 @@ import {
 	LocationClass
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
-import { MapPlace } from "../Map";
 import { Dispatch, ReactNode, SetStateAction } from "react";
+import { LatitudeLongitude } from "../Map";
 
 export type TableTypes = {
 	data: TData[];
@@ -62,7 +62,7 @@ export type TableColumnTextfieldProps = {
 };
 
 export type TableColumnGeopointProps = {
-	value: MapPlace;
+	value: LatitudeLongitude;
 	isEditable?: boolean;
 	onChange: (place: MapPlace) => void;
 };
