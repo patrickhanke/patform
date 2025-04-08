@@ -1,17 +1,14 @@
 "use client";
 
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import PatflowAppContext from "./PatflowAppContext";
 import { useQuery } from "@apollo/client";
-import {
-	FIND_ALL_ROLES,
-	generateGraphQLQuery,
-	UserContext
-} from "@repo/provider";
+import { FIND_ALL_ROLES, generateGraphQLQuery } from "@repo/provider";
 import { RoleUsers } from "./types";
 import { PatflowUserRole } from "@repo/types";
 import { CreateTask, CreateTicket } from "@repo/modules";
 import dynamic from "next/dynamic";
+import { useAppContext } from "@repo/provider";
 
 const SelectYear = dynamic(() => import("./components/SelectYear"), {
 	ssr: false
@@ -22,7 +19,7 @@ const PatflowAppContextProvider = ({
 }: {
 	children: React.ReactNode;
 }) => {
-	const { project } = useContext(UserContext);
+	const { project } = useAppContext();
 	const [refetchTicket, setRefetchTicket] = useState<Date | undefined>();
 	const [refetchTask, setRefetchTask] = useState<Date | undefined>();
 	const [year, setYear] = useState(new Date().getFullYear());
@@ -47,10 +44,11 @@ const PatflowAppContextProvider = ({
 			variables: {
 				params: {
 					project: {
-						_eq: project.objectId
+						_eq: project?.objectId
 					}
 				}
-			}
+			},
+			skip: !project?.objectId
 		}
 	);
 
@@ -68,7 +66,7 @@ const PatflowAppContextProvider = ({
 			variables: {
 				params: {
 					project: {
-						_eq: project.objectId
+						_eq: project?.objectId
 					}
 				}
 			}

@@ -27,6 +27,7 @@ export type PatflowUser = {
   role: PatflowUserRole;
   is_worker: boolean;
   portrait: Image;
+  projects: string[];
 };
 
 export type PatflowUserDisplayData = Pick<

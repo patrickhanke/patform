@@ -49,7 +49,7 @@ export default async function RootLayout({
       </Head>
       <body>
         <div className="layout">
-          <LayoutContext>
+          <LayoutContext user={user}>
             <RenderSidebar user={user} />
 
             <div className="main_content" id="main_content">

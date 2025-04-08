@@ -72,8 +72,6 @@ const ProjectContextProvider = ({
 		}
 	);
 
-	console.log({ currentProject });
-
 	useEffect(() => {
 		if (data) {
 			setCurrentProject(data.objects.getProject);

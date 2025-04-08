@@ -47,6 +47,9 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		[refetchTask]
 	);
 
+	console.log(workers);
+	
+
 	const nextDate = useMemo(() => {
 		let date;
 		if (data) {

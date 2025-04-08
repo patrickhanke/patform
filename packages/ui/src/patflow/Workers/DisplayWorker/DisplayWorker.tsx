@@ -19,7 +19,6 @@ const DisplayWorker = ({
 	const { year } = useContext(PatflowAppContext);
 
 	const { workers } = useContext(PatflowAppContext);
-
 	const { data, loading: dayLoading } = useQuery(find_day, {
 		variables: {
 			params: {
