@@ -103,6 +103,7 @@
 .slidein_secondary_content {
   order: 1;
   overflow: auto;
+  position: relative;
 }
 
 .slidein_secondary_content[data-open="true"] {

@@ -5,5 +5,5 @@ export type DateClass = ClassProperties & {
   title: string;
   description: string;
   image: string;
-  dates: EventDate[];
+  date: EventDate;
 };

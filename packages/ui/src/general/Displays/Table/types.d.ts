@@ -44,10 +44,8 @@ export type TableColumnGalleryProps = {
 
 export type TableColumnCategoryProps = {
 	category: ModuleCategory;
-	objectId: string;
-	className: string;
 	categories: ClassCategories;
-	refetch: () => void;
+	onChange: (categories: string[]) => Promise<void>;
 };
 
 export type TableColumnStringProps = {

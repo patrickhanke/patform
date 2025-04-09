@@ -8,6 +8,10 @@ const site_states = [
 		label: "Nutzer"
 	},
 	{
+		value: "roles",
+		label: "Rollen"
+	},
+	{
 		value: "settings",
 		label: "Einstellungen"
 	}

@@ -1,4 +1,5 @@
 import { FormDataElement } from "@repo/ui";
+import { CategoryClass } from "./Category";
 
 export type PatstoreProject = {
   name: string;
@@ -37,4 +38,6 @@ export type Classes =
   | CategoryClass
   | EventClass
   | ArticleClass
-  | GroupClass;
+  | GroupClass
+  | CategoryClass
+  | DateClass

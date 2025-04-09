@@ -3,7 +3,7 @@ import {
 	ElementSelectInterface,
 	PersonDisplay,
 	SelectElement,
-	SlideInRight
+	SlideIn
 } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
 import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
@@ -17,6 +17,8 @@ const TableColumnPersons = ({
 }: TableColumnPersonsProps) => {
 	const { modules } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [newPersons, setNewPersons] = useState<string[]>(value || []);
 
 	const { data: personData } = useQuery(
 		generateGraphQLQuery({
@@ -59,11 +61,11 @@ const TableColumnPersons = ({
 	}, [personData]);
 
 	const currentPersons: SelectElement[] = useMemo(() => {
-		const elementData: SelectElement[] = value.map((vl) =>
+		const elementData: SelectElement[] = newPersons.map((vl) =>
 			elements.find((element) => element.id === vl)
 		) as SelectElement[];
 		return elementData || [];
-	}, [elements, value]);
+	}, [elements, newPersons]);
 
 	const selectPerson = useMemo(
 		() => (
@@ -74,16 +76,16 @@ const TableColumnPersons = ({
 					console.log(selectValue);
 
 					if (!selectValue || selectValue.length === 0) {
-						onChange([]);
+						setNewPersons([]);
 					} else if (selectValue.length > 0) {
-						onChange(selectValue.map((value) => value.id));
+						setNewPersons(selectValue.map((value) => value.id));
 					}
 				}}
 				max={6}
 				isSearchable
 			/>
 		),
-		[elements, value]
+		[elements, value, currentPersons]
 	);
 
 	return (
@@ -93,6 +95,7 @@ const TableColumnPersons = ({
 					type="button"
 					onClick={() => setIsOpen(true)}
 					className="full_button sm grey"
+					disabled={!isEditable}
 				>
 					<span>+ Person hinzufügen</span>
 				</button>
@@ -101,6 +104,7 @@ const TableColumnPersons = ({
 					type="button"
 					onClick={() => setIsOpen(true)}
 					className="full_button sm light"
+					disabled={!isEditable}
 				>
 					<div className="person_display_container">
 						{value && value.length < 5 && personData ? (
@@ -120,13 +124,20 @@ const TableColumnPersons = ({
 					</div>
 				</button>
 			)}
-			<SlideInRight
+			<SlideIn
 				isOpen={isOpen}
-				setIsOpen={setIsOpen}
-				header="Person auswählen"
+				cancel={() => setIsOpen(false)}
+				confirm={async () => {
+					setLoading(true);
+					await onChange(newPersons);
+					setIsOpen(false);
+					setLoading(false);
+				}}
+				disabled={[loading, loading]}
+				header="Personen auswählen"
 			>
 				{selectPerson}
-			</SlideInRight>
+			</SlideIn>
 		</div>
 	);
 };

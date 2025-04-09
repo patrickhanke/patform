@@ -6,7 +6,7 @@ import axiosclient from "./axios";
 import { useDataContext } from "./DataContext";
 import compileAxiosError from "./compileAxiosError";
 
-const useDataHandler = () => {
+const useDataHandler = (useMasterKey = false) => {
 	const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
 	const [loading, setLoading] = useState(false);
 	const { feedbackHandler } = useDataContext();
@@ -30,7 +30,7 @@ const useDataHandler = () => {
 			let data: Array<any> = [];
 			setLoading(true);
 
-			await axiosclient()
+			await axiosclient(useMasterKey)
 				.put(
 					`classes/${className}/${objectId}`,
 					updateObject as AxiosRequestConfig<any>
@@ -79,7 +79,7 @@ const useDataHandler = () => {
 			if (feedback) {
 				setFeedback("lädt", "loading", new Date());
 			}
-			await axiosclient()
+			await axiosclient(useMasterKey)
 				.delete(`classes/${className}/${objectId}`)
 				.then((response: AxiosResponse<any, any>) => {
 					if (feedback) {
@@ -118,7 +118,7 @@ const useDataHandler = () => {
 		}) => {
 			const data: Array<any> = [];
 			setLoading(true);
-			await axiosclient()
+			await axiosclient(useMasterKey)
 				.post(
 					`classes/${className}`,
 					query || (updateObject as AxiosRequestConfig<any>)
@@ -149,7 +149,7 @@ const useDataHandler = () => {
 			let data: Array<any> = [];
 			setLoading(true);
 			if (query) {
-				await axiosclient()
+				await axiosclient(useMasterKey)
 					.get(`classes/${className}?where={${query}}`)
 					.then((response: AxiosResponse<any, any>) => {
 						data = response.data.results;
@@ -159,7 +159,7 @@ const useDataHandler = () => {
 					});
 			}
 			if (!query) {
-				await axiosclient()
+				await axiosclient(useMasterKey)
 					.get(`classes/${className}`)
 					.then((response: AxiosResponse<any, any>) => {
 						data = response.data.results;

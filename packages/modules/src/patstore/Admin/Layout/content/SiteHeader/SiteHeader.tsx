@@ -13,7 +13,7 @@ const SiteHeader = ({ title }: SiteHeaderComponent) => {
 			<div className={styles.main_container}>
 				<div className={styles.siteheader_container}>
 					<h1>{title}</h1>
-					p<div className={styles.siteheader_right_container}>
+					<div className={styles.siteheader_right_container}>
 						<button
 							className="full_button sm primary"
 							onClick={() => setAddProject(true)}

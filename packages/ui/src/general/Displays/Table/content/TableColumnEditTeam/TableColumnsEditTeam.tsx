@@ -39,7 +39,10 @@ const TableColumnEditTeam: FC<TableColumnEditTeamProps> = ({
 						{team.name}
 					</button>
 				) : (
-					<button className="full_button sm grey">
+					<button
+						className="full_button sm grey"
+						onClick={() => setEditTeam(true)}
+					>
 						+ Team hinzufügen
 					</button>
 				)}

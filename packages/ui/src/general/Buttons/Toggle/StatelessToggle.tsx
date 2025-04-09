@@ -5,20 +5,23 @@ import "./styles.scss";
 import { StatelessToggleProps } from "./types";
 
 const StatelessToggle: FC<StatelessToggleProps> = ({
-  onChange,
-  value,
-  disabled = false,
-  label,
+	onChange,
+	value,
+	disabled = false,
+	label
 }) => {
-  return (
-    <div className="toggle-container">
-      {label && <label>{label}</label>}
-      <div className="toggle-switch" data-disabled={disabled}>
-        <input type="checkbox" checked={value} disabled={disabled} />
-        <span onClick={() => onChange(!value)} className="toggle-slider"></span>
-      </div>
-    </div>
-  );
+	return (
+		<div className="toggle-container">
+			{label && <label>{label}</label>}
+			<div className="toggle-switch" data-disabled={disabled}>
+				<input type="checkbox" checked={value} disabled={disabled} />
+				<span
+					onClick={() => onChange(!value)}
+					className="toggle-slider"
+				></span>
+			</div>
+		</div>
+	);
 };
 
 export default StatelessToggle;

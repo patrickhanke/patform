@@ -9,11 +9,20 @@ export type ModuleCategory = {
   connected_class: string;
   position: number;
   is_multi: boolean;
+  category_ids: string[];
+
 };
+
+export type  ModuleSettingsCategory = {
+  id: string; 
+  label: string; 
+  value: string; 
+  position: number
+}
 
 export type ModuleSettings = {
   [key: string]: any;
-  categories: { id: string; label: string; value: string; position: number }[];
+  categories?: ModuleSettingsCategory[];
 };
 
 export type Module = {

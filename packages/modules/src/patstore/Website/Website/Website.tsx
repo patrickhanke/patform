@@ -11,52 +11,52 @@ import { useQuery } from "@apollo/client";
 import createPage from "./constants/createPage";
 
 const Website = () => {
-  const { currentModule } = useContext(PatstoreAppContext);
-  const { data: moduleData } = useQuery(
-    generateGraphQLQuery({
-      type: "get",
-      objectName: "Module",
-      fields: ["settings", "objectId"],
-    }),
-    { variables: { id: currentModule.objectId } },
-  );
-  const [activeState, setActiveState] = useState<(typeof pages_states)[number]>(
-    pages_states[0] as PageState,
-  );
+	const { currentModule } = useContext(PatstoreAppContext);
+	const { data: moduleData } = useQuery(
+		generateGraphQLQuery({
+			type: "get",
+			objectName: "Module",
+			fields: ["settings", "objectId"]
+		}),
+		{ variables: { id: currentModule.objectId } }
+	);
+	const [activeState, setActiveState] = useState<
+		(typeof pages_states)[number]
+	>(pages_states[0] as PageState);
 
-  const createClass = useMemo(() => {
-    if (activeState.value === "pages") {
-      return createPage();
-    }
-    return null;
-  }, [activeState]);
+	const createClass = useMemo(() => {
+		if (activeState.value === "pages") {
+			return createPage();
+		}
+		return null;
+	}, [activeState]);
 
-  if (moduleData) {
-    const module = moduleData.objects.getModule;
+	if (moduleData) {
+		const module = moduleData.objects.getModule;
 
-    return (
-      <Page
-        title={currentModule.name}
-        // pageHeaderContent={}
-        emptyContent={true}
-        pageStates={pages_states}
-        activeState={activeState}
-        navOnClick={setActiveState}
-        createClass={createClass}
-      >
-        {activeState.value === "settings" && (
-          <WebsiteSettings
-            settings={module.settings}
-            moduleId={currentModule.objectId}
-          />
-        )}
-        {activeState.value === "pages" && (
-          <WebsitePages moduleId={currentModule.objectId} />
-        )}
-      </Page>
-    );
-  }
-  return null;
+		return (
+			<Page
+				title={currentModule.name}
+				// pageHeaderContent={}
+				emptyContent={true}
+				pageStates={pages_states}
+				activeState={activeState}
+				navOnClick={setActiveState}
+				createClass={createClass}
+			>
+				{activeState.value === "settings" && (
+					<WebsiteSettings
+						settings={module.settings}
+						moduleId={currentModule.objectId}
+					/>
+				)}
+				{activeState.value === "pages" && (
+					<WebsitePages moduleId={currentModule.objectId} />
+				)}
+			</Page>
+		);
+	}
+	return null;
 };
 
 export default Website;

@@ -3,7 +3,7 @@ import {
 	ElementSelectInterface,
 	PersonDisplay,
 	SelectElement,
-	SlideInRight
+	SlideIn
 } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
 import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
@@ -17,6 +17,10 @@ const TableColumnPerson = ({
 }: TableColumnPersonProps) => {
 	const { modules } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [selectedPerson, setSelectedPerson] = useState<string | undefined>(
+		value.objectId
+	);
 
 	const { data: personData } = useQuery(
 		generateGraphQLQuery({
@@ -71,16 +75,16 @@ const TableColumnPerson = ({
 					console.log(selectValue);
 
 					if (!selectValue || selectValue.length === 0) {
-						onChange("");
+						setSelectedPerson("");
 					} else if (selectValue.length > 0) {
-						onChange((selectValue[0]?.id as string) || "");
+						setSelectedPerson((selectValue[0]?.id as string) || "");
 					}
 				}}
 				max={1}
 				isSearchable
 			/>
 		),
-		[elements, value]
+		[elements, value, currentPerson]
 	);
 
 	return (
@@ -102,13 +106,22 @@ const TableColumnPerson = ({
 					)}
 				</div>
 			</button>
-			<SlideInRight
+			<SlideIn
 				isOpen={isOpen}
-				setIsOpen={setIsOpen}
-				header="Person auswählen"
+				cancel={() => setIsOpen(false)}
+				confirm={async () => {
+					if (selectedPerson) {
+						setLoading(true);
+						await onChange(selectedPerson);
+						setIsOpen(false);
+						setLoading(false);
+					}
+				}}
+				disabled={[loading, loading || !selectedPerson]}
+				header="Personen auswählen"
 			>
 				{selectPerson}
-			</SlideInRight>
+			</SlideIn>
 		</div>
 	);
 };

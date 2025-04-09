@@ -55,12 +55,28 @@ const SlideIn: React.FC<SlideInProps> = ({
 							</div>
 
 							<motion.div
-								animate={{
-									width: showSecondaryContent ? 360 : 0
+								initial={{
+									width: 0
 								}}
-								transition={{ duration: 0.3, ease: "easeOut" }}
+								animate={{ width: 360 }}
+								exit={{ width: 0 }}
+								transition={{
+									duration: 0.3,
+									ease: "easeOut",
+									delay: 0.1
+								}}
 								className={"slidein_secondary_content"}
-								data-open={showSecondaryContent ? true : false}
+								style={{
+									display:
+										secondaryContent && showSecondaryContent
+											? "block"
+											: "none"
+								}}
+								data-open={
+									showSecondaryContent && isOpen
+										? true
+										: false
+								}
 							>
 								{secondaryContent}
 							</motion.div>

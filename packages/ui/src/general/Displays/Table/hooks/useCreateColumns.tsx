@@ -476,10 +476,19 @@ const useCreateColumns = <T extends ColumnClasses>({
 				accessorFn: (row) => (
 					<TableColumnCategory
 						category={category}
-						className={className}
-						objectId={row.objectId}
 						categories={row.categories || []}
-						refetch={refetch}
+						onChange={async (categories: string[]) => {
+							await updateData({
+								objectId: row.objectId,
+								className,
+								updateObject: {
+									categories: categories
+								}
+							});
+							if (refetch) {
+								refetch();
+							}
+						}}
 					/>
 				),
 				header: () => <span>{category.label}</span>,

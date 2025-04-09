@@ -2,6 +2,8 @@
 
 import { useContext, useState, useMemo } from "react";
 import {
+	DataTransfer,
+	generateQuery,
 	Modal,
 	Page,
 	RenderFilters,
@@ -15,6 +17,7 @@ import createDate from "./constants/createCalendar";
 import useFindDate from "./hooks/useFindDate";
 // import createGroup from "./constants/createGroup";
 // import group_states from "./constants/group_states";
+import { formatISO } from "date-fns";
 
 const CalendarOverview = () => {
 	const { deleteData } = useDataHandler();
@@ -26,7 +29,7 @@ const CalendarOverview = () => {
 		pageIndex: 0,
 		pageSize: 10
 	});
-	const { groups, refetch, count } = useFindDate({
+	const { dates, refetch, count } = useFindDate({
 		moduleId: currentModule.objectId,
 		filters,
 		limit: pagination.pageSize,
@@ -40,7 +43,7 @@ const CalendarOverview = () => {
 		data: [
 			{ id: "image", type: "edit_image", label: "Bild" },
 			{ id: "title", type: "edit_string", label: "Titel" },
-			{ id: "dates", type: "edit_dates", label: "Daten" },
+			{ id: "date", type: "edit_date", label: "Daten" },
 			{ id: "description", type: "edit_textfield", label: "Beschreibung" }
 		],
 		fields: currentModule.fields,
@@ -92,80 +95,60 @@ const CalendarOverview = () => {
 			createClass={createDate}
 			refetch={refetch}
 		>
-			{/* {process.env.NODE_ENV === "development" && (
+			{process.env.NODE_ENV === "development" && (
 				<DataTransfer<
-					GroupClass,
+					DateClass,
 					{
+						objectId: string;
 						titel: string;
 						beschreibung: string;
 						info: string;
-						startalter: string;
-						endalter: string;
-						aktiv: boolean;
-						geschlecht: string;
-						email: string;
-						bild: object;
-						mannschaft: {
-							objectId: string;
-							titel: string;
-							portrait: string;
-							text: string;
-						};
+						datum: string;
+						enddatum: string;
+						ort: string;
 					}
 				>
-					sourceClassName="Trainingsgruppe"
-					targetClassName="Group"
+					sourceClassName="Termin"
+					targetClassName="Date"
 					moduleId={currentModule.objectId}
 					url="https://pg-app-mvx9tbt2yit00ef2pzlktzg3k81djj.scalabl.cloud/graphql/"
 					masterKey="POcP3f5vEluCLVT1txftBPf5XGTIPYSki6UR7VRH"
 					appId="E24kTRGCLBzXhUOQvwFNekgPpoMPeHRNITT67YiR"
 					query={generateQuery({
-						objectName: "Trainingsgruppe",
+						objectName: "Termin",
 						fields: [
+							"objectId",
 							"titel",
 							"beschreibung",
-							"info",
-							"startalter",
-							"endalter",
-							"aktiv",
-							"geschlecht",
-							"email",
-							"bild",
-							"mannschaft {objectId titel portrait text}"
+							"datum",
+							"ort",
+							"enddatum"
 						]
 					})}
-					propertyMapping={(trainingsgruppe) => ({
-						title: trainingsgruppe.titel,
-						description: trainingsgruppe.beschreibung,
-						info: trainingsgruppe.info,
-						image: trainingsgruppe.bild as unknown as string,
-						data: {
-							start_age: trainingsgruppe.startalter,
-							end_age: trainingsgruppe.endalter,
-							info: trainingsgruppe.info,
-							description: trainingsgruppe.beschreibung,
-							contact: trainingsgruppe.email,
-
-							gender: "female"
-						},
-						state:
-							trainingsgruppe?.aktiv === false
-								? "draft"
-								: "published",
-						team: {
-							id: trainingsgruppe?.mannschaft?.objectId,
-							name: trainingsgruppe?.mannschaft?.titel,
-							image: trainingsgruppe?.mannschaft?.portrait,
-							description: trainingsgruppe?.mannschaft?.text
+					propertyMapping={(termin) => ({
+						title: termin.titel,
+						description: termin.beschreibung,
+						date: {
+							label: termin.titel,
+							start: formatISO(termin.datum),
+							end: termin.enddatum
+								? formatISO(termin.enddatum)
+								: "",
+							place: {
+								type: "address",
+								address: termin.ort
+							},
+							full_day: false,
+							id: termin.objectId
 						}
 					})}
 				/>
-			)} */}
+			)}
 
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}
-				data={groups || []}
+				data={dates || []}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
@@ -182,7 +165,7 @@ const CalendarOverview = () => {
 					await Promise.all(
 						selectedRows.map(async (objectId) => {
 							await deleteData({
-								className: "Group",
+								className: "Date",
 								objectId
 							});
 						})

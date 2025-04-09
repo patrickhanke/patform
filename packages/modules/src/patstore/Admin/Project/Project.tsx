@@ -16,6 +16,7 @@ import CreateModule from "./components/CreateModule";
 import site_states from "./constants/site_states";
 import AppUsers from "./content/AppUsers";
 import ProjectSettings from "./content/ProjectSettings";
+import ProjectRoles from "./content/ProjectRoles";
 
 const Project = ({ params }: { params: { project_id: string } }) => {
 	console.log(params.project_id);
@@ -32,6 +33,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 	);
 	const [createModule, setCreateModule] = useState(false);
 	const [createUser, setCreateUser] = useState(false);
+	const [createRole, setCreateRole] = useState(false);
 	const [addUser, setAddUser] = useState(false);
 
 	const [siteState, setSiteState] = useState(
@@ -78,6 +80,14 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 				{
 					text: "Benutzer hinzufügen",
 					onClick: () => setAddUser(true)
+				}
+			];
+		if (siteState.value === "roles")
+			return [
+				{
+					text: "Neue Rolle erstellen",
+					onClick: () => setCreateRole(true),
+					is_add_button: true
 				}
 			];
 	}, [params.project_id, siteState]);
@@ -167,6 +177,21 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 						setCreateUser={setCreateUser}
 						addUser={addUser}
 						setAddUser={setAddUser}
+					/>
+				</>
+			)}
+			{siteState?.value === "settings" && (
+				<>
+					<ProjectSettings projectId={params.project_id} />
+				</>
+			)}
+			{siteState?.value === "roles" && (
+				<>
+					<ProjectRoles
+						projectId={params.project_id}
+						createRole={createRole}
+						setCreateRole={setCreateRole}
+						modules={modules}
 					/>
 				</>
 			)}

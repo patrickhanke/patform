@@ -15,3 +15,4 @@ export type * from "./Data";
 export type * from "./Message";
 export type * from "./User";
 export type * from "./Date";
+export type * from "./Role";

@@ -10,7 +10,7 @@ const useFindDate: UseFindDateHook = ({ moduleId, filters, limit, skip }) => {
 			fields: [
 				"objectId",
 				"label",
-				"dates",
+				"date",
 				"title",
 				"image",
 				"description",
@@ -30,9 +30,9 @@ const useFindDate: UseFindDateHook = ({ moduleId, filters, limit, skip }) => {
 
 	return {
 		loading,
-		groups: data ? data.objects.findGroup.results : undefined,
+		dates: data ? data.objects.findDate.results : undefined,
 		refetch,
-		count: data ? data.objects.findGroup.count : 0
+		count: data ? data.objects.findDate.count : 0
 	};
 };
 

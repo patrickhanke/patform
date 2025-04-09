@@ -98,7 +98,7 @@ export type StringField = BasicField & {
 	dataType?: "string";
 	value?: string;
 	textAlign?: "left" | "center" | "right";
-	validation: {
+	validation?: {
 		required?: string;
 		min_length?: number;
 		max_length?: number;
@@ -126,7 +126,7 @@ export type NumberField = BasicField & {
 		number_start_value: number;
 		number_end_value: number;
 	};
-	validation: {
+	validation?: {
 		required?: string;
 		min_value?: number;
 		max_value?: number;
@@ -151,7 +151,7 @@ export type FileField = BasicField & {
 	type: "file";
 	value?: string | string[];
 	path: string;
-	validation: {
+	validation?: {
 		required?: string;
 		max_file_count?: number;
 	};
@@ -181,7 +181,7 @@ export type PersonsSelectField = BasicField & {
 export type ColorField = BasicField & {
 	type: "color";
 	value?: string;
-	validation: {
+	validation?: {
 		required?: string;
 	};
 };
@@ -189,7 +189,7 @@ export type ColorField = BasicField & {
 export type DateField = BasicField & {
 	type: DatePickerTypes;
 	value?: string;
-	validation: {
+	validation?: {
 		required?: string;
 	};
 };
@@ -207,7 +207,7 @@ export type Field =
 	| DateField;
 
 export type FieldValidationArray = Array<
-	Field & { validation: ValidationTypes }
+	Field & { validation?: ValidationTypes }
 >;
 
 export type getFieldsWithValidationFunction = (
@@ -216,7 +216,7 @@ export type getFieldsWithValidationFunction = (
 
 export type CreateYupSchemaFunction = (
 	type: Field["type"],
-	validation: Field["validation"]
+	validation?: Field["validation"]
 ) => Yup.ISchema<any, any, any, any> | Yup.Reference<unknown>;
 
 export type FormDataElement = { [key: string]: any };

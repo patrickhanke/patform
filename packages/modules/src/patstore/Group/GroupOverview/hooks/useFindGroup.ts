@@ -17,7 +17,8 @@ const useFindGroup: UseFindGroupHook = ({ moduleId, filters, limit, skip }) => {
 				"fields",
 				"data",
 				"persons",
-				"team"
+				"team",
+				"categories"
 			]
 		}),
 		{

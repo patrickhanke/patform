@@ -71,13 +71,13 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 												<span>{`${button.text}`}</span>
 											</button>
 										))}
-									{(pageHeaderContent || emptyContent) && (
-										<>
-											<div>{pageHeaderContent}</div>
-										</>
-									)}
 								</div>
 							)}
+						{(pageHeaderContent || emptyContent) && (
+							<>
+								<div>{pageHeaderContent}</div>
+							</>
+						)}
 						{createClass?.className && (
 							<CreateClass
 								initialData={createClass.initialData}
