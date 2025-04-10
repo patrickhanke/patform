@@ -27,6 +27,8 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				"name",
 				"createdAt",
 				"default",
+				"modules",
+				"color",
 				"project {objectId name}",
 				"users {results{objectId name}}",
 				"roles {results{objectId name}}"

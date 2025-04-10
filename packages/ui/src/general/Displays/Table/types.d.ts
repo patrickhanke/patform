@@ -13,6 +13,7 @@ import {
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
 import { LatitudeLongitude } from "../Map";
+import { ColorValues } from "@repo/ui";
 
 export type TableTypes = {
 	data: TData[];
@@ -150,3 +151,8 @@ export type PaginationState = {
 	pageIndex: number;
 	pageSize: number;
 };
+
+export type TableColumnEditColorProps = {
+	value: ColorValues;
+	onChange: (color: string) => void;
+}

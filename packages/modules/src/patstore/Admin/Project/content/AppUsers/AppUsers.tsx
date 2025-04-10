@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useQuery } from "@apollo/client";
 import {
+	axiosclient,
 	generateGraphQLQuery,
 	paramsHandler,
 	useDataHandler
@@ -13,6 +14,7 @@ import CreateUser from "./components/CreateUser";
 import AddUser from "./components/AddUser";
 import { v4 } from "uuid";
 import { cloneDeep } from "lodash-es";
+import { PatstoreRoleClass } from "@repo/types";
 
 const AppUsers: FC<AppUsersProps> = ({
 	projectId,
@@ -26,7 +28,7 @@ const AppUsers: FC<AppUsersProps> = ({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "_User",
-			fields: ["objectId", "username", "email", "label", "name"]
+			fields: ["objectId", "username", "email", "label", "name", "roles"]
 		}),
 		{
 			variables: {
@@ -43,11 +45,17 @@ const AppUsers: FC<AppUsersProps> = ({
 			}
 		}
 	);
+
 	const { data: roleData } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "_Role",
-			fields: ["objectId", "name", "users {results{objectId username}}"]
+			fields: [
+				"objectId",
+				"name",
+				"users {results{objectId username}}",
+				"default"
+			]
 		}),
 		{
 			variables: {
@@ -65,29 +73,38 @@ const AppUsers: FC<AppUsersProps> = ({
 		}
 	);
 	const columns = useUserColumns({
+		refetch,
 		roles: roleData?.objects.find_Role.results || []
 	});
 
-	const [user, setUser] = useState<UserObject | undefined>();
+	const [user, setUser] = useState<UserObject>({
+		username: "",
+		label: "",
+		value: "",
+		name: "",
+		projects: [projectId],
+		role: { value: "", label: "" }
+	});
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		if (!user && createUser) {
+		if (!user && createUser && roleData) {
+			const defaultRole = roleData.objects.find_Role.results.find(
+				(role: PatstoreRoleClass) => role.default
+			);
 			setUser({
 				username: "",
 				label: "",
 				value: "",
 				name: "",
-				projects: [projectId]
+				projects: [projectId],
+				role: { value: defaultRole.objectId, label: defaultRole.name }
 			});
 		}
-	}, [createUser, user]);
-
-	console.log(user);
+	}, [createUser, user, roleData]);
 
 	const updateUserHandler = useCallback(async () => {
 		setLoading(true);
-		console.log("update user");
 		if (createUser && user) {
 			await createData({
 				className: "_User",
@@ -97,8 +114,10 @@ const AppUsers: FC<AppUsersProps> = ({
 					projects: [projectId],
 					password: v4(),
 					email: user?.username,
-					set_passowrd: true,
-					name: user?.name
+					set_password: true,
+					name: user?.name,
+					roles: [user.role.value],
+					is_superuser: false
 				}
 			});
 		}
@@ -115,6 +134,12 @@ const AppUsers: FC<AppUsersProps> = ({
 		}
 		await refetch();
 		setLoading(false);
+		if (createUser) {
+			setCreateUser(false);
+		}
+		if (addUser) {
+			setAddUser(false);
+		}
 	}, [user]);
 
 	return (
@@ -139,13 +164,18 @@ const AppUsers: FC<AppUsersProps> = ({
 			>
 				<div>
 					{createUser && user && (
-						<CreateUser user={user} setUser={setUser} />
+						<CreateUser
+							user={user}
+							setUser={setUser}
+							roles={roleData?.objects.find_Role.results || []}
+						/>
 					)}
 					{addUser && (
 						<AddUser
 							user={user}
 							setUser={setUser}
 							projectId={projectId}
+							roles={roleData?.objects.find_Role.results || []}
 						/>
 					)}
 				</div>

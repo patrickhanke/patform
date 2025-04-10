@@ -21,7 +21,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "_User",
-			fields: ["objectId", "username", "email", "name"]
+			fields: ["objectId", "username", "email", "name", "roles"]
 		}),
 		{
 			variables: {
@@ -45,7 +45,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			skip: !project?.objectId
 		}
 	);
-	const columns = useUserColumns();
+	const columns = useUserColumns({ refetch });
 
 	const [user, setUser] = useState<UserObject | undefined>();
 	const [loading, setLoading] = useState(false);
@@ -61,12 +61,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		}
 	}, [createUser, user]);
 
-	console.log(user);
-
 	const updateUserHandler = useCallback(async () => {
 		setLoading(true);
-		console.log("update user");
-
 		if (createUser && user) {
 			axiosclient().post("/functions/send-user-invitation", {
 				username: user.username,

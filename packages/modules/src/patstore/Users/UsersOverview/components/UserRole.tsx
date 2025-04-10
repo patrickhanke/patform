@@ -1,8 +1,12 @@
-import { FC, useMemo, useState } from "react";
-import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
-import { PatstoreRoleClass } from "@repo/types";
-import { axiosclient } from "@repo/provider";
-import { SelectUserRoleProps } from "../types";
+import { axiosclient, useAppContext } from "@repo/provider";
+import {
+	ElementSelectInterface,
+	SelectElement,
+	SlideIn,
+	StateDisplay
+} from "@repo/ui";
+import { useState, useMemo } from "react";
+import { ApolloRefetch, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 
 const findRoleFromUserId = (userId: string, roles: PatstoreRoleClass[]) => {
 	const role = roles.find((role) =>
@@ -11,7 +15,16 @@ const findRoleFromUserId = (userId: string, roles: PatstoreRoleClass[]) => {
 	return role ? role : undefined;
 };
 
-const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
+const UserRole = ({
+	user,
+	refetch
+}: {
+	user: PatstoreUser;
+	refetch: ApolloRefetch;
+}) => {
+	const { roles } = useAppContext();
+	const [isOpen, setIsOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [initialRole, setInitialRole] = useState<string | undefined>(
 		findRoleFromUserId(user.objectId, roles)
 			? findRoleFromUserId(user.objectId, roles)?.objectId
@@ -22,9 +35,7 @@ const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 		initialRole
 	);
 
-	const [isOpen, setIsOpen] = useState(false);
-	const [loading, setLoading] = useState(false);
-
+	const userRole = roles.find((role) => user.roles.includes(role.objectId));
 	const elements = useMemo(() => {
 		const personOptionsArray: SelectElement[] = [];
 		if (roles) {
@@ -48,6 +59,7 @@ const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 				selectedElements={elements.filter(
 					(element) => selectedRole === element.id
 				)}
+				min={1}
 				onSelect={(selectValue) => {
 					if (!selectValue || selectValue.length === 0) {
 						setSelectedRole(undefined);
@@ -60,27 +72,29 @@ const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 						}
 					}
 				}}
-				max={6}
+				max={1}
 				isSearchable
 			/>
 		),
-		[elements, selectedRole, roles]
+		[elements, selectedRole, initialRole, roles]
 	);
 
 	return (
 		<>
-			<button
-				className="full_button sm light"
-				onClick={() => setIsOpen(true)}
-				type="button"
-			>
-				<span>
-					{initialRole
-						? elements.find((element) => element.id === initialRole)
-								?.label
-						: "Rolle auswählen"}
-				</span>
-			</button>
+			{userRole ? (
+				<StateDisplay
+					color={userRole.color || "blue"}
+					label={userRole.name}
+					onClick={() => setIsOpen(true)}
+				/>
+			) : (
+				<button
+					className="full_button light md"
+					onClick={() => setIsOpen(true)}
+				>
+					<span>Rolle hinzufügen</span>
+				</button>
+			)}
 			<SlideIn
 				isOpen={isOpen}
 				cancel={() => setIsOpen(false)}
@@ -104,4 +118,4 @@ const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 	);
 };
 
-export default SelectUserRole;
+export default UserRole;

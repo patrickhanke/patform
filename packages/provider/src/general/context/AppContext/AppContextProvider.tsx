@@ -13,6 +13,7 @@ import { PatstoreProject } from "@repo/types";
 import { generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import ProjectLoader from "./components/ProjectLoader";
+import useFindRoles from "./hooks/useFindRoles";
 
 const ProjectContextProvider = ({
 	projects,
@@ -72,6 +73,11 @@ const ProjectContextProvider = ({
 		}
 	);
 
+	const { roles } = useFindRoles({
+		appId,
+		projectId: currentProject?.objectId
+	});
+
 	useEffect(() => {
 		if (data) {
 			setCurrentProject(data.objects.getProject);
@@ -100,9 +106,10 @@ const ProjectContextProvider = ({
 	const projectContextObject = useMemo(
 		() => ({
 			project: currentProject,
-			loadProject
+			loadProject,
+			roles
 		}),
-		[currentProject]
+		[currentProject, roles]
 	);
 
 	return (

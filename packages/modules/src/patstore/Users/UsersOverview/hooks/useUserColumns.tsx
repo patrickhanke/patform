@@ -1,63 +1,64 @@
 import { useMemo } from "react";
 import { ColumnDef, TableColumnString } from "@repo/ui";
-import { PatstoreUser } from "@repo/types";
+import { ApolloRefetch, PatstoreUser } from "@repo/types";
 import { useDataHandler } from "@repo/provider";
+import UserRole from "../components/UserRole";
 
-const useUserColumns = () => {
-  const { updateData } = useDataHandler();
-  const columns: ColumnDef<PatstoreUser>[] = useMemo(
-    () => [
-      {
-        accessorFn: (row) => (
-          <TableColumnString
-            value={row.name}
-            onChange={(value) => {
-              updateData({
-                className: "_User",
-                objectId: row.objectId,
-                updateObject: {
-                  name: value,
-                },
-              });
-            }}
-            isEditable
-          />
-        ),
-        header: () => <span>Name</span>,
-        id: "name",
-        cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
-        enableSorting: false,
-      },
-      {
-        accessorFn: (row) => row?.username,
-        header: () => <span>E-Mail</span>,
-        id: "username",
-        cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
-        enableSorting: false,
-      },
-      {
-        accessorFn: (row) => row?.role?.name,
-        header: () => <span>Rolle</span>,
-        id: "role",
-        cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
-        enableSorting: false,
-      },
-      {
-        accessorFn: (row) => "edit",
-        header: () => <span>Bearbeiten</span>,
-        id: "edit",
-        cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
-        enableSorting: false,
-      },
-    ],
-    [],
-  );
+const useUserColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
+	const { updateData } = useDataHandler();
+	const columns: ColumnDef<PatstoreUser>[] = useMemo(
+		() => [
+			{
+				accessorFn: (row) => (
+					<TableColumnString
+						value={row.name}
+						onChange={(value) => {
+							updateData({
+								className: "_User",
+								objectId: row.objectId,
+								updateObject: {
+									name: value
+								}
+							});
+						}}
+						isEditable
+					/>
+				),
+				header: () => <span>Name</span>,
+				id: "name",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				accessorFn: (row) => row?.username,
+				header: () => <span>E-Mail</span>,
+				id: "username",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				accessorFn: (row) => <UserRole user={row} refetch={refetch} />,
+				header: () => <span>Rolle</span>,
+				id: "role",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				accessorFn: (row) => "edit",
+				header: () => <span>Bearbeiten</span>,
+				id: "edit",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			}
+		],
+		[]
+	);
 
-  return columns;
+	return columns;
 };
 
 export default useUserColumns;

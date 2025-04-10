@@ -84,7 +84,9 @@ const SelectRoleModules: FC<SelectRoleModulesProps> = ({
 				onClick={() => setIsOpen(true)}
 				type="button"
 			>
-				Module wählen
+				{selectedModules.length === 0
+					? "Module auswählen"
+					: `(${selectedModules.length}) Module`}
 			</button>
 			<SlideIn
 				isOpen={isOpen}

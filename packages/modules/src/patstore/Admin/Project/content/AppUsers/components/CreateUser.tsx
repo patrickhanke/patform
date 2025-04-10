@@ -2,7 +2,7 @@ import { FC, useMemo } from "react";
 import { Field, Form } from "@repo/ui";
 import { CreateUserProps, UserObject } from "../types";
 
-const CreateUser: FC<CreateUserProps> = ({ user, setUser }) => {
+const CreateUser: FC<CreateUserProps> = ({ user, setUser, roles }) => {
 	const formFields = useMemo(
 		() => [
 			{
@@ -10,19 +10,30 @@ const CreateUser: FC<CreateUserProps> = ({ user, setUser }) => {
 				id: "username",
 				name: "username",
 				type: "input",
-				value: user.username,
+				initialValue: user.username,
 				placeholder: "beispiel@email.de"
 			} as Field,
 			{
 				label: `Benutzername`,
-				name: "userlabel",
+				name: "name",
 				type: "input",
-				value: user.username,
+				initialValue: user.name,
 				dataType: "string",
 				placeholder: "Vor- und Nachname"
+			},
+			{
+				label: `Rolle`,
+				name: "role",
+				type: "select",
+				select_options: roles.map((role) => ({
+					label: role.name,
+					value: role.objectId
+				})),
+				initialValue: user.role,
+				placeholder: "Rolle auswählen"
 			}
 		],
-		[user]
+		[user, roles, roles.map((role) => role.objectId).join(",")]
 	);
 
 	return (

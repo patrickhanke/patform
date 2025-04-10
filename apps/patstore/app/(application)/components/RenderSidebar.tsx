@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import Logo from "./Logo";
 import { MenuItem, Sidebar } from "@repo/ui";
 import { Module, PatstoreUser } from "@repo/types";
@@ -8,18 +8,30 @@ import packageJson from "../../../package.json";
 import { useAppContext } from "@repo/provider";
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
-  const { project } = useAppContext();
-
+  const { project, roles } = useAppContext();
+  
+  const userRole = roles.find((role) => user.roles.includes(role.objectId));
+  
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [];
     if (project) {
       project.modules.results.forEach((module: Module) => {
-        menuItemsArray.push({
-          label: module.name,
-          icon: module.icon,
-          value: module.path,
-          sub_menu: [],
-        });
+        console.log(module.objectId)
+        if (user.is_superuser) {
+          menuItemsArray.push({
+            label: module.name,
+            icon: module.icon,
+            value: module.path,
+            sub_menu: [],
+          });
+        } else if (userRole && userRole.modules.includes(module.objectId)) {
+          menuItemsArray.push({
+            label: module.name,
+            icon: module.icon,
+            value: module.path,
+            sub_menu: [],
+          });
+        }
       });
     }
 

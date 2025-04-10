@@ -8,3 +8,4 @@ export * from "./StateSelect";
 export * from "./ColorPicker";
 export * from "./ElementSelectInterface";
 export * from "./DataTransfer";
+export * from "./ColorSelect";

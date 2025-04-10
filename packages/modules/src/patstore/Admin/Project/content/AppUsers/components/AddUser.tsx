@@ -5,7 +5,7 @@ import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
 import { AddUserProps, UserObject } from "../types";
 import { PatstoreUser } from "@repo/types";
 
-const AddUser: FC<AddUserProps> = ({ user, setUser, projectId }) => {
+const AddUser: FC<AddUserProps> = ({ user, setUser, projectId, roles }) => {
 	const [searchValue, setSearchValue] = useState("");
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({

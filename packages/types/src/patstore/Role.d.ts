@@ -1,3 +1,4 @@
+import { ColorValues } from "@repo/ui";
 import { ClassProperties, PatstoreProject } from "./Classes";
 import { PatstoreUser } from "./User";
 
@@ -13,4 +14,5 @@ export type PatstoreRoleClass = ClassProperties & {
 	project: PatstoreProject;
 	modules: string[];
 	default: boolean;
+	color?: ColorValues;
 }

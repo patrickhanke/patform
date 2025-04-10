@@ -31,6 +31,7 @@ import TableColumnPersons from "../components/TableColumnPersons";
 import TableColumnFiles from "../components/TableColumnFiles";
 import { IconButton } from "../../../Buttons";
 import { TableColumnEditTeam } from "../content/TableColumnEditTeam";
+import TableColumnEditColor from "../components/TableColumnEditColor";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -399,6 +400,32 @@ const useCreateColumns = <T extends ColumnClasses>({
 									className: className,
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value }
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "edit_color") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnEditColor
+							value={row[columnElement.id] as string}
+							onChange={async (value: string) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: { [columnElement.id]: value },
+									feedback: "Farbe geändert"
 								});
 								if (refetch) {
 									refetch();

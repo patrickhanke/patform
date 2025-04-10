@@ -21,7 +21,7 @@ const fetchProject = async (path: string) => {
 };
 
 const Login = async ({ params }: { params: { project_path: string } }) => {
-  const response = await fetchProject(`/${params.project_path}`);
+  const response = await fetchProject(`${params.project_path}`);
 
   if (response.success === false) {
     return (

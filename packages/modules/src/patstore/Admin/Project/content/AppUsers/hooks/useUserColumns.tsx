@@ -1,10 +1,19 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { ColumnDef } from "@repo/ui";
 import { PatstoreUser } from "@repo/types";
 import { UseUserColumnsProps } from "../types";
 import SelectUserRole from "../components/SelectUserRole";
 
-const useUserColumns = ({ roles }: UseUserColumnsProps) => {
+const useUserColumns = ({ roles, refetch }: UseUserColumnsProps) => {
+	const renderSelectUserRole = useCallback(
+		(user: PatstoreUser) => {
+			return (
+				<SelectUserRole user={user} roles={roles} refetch={refetch} />
+			);
+		},
+		[roles]
+	);
+
 	const columns: ColumnDef<PatstoreUser>[] = useMemo(
 		() => [
 			{
@@ -24,9 +33,7 @@ const useUserColumns = ({ roles }: UseUserColumnsProps) => {
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => (
-					<SelectUserRole userId={row.objectId} roles={roles} />
-				),
+				accessorFn: (row) => renderSelectUserRole(row),
 				header: () => <span>Rolle</span>,
 				id: "role",
 				cell: (info) => info.getValue(),
@@ -44,9 +51,6 @@ const useUserColumns = ({ roles }: UseUserColumnsProps) => {
 		],
 		[roles]
 	);
-
-    console.log(roles);
-    
 
 	return columns;
 };

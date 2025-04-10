@@ -1,15 +1,14 @@
 "use client";
 
-import { TableColumnTextfieldProps } from "../types";
+import { TableColumnEditColorProps } from "../types";
 import { useState } from "react";
 import "../styles.scss";
-import { Modal, IconButton } from "@repo/ui";
+import { Modal, IconButton, ColorSelect } from "@repo/ui";
 
-const TableColumnTextfield = ({
+const TableColumnEditColor = ({
 	value,
-	isEditable = false,
 	onChange
-}: TableColumnTextfieldProps) => {
+}: TableColumnEditColorProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [string, setString] = useState(value);
 
@@ -17,15 +16,7 @@ const TableColumnTextfield = ({
 		<>
 			<div className="table_column_textfield_container">
 				{value ? value : "-"}
-
-				{isEditable && (
-					<>
-						<IconButton
-							icon="edit"
-							onClick={() => setIsOpen(!isOpen)}
-						/>
-					</>
-				)}
+				<IconButton icon="edit" onClick={() => setIsOpen(!isOpen)} />
 			</div>
 			<Modal
 				isOpen={isOpen}
@@ -38,9 +29,11 @@ const TableColumnTextfield = ({
 				buttonDisabled={[false, !string]}
 			>
 				<div className={"table_column_textfield_textarea_container"}>
-					<textarea
-						defaultValue={value}
-						onChange={(e) => setString(e.target.value)}
+					<ColorSelect
+						value={string}
+						onChange={(color) => {
+							setString(color);
+						}}
 					/>
 				</div>
 			</Modal>
@@ -48,4 +41,4 @@ const TableColumnTextfield = ({
 	);
 };
 
-export default TableColumnTextfield;
+export default TableColumnEditColor;

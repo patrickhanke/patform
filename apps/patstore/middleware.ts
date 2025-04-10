@@ -105,8 +105,43 @@ export async function middleware(request: NextRequest) {
   if (loggedIn) {
     response.cookies.set("patstore_logged_in", "true");
   }
-
   const projectId = process.env.PROJECT_ID;
+    
+  let roleModuleArray: string[] = [];
+  try {
+    const data = await fetch(
+      `https://pg-app-uefbsna5l6ijyse42wipewpjwu804d.scalabl.cloud/1/classes/_Role?where={"project":{"__type":"Pointer","className":"Project","objectId":"${projectId}"}}`,
+      {
+        method: "GET",
+        headers: {
+          "X-Parse-Application-Id": process.env.SASHIDO_APP_ID || "",
+          "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY || "",
+          "X-Parse-Master-Key": process.env.SASHIDO_MASTER_KEY || "",
+        },
+      },
+    );
+    if (data.ok) {
+      const roles = await data.json();
+      
+        if (user && user.roles && Array.isArray(user.roles)) {
+            roles.results.forEach((role: any) => {
+                if (user && user.roles.includes(role.objectId)) {
+                    if (role.modules) {
+                        role.modules.forEach((module: string) => {
+                            roleModuleArray.push(module);
+                        });
+                    }
+                }
+            });
+        }
+       
+    } else {
+      console.error("Failed to fetch modules:", data.status, data.statusText);
+    }
+  } catch (err: any) {
+    console.error("Error fetching modules:", err.message);
+  }
+
   const pathArray: string[] = ["/"];
   try {
     const data = await fetch(
@@ -123,7 +158,9 @@ export async function middleware(request: NextRequest) {
     if (data.ok) {
       const modules = await data.json();
       modules.results.forEach((module: any) => {
-        pathArray.push(module.path);
+        if (roleModuleArray.includes(module.objectId)) {
+          pathArray.push(module.path);
+        }
       });
     } else {
       console.error("Failed to fetch modules:", data.status, data.statusText);
@@ -131,6 +168,9 @@ export async function middleware(request: NextRequest) {
   } catch (err: any) {
     console.error("Error fetching modules:", err.message);
   }
+
+  console.log({pathArray});
+  
 
   if (
     !pathArray.includes(request.nextUrl.pathname) &&
