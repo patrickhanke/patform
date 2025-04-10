@@ -1,8 +1,7 @@
-import { useCallback, useContext, useMemo } from "react";
+import { FC, useCallback, useContext, useMemo } from "react";
 import { Map, Select, StatelessToggle, SwitchButtons } from "@repo/ui";
 import { EventDate, LocationClass } from "@repo/types";
-import { TableColumnEditDateProps } from "../types";
-import locationButtonStates from "../constants/locationButtonStates";
+import { DateEditProps } from "../types";
 import { set, cloneDeep } from "lodash-es";
 import { useQuery } from "@apollo/client";
 import {
@@ -10,8 +9,9 @@ import {
 	generateGraphQLQuery,
 	paramsHandler
 } from "@repo/provider";
+import locationButtonStates from "../constants/locationButtonStates";
 
-const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
+const DateEdit: FC<DateEditProps> = ({ date, setDate }) => {
 	const { modules } = useContext(PatstoreAppContext);
 	const { data: locationData } = useQuery(
 		generateGraphQLQuery({
@@ -35,6 +35,9 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 		}
 	);
 
+	console.log(modules);
+	console.log(locationData);
+
 	const locationOptions = useMemo(() => {
 		if (!locationData) return [];
 
@@ -54,20 +57,15 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 				| EventDate["place"][keyof EventDate["place"]]
 		) => {
 			if (date) {
-				setDates((draft: EventDate[]) => {
-					const index: number = draft.findIndex(
-						(dateToFind) => dateToFind.id === date.id
-					);
-					const dateCopy: typeof date = cloneDeep(date);
+				setDate((draft: EventDate) => {
+					const dateCopy: typeof date = cloneDeep(draft);
 					set(dateCopy, key, value);
 
-					if (index !== -1) {
-						draft[index] = { ...dateCopy };
-					}
+					draft = dateCopy;
 				});
 			}
 		},
-		[date, setDates]
+		[date]
 	);
 
 	if (!date) {
@@ -111,7 +109,7 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 			<div>
 				<label>Ort</label>
 				<SwitchButtons
-					buttonStates={locationButtonStates}
+					buttonStates={[...locationButtonStates]}
 					currentStates={
 						locationButtonStates.find(
 							(button) => button.value === date.place.type
@@ -175,7 +173,7 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 							<label>Ort auswählen</label>
 							<Map
 								initialPlace={{
-									lat: date?.place?.map?.latitude || 0,
+									lat: date.place.map?.latitude || 0,
 									lng: date.place.map?.longitude || 0
 								}}
 								onChange={(place) =>
@@ -193,4 +191,4 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 	);
 };
 
-export default TableColumnEditDate;
+export default DateEdit;

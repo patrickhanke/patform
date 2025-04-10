@@ -74,7 +74,6 @@ const NewsOverview = () => {
 	return (
 		<Page
 			title={currentModule.name}
-			// pageHeaderContent={<CreateNews refetch={refetch} />}
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
 			createClass={createClass}

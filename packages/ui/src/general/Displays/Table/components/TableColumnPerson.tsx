@@ -97,7 +97,6 @@ const TableColumnPerson = ({
 					}
 				}}
 			>
-				{/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
 				<div>
 					{currentPerson ? (
 						<PersonDisplay person={value} onlyImage={false} />

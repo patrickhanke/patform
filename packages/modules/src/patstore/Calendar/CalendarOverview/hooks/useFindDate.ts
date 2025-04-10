@@ -15,7 +15,8 @@ const useFindDate: UseFindDateHook = ({ moduleId, filters, limit, skip }) => {
 				"image",
 				"description",
 				"fields",
-				"data"
+				"data",
+				"categories"
 			]
 		}),
 		{

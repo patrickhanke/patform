@@ -45,14 +45,6 @@ const useUserColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,
 				enableSorting: false
-			},
-			{
-				accessorFn: (row) => "edit",
-				header: () => <span>Bearbeiten</span>,
-				id: "edit",
-				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				enableSorting: false
 			}
 		],
 		[]

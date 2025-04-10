@@ -21,7 +21,7 @@ import {
 import TableColumnDate from "../components/TableColumnDate";
 import TableColumnTexteditor from "../components/TableColumnTexteditor";
 import TableColumnGeopoint from "../components/TableColumnGeopoint";
-import { LatitudeLongitude } from "@repo/ui";
+import { ColorValues, LatitudeLongitude } from "@repo/ui";
 import TableColumnEditState from "../components/TableColumnEditState";
 import { get } from "lodash-es";
 import TableColumnGallery from "../components/TableColumnGallery";
@@ -32,6 +32,7 @@ import TableColumnFiles from "../components/TableColumnFiles";
 import { IconButton } from "../../../Buttons";
 import { TableColumnEditTeam } from "../content/TableColumnEditTeam";
 import TableColumnEditColor from "../components/TableColumnEditColor";
+import TableColumnEditDate from "../content/TableColumnEditDate";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -419,7 +420,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnEditColor
-							value={row[columnElement.id] as string}
+							value={row[columnElement.id] as ColorValues}
 							onChange={async (value: string) => {
 								await updateData({
 									className: className,
@@ -487,6 +488,31 @@ const useCreateColumns = <T extends ColumnClasses>({
 							maxFileCount={
 								columnElement.type === "file" ? 1 : 10
 							}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "edit_date") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnEditDate
+							value={row[columnElement.id] as EventDate}
+							onChange={async (value: EventDate) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: { [columnElement.id]: value }
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,

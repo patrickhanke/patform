@@ -16,7 +16,6 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
     const menuItemsArray: MenuItem[] = [];
     if (project) {
       project.modules.results.forEach((module: Module) => {
-        console.log(module.objectId)
         if (user.is_superuser) {
           menuItemsArray.push({
             label: module.name,

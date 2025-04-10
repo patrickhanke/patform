@@ -7,7 +7,15 @@ const useFindNews: UseFindNewsHook = ({ moduleId, filters, limit, skip }) => {
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "News",
-			fields: ["objectId", "title", "image", "createdAt", "text", "data"]
+			fields: [
+				"objectId",
+				"title",
+				"image",
+				"createdAt",
+				"text",
+				"data",
+				"categories"
+			]
 		}),
 		{
 			variables: {

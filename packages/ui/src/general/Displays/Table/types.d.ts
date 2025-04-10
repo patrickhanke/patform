@@ -112,7 +112,8 @@ export type ColumnDataTypes =
 	| "edit_times"
 	| "file"
 	| "edit_team"
-	| "files";
+	| "files"
+	| "edit_color";
 
 export type ColumnData<Class> = {
 	id: keyof Class;
@@ -155,4 +156,4 @@ export type PaginationState = {
 export type TableColumnEditColorProps = {
 	value: ColorValues;
 	onChange: (color: string) => void;
-}
+};

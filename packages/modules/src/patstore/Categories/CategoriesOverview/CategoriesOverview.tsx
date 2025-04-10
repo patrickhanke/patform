@@ -44,8 +44,6 @@ const Categories = () => {
 		categories: currentModule?.categories
 	});
 
-	console.log(activeState);
-
 	const pageHeaderContent = useMemo(
 		() =>
 			activeState ? (
@@ -56,7 +54,7 @@ const Categories = () => {
 					type={activeState?.value}
 				/>
 			) : null,
-		[]
+		[activeState]
 	);
 
 	return (

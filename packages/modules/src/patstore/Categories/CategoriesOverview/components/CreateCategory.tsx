@@ -29,7 +29,7 @@ const CreateCategory = ({
 				label: "Name",
 				validation: {
 					required: "Pflichtfeld",
-					min_length: 6
+					min_length: 2
 				}
 			},
 			{
