@@ -19,7 +19,7 @@ const TableColumnPerson = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [selectedPerson, setSelectedPerson] = useState<string | undefined>(
-		value.objectId
+		value?.objectId
 	);
 
 	const { data: personData } = useQuery(

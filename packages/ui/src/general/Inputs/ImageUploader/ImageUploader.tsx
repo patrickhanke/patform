@@ -6,6 +6,7 @@ import {
 } from "@bytescale/upload-widget-react";
 import { ErrorDisplay, ImageDisplay } from "@repo/ui";
 import { Image } from "@repo/types";
+import { generateImagePath, useAppContext } from "@repo/provider";
 
 const ImageUploader = ({
 	previewImage,
@@ -16,10 +17,11 @@ const ImageUploader = ({
 	deleteHandler,
 	filename,
 	crop = false,
-	preview = false
+	preview = false,
+	returnType = "array"
 }: {
 	previewImage?: Image | Image[];
-	onChange: (F: Image[]) => void;
+	onChange: (F: Image[] | Image) => void;
 	label: string;
 	path: string;
 	maxFileCount?: number;
@@ -27,7 +29,10 @@ const ImageUploader = ({
 	deleteHandler?: (image: Image) => void;
 	crop?: boolean;
 	preview?: boolean;
+	returnType?: "array" | "string";
 }) => {
+	const { project } = useAppContext();
+
 	const [reinitialize, setReinitialize] = React.useState(true);
 	const options = useMemo(() => {
 		const configObject: UploadDropzoneConfig = {
@@ -73,8 +78,10 @@ const ImageUploader = ({
 				xOfY: "of"
 			},
 			path: {
-				folderPath: path,
-				folderPathVariablesEnabled: true
+				folderPath: `${generateImagePath(
+					process.env.APP_NAME as string,
+					project.path
+				)}`
 			},
 			showRemoveButton: true,
 			styles: {
@@ -126,6 +133,15 @@ const ImageUploader = ({
 				<UploadDropzone
 					options={options}
 					onComplete={(uploadedFiles) => {
+						if (
+							returnType === "string" &&
+							uploadedFiles.length > 0
+						) {
+							const value = uploadedFiles[0]?.filePath || "";
+							return onChange(value) as unknown as (
+								F: string
+							) => void;
+						}
 						onChange(
 							uploadedFiles.map((file) => file.filePath)
 						) as unknown as (F: Image[]) => void;

@@ -8,7 +8,8 @@ import {
 	ArticleClass,
 	GroupClass,
 	LocationClass,
-	DateClass
+	DateClass,
+	PageClass
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -46,6 +47,7 @@ export type TableColumnGalleryProps = {
 export type TableColumnCategoryProps = {
 	category: ModuleCategory;
 	categories: ClassCategories;
+	isEditable: boolean;
 	onChange: (categories: string[]) => Promise<void>;
 };
 
@@ -119,6 +121,7 @@ export type ColumnData<Class> = {
 	id: keyof Class;
 	label: string;
 	type: ColumnDataTypes;
+	disabled?: (a: Class) => boolean;
 	enableSorting?: boolean;
 	sortingFn?: (a: Class, b: Class) => number;
 };
@@ -131,6 +134,7 @@ export type CreateColumnHookProps<Class> = {
 	refetch: () => void;
 	constants?: { [key: string]: object };
 	editLink?: string;
+	disableCategory?: (row: Class, label: ModuleCategory["label"]) => boolean;
 };
 
 export type ColumnClasses =
@@ -142,7 +146,8 @@ export type ColumnClasses =
 	| ArticleClass
 	| GroupClass
 	| LocationClass
-	| DateClass;
+	| DateClass
+	| PageClass;
 
 export type UseCreateColumnsHook<Class> = (
 	params: CreateColumnHookProps<Class>

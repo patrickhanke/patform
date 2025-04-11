@@ -5,12 +5,18 @@ import { TableColumnCategoryProps } from "../types";
 import "../styles.scss";
 import { useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
+import {
+	ElementSelectInterface,
+	SelectElement,
+	SlideIn,
+	StateDisplay
+} from "@repo/ui";
 import { Classes } from "@repo/types";
 
 const TableColumnCategory = ({
 	category,
 	categories = [],
+	isEditable,
 	onChange
 }: TableColumnCategoryProps) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +29,8 @@ const TableColumnCategory = ({
 		const fields = ["objectId", "label", category.key];
 		if (category.connected_class === "Category") {
 			fields.push("category_id");
+			fields.push("description");
+			fields.push("color");
 		}
 		return fields;
 	}, [category]);
@@ -52,7 +60,15 @@ const TableColumnCategory = ({
 								value: cat.objectId,
 								id: cat.objectId,
 								label: `${cat.label}`,
-								element: <p>{cat.label}</p>
+								color: cat.color || "grey",
+								element: (
+									<div>
+										<h4>{cat.label}</h4>
+										{cat.description && (
+											<p>{cat.description}</p>
+										)}
+									</div>
+								)
 							});
 						}
 					} else {
@@ -60,7 +76,14 @@ const TableColumnCategory = ({
 							value: cat.objectId,
 							id: cat.objectId,
 							label: `${cat.label}`,
-							element: <div>{cat.label}</div>
+							element: (
+								<div>
+									<h4>{cat.label}</h4>
+									{cat.description && (
+										<p>{cat.description}</p>
+									)}
+								</div>
+							)
 						});
 					}
 				}
@@ -100,24 +123,35 @@ const TableColumnCategory = ({
 						type="button"
 						onClick={() => setIsOpen(true)}
 						className="full_button sm grey"
+						disabled={!isEditable}
 					>
 						<span>+ Kategorie hinzufügen</span>
 					</button>
 				) : (
-					<button
-						type="button"
+					<div
 						onClick={() => setIsOpen(true)}
-						className="full_button sm light"
+						className="flex row gap-sm"
 					>
 						<span>
-							{categories.map(
-								(cat) =>
-									elements.find(
-										(element) => element.id === cat
-									)?.label
-							)}
+							{categories.map((catId) => {
+								const category = elements.find(
+									(element) => element.id === catId
+								);
+								if (category) {
+									console.log(category);
+
+									return (
+										<StateDisplay
+											key={catId}
+											label={category.label}
+											color={category.color}
+										/>
+									);
+								}
+								return null;
+							})}
 						</span>
-					</button>
+					</div>
 				)}
 			</div>
 			<SlideIn

@@ -64,6 +64,8 @@ const TableColumnImage = ({
 						project.path
 					)}
 					maxFileCount={maxFileCount}
+					previewImage={image}
+					returnType="string"
 				/>
 			</Modal>
 		</>

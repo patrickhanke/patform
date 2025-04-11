@@ -7,7 +7,7 @@ const useFindCategory: UseFindCategoryHook = ({ moduleId, filters }) => {
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Category",
-			fields: ["objectId", "name", "image", "createdAt", "data"]
+			fields: ["objectId", "name", "image", "createdAt", "data", "color"]
 		}),
 		{
 			variables: { params: paramsHandler({ moduleId, filters }) },

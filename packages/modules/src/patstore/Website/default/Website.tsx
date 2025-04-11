@@ -12,6 +12,8 @@ import createPage from "./constants/createPage";
 
 const Website = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
+	console.log(currentModule);
+
 	const { data: moduleData } = useQuery(
 		generateGraphQLQuery({
 			type: "get",
@@ -40,8 +42,8 @@ const Website = () => {
 				// pageHeaderContent={}
 				emptyContent={true}
 				pageStates={pages_states}
-				activeState={activeState}
-				navOnClick={setActiveState}
+				pageState={activeState}
+				setPageState={setActiveState}
 				createClass={createClass}
 			>
 				{activeState.value === "settings" && (

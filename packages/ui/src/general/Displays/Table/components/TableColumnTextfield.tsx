@@ -16,7 +16,13 @@ const TableColumnTextfield = ({
 	return (
 		<>
 			<div className="table_column_textfield_container">
-				{value ? value : "-"}
+				{value ? (
+					<span>
+						{value.length > 90 ? `${value.slice(0, 90)}...` : value}
+					</span>
+				) : (
+					"-"
+				)}
 
 				{isEditable && (
 					<>

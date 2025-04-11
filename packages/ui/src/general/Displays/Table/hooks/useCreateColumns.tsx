@@ -41,7 +41,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 	className,
 	refetch,
 	constants,
-	editLink
+	editLink,
+	disableCategory
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandler();
 
@@ -262,9 +263,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 							<TableColumnEditState
 								value={row[columnElement.id] as string}
 								isEditable={
-									columnElement.type === "edit_state"
-										? true
-										: false
+									columnElement.disabled
+										? columnElement.disabled(row)
+										: true
 								}
 								options={get(constants, columnElement.id, [])}
 								onChange={async (value: ClassState) => {
@@ -523,12 +524,43 @@ const useCreateColumns = <T extends ColumnClasses>({
 					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
+
+			if (columnElement.type === "edit_content") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnEditDate
+							value={row[columnElement.id] as EventDate}
+							onChange={async (value: EventDate) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: { [columnElement.id]: value }
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
 		});
 		categories.map((category) => {
 			columnArray.push({
 				accessorFn: (row) => (
 					<TableColumnCategory
 						category={category}
+						isEditable={
+							disableCategory
+								? !disableCategory(row, category.label)
+								: true
+						}
 						categories={row.categories || []}
 						onChange={async (categories: string[]) => {
 							await updateData({

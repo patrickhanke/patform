@@ -7,4 +7,5 @@ export type CategoryClass = ClassProperties & {
   connected_class: string;
   key: string;
   description: string;
+  color: string;
 };

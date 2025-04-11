@@ -7,43 +7,39 @@ import {
 	UploadDropzone,
 	UploadDropzoneConfig
 } from "@bytescale/upload-widget-react";
-import { v4 as uuidv4 } from "uuid";
 import clsx from "clsx";
 import { FileUplaoderProps } from "./types";
 import "./styles.scss";
 import useRenderPreviewContent from "./hooks/useRenderPreviewContent";
 import { isArray } from "lodash-es";
+import { generateImagePath, useAppContext } from "@repo/provider";
 
 const FileUploader = ({
 	type,
 	value,
 	onChange,
 	label,
-	path,
 	maxFileCount,
 	returnType = "array",
 	setSecondaryContent
 }: FileUplaoderProps) => {
+	const { project } = useAppContext();
 	const renderPreviewContent = useRenderPreviewContent({ type, value });
 	const [files, setFiles] = useState<string[] | string>([]);
 	const [uploadModal, setUploadModal] = useState(false);
 	const options: UploadDropzoneConfig = useMemo(() => {
 		return {
-			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string,
+			apiKey: process.env.BYTESCALE_API_KEY as string,
+
 			maxFileCount: maxFileCount || 10,
 			showFinishButton: false,
-			filename: `${path}_${uuidv4()}`,
+
+			// filename: `${path}_${generateUuid()}`,
 			path: {
-				fileNameFallback:
-					type === "image"
-						? `image_${new Date()}`
-						: `file_${new Date()}`,
-				fileNameVariablesEnabled: true,
-				folderPath:
-					type === "image"
-						? `/${process.env.BYTESCALE_IMAGE_FOLDER}/${path}/images`
-						: `/${process.env.BYTESCALE_IMAGE_FOLDER}/${path}/files`,
-				folderPathVariablesEnabled: true
+				folderPath: `${generateImagePath(
+					process.env.APP_NAME as string,
+					project.path
+				)}`
 			},
 			showRemoveButton: true,
 			styles: {
@@ -133,7 +129,7 @@ const FileUploader = ({
 		<div className={"upload_container"}>
 			<button
 				type="button"
-				className="edit_text"
+				className="full_button sm grey"
 				onClick={() => {
 					if (setSecondaryContent) {
 						return setSecondaryContent(renderDropzone);

@@ -36,7 +36,12 @@ const Categories = () => {
 		data: [
 			{ id: "image", type: "edit_image", label: "Bild" },
 			{ id: "name", type: "edit_string", label: "Name" },
-			{ id: "description", type: "edit_textfield", label: "Beschreibung" }
+			{
+				id: "description",
+				type: "edit_textfield",
+				label: "Beschreibung"
+			},
+			{ id: "color", type: "edit_color", label: "Farbe" }
 		],
 		fields: currentModule.fields,
 		className: "Category",
