@@ -115,7 +115,8 @@ export type ColumnDataTypes =
 	| "file"
 	| "edit_team"
 	| "files"
-	| "edit_color";
+	| "edit_color"
+	| "edit_content";
 
 export type ColumnData<Class> = {
 	id: keyof Class;

@@ -1,24 +1,18 @@
 import React from "react";
-import SlideIn from "./SlideIn";
 
 const SlideInWrapper = ({ children }) => {
 	const [isOpen, setIsOpen] = React.useState(false);
-	const [loading, setLoading] = React.useState(false);
-	return (
-		<SlideIn
-			isOpen={isOpen}
-			setIsOpen={setIsOpen}
-			loading={loading}
-			setLoading={setLoading}
-			header={"Beschreibung ändern"}
-			cancelButtonHandler={() => setIsOpen(false)}
-			confirmButtonHandler={() => {
-				setIsOpen(false);
-				setLoading(false);
-			}}
-			buttonDisabled={[loading, loading]}
-		></SlideIn>
+	const clonedChildren = React.Children.map(children, (child) =>
+		React.isValidElement(child)
+			? React.cloneElement(child, { isOpen, setIsOpen })
+			: child
 	);
+
+	if (isOpen) {
+		return <div className="slide_in_wrapper">{clonedChildren}</div>;
+	}
+
+	return <button onClick={() => setIsOpen(true)} className="slide_in_button">Open Slide In</button>;
 };
 
 export default SlideInWrapper;

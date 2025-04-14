@@ -22,7 +22,8 @@ const WebsitePages = ({
 				"title",
 				"subtitle",
 				"type",
-				"categories"
+				"categories",
+				"content"
 			]
 		}),
 		{ variables: { params: { module: { _eq: moduleId } } } }
@@ -33,6 +34,7 @@ const WebsitePages = ({
 			{ id: "name", type: "edit_string", label: "Name" },
 			{ id: "title", type: "edit_string", label: "Titel" },
 			{ id: "subtitle", type: "edit_textfield", label: "Untertitel" },
+			{ id: "content", type: "edit_content", label: "Inhalte" },
 			{
 				id: "type",
 				type: "edit_state",

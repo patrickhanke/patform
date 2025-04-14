@@ -9,14 +9,11 @@ import initialDateValues from "./constants/initialDateValues";
 
 const TableColumnEditDate: FC<TableColumnEditDateProps> = ({
 	value,
-	onChange
+	onChange,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [date, setDate] = useImmer<EventDate>(value || initialDateValues);
-console.log({value});
-
-
 
 	return (
 		<div>

@@ -50,7 +50,7 @@ const SlideIn: React.FC<SlideInProps> = ({
 						</div>
 						<div className="slidein_main_content">
 							<div className={"slidein_content"}>
-								{children}
+								{isOpen && children}
 								<ErrorDisplay errors={errors} />
 							</div>
 

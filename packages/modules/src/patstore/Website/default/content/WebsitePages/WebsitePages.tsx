@@ -10,7 +10,15 @@ const WebsitePages = ({ moduleId }: WebsitePagesProps) => {
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Webpage",
-			fields: ["title", "objectId", "name", "title", "subtitle", "type"]
+			fields: [
+				"title",
+				"objectId",
+				"name",
+				"title",
+				"subtitle",
+				"type",
+				"content"
+			]
 		}),
 		{ variables: { params: { module: moduleId } } }
 	);
@@ -20,6 +28,7 @@ const WebsitePages = ({ moduleId }: WebsitePagesProps) => {
 			{ id: "name", type: "edit_string", label: "Name" },
 			{ id: "title", type: "edit_string", label: "Titel" },
 			{ id: "subtitle", type: "edit_textfield", label: "Untertitel" },
+			{ id: "content", type: "edit_content", label: "Inhalte" },
 			{ id: "type", type: "edit_state", label: "Typ" }
 		],
 		fields: undefined,

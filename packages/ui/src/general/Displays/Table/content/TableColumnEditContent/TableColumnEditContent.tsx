@@ -1,98 +1,106 @@
-import { CreateButton, Editor, SlideIn } from "@repo/ui";
+import {
+	CreateButton,
+	Divider,
+	DnDDisplay,
+	SlideIn,
+	sortItemsByPosition
+} from "@repo/ui";
 import { FC, useCallback, useState } from "react";
 import { WebpageContent } from "@repo/types";
-import { useImmer } from "use-immer";
 import { v4 } from "uuid";
-import EditTeam from "./components/EditTeam";
 import { TableColumnEditContentProps } from "./types";
+import EditContentField from "./components/EditContentField";
+import initial_content_element from "./constants/initial_content_element";
+import { cloneDeep } from "lodash";
+import EditContent from "./components/EditContent";
 
 const TableColumnEditContent: FC<TableColumnEditContentProps> = ({
 	initialData,
 	onChange
 }) => {
+	const [activeIndex, setActiveIndex] = useState<number | null>(null);
+	const [content, setContent] = useState<WebpageContent[]>(initialData || []);
 	const [loading, setLoading] = useState(false);
-	const [editTeam, setEditTeam] = useState(false);
-	const [team, setTeam] = useImmer<WebpageContent>(
-		initialData
-			? initialData
-			: { id: v4(), name: "", description: "", image: "" }
-	);
+	const [editContent, setEditContent] = useState(false);
+
+	console.log(content);
+	console.log(activeIndex);
 
 	const slideInConfirmHandler = useCallback(async () => {
 		setLoading(true);
-		if (team) {
-			await onChange(team);
-		}
+		console.log(content);
 
-		setEditTeam(false);
+		await onChange(content);
 		setLoading(false);
-	}, [team]);
+	}, [content, onChange]);
+
+	const findIndexOfItem: (id: string) => number | null = useCallback(
+		(id: string) => {
+			return content.findIndex((item) => item.id === id);
+		},
+		[content]
+	);
 
 	return (
 		<>
 			<div className="button_container">
-				{team?.id ? (
-					<button
-						className="full_button sm light"
-						onClick={() => setEditTeam(true)}
-					>
-						{team.name}
-					</button>
-				) : (
-					<button
-						className="full_button sm grey"
-						onClick={() => setEditTeam(true)}
-					>
-						+ Team hinzufügen
-					</button>
-				)}
+				<button
+					className="full_button sm grey"
+					onClick={() => setEditContent(true)}
+				>
+					Inhalte bearbeiten
+				</button>
 			</div>
 			<SlideIn
-				cancel={() => setEditTeam(false)}
+				cancel={() => setEditContent(false)}
 				confirm={() => slideInConfirmHandler()}
-				isOpen={editTeam}
-				header="Felder bearbeiten"
+				isOpen={editContent}
+				header="Inhalte bearbeiten"
 				showSecondaryContent={true}
 				secondaryContent={
-					<Editor
-						label="Team Beschreibung"
-						content={team?.description}
-						onChange={(value) => {
-							setTeam((draft) => {
-								if (draft) {
-									draft.description = value;
-								}
-							});
-						}}
-					/>
+					typeof activeIndex === "number" && activeIndex >= 0 ? (
+						<EditContent
+							content={content}
+							setContent={setContent}
+							activeIndex={activeIndex}
+						/>
+					) : null
 				}
 				disabled={[loading, loading]}
 			>
-				<CreateButton
-					text="Kategorie hinzufügen"
-					size="small"
-					onClick={() => {
-						setCategories((draft) => {
-							draft.push({
-								...initialFieldValues,
-								position: draft.length + 1,
+				<div>
+					<CreateButton
+						text="Inhaltselement hinzufügen"
+						size="small"
+						onClick={() => {
+							const contentCopy = cloneDeep(content);
+							contentCopy.push({
+								...initial_content_element,
+								position: contentCopy.length + 1,
 								id: v4() as string
 							});
-						});
-					}}
-				/>
-				<Divider size="small" showLine={false} />
-				<DnDDisplay<Field[]>
-					items={(sortItemsByPosition(categories) as Field[]) || []}
-					ItemComponent={({ item }) => (
-						<AppModuleField
-							category={item as ModuleCategory}
-							setActiveCategory={setActiveCategory}
-						/>
-					)}
-					objectClass="Module"
-					subField={{ id: moduleId, field: "categories" }}
-				/>
+							return setContent(contentCopy);
+						}}
+					/>
+					<Divider size="small" showLine={false} />
+					<DnDDisplay<WebpageContent[]>
+						items={
+							(sortItemsByPosition(
+								content
+							) as WebpageContent[]) || []
+						}
+						ItemComponent={({ item, id }) => (
+							<EditContentField
+								field={item as WebpageContent}
+								setActiveIndex={() =>
+									setActiveIndex(findIndexOfItem(id))
+								}
+							/>
+						)}
+						objectClass="Module"
+						// subField={{ id: moduleId, field: "categories" }}
+					/>
+				</div>
 			</SlideIn>
 		</>
 	);

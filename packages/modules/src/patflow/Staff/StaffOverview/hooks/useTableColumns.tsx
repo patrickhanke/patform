@@ -4,37 +4,39 @@ import { useMemo } from "react";
 import StaffMemberSettings from "../content/StaffMemberSettings";
 
 const useTableColumns = () => {
-  const columns: ColumnDef<User>[] = useMemo(
-    () => [
-      {
-        accessorFn: (row) => `${row.first_name} ${row.family_name}`,
-        header: () => <span>Name</span>,
-        id: "name",
-        cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
-        enableSorting: false,
-      },
-      {
-        accessorFn: (row) => row.role.name,
-        header: () => <span>Rolle</span>,
-        id: "role",
-        cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
-        enableSorting: false,
-      },
-      {
-        accessorFn: (row) => <StaffMemberSettings userId={row.objectId} />,
-        header: () => <span>Bearbeiten</span>,
-        id: "edit",
-        cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
-        enableSorting: false,
-      },
-    ],
-    [],
-  );
+	const columns: ColumnDef<User>[] = useMemo(
+		() => [
+			{
+				accessorFn: (row) => `${row.first_name} ${row.family_name}`,
+				header: () => <span>Name</span>,
+				id: "name",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				accessorFn: (row) => row.role.name,
+				header: () => <span>Rolle</span>,
+				id: "role",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				accessorFn: (row) => (
+					<StaffMemberSettings userId={row.objectId} />
+				),
+				header: () => <span>Bearbeiten</span>,
+				id: "edit",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			}
+		],
+		[]
+	);
 
-  return columns;
+	return columns;
 };
 
 export default useTableColumns;

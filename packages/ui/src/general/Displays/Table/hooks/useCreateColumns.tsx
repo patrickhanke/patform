@@ -16,7 +16,8 @@ import {
 	EventDate,
 	EventTime,
 	PersonClass,
-	Team
+	Team,
+	WebpageContent
 } from "@repo/types";
 import TableColumnDate from "../components/TableColumnDate";
 import TableColumnTexteditor from "../components/TableColumnTexteditor";
@@ -33,6 +34,7 @@ import { IconButton } from "../../../Buttons";
 import { TableColumnEditTeam } from "../content/TableColumnEditTeam";
 import TableColumnEditColor from "../components/TableColumnEditColor";
 import TableColumnEditDate from "../content/TableColumnEditDate";
+import TableColumnEditContent from "../content/TableColumnEditContent";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -508,7 +510,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: {
+										[columnElement.id]: value
+									}
 								});
 								if (refetch) {
 									refetch();
@@ -528,9 +532,11 @@ const useCreateColumns = <T extends ColumnClasses>({
 			if (columnElement.type === "edit_content") {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnEditDate
-							value={row[columnElement.id] as EventDate}
-							onChange={async (value: EventDate) => {
+						<TableColumnEditContent
+							initialData={
+								row[columnElement.id] as WebpageContent[]
+							}
+							onChange={async (value: WebpageContent[]) => {
 								await updateData({
 									className: className,
 									objectId: row.objectId,

@@ -3,7 +3,7 @@ import { Updater } from "use-immer";
 
 export type TableColumnEditDateProps = {
 	value: EventDate | undefined;
-	onChange: (value: EventDate) => void;
+	onChange: (value: EventDate) => Promise<void>;
 };
 
 export type DateEditProps = {
