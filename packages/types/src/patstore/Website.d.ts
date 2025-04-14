@@ -14,7 +14,7 @@ export type WebpageContentText = {
     type: 'text';
     position: number;
     text: string;
-    image: null;
+    url: null;
 }
 
 export type WebpageContentImage = {
@@ -23,7 +23,15 @@ export type WebpageContentImage = {
     type: 'image';
     position: number;
     text: string;
-    image: string;
+    url: string;
+}
+export type WebpageContentVideo = {
+    name: string;
+    id: string;
+    type: 'video';
+    position: number;
+    text: string;
+    url: string;
 }
 
-export type WebpageContent = (WebpageContentText | WebpageContentImage);
+export type WebpageContent = (WebpageContentText | WebpageContentImage | WebpageContentVideo);

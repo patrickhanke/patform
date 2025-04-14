@@ -8,7 +8,8 @@ export type TableColumnEditContentProps = {
 
 export type EditContentFieldProps = {
 	field: WebpageContent;
-	setActiveIndex: Dispatch<SetStateAction<number>>;
+	setActiveIndex: Dispatch<SetStateAction<number | null>>;
+	index: number;
 };
 
 export type EditContentProps = {

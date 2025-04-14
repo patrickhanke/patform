@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import content_type_options from "../constants/content_type_options";
-import { Editor, Select } from "@repo/ui";
+import { Editor, ImageUploader, Select } from "@repo/ui";
 import { EditContentProps } from "../types";
 import { cloneDeep, set } from "lodash";
 
@@ -44,6 +44,17 @@ const EditContent: FC<EditContentProps> = ({
 					label="Textinhalt"
 					content={content[activeIndex]?.text || ""}
 					onChange={(value) => updateContent("text", value)}
+				/>
+			)}
+			{content[activeIndex]?.type === "video" && (
+				<ImageUploader
+					label="Videoinhalt"
+					onChange={(value) =>
+						updateContent("video", value as string)
+					}
+					maxFileCount={1}
+					returnType="string"
+					preview={false}
 				/>
 			)}
 		</div>

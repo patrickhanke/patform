@@ -34,7 +34,7 @@ const TableColumnEditContent: FC<TableColumnEditContentProps> = ({
 		setLoading(false);
 	}, [content, onChange]);
 
-	const findIndexOfItem: (id: string) => number | null = useCallback(
+	const findIndexOfItem: (id: string) => number = useCallback(
 		(id: string) => {
 			return content.findIndex((item) => item.id === id);
 		},
@@ -92,9 +92,8 @@ const TableColumnEditContent: FC<TableColumnEditContentProps> = ({
 						ItemComponent={({ item, id }) => (
 							<EditContentField
 								field={item as WebpageContent}
-								setActiveIndex={() =>
-									setActiveIndex(findIndexOfItem(id))
-								}
+								setActiveIndex={setActiveIndex}
+								index={findIndexOfItem(id)}
 							/>
 						)}
 						objectClass="Module"

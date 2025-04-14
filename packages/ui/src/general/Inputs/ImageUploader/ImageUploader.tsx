@@ -12,7 +12,6 @@ const ImageUploader = ({
 	previewImage,
 	onChange,
 	label,
-	path,
 	maxFileCount,
 	deleteHandler,
 	filename,
@@ -23,7 +22,6 @@ const ImageUploader = ({
 	previewImage?: Image | Image[];
 	onChange: (F: Image[] | Image) => void;
 	label: string;
-	path: string;
 	maxFileCount?: number;
 	filename?: string;
 	deleteHandler?: (image: Image) => void;
@@ -92,7 +90,7 @@ const ImageUploader = ({
 			}
 		};
 		return configObject;
-	}, [path, maxFileCount, filename]);
+	}, [maxFileCount, filename]);
 
 	const reinitializeHandler = useCallback(() => {
 		setReinitialize(false);
