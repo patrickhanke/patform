@@ -277,7 +277,7 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 			<Modal
 				header="Tickets löschen"
 				isOpen={deleteTickets}
-				confirmButtonText="Tickets archivieren"
+				confirmButtonText="Tickets löschen"
 				cancelButtonHandler={() => setArchiveTickets(false)}
 				buttonDisabled={[loading, loading]}
 				confirmButtonHandler={async () => {

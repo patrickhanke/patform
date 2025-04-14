@@ -1,13 +1,13 @@
 "use client";
 
-import { FC, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { State, StateSelectProps } from "./types";
 import styles from "./StateSelect.module.scss";
 import { Icon } from "@repo/ui";
 import ReactSelect, { components, StylesConfig } from "react-select";
 import customStyles from "./constants/customStyles";
 
-const StateSelect: FC<StateSelectProps<State>> = ({
+const StateSelect = <S extends object | State>({
 	state,
 	stateOptions,
 	label,
@@ -17,10 +17,10 @@ const StateSelect: FC<StateSelectProps<State>> = ({
 	noBackground = false,
 	customOptions,
 	width
-}) => {
+}: StateSelectProps<S>) => {
 	const [doc, setDoc] = useState<HTMLElement | null>(null);
 
-	const handleStateSelect = (option: State | null) => {
+	const handleStateSelect = (option: S | null) => {
 		if (stateSelectHandler && option) {
 			stateSelectHandler(option);
 		}

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import styles from "../Tickets.module.scss";
 import { useDataHandler } from "@repo/provider";
 import { TicketStateProps } from "../types";
@@ -8,12 +8,14 @@ import { ticket_state_options } from "@repo/provider";
 const TicketState = ({ ticketId, ticketState, refetch }: TicketStateProps) => {
 	const { updateData } = useDataHandler();
 	const updateTicketState = useCallback(
-		async (state: string | object | number) => {
+		async (state: (typeof ticket_state_options)[number]) => {
+			console.log(state);
+
 			await updateData({
 				className: "Ticket",
 				objectId: ticketId,
 				updateObject: {
-					state
+					state: state.value
 				}
 			});
 			refetch();
@@ -24,12 +26,11 @@ const TicketState = ({ ticketId, ticketState, refetch }: TicketStateProps) => {
 	return (
 		<div className={styles.ticket_state_container}>
 			<div className={styles.ticket_subheadline}>
-				<StateSelect
+				<StateSelect<typeof ticket_state_options>
 					type="state"
 					state={ticketState}
-					stateOptions={ticket_state_options}
+					stateOptions={[...ticket_state_options]}
 					icon="clock"
-					displayInterface={ticketState === "closed" ? false : true}
 					stateSelectHandler={updateTicketState}
 				/>
 			</div>

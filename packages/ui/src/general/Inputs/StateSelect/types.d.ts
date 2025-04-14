@@ -23,13 +23,15 @@ export type CustomOptions = {
 	disabled?: boolean;
 }[];
 
-export type State = ClassState;
+export type State =
+	| ClassState
+	| { value: string; label: string; color?: string };
 
 export type StateSelectProps<S> = {
 	color?: string;
 	icon?: IconTypes;
 	isDisabled?: boolean;
-	stateSelectHandler?: (state: S) => void | Promise<void>;
+	stateSelectHandler?: (state: S[number]) => void | Promise<void>;
 	noBackground?: boolean;
 	onClick?: () => void;
 	width?: number | string;
