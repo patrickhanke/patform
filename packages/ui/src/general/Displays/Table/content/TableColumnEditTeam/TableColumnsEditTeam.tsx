@@ -31,7 +31,7 @@ const TableColumnEditTeam: FC<TableColumnEditTeamProps> = ({
 	return (
 		<>
 			<div className="button_container">
-				{team?.id ? (
+				{initialData && team?.id ? (
 					<button
 						className="full_button sm light"
 						onClick={() => setEditTeam(true)}

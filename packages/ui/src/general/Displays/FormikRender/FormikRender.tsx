@@ -21,9 +21,7 @@ const FormikRender: FC<FormikRenderProps> = ({
 	useWithDebounce,
 	isHorizontal = false,
 	setSecondaryContent,
-	highlightChanges = false,
-	valueReturnFunction,
-	enableReinitialize = false
+	highlightChanges = false
 }) => {
 	return (
 		<Formik
@@ -38,6 +36,8 @@ const FormikRender: FC<FormikRenderProps> = ({
 						)
 			}
 			onSubmit={(values) => {
+				console.log(values);
+
 				if (formSubmitHandler) {
 					formSubmitHandler(values);
 				}
@@ -79,6 +79,7 @@ const FormikRender: FC<FormikRenderProps> = ({
 					<FormSubmitStore
 						formValidationHandler={formValidationHandler}
 						useWithDebounce={useWithDebounce}
+						submitForm={handleSubmit}
 					/>
 				</form>
 			)}

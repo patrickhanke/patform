@@ -14,6 +14,8 @@ const containerStyle = {
 const API_KEY = "AIzaSyAJgX9vOxmGb-w5JtU4z9xrlXJ0vKpQHP8";
 
 const Map = ({ initialPlace, onChange }: MapProps) => {
+	console.log(initialPlace);
+
 	const [selectedPlace, setSelectedPlace] = useState<LatLng>(
 		initialPlace || { lat: 0, lng: 0 }
 	);
@@ -28,7 +30,6 @@ const Map = ({ initialPlace, onChange }: MapProps) => {
 	const [map, setMap] = useState<google.maps.Map | null>(null);
 
 	const onLoad = useCallback(function callback(map: google.maps.Map) {
-		// This is just an example of getting and using the map instance!!! don't just blindly copy!
 		const bounds = new window.google.maps.LatLngBounds(selectedPlace);
 		map.fitBounds(bounds);
 

@@ -117,7 +117,7 @@ const TableColumnCategory = ({
 
 	return (
 		<>
-			<div>
+			<div style={{ width: "180px" }}>
 				{!categories || categories?.length === 0 ? (
 					<button
 						type="button"
@@ -138,8 +138,6 @@ const TableColumnCategory = ({
 									(element) => element.id === catId
 								);
 								if (category) {
-									console.log(category);
-
 									return (
 										<StateDisplay
 											key={catId}

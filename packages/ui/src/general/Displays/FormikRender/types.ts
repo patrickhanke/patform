@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { FormikValues } from "formik";
+import { FormikHandlers, FormikValues } from "formik";
 import { Dispatch, SetStateAction } from "react";
 import { Pointer } from "@repo/types";
 import { DatePickerTypes } from "@repo/ui";
@@ -25,6 +25,7 @@ export type FormikRenderProps = {
 export type FormSubmitStoreProps = {
 	formValidationHandler?: (t: boolean) => void;
 	useWithDebounce?: boolean;
+	submitForm: FormikHandlers["handleSubmit"];
 };
 
 export type FieldTypes =
@@ -65,6 +66,7 @@ export type BasicField = {
 	disabled?: (values: FormikValues) => boolean | boolean;
 	width?: string | number;
 	validation?: {
+		validate?: boolean;
 		required?: string;
 	};
 };
@@ -99,6 +101,7 @@ export type StringField = BasicField & {
 	value?: string;
 	textAlign?: "left" | "center" | "right";
 	validation?: {
+		validate?: boolean;
 		required?: string;
 		min_length?: number;
 		max_length?: number;
@@ -190,7 +193,7 @@ export type DateField = BasicField & {
 	type: DatePickerTypes;
 	value?: string;
 	validation?: {
-		required?: string;
+		validate?: string;
 	};
 };
 

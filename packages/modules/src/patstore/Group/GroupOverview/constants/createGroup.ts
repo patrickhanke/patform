@@ -22,12 +22,7 @@ const createGroup: PageCreateClassObject = {
 			position: 3,
 			name: "text",
 			type: "textarea",
-			label: "Beschreibung",
-			validation: {
-				required: "Pflichtfeld",
-				min_length: 30,
-				max_length: 180
-			}
+			label: "Beschreibung"
 		}
 	]
 };

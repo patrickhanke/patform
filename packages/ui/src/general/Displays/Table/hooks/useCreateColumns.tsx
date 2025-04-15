@@ -68,7 +68,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Text aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -101,7 +102,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Bild aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -134,7 +136,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Text aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -160,7 +163,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Text aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -185,7 +189,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Termin aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -239,7 +244,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 											latitude: value.latitude,
 											longitude: value.longitude
 										}
-									}
+									},
+									feedback: "GeoPoint aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -276,7 +282,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 										objectId: row.objectId,
 										updateObject: {
 											[columnElement.id]: value.value
-										}
+										},
+										feedback: "Status aktualisiert"
 									});
 									if (refetch) {
 										refetch();
@@ -305,7 +312,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Galerie aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -344,7 +352,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 											className: "Person",
 											objectId: value
 										}
-									}
+									},
+									feedback: "Person aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -378,7 +387,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: values }
+									updateObject: {
+										[columnElement.id]: values
+									},
+									feedback: "Personen aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -403,7 +415,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Zeiten aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -454,7 +467,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Team aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -482,7 +496,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Datei aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -512,7 +527,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 									objectId: row.objectId,
 									updateObject: {
 										[columnElement.id]: value
-									}
+									},
+									feedback: "Datum aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -540,7 +556,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								await updateData({
 									className: className,
 									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value }
+									updateObject: { [columnElement.id]: value },
+									feedback: "Inhalt aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -574,7 +591,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								className,
 								updateObject: {
 									categories: categories
-								}
+								},
+								feedback: "Kategorie aktualisiert"
 							});
 							if (refetch) {
 								refetch();

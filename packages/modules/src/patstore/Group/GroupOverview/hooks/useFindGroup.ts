@@ -27,7 +27,8 @@ const useFindGroup: UseFindGroupHook = ({ moduleId, filters, limit, skip }) => {
 				skip,
 				limit
 			},
-			notifyOnNetworkStatusChange: true
+			notifyOnNetworkStatusChange: true,
+			fetchPolicy: "cache-first"
 		}
 	);
 

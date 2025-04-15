@@ -28,6 +28,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	const [isOpen, setIsOpen] = useState(false);
 	const [secondaryContent, setSecondaryContent] =
 		useState<React.ReactNode>(null);
+
 	const { loading, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "get",
@@ -86,13 +87,24 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 				disabled={disabled}
 				showSecondaryContent={!!secondaryContent}
 				secondaryContent={secondaryContent}
+				preventClickOutside
 			>
 				{currentModule.fields && (
 					<Form
 						fields={currentModule.fields}
 						data={data}
-						formSubmitHandler={(values) => setData(values)}
+						formSubmitHandler={(values) => {
+							setData(values);
+						}}
 						setSecondaryContent={setSecondaryContent}
+						formValidationHandler={(isValid) => {
+							if (!isValid) {
+								setDisabled([false, true]);
+							} else if (disabled[1] === true) {
+								setDisabled([false, false]);
+							}
+						}}
+						useWithDebounce
 					/>
 				)}
 			</SlideIn>

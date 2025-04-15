@@ -35,9 +35,6 @@ const DateEdit: FC<DateEditProps> = ({ date, setDate }) => {
 		}
 	);
 
-	console.log(modules);
-	console.log(locationData);
-
 	const locationOptions = useMemo(() => {
 		if (!locationData) return [];
 

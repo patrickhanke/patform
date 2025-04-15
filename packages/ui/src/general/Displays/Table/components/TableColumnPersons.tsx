@@ -73,8 +73,6 @@ const TableColumnPersons = ({
 				elements={elements}
 				selectedElements={currentPersons}
 				onSelect={(selectValue) => {
-					console.log(selectValue);
-
 					if (!selectValue || selectValue.length === 0) {
 						setNewPersons([]);
 					} else if (selectValue.length > 0) {

@@ -47,8 +47,6 @@ const WebsitePages = ({
 		refetch,
 		categories: categories || [],
 		disableCategory(row, label) {
-			console.log({ row, label });
-
 			if (row.type === "webpage") {
 				return true;
 			}

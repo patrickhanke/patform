@@ -4,7 +4,7 @@ import { AppModuleFieldProps } from "../types";
 
 const AppModuleField = ({ field, setActiveField }: AppModuleFieldProps) => {
 	return (
-		<div >
+		<div>
 			<div>
 				<h3>{field.label}</h3>
 			</div>

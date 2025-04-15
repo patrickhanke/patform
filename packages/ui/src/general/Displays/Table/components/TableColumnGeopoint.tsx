@@ -18,8 +18,6 @@ const TableColumnGeopoint = ({
 		lng: value?.longitude
 	});
 
-	console.log(value);
-
 	return (
 		<>
 			<div className="table_column_textfield_container">

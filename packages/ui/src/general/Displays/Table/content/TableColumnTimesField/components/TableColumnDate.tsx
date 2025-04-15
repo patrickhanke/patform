@@ -6,13 +6,11 @@ import { TableColumnTimeProps } from "../types";
 import { weekdays } from "@repo/provider";
 
 const TableColumnTime = ({ time, setActiveTime }: TableColumnTimeProps) => {
-	console.log({ time });
-
 	const title = useMemo(() => {
 		if (time.weekday) {
 			const day = weekdays.find((day) => day.value === time.weekday);
 			return day?.label || "Kein Wochentag";
-		} else if (time.start) {
+		} else if (time.start && time.start.length > 2) {
 			return formatISO9075(new Date(time.start));
 		} else {
 			return "Kein Datum";

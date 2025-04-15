@@ -67,7 +67,9 @@ const RenderFields: FC<RenderFieldsType> = ({
 									? "number"
 									: field.type
 							}
-							onChange={(e) => handleChange(e)}
+							onChange={(e) => {
+								setFieldValue(field.name, e.target.value, true);
+							}}
 							value={get(values, field.name, "")}
 							onBlur={(e) => handleBlur(e)}
 							placeholder={field.placeholder}
@@ -199,7 +201,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 				{field.type === "texteditor" && (
 					<TextEditor
 						name={field.name}
-						label={field.label}
+						// label={}
 						id={field.id}
 						onChange={(value) =>
 							setFieldValue(field.name, value, true)
@@ -239,10 +241,25 @@ const RenderFields: FC<RenderFieldsType> = ({
 						/>
 					</>
 				)}
+				<br />
 				{getFieldMeta(field.name).touched &&
 				getFieldMeta(field.name).error ? (
 					<div className={"error_message"}>
-						{getFieldMeta(field.name).error}
+						{typeof getFieldMeta(field.name).error === "object" &&
+						getFieldMeta(field.name).error !== null
+							? Object.keys(getFieldMeta(field.name).error).map(
+									(key) => (
+										<div key={key}>
+											{key}:{" "}
+											{
+												getFieldMeta(field.name).error[
+													key
+												]
+											}
+										</div>
+									)
+								)
+							: getFieldMeta(field.name).error}
 					</div>
 				) : null}
 				{/* {isHorizontal && <div className='form_divider' />} */}

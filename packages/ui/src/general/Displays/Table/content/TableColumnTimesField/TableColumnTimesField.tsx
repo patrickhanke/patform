@@ -42,11 +42,15 @@ const TableColumnTimesField = ({
 						className="full_button sm light"
 						onClick={() => setEditDates(!editDates)}
 					>
-						{times.map((time) => (
-							<div key={`${time.weekday}_${time.start}`}>
-								{`${getWeekday(time.weekday)?.short} - ${time.start}-${time.end}`}
-							</div>
-						))}
+						{times.length > 3 ? (
+							<div>{times.length} Zeiten</div>
+						) : (
+							times.map((time) => (
+								<div key={`${time.weekday}_${time.start}`}>
+									{`${getWeekday(time.weekday)?.short} - ${time.start}-${time.end}`}
+								</div>
+							))
+						)}
 					</button>
 				) : (
 					<button

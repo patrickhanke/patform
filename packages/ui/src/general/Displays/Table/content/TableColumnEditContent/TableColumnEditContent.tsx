@@ -23,9 +23,6 @@ const TableColumnEditContent: FC<TableColumnEditContentProps> = ({
 	const [loading, setLoading] = useState(false);
 	const [editContent, setEditContent] = useState(false);
 
-	console.log(content);
-	console.log(activeIndex);
-
 	const slideInConfirmHandler = useCallback(async () => {
 		setLoading(true);
 		console.log(content);

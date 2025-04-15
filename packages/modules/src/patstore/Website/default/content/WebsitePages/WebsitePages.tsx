@@ -40,7 +40,6 @@ const WebsitePages = ({ moduleId }: WebsitePagesProps) => {
 
 	if (pageData) {
 		const pages = pageData?.objects.findWebpage.results;
-		console.log(pages);
 
 		return <Table data={pages} columns={columns} />;
 	}

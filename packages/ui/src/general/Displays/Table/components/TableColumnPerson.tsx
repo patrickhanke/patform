@@ -72,8 +72,6 @@ const TableColumnPerson = ({
 				elements={elements}
 				selectedElements={currentPerson ? [currentPerson] : []}
 				onSelect={(selectValue) => {
-					console.log(selectValue);
-
 					if (!selectValue || selectValue.length === 0) {
 						setSelectedPerson("");
 					} else if (selectValue.length > 0) {

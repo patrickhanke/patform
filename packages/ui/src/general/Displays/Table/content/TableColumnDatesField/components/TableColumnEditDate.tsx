@@ -176,7 +176,7 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 							<Map
 								initialPlace={{
 									lat: date?.place?.map?.latitude || 0,
-									lng: date.place.map?.longitude || 0
+									lng: date?.place.map?.longitude || 0
 								}}
 								onChange={(place) =>
 									changeHandler("place.map", {
