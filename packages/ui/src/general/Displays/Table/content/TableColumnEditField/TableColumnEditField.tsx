@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { IconButton, SlideIn } from "@repo/ui";
 import {
@@ -29,7 +29,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	const [secondaryContent, setSecondaryContent] =
 		useState<React.ReactNode>(null);
 
-	const { loading, refetch } = useQuery(
+	const { loading } = useQuery(
 		generateGraphQLQuery({
 			type: "get",
 			objectName: className,
@@ -60,17 +60,18 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 			className,
 			updateObject: {
 				data
-			}
+			},
+			feedback: "Daten aktualisiert"
 		});
 		setDisabled([false, false]);
 		setIsOpen(false);
 	}, [data]);
 
-	useEffect(() => {
-		if (isOpen) {
-			refetch();
-		}
-	}, [isOpen]);
+	// useEffect(() => {
+	// 	if (isOpen) {
+	// 		refetch();
+	// 	}
+	// }, [isOpen]);
 
 	return (
 		<>
