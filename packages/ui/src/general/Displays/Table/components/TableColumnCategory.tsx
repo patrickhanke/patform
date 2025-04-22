@@ -118,7 +118,11 @@ const TableColumnCategory = ({
 	return (
 		<>
 			<div style={{ width: "180px" }}>
-				{!categories || categories?.length === 0 ? (
+				{!categories ||
+				categories?.length === 0 ||
+				!categories.some((catId) =>
+					elements.some((element) => element.id === catId)
+				) ? (
 					<button
 						type="button"
 						onClick={() => setIsOpen(true)}
