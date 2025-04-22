@@ -14,7 +14,8 @@ const useFindCategory: UseFindCategoryHook = ({ moduleId, filters }) => {
 				"createdAt",
 				"data",
 				"color",
-				"categories"
+				"categories",
+				"description"
 			]
 		}),
 		{
