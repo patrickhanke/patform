@@ -586,6 +586,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 						}
 						categories={row.categories || []}
 						onChange={async (categories: string[]) => {
+							
 							await updateData({
 								objectId: row.objectId,
 								className,

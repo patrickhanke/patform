@@ -42,9 +42,12 @@ const TableColumnCategory = ({
 			fields
 		}),
 		{
-			variables: { params: { module: { _eq: category.moduleId } } }
+			variables: { params: { module: { _eq: category.moduleId } } },
+			fetchPolicy: "cache-first"
 		}
 	);
+
+	console.log({ newCategories });
 
 	const elements = useMemo(() => {
 		const categoryOptionsArray: SelectElement[] = [];
@@ -103,9 +106,29 @@ const TableColumnCategory = ({
 				)}
 				onSelect={(selectValue) => {
 					if (!selectValue || selectValue.length === 0) {
-						setNewCategories([]);
+						const newCategoriesArray = [...categories].filter(
+							(category) =>
+								!elements.find(
+									(element) => element.id === category
+								)
+						);
+
+						setNewCategories(newCategoriesArray);
 					} else if (selectValue.length > 0) {
-						setNewCategories(selectValue.map((value) => value.id));
+						const newCategoriesArray: string[] = [
+							...categories
+						].filter(
+							(category) =>
+								!elements.find(
+									(element) => element.id === category
+								)
+						);
+
+						const newIds: string[] = selectValue.map(
+							(value: SelectElement) => value.id
+						) as string[];
+
+						setNewCategories([...newCategoriesArray, ...newIds]);
 					}
 				}}
 				max={category.is_multi ? 6 : 1}
