@@ -35,7 +35,7 @@ const TableColumnTexteditor = ({
 					setIsOpen(false);
 				}}
 				header={"Text"}
-				buttonDisabled={[false, !string]}
+				buttonDisabled={[false, false]}
 			>
 				<div className={"table_column_textfield_textarea_container"}>
 					<Editor

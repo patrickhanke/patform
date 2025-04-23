@@ -25,6 +25,7 @@ const GroupOverview = () => {
 		pageIndex: 0,
 		pageSize: 10
 	});
+
 	const { groups, refetch, count } = useFindGroup({
 		moduleId: currentModule.objectId,
 		filters,
