@@ -116,7 +116,8 @@ export type ColumnDataTypes =
 	| "edit_team"
 	| "files"
 	| "edit_color"
-	| "edit_content";
+	| "edit_content"
+	| "date_picker";
 
 export type ColumnData<Class> = {
 	id: keyof Class;

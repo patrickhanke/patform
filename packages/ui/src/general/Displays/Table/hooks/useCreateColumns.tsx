@@ -206,11 +206,30 @@ const useCreateColumns = <T extends ColumnClasses>({
 					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
-			if (columnElement.type === "date") {
+			if (
+				columnElement.type === "date" ||
+				columnElement.type === "date_picker"
+			) {
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnDate
 							date={row[columnElement.id] as string}
+							onChange={async (value: string) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: { [columnElement.id]: value },
+									feedback: "Datum aktualisiert"
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+							isEditable={
+								columnElement.type === "date_picker"
+									? true
+									: false
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -586,7 +605,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 						}
 						categories={row.categories || []}
 						onChange={async (categories: string[]) => {
-							
 							await updateData({
 								objectId: row.objectId,
 								className,
@@ -649,7 +667,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 						/>
 					</div>
 				),
-				header: () => <span>Bearb.</span>,
+				header: () => (
+					<span>{fields.length > 0 ? "Bearb." : "Löschen"}</span>
+				),
 				id: "edit",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,

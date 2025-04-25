@@ -14,6 +14,7 @@ const useFindNews: UseFindNewsHook = ({ moduleId, filters, limit, skip }) => {
 				"createdAt",
 				"text",
 				"data",
+				"date",
 				"categories"
 			]
 		}),

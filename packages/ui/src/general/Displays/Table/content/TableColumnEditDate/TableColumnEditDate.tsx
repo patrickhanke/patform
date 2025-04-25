@@ -9,7 +9,7 @@ import initialDateValues from "./constants/initialDateValues";
 
 const TableColumnEditDate: FC<TableColumnEditDateProps> = ({
 	value,
-	onChange,
+	onChange
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ const TableColumnEditDate: FC<TableColumnEditDateProps> = ({
 					onClick={() => setIsOpen(true)}
 					className="full_button sm grey"
 				>
-					<span>+ Person hinzufügen</span>
+					<span>+ Datum hinzufügen</span>
 				</button>
 			) : (
 				<button
