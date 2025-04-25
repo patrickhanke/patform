@@ -35,7 +35,7 @@ const TableColumnGallery = ({
 					onChange(image);
 					setIsOpen(false);
 				}}
-				header={"Bild ändern"}
+				header={"Bilder ändern"}
 				buttonDisabled={[false, !image]}
 			>
 				<ImageUploader

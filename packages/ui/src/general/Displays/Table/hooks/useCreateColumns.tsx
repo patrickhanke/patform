@@ -674,7 +674,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,
 				enableSorting: false,
-				sortingFn: undefined // Default sortingFn
+				sortingFn: undefined
 			});
 
 		return columnArray;
