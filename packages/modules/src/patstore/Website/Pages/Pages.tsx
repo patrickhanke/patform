@@ -39,8 +39,7 @@ const Pages = () => {
 		if (pageStates.length > 0) {
 			setPageState(pageStates[0]);
 		}
-	}
-	, [pageStates]);
+	}, [pageStates]);
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(
 		() => [
@@ -88,7 +87,6 @@ const Pages = () => {
 		<Page
 			title={`${currentModule.name} - Seiten`}
 			description="Übersicht über alle Seiten"
-			// pageHeaderContent={}
 			emptyContent={true}
 			pageStates={pageStates}
 			pageState={pageState || pageStates[0]}

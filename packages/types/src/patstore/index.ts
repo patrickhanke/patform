@@ -16,3 +16,4 @@ export type * from "./Message";
 export type * from "./User";
 export type * from "./Date";
 export type * from "./Role";
+export type * from "./Content";
