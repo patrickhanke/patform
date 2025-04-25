@@ -12,7 +12,24 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 1,
 		categories: [],
-		connected_class: "Webpage"
+		connected_class: "Webpage",
+		sub_menu: [
+			{
+				label: "Inhalte",
+				value: "/content",
+				icon: "content"
+			},
+			{
+				label: "Seiten",
+				value: "/pages",
+				icon: "pages"
+			},
+			{
+				label: "Einstellungen",
+				value: "/settings",
+				icon: "settings"
+			}
+		]
 	},
 	"/articles": {
 		path: "/articles",
@@ -24,7 +41,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 2,
 		categories: [],
-		connected_class: "Article"
+		connected_class: "Article",
+		sub_menu: []
 	},
 	"/events": {
 		path: "/events",
@@ -36,7 +54,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 3,
 		categories: [],
-		connected_class: "Event"
+		connected_class: "Event",
+		sub_menu: []
 	},
 	"/news": {
 		path: "/news",
@@ -48,7 +67,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 4,
 		categories: [],
-		connected_class: "News"
+		connected_class: "News",
+		sub_menu: []
 	},
 	"/categories": {
 		path: "/categories",
@@ -60,7 +80,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 5,
 		categories: [],
-		connected_class: "Category"
+		connected_class: "Category",
+		sub_menu: []
 	},
 	"/persons": {
 		path: "/persons",
@@ -72,7 +93,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 6,
 		categories: [],
-		connected_class: "Person"
+		connected_class: "Person",
+		sub_menu: []
 	},
 	"/images": {
 		path: "/images",
@@ -84,7 +106,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 7,
 		categories: [],
-		connected_class: "Image"
+		connected_class: "Image",
+		sub_menu: []
 	},
 	"/groups": {
 		path: "/groups",
@@ -96,7 +119,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 2,
 		categories: [],
-		connected_class: "Group"
+		connected_class: "Group",
+		sub_menu: []
 	},
 	"/training-group": {
 		path: "/training-group",
@@ -133,7 +157,8 @@ export const module_option_fields: ModuleOptionsField = {
 		],
 		position: 2,
 		categories: [],
-		connected_class: "Group"
+		connected_class: "Group",
+		sub_menu: []
 	},
 	"/downloads": {
 		path: "/downloads",
@@ -145,7 +170,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 9,
 		categories: [],
-		connected_class: "Download"
+		connected_class: "Download",
+		sub_menu: []
 	},
 	"/forms": {
 		path: "/forms",
@@ -157,7 +183,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 10,
 		categories: [],
-		connected_class: "Form"
+		connected_class: "Form",
+		sub_menu: []
 	},
 	"/users": {
 		path: "/users",
@@ -169,7 +196,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 10,
 		categories: [],
-		connected_class: "_User"
+		connected_class: "_User",
+		sub_menu: []
 	},
 	"/locations": {
 		path: "/locations",
@@ -181,7 +209,8 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 11,
 		categories: [],
-		connected_class: "Location"
+		connected_class: "Location",
+		sub_menu: []
 	},
 	"/calendar": {
 		path: "/calendar",
@@ -193,6 +222,7 @@ export const module_option_fields: ModuleOptionsField = {
 		fields: [],
 		position: 12,
 		categories: [],
-		connected_class: "Dates"
+		connected_class: "Dates",
+		sub_menu: []
 	}
 };

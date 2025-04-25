@@ -6,6 +6,7 @@ export type WebpageClass = ClassProperties & {
     type: string;
     subtitle: string;
     content: WebpageContent[];
+    active: boolean;
 };
 
 export type WebpageContentText = {
@@ -15,6 +16,7 @@ export type WebpageContentText = {
     position: number;
     text: string;
     url: null;
+    active: boolean;
 }
 
 export type WebpageContentImage = {
@@ -24,6 +26,7 @@ export type WebpageContentImage = {
     position: number;
     text: string;
     url: string;
+    active: boolean;
 }
 export type WebpageContentVideo = {
     name: string;
@@ -32,6 +35,7 @@ export type WebpageContentVideo = {
     position: number;
     text: string;
     url: string;
+    active: boolean;
 }
 
 export type WebpageContent = (WebpageContentText | WebpageContentImage | WebpageContentVideo);

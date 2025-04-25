@@ -76,6 +76,9 @@
     $justify: space-between,
     $gap: constants.$sm
   );
+  position: relative;
+  width: 100%;
+  overflow-x: auto; 
 }
 
 .pageheader_createbutton {

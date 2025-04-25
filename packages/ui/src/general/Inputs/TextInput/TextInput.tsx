@@ -3,6 +3,7 @@
 import { ErrorDisplay } from "@repo/ui";
 import { useEffect, useRef } from "react";
 import { ErrorMessage } from "@repo/types";
+import { useDebounceCallback } from "usehooks-ts";
 
 const TextInput = ({
 	label,
@@ -35,6 +36,7 @@ const TextInput = ({
 }) => {
 	const inputRef = useRef(null as unknown as HTMLInputElement);
 	const textareaRef = useRef(null as unknown as HTMLTextAreaElement);
+	const setValue = useDebounceCallback(onChange, 500);
 
 	useEffect(() => {
 		if (
@@ -61,7 +63,7 @@ const TextInput = ({
 					ref={textareaRef}
 					defaultValue={defaultValue}
 					id={id}
-					onChange={(e) => onChange(e.target.value)}
+					onChange={(e) => setValue(e.target.value)}
 					style={{ width }}
 					onBlur={onBlur}
 					placeholder={placeholder ? placeholder : ""}
@@ -72,7 +74,7 @@ const TextInput = ({
 					ref={inputRef}
 					defaultValue={defaultValue}
 					id={id}
-					onChange={(e) => onChange(e.target.value)}
+					onChange={(e) => setValue(e.target.value)}
 					type={type ? type : "text"}
 					style={{ width }}
 					onBlur={onBlur}

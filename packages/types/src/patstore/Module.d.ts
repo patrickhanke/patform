@@ -36,4 +36,9 @@ export type Module = {
   connected_class: string;
   categories: ModuleCategory[];
   settings: ModuleSettings;
+  sub_menu: {
+    label: string;
+    value: string;
+    icon: string;
+  }[]
 };

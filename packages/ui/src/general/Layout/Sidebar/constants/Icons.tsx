@@ -38,6 +38,7 @@ import {
 import { TfiClose, TfiList, TfiViewList } from "react-icons/tfi";
 import { LuArchive, LuMessageSquareText } from "react-icons/lu";
 import { IoIosTimer } from "react-icons/io";
+import { IoBookmarksOutline } from "react-icons/io5";
 
 const Icons = ({ icon, color }: { icon: string; color?: string }) => {
 	if (icon === "projects") {
@@ -177,6 +178,9 @@ const Icons = ({ icon, color }: { icon: string; color?: string }) => {
 	}
 	if (icon === "completed" || icon === "closed") {
 		return <CiBookmarkRemove color={color || "inherit"} />;
+	}
+	if (icon === "pages") {
+		return <IoBookmarksOutline color={color || "inherit"} />;
 	}
 
 	return null;

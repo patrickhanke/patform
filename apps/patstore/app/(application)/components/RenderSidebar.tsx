@@ -21,14 +21,14 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
             label: module.name,
             icon: module.icon,
             value: module.path,
-            sub_menu: [],
+            sub_menu: module.sub_menu || [],
           });
         } else if (userRole && userRole.modules.includes(module.objectId)) {
           menuItemsArray.push({
             label: module.name,
             icon: module.icon,
             value: module.path,
-            sub_menu: [],
+            sub_menu: module.sub_menu || [],
           });
         }
       });

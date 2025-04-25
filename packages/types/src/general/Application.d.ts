@@ -8,7 +8,7 @@ export type Params = {
 export type PageState = {
   value: string;
   label: string;
-  disbaled?: boolean;
+  disabled?: boolean;
 };
 
 export type FilterOperator =
