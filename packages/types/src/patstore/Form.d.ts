@@ -1,4 +1,5 @@
 import { ClassProperties } from "./Classes";
+import FormField from '../../../modules/src/patstore/Form/Form/content/FormFields/content/FormField/FormField';
 
 export type Recipient = {
   email: string;
@@ -8,7 +9,7 @@ export type Recipient = {
 
 export type FormClass = ClassProperties & {
   name: string;
-  fields: Field[];
+  fields: FormField[];
   description: string;
   settings: {
     recipients: Recipient[];

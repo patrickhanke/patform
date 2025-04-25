@@ -35,7 +35,7 @@ const TableColumnString = ({
 					setIsOpen(false);
 				}}
 				header={"Text ändern"}
-				buttonDisabled={[false, !string]}
+				buttonDisabled={[false, false]}
 			>
 				<div className={"table_column_textfield_textarea_container"}>
 					<input

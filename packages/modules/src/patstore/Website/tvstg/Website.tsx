@@ -21,6 +21,18 @@ const Website = () => {
 		}),
 		{ variables: { id: currentModule.objectId } }
 	);
+
+	const { data: pageData } = useQuery(
+		generateGraphQLQuery({
+			type: "find",
+			objectName: "Webpage",
+			fields: ["objectId", "name"]
+		}),
+		{ variables: { params: { module: { _eq: currentModule.objectId } } } }
+	);
+
+	console.log({ pageData });
+
 	const [activeState, setActiveState] = useState<
 		(typeof pages_states)[number]
 	>(pages_states[0] as PageState);
