@@ -5,23 +5,26 @@ import { isArray } from "lodash-es";
 import geneateFormColumns from "../functions/generateFormColumns";
 
 const useFormDataColumns = ({
-  data,
-  refetch,
+	data,
+	refetch
 }: {
-  data: FormDataClass["data"];
-  refetch: ApolloRefetch;
+	data: FormDataClass["data"];
+	refetch: ApolloRefetch;
 }) => {
-  const columns = useCreateColumns<FormDataClass["data"]>({
-    data: geneateFormColumns(
-      isArray(data) ? data.map((data) => data.data) : [],
-    ),
-    fields: [],
-    className: "Data",
-    refetch,
-    categories: [],
-  });
+	const columns = useCreateColumns<FormDataClass["data"]>({
+		data: [
+			{ id: "cretedAt", type: "date", label: "Datum" },
+			...geneateFormColumns(
+				isArray(data) ? data.map((data) => data.data) : []
+			)
+		],
+		fields: [],
+		className: "Data",
+		refetch,
+		categories: []
+	});
 
-  return columns;
+	return columns;
 };
 
 export default useFormDataColumns;

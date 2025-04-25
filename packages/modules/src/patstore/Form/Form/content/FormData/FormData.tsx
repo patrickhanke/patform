@@ -1,40 +1,76 @@
 import { Table } from "@repo/ui";
-import { generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
 import useFormDataColumns from "./hooks/useFormDataColumns";
-import generateFormData from "./functions/generateFormData";
+import useFindFormData from "./hooks/useFindFormData";
+import { FC, useState } from "react";
+import { Filter } from "@repo/types";
+import { FormDataProps } from "./types";
 
-const FormData = ({ formId }: { formId: string }) => {
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Data",
-			fields: ["objectId", "createdAt", "data"]
-		}),
+const FormData: FC<FormDataProps> = ({ formId, setSelectedDataRows }) => {
+	const initialFilters: Filter[] = [
 		{
-			variables: { params: { reference_id: { _eq: formId } } }
+			key: "reference_id",
+			operator: "_eq",
+			id: "reference_id",
+			value: formId
 		}
-	);
+	];
+	const [filters] = useState<Filter[]>(initialFilters);
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10
+	});
+
+	const { data, refetch, count } = useFindFormData({
+		filters,
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize
+	});
 
 	const columns = useFormDataColumns({
-		data: data?.objects.findData.results,
+		data,
 		refetch
 	});
 
-	if (!data) {
-		return null;
-	}
-
-	const formData = generateFormData(
-		data.objects.findData.results.map((data: any) => data.data)
-	);
+	// const renderFilters = useMemo(() => {
+	// 	return (
+	// 		<RenderFilters
+	// 			filters={filters}
+	// 			setFilters={setFilters}
+	// 			fields={[
+	// 				{
+	// 					type: "input",
+	// 					key: "title",
+	// 					operator: "_regex",
+	// 					value: "",
+	// 					placeholder: "Suchwort"
+	// 				}
+	// 			]}
+	// 			categories={[]}
+	// 			initialFilters={initialFilters}
+	// 		/>
+	// 	);
+	// }, []);
 
 	return (
 		<div>
-			{formData.length === 0 ? (
+			{data.length === 0 ? (
 				<p>Keine Daten vorhanden</p>
 			) : (
-				<Table data={formData} columns={columns} />
+				<Table
+					columns={columns}
+					data={
+						data.map((dataElement) => ({
+							...dataElement.data,
+							objectId: dataElement.objectId
+						})) || []
+					}
+					setPagination={setPagination}
+					pagination={pagination}
+					rowCount={count}
+					// filterContent={renderFilters}
+					onRowSelection={setSelectedDataRows}
+					enableRowSelection
+				/>
 			)}
 		</div>
 	);
