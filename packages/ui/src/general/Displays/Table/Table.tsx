@@ -205,13 +205,9 @@ const Table: React.FC<TableTypes> = ({
 								return (
 									<tr
 										key={row.id}
+										data-is_selected={isSelected}
 										style={{
-											...(rowStyles
-												? rowStyles(row)
-												: {}),
-											backgroundColor: isSelected
-												? "#e0f7fa"
-												: "transparent"
+											...(rowStyles ? rowStyles(row) : {})
 										}}
 									>
 										{enableRowSelection && (

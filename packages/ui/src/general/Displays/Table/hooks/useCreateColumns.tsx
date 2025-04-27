@@ -627,6 +627,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 				sortingFn: undefined // Default sortingFn
 			} as ColumnDef<T>);
 		});
+		console.log('editLink');
+		
 		if (typeof editLink === "string") {
 			columnArray.push({
 				accessorFn: (row) => (

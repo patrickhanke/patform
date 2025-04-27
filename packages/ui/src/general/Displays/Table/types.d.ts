@@ -135,7 +135,7 @@ export type CreateColumnHookProps<Class> = {
 	fields?: Module["fields"];
 	refetch: () => void;
 	constants?: { [key: string]: object };
-	editLink?: string;
+	editLink?: string; // if muttiple links, use "link1/link2"
 	disableCategory?: (row: Class, label: ModuleCategory["label"]) => boolean;
 };
 

@@ -1,0 +1,1 @@
+export {WebsitePage as default} from "@repo/modules";
