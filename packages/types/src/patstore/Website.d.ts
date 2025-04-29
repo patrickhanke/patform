@@ -9,6 +9,8 @@ export type WebpageClass = ClassProperties & {
     active: boolean;
 };
 
+
+
 export type WebpageContentText = {
     name: string;
     id: string;

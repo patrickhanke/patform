@@ -14,6 +14,8 @@ const TableColumnDate = ({
 	const [editDate, setEditDate] = useState(false);
 	const [newDate, setNewDate] = useState<string>(date || "");
 
+	console.log(isEditable);
+
 	return (
 		<>
 			<div

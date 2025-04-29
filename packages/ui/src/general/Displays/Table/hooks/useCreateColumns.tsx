@@ -35,6 +35,7 @@ import { TableColumnEditTeam } from "../content/TableColumnEditTeam";
 import TableColumnEditColor from "../components/TableColumnEditColor";
 import TableColumnEditDate from "../content/TableColumnEditDate";
 import TableColumnEditContent from "../content/TableColumnEditContent";
+import TableColumnEditBoolean from "../components/TableColumnEditBoolean";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -564,6 +565,89 @@ const useCreateColumns = <T extends ColumnClasses>({
 				} as ColumnDef<T>);
 			}
 
+			if (columnElement.type === "boolean") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnEditBoolean
+							value={row[columnElement.id] as boolean}
+							onChange={async (value: boolean) => {
+								await updateData({
+									className: className,
+									objectId: row.objectId,
+									updateObject: {
+										[columnElement.id]: value
+									},
+									feedback: "Wert aktualisiert"
+								});
+								if (refetch) {
+									refetch();
+								}
+							}}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "content") {
+				columnArray.push({
+					accessorFn: (row) =>
+						row?.type === "text" ? (
+							<TableColumnTexteditor
+								value={row[columnElement.id]?.value as string}
+								isEditable={true}
+								onChange={async (value: string) => {
+									await updateData({
+										className: className,
+										objectId: row.objectId,
+										updateObject: {
+											[columnElement.id]: {
+												type: row.type,
+												value
+											}
+										},
+										feedback: "Text aktualisiert"
+									});
+									if (refetch) {
+										refetch();
+									}
+								}}
+							/>
+						) : (
+							<TableColumnImage
+								url={row[columnElement.id].value as string}
+								isEditable={true}
+								onChange={async (value: string) => {
+									await updateData({
+										className: className,
+										objectId: row.objectId,
+										updateObject: {
+											[columnElement.id]: {
+												type: row.type,
+												value
+											}
+										},
+										feedback: "Bild aktualisiert"
+									});
+									if (refetch) {
+										refetch();
+									}
+								}}
+							/>
+						),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
+
 			if (columnElement.type === "edit_content") {
 				columnArray.push({
 					accessorFn: (row) => (
@@ -627,8 +711,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 				sortingFn: undefined // Default sortingFn
 			} as ColumnDef<T>);
 		});
-		console.log('editLink');
-		
+		console.log("editLink");
+
 		if (typeof editLink === "string") {
 			columnArray.push({
 				accessorFn: (row) => (

@@ -1,12 +1,15 @@
-import { Field, Form } from "@repo/ui";
+"use client";
+
+import { Field, Form, Page } from "@repo/ui";
 import { WebsiteSettingsProps } from "./types";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { cloneDeep, set } from "lodash-es";
-import { useDataHandler } from "@repo/provider";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import { FormikValues } from "formik";
 
 const WebsiteSettings = ({ settings, moduleId }: WebsiteSettingsProps) => {
 	const { updateData } = useDataHandler();
+	const { currentModule } = useContext(PatstoreAppContext);
 	const siteSettings = settings?.site_settings;
 	const fields: Field[] = useMemo(
 		() => [
@@ -71,14 +74,21 @@ const WebsiteSettings = ({ settings, moduleId }: WebsiteSettingsProps) => {
 	};
 
 	return (
-		<div className="content_element">
-			<Form
-				data={siteSettings}
-				fields={fields}
-				formSubmitHandler={updateSettings}
-				isHorizontal={true}
-			/>
-		</div>
+		<Page
+			title={`${currentModule.name} - Einstellungen`}
+			description="Übersicht über die Einstellungen der Webseite"
+			emptyContent={true}
+			// pageHeaderButtons={user?.is_superuser ? pageHeaderButtons : []}
+		>
+			<div className="content_element">
+				<Form
+					data={siteSettings}
+					fields={fields}
+					formSubmitHandler={updateSettings}
+					isHorizontal={true}
+				/>
+			</div>
+		</Page>
 	);
 };
 

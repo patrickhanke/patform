@@ -21,11 +21,20 @@ const TableColumnImage = ({
 	return (
 		<>
 			<div className="horizontal_container">
-				<div className="table_columns_image_container">
+				<div>
 					{url ? (
-						<img src={getImageUrl({ filePath: url, height: 30 })} />
+						<div className="table_columns_image_container">
+							<img
+								src={getImageUrl({ filePath: url, height: 30 })}
+							/>
+						</div>
 					) : (
-						<div className="table_columns_image_placeholder" />
+						<button
+							className="full_button sm grey"
+							onClick={() => setIsOpen(true)}
+						>
+							+ Bild hinzufügen
+						</button>
 					)}
 				</div>
 				<div className="table_vertical_container">

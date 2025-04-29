@@ -1,60 +1,40 @@
 "use client";
 
-import { Page, PageHeaderButton } from "@repo/ui";
-import { useContext, useMemo } from "react";
-
-import { useQuery } from "@apollo/client";
-import { ContentElement } from "./content/ContentElement";
-import { ContentClass } from "@repo/types";
 import {
-	generateGraphQLQuery,
-	PatstoreAppContext,
-	useDataHandler
-} from "@repo/provider";
+	Page,
+	PageHeaderButton,
+	RenderFilters,
+	Table,
+	useCreateColumns
+} from "@repo/ui";
+import { useContext, useMemo, useState } from "react";
+
+import { ContentClass, Filter } from "@repo/types";
+import { PatstoreAppContext } from "@repo/provider";
+import useFindContent from "./hooks/useFindContent";
+import CreateContent from "./components/CreateContent";
 
 const WebsiteContent = () => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
-	const { deleteData, createData } = useDataHandler();
-
-	const { data: contentData, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Content",
-			fields: ["objectId", "name"]
-		}),
-		{
-			variables: {
-				params: { module: { _eq: currentModule.objectId } }
-			}
-		}
-	);
+	const [addContent, setAddContent] = useState(false);
+	const [filters, setFilters] = useState<Filter[]>([]);
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10
+	});
+	const { content, refetch, count } = useFindContent({
+		moduleId: currentModule.objectId,
+		filters,
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize
+	});
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(
 		() => [
 			{
 				text: "SeitenElement hinzufügen",
-				onClick: async () => {
-					await createData({
-						className: "Webpage",
-						updateObject: {
-							title: "Neue Seite",
-							name: "new-site",
-							module: {
-								__type: "Pointer",
-								className: "Module",
-								objectId: currentModule.objectId
-							},
-							content: [],
-							categories: [],
-							created_by: {
-								__type: "Pointer",
-								className: "_User",
-								objectId: user?.objectId
-							}
-						},
-						feedback: "Seite erfolgreich erstellt"
-					});
-					await refetch();
+				onClick: () => {
+					setAddContent(true);
 				},
 				icon: "add",
 				is_add_button: true,
@@ -64,6 +44,46 @@ const WebsiteContent = () => {
 		[user]
 	);
 
+	const columns = useCreateColumns<ContentClass>({
+		data: [
+			{ id: "name", type: "edit_string", label: "Name" },
+			{
+				id: "content_id",
+				type: "string",
+				label: "ID (kann nicht geändert werden)"
+			},
+			{ id: "type", type: "string", label: "Typ" },
+			{ id: "createdAt", type: "date", label: "Erstellt am" },
+			{ id: "active", type: "boolean", label: "Aktiv" },
+			{ id: "content", type: "content", label: "Inhalt" }
+		],
+		fields: [],
+		className: "Content",
+		refetch,
+
+		categories: []
+	});
+
+	const renderFilters = useMemo(() => {
+		return (
+			<RenderFilters
+				filters={filters}
+				setFilters={setFilters}
+				fields={[
+					{
+						type: "input",
+						key: "name",
+						operator: "_regex",
+						value: "",
+						placeholder: "Suchwort"
+					}
+				]}
+				categories={[]}
+				initialFilters={[]}
+			/>
+		);
+	}, []);
+
 	return (
 		<Page
 			title={`${currentModule.name} - Inhalte`}
@@ -71,10 +91,20 @@ const WebsiteContent = () => {
 			emptyContent={true}
 			pageHeaderButtons={user?.is_superuser ? pageHeaderButtons : []}
 		>
-			{contentData &&
-				contentData.objects.findContent.results.map((content: ContentClass) => (
-					<ContentElement content={content} />
-				))}
+			<Table
+				columns={columns}
+				data={content || []}
+				setPagination={setPagination}
+				pagination={pagination}
+				rowCount={count}
+				filterContent={renderFilters}
+			/>
+			<CreateContent
+				createContent={addContent}
+				setCreateContent={setAddContent}
+				allContent={content || []}
+				refetch={refetch}
+			/>
 		</Page>
 	);
 };

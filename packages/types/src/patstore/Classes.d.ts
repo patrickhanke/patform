@@ -1,5 +1,6 @@
 import { FormDataElement } from "@repo/ui";
 import { CategoryClass } from "./Category";
+import { PatstoreUser } from "./User";
 
 export type PatstoreProject = {
   name: string;
@@ -25,10 +26,13 @@ export type ClassState = {
 export type ClassProperties = {
   objectId: string;
   createdAt: string;
+  updatedAt: string;
   data?: FormDataElement;
   module: Module;
   categories: ClassCategories;
   label: string;
+  created_by: PatstoreUser;
+  updated_by: PatstoreUser;
 };
 
 export type Classes =

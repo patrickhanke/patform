@@ -241,7 +241,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 						/>
 					</>
 				)}
-				<br />
+				{!isHorizontal && <br />}
 				{getFieldMeta(field.name).touched &&
 				getFieldMeta(field.name).error ? (
 					<div className={"error_message"}>
