@@ -3,6 +3,7 @@
 import { getImageUrl } from "@repo/provider";
 import { TableColumnImageProps } from "../types";
 import "../styles.scss";
+import Image from "next/image";
 
 const TableColumnImage = ({ url }: TableColumnImageProps) => {
 	return (
@@ -11,8 +12,14 @@ const TableColumnImage = ({ url }: TableColumnImageProps) => {
 				<div>
 					{url ? (
 						<div className="table_columns_image_container">
-							<img
-								src={getImageUrl({ filePath: url, height: 30 })}
+							<Image
+								alt={url}
+								src={getImageUrl({
+									filePath: url,
+									height: 128
+								})}
+								height={36}
+								width={64}
 							/>
 						</div>
 					) : (

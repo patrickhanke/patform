@@ -40,6 +40,8 @@ export type DisplayImageElementProps = {
 };
 
 export type ImageUploaderProps = {
-	onChange: (V: { filePath: string; fileName: string }[]) => Promise<void>;
+	onChange: (
+		V: { filePath: string; fileName: string }[]
+	) => void | Promise<void>;
 	maxFileCount: number;
 };

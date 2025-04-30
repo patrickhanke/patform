@@ -1,49 +1,78 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import {
 	Modal,
 	Page,
+	PatstoreDisplayImage,
+	PatstoreImageUploader,
 	RenderFilters,
 	Separator,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
 import useGetImages from "./hooks/useGetImages";
-import { Filter, ImageClass, PageState } from "@repo/types";
-import { ImageUploader, useImageDataHandler } from "../ImageUploader";
-import deleteModalInitialValues from "./constants/deleteModalInitialValues";
-import {
-	generateImagePath,
-	PatstoreAppContext,
-	useAppContext
-} from "@repo/provider";
-
-const pageStates: PageState[] = [
-	{ value: "all", label: "Alle" },
-	{ value: "active", label: "Aktiv" },
-	{ value: "inactive", label: "Inaktiv" }
-];
+import { Filter, ImageClass } from "@repo/types";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 
 const ImagesOverview = () => {
-	const { project } = useAppContext();
-	const { currentModule } = useContext(PatstoreAppContext);
+	const { currentModule, user } = useContext(PatstoreAppContext);
+	const { deleteData, createData } = useDataHandler();
+
 	const [uploadImages, setUploadImages] = useState(false);
-	const [newImages, setNewImages] = useState<string[]>([]);
-	const [activeState, setActiveState] = useState(pageStates[0]);
+	const [newImages, setNewImages] = useState<
+		{ filePath: string; fileName: string }[]
+	>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
-	const { images, refetch } = useGetImages({
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10
+	});
+	const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
+	const [loading, setLoading] = useState(false);
+
+	const { images, refetch, count } = useGetImages({
 		moduleId: currentModule.objectId,
-		filters
+		filters,
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize
 	});
 
-	const { imageUploadHandler } = useImageDataHandler({
-		projectId: project.objectId,
-		afterCancelFunction: refetch,
-		afterSaveFunction: refetch
-	});
+	const resetUploadImages = () => {
+		setNewImages([]);
+		setUploadImages(false);
+	};
 
-	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
+	const imageUploadHandler = useCallback(async () => {
+		const uploadArray = newImages.map(async (image) => {
+			await createData({
+				className: "Image",
+				updateObject: {
+					name: image.fileName,
+					filePath: image.filePath,
+					categories: [],
+					description: "",
+					fields: [],
+					created_by: {
+						__type: "Pointer",
+						className: "_User",
+						objectId: user.objectId
+					},
+					module: {
+						__type: "Pointer",
+						className: "Module",
+						objectId: currentModule.objectId
+					}
+				}
+			});
+		});
+
+		await Promise.all(uploadArray);
+		await refetch();
+	}, [currentModule, newImages, user]);
+
+	const [deleteModal, setDeleteModal] = useState(false);
 
 	const columns = useCreateColumns<ImageClass>({
 		data: [
@@ -58,6 +87,26 @@ const ImagesOverview = () => {
 		categories: currentModule?.categories
 	});
 
+	const renderFilters = useMemo(() => {
+		return (
+			<RenderFilters
+				filters={filters}
+				setFilters={setFilters}
+				fields={[
+					{
+						type: "input",
+						key: "name",
+						operator: "_regex",
+						value: "",
+						placeholder: "Suchwort"
+					}
+				]}
+				categories={[]}
+				initialFilters={[]}
+			/>
+		);
+	}, []);
+
 	return (
 		<Page
 			title="Bilder"
@@ -68,52 +117,76 @@ const ImagesOverview = () => {
 				}
 			]}
 			emptyContent={true}
-			pageStates={pageStates}
-			pageState={activeState}
-			setPageState={setActiveState}
 		>
-			<RenderFilters
-				categories={currentModule.categories}
-				filters={filters}
-				setFilters={setFilters}
-				initialFilters={[]}
-				fields={[]}
-			/>
 			<Separator size="xs" noLine />
-			<Table columns={columns} data={images || []} />
+			<Table
+				columns={columns}
+				data={images || []}
+				rowCount={count}
+				pagination={pagination}
+				setPagination={setPagination}
+				enableRowSelection
+				onRowSelection={setSelectedRows}
+				filterContent={renderFilters}
+			/>
 			<Modal
 				isOpen={uploadImages}
 				buttonDisabled={[false, newImages.length === 0]}
-				cancelButtonHandler={() => setUploadImages(false)}
+				cancelButtonHandler={() => resetUploadImages()}
 				confirmButtonHandler={async () => {
-					await imageUploadHandler(newImages);
-					setUploadImages(false);
+					await imageUploadHandler();
+					resetUploadImages();
 				}}
-				header="Upload Images"
+				header="Bilder hochladen"
 			>
-				<ImageUploader
-					label="Uploader"
-					path={generateImagePath(
-						process.env.APP_NAME as string,
-						project.path
-					)}
-					onChange={(images) => {
-						setNewImages(images as string[]);
+				<p>
+					Bitte wählen Sie die Bilder aus, die Sie hochladen möchten.
+				</p>
+				<PatstoreImageUploader
+					maxFileCount={20}
+					onChange={(newImages) => {
+						setNewImages(newImages);
 					}}
 				/>
+				{newImages.length > 0 && (
+					<div>
+						<p>{newImages.length} Bilder ausgewählt</p>
+						<div className="flex row ai-ce jc-fs gap-sm wrap">
+							{newImages.map((image) => (
+								<PatstoreDisplayImage
+									key={image.filePath}
+									filePath={image.filePath}
+									name={image.fileName}
+								/>
+							))}
+						</div>
+					</div>
+				)}
 			</Modal>
 			<Modal
-				isOpen={deleteModal.isOpen}
-				cancelButtonHandler={() =>
-					setDeleteModal(deleteModalInitialValues)
-				}
-				confirmButtonHandler={() => {
-					deleteModal.confirmButtonHandler();
-					setDeleteModal(deleteModalInitialValues);
+				isOpen={deleteModal}
+				cancelButtonHandler={() => setDeleteModal(false)}
+				buttonDisabled={[loading, loading]}
+				confirmButtonHandler={async () => {
+					setLoading(true);
+					await Promise.all(
+						selectedRows.map(async (objectId) => {
+							await deleteData({
+								className: "Article",
+								objectId
+							});
+						})
+					);
+					await refetch();
+					setLoading(false);
+					setDeleteModal(false);
 				}}
-				header={deleteModal.header}
+				header={"Berichte löschen"}
 			>
-				<p>Sind sich Sicher, dass sie das Bild löschen möchten?</p>
+				<p>
+					Sind sich Sicher, dass sie {selectedRows.length} Berichte
+					löschen möchten?
+				</p>
 			</Modal>
 		</Page>
 	);

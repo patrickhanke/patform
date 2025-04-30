@@ -1,8 +1,8 @@
 import React from "react";
-import { ImageUploader } from "@repo/modules";
+import { ImageUploader } from "@repo/ui";
 import { ImageField, Modal } from "@repo/ui";
 import { useState } from "react";
-import { generateImagePath, getImageUrl, useAppContext } from "@repo/provider";
+import { getImageUrl } from "@repo/provider";
 
 interface ImageUploadProps {
 	fieldValues: {
@@ -20,7 +20,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 	setFieldValue,
 	isHorizontal
 }) => {
-	const { project } = useAppContext();
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState("");
 
@@ -58,11 +57,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 				buttonDisabled={[false, !image]}
 			>
 				<ImageUploader
+					label=""
 					onChange={(imgUrl) => setImage(imgUrl as string)}
-					path={generateImagePath(
-						process.env.APP_NAME as string,
-						project.path
-					)}
 					returnType={field?.options?.return_type || "array"}
 					maxFileCount={field?.options?.max_file_count || 10}
 				/>

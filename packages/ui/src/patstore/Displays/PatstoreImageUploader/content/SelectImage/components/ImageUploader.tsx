@@ -15,7 +15,7 @@ const ImageUploader: FC<ImageUploaderProps> = ({ onChange, maxFileCount }) => {
 	const options = useMemo(() => {
 		const configObject: UploadDropzoneConfig = {
 			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string,
-			maxFileCount: maxFileCount || 10,
+			maxFileCount: maxFileCount || 20,
 			showFinishButton: true,
 			editor: {
 				images: {

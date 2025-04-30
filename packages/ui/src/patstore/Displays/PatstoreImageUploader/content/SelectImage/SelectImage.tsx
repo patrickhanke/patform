@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useCallback, useContext, useMemo, useState } from "react";
 import select_states from "./constants/select_states";
 import {
@@ -56,6 +58,9 @@ const SelectImage: FC<SelectImageProps> = ({
 					updateObject: {
 						name: image.fileName,
 						filePath: image.filePath,
+						categories: [],
+						description: "",
+						fields: [],
 						created_by: {
 							__type: "Pointer",
 							className: "_User",

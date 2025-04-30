@@ -1,29 +1,35 @@
-import { Filter, Image } from "@repo/types";
+import { Filter } from "@repo/types";
 
 export type UseGetImagesHookReturnValue = {
-  loading: boolean;
-  images?: TicketTypes.Ticket[];
-  refetch: () => void;
+	loading: boolean;
+	images?: TicketTypes.Ticket[];
+	refetch: () => void;
 };
 
 type FilterArray = Filter[];
 
 type GreetFunction = ({
-  projectId: string,
-  id: string,
-  className: string,
-  filters: FilterArray,
+	projectId: string,
+	id: string,
+	className: string,
+	filters: FilterArray
 }) => void;
 
-export type UseGetImagesHook = ({ moduleId: string, filters: FilterArray }) => {
-  loading: boolean;
-  images?: Image[];
-  refetch: () => void;
+export type UseFindImagesHook = (T: {
+	moduleId: string;
+	filters: Filter[];
+	limit?: number;
+	skip?: number;
+}) => {
+	images: ImageClass[];
+	refetch: ApolloRefetch;
+	count: number;
+	loading: boolean;
 };
 
 export type DeleteModalProps = {
-  images: string[];
-  isOpen: boolean;
-  confirmButtonHandler: () => void;
-  header: "Bilder löschen";
+	images: string[];
+	isOpen: boolean;
+	confirmButtonHandler: () => void;
+	header: "Bilder löschen";
 };
