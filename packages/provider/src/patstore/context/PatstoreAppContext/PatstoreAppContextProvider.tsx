@@ -45,6 +45,7 @@ const AppContextProvider = ({
 			project,
 			currentModule,
 			user,
+			userLoading: !user.objectId ? true : false,
 			modules: project.modules.results
 		}),
 		[pageTitle, project, currentModule, user]

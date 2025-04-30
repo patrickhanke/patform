@@ -17,12 +17,13 @@ import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 
 const ImagesOverview = () => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
-	const { deleteData, createData } = useDataHandler();
+	const { deleteData, createData } = useDataHandler(false);
 
 	const [uploadImages, setUploadImages] = useState(false);
 	const [newImages, setNewImages] = useState<
 		{ filePath: string; fileName: string }[]
 	>([]);
+
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -107,15 +108,28 @@ const ImagesOverview = () => {
 		);
 	}, []);
 
+	const pageHeaderButtons = useMemo(
+		() => [
+			{
+				text: "Bilder löschen",
+				onClick: () => {
+					setDeleteModal(true);
+				},
+				icon: "delete",
+				disabled: selectedRows.length === 0
+			},
+			{
+				text: "Bilder hochladen",
+				onClick: () => setUploadImages(true)
+			}
+		],
+		[selectedRows]
+	);
+
 	return (
 		<Page
 			title="Bilder"
-			pageHeaderButtons={[
-				{
-					text: "Bilder hochladen",
-					onClick: () => setUploadImages(true)
-				}
-			]}
+			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
 		>
 			<Separator size="xs" noLine />
@@ -172,7 +186,7 @@ const ImagesOverview = () => {
 					await Promise.all(
 						selectedRows.map(async (objectId) => {
 							await deleteData({
-								className: "Article",
+								className: "Image",
 								objectId
 							});
 						})
@@ -181,10 +195,10 @@ const ImagesOverview = () => {
 					setLoading(false);
 					setDeleteModal(false);
 				}}
-				header={"Berichte löschen"}
+				header={"Bilder löschen"}
 			>
 				<p>
-					Sind sich Sicher, dass sie {selectedRows.length} Berichte
+					Sind sich Sicher, dass sie {selectedRows.length} Bilder
 					löschen möchten?
 				</p>
 			</Modal>

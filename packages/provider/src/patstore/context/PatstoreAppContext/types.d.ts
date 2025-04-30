@@ -7,4 +7,5 @@ export type ContextValues = {
 	currentModule: Module;
 	modules: Module[];
 	user: PatstoreUser;
+	userLoading: boolean;
 };

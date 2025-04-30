@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { CreateColumnHookProps, ColumnClasses } from "../types";
 import { ColumnDef } from "@tanstack/react-table";
 import TableColumnString from "../components/TableColumnString";
-import { useDataHandler } from "@repo/provider";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import TableColumnImage from "../components/TableColumnImage";
 import TableColumnTextfield from "../components/TableColumnTextfield";
 import TableColumnCategory from "../components/TableColumnCategory";
@@ -47,7 +47,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 	editLink,
 	disableCategory
 }: CreateColumnHookProps<T>) => {
-	const { updateData } = useDataHandler();
+	const { updateData } = useDataHandler(false);
 
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
@@ -699,8 +699,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 				sortingFn: undefined // Default sortingFn
 			} as ColumnDef<T>);
 		});
-		console.log("editLink");
-
 		if (typeof editLink === "string") {
 			columnArray.push({
 				accessorFn: (row) => (
