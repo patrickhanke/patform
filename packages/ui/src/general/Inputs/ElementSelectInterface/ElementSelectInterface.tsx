@@ -15,7 +15,8 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 	min = 1,
 	max = 1,
 	isSearchable = false,
-	selectProperty = false
+	selectProperty = false,
+	useTiles = false
 }) => {
 	const [searchInput, setSearchTerm] = useState("");
 
@@ -25,7 +26,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 
 			if (selectProperty) {
 				const elementIndex = elementsCopy.findIndex(
-					(el: SelectElement) => el.value === element.value
+					(el: SelectElement) => el?.value === element.value
 				);
 				if (elementIndex !== -1) {
 					elementsCopy[elementIndex].selected =
@@ -89,7 +90,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 		}
 
 		if (header && index > 0) {
-			if (elements[index - 1].header === header) {
+			if (elements[index - 1]?.header === header) {
 				return false;
 			}
 		}
@@ -132,7 +133,10 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 					/>
 				</div>
 			)}
-			<div className={styles.elements_interface_container}>
+			<div
+				className={styles.elements_interface_container}
+				data-row={useTiles}
+			>
 				{filteredElements.map(
 					(element: SelectElement, index, elements) => (
 						<Fragment key={element.value}>
@@ -148,11 +152,12 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 									!selectProperty
 										? selectedElements.some(
 												(el: SelectElement) =>
-													el.value === element.value
-											)
-										: element.selected
+													el?.value === element.value
+											) || false
+										: element.selected || false
 								}
 								onSelect={elementChangeHandler}
+								useTiles={useTiles}
 							/>
 						</Fragment>
 					)

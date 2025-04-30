@@ -5,29 +5,34 @@ import clsx from "clsx";
 import { Icon } from "@repo/ui";
 
 const ListElement: FC<ListElementProps> = ({
-  element,
-  isSelected,
-  onSelect,
+	element,
+	isSelected,
+	onSelect,
+	useTiles = false
 }) => {
-  return (
-    <>
-      <button
-        className={clsx("content_element", styles.list_element_container)}
-        data-selected={isSelected}
-        onClick={() => onSelect(element)}
-        disabled={element.disabled || false}
-      >
-        <div>
-          <Icon
-            type={isSelected ? "circle-check" : "circle"}
-            strokeWidth={1.8}
-            color={isSelected ? "green" : "gray"}
-          />
-        </div>
-        {element.element ? element.element : <p>{element.label}</p>}
-      </button>
-    </>
-  );
+	return (
+		<>
+			<button
+				className={clsx(
+					"content_element",
+					styles.list_element_container
+				)}
+				data-tile={useTiles}
+				data-selected={isSelected}
+				onClick={() => onSelect(element)}
+				disabled={element.disabled || false}
+			>
+				<div>
+					<Icon
+						type={isSelected ? "circle-check" : "circle"}
+						strokeWidth={1.8}
+						color={isSelected ? "green" : "gray"}
+					/>
+				</div>
+				{element.element ? element.element : <p>{element.label}</p>}
+			</button>
+		</>
+	);
 };
 
 export default ListElement;

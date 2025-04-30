@@ -36,11 +36,13 @@ const ImagesOverview = () => {
 		moduleId: currentModule.objectId,
 		filters
 	});
+
 	const { imageUploadHandler } = useImageDataHandler({
 		projectId: project.objectId,
 		afterCancelFunction: refetch,
 		afterSaveFunction: refetch
 	});
+
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
 
 	const columns = useCreateColumns<ImageClass>({
@@ -67,8 +69,8 @@ const ImagesOverview = () => {
 			]}
 			emptyContent={true}
 			pageStates={pageStates}
-			activeState={activeState}
-			navOnClick={setActiveState}
+			pageState={activeState}
+			setPageState={setActiveState}
 		>
 			<RenderFilters
 				categories={currentModule.categories}

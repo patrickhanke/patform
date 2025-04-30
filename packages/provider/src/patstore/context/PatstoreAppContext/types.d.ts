@@ -6,5 +6,5 @@ export type ContextValues = {
 	project: Project;
 	currentModule: Module;
 	modules: Module[];
-	user: PatstoreUser | null;
+	user: PatstoreUser;
 };

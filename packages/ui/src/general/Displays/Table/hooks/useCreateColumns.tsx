@@ -25,7 +25,6 @@ import TableColumnGeopoint from "../components/TableColumnGeopoint";
 import { ColorValues, LatitudeLongitude } from "@repo/ui";
 import TableColumnEditState from "../components/TableColumnEditState";
 import { get } from "lodash-es";
-import TableColumnGallery from "../components/TableColumnGallery";
 import TableColumnPerson from "../components/TableColumnPerson";
 import TableColumnTimesField from "../content/TableColumnTimesField";
 import TableColumnPersons from "../components/TableColumnPersons";
@@ -36,6 +35,7 @@ import TableColumnEditColor from "../components/TableColumnEditColor";
 import TableColumnEditDate from "../content/TableColumnEditDate";
 import TableColumnEditContent from "../content/TableColumnEditContent";
 import TableColumnEditBoolean from "../components/TableColumnEditBoolean";
+import TableColumnImages from "../components/TableColumnImages";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -87,24 +87,22 @@ const useCreateColumns = <T extends ColumnClasses>({
 				} as ColumnDef<T>);
 			}
 			if (
-				columnElement.type === "image" ||
-				columnElement.type === "edit_image"
+				columnElement.type === "edit_image" ||
+				columnElement.type === "gallery"
 			) {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnImage
-							url={row[columnElement.id] as string}
-							isEditable={
-								columnElement.type === "edit_image"
-									? true
-									: false
+						<TableColumnImages
+							value={row[columnElement.id] as string | string[]}
+							maxFileCount={
+								columnElement.type === "gallery" ? 20 : 1
 							}
-							onChange={async (value: string) => {
+							onChange={async (value: string | string[]) => {
 								await updateData({
 									className: className,
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
-									feedback: "Bild aktualisiert"
+									feedback: "Bilder aktualisiert"
 								});
 								if (refetch) {
 									refetch();
@@ -323,22 +321,11 @@ const useCreateColumns = <T extends ColumnClasses>({
 					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
-			if (columnElement.type === "gallery") {
+			if (columnElement.type === "image") {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnGallery
-							value={row[columnElement.id] as string[]}
-							onChange={async (value: string[]) => {
-								await updateData({
-									className: className,
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Galerie aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+						<TableColumnImage
+							url={row[columnElement.id] as string}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -618,20 +605,21 @@ const useCreateColumns = <T extends ColumnClasses>({
 								}}
 							/>
 						) : (
-							<TableColumnImage
-								url={row[columnElement.id].value as string}
-								isEditable={true}
-								onChange={async (value: string) => {
+							<TableColumnImages
+								value={
+									row[columnElement.id] as string | string[]
+								}
+								maxFileCount={
+									columnElement.type === "gallery" ? 20 : 1
+								}
+								onChange={async (value: string | string[]) => {
 									await updateData({
 										className: className,
 										objectId: row.objectId,
 										updateObject: {
-											[columnElement.id]: {
-												type: row.type,
-												value
-											}
+											[columnElement.id]: value
 										},
-										feedback: "Bild aktualisiert"
+										feedback: "Bilder aktualisiert"
 									});
 									if (refetch) {
 										refetch();

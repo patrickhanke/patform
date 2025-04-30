@@ -58,7 +58,7 @@ const SlideIn: React.FC<SlideInProps> = ({
 								initial={{
 									width: 0
 								}}
-								animate={{ width: 360 }}
+								animate={{ width: 420 }}
 								exit={{ width: 0 }}
 								transition={{
 									duration: 0.3,

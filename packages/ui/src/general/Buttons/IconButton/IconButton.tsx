@@ -19,9 +19,6 @@ const IconButton: FC<IconButtonProps> = ({
 	size = 12,
 	color
 }) => {
-    console.log(link);
-    console.log(isLink);
-    
 	if (!isLink && onClick)
 		return (
 			<button

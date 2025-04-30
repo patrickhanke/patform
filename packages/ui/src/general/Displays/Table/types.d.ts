@@ -33,13 +33,10 @@ export type ColumnDef<TData> = ColumnDef<TData>;
 
 export type TableColumnImageProps = {
 	url?: string;
-	isEditable?: boolean;
-	onChange: (image: string) => void;
-	maxFileCount?: number;
 };
 
-export type TableColumnGalleryProps = {
-	value?: string[];
+export type TableColumnImagesProps = {
+	value?: string[] | string;
 	onChange: (images: string[]) => Promise<void>;
 	maxFileCount?: number;
 };

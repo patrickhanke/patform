@@ -1,0 +1,108 @@
+@use "@repo/styles/constants";
+
+.upload_container {
+  @include constants.flexbox($direction: column, $align: flex-star, $gap: 0);
+  width: 100%;
+  height: fit-content;
+  position: relative;
+}
+
+.upload_zone {
+  min-height: 240px;
+  .upload-widget__root {
+    .upload-widget {
+      .upload-widget__controls {
+        @include constants.flexbox(
+          $direction: row,
+          $justify: flex-start,
+          $align: center,
+          $gap: 10px
+        );
+        .upload-widget__controls__button {
+          @extend .full_button !optional;
+        }
+      }
+      .btn {
+        @include constants.full_button_mixin("md", "primary");
+        line-height: 1;
+      }
+      .upload-widget__internal {
+        .upload-widget__internal__children {
+          .upload-widget__main-screen {
+            .upload-widget__main-screen__file-list {
+              .upload-widget__main-screen__file-list__inner {
+                padding: map-get($map: constants.$padding, $key: "sm");
+                .upload-widget__submitted-file {
+                  .upload-widget__submitted-file__container {
+                    .upload-widget__submitted-file__inner {
+                      padding: map-get($map: constants.$padding, $key: "sm");
+                      a {
+                        font-size: map-get(
+                          $map: constants.$font_size,
+                          $key: "sm"
+                        );
+                      }
+                      .progress-icon__container {
+                        scale: 0.7;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            .upload-widget__controls {
+              @include constants.flexbox(
+                $direction: row,
+                $justify: flex-start,
+                $align: center,
+                $gap: 10px
+              );
+              .upload-widget__controls__button {
+                @extend .full_button !optional;
+              }
+            }
+          }
+          label {
+            color: constants.$white;
+            margin: 0;
+          }
+          .upload-widget__image-editor {
+            .upload-widget__controls--space {
+              @include constants.button_container;
+            }
+          }
+        }
+      }
+      // .upload-widget__internal__children {
+      //     .upload-widget__main-screen{
+      //         background-color: red;
+      //         .upload-widget__controls{
+      //             @include constants.flexbox($direction: row, $justify: flex-start, $align: center, $gap: 10px);
+      //             .upload-widget__controls__button {
+      //                 @extend .full_button !optional;
+      //             }
+      //         }
+      //     }
+      //     label {
+      //         color: constants.$white;
+      //         padding: map-get($map: constants.$padding, $key: 'md' );
+      //     }
+      //     .upload-widget__image-editor{
+      //         .upload-widget__controls--space {
+      //             @include constants.button_container
+      //         }
+      //     }
+      // }
+    }
+  }
+}
+
+.image_uploader_display_container {
+  @include constants.flexbox(
+    $direction: row,
+    $align: flex-start,
+    $justify: flex-start,
+    $gap: constants.$sm,
+    $wrap: wrap
+  );
+}

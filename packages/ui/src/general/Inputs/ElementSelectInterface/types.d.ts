@@ -17,10 +17,12 @@ export type ElementSelectInterfaceProps = {
 	max?: number;
 	isSearchable?: boolean;
 	selectProperty?: boolean;
+	useTiles?: boolean;
 };
 
 export type ListElementProps = {
 	element: SelectElement;
 	isSelected: boolean;
 	onSelect: (element: SelectElement) => void;
+	useTiles?: boolean;
 };

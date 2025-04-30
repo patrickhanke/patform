@@ -14,7 +14,7 @@ const AppContextProvider = ({
 	children: React.ReactNode;
 }) => {
 	const [pageTitle, setPageTitle] = useState();
-	const [user, setUser] = useState<PatstoreUser | null>(null);
+	const [user, setUser] = useState<PatstoreUser>({} as PatstoreUser);
 	const pathname = usePathname();
 
 	const currentModule = useMemo(() => {

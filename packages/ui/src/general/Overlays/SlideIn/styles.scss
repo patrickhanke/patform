@@ -44,7 +44,7 @@
 
 .is_open[data-size="small"] {
   right: 0;
-  width: 420px !important;
+  width: 480px !important;
   visibility: visible;
 }
 
@@ -94,7 +94,7 @@
     $justify: space-between,
     $gap: constants.$xs
   );
-  width: 360px;
+  width: 420px;
   order: 2;
   padding: map-get(constants.$padding, "sm");
   overflow: auto;
