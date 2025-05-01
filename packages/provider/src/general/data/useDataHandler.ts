@@ -14,8 +14,6 @@ const useDataHandler = (useMasterKey = false) => {
 	const { feedbackHandler } = useDataContext();
 	const { user, userLoading } = useContext(PatstoreAppContext);
 
-	console.log({ user });
-
 	const updateData = useCallback(
 		async ({
 			className,
@@ -38,8 +36,6 @@ const useDataHandler = (useMasterKey = false) => {
 			setLoading(true);
 			const updateObjectCopy = cloneDeep(updateObject);
 
-			console.log({ user });
-
 			if (user?.objectId) {
 				set(updateObjectCopy, "updated_by", {
 					__type: "Pointer",
@@ -47,7 +43,6 @@ const useDataHandler = (useMasterKey = false) => {
 					objectId: user.objectId
 				});
 			}
-			console.log("UpdateObject", updateObjectCopy);
 
 			await axiosclient(useMasterKey)
 				.put(

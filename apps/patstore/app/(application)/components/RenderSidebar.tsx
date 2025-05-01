@@ -6,6 +6,7 @@ import { MenuItem, Sidebar } from "@repo/ui";
 import { Module, PatstoreUser } from "@repo/types";
 import packageJson from "../../../package.json";
 import { useAppContext } from "@repo/provider";
+import { cloneDeep } from 'lodash-es';
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const { project, roles } = useAppContext();
@@ -15,7 +16,11 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [];
     if (project) {
-      project.modules.results.forEach((module: Module) => {
+
+      const modules = cloneDeep(project.modules.results).sort( (a: Module, b: Module) => a.position - b.position);
+      console.log(modules);
+      
+      modules.forEach((module: Module) => {
         if (user.is_superuser) {
           menuItemsArray.push({
             label: module.name,
