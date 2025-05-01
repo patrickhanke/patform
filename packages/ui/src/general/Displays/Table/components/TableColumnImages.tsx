@@ -1,4 +1,3 @@
-import React from "react";
 import { PatstoreSelectImages, TableColumnImagesProps } from "@repo/ui";
 
 const TableColumnImages = ({

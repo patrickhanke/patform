@@ -26,7 +26,6 @@ const UserMenu: FC<UserMenuProps> = ({
         onClick: () => {
           setUserSettings(true);
           setUserMenu(false);
-          console.log("Profile");
         },
       },
       {

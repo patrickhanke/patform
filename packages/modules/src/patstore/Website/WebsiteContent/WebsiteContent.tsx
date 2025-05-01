@@ -87,7 +87,7 @@ const WebsiteContent = () => {
 	return (
 		<Page
 			title={`${currentModule.name} - Inhalte`}
-			description="Übersicht über alle Seiten"
+			description="Übersicht über alle Inhalte"
 			emptyContent={true}
 			pageHeaderButtons={user?.is_superuser ? pageHeaderButtons : []}
 		>

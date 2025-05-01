@@ -20,19 +20,29 @@ import { v4 } from "uuid";
 import { cloneDeep } from "lodash-es";
 import { EditContentField } from "./content/EditContentField";
 import "./styles.scss";
+import WebsitePageCategories from "./components/WebsitePageCategories";
 
 const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
-	console.log(params);
 	const websiteId = params.webpage_id;
 	console.log({ websiteId });
 
 	const { updateData } = useDataHandler();
-	const { user } = useContext(PatstoreAppContext);
+	const { user, currentModule } = useContext(PatstoreAppContext);
+
+	console.log({ currentModule });
+
 	const { data: pageData, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "get",
 			objectName: "Webpage",
-			fields: ["objectId", "name", "content", "title", "subtitle"]
+			fields: [
+				"objectId",
+				"name",
+				"content",
+				"title",
+				"subtitle",
+				"categories"
+			]
 		}),
 		{ variables: { id: websiteId } }
 	);
@@ -41,13 +51,9 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 
 	useEffect(() => {
 		if (pageData) {
-			console.log("udcontent");
-
 			setContent(pageData.objects.getWebpage.content);
 		}
 	}, [pageData]);
-
-	console.log(pageData);
 
 	return (
 		<Page
@@ -173,6 +179,36 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 							}}
 							placeholder="Untertitel der Seite"
 						/>
+					</div>
+					<div>
+						<label>Kategorien</label>
+						<div className="flex col gap-sm">
+							{pageData &&
+								currentModule.categories.length > 0 &&
+								currentModule.categories.map(
+									(moduleCategory) => (
+										<WebsitePageCategories
+											key={moduleCategory.id}
+											categories={
+												pageData?.objects.getWebpage
+													.categories
+											}
+											category={moduleCategory}
+											isEditable
+											onChange={async (categories) => {
+												await updateData({
+													className: "Webpage",
+													objectId: websiteId,
+													updateObject: {
+														categories: categories
+													}
+												});
+												await refetch();
+											}}
+										/>
+									)
+								)}
+						</div>
 					</div>
 				</div>
 			</div>

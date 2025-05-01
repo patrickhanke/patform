@@ -36,16 +36,25 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 		</button>;
 	} else if (maxFileCount === 1 && selectedImages.length === 1) {
 		return data ? (
-			<Image
-				alt={data?.objects.getImage.name}
-				src={getImageUrl({
-					filePath: data?.objects.getImage.filePath,
-					height: 90
-				})}
-				height={27}
-				width={48}
-			/>
-		) : null;
+			<div onClick={() => onClick(true)}>
+				<Image
+					alt={data?.objects.getImage.name}
+					src={getImageUrl({
+						filePath: data?.objects.getImage.filePath,
+						height: 90
+					})}
+					height={27}
+					width={48}
+				/>
+			</div>
+		) : (
+			<button
+				className="full_button sm grey"
+				onClick={() => onClick(true)}
+			>
+				+ Bild hinzufügen
+			</button>
+		);
 	} else {
 		return (
 			<button

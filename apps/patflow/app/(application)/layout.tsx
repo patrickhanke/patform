@@ -9,7 +9,6 @@ import { cookies } from "next/headers";
 
 export const metadata = {
   title: "patflow",
-
   description: "PH",
 };
 
@@ -39,7 +38,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const user = await getData();
-  console.log({ "patflow user": user });
 
   return (
     <html lang="de">

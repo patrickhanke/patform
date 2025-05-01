@@ -11,7 +11,7 @@ const CreateCategory = ({
 	type
 }: CreateCategoryProps) => {
 	const { createData } = useDataHandler();
-	const { currentModule } = useContext(PatstoreAppContext);
+	const { currentModule, user } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [data, setData] = useState({} as { [key: string]: any });
 	const [disabled, setDisabled] = useState<[boolean, boolean]>([
@@ -66,11 +66,12 @@ const CreateCategory = ({
 					className: "Module",
 					objectId: currentModule.objectId
 				}
-			}
+			},
+			userId: user?.objectId
 		});
 		refetch();
 		setIsOpen(false);
-	}, [data, createData, refetch, typeId]);
+	}, [data, createData, user, refetch, typeId]);
 
 	return (
 		<div>

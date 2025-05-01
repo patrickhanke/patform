@@ -9,6 +9,8 @@ const EditContent: FC<EditContentProps> = ({
 	setContent,
 	activeIndex
 }) => {
+	console.log({ content });
+
 	const updateContent = useCallback(
 		(key: string, value: string) => {
 			const contentCopy = cloneDeep(content);

@@ -1,7 +1,7 @@
 "use client";
 
+import { FC } from "react";
 import { generateGraphQLQuery } from "@repo/provider";
-import { TableColumnCategoryProps } from "../types";
 import "../styles.scss";
 import { useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
@@ -12,18 +12,17 @@ import {
 	StateDisplay
 } from "@repo/ui";
 import { Classes } from "@repo/types";
+import { WebsitePageCategoriesProps } from "../types";
 
-const TableColumnCategory = ({
+const WebsitePageCategories: FC<WebsitePageCategoriesProps> = ({
 	category,
 	categories = [],
 	isEditable,
 	onChange
-}: TableColumnCategoryProps) => {
+}) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [newCategories, setNewCategories] = useState<string[]>(
-		categories || []
-	);
+	const [newCategories, setNewCategories] = useState<string[]>(categories);
 
 	const fields = useMemo(() => {
 		const fields = ["objectId", "label", category.key];
@@ -46,8 +45,6 @@ const TableColumnCategory = ({
 			fetchPolicy: "cache-first"
 		}
 	);
-
-	console.log({ newCategories });
 
 	const elements = useMemo(() => {
 		const categoryOptionsArray: SelectElement[] = [];
@@ -197,4 +194,4 @@ const TableColumnCategory = ({
 	);
 };
 
-export default TableColumnCategory;
+export default WebsitePageCategories;

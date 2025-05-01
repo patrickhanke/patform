@@ -5,7 +5,7 @@ import { Form } from "@repo/ui";
 
 const CreateNews = ({ refetch }: { refetch: () => void }) => {
 	const { createData } = useDataHandler();
-	const { currentModule } = useContext(PatstoreAppContext);
+	const { currentModule, user } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [data, setData] = useState({} as { [key: string]: any });
 
@@ -90,12 +90,13 @@ const CreateNews = ({ refetch }: { refetch: () => void }) => {
 					objectId: currentModule.objectId
 				},
 				...data
-			}
+			},
+			userId: user?.objectId,
 		});
 		setDisabled([false, false]);
 		setIsOpen(false);
 		refetch();
-	}, [data]);
+	}, [data, user]);
 
 	return (
 		<>

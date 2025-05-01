@@ -16,8 +16,6 @@ const EditContentField: FC<EditContentFieldProps> = ({
 	const [editContent, setEditContent] = useState(false);
 	const [field, setField] = useState<WebpageContent>(initialField);
 
-	console.log(field);
-
 	return (
 		<div className="flex row al-ce j-sb gap-sm w-100">
 			<h3>{field.name}</h3>

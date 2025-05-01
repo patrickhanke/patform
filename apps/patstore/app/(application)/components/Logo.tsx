@@ -6,8 +6,6 @@ import React from "react";
 import { patstoreLogo } from "@repo/assets";
 
 const Logo = ({ logo, alt = "patwork" }: { logo: string; alt?: string }) => {
-  console.log({ logo });
-
   return logo ? (
     <Image
       src={getImageUrl({ filePath: logo, width: 60, height: 60 })}

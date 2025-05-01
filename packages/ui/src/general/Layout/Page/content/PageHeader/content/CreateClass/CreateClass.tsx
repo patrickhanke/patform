@@ -15,7 +15,7 @@ const CreateClass = <T extends Classes>({
 	refetch
 }: CreateClassProps<T>) => {
 	const { createData } = useDataHandler();
-	const { currentModule } = useContext(PatstoreAppContext);
+	const { currentModule, user } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [data, setData] =
 		useState<CreateClassProps<T>["initialData"]>(initialData);
@@ -38,14 +38,15 @@ const CreateClass = <T extends Classes>({
 					objectId: currentModule.objectId
 				},
 				...data
-			}
+			},
+			userId: user?.objectId
 		});
 		setDisabled([false, false]);
 		setIsOpen(false);
 		if (refetch) {
 			refetch();
 		}
-	}, [data]);
+	}, [data, user]);
 
 	useEffect(() => {
 		if (!isOpen) {

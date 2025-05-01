@@ -119,31 +119,40 @@ const useDataHandler = (useMasterKey = false) => {
 	const createData = useCallback(
 		async ({
 			className,
-			query,
 			updateObject,
 			afterSaveHandler,
-			feedback
+			feedback,
+			userId
 		}: {
 			className: string;
-			query?: string;
 			updateObject?: any;
 			afterSaveHandler?: (objectId: string) => void;
 			feedback?: string;
+			userId?: string;
 		}) => {
 			const data: Array<any> = [];
 			setLoading(true);
+			console.log("userId", userId);
+
 			const updateObjectCopy = cloneDeep(updateObject);
-			if (user?.objectId) {
+			if (userId) {
 				set(updateObjectCopy, "created_by", {
 					__type: "Pointer",
 					className: "_User",
-					objectId: user.objectId
+					objectId: userId
+				});
+			}
+			if (userId) {
+				set(updateObjectCopy, "updated_by", {
+					__type: "Pointer",
+					className: "_User",
+					objectId: userId
 				});
 			}
 			await axiosclient(useMasterKey)
 				.post(
 					`classes/${className}`,
-					query || (updateObject as AxiosRequestConfig<any>)
+					updateObjectCopy as AxiosRequestConfig<any>
 				)
 				.then((response: AxiosResponse<any, any>) => {
 					if (feedback) {

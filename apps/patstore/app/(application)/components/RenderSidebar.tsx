@@ -18,8 +18,6 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
     if (project) {
 
       const modules = cloneDeep(project.modules.results).sort( (a: Module, b: Module) => a.position - b.position);
-      console.log(modules);
-      
       modules.forEach((module: Module) => {
         if (user.is_superuser) {
           menuItemsArray.push({

@@ -65,13 +65,14 @@ const ImagesOverview = () => {
 						className: "Module",
 						objectId: currentModule.objectId
 					}
-				}
+				},
+				userId: user?.objectId
 			});
 		});
 
 		await Promise.all(uploadArray);
 		await refetch();
-	}, [currentModule, newImages, user]);
+	}, [currentModule, user, newImages, user]);
 
 	const [deleteModal, setDeleteModal] = useState(false);
 

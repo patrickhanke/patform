@@ -92,8 +92,6 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 							)?.value || null
 						}
 						onChange={(value) => {
-							console.log(value);
-
 							setFilters(
 								filterChangeHandler(
 									"property",

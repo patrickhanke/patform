@@ -617,7 +617,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 										className: className,
 										objectId: row.objectId,
 										updateObject: {
-											[columnElement.id]: value
+											[columnElement.id]: {
+												type: row.type,
+												value: value
+											}
 										},
 										feedback: "Bilder aktualisiert"
 									});
