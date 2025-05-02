@@ -27,7 +27,7 @@ const NewsOverview = () => {
 	const [loading, setLoading] = useState(false);
 	const columns = useCreateColumns<NewsClass>({
 		data: [
-			{ id: "image", type: "image", label: "Bild" },
+			{ id: "image", type: "edit_image", label: "Bild" },
 			{ id: "title", type: "edit_string", label: "Titel" },
 			{ id: "date", type: "date_picker", label: "Datum" },
 			{ id: "text", type: "edit_texteditor", label: "Text" }
