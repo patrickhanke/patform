@@ -46,10 +46,9 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 	return (
 		<>
 			<RenderButtons
-				selectedImages={selectedImages}
+				selectedImages={checkForImages(image, maxFileCount || 1)}
 				maxFileCount={maxFileCount || 1}
 				onClick={() => setSelectImages(true)}
-				selectImages={selectImages}
 			/>
 
 			<SlideIn

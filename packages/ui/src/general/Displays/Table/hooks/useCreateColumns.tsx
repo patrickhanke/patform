@@ -1,10 +1,10 @@
 "use client";
 
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { CreateColumnHookProps, ColumnClasses } from "../types";
 import { ColumnDef } from "@tanstack/react-table";
 import TableColumnString from "../components/TableColumnString";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import TableColumnImage from "../components/TableColumnImage";
 import TableColumnTextfield from "../components/TableColumnTextfield";
 import TableColumnCategory from "../components/TableColumnCategory";
@@ -36,6 +36,7 @@ import TableColumnEditDate from "../content/TableColumnEditDate";
 import TableColumnEditContent from "../content/TableColumnEditContent";
 import TableColumnEditBoolean from "../components/TableColumnEditBoolean";
 import TableColumnImages from "../components/TableColumnImages";
+import TableColumnConnectedElements from "../components/TableColumnConnectedElements";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -639,6 +640,21 @@ const useCreateColumns = <T extends ColumnClasses>({
 				} as ColumnDef<T>);
 			}
 
+			if (columnElement.type === "connected_elements") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnConnectedElements
+							value={row[columnElement.id] as Array<object>}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
 			if (columnElement.type === "edit_content") {
 				columnArray.push({
 					accessorFn: (row) => (

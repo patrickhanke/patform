@@ -8,8 +8,7 @@ import { RenderButtonsProps } from "../types";
 const RenderButtons: FC<RenderButtonsProps> = ({
 	selectedImages,
 	maxFileCount,
-	onClick,
-	selectImages
+	onClick
 }) => {
 	const { data } = useQuery(
 		generateGraphQLQuery({
@@ -19,24 +18,23 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 		}),
 		{
 			variables: { id: selectedImages[0] },
-			skip:
-				selectedImages.length !== 1 ||
-				maxFileCount !== 1 ||
-				selectImages == true
+			skip: selectedImages.length !== 1 || maxFileCount !== 1
 		}
 	);
 
 	if (maxFileCount > 1) {
-		<button
-			className="full_button sm light"
-			type="button"
-			onClick={() => onClick()}
-		>
-			{isArray(selectedImages) ? selectedImages?.length : "0"} Bilder
-		</button>;
-	} else if (maxFileCount === 1 && selectedImages.length === 1) {
-		return data ? (
-			<div onClick={() => onClick(true)}>
+		return (
+			<button
+				className="full_button sm light"
+				type="button"
+				onClick={() => onClick()}
+			>
+				{isArray(selectedImages) ? selectedImages?.length : "0"} Bilder
+			</button>
+		);
+	} else if (maxFileCount === 1 && data) {
+		return (
+			<div onClick={() => onClick(true)} style={{ cursor: "pointer" }}>
 				<Image
 					alt={data?.objects.getImage.name}
 					src={getImageUrl({
@@ -47,13 +45,6 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 					width={48}
 				/>
 			</div>
-		) : (
-			<button
-				className="full_button sm grey"
-				onClick={() => onClick(true)}
-			>
-				+ Bild hinzufügen
-			</button>
 		);
 	} else {
 		return (

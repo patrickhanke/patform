@@ -81,7 +81,16 @@ const ImagesOverview = () => {
 			{ id: "filePath", type: "image", label: "Vorschau" },
 			{ id: "date", type: "date", label: "Datum" },
 			{ id: "name", type: "edit_string", label: "Name" },
-			{ id: "description", type: "edit_textfield", label: "Beschreibung" }
+			{
+				id: "description",
+				type: "edit_textfield",
+				label: "Beschreibung"
+			},
+			{
+				id: "connected_elements",
+				type: "connected_elements",
+				label: "Verknüpfungen"
+			}
 		],
 		fields: currentModule.fields,
 		className: "Image",

@@ -20,5 +20,4 @@ export type RenderButtonsProps = {
 	selectedImages: string[];
 	maxFileCount: number;
 	onClick: Dispatch<SetStateAction<boolean>>;
-	selectImages: boolean;
 };

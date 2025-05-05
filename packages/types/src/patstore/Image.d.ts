@@ -5,4 +5,5 @@ export type ImageClass = ClassProperties & {
   date: string;
   filePath: string;
   description: string;
+  connected_elements: {value: string, label: string}[];
 };

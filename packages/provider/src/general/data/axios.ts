@@ -3,8 +3,7 @@ import Cookies from "js-cookie";
 
 const axiosclient = (useMasterKey = false) => {
 	const localToken = Cookies.get(process.env.SESSION_TOKEN as string);
-	console.log(process.env.SASHIDO_API_URL);
-	console.log(localToken);
+
 	const headers = {
 		"X-Parse-Application-Id": process.env.SASHIDO_APP_ID,
 		"X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY,
@@ -12,7 +11,7 @@ const axiosclient = (useMasterKey = false) => {
 	};
 
 	if (useMasterKey) {
-		headers["X-Parse-Master-Key"] = process.env.SASHIDO_MASTER_KEY;
+		headers["X-Parse-Master-Key"] = process.env.SASHIDO_MASTER_KEY as string;
 	}
 
 	return axios.create({

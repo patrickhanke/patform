@@ -116,7 +116,8 @@ export type ColumnDataTypes =
 	| "edit_content"
 	| "date_picker"
 	| "boolean"
-	| "content";
+	| "content"
+	| "connected_elements";
 
 export type ColumnData<Class> = {
 	id: keyof Class;

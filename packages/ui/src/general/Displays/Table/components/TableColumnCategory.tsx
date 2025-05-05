@@ -47,8 +47,6 @@ const TableColumnCategory = ({
 		}
 	);
 
-	console.log({ newCategories });
-
 	const elements = useMemo(() => {
 		const categoryOptionsArray: SelectElement[] = [];
 		if (data) {
