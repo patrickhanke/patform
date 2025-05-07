@@ -163,6 +163,8 @@ const useDataHandler = (useMasterKey = false) => {
 						});
 					}
 					if (afterSaveHandler) {
+						console.log("afterSaveHandler", afterSaveHandler);
+
 						afterSaveHandler(response.data.objectId);
 					}
 				})

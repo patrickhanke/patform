@@ -148,6 +148,8 @@ const CreateTask = ({
 			className: "Task",
 			updateObject,
 			async afterSaveHandler(objectId) {
+				console.log("afterSaveHandler", objectId);
+
 				if (task.ticket) {
 					await updateData({
 						className: "Ticket",
