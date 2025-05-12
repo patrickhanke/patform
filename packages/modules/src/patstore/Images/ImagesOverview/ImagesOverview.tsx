@@ -2,6 +2,8 @@
 
 import { useCallback, useContext, useMemo, useState } from "react";
 import {
+	DataTransfer,
+	generateQuery,
 	Modal,
 	Page,
 	PatstoreDisplayImage,
@@ -13,11 +15,17 @@ import {
 } from "@repo/ui";
 import useGetImages from "./hooks/useGetImages";
 import { Filter, ImageClass } from "@repo/types";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
+import {
+	convertDateToString,
+	PatstoreAppContext,
+	useDataHandler
+} from "@repo/provider";
 
 const ImagesOverview = () => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
 	const { deleteData, createData } = useDataHandler(false);
+
+	console.log(user);
 
 	const [uploadImages, setUploadImages] = useState(false);
 	const [newImages, setNewImages] = useState<
@@ -136,12 +144,47 @@ const ImagesOverview = () => {
 		[selectedRows]
 	);
 
+	const dataTransfer = useMemo(
+		() => (
+			<DataTransfer<
+				ImageClass,
+				{
+					titel: string;
+					titelbild: object;
+				}
+			>
+				sourceClassName="Berichte"
+				targetClassName="Image"
+				moduleId={currentModule.objectId}
+				userId={user.objectId}
+				url="https://pg-app-mvx9tbt2yit00ef2pzlktzg3k81djj.scalabl.cloud/graphql/"
+				masterKey="POcP3f5vEluCLVT1txftBPf5XGTIPYSki6UR7VRH"
+				appId="E24kTRGCLBzXhUOQvwFNekgPpoMPeHRNITT67YiR"
+				query={generateQuery({
+					objectName: "Berichte",
+					fields: ["titel", "titelbild"]
+				})}
+				propertyMapping={(bericht) => ({
+					name: bericht.titel,
+					filePath: bericht.titelbild as unknown as string,
+					categories: [],
+					description: "",
+					fields: [],
+					date: convertDateToString(new Date()),
+					connected_elements: []
+				})}
+			/>
+		),
+		[user]
+	);
+
 	return (
 		<Page
 			title="Bilder"
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
 		>
+			{process.env.NODE_ENV === "development" && dataTransfer}
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}
@@ -202,6 +245,7 @@ const ImagesOverview = () => {
 						})
 					);
 					await refetch();
+					setSelectedRows([]);
 					setLoading(false);
 					setDeleteModal(false);
 				}}

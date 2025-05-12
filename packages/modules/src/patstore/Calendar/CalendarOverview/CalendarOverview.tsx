@@ -37,11 +37,22 @@ const CalendarOverview = () => {
 		data: [
 			{ id: "image", type: "edit_image", label: "Bild" },
 			{ id: "title", type: "edit_string", label: "Titel" },
-			{ id: "date", type: "edit_date", label: "Datum" },
+			{
+				id: "date",
+				type: "edit_date",
+				label: "Datum",
+				enableSorting: true,
+				sortingFn(a, b) {
+					return (
+						new Date(a.original.date.start).getTime() -
+						new Date(b.original.date.start).getTime()
+					);
+				}
+			},
 			{ id: "description", type: "edit_textfield", label: "Beschreibung" }
 		],
 		fields: currentModule.fields,
-		className: "Calendar",
+		className: "Date",
 		refetch,
 		categories: currentModule?.categories,
 		constants: {}

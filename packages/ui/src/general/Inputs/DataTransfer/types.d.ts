@@ -4,6 +4,7 @@ export type DataTranferProps<T, D> = {
 	sourceClassName: string;
 	targetClassName: string;
 	moduleId: string;
+	userId: string;
 	query: DocumentNode;
 	url: string;
 	appId: string;

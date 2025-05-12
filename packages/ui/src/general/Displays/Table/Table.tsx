@@ -43,7 +43,7 @@ const Table: React.FC<TableTypes> = ({
 		enableRowSelection,
 		getCoreRowModel: getCoreRowModel(),
 		getSortedRowModel: getSortedRowModel(),
-		getRowId: (row) => row.uuid,
+		getRowId: (row) => row.objectId,
 		manualPagination: true,
 		rowCount: rowCount || tableData.length,
 		onSortingChange: setSorting,

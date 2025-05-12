@@ -3,7 +3,7 @@ const TableColumnConnectedElements = ({
 }: {
 	value: Array<object>;
 }) => {
-	return <div>{`${value.length} Verbundenen Element(e)`}</div>;
+	return <div>{`${value?.length} Verbundenen Element(e)`}</div>;
 };
 
 export default TableColumnConnectedElements;

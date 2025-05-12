@@ -1,4 +1,4 @@
-import { ColumnDef, PaginationState } from "@tanstack/react-table";
+import { ColumnDef, PaginationState, Row } from '@tanstack/react-table';
 import {
 	ClassCategories,
 	ModuleCategory,
@@ -125,7 +125,7 @@ export type ColumnData<Class> = {
 	type: ColumnDataTypes;
 	disabled?: (a: Class) => boolean;
 	enableSorting?: boolean;
-	sortingFn?: (a: Class, b: Class) => number;
+	sortingFn?: (a: Row<Class>, b: Row<Class>) => number;
 };
 
 export type CreateColumnHookProps<Class> = {

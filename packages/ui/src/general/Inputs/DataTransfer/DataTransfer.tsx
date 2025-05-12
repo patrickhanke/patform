@@ -3,7 +3,7 @@
 import React, { useContext, useState } from "react";
 import { useCallback } from "react";
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
-import { DataObject, DataTranferProps, DataValue } from "./types";
+import { DataObject, DataTranferProps } from "./types";
 import { get } from "lodash-es";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import checkDataElement from "./functions/checkDataEements";
@@ -13,6 +13,7 @@ const DataTransfer = <T extends Classes, D extends object>({
 	sourceClassName,
 	targetClassName,
 	moduleId,
+	userId,
 	query,
 	url,
 	appId,
@@ -65,6 +66,7 @@ const DataTransfer = <T extends Classes, D extends object>({
 				// }
 				return transformedObject;
 			});
+			console.log({ userId });
 
 			if (preview) {
 				console.log("Preview Data:", transformedData);
@@ -81,6 +83,7 @@ const DataTransfer = <T extends Classes, D extends object>({
 				})
 			);
 			console.log({ updateTransformedData });
+			console.log({ userId });
 
 			await Promise.all(
 				updateTransformedData.map(async (dataElement) => {
@@ -92,6 +95,11 @@ const DataTransfer = <T extends Classes, D extends object>({
 								__type: "Pointer",
 								className: "Module",
 								objectId: moduleId
+							},
+							created_by: {
+								__type: "Pointer",
+								className: "_User",
+								objectId: userId
 							}
 						}
 					});
@@ -101,7 +109,7 @@ const DataTransfer = <T extends Classes, D extends object>({
 
 			return updateTransformedData;
 		},
-		[query, url, appId, masterKey]
+		[query, url, appId, masterKey, userId]
 	);
 
 	console.log(data);

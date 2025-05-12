@@ -94,11 +94,6 @@ const CreateContent: FC<CreateContentProps> = ({
 							__type: "Pointer",
 							className: "_User",
 							objectId: user?.objectId
-						},
-						updated_by: {
-							__type: "Pointer",
-							className: "_User",
-							objectId: user?.objectId
 						}
 					}
 				});

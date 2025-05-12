@@ -1,3 +1,4 @@
+import { generateImagePath } from "@repo/provider";
 import { UploadFromUrl } from "../types";
 
 const uploadFromUrl: UploadFromUrl = async ({
@@ -9,7 +10,10 @@ const uploadFromUrl: UploadFromUrl = async ({
 	if (!accountId) throw new Error("Missing accountId");
 	if (!apiKey) throw new Error("Missing apiKey");
 	if (!projectPath) throw new Error("Missing projectPath");
-	const subPath = `/${process.env.BYTESCALE_IMAGE_FOLDER}${projectPath}/images`;
+	const subPath = generateImagePath(
+		process.env.APP_NAME as string,
+		projectPath
+	);
 	const baseUrl = "https://api.bytescale.com";
 
 	const path = `/v2/accounts/${accountId}/uploads/url`;
@@ -53,6 +57,8 @@ const uploadFromUrl: UploadFromUrl = async ({
 		);
 
 		if (copyResponse.ok) {
+			console.log({copyResponse});
+			
 			filePath = copyBody.destination;
 		}
 		console.log(copyResponse);
