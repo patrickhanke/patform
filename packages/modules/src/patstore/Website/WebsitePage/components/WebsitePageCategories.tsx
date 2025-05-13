@@ -99,7 +99,7 @@ const WebsitePageCategories: FC<WebsitePageCategoriesProps> = ({
 			<ElementSelectInterface
 				elements={elements}
 				selectedElements={elements.filter((element) =>
-					newCategories.includes(element.id)
+					newCategories?.includes(element.id)
 				)}
 				onSelect={(selectValue) => {
 					if (!selectValue || selectValue.length === 0) {

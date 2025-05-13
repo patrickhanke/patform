@@ -10,6 +10,8 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 	maxFileCount,
 	onClick
 }) => {
+	console.log("selectedImages", selectedImages);
+	
 	const { data } = useQuery(
 		generateGraphQLQuery({
 			type: "get",

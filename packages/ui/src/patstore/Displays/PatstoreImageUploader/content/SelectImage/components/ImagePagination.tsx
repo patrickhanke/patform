@@ -60,11 +60,10 @@ const ImagePagination: FC<PaginationHandlersProps> = ({
 					)}
 					isClearable={false}
 					onChange={(value) => {
-						setPagination((prev) => ({
-							...prev,
+						setPagination(() => ({
+							pageIndex: 0,
 							pageSize: value.value
 						}));
-						firstPage();
 					}}
 					placeholder="Zeilen pro Seite"
 					width={90}

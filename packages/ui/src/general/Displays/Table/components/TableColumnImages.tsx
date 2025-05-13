@@ -5,6 +5,8 @@ const TableColumnImages = ({
 	onChange,
 	maxFileCount
 }: TableColumnImagesProps) => {
+	console.log(value);
+	
 	return (
 		<div>
 			<PatstoreSelectImages

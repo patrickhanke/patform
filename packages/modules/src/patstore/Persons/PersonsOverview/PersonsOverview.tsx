@@ -1,33 +1,44 @@
 "use client";
 
-import { useContext, useState } from "react";
-import {
-	DataTransfer,
-	generateQuery,
-	Modal,
-	Page,
-	Table,
-	useCreateColumns
-} from "@repo/ui";
-import { PersonClass } from "@repo/types";
-import { PatstoreAppContext } from "@repo/provider";
+import { useContext, useMemo, useState } from "react";
+import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import { Filter, PersonClass } from "@repo/types";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindPerson from "./hooks/useFindPerson";
-import deleteModalInitialValues from "./constants/deleteModalInitialValues";
-import CreatePerson from "./components/CreatePerson";
+import create_person from "./constants/create_person";
 
 const PersonsOverview = () => {
+	const { deleteData } = useDataHandler(false);
+
 	const { currentModule } = useContext(PatstoreAppContext);
-	const [filters] = useState([]);
-	const { persons, refetch } = useFindPerson({
-		moduleId: currentModule.objectId,
-		filters
+	const [filters, setFilters] = useState<Filter[]>([]);
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10
 	});
-	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
+	const [selectedRows, setSelectedRows] = useState<string[]>([]);
+	const [loading, setLoading] = useState(false);
+	const { persons, refetch, count } = useFindPerson({
+		moduleId: currentModule.objectId,
+		filters,
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize
+	});
+
+	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
 	const columns = useCreateColumns<PersonClass>({
 		data: [
 			{ id: "portrait", type: "edit_image", label: "Portrait" },
-			{ id: "name", type: "edit_string", label: "Name" }
+			{
+				id: "name",
+				type: "edit_string",
+				label: "Name",
+				enableSorting: true,
+				sortingFn(a, b) {
+					return a.original.name.localeCompare(b.original.name);
+				}
+			}
 		],
 		fields: currentModule.fields,
 		className: "Person",
@@ -35,44 +46,83 @@ const PersonsOverview = () => {
 		categories: currentModule?.categories
 	});
 
+	const renderFilters = useMemo(() => {
+		return (
+			<RenderFilters
+				filters={filters}
+				setFilters={setFilters}
+				fields={[
+					{
+						type: "input",
+						key: "name",
+						operator: "_regex",
+						value: "",
+						placeholder: "Suchwort"
+					}
+				]}
+				categories={[]}
+				initialFilters={[]}
+			/>
+		);
+	}, []);
+
+	const pageHeaderButtons = useMemo(
+		() => [
+			{
+				text: "Personen löschen",
+				onClick: () => {
+					setDeleteModal(true);
+				},
+				icon: "delete",
+				disabled: selectedRows.length === 0
+			}
+		],
+		[selectedRows]
+	);
+
 	return (
 		<Page
 			title={currentModule.name}
-			pageHeaderContent={<CreatePerson refetch={refetch} />}
+			// pageHeaderContent={<CreatePerson refetch={refetch} />}
+			pageHeaderButtons={pageHeaderButtons}
+			createClass={create_person}
 			emptyContent={true}
 		>
-			{process.env.NODE_ENV === "development" && (
-				<DataTransfer
-					sourceClassName="Uebungsleiter"
-					targetClassName="Person"
-					moduleId={currentModule.objectId}
-					url="https://pg-app-mvx9tbt2yit00ef2pzlktzg3k81djj.scalabl.cloud/graphql/"
-					masterKey="POcP3f5vEluCLVT1txftBPf5XGTIPYSki6UR7VRH"
-					appId="E24kTRGCLBzXhUOQvwFNekgPpoMPeHRNITT67YiR"
-					query={generateQuery({
-						objectName: "Uebungsleiter",
-						fields: ["username", "email", "portrait"]
-					})}
-					propertyMapping={{
-						username: "name",
-						email: "email",
-						portrait: "portrait"
-					}}
-				/>
-			)}
-			<Table columns={columns} data={persons || []} />
+			<Table
+				columns={columns}
+				data={persons || []}
+				rowCount={count}
+				pagination={pagination}
+				setPagination={setPagination}
+				enableRowSelection
+				onRowSelection={setSelectedRows}
+				filterContent={renderFilters}
+			/>
 			<Modal
-				isOpen={deleteModal.isOpen}
-				cancelButtonHandler={() =>
-					setDeleteModal(deleteModalInitialValues)
-				}
-				confirmButtonHandler={() => {
-					deleteModal.confirmButtonHandler();
-					setDeleteModal(deleteModalInitialValues);
+				isOpen={deleteModal}
+				cancelButtonHandler={() => setDeleteModal(false)}
+				buttonDisabled={[loading, loading]}
+				confirmButtonHandler={async () => {
+					setLoading(true);
+					await Promise.all(
+						selectedRows.map(async (objectId) => {
+							await deleteData({
+								className: "Person",
+								objectId
+							});
+						})
+					);
+					await refetch();
+					setSelectedRows([]);
+					setLoading(false);
+					setDeleteModal(false);
 				}}
-				header={deleteModal.header}
+				header={"Bilder löschen"}
 			>
-				<p>Sind sich Sicher, dass sie die Person löschen möchten?</p>
+				<p>
+					Sind sich Sicher, dass sie {selectedRows.length} Personen
+					löschen möchten?
+				</p>
 			</Modal>
 		</Page>
 	);

@@ -43,7 +43,7 @@ const SelectImage: FC<SelectImageProps> = ({
 		(module: Module) => module.path === "/images"
 	)?.objectId;
 
-	const { images, refetch } = useGetImages({
+	const { images, refetch, count } = useGetImages({
 		moduleId,
 		filters,
 		limit: pagination.pageSize,
@@ -130,13 +130,11 @@ const SelectImage: FC<SelectImageProps> = ({
 								})
 							}
 							pageCount={Math.ceil(
-								(images?.length || 0) / pagination.pageSize
+								(count || 0) / pagination.pageSize
 							)}
 							canGetNextPage={
 								pagination.pageIndex <
-								Math.ceil(
-									(images?.length || 0) / pagination.pageSize
-								) -
+								Math.ceil((count || 0) / pagination.pageSize) -
 									1
 							}
 							canGetPreviousPage={pagination.pageIndex > 0}

@@ -1,19 +1,36 @@
 import { useQuery } from "@apollo/client";
-import { paramsHandler } from "@repo/provider";
-import find_persons from "../constants/find_persons";
+import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
 import { UseFindPersonsHook } from "../types";
 
-const useFindPerson: UseFindPersonsHook = ({ moduleId, filters }) => {
-  const { loading, data, refetch } = useQuery(find_persons, {
-    variables: { params: paramsHandler({ moduleId, filters }) },
-    notifyOnNetworkStatusChange: true,
-  });
+const useFindPerson: UseFindPersonsHook = ({
+	moduleId,
+	filters,
+	limit,
+	skip
+}) => {
+	const { loading, data, refetch } = useQuery(
+		generateGraphQLQuery({
+			type: "find",
+			objectName: "Person",
+			fields: ["objectId", "name", "portrait", "data", "categories"]
+		}),
+		{
+			variables: {
+				order: "name_ASC",
+				params: paramsHandler({ moduleId, filters }),
+				limit,
+				skip
+			},
+			notifyOnNetworkStatusChange: true
+		}
+	);
 
-  return {
-    loading,
-    persons: data ? data.objects.findPerson.results : undefined,
-    refetch,
-  };
+	return {
+		loading,
+		persons: data ? data.objects.findPerson.results : undefined,
+		refetch,
+		count: data ? data.objects.findPerson.count : 0
+	};
 };
 
 export default useFindPerson;

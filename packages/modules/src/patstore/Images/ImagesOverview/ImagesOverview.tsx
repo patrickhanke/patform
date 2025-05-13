@@ -25,8 +25,6 @@ const ImagesOverview = () => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
 	const { deleteData, createData } = useDataHandler(false);
 
-	console.log(user);
-
 	const [uploadImages, setUploadImages] = useState(false);
 	const [newImages, setNewImages] = useState<
 		{ filePath: string; fileName: string }[]

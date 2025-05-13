@@ -1,8 +1,6 @@
 import React from "react";
-import { ImageUploader } from "@repo/ui";
-import { ImageField, Modal } from "@repo/ui";
-import { useState } from "react";
-import { getImageUrl } from "@repo/provider";
+import { PatstoreSelectImages } from "@repo/ui";
+import { ImageField } from "@repo/ui";
 
 interface ImageUploadProps {
 	fieldValues: {
@@ -17,36 +15,18 @@ interface ImageUploadProps {
 const ImageUpload: React.FC<ImageUploadProps> = ({
 	fieldValues,
 	field,
-	setFieldValue,
-	isHorizontal
+	setFieldValue
 }) => {
-	const [isOpen, setIsOpen] = useState(false);
-	const [image, setImage] = useState("");
-
 	return (
 		<>
-			<div className={isHorizontal ? "form_horizontal_container" : ""}>
-				{fieldValues.value && (
-					<>
-						<img
-							src={getImageUrl({
-								filePath: fieldValues.value,
-								width: 60
-							})}
-						/>
-						<br />
-					</>
-				)}
-				<button
-					className="full_button primary sm"
-					onClick={() => setIsOpen(true)}
-				>
-					{fieldValues.value
-						? "Neues Bild hochladen"
-						: "Bild hochladen"}
-				</button>
-			</div>
-			<Modal
+			<PatstoreSelectImages
+				image={fieldValues.value}
+				onChange={(imgUrl: string) =>
+					setFieldValue(field.name, imgUrl as string)
+				}
+				maxFileCount={field?.options?.max_file_count || 10}
+			/>
+			{/* <Modal
 				isOpen={isOpen}
 				cancelButtonHandler={() => setIsOpen(false)}
 				confirmButtonHandler={() => {
@@ -62,7 +42,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 					returnType={field?.options?.return_type || "array"}
 					maxFileCount={field?.options?.max_file_count || 10}
 				/>
-			</Modal>
+			</Modal> */}
 		</>
 	);
 };
