@@ -22,6 +22,7 @@ const DisplaySelectedImages: FC<DisplaySelectedImagesProps> = ({
 				alt={name}
 				width={maxFileCount === 1 ? 360 : 120}
 				height={maxFileCount === 1 ? 202.5 : 63}
+				style={{ objectFit: "contain" }}
 				fill={false}
 			/>
 			<div className="selected_image_icons">

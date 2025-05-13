@@ -13,6 +13,7 @@ const DisplayImageElement: FC<DisplayImageElementProps> = ({
 				src={getImageUrl({ filePath, width: 256 })}
 				width={106}
 				height={66}
+				style={{ objectFit: "contain" }}
 				alt={name}
 			/>
 			<h3>{name}</h3>
