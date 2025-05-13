@@ -72,8 +72,6 @@ const EditTime = ({
 
 	const weekdayHandler = useCallback(
 		(weekday: (typeof weekdays)[number]) => {
-			console.log("selectedWeek", selectedWeek);
-			
 			const date = formatISO9075(
 				getDateFromWeek(selectedWeek, weekday.index),
 				{
@@ -88,11 +86,8 @@ const EditTime = ({
 					isAbsence = true;
 				}
 			});
-			console.log("date", date);
-			console.log("string", string);
-			
+
 			const label = `${weekday.label} - ${isAbsence ? "Abwesend" : string}`;
-			console.log("label", label);
 			return { isAbsence, date, label };
 		},
 		[workingTimes, day, selectedWeek]

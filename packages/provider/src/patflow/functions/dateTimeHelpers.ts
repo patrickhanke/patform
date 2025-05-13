@@ -37,6 +37,13 @@ export function getDateFromWeek(
 	year?: number
 ) {
 	const date = new Date(year || new Date().getFullYear(), 0, 1);
+
+	// Adjust to the first Monday of the year
+	const dayOfWeek = date.getDay(); // 0 (Sunday) to 6 (Saturday)
+	const daysToMonday = (dayOfWeek === 0 ? 7 : dayOfWeek) - 1; // Days to subtract to get to Monday
+	date.setDate(date.getDate() - daysToMonday);
+
+	// Calculate the target date
 	const days = (weekNumber - 1) * 7 + dayIndex;
 	date.setDate(date.getDate() + days);
 

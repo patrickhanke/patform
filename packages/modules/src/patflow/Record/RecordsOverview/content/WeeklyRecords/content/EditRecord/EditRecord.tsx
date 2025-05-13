@@ -11,7 +11,7 @@ import RecordTimeDisplay from "./components/RecordTimeDisplay";
 import styles from "./EditRecord.module.scss";
 import {
 	PatflowAppContext,
-	createTime,
+	axiosclient,
 	findDefaultTimeForDate,
 	getWorktimeDuration,
 	useGetActiveRecord
@@ -142,7 +142,7 @@ const EditRecord = ({
 			if (record && record?.objectId) {
 				const recordTime = findDefaultTimeForDate(day.date, [record]);
 				promise.push(
-					createTime({
+					axiosclient().post("/functions/create-time", {
 						...day,
 						default_time: recordTime.default_time,
 						record_id: record?.objectId,
