@@ -18,6 +18,7 @@ const TableColumnImage = ({ url }: TableColumnImageProps) => {
 									filePath: url,
 									height: 128
 								})}
+								style={{ objectFit: "contain" }}
 								height={36}
 								width={64}
 							/>

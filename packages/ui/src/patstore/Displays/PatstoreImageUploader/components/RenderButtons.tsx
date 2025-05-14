@@ -10,8 +10,6 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 	maxFileCount,
 	onClick
 }) => {
-	console.log("selectedImages", selectedImages);
-	
 	const { data } = useQuery(
 		generateGraphQLQuery({
 			type: "get",
@@ -43,8 +41,12 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 						filePath: data?.objects.getImage.filePath,
 						height: 90
 					})}
+					objectFit="contain"
+					style={{ objectFit: "contain" }}
 					height={27}
 					width={48}
+					fill={false}
+
 				/>
 			</div>
 		);

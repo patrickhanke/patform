@@ -52,7 +52,7 @@ const ArticlesOverview = () => {
 	const columns = useCreateColumns<ArticleClass>({
 		data: [
 			{ id: "image", type: "edit_image", label: "Bild" },
-			{ id: "date", type: "string", label: "Datum" },
+			{ id: "date", type: "date_picker", label: "Datum" },
 			{ id: "title", type: "edit_string", label: "Titel" },
 			{ id: "text", type: "texteditor", label: "Text" },
 			{ id: "state", type: "edit_state", label: "Status" },
@@ -140,6 +140,7 @@ const ArticlesOverview = () => {
 						})
 					);
 					await refetch();
+					setSelectedRows([]);
 					setLoading(false);
 					setDeleteModal(false);
 				}}

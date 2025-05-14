@@ -16,15 +16,17 @@ const TableColumnDate = ({
 
 	return (
 		<>
-			<div
-				onClick={() => setEditDate(true)}
-				style={{
-					textDecoration: isEditable ? "underline" : "none",
-					cursor: isEditable ? "pointer" : "default"
-				}}
-			>
-				{getDateString(date).date}
-			</div>
+			{isEditable ? (
+				<button
+					className="full_button sm light"
+					type="button"
+					onClick={() => setEditDate(true)}
+				>
+					{getDateString(date).date}
+				</button>
+			) : (
+				<div>{getDateString(date).date}</div>
+			)}
 			{isEditable && (
 				<Modal
 					header="Datum auswählen"

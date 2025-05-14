@@ -147,11 +147,11 @@ const ImagesOverview = () => {
 			<DataTransfer<
 				ImageClass,
 				{
-					titel: string;
-					titelbild: object;
+					username: string;
+					portrait: object;
 				}
 			>
-				sourceClassName="Berichte"
+				sourceClassName="Uebungsleiter"
 				targetClassName="Image"
 				moduleId={currentModule.objectId}
 				userId={user.objectId}
@@ -159,12 +159,12 @@ const ImagesOverview = () => {
 				masterKey="POcP3f5vEluCLVT1txftBPf5XGTIPYSki6UR7VRH"
 				appId="E24kTRGCLBzXhUOQvwFNekgPpoMPeHRNITT67YiR"
 				query={generateQuery({
-					objectName: "Berichte",
-					fields: ["titel", "titelbild"]
+					objectName: "Uebungsleiter",
+					fields: ["username", "portrait"]
 				})}
-				propertyMapping={(bericht) => ({
-					name: bericht.titel,
-					filePath: bericht.titelbild as unknown as string,
+				propertyMapping={(person) => ({
+					name: person.username,
+					filePath: person.portrait as unknown as string,
 					categories: [],
 					description: "",
 					fields: [],
