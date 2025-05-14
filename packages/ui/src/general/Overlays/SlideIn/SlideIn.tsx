@@ -30,7 +30,9 @@ const SlideIn: React.FC<SlideInProps> = ({
 
 	return (
 		<>
-			<div className={"overlay_container"} data-isopen={isOpen} />
+			{isOpen && (
+				<div className={"overlay_container"} data-isopen={isOpen} />
+			)}
 			<AnimatePresence
 				initial={true}
 				onExitComplete={() => console.log("exited")}

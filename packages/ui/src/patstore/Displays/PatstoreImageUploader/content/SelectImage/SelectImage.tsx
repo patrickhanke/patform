@@ -27,6 +27,7 @@ import {
 import { Filter, Module } from "@repo/types";
 import DisplayImageElement from "./components/DisplayImageElement";
 import ImagePagination from "./components/ImagePagination";
+import { formatISO9075 } from "date-fns";
 
 const SelectImage: FC<SelectImageProps> = ({
 	maxFileCount,
@@ -61,11 +62,11 @@ const SelectImage: FC<SelectImageProps> = ({
 		skip: pagination.pageIndex * pagination.pageSize
 	});
 
-	useEffect(() => {
-		if (selectState.value === "select") {
-			imagesRefetch();
-		}
-	}, [selectState]);
+	// useEffect(() => {
+	// 	if (selectState.value === "select") {
+	// 		imagesRefetch();
+	// 	}
+	// }, [selectState]);
 
 	const createImageHandler = useCallback(
 		async (images: { filePath: string; fileName: string }[]) => {
@@ -78,6 +79,8 @@ const SelectImage: FC<SelectImageProps> = ({
 						categories: [],
 						description: "",
 						fields: [],
+						connected_elements: [],
+						date: formatISO9075(new Date()),
 						created_by: {
 							__type: "Pointer",
 							className: "_User",

@@ -18,7 +18,8 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 		}),
 		{
 			variables: { id: selectedImages[0] },
-			skip: selectedImages.length !== 1 || maxFileCount !== 1
+			skip: selectedImages.length !== 1 || maxFileCount !== 1,
+			fetchPolicy: "cache-first"
 		}
 	);
 
@@ -34,7 +35,7 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 		);
 	} else if (maxFileCount === 1 && data) {
 		return (
-			<div onClick={() => onClick(true)} style={{ cursor: "pointer" }}>
+			<div onClick={() => onClick()} style={{ cursor: "pointer" }}>
 				<Image
 					alt={data?.objects.getImage.name}
 					src={getImageUrl({
@@ -46,16 +47,12 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 					height={27}
 					width={48}
 					fill={false}
-
 				/>
 			</div>
 		);
 	} else {
 		return (
-			<button
-				className="full_button sm grey"
-				onClick={() => onClick(true)}
-			>
+			<button className="full_button sm grey" onClick={() => onClick()}>
 				+ Bild hinzufügen
 			</button>
 		);

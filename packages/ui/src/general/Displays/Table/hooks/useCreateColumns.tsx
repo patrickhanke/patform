@@ -22,7 +22,7 @@ import {
 import TableColumnDate from "../components/TableColumnDate";
 import TableColumnTexteditor from "../components/TableColumnTexteditor";
 import TableColumnGeopoint from "../components/TableColumnGeopoint";
-import { ColorValues, LatitudeLongitude } from "@repo/ui";
+import { ColorValues, LatitudeLongitude, PatstoreSelectImages } from "@repo/ui";
 import TableColumnEditState from "../components/TableColumnEditState";
 import { get } from "lodash-es";
 import TableColumnPerson from "../components/TableColumnPerson";
@@ -93,8 +93,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 			) {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnImages
-							value={row[columnElement.id] as string | string[]}
+						<PatstoreSelectImages
+							key={row.objectId}
+							image={row[columnElement.id] as string | string[]}
 							maxFileCount={
 								columnElement.type === "gallery" ? 20 : 1
 							}
@@ -105,6 +106,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 									updateObject: { [columnElement.id]: value },
 									feedback: "Bilder aktualisiert"
 								});
+
 								if (refetch) {
 									refetch();
 								}

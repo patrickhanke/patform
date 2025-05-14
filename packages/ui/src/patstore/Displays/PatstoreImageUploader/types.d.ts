@@ -1,6 +1,6 @@
 export type PatstoreSelectImagesProps = {
 	image: string | string[] | undefined;
-	onChange: (F: Image[] | Image) => void;
+	onChange: (F: Image[] | Image) => void | Promise<void>;
 	maxFileCount: number;
 };
 

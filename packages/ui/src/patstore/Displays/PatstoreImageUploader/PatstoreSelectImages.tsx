@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { SlideIn } from "@repo/ui";
 import SelectImage from "./content/SelectImage";
 import { PatstoreSelectImagesProps } from "./types";
@@ -43,6 +43,11 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 		);
 	}, [selectedImages]);
 
+	const confirmHandler = useCallback(async () => {
+		await onChange(maxFileCount > 1 ? selectedImages : selectedImages[0]);
+		setSelectImages(false);
+	}, [selectedImages, maxFileCount, onChange]);
+
 	return (
 		<>
 			<RenderButtons
@@ -55,16 +60,7 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 				header="Bilder auswählen"
 				isOpen={selectImages}
 				cancel={() => setSelectImages(false)}
-				confirm={async () => {
-					if (onChange) {
-						onChange(
-							maxFileCount > 1
-								? selectedImages
-								: selectedImages[0]
-						);
-					}
-					setSelectImages(false);
-				}}
+				confirm={() => confirmHandler()}
 				secondaryContent={secondaryContent}
 				showSecondaryContent
 			>
