@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import "../styles.scss";
 import {
 	UploadDropzone,
@@ -11,7 +11,6 @@ import { ImageUploaderProps } from "../types";
 const ImageUploader: FC<ImageUploaderProps> = ({ onChange, maxFileCount }) => {
 	const { project } = useAppContext();
 
-	const [reinitialize, setReinitialize] = React.useState(true);
 	const options = useMemo(() => {
 		const configObject: UploadDropzoneConfig = {
 			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string,
@@ -72,37 +71,35 @@ const ImageUploader: FC<ImageUploaderProps> = ({ onChange, maxFileCount }) => {
 		return configObject;
 	}, [maxFileCount]);
 
-	const reinitializeHandler = useCallback(() => {
-		setReinitialize(false);
-		setTimeout(() => {
-			setReinitialize(true);
-		}, 100);
-	}, []);
+	// const reinitializeHandler = useCallback(() => {
+	// 	setReinitialize(false);
+	// 	setTimeout(() => {
+	// 		setReinitialize(true);
+	// 	}, 100);
+	// }, []);
 
 	return (
 		<div className={"upload_container"}>
-			{reinitialize && (
-				<UploadDropzone
-					options={options}
-					onComplete={(uploadedFiles) => {
-						onChange(
-							uploadedFiles.map((file) => {
-								return {
-									filePath: file.filePath,
-									fileName:
-										file.originalFile.originalFileName ||
-										file.filePath
-								};
-							})
-						);
-						reinitializeHandler();
-					}}
-					onUpdate={(files) => console.log({ files })}
-					width="100%"
-					height="fit-content"
-					className={"upload_zone"}
-				/>
-			)}
+			<UploadDropzone
+				options={options}
+				onComplete={(uploadedFiles) => {
+					onChange(
+						uploadedFiles.map((file) => {
+							return {
+								filePath: file.filePath,
+								fileName:
+									file.originalFile.originalFileName ||
+									file.filePath
+							};
+						})
+					);
+					// reinitializeHandler();
+				}}
+				onUpdate={(files) => console.log({ files })}
+				width="100%"
+				height="fit-content"
+				className={"upload_zone"}
+			/>
 			<ErrorDisplay id="uloader" errors={[]} />
 		</div>
 	);

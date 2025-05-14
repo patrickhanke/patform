@@ -1,6 +1,13 @@
 "use client";
 
-import { FC, useCallback, useContext, useMemo, useState } from "react";
+import {
+	FC,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState
+} from "react";
 import select_states from "./constants/select_states";
 import {
 	Divider,
@@ -43,14 +50,24 @@ const SelectImage: FC<SelectImageProps> = ({
 		(module: Module) => module.path === "/images"
 	)?.objectId;
 
-	const { images, refetch, count } = useGetImages({
+	const {
+		images,
+		refetch: imagesRefetch,
+		count
+	} = useGetImages({
 		moduleId,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
 	});
 
-	const onChange = useCallback(
+	useEffect(() => {
+		if (selectState.value === "select") {
+			imagesRefetch();
+		}
+	}, [selectState]);
+
+	const createImageHandler = useCallback(
 		async (images: { filePath: string; fileName: string }[]) => {
 			const uploadArray = images.map(async (image) => {
 				await createData({
@@ -76,10 +93,10 @@ const SelectImage: FC<SelectImageProps> = ({
 			});
 
 			await Promise.all(uploadArray);
-			await refetch();
 			setSelectState(select_states[0]);
+			// await imagesRefetch();
 		},
-		[moduleId]
+		[moduleId, imagesRefetch]
 	);
 
 	const elements: SelectElement[] = useMemo(() => {
@@ -113,7 +130,7 @@ const SelectImage: FC<SelectImageProps> = ({
 			<Divider size="small" />
 			{selectState.value === "upload" && (
 				<ImageUploader
-					onChange={onChange}
+					onChange={createImageHandler}
 					maxFileCount={maxFileCount}
 				/>
 			)}
@@ -183,22 +200,24 @@ const SelectImage: FC<SelectImageProps> = ({
 					<Divider size="small" />
 
 					<div className="upload_container">
-						<ElementSelectInterface
-							elements={elements}
-							selectedElements={elements.filter((element) =>
-								selectedImages.includes(element.value)
-							)}
-							onSelect={(selectedElements) => {
-								const imageArray: string[] = [];
-								selectedElements.forEach(
-									(element: SelectElement) => {
-										imageArray.push(element.value);
-									}
-								);
-								setSelectedImages(imageArray);
-							}}
-							useTiles
-						/>
+						{images && (
+							<ElementSelectInterface
+								elements={elements}
+								selectedElements={elements.filter((element) =>
+									selectedImages.includes(element.value)
+								)}
+								onSelect={(selectedElements) => {
+									const imageArray: string[] = [];
+									selectedElements.forEach(
+										(element: SelectElement) => {
+											imageArray.push(element.value);
+										}
+									);
+									setSelectedImages(imageArray);
+								}}
+								useTiles
+							/>
+						)}
 					</div>
 				</>
 			)}
