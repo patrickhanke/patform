@@ -1,6 +1,7 @@
 import { PageCreateClassObject } from "@repo/ui";
+import { DownloadClass } from "@repo/types";
 
-const createDownload: PageCreateClassObject = {
+const createDownload: PageCreateClassObject<DownloadClass> = {
 	initialData: undefined,
 	className: "Download",
 	text: "Neuen Download erstellen",
@@ -23,7 +24,14 @@ const createDownload: PageCreateClassObject = {
 			name: "file",
 			type: "file",
 			label: "Datei",
-			validation: { required: "Pflichtfeld" }
+			options: {
+				return_type: "string",
+				max_file_count: 1
+			},
+			validation: {
+				validate: true,
+				required: "Pflichtfeld"
+			}
 		},
 		{
 			id: "info",

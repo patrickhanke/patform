@@ -1,6 +1,7 @@
 import { PageCreateClassObject } from "@repo/ui";
+import { DateClass } from "@repo/types";
 
-const createDate: PageCreateClassObject = {
+const createDate: PageCreateClassObject<DateClass> = {
 	initialData: undefined,
 	className: "Date",
 	text: "Neuen Kalendereintrag erstellen",
@@ -12,6 +13,7 @@ const createDate: PageCreateClassObject = {
 			type: "input",
 			label: "Name",
 			validation: {
+				validate: true,
 				required: "Pflichtfeld",
 				min_length: 5,
 				max_length: 36

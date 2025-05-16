@@ -2,19 +2,14 @@
 
 import { useContext, useState, useMemo } from "react";
 import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
-import {
-	PatstoreAppContext,
-	generateGraphQLQuery,
-	useDataHandler
-} from "@repo/provider";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindArticles from "./hooks/useFindArticles";
-import { ArticleClass, Filter, PersonClass } from "@repo/types";
+import { ArticleClass, Filter } from "@repo/types";
 import createArticle from "./constants/createArticle";
-import { useQuery } from "@apollo/client";
 import state from "./constants/articleState";
 
 const ArticlesOverview = () => {
-	const { currentModule, modules } = useContext(PatstoreAppContext);
+	const { currentModule } = useContext(PatstoreAppContext);
 	const { deleteData } = useDataHandler();
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
@@ -31,23 +26,6 @@ const ArticlesOverview = () => {
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [loading, setLoading] = useState(false);
-	const { data: personData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Person",
-			fields: ["objectId", "label", "portrait"]
-		}),
-		{
-			variables: {
-				params: {
-					module: {
-						_eq: modules.find((module) => module.name === "Person")
-							?.objectId
-					}
-				}
-			}
-		}
-	);
 
 	const columns = useCreateColumns<ArticleClass>({
 		data: [
@@ -105,14 +83,7 @@ const ArticlesOverview = () => {
 			title={currentModule.name}
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
-			createClass={createArticle(
-				personData?.objects.findPerson.results.map(
-					(person: PersonClass) => ({
-						value: person.objectId,
-						label: person.label
-					})
-				) || []
-			)}
+			createClass={createArticle}
 			refetch={refetch}
 		>
 			<Table

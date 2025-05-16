@@ -145,6 +145,7 @@ export type ImageField = BasicField & {
 		max_file_count: number;
 	};
 	validation?: {
+		validate?: boolean;
 		required?: string;
 		max_file_count?: number;
 	};
@@ -153,8 +154,8 @@ export type ImageField = BasicField & {
 export type FileField = BasicField & {
 	type: "file";
 	value?: string | string[];
-	path: string;
 	validation?: {
+		validate?: boolean;
 		required?: string;
 		max_file_count?: number;
 	};
@@ -185,6 +186,7 @@ export type ColorField = BasicField & {
 	type: "color";
 	value?: string;
 	validation?: {
+		validate?: boolean;
 		required?: string;
 	};
 };
@@ -193,7 +195,8 @@ export type DateField = BasicField & {
 	type: DatePickerTypes;
 	value?: string;
 	validation?: {
-		validate?: string;
+		validate?: boolean;
+		required?: string;
 	};
 };
 

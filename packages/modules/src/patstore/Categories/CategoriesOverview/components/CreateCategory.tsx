@@ -13,7 +13,7 @@ const CreateCategory = ({
 	const { createData } = useDataHandler();
 	const { currentModule, user } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
-	const [data, setData] = useState({} as { [key: string]: any });
+	const [data, setData] = useState({} as { [key: string]: number | string });
 	const [disabled, setDisabled] = useState<[boolean, boolean]>([
 		false,
 		false
@@ -28,6 +28,7 @@ const CreateCategory = ({
 				type: "input",
 				label: "Name",
 				validation: {
+					validate: true,
 					required: "Pflichtfeld",
 					min_length: 2
 				}

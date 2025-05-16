@@ -142,13 +142,13 @@ const useDataHandler = (useMasterKey = false) => {
 					objectId: userId
 				});
 			}
-			if (userId) {
-				set(updateObjectCopy, "updated_by", {
-					__type: "Pointer",
-					className: "_User",
-					objectId: userId
-				});
-			}
+			// if (userId) {
+			// 	set(updateObjectCopy, "updated_by", {
+			// 		__type: "Pointer",
+			// 		className: "_User",
+			// 		objectId: userId
+			// 	});
+			// }
 			await axiosclient(useMasterKey)
 				.post(
 					`classes/${className}`,

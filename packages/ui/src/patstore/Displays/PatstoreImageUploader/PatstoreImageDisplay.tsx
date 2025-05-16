@@ -20,9 +20,34 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 		{
 			variables: {
 				id
-			}
+			},
+			skip: !id || id.length !== 10
 		}
 	);
+
+	if (id && id.length !== 10) {
+		console.log({ id });
+		console.log(
+			getImageUrl({
+				filePath: id,
+				width: width * 3,
+				height: height * 3
+			})
+		);
+
+		return (
+			<Image
+				src={getImageUrl({
+					filePath: id,
+					width: width * 3,
+					height: height * 3
+				})}
+				alt={`${id}`}
+				width={width}
+				height={height}
+			/>
+		);
+	}
 
 	if (loading) {
 		return (

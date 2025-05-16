@@ -21,7 +21,6 @@ const TableColumnFiles = ({
 				label="Bild"
 				value={url}
 				onChange={(files) => onChange(files)}
-				path={`${process.env.BYTESCALE_IMAGE_FOLDER}/files`}
 				returnType={maxFileCount === 1 ? "string" : "array"}
 				maxFileCount={maxFileCount}
 			/>

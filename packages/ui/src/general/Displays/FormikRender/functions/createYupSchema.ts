@@ -7,7 +7,16 @@ const createYupSchema: CreateYupSchemaFunction = (type, validation) => {
 		| Yup.NumberSchema
 		| Yup.ArraySchema<any[], Yup.AnyObject, undefined, ""> = Yup.string();
 	if (validation?.validate === true) {
-		if (type === "input" || type === "url" || type === "textarea") {
+		if (
+			type === "input" ||
+			type === "url" ||
+			type === "textarea" ||
+			type === "date" ||
+			type === "image" ||
+			type === "texteditor" ||
+			type === "datetime" ||
+			type === "datetime-local"
+		) {
 			method = Yup.string();
 			if (validation?.required) {
 				method = method.required(validation.required);
@@ -65,7 +74,6 @@ const createYupSchema: CreateYupSchemaFunction = (type, validation) => {
 			);
 		}
 	}
-
 	return method;
 };
 

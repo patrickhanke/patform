@@ -18,7 +18,9 @@ const useFindGroup: UseFindGroupHook = ({ moduleId, filters, limit, skip }) => {
 				"data",
 				"persons",
 				"team",
-				"categories"
+				"categories",
+				"updated_by {objectId portrait name label}",
+				"created_by {objectId portrait name label}"
 			]
 		}),
 		{

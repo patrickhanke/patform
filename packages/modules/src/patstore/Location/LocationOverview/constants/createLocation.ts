@@ -1,5 +1,7 @@
 import { PageCreateClassObject } from "@repo/ui";
-const createLocation: PageCreateClassObject = {
+import { LocationClass } from "@repo/types";
+
+const createLocation: PageCreateClassObject<LocationClass> = {
 	initialData: undefined,
 	className: "Location",
 	text: "Neuen Ort erstellen",
@@ -11,9 +13,10 @@ const createLocation: PageCreateClassObject = {
 			type: "input",
 			label: "Name",
 			validation: {
+				validate: true,
 				required: "Pflichtfeld",
 				min_length: 5,
-				max_length: 36
+				max_length: 90
 			}
 		},
 		{

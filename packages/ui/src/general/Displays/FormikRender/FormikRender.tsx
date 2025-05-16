@@ -9,6 +9,7 @@ import { FormikRenderProps } from "./types";
 import createYupSchema from "./functions/createYupSchema";
 import getFieldsWithValidation from "./functions/getFieldsWithValidation";
 import { FC } from "react";
+import { Divider } from "@repo/ui";
 
 const FormikRender: FC<FormikRenderProps> = ({
 	fields,
@@ -81,6 +82,8 @@ const FormikRender: FC<FormikRenderProps> = ({
 						useWithDebounce={useWithDebounce}
 						submitForm={handleSubmit}
 					/>
+					<Divider showLine={false} />
+					<h6>* Pflichtfeld</h6>
 				</form>
 			)}
 		</Formik>

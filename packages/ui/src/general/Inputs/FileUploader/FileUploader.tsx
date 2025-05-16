@@ -29,8 +29,7 @@ const FileUploader = ({
 	const [uploadModal, setUploadModal] = useState(false);
 	const options: UploadDropzoneConfig = useMemo(() => {
 		return {
-			apiKey: process.env.BYTESCALE_API_KEY as string,
-
+			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string,
 			maxFileCount: maxFileCount || 10,
 			showFinishButton: false,
 

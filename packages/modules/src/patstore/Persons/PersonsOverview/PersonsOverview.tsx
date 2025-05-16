@@ -38,6 +38,15 @@ const PersonsOverview = () => {
 				sortingFn(a, b) {
 					return a.original.name.localeCompare(b.original.name);
 				}
+			},
+			{
+				id: "email",
+				type: "edit_string",
+				label: "E-Mail",
+				enableSorting: true,
+				sortingFn(a, b) {
+					return a.original.name.localeCompare(b.original.name);
+				}
 			}
 		],
 		fields: currentModule.fields,

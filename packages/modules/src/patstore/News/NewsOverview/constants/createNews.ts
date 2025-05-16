@@ -17,20 +17,10 @@ const createClass: PageCreateClassObject<NewsClass> = {
 			type: "input",
 			label: "Name",
 			validation: {
+				validate: true,
 				required: "Pflichtfeld",
 				min_length: 5,
-				max_length: 36
-			}
-		},
-		{
-			id: "image",
-			position: 2,
-			name: "image",
-			type: "image",
-			label: "Bild",
-			options: {
-				return_type: "string",
-				max_file_count: 1
+				max_length: 90
 			}
 		},
 		{
@@ -40,9 +30,21 @@ const createClass: PageCreateClassObject<NewsClass> = {
 			type: "textarea",
 			label: "Beschreibung",
 			validation: {
+				validate: true,
 				required: "Pflichtfeld",
 				min_length: 30,
-				max_length: 180
+				max_length: 240
+			}
+		},
+		{
+			id: "date",
+			position: 4,
+			name: "date",
+			type: "date",
+			label: "Datum",
+			validation: {
+				validate: true,
+				required: "Pflichtfeld"
 			}
 		}
 	]

@@ -8,7 +8,11 @@ interface ImageUploadProps {
 		value: string;
 	};
 	field: ImageField;
-	setFieldValue: (name: string, value: any, shouldValidate?: boolean) => void;
+	setFieldValue: (
+		name: string,
+		value: string | string[],
+		shouldValidate?: boolean
+	) => void;
 	isHorizontal?: boolean;
 }
 
@@ -26,23 +30,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 				}
 				maxFileCount={field?.options?.max_file_count || 10}
 			/>
-			{/* <Modal
-				isOpen={isOpen}
-				cancelButtonHandler={() => setIsOpen(false)}
-				confirmButtonHandler={() => {
-					setFieldValue(field.name, image);
-					setIsOpen(false);
-				}}
-				header={"Bild ändern"}
-				buttonDisabled={[false, !image]}
-			>
-				<ImageUploader
-					label=""
-					onChange={(imgUrl) => setImage(imgUrl as string)}
-					returnType={field?.options?.return_type || "array"}
-					maxFileCount={field?.options?.max_file_count || 10}
-				/>
-			</Modal> */}
 		</>
 	);
 };

@@ -43,7 +43,8 @@ const GroupOverview = () => {
 			{ id: "times", type: "edit_times", label: "Zeiten" },
 			{ id: "persons", type: "edit_persons", label: "Übungsleiter" },
 			{ id: "team", type: "edit_team", label: "Mannschaft" },
-			{ id: "state", type: "edit_state", label: "Status" }
+			{ id: "state", type: "edit_state", label: "Status" },
+			{ id: "updated_by", type: "updated_by", label: "Aktualisiert von" }
 		],
 		fields: currentModule.fields,
 		className: "Group",

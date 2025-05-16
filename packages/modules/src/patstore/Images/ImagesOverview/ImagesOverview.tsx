@@ -66,6 +66,7 @@ const ImagesOverview = () => {
 						className: "_User",
 						objectId: user.objectId
 					},
+					connected_elements: [],
 					module: {
 						__type: "Pointer",
 						className: "Module",

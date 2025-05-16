@@ -5,7 +5,7 @@ import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
 import { Filter, NewsClass } from "@repo/types";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindNews from "./hooks/useFindNews";
-import createClass from "./constants/createClass";
+import createNews from "./constants/createNews";
 
 const NewsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
@@ -77,7 +77,7 @@ const NewsOverview = () => {
 			title={currentModule.name}
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
-			createClass={createClass}
+			createClass={createNews}
 			refetch={refetch}
 		>
 			<Table

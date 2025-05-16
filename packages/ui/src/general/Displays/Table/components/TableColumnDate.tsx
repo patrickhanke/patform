@@ -22,7 +22,7 @@ const TableColumnDate = ({
 					type="button"
 					onClick={() => setEditDate(true)}
 				>
-					{getDateString(date).date}
+					{getDateString(date).date || "+ Datum hinzufügen"}
 				</button>
 			) : (
 				<div>{getDateString(date).date}</div>

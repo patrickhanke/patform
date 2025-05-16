@@ -40,8 +40,6 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
 
     const nameParts = username.split(" ");
 
-    console.log(nameParts);
-
     if (nameParts.length === 1 && nameParts[0]) {
       return nameParts[0][0];
     } else if (

@@ -20,6 +20,7 @@ const useFindNews: UseFindNewsHook = ({ moduleId, filters, limit, skip }) => {
 		}),
 		{
 			variables: {
+				order: "date_DESC",
 				params: paramsHandler({ moduleId, filters }),
 				skip,
 				limit

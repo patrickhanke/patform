@@ -1,22 +1,25 @@
 import { CreateClassProps } from "@repo/ui";
 import { ArticleClass } from "@repo/types";
 
-const createArticle = (
-	persons: { value: string; label: string }[]
-): CreateClassProps<ArticleClass> => ({
+const createArticle: CreateClassProps<ArticleClass> = {
 	initialData: {
 		state: "draft",
-		categories: []
+		categories: [],
+		gallery: []
 	},
 	className: "Article",
-	text: "Bericht erstellen",
+	text: "Beitrag erstellen",
 	fields: [
 		{
 			id: "title",
 			position: 1,
 			name: "title",
 			type: "input",
-			label: "Titel"
+			label: "Titel",
+			validation: {
+				validate: true,
+				required: "Pflichtfeld"
+			}
 		},
 		{
 			id: "image",
@@ -29,6 +32,7 @@ const createArticle = (
 				max_file_count: 1
 			},
 			validation: {
+				validate: true,
 				required: "Pflichtfeld"
 			}
 		},
@@ -40,22 +44,22 @@ const createArticle = (
 			label: "Text",
 			placeholder: "Text des Artikels",
 			validation: {
+				validate: true,
 				required: "Pflichtfeld"
 			}
 		},
 		{
-			id: "author",
+			id: "date",
 			position: 4,
-			name: "author",
-			type: "pointer_select",
-			label: "Autor",
-			placeholder: "Autor*in",
-			options: {
-				pointer_class: "Person"
-			},
-			select_options: persons
+			name: "date",
+			type: "date",
+			label: "Datum",
+			validation: {
+				validate: true,
+				required: "Pflichtfeld"
+			}
 		}
 	]
-});
+};
 
 export default createArticle;

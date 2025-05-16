@@ -41,7 +41,7 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 				setSelectedImages={setSelectedImages}
 			/>
 		);
-	}, [selectedImages]);
+	}, [selectedImages, maxFileCount]);
 
 	const confirmHandler = useCallback(async () => {
 		await onChange(maxFileCount > 1 ? selectedImages : selectedImages[0]);
@@ -57,7 +57,9 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 			/>
 
 			<SlideIn
-				header="Bilder auswählen"
+				header={
+					maxFileCount > 1 ? "Bilder auswählen" : "Bild auswählen"
+				}
 				isOpen={selectImages}
 				cancel={() => setSelectImages(false)}
 				confirm={() => confirmHandler()}

@@ -219,6 +219,8 @@ const SelectImage: FC<SelectImageProps> = ({
 									setSelectedImages(imageArray);
 								}}
 								useTiles
+								min={1}
+								max={maxFileCount}
 							/>
 						)}
 					</div>
