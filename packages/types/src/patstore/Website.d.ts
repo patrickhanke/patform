@@ -1,12 +1,14 @@
 import { ClassProperties } from "./Classes";
 
 export type WebpageClass = ClassProperties & {
-    name: string;
+    path: string;
     title: string;
     type: string;
     subtitle: string;
     content: WebpageContent[];
     active: boolean;
+    image: string;
+    documents: string[];
 };
 
 

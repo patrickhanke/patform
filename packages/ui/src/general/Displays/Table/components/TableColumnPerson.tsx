@@ -85,6 +85,18 @@ const TableColumnPerson = ({
 		[elements, value, currentPerson]
 	);
 
+	if (!isEditable) {
+		return (
+			<div>
+				{value ? (
+					<PersonDisplay person={value} onlyImage={false} />
+				) : (
+					<span>-</span>
+				)}
+			</div>
+		);
+	}
+
 	return (
 		<div>
 			<button
@@ -109,7 +121,9 @@ const TableColumnPerson = ({
 				confirm={async () => {
 					if (selectedPerson) {
 						setLoading(true);
-						await onChange(selectedPerson);
+						if (onChange) {
+							await onChange(selectedPerson);
+						}
 						setIsOpen(false);
 						setLoading(false);
 					}

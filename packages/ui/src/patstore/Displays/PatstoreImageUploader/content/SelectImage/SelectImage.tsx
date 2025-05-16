@@ -62,11 +62,11 @@ const SelectImage: FC<SelectImageProps> = ({
 		skip: pagination.pageIndex * pagination.pageSize
 	});
 
-	// useEffect(() => {
-	// 	if (selectState.value === "select") {
-	// 		imagesRefetch();
-	// 	}
-	// }, [selectState]);
+	useEffect(() => {
+		if (selectState.value === "select") {
+			imagesRefetch();
+		}
+	}, [selectState]);
 
 	const createImageHandler = useCallback(
 		async (images: { filePath: string; fileName: string }[]) => {

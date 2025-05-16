@@ -23,7 +23,7 @@ export type PageHeaderButtons = PageHeaderButton[];
 
 type PageHeaderContent = ReactNode | null;
 
-export type PageCreateClassObject = CreateClassProps;
+export type PageCreateClassObject<T> = CreateClassProps<T>;
 
 export type PageProps = {
 	title?: string;

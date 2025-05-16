@@ -138,6 +138,7 @@ const WebsitePageCategories: FC<WebsitePageCategoriesProps> = ({
 	return (
 		<>
 			<div style={{ width: "180px" }}>
+				<label> {category.label} </label>
 				{!categories ||
 				categories?.length === 0 ||
 				!categories.some((catId) =>

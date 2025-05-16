@@ -6,11 +6,14 @@ import {
 	PatstoreAppContext,
 	useDataHandler
 } from "@repo/provider";
-import { WebpageContent } from "@repo/types";
+import { WebpageClass, WebpageContent } from "@repo/types";
 import {
 	CreateButton,
+	Divider,
 	DnDDisplay,
+	InfoBox,
 	Page,
+	PatstoreSelectImages,
 	sortItemsByPosition,
 	TextInput
 } from "@repo/ui";
@@ -21,6 +24,7 @@ import { cloneDeep } from "lodash-es";
 import { EditContentField } from "./content/EditContentField";
 import "./styles.scss";
 import WebsitePageCategories from "./components/WebsitePageCategories";
+import WebsitePageDocuments from "./components/WebsitePageDocuments";
 
 const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 	const websiteId = params.webpage_id;
@@ -37,11 +41,13 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 			objectName: "Webpage",
 			fields: [
 				"objectId",
-				"name",
+				"path",
 				"content",
 				"title",
 				"subtitle",
-				"categories"
+				"categories",
+				"image",
+				"documents"
 			]
 		}),
 		{ variables: { id: websiteId } }
@@ -55,9 +61,15 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 		}
 	}, [pageData]);
 
+	if (!pageData) {
+		return null;
+	}
+
+	const webPage: WebpageClass = pageData.objects.getWebpage;
+
 	return (
 		<Page
-			title={`${pageData?.objects.getWebpage.title} - Inhalte`}
+			title={`${webPage.title} - Inhalte`}
 			description="Bearbeitung der Webseiten Inhalte"
 			pageHeaderButtons={[]}
 		>
@@ -121,12 +133,33 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 				<div className="head_container flex col al-fs j-sb gap-sm w-33">
 					<h3>Inhalte</h3>
 					<div>
+						<label>Pfad der Seite</label>
+						<TextInput
+							id="name"
+							width={"100%"}
+							type="text"
+							defaultValue={webPage.path}
+							onChange={async (value) => {
+								await updateData({
+									className: "Webpage",
+									objectId: websiteId,
+									updateObject: {
+										path: value
+									}
+								});
+								await refetch();
+							}}
+							disabled={!user?.is_superuser}
+							placeholder="Name der Seite"
+						/>
+						<InfoBox text="Änderungen am Pfad können dazu führen, dass die Inhalte auf der Webseite nicht mehr angezeigt werden." />
+						<Divider size="small" />
 						<label>Titel der Seite</label>
 						<TextInput
 							id="text"
 							width={"100%"}
 							type="text"
-							defaultValue={pageData?.objects.getWebpage.title}
+							defaultValue={webPage.title}
 							onChange={async (value) => {
 								await updateData({
 									className: "Webpage",
@@ -139,26 +172,8 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 							}}
 							placeholder="Titel der Seite"
 						/>
-						<label>Name der Seite</label>
-						<TextInput
-							id="name"
-							width={"100%"}
-							type="text"
-							defaultValue={pageData?.objects.getWebpage.name}
-							onChange={async (value) => {
-								await updateData({
-									className: "Webpage",
-									objectId: websiteId,
-									updateObject: {
-										name: value
-									}
-								});
-								await refetch();
-							}}
-							disabled={!user?.is_superuser}
-							placeholder="Name der Seite"
-						/>
 					</div>
+					<Divider size="small" />
 					<div>
 						<label>Untertitel der Seite</label>
 						<TextInput
@@ -166,7 +181,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 							width={"100%"}
 							type="textarea"
 							isTextArea
-							defaultValue={pageData?.objects.getWebpage.subtitle}
+							defaultValue={webPage.subtitle}
 							onChange={async (value) => {
 								await updateData({
 									className: "Webpage",
@@ -180,8 +195,45 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 							placeholder="Untertitel der Seite"
 						/>
 					</div>
+					<Divider size="small" />
 					<div>
-						<label>Kategorien</label>
+						<label>Titelbild</label>
+						<PatstoreSelectImages
+							image={webPage.image}
+							onChange={async (value) => {
+								await updateData({
+									className: "Webpage",
+									objectId: websiteId,
+									updateObject: {
+										image: value
+									}
+								});
+								await refetch();
+							}}
+							maxFileCount={1}
+						/>
+					</div>
+					<Divider size="small" />
+					<div>
+						<label>Dokumente</label>
+						<WebsitePageDocuments
+							documents={webPage.documents}
+							onChange={async (value) => {
+								await updateData({
+									className: "Webpage",
+									objectId: websiteId,
+									updateObject: {
+										documents: value
+									}
+								});
+								await refetch();
+							}}
+							isEditable
+						/>
+					</div>
+					<Divider size="small" />
+					<div>
+						<h3>Kategorien</h3>
 						<div className="flex col gap-sm">
 							{pageData &&
 								currentModule.categories.length > 0 &&
@@ -189,10 +241,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 									(moduleCategory) => (
 										<WebsitePageCategories
 											key={moduleCategory.id}
-											categories={
-												pageData?.objects.getWebpage
-													.categories
-											}
+											categories={webPage.categories}
 											category={moduleCategory}
 											isEditable
 											onChange={async (categories) => {

@@ -1,10 +1,6 @@
 import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
-import {
-	ApolloClient,
-	ApolloQueryResult,
-	NormalizedCacheObject
-} from "@apollo/client";
-import { Filter } from "@repo/types";
+import { ApolloClient, ApolloQueryResult } from "@apollo/client";
+import { Classes, Filter } from "@repo/types";
 import React from "react";
 
 type type = "find" | "get";
@@ -36,14 +32,22 @@ export type ApolloAppProviderProps = {
 	uri: string;
 	appId: string;
 	restKey: string;
-    masterKey?: string;
+	masterKey?: string;
 	children: React.ReactNode;
 };
 
-export type makeClientProps = (
+export type MakeClientProps = (
 	uri: string,
 	appId: string,
-	restKey: string
-) => ApolloClient<NormalizedCacheObject>;
+	restKey: string,
+	masterKey?: string
+) => ApolloClient;
 
-export type ApolloRefetch = () => Promise<ApolloQueryResult<any>>;
+export type ClientHeaders = {
+	"X-Parse-Application-Id": string;
+	"X-Parse-REST-API-Key": string;
+	"X-Parse-Session-Token": string;
+	"X-Parse-Master-Key"?: string;
+};
+
+export type ApolloRefetch = () => Promise<ApolloQueryResult<Classes>>;

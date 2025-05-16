@@ -8,15 +8,15 @@ import {
 	InMemoryCache,
 	SSRMultipartLink
 } from "@apollo/experimental-nextjs-app-support";
-import { makeClientProps } from "./types";
+import { ClientHeaders, MakeClientProps } from "./types";
 // import { InMemoryCache } from '@apollo/client-react-streaming';
 
-const makeClient: makeClientProps = (uri, appId, restKey, masterKey) => {
+const makeClient: MakeClientProps = (uri, appId, restKey, masterKey) => {
 	const localToken = Cookies.get(process.env.SESSION_TOKEN as string);
 
 	const token = localToken || "";
 
-	const headers = {
+	const headers: ClientHeaders = {
 		"X-Parse-Application-Id": appId || "",
 		"X-Parse-REST-API-Key": restKey || "",
 		"X-Parse-Session-Token": token

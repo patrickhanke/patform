@@ -5,7 +5,8 @@ const createArticle = (
 	persons: { value: string; label: string }[]
 ): CreateClassProps<ArticleClass> => ({
 	initialData: {
-		state: "draft"
+		state: "draft",
+		categories: []
 	},
 	className: "Article",
 	text: "Bericht erstellen",
@@ -15,12 +16,7 @@ const createArticle = (
 			position: 1,
 			name: "title",
 			type: "input",
-			label: "Titel",
-			validation: {
-				required: "Pflichtfeld",
-				min_length: 5,
-				max_length: 36
-			}
+			label: "Titel"
 		},
 		{
 			id: "image",

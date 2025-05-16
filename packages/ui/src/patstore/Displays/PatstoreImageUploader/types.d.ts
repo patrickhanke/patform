@@ -1,3 +1,5 @@
+import { ImageClass } from "@repo/types";
+
 export type PatstoreSelectImagesProps = {
 	image: string | string[] | undefined;
 	onChange: (F: Image[] | Image) => void | Promise<void>;
@@ -21,3 +23,16 @@ export type RenderButtonsProps = {
 	maxFileCount: number;
 	onClick: Dispatch<SetStateAction<boolean>>;
 };
+
+export type UseGetImage = (T: { id: string }) => {
+	image: ImageClass;
+	filePath: string;
+	loading: boolean;
+	error: Error | undefined;
+};
+
+export type PatstoreImageDisplayProps = {
+	id: string;
+	height: number;
+	width: number;
+}

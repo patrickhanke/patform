@@ -78,7 +78,7 @@ type PersonOption = { value: string; label: string; person: PersonClass };
 export type TableColumnPersonProps = {
 	value: PersonClass;
 	isEditable?: boolean;
-	onChange: (person: string) => Promise<void>;
+	onChange?: (person: string) => Promise<void>;
 };
 
 export type TableColumnPersonsProps = {
@@ -117,7 +117,9 @@ export type ColumnDataTypes =
 	| "date_picker"
 	| "boolean"
 	| "content"
-	| "connected_elements";
+	| "connected_elements"
+	| "updated_by"
+	| "created_by";
 
 export type ColumnData<Class> = {
 	id: keyof Class;

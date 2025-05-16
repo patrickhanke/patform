@@ -642,6 +642,25 @@ const useCreateColumns = <T extends ColumnClasses>({
 				} as ColumnDef<T>);
 			}
 
+			if (
+				columnElement.type === "updated_by" ||
+				columnElement.type === "created_by"
+			) {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnPerson
+							value={row[columnElement.id] as PersonClass}
+							isEditable={false}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
 			if (columnElement.type === "connected_elements") {
 				columnArray.push({
 					accessorFn: (row) => (

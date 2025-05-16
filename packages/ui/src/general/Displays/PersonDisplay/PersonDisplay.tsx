@@ -1,11 +1,12 @@
-import { getImageUrl } from "@repo/provider";
 import "./styles.scss";
 import { PersonDisplayProps } from "./types";
+import { PatstoreImageDisplay } from "@repo/ui";
 
 const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 	if (!person) {
 		return null;
 	}
+
 	return (
 		<div className={"display_person_container"} data-onlyimage={onlyImage}>
 			{person.portrait ? (
@@ -13,15 +14,10 @@ const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 					className={"display_person_image_container"}
 					data-onlyimage={onlyImage}
 				>
-					<img
-						src={getImageUrl({
-							filePath: person.portrait,
-							width: 60,
-							height: 60
-						})}
-						alt={`${person.label}`}
-						width={onlyImage ? "24px" : "18px"}
-						height={onlyImage ? "24px" : "18px"}
+					<PatstoreImageDisplay
+						id={person.portrait}
+						height={onlyImage ? 24 : 18}
+						width={onlyImage ? 24 : 18}
 					/>
 				</div>
 			) : (
@@ -31,10 +27,11 @@ const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 				>
 					<div className={"display_person_no_image_placeholder"} />
 					<div className="display_person_no_image_character">
-						{person.label && person.label
-							.split(" ")
-							.map((word) => word[0])
-							.join("")}
+						{person.label &&
+							person.label
+								.split(" ")
+								.map((word: string) => word[0])
+								.join("")}
 					</div>
 				</div>
 			)}

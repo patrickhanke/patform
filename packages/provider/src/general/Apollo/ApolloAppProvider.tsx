@@ -9,7 +9,7 @@ function ApolloAppProvider({
 	uri,
 	appId,
 	restKey,
-    masterKey
+	masterKey
 }: ApolloAppProviderProps) {
 	return (
 		<ApolloNextAppProvider
