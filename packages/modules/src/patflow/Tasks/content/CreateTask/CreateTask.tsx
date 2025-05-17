@@ -164,10 +164,14 @@ const CreateTask = ({
 					});
 				}
 			}
-		}).catch((error) => {
-			console.log(error);
-			setLoading(false);
-		});
+		})
+			.then((response) => {
+				console.log("response", response);
+			})
+			.catch((error) => {
+				console.log(error);
+				setLoading(false);
+			});
 		if (setRefetchTask) {
 			setRefetchTask(new Date());
 		}
