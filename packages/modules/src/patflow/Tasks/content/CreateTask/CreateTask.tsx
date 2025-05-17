@@ -14,7 +14,7 @@ import {
 import initial_task from "./constants/initial_task";
 import { Icon, ImageUploader, SlideIn, TextInput } from "@repo/ui";
 import { modi_options, date_category_options } from "@repo/ui";
-import { generateImagePath, useDataHandler } from "@repo/provider";
+import { axiosclient, generateImagePath, useDataHandler } from "@repo/provider";
 import SelectTicket from "./components/SelectTicket";
 import SelectProperty from "./components/SelectProperty";
 import SelectWorker from "./components/SelectWorker";
@@ -144,7 +144,7 @@ const CreateTask = ({
 			};
 		}
 
-		await createData({
+		const response = await createData({
 			className: "Task",
 			updateObject,
 			async afterSaveHandler(objectId) {
@@ -164,14 +164,22 @@ const CreateTask = ({
 					});
 				}
 			}
-		})
-			.then((response) => {
-				console.log("response", response);
-			})
-			.catch((error) => {
-				console.log(error);
-				setLoading(false);
-			});
+		}).catch((error) => {
+			console.log(error);
+			setLoading(false);
+		});
+
+		console.log("response", response);
+
+		// await axiosclient().post('functions/send-task-message', {
+		// 	title: task.title,
+		//     state: task.assigned_staffstate,
+		//     assignedStaff: assignedStaff,
+		//     formerStaff: formerStaff,
+		//     sendCreateMessage,
+		//     id: task.id
+		// })
+
 		if (setRefetchTask) {
 			setRefetchTask(new Date());
 		}
