@@ -7,12 +7,15 @@ import { useDataContext } from "./DataContext";
 import compileAxiosError from "./compileAxiosError";
 import { cloneDeep, set } from "lodash-es";
 import { PatstoreAppContext } from "../../patstore";
+import useNetlifyHooks from "./hooks/useNetlifyHooks";
 
 const useDataHandler = (useMasterKey = false) => {
 	const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
 	const [loading, setLoading] = useState(false);
 	const { feedbackHandler } = useDataContext();
 	const { user, userLoading } = useContext(PatstoreAppContext);
+	const netlifyHookHandler = useNetlifyHooks();
+
 
 	const updateData = useCallback(
 		async ({
@@ -70,8 +73,8 @@ const useDataHandler = (useMasterKey = false) => {
 						onError(error.message);
 					}
 				});
+			netlifyHookHandler(className);
 			setLoading(false);
-
 			return data;
 		},
 		[user, userLoading]
@@ -110,6 +113,7 @@ const useDataHandler = (useMasterKey = false) => {
 				.catch((error) => {
 					feedbackHandler(compileAxiosError(error));
 				});
+			netlifyHookHandler(className);
 			setLoading(false);
 			setFeedback("", "", new Date());
 		},
@@ -142,13 +146,6 @@ const useDataHandler = (useMasterKey = false) => {
 					objectId: userId
 				});
 			}
-			// if (userId) {
-			// 	set(updateObjectCopy, "updated_by", {
-			// 		__type: "Pointer",
-			// 		className: "_User",
-			// 		objectId: userId
-			// 	});
-			// }
 			await axiosclient(useMasterKey)
 				.post(
 					`classes/${className}`,
@@ -171,6 +168,7 @@ const useDataHandler = (useMasterKey = false) => {
 				.catch((error) => {
 					feedbackHandler(compileAxiosError(error));
 				});
+			netlifyHookHandler(className);
 			setLoading(false);
 			return data;
 		},
