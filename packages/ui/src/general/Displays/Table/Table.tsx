@@ -251,4 +251,4 @@ const Table: React.FC<TableTypes> = ({
 	);
 };
 
-export default Table;
+export default React.memo(Table);

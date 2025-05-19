@@ -1,4 +1,4 @@
-import { ColumnDef, PaginationState, Row } from '@tanstack/react-table';
+import { ColumnDef, PaginationState, Row } from "@tanstack/react-table";
 import {
 	ClassCategories,
 	ModuleCategory,
@@ -166,3 +166,11 @@ export type TableColumnEditColorProps = {
 	value: ColorValues;
 	onChange: (color: string) => void;
 };
+
+export type UpdateColumnData = (t: {
+	objectId: string;
+	updateObject: {
+		[key: string]: object | string | number | string[] | boolean;
+	};
+	feedback: string;
+}) => Promise<void>;

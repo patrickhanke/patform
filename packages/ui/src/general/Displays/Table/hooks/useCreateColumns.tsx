@@ -1,7 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
-import { CreateColumnHookProps, ColumnClasses } from "../types";
+import { useCallback, useMemo } from "react";
+import {
+	CreateColumnHookProps,
+	ColumnClasses,
+	UpdateColumnData
+} from "../types";
 import { ColumnDef } from "@tanstack/react-table";
 import TableColumnString from "../components/TableColumnString";
 import { useDataHandler } from "@repo/provider";
@@ -50,6 +54,23 @@ const useCreateColumns = <T extends ColumnClasses>({
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandler(false);
 
+	console.log({ data });
+
+	const updateColumnData: UpdateColumnData = useCallback(
+		async ({ objectId, updateObject, feedback }) => {
+			await updateData({
+				className,
+				objectId,
+				updateObject,
+				feedback
+			});
+			if (refetch) {
+				refetch();
+			}
+		},
+		[className, refetch]
+	);
+
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
 		data.forEach((columnElement) => {
@@ -66,17 +87,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 									? true
 									: false
 							}
-							onChange={async (value: string) => {
-								await updateData({
-									className: className,
+							onChange={(value: string) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Text aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -99,18 +116,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 							maxFileCount={
 								columnElement.type === "gallery" ? 20 : 1
 							}
-							onChange={async (value: string | string[]) => {
-								await updateData({
-									className: className,
+							onChange={(value: string | string[]) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Bilder aktualisiert"
-								});
-
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -134,17 +146,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 									? true
 									: false
 							}
-							onChange={async (value: string) => {
-								await updateData({
-									className: className,
+							onChange={(value: string) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Text aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -161,17 +169,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 						<TableColumnTexteditor
 							value={row[columnElement.id] as string}
 							isEditable={true}
-							onChange={async (value: string) => {
-								await updateData({
-									className: className,
+							onChange={(value: string) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Text aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -187,17 +191,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnDatesField
 							initialDates={row[columnElement.id] as EventDate[]}
-							onChange={async (value: EventDate[]) => {
-								await updateData({
-									className: className,
+							onChange={(value: EventDate[]) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Termin aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -216,17 +216,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnDate
 							date={row[columnElement.id] as string}
-							onChange={async (value: string) => {
-								await updateData({
-									className: className,
+							onChange={(value: string) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Datum aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 							isEditable={
 								columnElement.type === "date_picker"
 									? true
@@ -255,9 +251,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 									? true
 									: false
 							}
-							onChange={async (value: LatitudeLongitude) => {
-								await updateData({
-									className: className,
+							onChange={(value: LatitudeLongitude) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: {
 										[columnElement.id]: {
@@ -267,11 +262,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 										}
 									},
 									feedback: "GeoPoint aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -297,19 +289,15 @@ const useCreateColumns = <T extends ColumnClasses>({
 										: true
 								}
 								options={get(constants, columnElement.id, [])}
-								onChange={async (value: ClassState) => {
-									await updateData({
-										className: className,
+								onChange={(value: ClassState) =>
+									updateColumnData({
 										objectId: row.objectId,
 										updateObject: {
 											[columnElement.id]: value.value
 										},
 										feedback: "Status aktualisiert"
-									});
-									if (refetch) {
-										refetch();
-									}
-								}}
+									})
+								}
 							/>
 						) : (
 							<p className="error_message">
@@ -352,9 +340,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 									: false
 							}
 							value={row[columnElement.id] as PersonClass}
-							onChange={async (value: string) => {
-								await updateData({
-									className: className,
+							onChange={(value: string) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: {
 										[columnElement.id]: {
@@ -364,11 +351,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 										}
 									},
 									feedback: "Person aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -393,19 +377,15 @@ const useCreateColumns = <T extends ColumnClasses>({
 								(row[columnElement.id] as string[]) ||
 								([] as string[])
 							}
-							onChange={async (values: string[]) => {
-								await updateData({
-									className: className,
+							onChange={(values: string[]) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: {
 										[columnElement.id]: values
 									},
 									feedback: "Personen aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -421,17 +401,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnTimesField
 							initialTimes={row[columnElement.id] as EventTime[]}
-							onChange={async (value: EventTime[]) => {
-								await updateData({
-									className: className,
+							onChange={(value: EventTime[]) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Zeiten aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -447,17 +423,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnEditColor
 							value={row[columnElement.id] as ColorValues}
-							onChange={async (value: string) => {
-								await updateData({
-									className: className,
+							onChange={(value: string) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Farbe geändert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -473,17 +445,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnEditTeam
 							initialData={row[columnElement.id] as Team}
-							onChange={async (value: Team) => {
-								await updateData({
-									className: className,
+							onChange={(value: Team) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Team aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -502,17 +470,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnFiles
 							url={row[columnElement.id] as string}
-							onChange={async (value: string | string[]) => {
-								await updateData({
-									className: className,
+							onChange={(value: string | string[]) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Datei aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 							maxFileCount={
 								columnElement.type === "file" ? 1 : 10
 							}
@@ -531,19 +495,15 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnEditDate
 							value={row[columnElement.id] as EventDate}
-							onChange={async (value: EventDate) => {
-								await updateData({
-									className: className,
+							onChange={(value: EventDate) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: {
 										[columnElement.id]: value
 									},
 									feedback: "Datum aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -554,25 +514,20 @@ const useCreateColumns = <T extends ColumnClasses>({
 					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
-
 			if (columnElement.type === "boolean") {
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnEditBoolean
 							value={row[columnElement.id] as boolean}
-							onChange={async (value: boolean) => {
-								await updateData({
-									className: className,
+							onChange={(value: boolean) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: {
 										[columnElement.id]: value
 									},
 									feedback: "Wert aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -590,9 +545,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 							<TableColumnTexteditor
 								value={row[columnElement.id]?.value as string}
 								isEditable={true}
-								onChange={async (value: string) => {
-									await updateData({
-										className: className,
+								onChange={(value: string) =>
+									updateColumnData({
 										objectId: row.objectId,
 										updateObject: {
 											[columnElement.id]: {
@@ -601,11 +555,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 											}
 										},
 										feedback: "Text aktualisiert"
-									});
-									if (refetch) {
-										refetch();
-									}
-								}}
+									})
+								}
 							/>
 						) : (
 							<TableColumnImages
@@ -615,9 +566,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 								maxFileCount={
 									columnElement.type === "gallery" ? 20 : 1
 								}
-								onChange={async (value: string | string[]) => {
-									await updateData({
-										className: className,
+								onChange={(value: string | string[]) =>
+									updateColumnData({
 										objectId: row.objectId,
 										updateObject: {
 											[columnElement.id]: {
@@ -626,48 +576,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 											}
 										},
 										feedback: "Bilder aktualisiert"
-									});
-									if (refetch) {
-										refetch();
-									}
-								}}
+									})
+								}
 							/>
 						),
-					header: () => <span>{columnElement.label}</span>,
-					id: columnElement.id as string,
-					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id,
-					enableSorting: columnElement.enableSorting ?? false,
-					sortingFn: columnElement.sortingFn
-				} as ColumnDef<T>);
-			}
-
-			if (
-				columnElement.type === "updated_by" ||
-				columnElement.type === "created_by"
-			) {
-				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnPerson
-							value={row[columnElement.id] as PersonClass}
-							isEditable={false}
-						/>
-					),
-					header: () => <span>{columnElement.label}</span>,
-					id: columnElement.id as string,
-					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id,
-					enableSorting: columnElement.enableSorting ?? false,
-					sortingFn: columnElement.sortingFn
-				} as ColumnDef<T>);
-			}
-			if (columnElement.type === "connected_elements") {
-				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnConnectedElements
-							value={row[columnElement.id] as Array<object>}
-						/>
-					),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -683,17 +595,29 @@ const useCreateColumns = <T extends ColumnClasses>({
 							initialData={
 								row[columnElement.id] as WebpageContent[]
 							}
-							onChange={async (value: WebpageContent[]) => {
-								await updateData({
-									className: className,
+							onChange={(value: WebpageContent[]) =>
+								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },
 									feedback: "Inhalt aktualisiert"
-								});
-								if (refetch) {
-									refetch();
-								}
-							}}
+								})
+							}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
+
+			if (columnElement.type === "connected_elements") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnConnectedElements
+							value={row[columnElement.id] as Array<object>}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -705,6 +629,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				} as ColumnDef<T>);
 			}
 		});
+
 		categories.map((category) => {
 			columnArray.push({
 				accessorFn: (row) => (
@@ -716,19 +641,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 								: true
 						}
 						categories={row.categories || []}
-						onChange={async (categories: string[]) => {
-							await updateData({
+						onChange={(categories: string[]) =>
+							updateColumnData({
 								objectId: row.objectId,
-								className,
-								updateObject: {
-									categories: categories
-								},
+								updateObject: { categories },
 								feedback: "Kategorie aktualisiert"
-							});
-							if (refetch) {
-								refetch();
-							}
-						}}
+							})
+						}
 					/>
 				),
 				header: () => <span>{category.label}</span>,
@@ -739,6 +658,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				sortingFn: undefined // Default sortingFn
 			} as ColumnDef<T>);
 		});
+
 		if (typeof editLink === "string") {
 			columnArray.push({
 				accessorFn: (row) => (
@@ -788,6 +708,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 				enableSorting: false,
 				sortingFn: undefined
 			});
+
+		console.log(columnArray);
 
 		return columnArray;
 	}, [data, className]);
