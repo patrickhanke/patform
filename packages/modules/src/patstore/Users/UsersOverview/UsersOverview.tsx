@@ -1,50 +1,49 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import { useQuery } from "@apollo/client";
-import {
-	axiosclient,
-	generateGraphQLQuery,
-	paramsHandler,
-	useAppContext
-} from "@repo/provider";
-import { Page, SlideIn, Table } from "@repo/ui";
+import { axiosclient, useAppContext } from "@repo/provider";
+import { Page, RenderFilters, SlideIn, Table } from "@repo/ui";
 import useUserColumns from "./hooks/useUserColumns";
 import { UsersOverviewProps, UserObject } from "./types";
 import { FC, useEffect, useState } from "react";
 import CreateUser from "./components/CreateUser";
+import useFindUser from "./hooks/useFindUser";
+import { Filter } from "@repo/types";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
 	const [createUser, setCreateUser] = useState(false);
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "_User",
-			fields: ["objectId", "username", "email", "name", "roles"]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "projects",
-							value: project.objectId,
-							operator: "_in",
-							id: "projects"
-						},
-						{
-							key: "is_superuser",
-							value: true,
-							operator: "_ne",
-							id: "is_superuser"
-						}
-					]
-				})
+
+	const initialFilters: Filter[] = useMemo(
+		() => [
+			{
+				key: "projects",
+				value: project.objectId,
+				operator: "_in",
+				id: "projects"
 			},
-			skip: !project?.objectId
-		}
+			{
+				key: "is_superuser",
+				value: true,
+				operator: "_ne",
+				id: "is_superuser"
+			}
+		],
+		[project]
 	);
+
+	const [filters, setFilters] = useState<Filter[]>(initialFilters);
+
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10
+	});
+
+	const { users, refetch, count } = useFindUser({
+		filters,
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize
+	});
 	const columns = useUserColumns({ refetch });
 
 	const [user, setUser] = useState<UserObject | undefined>();
@@ -87,11 +86,35 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		[]
 	);
 
+	const renderFilters = useMemo(() => {
+		return (
+			<RenderFilters
+				filters={filters}
+				setFilters={setFilters}
+				fields={[
+					{
+						type: "input",
+						key: "name",
+						operator: "_regex",
+						value: "",
+						placeholder: "Suchwort"
+					}
+				]}
+				categories={[]}
+				initialFilters={initialFilters}
+			/>
+		);
+	}, []);
+
 	return (
 		<Page title="Nutzerübersicht" pageHeaderButtons={pageHeaderButtons}>
 			<Table
 				columns={columns}
-				data={data?.objects.find_User.results || []}
+				data={users || []}
+				setPagination={setPagination}
+				pagination={pagination}
+				rowCount={count}
+				filterContent={renderFilters}
 			/>
 			<SlideIn
 				header="Neuen Benutzer einladen"

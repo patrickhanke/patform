@@ -1,4 +1,4 @@
-import { Filter, LocationClass } from "@repo/types";
+import { ApolloRefetch, Filter, LocationClass } from "@repo/types";
 
 export type FilterArray = Filter[];
 
@@ -10,6 +10,6 @@ export type UseFindLocationHook = ({
 }) => {
 	loading: boolean;
 	locations?: LocationClass[];
-	refetch: () => void;
+	refetch: ApolloRefetch;
 	count: number;
 };
