@@ -19,7 +19,8 @@ const makeClient: MakeClientProps = (uri, appId, restKey, masterKey) => {
 	const headers: ClientHeaders = {
 		"X-Parse-Application-Id": appId || "",
 		"X-Parse-REST-API-Key": restKey || "",
-		"X-Parse-Session-Token": token
+		"X-Parse-Session-Token": token,
+		"Access-Control-Allow-Origin": "*"
 	};
 
 	if (masterKey) {

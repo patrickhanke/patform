@@ -103,8 +103,8 @@ const AddService: FC<AddServiceProps> = ({
 						objectId: propertyId
 					}
 				},
-				afterSaveHandler(objectId) {
-					setServiceId(objectId);
+				afterSaveHandler(data) {
+					setServiceId(data.objectId);
 				}
 			});
 		}

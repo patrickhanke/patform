@@ -105,7 +105,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 						objectId: params.project_id
 					}
 				},
-				afterSaveHandler: async (objectId) => {
+				afterSaveHandler: async (data) => {
 					await updateData({
 						className: "Project",
 						objectId: params.project_id,
@@ -116,7 +116,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 									{
 										__type: "Relation",
 										className: "Module",
-										objectId
+										objectId: data.objectId
 									}
 								]
 							}

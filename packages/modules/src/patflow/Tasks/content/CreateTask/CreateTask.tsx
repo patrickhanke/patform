@@ -14,7 +14,7 @@ import {
 import initial_task from "./constants/initial_task";
 import { Icon, ImageUploader, SlideIn, TextInput } from "@repo/ui";
 import { modi_options, date_category_options } from "@repo/ui";
-import { axiosclient, generateImagePath, useDataHandler } from "@repo/provider";
+import { generateImagePath, useDataHandler } from "@repo/provider";
 import SelectTicket from "./components/SelectTicket";
 import SelectProperty from "./components/SelectProperty";
 import SelectWorker from "./components/SelectWorker";
@@ -147,9 +147,8 @@ const CreateTask = ({
 		const response = await createData({
 			className: "Task",
 			updateObject,
-			async afterSaveHandler(objectId) {
-				console.log("afterSaveHandler", objectId);
-
+			async afterSaveHandler(data) {
+				console.log("afterSaveHandler", data);
 				if (task.ticket) {
 					await updateData({
 						className: "Ticket",
@@ -158,7 +157,7 @@ const CreateTask = ({
 							task: {
 								__type: "Pointer",
 								className: "Task",
-								objectId
+								objectId: data.objectId
 							}
 						}
 					});

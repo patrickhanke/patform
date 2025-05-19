@@ -48,6 +48,7 @@ export type ClientHeaders = {
 	"X-Parse-REST-API-Key": string;
 	"X-Parse-Session-Token": string;
 	"X-Parse-Master-Key"?: string;
+	"Access-Control-Allow-Origin"?: string;
 };
 
 export type ApolloRefetch = () => Promise<ApolloQueryResult<Classes>>;
