@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import content_type_options from "../constants/content_type_options";
-import { Editor, ImageUploader, Select } from "@repo/ui";
+import { Editor, ImageUploader, PatstoreSelectImages, Select } from "@repo/ui";
 import { EditContentProps } from "../types";
 import { cloneDeep, set } from "lodash";
 
@@ -25,7 +25,7 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 				/>
 			</div>
 			<Select
-				label="Inhatsart"
+				label="Inhaltsart"
 				value={content.type}
 				options={content_type_options}
 				onChange={(selectElement) =>
@@ -51,6 +51,16 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 					preview={false}
 				/>
 			)}
+			{content.type === "image" ||
+				(content.type === "video" && (
+					<PatstoreSelectImages
+						onChange={(value) =>
+							updateContent(content.type, value as string)
+						}
+						maxFileCount={1}
+						image={content[content.type]}
+					/>
+				))}
 		</div>
 	);
 };

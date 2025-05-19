@@ -31,6 +31,7 @@ export type WebpageContentImage = {
     text: string;
     url: string;
     active: boolean;
+    image: string;
 }
 export type WebpageContentVideo = {
     name: string;
@@ -40,6 +41,7 @@ export type WebpageContentVideo = {
     text: string;
     url: string;
     active: boolean;
+    video: string;
 }
 
 export type WebpageContent = (WebpageContentText | WebpageContentImage | WebpageContentVideo);

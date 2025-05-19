@@ -28,12 +28,9 @@ import WebsitePageDocuments from "./components/WebsitePageDocuments";
 
 const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 	const websiteId = params.webpage_id;
-	console.log({ websiteId });
 
 	const { updateData } = useDataHandler();
 	const { user, currentModule } = useContext(PatstoreAppContext);
-
-	console.log({ currentModule });
 
 	const { data: pageData, refetch } = useQuery(
 		generateGraphQLQuery({

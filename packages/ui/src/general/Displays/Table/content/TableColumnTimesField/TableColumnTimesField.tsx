@@ -46,7 +46,7 @@ const TableColumnTimesField = ({
 							<div>{times.length} Zeiten</div>
 						) : (
 							times.map((time) => (
-								<div key={`${time.weekday}_${time.start}`}>
+								<div key={`${time.id}_${time.start}`}>
 									{`${getWeekday(time.weekday)?.short} - ${time.start}-${time.end}`}
 								</div>
 							))

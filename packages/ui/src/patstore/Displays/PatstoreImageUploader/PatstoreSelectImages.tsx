@@ -56,22 +56,24 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 				onClick={() => setSelectImages(true)}
 			/>
 
-			<SlideIn
-				header={
-					maxFileCount > 1 ? "Bilder auswählen" : "Bild auswählen"
-				}
-				isOpen={selectImages}
-				cancel={() => setSelectImages(false)}
-				confirm={() => confirmHandler()}
-				secondaryContent={secondaryContent}
-				showSecondaryContent
-			>
-				<SelectedImages
-					selectedImages={selectedImages}
-					setSelectedImages={setSelectedImages}
-					maxFileCount={maxFileCount || 1}
-				/>
-			</SlideIn>
+			{selectImages && (
+				<SlideIn
+					header={
+						maxFileCount > 1 ? "Bilder auswählen" : "Bild auswählen"
+					}
+					isOpen={selectImages}
+					cancel={() => setSelectImages(false)}
+					confirm={() => confirmHandler()}
+					secondaryContent={secondaryContent}
+					showSecondaryContent
+				>
+					<SelectedImages
+						selectedImages={selectedImages}
+						setSelectedImages={setSelectedImages}
+						maxFileCount={maxFileCount || 1}
+					/>
+				</SlideIn>
+			)}
 		</>
 	);
 };

@@ -35,15 +35,6 @@ const SiteHeader = ({ title }: SiteHeaderComponent) => {
       <div className={styles.main_container}>
         <div className={styles.siteheader_container}>
           <div>
-            {/* <nav aria-label="breadcrumbs">
-              /
-              {breadcrumbs.map((crumb, index) => (
-                <span key={crumb.href}>
-                  <a href={crumb.href}>{crumb.name}</a>
-                  {index < breadcrumbs.length - 1 && " / "}
-                </span>
-              ))}
-            </nav> */}
             <h1>{pageTitle || title}</h1>
           </div>
           <div className={styles.siteheader_right_container}>
