@@ -53,7 +53,9 @@ const Select = ({
 				className={"react_select_container"}
 				classNamePrefix="react-select"
 				styles={customStyles({ width })}
-				menuPortalTarget={document.body}
+				menuPortalTarget={
+					typeof window !== "undefined" ? document.body : undefined
+				}
 				menuPosition="fixed"
 				menuPlacement="auto"
 			/>

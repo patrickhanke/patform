@@ -14,7 +14,7 @@ import {
 import initial_task from "./constants/initial_task";
 import { Icon, ImageUploader, SlideIn, TextInput } from "@repo/ui";
 import { modi_options, date_category_options } from "@repo/ui";
-import { generateImagePath, useDataHandler } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import SelectTicket from "./components/SelectTicket";
 import SelectProperty from "./components/SelectProperty";
 import SelectWorker from "./components/SelectWorker";
@@ -27,7 +27,7 @@ const CreateTask = ({
 	initialData
 }: CreateTaskProps) => {
 	const { createData, updateData } = useDataHandler();
-	const { user, projectId, project } = useContext(UserContext);
+	const { user, projectId } = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [secContent, setSecContent] = useState<
@@ -301,29 +301,7 @@ const CreateTask = ({
 									</button>
 								)}
 							</div>
-							<div>
-								<label>Ticket auswählen</label>
-								{task.ticket ? (
-									<div
-										className="content_element"
-										onClick={() => setSecContent("ticket")}
-									>
-										<SelectTicket
-											projectId={projectId}
-											setTask={setTask}
-											task={task}
-											showTicketOnly
-										/>
-									</div>
-								) : (
-									<button
-										className="full_button sm secondary"
-										onClick={() => setSecContent("ticket")}
-									>
-										Ticket wählen
-									</button>
-								)}
-							</div>
+
 							<div>
 								<label>Objekt auswählen</label>
 								{task.property ? (
@@ -382,6 +360,29 @@ const CreateTask = ({
 									</button>
 								)}
 							</div>
+							<div>
+								<label>Ticket auswählen</label>
+								{task.ticket ? (
+									<div
+										className="content_element"
+										onClick={() => setSecContent("ticket")}
+									>
+										<SelectTicket
+											projectId={projectId}
+											setTask={setTask}
+											task={task}
+											showTicketOnly
+										/>
+									</div>
+								) : (
+									<button
+										className="full_button sm secondary"
+										onClick={() => setSecContent("ticket")}
+									>
+										Ticket wählen
+									</button>
+								)}
+							</div>
 							<TextInput
 								label="Beschreibung"
 								id="description"
@@ -395,12 +396,8 @@ const CreateTask = ({
 								isTextArea
 							/>
 							<ImageUploader
-								path={generateImagePath(
-									"patflow",
-									project.path
-								)}
 								label="Bilder"
-								onChange={(images: string[]) =>
+								onChange={(images) =>
 									setTask((draft) => {
 										draft.images.push(...images);
 									})
