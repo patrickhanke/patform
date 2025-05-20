@@ -71,6 +71,16 @@ const useCreateColumns = <T extends ColumnClasses>({
 		[className, refetch]
 	);
 
+	const handleImageChange = useCallback(
+		(objectId, columnId) => (value) =>
+			updateColumnData({
+				objectId,
+				updateObject: { [columnId]: value },
+				feedback: "Bilder aktualisiert"
+			}),
+		[updateColumnData]
+	);
+
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
 		data.forEach((columnElement) => {
@@ -116,13 +126,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 							maxFileCount={
 								columnElement.type === "gallery" ? 20 : 1
 							}
-							onChange={(value: string | string[]) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Bilder aktualisiert"
-								})
-							}
+							onChange={handleImageChange(row.objectId, columnElement.id)}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -712,7 +716,18 @@ const useCreateColumns = <T extends ColumnClasses>({
 		console.log(columnArray);
 
 		return columnArray;
-	}, [data, className]);
+	}, [
+		data,
+		className,
+		refetch,
+		constants,
+		fields,
+		categories,
+		editLink,
+		disableCategory,
+		updateColumnData,
+		handleImageChange
+	]);
 
 	return columns;
 };

@@ -33,10 +33,7 @@ const SlideIn: React.FC<SlideInProps> = ({
 			{isOpen && (
 				<div className={"overlay_container"} data-isopen={isOpen} />
 			)}
-			<AnimatePresence
-				initial={true}
-				onExitComplete={() => console.log("exited")}
-			>
+			<AnimatePresence initial={true}>
 				{isOpen && (
 					<motion.div
 						initial={{ right: -300 }}

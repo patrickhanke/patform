@@ -45,3 +45,10 @@ export type ImageUploaderProps = {
 	) => void | Promise<void>;
 	maxFileCount: number;
 };
+
+export type SelectImagesInterfaceProps = {
+	selectedImages: string[];
+	setSelectedImages: Dispatch<SetStateAction<string[]>>;
+	maxFileCount: number;
+	moduleId: string;
+};

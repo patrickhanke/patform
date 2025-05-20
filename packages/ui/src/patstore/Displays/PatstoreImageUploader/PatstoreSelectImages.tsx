@@ -30,18 +30,21 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 }) => {
 	const [selectImages, setSelectImages] = useState(false);
 	const [selectedImages, setSelectedImages] = useState<string[]>(
-		checkForImages(image, maxFileCount || 1)
+		checkForImages(image, maxFileCount)
 	);
 
 	const secondaryContent = useMemo(() => {
+		if (!selectImages) {
+			return null;
+		}
 		return (
 			<SelectImage
-				maxFileCount={maxFileCount || 1}
+				maxFileCount={maxFileCount}
 				selectedImages={selectedImages}
 				setSelectedImages={setSelectedImages}
 			/>
 		);
-	}, [selectedImages, maxFileCount]);
+	}, [selectedImages, selectImages, maxFileCount]);
 
 	const confirmHandler = useCallback(async () => {
 		await onChange(maxFileCount > 1 ? selectedImages : selectedImages[0]);
@@ -52,10 +55,9 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 		<>
 			<RenderButtons
 				selectedImages={checkForImages(image, maxFileCount || 1)}
-				maxFileCount={maxFileCount || 1}
+				maxFileCount={maxFileCount}
 				onClick={() => setSelectImages(true)}
 			/>
-
 			<SlideIn
 				header={
 					maxFileCount > 1 ? "Bilder auswählen" : "Bild auswählen"
@@ -69,7 +71,7 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 				<SelectedImages
 					selectedImages={selectedImages}
 					setSelectedImages={setSelectedImages}
-					maxFileCount={maxFileCount || 1}
+					maxFileCount={maxFileCount}
 				/>
 			</SlideIn>
 		</>
