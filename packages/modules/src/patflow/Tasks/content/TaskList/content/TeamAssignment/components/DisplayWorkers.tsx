@@ -1,16 +1,9 @@
 import { DisplayWorker } from "@repo/ui";
-import { PatflowAppContext, useDataHandler } from "@repo/provider";
+import { axiosclient, PatflowAppContext } from "@repo/provider";
 import { GET_TASK_WORKERS } from "@repo/provider";
 import { Task, Worker } from "@repo/types";
 import { useQuery } from "@apollo/client";
-import {
-	FC,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState
-} from "react";
+import { FC, useContext, useEffect, useMemo, useState } from "react";
 import { cloneDeep } from "lodash-es";
 
 import { formatISO9075 } from "date-fns";
@@ -20,32 +13,33 @@ import "../styles.scss";
 
 const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	taskId,
-	refetchTask,
 	taskState,
+	refetchTask,
 	showAsButton = false,
 	selectWorkers = false
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { updateData } = useDataHandler();
 	const { data, refetch } = useQuery(GET_TASK_WORKERS, {
 		variables: { id: taskId },
 		notifyOnNetworkStatusChange: true
 	});
 	const { workers } = useContext(PatflowAppContext);
 
-	const taskStateHandler = useCallback(
-		async (stateValue: Task["state"]) => {
-			await updateData({
-				className: "Task",
-				objectId: taskId,
-				updateObject: {
-					state: stateValue
-				}
-			});
-			refetchTask();
-		},
-		[refetchTask]
-	);
+	// const taskStateHandler = useCallback(
+	// 	async (stateValue: Task["state"]) => {
+	// 		await updateData({
+	// 			className: "Task",
+	// 			objectId: taskId,
+	// 			updateObject: {
+	// 				state: stateValue
+	// 			}
+	// 		});
+	// 		refetchTask();
+	// 	},
+	// 	[refetchTask]
+	// );
+
+	console.log({ data });
 
 	const nextDate = useMemo(() => {
 		let date;
@@ -67,20 +61,20 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		return date;
 	}, [data, workers]);
 
-	useEffect(() => {
-		const taskWorkers = data?.objects.getTask.assigned_staff;
+	// useEffect(() => {
+	// 	const taskWorkers = data?.objects.getTask.assigned_staff;
 
-		if (
-			taskWorkers &&
-			taskWorkers?.length === 0 &&
-			taskState !== "created"
-		) {
-			taskStateHandler("created");
-		}
-		if (taskWorkers && taskWorkers?.length > 0 && taskState === "created") {
-			taskStateHandler("assigned");
-		}
-	}, [taskState, data, workers]);
+	// 	if (
+	// 		taskWorkers &&
+	// 		taskWorkers?.length === 0 &&
+	// 		taskState !== "created"
+	// 	) {
+	// 		taskStateHandler("created");
+	// 	}
+	// 	if (taskWorkers && taskWorkers?.length > 0 && taskState === "created") {
+	// 		taskStateHandler("assigned");
+	// 	}
+	// }, [taskState, data, workers]);
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
@@ -122,12 +116,9 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 				}
 				onSelect={async (values) => {
 					const newWorkers = values.map((value) => value.value);
-					await updateData({
-						className: "Task",
-						objectId: taskId,
-						updateObject: {
-							assigned_staff: [...newWorkers]
-						}
+					await axiosclient().post("functions/change-task-staff", {
+						task_id: taskId,
+						new_staff: [...newWorkers]
 					});
 					refetch();
 				}}
@@ -137,6 +128,12 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		),
 		[data, data?.objects?.getTask?.assigned_staff?.length, nextDate]
 	);
+
+	useEffect(() => {
+		if (!isOpen) {
+			refetchTask();
+		}
+	}, [isOpen, refetchTask]);
 
 	const staffNumber = data?.objects.getTask.assigned_staff.length || 0;
 

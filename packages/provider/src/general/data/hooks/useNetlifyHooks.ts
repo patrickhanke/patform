@@ -7,6 +7,9 @@ const useNetlifyHooks = () => {
 
 	const netlifyHookHandler = useCallback(
 		(objectClass: string) => {
+			if (!project) {
+				return;
+			}
 			if (project.path === "tvstg") {
 				if (objectClass === "Article" || objectClass === "Webpage") {
 					return axios.post(
