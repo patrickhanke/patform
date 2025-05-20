@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { isArray } from "lodash";
 import { generateGraphQLQuery, getImageUrl } from "@repo/provider";
 import { useQuery } from "@apollo/client";
@@ -8,7 +8,8 @@ import { RenderButtonsProps } from "../types";
 const RenderButtons: FC<RenderButtonsProps> = ({
 	selectedImages,
 	maxFileCount,
-	onClick
+	onClick,
+	previewImageSize = "sm"
 }) => {
 	const { data } = useQuery(
 		generateGraphQLQuery({
@@ -22,6 +23,40 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 			fetchPolicy: "cache-first"
 		}
 	);
+
+	const imageSizes: { height: number; width: number } = useMemo(() => {
+		const height = 36;
+		const width = 64;
+
+		if (previewImageSize === "sm") {
+			return {
+				width: width,
+				height: height
+			};
+		}
+		if (previewImageSize === "md") {
+			return {
+				width: width * 2,
+				height: height * 2
+			};
+		}
+		if (previewImageSize === "lg") {
+			return {
+				width: width * 4,
+				height: height * 4
+			};
+		}
+		if (previewImageSize === "xl") {
+			return {
+				width: width * 8,
+				height: height * 8
+			};
+		}
+		return {
+			width: width,
+			height: height
+		};
+	}, [previewImageSize]);
 
 	if (maxFileCount > 1) {
 		return (
@@ -40,11 +75,12 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 					alt={data?.objects.getImage.name}
 					src={getImageUrl({
 						filePath: data?.objects.getImage.filePath,
-						height: 90
+						height: imageSizes.height * 2,
+						width: imageSizes.width * 2
 					})}
 					style={{ objectFit: "contain" }}
-					height={27}
-					width={48}
+					height={imageSizes.height}
+					width={imageSizes.width}
 					fill={false}
 				/>
 			</div>

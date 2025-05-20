@@ -1,13 +1,10 @@
 import { FC } from "react";
-import { ImageUploader, TextInput } from "@repo/ui";
-import { generateImagePath, useAppContext } from "@repo/provider";
+import { Divider, PatstoreSelectImages, TextInput } from "@repo/ui";
 import { EditTeamProps } from "../types";
 
 const EditTeam: FC<EditTeamProps> = ({ team, setTeam }) => {
-	const { project } = useAppContext();
-
 	return (
-		<div>
+		<div className="flex col gap-sm">
 			<TextInput
 				id="team"
 				defaultValue={team?.name}
@@ -22,21 +19,18 @@ const EditTeam: FC<EditTeamProps> = ({ team, setTeam }) => {
 				label="Team Name"
 				type="text"
 			/>
-			<ImageUploader
-				previewImage={team?.image}
-				maxFileCount={1}
+			<Divider size="small" />
+			<PatstoreSelectImages
+				image={team?.image}
 				onChange={(value) =>
 					setTeam((draft) => {
 						if (draft) {
-							draft.image = value[0] as string;
+							draft.image = value;
 						}
 					})
 				}
-				label="Team Image"
-				path={generateImagePath(
-					process.env.APP_NAME as string,
-					project.path
-				)}
+				maxFileCount={1}
+				previewImageSize="lg"
 			/>
 		</div>
 	);

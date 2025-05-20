@@ -4,6 +4,7 @@ export type PatstoreSelectImagesProps = {
 	image: string | string[] | undefined;
 	onChange: (F: Image[] | Image) => void | Promise<void>;
 	maxFileCount: number;
+	previewImageSize?: "sm" | "md" | "lg" | "xl";
 };
 
 export type ImageUploaderProps = {
@@ -22,6 +23,7 @@ export type RenderButtonsProps = {
 	selectedImages: string[];
 	maxFileCount: number;
 	onClick: Dispatch<SetStateAction<boolean>>;
+	previewImageSize: PatstoreSelectImagesProps["previewImageSize"];
 };
 
 export type UseGetImage = (T: { id: string }) => {
@@ -35,4 +37,4 @@ export type PatstoreImageDisplayProps = {
 	id: string;
 	height: number;
 	width: number;
-}
+};

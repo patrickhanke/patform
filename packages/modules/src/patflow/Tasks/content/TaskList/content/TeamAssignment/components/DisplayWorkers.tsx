@@ -25,22 +25,6 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	});
 	const { workers } = useContext(PatflowAppContext);
 
-	// const taskStateHandler = useCallback(
-	// 	async (stateValue: Task["state"]) => {
-	// 		await updateData({
-	// 			className: "Task",
-	// 			objectId: taskId,
-	// 			updateObject: {
-	// 				state: stateValue
-	// 			}
-	// 		});
-	// 		refetchTask();
-	// 	},
-	// 	[refetchTask]
-	// );
-
-	console.log({ data });
-
 	const nextDate = useMemo(() => {
 		let date;
 		if (data) {

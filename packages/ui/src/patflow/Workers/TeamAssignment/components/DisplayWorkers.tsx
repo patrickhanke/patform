@@ -1,9 +1,9 @@
 "use client";
 
+import { FC, useMemo, useState } from "react";
 import { DisplayWorker } from "@repo/ui";
 import { FIND_ALL_STAFF } from "@repo/provider";
 import { useQuery } from "@apollo/client";
-import React, { FC, useMemo, useState } from "react";
 
 import styles from "../TeamAssignment.module.scss";
 import { ElementSelectInterface, SlideInRight } from "@repo/ui";

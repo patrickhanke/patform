@@ -26,7 +26,8 @@ const checkForImages = (
 const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 	image,
 	onChange,
-	maxFileCount
+	maxFileCount,
+	previewImageSize
 }) => {
 	const [selectImages, setSelectImages] = useState(false);
 	const [selectedImages, setSelectedImages] = useState<string[]>(
@@ -57,6 +58,7 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 				selectedImages={checkForImages(image, maxFileCount || 1)}
 				maxFileCount={maxFileCount}
 				onClick={() => setSelectImages(true)}
+				previewImageSize={previewImageSize}
 			/>
 			<SlideIn
 				header={
