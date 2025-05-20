@@ -4,6 +4,7 @@ import {
 	Property,
 	StaffMember
 } from "@repo/types";
+import { Dispatch } from "react";
 
 export type dynamicItem = {
 	value: string;
@@ -17,6 +18,8 @@ export type RoleUsers = {
 export type ContextValues = {
 	refetchTicket: Date | undefined;
 	refetchTask?: Date | undefined;
+	setRefetchTicket: Dispatch<SetStateAction<Date | undefined>>;
+	setRefetchTask: Dispatch<SetStateAction<Date | undefined>>;
 	createTicket: JSX.Element;
 	createTask: JSX.Element;
 	selectYear: JSX.Element;

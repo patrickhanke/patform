@@ -1,29 +1,24 @@
 "use client";
 
-import React, { Suspense, useContext, useEffect } from "react";
+import React, { Suspense, useContext } from "react";
 import styles from "./SiteHeader.module.scss";
 import { SiteHeaderComponent } from "./types";
 import { PatflowAppContext } from "@repo/provider";
 import CalendarWeek from "./components/CalendarWeek";
 import UserDisplay from "./components/UserDisplay";
+import { CreateTask, CreateTicket } from "@repo/modules";
 
-const SiteHeader = ({ title, refetch }: SiteHeaderComponent) => {
-  const { createTask, createTicket, setRefetchFunction, selectYear } =
+const SiteHeader = ({ title }: SiteHeaderComponent) => {
+  const { setRefetchTask, setRefetchTicket, selectYear } =
     useContext(PatflowAppContext);
-
-  useEffect(() => {
-    if (refetch) {
-      setRefetchFunction(() => refetch);
-    }
-  }, [refetch]);
 
   return (
     <div className={styles.siteheader_container}>
       <h1>{title}</h1>
       <div className={styles.siteheader_right_container}>
-        {createTask}
+        <CreateTask setRefetchTask={setRefetchTask} />
         <div className="vertical_line" />
-        {createTicket}
+        <CreateTicket setRefetchTicket={setRefetchTicket} />
         <div className="vertical_line" />
         {selectYear}
         <div className="vertical_line" />

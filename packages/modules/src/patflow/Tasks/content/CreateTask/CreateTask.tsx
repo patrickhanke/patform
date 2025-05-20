@@ -144,11 +144,10 @@ const CreateTask = ({
 			};
 		}
 
-		const response = await createData({
+		await createData({
 			className: "Task",
 			updateObject,
 			async afterSaveHandler(data) {
-				console.log("afterSaveHandler", data);
 				if (task.ticket) {
 					await updateData({
 						className: "Ticket",
@@ -167,17 +166,6 @@ const CreateTask = ({
 			console.log(error);
 			setLoading(false);
 		});
-
-		console.log("response", response);
-
-		// await axiosclient().post('functions/send-task-message', {
-		// 	title: task.title,
-		//     state: task.assigned_staffstate,
-		//     assignedStaff: assignedStaff,
-		//     formerStaff: formerStaff,
-		//     sendCreateMessage,
-		//     id: task.id
-		// })
 
 		if (setRefetchTask) {
 			setRefetchTask(new Date());

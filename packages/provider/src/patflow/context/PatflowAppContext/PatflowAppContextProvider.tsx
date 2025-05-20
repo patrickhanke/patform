@@ -97,6 +97,8 @@ const PatflowAppContextProvider = ({
 		() => ({
 			refetchTask,
 			refetchTicket,
+			setRefetchTask,
+			setRefetchTicket,
 			createTicket: <CreateTicket setRefetchTicket={setRefetchTicket} />,
 			createTask: <CreateTask setRefetchTask={setRefetchTask} />,
 			selectYear: <SelectYear year={year} setYear={setYear} />,
@@ -125,7 +127,8 @@ const PatflowAppContextProvider = ({
 			year,
 			roleData,
 			workerData,
-			propertyData
+			propertyData,
+			project
 		]
 	);
 
