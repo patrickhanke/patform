@@ -10,6 +10,10 @@ const content_types = [
 	{
 		value: "video",
 		label: "Video"
+	},
+	{
+		value: "table",
+		label: "Tabelle"
 	}
 ];
 

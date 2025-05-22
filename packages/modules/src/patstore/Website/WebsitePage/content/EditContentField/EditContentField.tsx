@@ -1,10 +1,11 @@
 import { IconButton, SlideIn, StatelessToggle } from "@repo/ui";
 import { EditContentFieldProps } from "./types";
-import { useState, FC } from "react";
+import { useState, FC, ReactNode, useEffect } from "react";
 import EditContent from "./components/EditContent";
-import { WebpageContent } from "@repo/types";
+import { WebpageContent, WebpageContentTable } from "@repo/types";
 import { cloneDeep, set } from "lodash-es";
 import { useDataHandler } from "@repo/provider";
+import EditTable from "./content/EditTable";
 
 const EditContentField: FC<EditContentFieldProps> = ({
 	initialField,
@@ -15,6 +16,28 @@ const EditContentField: FC<EditContentFieldProps> = ({
 	const { updateData } = useDataHandler();
 	const [editContent, setEditContent] = useState(false);
 	const [field, setField] = useState<WebpageContent>(initialField);
+
+	const [secondaryContent, setSecondaryContent] = useState<ReactNode | null>(
+		null
+	);
+
+	useEffect(() => {
+		if (field.type === "table") {
+			setSecondaryContent(
+				<EditTable
+					initialField={field["table"]}
+					onChange={(table: WebpageContentTable["table"]) =>
+						setField({
+							...field,
+							table: table
+						})
+					}
+				/>
+			);
+		} else {
+			setSecondaryContent(null);
+		}
+	}, [field]);
 
 	return (
 		<div className="flex row al-ce j-sb gap-sm w-100">
@@ -76,6 +99,8 @@ const EditContentField: FC<EditContentFieldProps> = ({
 				}}
 				isOpen={editContent}
 				header="Inhalte bearbeiten"
+				secondaryContent={secondaryContent}
+				showSecondaryContent
 			>
 				<EditContent content={field} setContent={setField} />
 			</SlideIn>

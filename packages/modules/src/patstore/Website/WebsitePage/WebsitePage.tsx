@@ -110,7 +110,6 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 								key={id}
 							/>
 						)}
-						objectClass="Module"
 						onChange={(items) => {
 							updateData({
 								className: "Webpage",

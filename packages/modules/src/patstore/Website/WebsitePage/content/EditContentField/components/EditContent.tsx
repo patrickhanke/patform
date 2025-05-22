@@ -3,11 +3,39 @@ import content_type_options from "../constants/content_type_options";
 import { Editor, ImageUploader, PatstoreSelectImages, Select } from "@repo/ui";
 import { EditContentProps } from "../types";
 import { cloneDeep, set } from "lodash";
+import EditDivider from "./EditDivider";
 
 const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 	const updateContent = useCallback(
-		(key: string, value: string) => {
+		(key: string, value: string | object) => {
 			const contentCopy = cloneDeep(content);
+
+			if (
+				key === "type" &&
+				value === "table" &&
+				!("table" in contentCopy)
+			) {
+				set(contentCopy, "table", {
+					columns: [],
+					rows: [],
+					settings: {
+						title: "Neue Tabelle",
+						description: "",
+						footer: ""
+					}
+				});
+			}
+
+			if (
+				key === "type" &&
+				value === "divider" &&
+				!("divider" in contentCopy)
+			) {
+				set(contentCopy, "divider", {
+					size: "medium",
+					showLine: false
+				});
+			}
 			set(contentCopy, `${key}`, value);
 			setContent(contentCopy);
 		},
@@ -61,6 +89,12 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 						image={content[content.type]}
 					/>
 				))}
+			{content.type === "divider" && (
+				<EditDivider
+					divider={content.divider}
+					onChange={(value) => updateContent(content.type, value)}
+				/>
+			)}
 		</div>
 	);
 };

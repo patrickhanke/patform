@@ -14,6 +14,14 @@ const content_type_options = [
 	{
 		value: "link",
 		label: "Link"
+	},
+	{
+		value: "divider",
+		label: "Trenner"
+	},
+	{
+		value: "table",
+		label: "Tabelle"
 	}
 ];
 
