@@ -11,7 +11,11 @@ const useNetlifyHooks = () => {
 				return;
 			}
 			if (project.path === "tvstg") {
-				if (objectClass === "Article" || objectClass === "Webpage") {
+				if (
+					objectClass === "Article" ||
+					objectClass === "Webpage" ||
+					objectClass === "Content"
+				) {
 					return axios.post(
 						"https://api.netlify.com/build_hooks/682ae7fb29acb184f8de3d77"
 					);

@@ -13,7 +13,7 @@ export type UseFindDateHook = ({
 	limit: number
 }) => {
 	loading: boolean;
-	dates?: DateClass[];
+	dates: DateClass[];
 	refetch: ApolloRefetch;
 	count: number;
 };

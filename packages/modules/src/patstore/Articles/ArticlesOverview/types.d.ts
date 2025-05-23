@@ -10,7 +10,7 @@ export type UseFindArticlesHook = (T: {
 	skip?: number;
 }) => {
 	loading: boolean;
-	articles?: ArticleClass[];
+	articles: ArticleClass[];
 	refetch: ApolloRefetch;
 	count: number;
 };

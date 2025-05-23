@@ -44,12 +44,14 @@ const WebsiteContent = () => {
 		[user]
 	);
 
+	console.log(user);
+
 	const columns = useCreateColumns<ContentClass>({
 		data: [
 			{ id: "name", type: "edit_string", label: "Name" },
 			{
 				id: "content_id",
-				type: "string",
+				type: user.is_superuser ? "edit_string" : "string",
 				label: "ID (kann nicht geändert werden)"
 			},
 			{ id: "type", type: "string", label: "Typ" },

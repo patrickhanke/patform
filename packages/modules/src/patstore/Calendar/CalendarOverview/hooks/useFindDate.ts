@@ -32,9 +32,9 @@ const useFindDate: UseFindDateHook = ({ moduleId, filters, limit, skip }) => {
 
 	return {
 		loading,
-		dates: data ? data.objects.findDate.results : undefined,
+		dates: data?.objects.findDate.results || [],
 		refetch,
-		count: data ? data.objects.findDate.count : 0
+		count: data?.objects.findDate.count || 0
 	};
 };
 

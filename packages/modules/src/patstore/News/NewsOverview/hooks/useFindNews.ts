@@ -31,9 +31,9 @@ const useFindNews: UseFindNewsHook = ({ moduleId, filters, limit, skip }) => {
 
 	return {
 		loading,
-		news: data ? data.objects.findNews.results : undefined,
+		news: data?.objects.findNews.results || [],
 		refetch,
-		count: data ? data.objects.findNews.count : 0
+		count: data?.objects.findNews.count || 0
 	};
 };
 

@@ -10,7 +10,7 @@ import state from "./constants/articleState";
 
 const ArticlesOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
-	const { deleteData } = useDataHandler();
+	const { deleteData, updateData } = useDataHandler();
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
@@ -86,6 +86,27 @@ const ArticlesOverview = () => {
 			createClass={createArticle}
 			refetch={refetch}
 		>
+			{process.env.NODE_ENV === "development" && (
+				<>
+					<button
+						onClick={async () => {
+							await Promise.all(
+								articles.map(async (article) => {
+									await updateData({
+										className: "Article",
+										objectId: article.objectId,
+										updateObject: {
+											title: article.title
+										}
+									});
+								})
+							);
+						}}
+					>
+						Artikel aktualisieren
+					</button>
+				</>
+			)}
 			<Table
 				columns={columns}
 				data={articles || []}

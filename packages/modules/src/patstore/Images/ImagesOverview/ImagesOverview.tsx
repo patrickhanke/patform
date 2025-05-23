@@ -23,7 +23,7 @@ import {
 
 const ImagesOverview = () => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
-	const { deleteData, createData } = useDataHandler(false);
+	const { deleteData, createData, updateData } = useDataHandler(false);
 
 	const [uploadImages, setUploadImages] = useState(false);
 	const [newImages, setNewImages] = useState<
@@ -184,6 +184,27 @@ const ImagesOverview = () => {
 			emptyContent={true}
 		>
 			{process.env.NODE_ENV === "development" && dataTransfer}
+			{process.env.NODE_ENV === "development" && (
+				<>
+					<button
+						onClick={async () => {
+							await Promise.all(
+								images.map(async (image) => {
+									await updateData({
+										className: "Image",
+										objectId: image.objectId,
+										updateObject: {
+											name: image.name
+										}
+									});
+								})
+							);
+						}}
+					>
+						Bilder aktualisieren
+					</button>
+				</>
+			)}
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}

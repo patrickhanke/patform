@@ -9,7 +9,7 @@ import createNews from "./constants/createNews";
 
 const NewsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
-	const { deleteData } = useDataHandler();
+	const { deleteData, updateData } = useDataHandler();
 
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
@@ -80,6 +80,27 @@ const NewsOverview = () => {
 			createClass={createNews}
 			refetch={refetch}
 		>
+			{process.env.NODE_ENV === "development" && (
+				<>
+					<button
+						onClick={async () => {
+							await Promise.all(
+								news.map(async (nw) => {
+									await updateData({
+										className: "News",
+										objectId: nw.objectId,
+										updateObject: {
+											title: nw.title
+										}
+									});
+								})
+							);
+						}}
+					>
+						News aktualisieren
+					</button>
+				</>
+			)}
 			<Table
 				columns={columns}
 				data={news || []}

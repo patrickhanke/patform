@@ -15,7 +15,7 @@ import createDate from "./constants/createCalendar";
 import useFindDate from "./hooks/useFindDate";
 
 const CalendarOverview = () => {
-	const { deleteData } = useDataHandler();
+	const { deleteData, updateData } = useDataHandler();
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -100,6 +100,27 @@ const CalendarOverview = () => {
 			createClass={createDate}
 			refetch={refetch}
 		>
+			{process.env.NODE_ENV === "development" && (
+				<>
+					<button
+						onClick={async () => {
+							await Promise.all(
+								dates.map(async (date) => {
+									await updateData({
+										className: "Date",
+										objectId: date.objectId,
+										updateObject: {
+											title: date.title
+										}
+									});
+								})
+							);
+						}}
+					>
+						Daten aktualisieren
+					</button>
+				</>
+			)}
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}

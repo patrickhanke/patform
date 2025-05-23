@@ -39,8 +39,8 @@ const useFindArticles: UseFindArticlesHook = ({
 
 	return {
 		loading,
-		articles: data ? data.objects.findArticle.results : undefined,
-		count: data ? data.objects.findArticle.count : 0,
+		articles: data?.objects.findArticle.results || undefined,
+		count: data?.objects.findArticle.count || 0,
 		refetch
 	};
 };

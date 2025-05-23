@@ -9,7 +9,7 @@ export type UseFindNewsHook = (T: {
 	limit: number;
 }) => {
 	loading: boolean;
-	news?: NewsClass[];
+	news: NewsClass[];
 	refetch: ApolloRefetch;
 	count: number;
 };
