@@ -79,16 +79,15 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 					preview={false}
 				/>
 			)}
-			{content.type === "image" ||
-				(content.type === "video" && (
-					<PatstoreSelectImages
-						onChange={(value) =>
-							updateContent(content.type, value as string)
-						}
-						maxFileCount={1}
-						image={content[content.type]}
-					/>
-				))}
+			{content.type === "image" && (
+				<PatstoreSelectImages
+					onChange={(value) =>
+						updateContent(content.type, value as string)
+					}
+					maxFileCount={1}
+					image={content[content.type]}
+				/>
+			)}
 			{content.type === "divider" && (
 				<EditDivider
 					divider={content.divider}
