@@ -169,6 +169,14 @@ const CreateField: FC<CreateFieldProps> = ({
 					/>
 				</div>
 				<div>
+					<TextInput
+						label="Label"
+						id="label"
+						defaultValue={data.label}
+						onChange={(value) => setData({ ...data, label: value })}
+					/>
+				</div>
+				<div>
 					<label>Feldtyp auswählen</label>
 					{data.type ? (
 						<div

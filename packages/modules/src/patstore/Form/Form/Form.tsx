@@ -9,6 +9,7 @@ import FormSettings from "./content/FormSettings";
 import FormFields from "./content/FormFields";
 import { Params } from "@repo/types";
 import { useDataHandler } from "@repo/provider";
+import FormEmail from "./content/FormEmail";
 
 const Form = ({ params }: { params: Params }) => {
 	const { deleteData } = useDataHandler();
@@ -84,6 +85,11 @@ const Form = ({ params }: { params: Params }) => {
 							formId={formId}
 							createField={createField}
 							setCreateField={setCreateField}
+						/>
+					)}
+					{siteState.value === "email" && (
+						<FormEmail
+							formId={formId}
 						/>
 					)}
 				</>

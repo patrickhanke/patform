@@ -11,7 +11,7 @@ const FormField: FC<FormFieldProps> = ({ formId, field, refetch, fields }) => {
 
 	return (
 		<div className="flex row a-ce j-sb">
-			{field.name}
+			{field.label || "..."}
 			<div className="button_container">
 				<IconButton icon="edit" onClick={() => setEditField(true)} />
 				<IconButton
