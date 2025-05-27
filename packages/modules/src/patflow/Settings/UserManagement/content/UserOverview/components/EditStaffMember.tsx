@@ -1,10 +1,6 @@
-import {
-	generateImagePath,
-	PatflowAppContext,
-	useAppContext
-} from "@repo/provider";
+import { PatflowAppContext } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useImmer } from "use-immer";
 import styles from "../UserOverview.module.scss";
 import clsx from "clsx";
@@ -20,14 +16,12 @@ import {
 } from "@repo/ui";
 
 const EditStaffMember = ({ userId }: { userId: string }) => {
-	const { project } = useAppContext();
-
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { roles } = useContext(PatflowAppContext);
 	const { updateData } = useDataHandler();
 
-	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
+	const [errors] = useState([] as unknown as ErrorMessage[]);
 	const [staffMember, setStaffMember] = useImmer({
 		first_name: "",
 		family_name: "",
@@ -51,19 +45,19 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 		}
 	});
 
-	useEffect(() => {
-		const errorArray: ErrorMessage[] = [];
+	// useEffect(() => {
+	// 	const errorArray: ErrorMessage[] = [];
 
-		if (!staffMember.email) {
-			errorArray.push({
-				message: "Bitte eine E-Mail Adresse angeben",
-				key: "email",
-				id: "email"
-			});
-		}
+	// 	if (!staffMember.email) {
+	// 		errorArray.push({
+	// 			message: "Bitte eine E-Mail Adresse angeben",
+	// 			key: "email",
+	// 			id: "email"
+	// 		});
+	// 	}
 
-		setErrors(errorArray);
-	}, [staffMember]);
+	// 	setErrors(errorArray);
+	// }, [staffMember]);
 
 	const updateUser = useCallback(async () => {
 		await updateData({
@@ -105,14 +99,12 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 									})
 								}
 								defaultValue={staffMember.email}
-								errors={errors}
 							/>
 						)}
 						{staffMember.role && (
 							<Select
 								label="Rolle auswählen"
 								id="role"
-								errors={errors}
 								options={roles}
 								value={
 									staffMember.role &&
@@ -133,10 +125,6 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 
 						<ImageUploader
 							filename={`${staffMember.first_name}_${staffMember.family_name}_${new Date()}_portrait.jpg`}
-							path={generateImagePath(
-								process.env.APP_NAME as string,
-								project.path
-							)}
 							label="Portrait"
 							onChange={(images) => {
 								if (
