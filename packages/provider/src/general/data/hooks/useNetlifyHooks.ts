@@ -21,11 +21,6 @@ const useNetlifyHooks = () => {
 					);
 				}
 			}
-		},
-		(objectClass: string) => {
-			if (!project) {
-				return;
-			}
 			if (project.path === "patwork") {
 				if (
 					objectClass === "Article" ||
@@ -38,6 +33,7 @@ const useNetlifyHooks = () => {
 				}
 			}
 		},
+
 		[project]
 	);
 
