@@ -22,6 +22,22 @@ const useNetlifyHooks = () => {
 				}
 			}
 		},
+		(objectClass: string) => {
+			if (!project) {
+				return;
+			}
+			if (project.path === "patwork") {
+				if (
+					objectClass === "Article" ||
+					objectClass === "Webpage" ||
+					objectClass === "Content"
+				) {
+					return axios.post(
+						"https://api.vercel.com/v1/integrations/deploy/prj_OhGFYMtNJUrzaAoTTHMsBUVybA5G/zgrsBETrlk"
+					);
+				}
+			}
+		},
 		[project]
 	);
 
