@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import UserContext from "./UserContext";
 import { axiosclient, generateGraphQLQuery } from "@repo/provider";
 import Cookies from "js-cookie";
@@ -14,6 +14,10 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 	const token = Cookies.get(process.env.SESSION_TOKEN as string);
 	// const [project, setProject] = useState('');
 	const { getItem, setItem } = useStorage();
+
+	const [user, setUser] = useState<PatflowUser | null>(
+		getItem("user", "session", "object") || null
+	);
 
 	const { data: messageData, refetch } = useQuery(find_user_messages, {
 		variables: {
@@ -71,6 +75,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 			.then((response) => {
 				setItem("user", response.data, "session");
 				setItem("project", response.data.project.objectId, "session");
+				setUser(response.data);
 			})
 			.catch((error) => console.error(error.message));
 	}, [getItem("user", "session", "object")]);
@@ -85,15 +90,15 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 			]
 		}),
 		{
-			skip: !getItem("user", "session", "object")?.objectId,
+			skip: !user,
 			variables: {
-				id: getItem("user", "session", "object")?.objectId
+				id: user?.objectId
 			}
 		}
 	);
 
-    console.log("projectData", projectData);
-    
+	console.log("projectData", projectData);
+	console.log("user", user);
 
 	const userContextObject = useMemo(
 		() => ({
@@ -106,11 +111,11 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 			userMessages,
 			refetchMessages: refetch
 		}),
-		[token, getItem("user", "session", "object"), projectData, messageData]
+		[token, user, projectData, messageData]
 	);
 
 	useEffect(() => {
-		if (token && !getItem("user", "session", "object")) {
+		if (token && !user) {
 			getUserData();
 		}
 	}, []);

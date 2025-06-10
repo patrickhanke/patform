@@ -14,66 +14,70 @@ import RecordsSettings from "./content/RecordsSettings";
 import { Page } from "@repo/ui";
 
 const RecordsOverview = () => {
-  const { year } = useContext(PatflowAppContext);
-  const [filters, setFilters] = React.useState(
-    initialFilters(year) as Filter[],
-  );
-  const { records, loading, refetch } = useGetRecords({ filters });
-  const [siteState, setSiteState] = useState(
-    siteStates[0] as (typeof siteStates)[0],
-  );
-  const [editAbsence, setEditAbsence] = useState(false);
+	const { year } = useContext(PatflowAppContext);
+	const [filters, setFilters] = React.useState(
+		initialFilters(year) as Filter[]
+	);
+	const { records, loading, refetch } = useGetRecords({ filters });
+	const [siteState, setSiteState] = useState(
+		siteStates[0] as (typeof siteStates)[0]
+	);
+	const [editAbsence, setEditAbsence] = useState(false);
 
-  const pageHeaderButtons = useMemo(() => {
-    if (siteState.value === "absence") {
-      return [
-        {
-          type: "button",
-          text: "Neue Abwesenheit",
-          onClick: () => {
-            setEditAbsence(true);
-          },
-          color: "primary",
-          is_add_button: true,
-        },
-      ];
-    }
-  }, [siteState]);
+	const pageHeaderButtons = useMemo(() => {
+		if (siteState.value === "absence") {
+			return [
+				{
+					type: "button",
+					text: "Neue Abwesenheit",
+					onClick: () => {
+						setEditAbsence(true);
+					},
+					color: "primary",
+					is_add_button: true
+				}
+			];
+		}
+	}, [siteState]);
 
-  if (!records) {
-    return null;
-  }
+	if (!records) {
+		return null;
+	}
 
-  return (
-    <Page
-      title="Zeiterfassung"
-      description="Hier finden Sie alle erfassten Arbeitszeiten und Urlaube."
-      pageState={siteState}
-      pageStates={siteStates}
-      setPageState={setSiteState}
-      pageHeaderButtons={pageHeaderButtons}
-    >
-      {siteState.value === "weeks" && (
-        <WeeklyRecords
-          records={records}
-          refetch={refetch}
-          loading={loading}
-          filters={filters}
-          setFilters={setFilters}
-        />
-      )}
-      {siteState.value === "workers" && <RecordsStaffOverview year={year} />}
-      {siteState.value === "absence" && (
-        <RecordsAbsence
-          records={records}
-          editAbsence={editAbsence}
-          setEditAbsence={setEditAbsence}
-        />
-      )}
-      {siteState.value === "calendar" && <RecordsCalendar records={records} />}
-      {siteState.value === "settings" && <RecordsSettings />}
-    </Page>
-  );
+	return (
+		<Page
+			title="Zeiterfassung"
+			description="Hier finden Sie alle erfassten Arbeitszeiten und Urlaube."
+			pageState={siteState}
+			pageStates={siteStates}
+			setPageState={setSiteState}
+			pageHeaderButtons={pageHeaderButtons}
+		>
+			{siteState.value === "weeks" && (
+				<WeeklyRecords
+					records={records}
+					refetch={refetch}
+					loading={loading}
+					filters={filters}
+					setFilters={setFilters}
+				/>
+			)}
+			{siteState.value === "workers" && (
+				<RecordsStaffOverview year={year} />
+			)}
+			{siteState.value === "absence" && (
+				<RecordsAbsence
+					records={records}
+					editAbsence={editAbsence}
+					setEditAbsence={setEditAbsence}
+				/>
+			)}
+			{siteState.value === "calendar" && (
+				<RecordsCalendar records={records} />
+			)}
+			{siteState.value === "settings" && <RecordsSettings />}
+		</Page>
+	);
 };
 
 export default RecordsOverview;
