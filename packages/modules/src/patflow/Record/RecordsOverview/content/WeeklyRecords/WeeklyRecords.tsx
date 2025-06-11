@@ -1,8 +1,7 @@
-import React, { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { WeeklyRecordProps, WeekObject } from "./types";
 import { PatflowAppContext, getWeekDayKeys } from "@repo/provider";
 import useTableColumns from "./hooks/useTableColumns";
-import SiteHeaderContent from "./components/SiteHeaderContent";
 import { getWeek, hoursToMilliseconds } from "date-fns";
 import initialFilters from "./constants/initialFilters";
 import { Day, StaffMember } from "@repo/types";
@@ -12,21 +11,17 @@ import { FIND_ALL_STAFF } from "@repo/provider";
 import { cloneDeep } from "lodash-es";
 import { Divider, Table } from "@repo/ui";
 import { RefreshCcw } from "lucide-react";
+import WeeklyRecordSiteHeaderContent from "./components/WeeklyRecordSiteHeaderContent";
 
-const WeeklyRecords = ({
-	records,
-	filters,
-	setFilters,
-	loading
-}: WeeklyRecordProps) => {
+const WeeklyRecords = ({ records, filters, setFilters }: WeeklyRecordProps) => {
 	const [selectedWeek, setSelectedWeek] = useState(
 		getWeek(new Date(), { weekStartsOn: 1 })
 	);
-	const { data: dayData, refetch } = useQuery(find_day, {
+	const { data: dayData } = useQuery(find_day, {
 		variables: { params: { date: { _in: getWeekDayKeys(selectedWeek) } } }
 	});
 	const { data: staffData } = useQuery(FIND_ALL_STAFF);
-	const columns = useTableColumns({ selectedWeek, refetch });
+	const columns = useTableColumns({ selectedWeek });
 	const { year } = useContext(PatflowAppContext);
 
 	const weekData = useMemo(() => {
@@ -99,7 +94,7 @@ const WeeklyRecords = ({
 
 	const siteHeaderContent = useMemo(
 		() => (
-			<SiteHeaderContent
+			<WeeklyRecordSiteHeaderContent
 				filters={filters}
 				setFilters={setFilters}
 				setSelectedWeek={setSelectedWeek}

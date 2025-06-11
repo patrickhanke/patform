@@ -46,3 +46,11 @@ export type SiteHeaderContentComponent = {
 export type useInitialFiltersHook = {
 	siteType: TasksComponent["siteType"];
 };
+
+export type TaskModalProps = {
+	isOpen: boolean;
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	type?: "archive" | "close";
+	tasks: string[];
+	refetch: ApolloRefetch;
+};

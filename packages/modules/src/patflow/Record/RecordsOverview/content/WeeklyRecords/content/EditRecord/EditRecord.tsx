@@ -31,7 +31,7 @@ const EditRecord = ({
 	const [slidein, setSlideIn] = useState(false);
 	const [workingTimes, setWorkingTimes] = useState<WorkingTimes>(weekDays);
 	const [currentIndex, setCurrentIndex] = useState<number>(NaN);
-	const { deleteData } = useDataHandler();
+	const { deleteData, updateData } = useDataHandler();
 	const [disabled, setDisabled] = useState<[boolean, boolean]>([
 		false,
 		false
@@ -40,6 +40,8 @@ const EditRecord = ({
 	const { year } = useContext(PatflowAppContext);
 
 	const { record } = useGetActiveRecord({ year, userId });
+
+	console.log({ workingTimes });
 
 	const itemValues = useMemo(
 		() =>
@@ -141,14 +143,24 @@ const EditRecord = ({
 		workingTimes.forEach((day: WorkingTimes[number]) => {
 			if (record && record?.objectId) {
 				const recordTime = findDefaultTimeForDate(day.date, [record]);
-				promise.push(
-					axiosclient().post("/functions/create-time", {
-						...day,
-						default_time: recordTime.default_time,
-						record_id: record?.objectId,
-						user_id: userId
-					})
-				);
+
+				if (day.objectId && day.time) {
+					updateData({
+						className: "Day",
+						objectId: day.objectId,
+						updateObject: {
+							time: day.time
+						}
+					});
+				} else if (day.id && day.time) {
+					promise.push(
+						axiosclient().post("/functions/create-time", {
+							...day,
+							user_id: userId,
+							id: ""
+						})
+					);
+				} else return null;
 			}
 		});
 

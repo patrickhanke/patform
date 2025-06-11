@@ -18,7 +18,7 @@ const RecordsOverview = () => {
 	const [filters, setFilters] = React.useState(
 		initialFilters(year) as Filter[]
 	);
-	const { records, loading, refetch } = useGetRecords({ filters });
+	const { records, refetch } = useGetRecords({ filters });
 	const [siteState, setSiteState] = useState(
 		siteStates[0] as (typeof siteStates)[0]
 	);
@@ -57,7 +57,6 @@ const RecordsOverview = () => {
 				<WeeklyRecords
 					records={records}
 					refetch={refetch}
-					loading={loading}
 					filters={filters}
 					setFilters={setFilters}
 				/>

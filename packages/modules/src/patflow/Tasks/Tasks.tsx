@@ -18,6 +18,7 @@ import { Divider, generatePagination, Page } from "@repo/ui";
 import site_states from "./constants/site_states";
 import { PatflowAppContext } from "@repo/provider";
 import { NotificationContext } from "@repo/provider";
+import TaskModal from "./components/TaskModal";
 
 const Tasks = ({ id, className, pageState }: TasksComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
@@ -25,6 +26,10 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		site_states[0] as (typeof site_states)[0]
 	);
 	const searchParams = useSearchParams();
+	const [selectedRows, setSelectedRows] = useState<string[]>([]);
+	const [taskModal, setTaskModal] = useState<"close" | "archive" | undefined>(
+		undefined
+	);
 
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -135,6 +140,33 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		}));
 	}, [tasks]);
 
+	const pageHeaderButtons = useMemo(() => {
+		if (pageState === "executed") {
+			return [
+				{
+					type: "button",
+					text: "Aufgaben schließen",
+					onClick: () => setTaskModal("close"),
+					color: "primary",
+					is_add_button: false,
+					disabled: selectedRows.length === 0
+				}
+			];
+		}
+		if (pageState === "completed") {
+			return [
+				{
+					type: "button",
+					text: "Aufgaben archivieren",
+					onClick: () => setTaskModal("archive"),
+					color: "primary",
+					is_add_button: false,
+					disabled: selectedRows.length === 0
+				}
+			];
+		}
+	}, [pageState, id, selectedRows]);
+
 	if (id && className) {
 		return (
 			<>
@@ -167,6 +199,7 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 			pageStates={pageState === "active" ? siteStates : undefined}
 			pageState={siteState}
 			setPageState={setSiteState}
+			pageHeaderButtons={pageHeaderButtons}
 		>
 			{pageState !== "active" ? (
 				<TaskList
@@ -175,6 +208,8 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 					pageState={pageState}
 					pagination={pagination}
 					setPagination={setPagination}
+					enableRowSelection={true}
+					onRowSelection={setSelectedRows}
 					count={count}
 					filterContent={
 						<SiteHeaderContent
@@ -215,6 +250,16 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 					}
 				/>
 			)}
+			<TaskModal
+				isOpen={taskModal === "close" || taskModal === "archive"}
+				setIsOpen={() => {
+					setTaskModal(undefined);
+					setSelectedRows([]);
+				}}
+				tasks={selectedRows}
+				type={taskModal}
+				refetch={refetch}
+			/>
 		</Page>
 	);
 };

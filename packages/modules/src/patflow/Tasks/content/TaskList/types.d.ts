@@ -17,6 +17,8 @@ export type TaskListComponent = {
 	>;
 	count?: number;
 	filterContent?: React.ReactNode;
+	enableRowSelection?: boolean;
+	onRowSelection?: (selectedRows: string[]) => void;
 };
 
 export type UseTaskColumnsProps = {

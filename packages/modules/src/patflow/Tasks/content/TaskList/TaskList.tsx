@@ -15,8 +15,12 @@ const TaskList = ({
 	pagination,
 	setPagination,
 	count,
-	filterContent
+	filterContent,
+	enableRowSelection = false,
+	onRowSelection
 }: TaskListComponent) => {
+	console.log({ pageState });
+
 	const { updateData, deleteData } = useDataHandler();
 	const [deleteTaskModal, setDeleteTaskModal] = useState<undefined | Task>(
 		undefined
@@ -67,6 +71,8 @@ const TaskList = ({
 					setPagination={setPagination}
 					rowCount={count}
 					filterContent={filterContent}
+					enableRowSelection={enableRowSelection}
+					onRowSelection={onRowSelection}
 				/>
 				<Modal
 					isOpen={!!deleteTaskModal}
