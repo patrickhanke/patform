@@ -46,7 +46,7 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
       nameParts.length > 1 &&
       nameParts[0] &&
       nameParts[nameParts.length - 1] &&
-      nameParts[nameParts.length - 1]?.length > 0
+      nameParts[nameParts.length - 1].length > 0
     ) {
       return `${nameParts[0]?.[0] ?? ""}${nameParts[nameParts.length - 1]?.[0] ?? ""}`;
     }

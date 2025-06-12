@@ -1,12 +1,12 @@
 "use client";
 
-import React, { Suspense, useContext } from "react";
+import React, { useContext } from "react";
 import styles from "./SiteHeader.module.scss";
 import { SiteHeaderComponent } from "./types";
 import { PatflowAppContext } from "@repo/provider";
 import CalendarWeek from "./components/CalendarWeek";
-import UserDisplay from "./components/UserDisplay";
 import { CreateTask, CreateTicket } from "@repo/modules";
+import { UserDisplay } from "./content/UserDisplay";
 
 const SiteHeader = ({ title }: SiteHeaderComponent) => {
   const { setRefetchTask, setRefetchTicket, selectYear } =
@@ -24,9 +24,7 @@ const SiteHeader = ({ title }: SiteHeaderComponent) => {
         <div className="vertical_line" />
         <CalendarWeek />
         <div className="vertical_line" />
-        <Suspense>
-          <UserDisplay userMessages />
-        </Suspense>
+        <UserDisplay userMessages />
       </div>
     </div>
   );

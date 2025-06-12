@@ -1,0 +1,57 @@
+@use "@repo/styles/constants";
+
+.patflow_user_container {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center
+  );
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+}
+
+.patflow_user_image_container {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: constants.$grey;
+}
+
+.patflow_user_image_placeholder {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+  background-color: constants.$grey;
+}
+
+.patflow_display_user_no_image {
+  @include constants.flexbox($direction: row, $justify: center, $align: center);
+  height: 18px;
+  width: 18px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.patflow_display_user_no_image[data-onlyimage="true"] {
+  border: 2px solid #fff;
+  width: 24px;
+  height: 24px;
+}
+
+.patflow_display_user_no_image_background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.patflow_display_user_no_image_character {
+  position: relative;
+  font-size: map-get($map: constants.$font_size, $key: "xs");
+}
