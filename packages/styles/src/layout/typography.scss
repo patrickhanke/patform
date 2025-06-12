@@ -76,6 +76,19 @@ p {
   font-size: map-get($map: constants.$font-size, $key: "md");
   text-wrap: wrap;
 }
+li {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  line-height: 1;
+  color: inherit;
+  margin-bottom: 0;
+  margin-block-start: 0;
+  margin: 0;
+  text-align: left;
+  font-size: map-get($map: constants.$font-size, $key: "md");
+  text-wrap: wrap;
+}
 td {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
@@ -123,12 +136,6 @@ button {
   letter-spacing: 1px;
 }
 
-li {
-  margin-top: 0.3rem;
-  margin-bottom: 0.3rem;
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.85rem;
-}
 ol li {
   padding-left: 0;
 }
