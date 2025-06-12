@@ -1,1 +1,12 @@
-export { Login as default } from "@repo/modules";
+import { DisplayProject, LoginForm } from "../content";
+
+const Login = async () => {
+  return (
+    <>
+      <DisplayProject />
+      <LoginForm />
+    </>
+  );
+};
+
+export default Login;

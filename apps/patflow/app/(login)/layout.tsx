@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./Layout.module.scss";
 import "@repo/styles/typography";
 import "@repo/styles/global";
+import Framework from "./content/Framework";
+import './styles.scss';
 
 export const metadata = {
   title: "patflow",
@@ -15,7 +16,10 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="de">
-      <body className={styles.layout}>{children}</body>
+      <body className={"patflow_login_layout"}>
+        <Framework />
+        <div className="patflow_login_content">{children}</div>
+      </body>
     </html>
   );
 }
