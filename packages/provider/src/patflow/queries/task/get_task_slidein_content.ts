@@ -7,6 +7,8 @@ const get_task_slidein_content = gql`
 				objectId
 				comments
 				images
+				state
+				executed_at
 				ticket {
 					objectId
 					createdAt

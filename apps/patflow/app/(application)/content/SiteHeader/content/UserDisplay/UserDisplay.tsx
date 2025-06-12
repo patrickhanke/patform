@@ -49,15 +49,15 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
                 onClick={() => setUserMenu(!userMenu)}
             >
             <div className={"patflow_user_image_container"}>
-                {userMessages && <MessageIndicator notifications={unreadNotifications} />}
                 {client && userData.url ? (
-                <Image src={userData.url} alt={userData.alt} width={24} height={24} />
+                    <Image src={userData.url} alt={userData.alt} width={24} height={24} />
                 ) : (
-                <div className={"patflow_user_image_placeholder"} />
+                    <div className={"patflow_user_image_placeholder"} />
                 )}
                 </div>
                 <Icon type="arrow-down" size={15} strokeWidth={2} />
-        </div>
+                {userMessages && <MessageIndicator notifications={unreadNotifications} />}
+            </div>
 
             <AnimatePresence initial={false}>
             {userMenu && (

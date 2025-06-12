@@ -9,6 +9,7 @@ import TeamAssignments from "../content/TeamAssignment";
 import TaskSlideIn from "../content/TaskSlideIn";
 import { UseTaskColumnsProps } from "../types";
 import { getDateString } from "@repo/provider";
+import { TaskDate } from "../content/TaskDate";
 
 const useTableColumns = ({
 	refetch,
@@ -42,12 +43,7 @@ const useTableColumns = ({
 			},
 			{
 				accessorFn: (task) => (
-					<TaskNextDate
-						taskId={task.objectId}
-						tasksRefetch={refetch}
-						setArchiveModal={setArchiveModal}
-						setDeleteTaskModal={setDeleteTaskModal}
-					/>
+					<TaskDate taskId={task.objectId} tasksRefetch={refetch} />
 				),
 				header: () => <span>Termin</span>,
 				id: "start_time",
@@ -120,7 +116,7 @@ const useTableColumns = ({
 		];
 
 		if (pageState !== "active") {
-			col.splice(4, 0, {
+			col.splice(2, 0, {
 				accessorFn: (task) =>
 					task.executed_at
 						? `${getDateString(task.executed_at).date} - ${getDateString(task.executed_at).time}`

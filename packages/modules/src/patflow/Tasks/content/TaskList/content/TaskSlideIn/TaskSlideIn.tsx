@@ -5,7 +5,8 @@ import styles from "./TaskSlideIn.module.scss";
 import { useQuery } from "@apollo/client";
 import {
 	FIND_DOCUMENTS_FOR_TASK,
-	GET_TASK_SLIDEIN_CONTENT
+	GET_TASK_SLIDEIN_CONTENT,
+	getDateString
 } from "@repo/provider";
 import TaskDocuments from "../TaskDocuments";
 import TaskImages from "../TaskImages";
@@ -16,13 +17,9 @@ import TeamAssignment from "../TeamAssignment";
 import { IconButton, SlideIn, StateDisplay, SwitchButtons } from "@repo/ui";
 import { TaskSlideInProps } from "./types";
 import TaskSlideInTicketDetails from "./components/TaskSlideInTicketDetails";
+import { TaskDate } from "../TaskDate";
 
-const TaskSlideIn: FC<TaskSlideInProps> = ({
-	title,
-	taskId,
-	setDeleteTaskModal,
-	setArchiveModal
-}) => {
+const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
 	const [showDetails, setShowDetails] = useState(false);
 	const { data: dataSlidein, refetch: refetchSlideIn } = useQuery(
 		GET_TASK_SLIDEIN_CONTENT,
@@ -110,6 +107,11 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 			</div>
 		);
 	}, [buttonStates, buttonState, dataSlidein, dataDocuments]);
+	const task = dataSlidein?.objects.getTask;
+
+	if (!task) {
+		return null;
+	}
 
 	return (
 		<>
@@ -174,7 +176,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 				showSecondaryContent={true}
 			>
 				<div className={styles.task_slidein_content}>
-					<div className={styles.task_slidein_top_content}>
+					<div className={"flex col al-st gap-md"}>
 						<div className={styles.task_slidein_content_element}>
 							<label
 								className={
@@ -185,7 +187,6 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 							</label>
 							<div>
 								<DisplayTaskState
-									taskId={taskId}
 									taskState={
 										dataSlidein?.objects?.getTask?.state
 									}
@@ -201,11 +202,21 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 								Datum
 							</label>
 							<div>
-								<TaskNextDate
-									taskId={taskId}
-									setArchiveModal={setArchiveModal}
-									setDeleteTaskModal={setDeleteTaskModal}
-								/>
+								<TaskDate taskId={taskId} />
+							</div>
+						</div>
+						<div className={styles.task_slidein_content_element}>
+							<label
+								className={
+									styles.task_slidein_content_element_label
+								}
+							>
+								Abgeschlossen
+							</label>
+							<div>
+								{task.executed_at
+									? `${getDateString(task.executed_at).date} - ${getDateString(task.executed_at).time}`
+									: "-"}
 							</div>
 						</div>
 						<div className={styles.task_slidein_content_element}>
