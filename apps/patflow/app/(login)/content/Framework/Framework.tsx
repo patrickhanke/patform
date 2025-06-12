@@ -17,8 +17,8 @@ const Framework = () => {
         />
       </div>
       <div className="patflow_login_footer_container">
-        <a href="https://patwork.net/impressum">Impressum</a>
-        <a href="https://patwork.net/datenschutz">Datenschutz</a>
+        <a href="https://patflow.net/impressum">Impressum</a>
+        <a href="https://patflow.net/datenschutz">Datenschutz</a>
         <p>patwork @{new Date().getFullYear()}</p>
       </div>
     </>
