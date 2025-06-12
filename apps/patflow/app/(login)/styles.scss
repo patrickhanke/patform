@@ -23,6 +23,11 @@
   );
   max-width: 840px;
   padding: map-get($map: constants.$padding, $key: "md");
+  padding-bottom: 60px;
+  padding-top: 60px;
+  p: {
+    line-height: 1.4;
+  }
 }
 
 .patflow_login_logo_container {

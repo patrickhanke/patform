@@ -4,19 +4,19 @@ const Impressum = () => {
   return (
 	<div>
 			<h1>Impressum</h1>
-			<h2>Angaben gemäß § 5 TMG:</h2>
+			<h3>Angaben gemäß § 5 TMG:</h3>
 
 			<p>Patrick Hanke</p>
 			<p>Bergmannsweg 5</p>
 			<p>79111 Freiburg</p>
 			<p>Deutschland</p>
 
-			<h2>Kontakt:</h2>
+			<h3>Kontakt:</h3>
 			<p>Telefon: — (bitte ergänzen, falls vorhanden)</p>
 			<p>E-Mail: info@patwork.net</p>
 			<p>Webseite: https://patwork.net</p>
 
-			<h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</h2>
+			<h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</h3>
 			<p>Patrick Hanke</p>
 			<p>Bergmannsweg 5</p>
 			<p>79111 Freiburg</p>

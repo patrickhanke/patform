@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const Framework = () => {
@@ -5,20 +6,20 @@ const Framework = () => {
     <>
       <div className="patflow_login_logo_container">
         <img
-          src={"https://flow.patwork.net/logo.png"}
+          src={"https://flow.patwork.net/patflow_logo.png"}
           alt={"patstore"}
           height={24}
           width={24}
         />
         <img
-          src={"https://flow.patwork.net/logo_lettering.png"}
+          src={"https://flow.patwork.net/patflow_logo_lettering.png"}
           alt={"patstore"}
           height={24}
         />
       </div>
       <div className="patflow_login_footer_container">
-        <a href="https://flow.patwork.net/impressum">Impressum</a>
-        <a href="https://flow.patwork.net/datenschutz">Datenschutz</a>
+        <Link href="/impressum">Impressum</Link>
+        <Link href="/datenschutz">Datenschutz</Link>
         <p>patwork @{new Date().getFullYear()}</p>
       </div>
     </>
