@@ -119,7 +119,7 @@ const useTableColumns = ({
 			}
 		];
 
-		if (pageState === "executed") {
+		if (pageState !== "active") {
 			col.splice(4, 0, {
 				accessorFn: (task) =>
 					task.executed_at
