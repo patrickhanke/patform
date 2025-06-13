@@ -40,7 +40,7 @@ const EditContentField: FC<EditContentFieldProps> = ({
 	}, [field]);
 
 	return (
-		<div className="flex row al-ce j-sb gap-sm w-100">
+		<div className="flex row a-ce j-sb gap-sm w-100">
 			<h3>{field.name}</h3>
 			<div className="button_container">
 				<p>Aktiv: </p>

@@ -9,12 +9,9 @@ import SiteHeaderContent from "./components/SiteHeaderContent";
 import { eachDayOfInterval, formatISO9075, isWeekend } from "date-fns";
 import useTableColumns from "./hooks/useTableColumns";
 import { Row } from "@tanstack/react-table";
-import site_states from "./constants/site_states";
-import StaffRecord from "./content/StaffRecord";
 import { months } from "@repo/provider";
 import useGetDay from "./hooks/useGetDay";
 import { Divider, Table } from "@repo/ui";
-import { SiteState } from "@repo/types";
 
 const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
 	const [selectedMonth, setSelectedMonth] = React.useState<
@@ -27,25 +24,23 @@ const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
 	const [selectedUser, setSelectedUser] = React.useState<StaffOption | null>(
 		null
 	);
-	const [displayState, setDisplayState] = React.useState<SiteState>(
-		site_states[0] as SiteState
-	);
-	const { days } = useGetDay({ year, user: selectedUser?.value });
-	const columns = useTableColumns();
+
+	const { days, refetch, loading } = useGetDay({
+		year,
+		user: selectedUser?.value
+	});
+	const columns = useTableColumns({ refetch, userId: selectedUser?.value });
 
 	const siteHeaderContent = useMemo(
 		() => (
 			<SiteHeaderContent
-				displayStates={site_states}
-				displayState={displayState}
-				setDisplayState={setDisplayState}
 				setSelectedMonth={setSelectedMonth}
 				selectedMonth={selectedMonth}
 				setSelectedUser={setSelectedUser}
 				selectedUser={selectedUser}
 			/>
 		),
-		[selectedMonth, selectedUser, displayState]
+		[selectedMonth, selectedUser]
 	);
 
 	const rowStyles = useCallback((row: Row<TableData>) => {
@@ -75,20 +70,39 @@ const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
 			);
 
 			if (daysToFind.length === 1 && daysToFind[0]) {
+				const timeArray: DayData["time"] = [];
+				daysToFind.forEach((day) => {
+					if (day.time) {
+						timeArray.push({
+							...day.time,
+							day_id: day.objectId
+						});
+					}
+				});
 				interval.push({
 					date: daysToFind[0].date,
 					is_working_day: daysToFind[0].is_working_day,
 					default_time: daysToFind[0].default_time,
-					time: daysToFind[0].time,
+					time: timeArray,
 					absence: daysToFind[0].absence,
 					type: daysToFind[0].type
 				});
 			} else if (daysToFind.length > 1 && daysToFind[0]) {
+				const timeArray: DayData["time"] = [];
+				daysToFind.forEach((day) => {
+					if (day.time) {
+						timeArray.push({
+							...day.time,
+							day_id: day.objectId
+						});
+					}
+				});
+
 				interval.push({
 					date: formatISO9075(element, { representation: "date" }),
 					is_working_day: true,
 					default_time: daysToFind[0].default_time,
-					time: daysToFind.map((day) => day.time),
+					time: timeArray,
 					absence: null,
 					type: daysToFind[0].type
 				});
@@ -105,32 +119,20 @@ const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
 		});
 
 		return interval;
-	}, [days, selectedMonth, year]);
+	}, [days, selectedMonth, year, loading]);
 
 	return (
 		<div>
 			<div className="button_container">{siteHeaderContent}</div>
 			<Divider size="small" showLine={false} />
 			{selectedUser ? (
-				<>
-					{displayState.value === "table" && (
-						<div className="content_element no_padding">
-							<Table
-								data={tableData}
-								columns={columns}
-								rowStyles={rowStyles}
-							/>
-						</div>
-					)}
-					{displayState.value === "list" && (
-						<StaffRecord
-							days={days}
-							month={selectedMonth}
-							year={year}
-							user={selectedUser}
-						/>
-					)}
-				</>
+				<div className="content_element no_padding">
+					<Table
+						data={tableData}
+						columns={columns}
+						rowStyles={rowStyles}
+					/>
+				</div>
 			) : (
 				<div>
 					<p>Bitte wählen Sie einen Mitarbeiter aus</p>

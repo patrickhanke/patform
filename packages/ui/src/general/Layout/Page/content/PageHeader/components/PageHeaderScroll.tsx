@@ -24,7 +24,7 @@ const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 				<div>
 					<h3>{title}</h3>
 				</div>
-				<div className="flex row al-ce jc-fe gap-md">
+				<div className="flex row a-ce j-fe gap-md">
 					{isArray(pageHeaderButtons) &&
 						pageHeaderButtons?.length > 0 && (
 							<div className={"pageheader_button_container"}>

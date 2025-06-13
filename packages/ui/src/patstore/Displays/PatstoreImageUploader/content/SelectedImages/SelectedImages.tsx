@@ -48,7 +48,7 @@ const SelectedImages: FC<SelectedImagesProps> = ({
 	return (
 		<div>
 			<h3>Ausgewählte Bilder</h3>
-			<div className="flex row ai-ce jc-sb gap-sm wrap">
+			<div className="flex row ai-ce j-sb gap-sm wrap">
 				{images.map((image: ImageClass) => {
 					return (
 						<DisplaySelectedImages

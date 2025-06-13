@@ -80,3 +80,10 @@ type AbsenceDay = {
 export type Day = BasicDay & (WorkDay | AbsenceDay | InitialDay);
 
 export type DefaultDay = MakeOptional<Day, "record" | "user" | "objectId">;
+
+export type WorkingDay = BasicDay & WorkDay;
+
+export type DefaultWorkingDay = MakeOptional<
+  WorkingDay,
+  "record" | "user" | "objectId"
+> 

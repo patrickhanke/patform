@@ -176,7 +176,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
 				showSecondaryContent={true}
 			>
 				<div className={styles.task_slidein_content}>
-					<div className={"flex col al-st gap-md"}>
+					<div className={"flex col a-st gap-md"}>
 						<div className={styles.task_slidein_content_element}>
 							<label
 								className={

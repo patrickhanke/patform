@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { SiteHeaderContentComponent } from "../types";
-import styles from "../WeeklyRecords.module.scss";
 import { Select } from "@repo/ui";
 import { differenceInCalendarWeeks } from "date-fns";
 
@@ -22,7 +21,7 @@ const WeeklyRecordSiteHeaderContent = ({
 	}, []);
 
 	return (
-		<div className={styles.siteheader_content}>
+		<div className="flex row j-sb a-ce">
 			<Select
 				label=""
 				width="90px"

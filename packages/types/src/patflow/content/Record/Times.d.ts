@@ -1,7 +1,7 @@
 import { Absence } from "../Worker";
 
 export type DayTime = {
-  type: "regular";
+  type: "regular" | "work";
   start: string;
   end: string;
   pause: number;

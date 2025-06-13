@@ -66,7 +66,7 @@ const SelectImage: FC<SelectImageProps> = ({
 	);
 
 	return (
-		<div className="flex col al-st gap-xs">
+		<div className="flex col a-st gap-xs">
 			<SwitchButtons
 				buttonStates={[...select_states]}
 				changeHandler={setSelectState}

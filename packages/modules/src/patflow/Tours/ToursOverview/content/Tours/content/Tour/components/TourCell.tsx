@@ -111,7 +111,7 @@ const TourCell: FC<TourCellProps> = ({
     service.substitutes
   ) {
     return (
-      <div className="flex row al-ct">
+      <div className="flex row a-ct">
         <div
           style={{ cursor: "pointer" }}
           onClick={removeServiceFromUserHandler}

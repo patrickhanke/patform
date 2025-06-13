@@ -238,7 +238,7 @@ const ImagesOverview = () => {
 				{newImages.length > 0 && (
 					<div>
 						<p>{newImages.length} Bilder ausgewählt</p>
-						<div className="flex row ai-ce jc-fs gap-sm wrap">
+						<div className="flex row ai-ce j-fs gap-sm wrap">
 							{newImages.map((image) => (
 								<PatstoreDisplayImage
 									key={image.filePath}

@@ -50,7 +50,7 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 
 	if (error) {
 		return (
-			<div className="flex al-ce jc-ce" style={{ height, width }}>
+			<div className="flex a-ce j-ce" style={{ height, width }}>
 				<SquareX />
 			</div>
 		);

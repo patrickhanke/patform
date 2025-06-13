@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { MonthData, StaffRecordProps } from "./types";
 import {
 	convertMillisecondsToString,
@@ -9,7 +9,6 @@ import {
 import { Day } from "@repo/types";
 import { find_record } from "@repo/provider";
 import { useQuery } from "@apollo/client";
-import styles from "./StaffRecord.module.scss";
 import useTableColumns from "./hooks/useTableColumns";
 import { Table } from "@repo/ui";
 
@@ -104,7 +103,7 @@ const StaffRecord = ({ days, year, user }: StaffRecordProps) => {
 	}, [days, year, recordData]);
 
 	return (
-		<div className={styles.staff_records_container}>
+		<div className="flex col j-sb a-fs">
 			<div>
 				<h3>
 					{user.first_name} {user.family_name}

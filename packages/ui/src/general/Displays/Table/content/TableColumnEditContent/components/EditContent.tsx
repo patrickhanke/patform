@@ -20,7 +20,7 @@ const EditContent: FC<EditContentProps> = ({
 		[content, activeIndex, setContent]
 	);
 	return (
-		<div className="flex col al-st gap-md">
+		<div className="flex col a-st gap-md">
 			<div>
 				<label>Name des Elements (wird nicht angezeigt)</label>
 				<input

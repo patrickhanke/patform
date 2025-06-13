@@ -8,7 +8,7 @@ const DisplayImageElement: FC<DisplayImageElementProps> = ({
 	name
 }) => {
 	return (
-		<div className="flex col ai-st jc-fs">
+		<div className="flex col ai-st j-fs">
 			<Image
 				src={getImageUrl({ filePath, width: 256 })}
 				width={106}

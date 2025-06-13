@@ -1,6 +1,7 @@
 import {
 	CreateInitialTime,
 	DefaultDay,
+	DefaultWorkingDay,
 	Holiday,
 	Record,
 	TimeObject
@@ -128,7 +129,7 @@ export const createInitialTimes: (
 	};
 };
 
-export const getDefaultTime: (date: string) => DefaultDay = (date) => ({
+export const getDefaultTime: (date: string) => DefaultWorkingDay = (date) => ({
 	objectId: "",
 	month: new Date(date).getMonth(),
 	year: new Date(date).getFullYear(),

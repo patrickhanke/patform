@@ -70,7 +70,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 			description="Bearbeitung der Webseiten Inhalte"
 			pageHeaderButtons={[]}
 		>
-			<div className="flex row al-fs j-sb gap-sm w-100">
+			<div className="flex row a-fs j-sb gap-sm w-100">
 				<div className="w-66">
 					<CreateButton
 						text="Inhaltselement hinzufügen"
@@ -126,7 +126,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 						// subField={{ id: moduleId, field: "categories" }}
 					/>
 				</div>
-				<div className="head_container flex col al-fs j-sb gap-sm w-33">
+				<div className="head_container flex col a-fs j-sb gap-sm w-33">
 					<h3>Inhalte</h3>
 					<div>
 						<label>Pfad der Seite</label>
