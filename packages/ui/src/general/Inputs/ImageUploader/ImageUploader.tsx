@@ -20,7 +20,7 @@ const ImageUploader = ({
 	returnType = "array"
 }: {
 	previewImage?: Image | Image[];
-	onChange: (F: Image[] | Image) => void;
+	onChange: (F: Image[] | Image) => void | Promise<void>;
 	label: string;
 	maxFileCount?: number;
 	filename?: string;

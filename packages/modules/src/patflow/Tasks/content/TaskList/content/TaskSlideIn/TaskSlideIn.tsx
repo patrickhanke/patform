@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo } from "react";
+import { FC, useState, useMemo } from "react";
 import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
 import styles from "./TaskSlideIn.module.scss";
@@ -6,20 +6,33 @@ import { useQuery } from "@apollo/client";
 import {
 	FIND_DOCUMENTS_FOR_TASK,
 	GET_TASK_SLIDEIN_CONTENT,
-	getDateString
+	getDateString,
+	useDataHandler
 } from "@repo/provider";
 import TaskDocuments from "../TaskDocuments";
 import TaskImages from "../TaskImages";
 import DisplayTaskState from "../DisplayTaskState";
-import TaskNextDate from "../TaskNextDate";
 import DisplayPropery from "../DisplayPropery";
 import TeamAssignment from "../TeamAssignment";
-import { IconButton, SlideIn, StateDisplay, SwitchButtons } from "@repo/ui";
+import {
+	IconButton,
+	Modal,
+	SlideIn,
+	StateDisplay,
+	SwitchButtons
+} from "@repo/ui";
 import { TaskSlideInProps } from "./types";
 import TaskSlideInTicketDetails from "./components/TaskSlideInTicketDetails";
 import { TaskDate } from "../TaskDate";
 
-const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
+const TaskSlideIn: FC<TaskSlideInProps> = ({
+	title,
+	taskId,
+	isEditable = true,
+	refetchTasks
+}) => {
+	const { deleteData } = useDataHandler();
+	const [deleteTask, setDeleteTask] = useState(false);
 	const [showDetails, setShowDetails] = useState(false);
 	const { data: dataSlidein, refetch: refetchSlideIn } = useQuery(
 		GET_TASK_SLIDEIN_CONTENT,
@@ -82,6 +95,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
 						taskId={taskId}
 						documents={dataDocuments.objects.findDocument.results}
 						refetch={refetchDocuments}
+						isEditable={isEditable}
 					/>
 				)}
 				{buttonState.value === "images" && dataSlidein && (
@@ -90,6 +104,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
 						taskName={title}
 						images={dataSlidein.objects.getTask.images}
 						refetch={refetchSlideIn}
+						isEditable={isEditable}
 					/>
 				)}
 				{buttonState.value === "comments" && dataSlidein && (
@@ -97,6 +112,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
 						taskId={taskId}
 						comments={dataSlidein.objects.getTask.comments}
 						refetch={refetchSlideIn}
+						isEditable={isEditable}
 					/>
 				)}
 				{buttonState.value === "ticket" && dataSlidein && (
@@ -228,7 +244,10 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
 								Objekt
 							</label>
 							<div>
-								<DisplayPropery taskId={taskId} />
+								<DisplayPropery
+									taskId={taskId}
+									isEditable={isEditable}
+								/>
 							</div>
 						</div>
 						<div className={styles.task_slidein_content_element}>
@@ -260,7 +279,10 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
 							>
 								Beschreibung
 							</label>
-							<TaskDescription taskId={taskId} />
+							<TaskDescription
+								taskId={taskId}
+								isEditable={isEditable}
+							/>
 						</div>
 						<div
 							className={styles.task_slidein_content_element}
@@ -289,9 +311,39 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ title, taskId }) => {
 								)}
 							</div>
 						</div>
+						<div>
+							<button
+								className={"full_button red md"}
+								onClick={() => setDeleteTask(true)}
+							>
+								Aufgabe löschen
+							</button>
+						</div>
 					</div>
 				</div>
 			</SlideIn>
+			<Modal
+				isOpen={deleteTask}
+				header="Aufgabe löschen"
+				confirmButtonHandler={async () => {
+					await deleteData({
+						className: "Task",
+						objectId: taskId,
+						feedback: "Aufgabe erfolgreich gelöscht"
+					});
+					await refetchTasks();
+					setDeleteTask(false);
+					setShowDetails(false);
+				}}
+				cancelButtonHandler={() => setDeleteTask(false)}
+			>
+				<p>
+					Sie Sie sicher, dass sie die Aufgabe{" "}
+					<span style={{ fontWeight: 600 }}>{task?.title}</span>{" "}
+					löschen möchten? Dieser Vorgang lässt sich nicht rückgängig
+					machen.
+				</p>
+			</Modal>
 		</>
 	);
 };

@@ -23,7 +23,5 @@ export type TaskListComponent = {
 
 export type UseTaskColumnsProps = {
 	refetch: ApolloRefetch;
-	setArchiveModal: Dispatch<SetStateAction<Task | undefined>>;
-	setDeleteTaskModal: Dispatch<SetStateAction<Task | undefined>>;
 	pageState?: string;
 };

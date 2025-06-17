@@ -7,7 +7,8 @@ const TeamAssignments: FC<TeamAssignmentProps> = ({
 	taskId,
 	taskState,
 	refetchTask,
-	showAsButton = false
+	showAsButton = false,
+	isEditable = true
 }) => {
 	return (
 		<div className="team_assignment_container">
@@ -17,9 +18,7 @@ const TeamAssignments: FC<TeamAssignmentProps> = ({
 					taskState={taskState}
 					refetchTask={refetchTask}
 					showAsButton={showAsButton}
-					selectWorkers={
-						taskState === "created" || taskState === "assigned"
-					}
+					selectWorkers={isEditable}
 				/>
 			</div>
 		</div>

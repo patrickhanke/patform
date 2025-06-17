@@ -16,166 +16,177 @@ import EditRecords from "./content/EditRecords";
 import { UserContext } from "@repo/provider";
 
 const TimeSettings = () => {
-  const [siteState, setSiteState] = useState<SiteState>(
-    site_states[0] as SiteState,
-  );
-  const { projectId } = useContext(UserContext);
-  const [createTemplate, setCreateTemplate] = useState(false);
-  const [createRecord, setCreateRecord] = useState(false);
-  const { data: holidayData, refetch: refetchHolidays } = useQuery(
-    generateGraphQLQuery({
-      type: "find",
-      objectName: "Holiday",
-      fields: ["objectId", "name", "label", "type", "dates"],
-    }),
-    {
-      variables: {
-        params: {
-          type: { _eq: "holiday" },
-          project: { _eq: projectId },
-        },
-      },
-      skip: !projectId,
-    },
-  );
+	const [siteState, setSiteState] = useState<SiteState>(
+		site_states[0] as SiteState
+	);
+	const { projectId } = useContext(UserContext);
+	const [createTemplate, setCreateTemplate] = useState(false);
+	const [createRecord, setCreateRecord] = useState(false);
+	const { data: holidayData, refetch: refetchHolidays } = useQuery(
+		generateGraphQLQuery({
+			type: "find",
+			objectName: "Holiday",
+			fields: ["objectId", "name", "label", "type", "dates"]
+		}),
+		{
+			variables: {
+				params: {
+					type: { _eq: "holiday" },
+					project: { _eq: projectId }
+				}
+			},
+			skip: !projectId
+		}
+	);
 
-  const { updateData } = useDataHandler();
+	const { updateData } = useDataHandler();
 
-  const refreshHolidayDates = useCallback(async () => {
-    const holidays = holidayData?.objects.findHoliday.results || [];
-    const yearArray = [];
+	const refreshHolidayDates = useCallback(async () => {
+		const holidays = holidayData?.objects.findHoliday.results || [];
+		const yearArray = [];
 
-    for (let i = 0; i < 7; i += 1) {
-      const year = new Date().getFullYear() + i;
-      yearArray.push(year);
-    }
-    const returnObject: { [key: string]: { [key: string]: string } } = {};
+		for (let i = 0; i < 7; i += 1) {
+			const year = new Date().getFullYear() + i;
+			yearArray.push(year);
+		}
+		const returnObject: { [key: string]: { [key: string]: string } } = {};
 
-    const getYears = yearArray.map(async (year) => {
-      const response = await axios.get(
-        `https://feiertage-api.de/api/?jahr=${year}`,
-      );
-      const data = response.data;
+		const getYears = yearArray.map(async (year) => {
+			const response = await axios.get(
+				`https://feiertage-api.de/api/?jahr=${year}`
+			);
+			const data = response.data;
 
-      if (!data || typeof data !== "object") {
-        throw new Error("Invalid API response");
-      }
+			if (!data || typeof data !== "object") {
+				throw new Error("Invalid API response");
+			}
 
-      function findDatum(data: { [key: string]: object }) {
-        const holidayObject = {};
-        for (const region in data) {
-          if (data[region]) {
-            Object.assign(holidayObject, data[region]);
-          }
-        }
-        return holidayObject;
-      }
-      const hdObject: { [key: string]: { datum: string } } = findDatum(data);
-      Object.keys(hdObject).forEach((holiday: keyof typeof hdObject) => {
-        const holidayCopy = cloneDeep(returnObject[holiday]);
-        const datum = hdObject[holiday]?.datum;
-        set(returnObject, [holiday], {
-          ...holidayCopy,
-          [year.toString()]: datum,
-        });
-      });
-    });
+			function findDatum(data: { [key: string]: object }) {
+				const holidayObject = {};
+				for (const region in data) {
+					if (data[region]) {
+						Object.assign(holidayObject, data[region]);
+					}
+				}
+				return holidayObject;
+			}
+			const hdObject: { [key: string]: { datum: string } } =
+				findDatum(data);
 
-    await Promise.all(getYears);
+			console.log(hdObject);
 
-    const updateHolidays = holidays.map((holiday: Holiday) => {
-      const dates = returnObject[holiday.name];
-      return updateData({
-        className: "Holiday",
-        objectId: holiday.objectId,
-        updateObject: {
-          dates,
-        },
-      });
-    });
+			Object.keys(hdObject).forEach((holiday: keyof typeof hdObject) => {
+				const holidayCopy = cloneDeep(returnObject[holiday]);
+				const datum = hdObject[holiday]?.datum;
+				set(returnObject, [holiday], {
+					...holidayCopy,
+					[year.toString()]: datum
+				});
+			});
+		});
 
-    await Promise.all(updateHolidays);
-    await refetchHolidays();
-    return returnObject;
-  }, [refetchHolidays]);
+		await Promise.all(getYears);
 
-  const siteHeaderButtons: PageHeaderButtons = useMemo(() => {
-    if (siteState.value === "holiday-templates") {
-      return [
-        {
-          text: "Neues Feiertag-Template erstellen",
-          onClick: () => {
-            setCreateTemplate(true);
-          },
-          is_add_button: true,
-          color: "primary",
-          disabled: false,
-        },
-      ];
-    }
-    if (siteState.value === "holidays") {
-      return [
-        {
-          text: "Daten aktualisieren",
-          onClick: () => {
-            refreshHolidayDates();
-          },
-          is_add_button: false,
-          color: "primary",
-          disabled: false,
-        },
-      ];
-    }
-    if (siteState.value === "records") {
-      return [
-        {
-          text: "Neuen Record erstellen",
-          onClick: () => {
-            setCreateRecord(true);
-          },
-          is_add_button: false,
-          color: "primary",
-          disabled: false,
-        },
-      ];
-    }
-    return [];
-  }, [siteState]);
+		console.log(returnObject);
 
-  return (
-    <Page
-      title="Zeiten und Zuschläge"
-      pageStates={site_states}
-      pageState={siteState}
-      setPageState={setSiteState}
-      pageHeaderButtons={siteHeaderButtons}
-    >
-      {siteState.value === "holiday-templates" && (
-        <HolidayTemplates
-          projectId={projectId}
-          createHolidayTemplate={createTemplate}
-          setCreateHolidayTemplate={setCreateTemplate}
-          holidays={holidayData?.objects.findHoliday.results || []}
-        />
-      )}
-      {siteState.value === "holidays" && (
-        <Holidays holidays={holidayData?.objects.findHoliday.results || []} />
-      )}
-      {siteState.value === "surcharges" && projectId && (
-        <SurchargeSettings
-          projectId={projectId}
-          holidays={holidayData?.objects.findHoliday.results || []}
-        />
-      )}
-      {siteState.value === "records" && (
-        <EditRecords
-          createRecord={createRecord}
-          setCreateRecord={setCreateRecord}
-          projectId={projectId}
-        />
-      )}
-    </Page>
-  );
+		const updateHolidays = holidays.map((holiday: Holiday) => {
+			const dates = returnObject[holiday.name];
+			console.log(dates);
+
+			return updateData({
+				className: "Holiday",
+				objectId: holiday.objectId,
+				updateObject: {
+					dates: dates as object
+				},
+				feedback: "Feiertags-Daten aktualisiert"
+			});
+		});
+
+		await Promise.all(updateHolidays);
+		await refetchHolidays();
+		return returnObject;
+	}, [refetchHolidays]);
+
+	const siteHeaderButtons: PageHeaderButtons = useMemo(() => {
+		if (siteState.value === "holiday-templates") {
+			return [
+				{
+					text: "Neues Feiertag-Template erstellen",
+					onClick: () => {
+						setCreateTemplate(true);
+					},
+					is_add_button: true,
+					color: "primary",
+					disabled: false
+				}
+			];
+		}
+		if (siteState.value === "holidays") {
+			return [
+				{
+					text: "Daten aktualisieren",
+					onClick: () => {
+						refreshHolidayDates();
+					},
+					is_add_button: false,
+					color: "primary",
+					disabled: false
+				}
+			];
+		}
+		if (siteState.value === "records") {
+			return [
+				{
+					text: "Neuen Record erstellen",
+					onClick: () => {
+						setCreateRecord(true);
+					},
+					is_add_button: false,
+					color: "primary",
+					disabled: false
+				}
+			];
+		}
+		return [];
+	}, [siteState]);
+
+	return (
+		<Page
+			title="Zeiten und Zuschläge"
+			pageStates={site_states}
+			pageState={siteState}
+			setPageState={setSiteState}
+			pageHeaderButtons={siteHeaderButtons}
+		>
+			{siteState.value === "holiday-templates" && (
+				<HolidayTemplates
+					projectId={projectId}
+					createHolidayTemplate={createTemplate}
+					setCreateHolidayTemplate={setCreateTemplate}
+					holidays={holidayData?.objects.findHoliday.results || []}
+				/>
+			)}
+			{siteState.value === "holidays" && (
+				<Holidays
+					holidays={holidayData?.objects.findHoliday.results || []}
+				/>
+			)}
+			{siteState.value === "surcharges" && projectId && (
+				<SurchargeSettings
+					projectId={projectId}
+					holidays={holidayData?.objects.findHoliday.results || []}
+				/>
+			)}
+			{siteState.value === "records" && (
+				<EditRecords
+					createRecord={createRecord}
+					setCreateRecord={setCreateRecord}
+					projectId={projectId}
+				/>
+			)}
+		</Page>
+	);
 };
 
 export default TimeSettings;

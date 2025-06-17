@@ -45,21 +45,6 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		return date;
 	}, [data, workers]);
 
-	// useEffect(() => {
-	// 	const taskWorkers = data?.objects.getTask.assigned_staff;
-
-	// 	if (
-	// 		taskWorkers &&
-	// 		taskWorkers?.length === 0 &&
-	// 		taskState !== "created"
-	// 	) {
-	// 		taskStateHandler("created");
-	// 	}
-	// 	if (taskWorkers && taskWorkers?.length > 0 && taskState === "created") {
-	// 		taskStateHandler("assigned");
-	// 	}
-	// }, [taskState, data, workers]);
-
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
 		if (workers.length > 0) {
@@ -173,7 +158,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 													width: "fit-content",
 													transform: `translateX(${-index * 12}px)`,
 													overflow: "visible",
-													zIndex: index
+													zIndex: 1
 												}}
 											>
 												<DisplayWorker

@@ -20,6 +20,8 @@ import SelectProperty from "./components/SelectProperty";
 import SelectWorker from "./components/SelectWorker";
 import { getDateString, UserContext } from "@repo/provider";
 import "./styles.scss";
+import { isArray } from "lodash-es";
+import { isToday } from "date-fns";
 
 const CreateTask = ({
 	setRefetchTask,
@@ -98,6 +100,21 @@ const CreateTask = ({
 				key: "taks_date",
 				id: "taks_date"
 			});
+		}
+
+		if (isArray(date.next_dates)) {
+			const now = new Date();
+			const invalidDates = date.dates.filter(
+				(d) => d && new Date(d) < now && !isToday(new Date(d))
+			);
+
+			if (invalidDates.length > 0) {
+				errorArray.push({
+					message: "Bitte nur zukünftige Daten angeben",
+					key: "date",
+					id: "date_future"
+				});
+			}
 		}
 		setErrors(errorArray);
 	}, [task, date]);

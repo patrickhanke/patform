@@ -6,6 +6,7 @@ export type TeamAssignmentProps = {
 	taskState: Task["state"];
 	refetchTask: ApolloRefetch;
 	showAsButton?: boolean;
+	isEditable?: boolean;
 };
 
 export type DisplayWorkerProps = {

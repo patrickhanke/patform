@@ -19,8 +19,6 @@ const TaskList = ({
 	enableRowSelection = false,
 	onRowSelection
 }: TaskListComponent) => {
-	console.log({ pageState });
-
 	const { updateData, deleteData } = useDataHandler();
 	const [deleteTaskModal, setDeleteTaskModal] = useState<undefined | Task>(
 		undefined
@@ -56,8 +54,6 @@ const TaskList = ({
 
 	const columns = useTableColumns({
 		refetch,
-		setArchiveModal,
-		setDeleteTaskModal,
 		pageState
 	});
 

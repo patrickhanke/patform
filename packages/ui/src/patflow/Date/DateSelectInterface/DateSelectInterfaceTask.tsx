@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DateSelect from "./content/DateSelect";
 import { useDataHandler } from "@repo/provider";
 import { useQuery } from "@apollo/client";

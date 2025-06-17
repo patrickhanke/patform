@@ -2,7 +2,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { Task } from "@repo/types";
 import TaskTitle from "../components/TaskTitle";
-import TaskNextDate from "../content/TaskNextDate";
 import DisplayProperty from "../content/DisplayPropery";
 import DisplayTaskState from "../content/DisplayTaskState";
 import TeamAssignments from "../content/TeamAssignment";
@@ -11,12 +10,7 @@ import { UseTaskColumnsProps } from "../types";
 import { getDateString } from "@repo/provider";
 import { TaskDate } from "../content/TaskDate";
 
-const useTableColumns = ({
-	refetch,
-	setArchiveModal,
-	setDeleteTaskModal,
-	pageState
-}: UseTaskColumnsProps) => {
+const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 	const columns: ColumnDef<Task>[] = useMemo(() => {
 		const col: ColumnDef<Task>[] = [
 			{
@@ -72,10 +66,7 @@ const useTableColumns = ({
 			},
 			{
 				accessorFn: (task) => (
-					<DisplayTaskState
-						taskId={task.objectId}
-						taskState={task.state}
-					/>
+					<DisplayTaskState taskState={task.state} />
 				),
 				header: () => <span>Status</span>,
 				id: "state",
@@ -103,8 +94,11 @@ const useTableColumns = ({
 					<TaskSlideIn
 						title={task.title}
 						taskId={task.objectId}
-						setArchiveModal={setArchiveModal}
-						setDeleteTaskModal={setDeleteTaskModal}
+						isEditable={
+							task.state === "created" ||
+							task.state === "assigned"
+						}
+						refetchTasks={refetch}
 					/>
 				),
 				header: () => <span>Info</span>,

@@ -89,6 +89,20 @@ const DateSelect = ({
 			});
 		}
 
+		if (isArray(date.dates)) {
+			const now = new Date();
+			const invalidDates = date.dates.filter(
+				(d) => d && new Date(d) < now
+			);
+			if (invalidDates.length > 0) {
+				errorArray.push({
+					message: "Bitte nur zukünftige Daten angeben",
+					key: "date",
+					id: "date_future"
+				});
+			}
+		}
+
 		setErrors(errorArray);
 	}, [date]);
 
@@ -139,7 +153,7 @@ const DateSelect = ({
 				<div>
 					<label>Kategorie wählen</label>
 					<DateCategories
-						date={date.category}
+						value={date.category}
 						onChange={(value) =>
 							setDate((draft) => {
 								draft.category = value;

@@ -5,7 +5,13 @@ import "./styles.scss";
 import TaskSelectPropery from "./components/TaskSelectProperty";
 import { useEffect, useState } from "react";
 
-const DisplayProperty = ({ taskId }: { taskId: string }) => {
+const DisplayProperty = ({
+	taskId,
+	isEditable = true
+}: {
+	taskId: string;
+	isEditable?: boolean;
+}) => {
 	const { updateData } = useDataHandler();
 	const [selectProperty, setSelectProperty] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -34,7 +40,10 @@ const DisplayProperty = ({ taskId }: { taskId: string }) => {
 			<>
 				<div
 					className="task_property_object_container"
-					onClick={() => setSelectProperty(true)}
+					onClick={() => {
+						if (!isEditable) return;
+						setSelectProperty(true);
+					}}
 				>
 					<StateDisplay
 						// type="label"

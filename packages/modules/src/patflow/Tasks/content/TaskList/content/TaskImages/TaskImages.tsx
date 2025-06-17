@@ -9,17 +9,19 @@ const TaskImages = ({
 	taskId,
 	taskName,
 	refetch,
-	images
+	images,
+	isEditable = true
 }: {
 	taskId: string;
 	taskName: string;
 	images: Image[];
 	refetch: () => void;
+	isEditable?: boolean;
 }) => {
 	const { updateData } = useDataHandler();
 	const { project } = useContext(UserContext);
 	const addImageHandler = useCallback(
-		async (content: Image[]) => {
+		async (content: string[]) => {
 			const newImages = [...images, ...content];
 
 			await updateData({
@@ -39,17 +41,19 @@ const TaskImages = ({
 			<div className={styles.task_slidein_image_container}>
 				<ImagesDisplay images={images} />
 			</div>
-			<div className={styles.task_slidein_footer}>
-				<ImageUploader
-					onChange={addImageHandler}
-					label="Bild hinzufügen"
-					path={generateImagePath(
-						process.env.APP_NAME as string,
-						project.path
-					)}
-					filename={`${taskName}_${new Date()}.jpg`}
-				/>
-			</div>
+			{isEditable && (
+				<div className={styles.task_slidein_footer}>
+					<ImageUploader
+						onChange={addImageHandler}
+						label="Bild hinzufügen"
+						path={generateImagePath(
+							process.env.APP_NAME as string,
+							project.path
+						)}
+						filename={`${taskName}_${new Date()}.jpg`}
+					/>
+				</div>
+			)}
 		</>
 	);
 };

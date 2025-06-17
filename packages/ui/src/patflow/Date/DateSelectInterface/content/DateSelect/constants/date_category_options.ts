@@ -7,6 +7,6 @@ const date_category_options = [
 		value: "opportunity",
 		label: "Turnusmäßig"
 	}
-];
+] as const;
 
 export default date_category_options;
