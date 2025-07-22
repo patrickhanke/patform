@@ -9,10 +9,11 @@ import FormSettings from "./content/FormSettings";
 import FormFields from "./content/FormFields";
 import { Params } from "@repo/types";
 import { useDataHandler } from "@repo/provider";
-import FormEmail from "./content/FormEmail";
+import TestEmail from "./components/TestEmail";
 
 const Form = ({ params }: { params: Params }) => {
 	const { deleteData } = useDataHandler();
+	const [testEmail, setTestEmail] = useState<boolean>(false);
 
 	const formId = params.form_id;
 	const { form, refetch } = useGetForm({ formId });
@@ -23,8 +24,6 @@ const Form = ({ params }: { params: Params }) => {
 	const [selectedDataRows, setSelectedDataRows] = useState<string[]>([]);
 	const [dataDeleteModal, setDataDeleteModal] = useState<boolean>(false);
 	const [loading, setLoading] = useState(false);
-
-	console.log(selectedDataRows);
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "fields") {
@@ -46,6 +45,16 @@ const Form = ({ params }: { params: Params }) => {
 					},
 					icon: "delete",
 					disabled: selectedDataRows.length === 0
+				}
+			];
+		}
+		if (siteState.value === "settings") {
+			return [
+				{
+					text: "Test E-Mail senden",
+					onClick: () => {
+						setTestEmail(true);
+					}
 				}
 			];
 		}
@@ -87,11 +96,6 @@ const Form = ({ params }: { params: Params }) => {
 							setCreateField={setCreateField}
 						/>
 					)}
-					{siteState.value === "email" && (
-						<FormEmail
-							formId={formId}
-						/>
-					)}
 				</>
 			)}
 			<Modal
@@ -118,6 +122,11 @@ const Form = ({ params }: { params: Params }) => {
 					Sind sich Sicher, dass sie die Datensätze löschen möchten?
 				</p>
 			</Modal>
+			<TestEmail
+				testEmail={testEmail}
+				setTestEmail={setTestEmail}
+				formId={formId}
+			/>
 		</Page>
 	);
 };

@@ -10,7 +10,8 @@ const SwitchButtons: React.FC<SwitchButtonProps> = ({
 	currentStates,
 	changeHandler,
 	underlineButtons = false,
-	useFragment
+	useFragment,
+	showBottomLine = false
 }) => {
 	React.useEffect(() => {
 		if (useFragment && window.location.hash) {
@@ -30,6 +31,7 @@ const SwitchButtons: React.FC<SwitchButtonProps> = ({
 		<div
 			className={styles.buttons_container}
 			data-underline_buttons={underlineButtons}
+			data-show_bottom_line={showBottomLine}
 		>
 			{buttonStates.map((button, index) => (
 				<button

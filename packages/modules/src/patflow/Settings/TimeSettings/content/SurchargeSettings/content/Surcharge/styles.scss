@@ -1,0 +1,13 @@
+@use "@repo/styles/constants";
+
+.surcharge_element_container {
+  background-color: constants.$lightest;
+}
+
+.surcharge_element_content {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center
+  );
+}

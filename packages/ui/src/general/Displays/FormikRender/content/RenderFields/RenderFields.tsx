@@ -40,8 +40,6 @@ const RenderFields: FC<RenderFieldsType> = ({
 }) => (
 	<>
 		{fields.map((field: Field) => {
-			console.log(getFieldMeta(field.name));
-			console.log(field.value);
 			return (
 				<div
 					key={field.id ? field.id : field.name}
@@ -268,11 +266,6 @@ const RenderFields: FC<RenderFieldsType> = ({
 								? Object.keys(
 										getFieldMeta(field.name).error
 									).map((key) => {
-										console.log({
-											name: field.name,
-											key,
-											meta: getFieldMeta(field.name)
-										});
 										return (
 											<div key={key}>
 												{key}:{" "}

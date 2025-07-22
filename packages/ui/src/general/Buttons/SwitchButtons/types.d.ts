@@ -13,4 +13,5 @@ export type SwitchButtonProps = {
 	changeHandler: React.SetStateAction.Dispatch<SwitchButton>;
 	underlineButtons?: boolean;
 	useFragment?: boolean;
+	showBottomLine?: boolean;
 };

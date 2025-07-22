@@ -10,12 +10,7 @@ const siteStates: { value: string; label: string }[] = [
 	{
 		value: "settings",
 		label: "Einstellungen"
-	},
-    {
-		value: "email",
-		label: "E-Mail Einstellungen"
-	},
-
+	}
 ];
 
 export default siteStates;

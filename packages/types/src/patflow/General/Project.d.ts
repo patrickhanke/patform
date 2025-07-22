@@ -1,3 +1,5 @@
+import { ColorValues } from "@repo/ui";
+
 export type PatflowProject = {
   objectId: string;
   name: string;
@@ -8,7 +10,7 @@ export type PatflowProject = {
 export type SurchargeTypes = "time" | "day" | "overtime" | "work";
 
 export type Surcharge = {
-  objectId?: string;
+  objectId: string;
   name: string;
   type: SurchargeTypes;
   time_value: { start: string; end: string };
@@ -18,6 +20,10 @@ export type Surcharge = {
   active: boolean;
   start_date: string;
   end_date: string | null;
+  connected_records: string[];
+  color: ColorValues;
+  short: string;
+  description: string;
 };
 
 export type RecordSettings = {

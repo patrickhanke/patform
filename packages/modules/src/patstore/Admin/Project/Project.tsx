@@ -180,11 +180,6 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 					/>
 				</>
 			)}
-			{siteState?.value === "settings" && (
-				<>
-					<ProjectSettings projectId={params.project_id} />
-				</>
-			)}
 			{siteState?.value === "roles" && (
 				<>
 					<ProjectRoles

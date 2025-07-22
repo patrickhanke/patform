@@ -6,6 +6,7 @@ import FormSettingToggle from "./components/FormSettingToggle";
 import { FormClass } from "@repo/types";
 import FormRecipients from "./content/FormReceipients";
 import FormSettingsText from "./components/FormSettingsText";
+import FormSettingsInput from "./components/FormSettingsInput";
 
 const FormSettings = ({ formId }: { formId: string }) => {
 	const { updateData } = useDataHandler();
@@ -106,6 +107,25 @@ const FormSettings = ({ formId }: { formId: string }) => {
 									updateSettings={updateSettingsHandler}
 								/>
 							</div>
+							<div
+								key={key}
+								className="flex row a-ce j-sb gap-sm"
+							>
+								<div className="flex col a-st">
+									<label>Absender E-Mail</label>
+									<p>
+										Geben Sie die Absender E-Mail Adresse
+										für das Formular an. Diese muss auf die
+										Domain Ihrer Webseite enden.
+									</p>
+								</div>
+
+								<FormSettingsInput
+									settings={settings}
+									updateSettings={updateSettingsHandler}
+								/>
+							</div>
+
 							<FormSettingsText
 								settings={settings}
 								updateSettings={updateSettingsHandler}

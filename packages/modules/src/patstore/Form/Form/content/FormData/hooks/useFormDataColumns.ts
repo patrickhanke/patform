@@ -13,7 +13,7 @@ const useFormDataColumns = ({
 }) => {
 	const columns = useCreateColumns<FormDataClass["data"]>({
 		data: [
-			{ id: "cretedAt", type: "date", label: "Datum" },
+			{ id: "createdAt", type: "date", label: "Datum" },
 			...geneateFormColumns(
 				isArray(data) ? data.map((data) => data.data) : []
 			)

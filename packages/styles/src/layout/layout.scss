@@ -136,7 +136,7 @@
   box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 2px 0px;
   border-radius: map-get($map: constants.$border_radius, $key: "sm");
   border: 0.5px solid constants.$grey_tinted;
-  padding: map-get($map: constants.$padding, $key: "sm");
+  padding: map-get($map: constants.$padding, $key: "md");
   overflow: hidden;
 }
 
@@ -217,4 +217,11 @@ label.error {
   background-color: constants.$yellow_tinted;
   border: 1px solid constants.$yellow;
   color: constants.$yellow;
+}
+
+.light_box {
+  background-color: constants.$lightest;
+  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  padding: map-get($map: constants.$padding, $key: "md");
+  box-shadow: constants.$shadow_light;
 }

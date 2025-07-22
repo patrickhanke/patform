@@ -3,7 +3,7 @@ export { ServiceTemplatesOverview } from "./ServiceTemplates";
 export * from "./Tasks";
 export * from "./Tickets";
 export { ToursOverview } from "./Tours";
-export { StaffOverview, StaffMember } from "./Staff";
+export { StaffOverview } from "./Staff";
 export { WasteOverview } from "./Waste";
 export * from "./Settings";
 export * from "./Record";

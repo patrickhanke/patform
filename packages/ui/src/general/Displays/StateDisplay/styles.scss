@@ -50,94 +50,10 @@
   );
 }
 
-.state_display_container[data-color="primary"] {
-  @include constants.colorgroup("primary");
-  border: none;
-}
-
-.state_display_container[data-color="secondary"] {
-  @include constants.colorgroup("secondary");
-  border: none;
-}
-
-.state_display_container[data-color="tertiary"] {
-  @include constants.colorgroup("tertiary");
-  border: none;
-}
-
-.state_display_container[data-color="magenta"] {
-  @include constants.colorgroup("magenta");
-  border: none;
-}
-
-.state_display_container[data-color="dark"] {
-  @include constants.colorgroup("dark");
-  border: none;
-}
-
-.state_display_container[data-color="light"] {
-  @include constants.colorgroup("light");
-  border: none;
-}
-
-.state_display_container[data-color="success"] {
-  @include constants.colorgroup("success");
-  border: none;
-}
-
-.state_display_container[data-color="warning"] {
-  @include constants.colorgroup("warning");
-  border: none;
-}
-
-.state_display_container[data-color="danger"] {
-  @include constants.colorgroup("danger");
-  border: none;
-}
-
-.state_display_container[data-color="info"] {
-  @include constants.colorgroup("info");
-  border: none;
-}
-
-.state_display_container[data-color="violet"] {
-  @include constants.colorgroup("violet");
-  border: none;
-}
-
-.state_display_container[data-color="purple"] {
-  @include constants.colorgroup("violet");
-  border: none;
-}
-
-.state_display_container[data-color="green"] {
-  @include constants.colorgroup("green");
-  border: none;
-}
-
-.state_display_container[data-color="yellow"] {
-  @include constants.colorgroup("yellow");
-  border: none;
-}
-
-.state_display_container[data-color="red"] {
-  @include constants.colorgroup("red");
-  border: none;
-}
-
-.state_display_container[data-color="blue"] {
-  @include constants.colorgroup("blue");
-  border: none;
-}
-
-.state_display_container[data-color="grey"] {
-  @include constants.colorgroup("grey");
-  border: none;
-}
-
-.state_display_container[data-display_interface="true"] {
-  cursor: pointer;
-  @include state_display_container_styles;
+@each $key, $color in constants.$color-map {
+  .state_display_container[data-color="#{$color}"] {
+    @include constants.colorgroup($color);
+  }
 }
 
 .state_display_container[data-no_background="true"] {

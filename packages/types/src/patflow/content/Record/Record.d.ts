@@ -1,7 +1,7 @@
 import { HolidayTemplate, User, UserDisplayData } from "@/types/General";
 import { Absence } from "../Worker";
 import { DayTime, TimeObject } from "./Times";
-import { AbsenceStateOptions } from "@repo/types";
+import { AbsenceStateOptions, Surcharge } from "@repo/types";
 
 export type RecordTimeSettings = {
   hours: number;
@@ -28,6 +28,7 @@ export type Record = {
   initial_vacation: number;
   former_record: Record | undefined;
   holiday_template: HolidayTemplate;
+  surcharges: string[]
 };
 
 export type Abence = {

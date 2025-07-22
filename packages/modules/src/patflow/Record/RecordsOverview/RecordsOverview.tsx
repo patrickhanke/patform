@@ -12,6 +12,7 @@ import { PatflowAppContext } from "@repo/provider";
 import { Filter } from "@repo/types";
 import RecordsSettings from "./content/RecordsSettings";
 import { Page } from "@repo/ui";
+import ResetWorkerTimes from "./content/ResetWorkerTimes";
 
 const RecordsOverview = () => {
 	const { year } = useContext(PatflowAppContext);
@@ -23,8 +24,22 @@ const RecordsOverview = () => {
 		siteStates[0] as (typeof siteStates)[0]
 	);
 	const [editAbsence, setEditAbsence] = useState(false);
+	const [resetWorkerTimes, setResetWorkerTimes] = useState(false);
 
 	const pageHeaderButtons = useMemo(() => {
+		if (siteState.value === "workers") {
+			return [
+				{
+					type: "button",
+					text: "Monatsdaten aktualisieren",
+					onClick: () => {
+						setResetWorkerTimes(true);
+					},
+					color: "light",
+					is_add_button: false
+				}
+			];
+		}
 		if (siteState.value === "absence") {
 			return [
 				{
@@ -75,6 +90,10 @@ const RecordsOverview = () => {
 				<RecordsCalendar records={records} />
 			)}
 			{siteState.value === "settings" && <RecordsSettings />}
+			<ResetWorkerTimes
+				resetWorkerTimes={resetWorkerTimes}
+				setResetWorkerTimes={setResetWorkerTimes}
+			/>
 		</Page>
 	);
 };

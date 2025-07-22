@@ -1,29 +1,29 @@
 import { ViewState } from "./content/CalendarHeader/types";
 
 export type CalendarDayElement = {
-  dataType: string;
-  dataLength: number;
-  dataColor: string;
-  [key: string]: any;
+	dataType: string;
+	dataLength: number;
+	dataColor: string;
+	[key: string]: any;
 };
 
 export type CalendarData = { [key: string]: CalendarDayElement[] };
 
 export type CalendarProps = {
-  data: CalendarData;
+	data: CalendarData;
 };
 
 export type Day = string;
 
 export type Week = {
-  id: string;
-  days: string[];
+	id: string;
+	days: string[];
 };
 
 export type WeekInterval = Week[];
 
 export type UseCreateIntervalHook = ({
-  view,
+	view
 }: {
-  view: ViewState;
+	view: ViewState;
 }) => WeekInterval[];

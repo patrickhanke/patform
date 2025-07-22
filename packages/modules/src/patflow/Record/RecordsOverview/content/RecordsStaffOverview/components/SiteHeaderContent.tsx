@@ -1,7 +1,5 @@
 import { useEffect, useMemo } from "react";
 import { StaffMember } from "@repo/types";
-import { FIND_ALL_STAFF } from "@repo/provider";
-import { useQuery } from "@apollo/client";
 import { SiteHeaderContentProps } from "../types";
 import { months } from "@repo/provider";
 import { Loader } from "lucide-react";
@@ -11,39 +9,36 @@ const SiteHeaderContent = ({
 	selectedMonth,
 	setSelectedMonth,
 	selectedUser,
-	setSelectedUser
+	setSelectedUser,
+	staff
 }: SiteHeaderContentProps) => {
-	const { data: staffData } = useQuery(FIND_ALL_STAFF);
-
 	const selectOptions = useMemo(() => {
 		let staffOptions = [] as { value: string; label: string }[];
 		const monthOptions = [
 			{ value: "all", label: "Alle Monate" },
 			...months
 		];
-		if (staffData) {
-			staffOptions = staffData.objects.find_User.results.map(
-				(staff: StaffMember) => ({
-					value: staff.objectId,
-					label: `${staff.first_name} ${staff.family_name}`,
-					...staff
-				})
-			);
-		}
+		console.log({ staff });
+
+		staffOptions = staff.map((staff: StaffMember) => ({
+			value: staff.objectId,
+			label: `${staff.first_name} ${staff.family_name}`,
+			...staff
+		}));
 
 		return { staffOptions, monthOptions };
-	}, [staffData]);
+	}, [staff]);
 
 	useEffect(() => {
 		if (selectOptions.staffOptions && !selectedUser) {
 			setSelectedUser(selectOptions.staffOptions[0]);
 		}
-	}, [selectedMonth, setSelectedMonth]);
+	}, [selectedMonth, setSelectedMonth, staff]);
 
 	return (
 		<div className="flex row j-sb a-ce">
 			<div className="button_container">
-				{staffData ? (
+				{staff ? (
 					<Select
 						label=""
 						width="240px"

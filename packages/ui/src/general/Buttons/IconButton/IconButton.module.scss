@@ -16,6 +16,13 @@
   padding: 0;
 }
 
+.icon_button_container :disabled {
+  border: none;
+  color: constants.$grey_tinted;
+  background-color: transparent;
+  cursor: default;
+}
+
 .icon_button_container[data-isdark="false"] {
   border: none;
   color: constants.$dark;

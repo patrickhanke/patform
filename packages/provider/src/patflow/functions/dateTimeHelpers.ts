@@ -10,11 +10,11 @@ export function convertMillisecondsToString(ms: number | undefined): string {
 		);
 		minutes = minutes < 10 ? "0" + minutes : minutes;
 		if (ms < 0) {
-			return `-${hours}:${minutes}`;
+			return `-${hours}.${minutes}`;
 		}
-		return ` ${hours}:${minutes}`;
+		return ` ${hours}.${minutes}`;
 	}
-	return "00:00";
+	return "00.00";
 }
 
 export function convertMillisecondsAndHours(

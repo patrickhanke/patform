@@ -39,6 +39,7 @@ const IconButton: FC<IconButtonProps> = ({
 				<div className={clsx("label", styles.icon_label)}>{text}</div>
 			</button>
 		);
+
 	if (isLink && link)
 		return (
 			<Link

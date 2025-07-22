@@ -16,7 +16,6 @@ const FormikRender: FC<FormikRenderProps> = ({
 	data,
 	apiClass,
 	id,
-	afterSaveFunction,
 	formSubmitHandler,
 	formValidationHandler,
 	useWithDebounce,
@@ -70,7 +69,6 @@ const FormikRender: FC<FormikRenderProps> = ({
 						values={values}
 						apiClass={apiClass}
 						id={id}
-						afterSaveFunction={afterSaveFunction}
 						setFieldValue={setFieldValue}
 						handleChange={handleChange}
 						isHorizontal={isHorizontal}

@@ -1,6 +1,5 @@
 import {
 	CreateInitialTime,
-	DefaultDay,
 	DefaultWorkingDay,
 	Holiday,
 	Record,
@@ -19,12 +18,13 @@ import {
 	isMonday
 } from "date-fns";
 import { isArray } from "lodash-es";
+import { v4 } from "uuid";
 
 const checkForWorkingDay: (
-	date: Date,
+	date: string,
 	weekdays: number,
 	holidays: string[]
-) => boolean = (date: Date, weekdays, holidays) => {
+) => boolean = (date: string, weekdays, holidays) => {
 	if (holidays.includes(formatISO9075(date, { representation: "date" }))) {
 		return false;
 	}
@@ -76,7 +76,7 @@ export const createInitialTimes: (
 }) => {
 	const times: TimeObject[] = [];
 
-	const createTimeObject: (day: Date) => TimeObject = (day) => {
+	const createTimeObject: (day: string) => TimeObject = (day) => {
 		const isWorkingDay = checkForWorkingDay(
 			day,
 			timeSettings.weekdays,
@@ -93,17 +93,58 @@ export const createInitialTimes: (
 		};
 
 		if (isWorkingDay) {
+			const startTime = `${day}T${timeSettings.start || "08:00"}`;
+			const durationMs =
+				hoursToMilliseconds(
+					timeSettings.hours / timeSettings.weekdays
+				) + minutesToMilliseconds(timeSettings.pause);
+
+			const endTime = new Date(
+				new Date(startTime).getTime() + durationMs
+			);
+			const calculateBreaks: (
+				startTime: string,
+				pauseDuration: number
+			) => { start: string; end: string; id: string }[] = (
+				startTime,
+				pauseDuration
+			) => {
+				const startDateTime = new Date(startTime);
+				const breakStart = new Date(
+					startDateTime.getTime() + hoursToMilliseconds(6)
+				);
+
+				const breakEnd = new Date(
+					breakStart.getTime() + minutesToMilliseconds(pauseDuration)
+				);
+
+				return [
+					{
+						start: `${formatISO9075(breakStart, { representation: "date" })}T${formatISO9075(
+							breakStart,
+							{ representation: "time" }
+						)}`,
+						end: `${formatISO9075(breakEnd, { representation: "date" })}T${formatISO9075(
+							breakEnd,
+							{ representation: "time" }
+						)}`,
+						id: v4()
+					}
+				];
+			};
+
 			timeObject.default_time = {
 				type: "regular",
-				start: timeSettings.start || "8:00",
-				end: "",
+				start: startTime,
+				end: `${formatISO9075(endTime, { representation: "date" })}T${formatISO9075(endTime, { representation: "time" })}`,
 				pause: minutesToMilliseconds(timeSettings.pause),
 				duration:
 					hoursToMilliseconds(
 						timeSettings.hours / timeSettings.weekdays
 					) + minutesToMilliseconds(timeSettings.pause),
 				comment: "",
-				state: "initial"
+				state: "initial",
+				breaks: calculateBreaks(startTime, timeSettings.pause)
 			};
 		}
 		return timeObject;
@@ -118,7 +159,9 @@ export const createInitialTimes: (
 	);
 
 	dayInterval.forEach((day) => {
-		times.push(createTimeObject(day));
+		times.push(
+			createTimeObject(formatISO9075(day, { representation: "date" }))
+		);
 	});
 
 	return {
@@ -129,27 +172,36 @@ export const createInitialTimes: (
 	};
 };
 
-export const getDefaultTime: (date: string) => DefaultWorkingDay = (date) => ({
-	objectId: "",
-	month: new Date(date).getMonth(),
-	year: new Date(date).getFullYear(),
-	date: formatISO9075(new Date(date), { representation: "date" }),
-	is_working_day: true,
-	absence: null,
-	saldo: 0,
-	type: "work",
-	default_time: null,
-	surcharges: [],
-	time: {
-		type: "regular",
-		start: "",
-		end: "",
-		pause: 0,
-		comment: "",
-		duration: 0,
-		state: "initial"
-	}
-});
+export const getDefaultTime: (date: string) => DefaultWorkingDay = (date) => {
+	return {
+		objectId: "",
+		month: new Date(date).getMonth(),
+		year: new Date(date).getFullYear(),
+		date: date,
+		is_working_day: true,
+		absence: null,
+		saldo: 0,
+		type: "work",
+		default_time: null,
+		surcharges: [],
+		time: {
+			type: "regular",
+			start: `${date}T08:00:00`,
+			end: `${date}T16:30:00`,
+			pause: 0,
+			comment: "",
+			duration: 0,
+			state: "initial",
+			breaks: [
+				{
+					start: `${formatISO9075(new Date(date), { representation: "date" })}T14:00:00`,
+					end: `${formatISO9075(new Date(date), { representation: "date" })}T14:30:00`,
+					id: v4()
+				}
+			]
+		}
+	};
+};
 
 export const createDateIntervalForMonth: (
 	year: number,
@@ -203,7 +255,7 @@ export const getHolidayDates = (y: number, hds: Holiday[]): string[] => {
 
 	hds.forEach((hd: Holiday) => {
 		if (hd.dates && hd.dates[y.toString()]) {
-			dateArray.push(hd.dates[y.toString()]);
+			dateArray.push(hd.dates[y.toString()] as string);
 		}
 	});
 

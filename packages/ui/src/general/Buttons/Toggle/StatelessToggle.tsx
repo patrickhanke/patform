@@ -14,7 +14,12 @@ const StatelessToggle: FC<StatelessToggleProps> = ({
 		<div className="toggle-container">
 			{label && <label>{label}</label>}
 			<div className="toggle-switch" data-disabled={disabled}>
-				<input type="checkbox" checked={value} disabled={disabled} />
+				<input
+					readOnly
+					type="checkbox"
+					checked={value}
+					disabled={disabled}
+				/>
 				<span
 					onClick={() => onChange(!value)}
 					className="toggle-slider"

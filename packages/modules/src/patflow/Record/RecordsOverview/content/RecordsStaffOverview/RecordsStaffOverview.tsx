@@ -1,19 +1,25 @@
-import React, { useCallback, useMemo } from "react";
-import {
-	DayData,
-	RecordsStaffOverviwProps,
-	StaffOption,
-	TableData
-} from "./types";
+import React, { useContext, useMemo } from "react";
+import { RecordsStaffOverviwProps, StaffOption } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
-import { eachDayOfInterval, formatISO9075, isWeekend } from "date-fns";
-import useTableColumns from "./hooks/useTableColumns";
-import { Row } from "@tanstack/react-table";
-import { months } from "@repo/provider";
+import {
+	FIND_ALL_STAFF,
+	find_record,
+	months,
+	UserContext
+} from "@repo/provider";
 import useGetDay from "./hooks/useGetDay";
-import { Divider, Table } from "@repo/ui";
+import { Divider } from "@repo/ui";
+import { useQuery } from "@apollo/client";
+import StaffRecord from "./content/StaffRecord";
+import { TimesSaldo } from "./content/TimesSaldo";
+import { Record } from "@repo/types";
+import { StaffSurcharges } from "./content/StaffSurcharges";
+import { StaffVacation } from "./content/StaffVacation";
+import { StaffWorkingTimes } from "./content/StaffWorkingTimes";
 
 const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
+	const { projectId } = useContext(UserContext);
+
 	const [selectedMonth, setSelectedMonth] = React.useState<
 		(typeof months)[number]
 	>(
@@ -25,11 +31,33 @@ const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
 		null
 	);
 
-	const { days, refetch, loading } = useGetDay({
+	const { days, refetch } = useGetDay({
 		year,
 		user: selectedUser?.value
 	});
-	const columns = useTableColumns({ refetch, userId: selectedUser?.value });
+
+	const { data: recordData } = useQuery(find_record, {
+		variables: {
+			params: {
+				year: { _eq: year }
+			}
+		},
+		skip: !year
+	});
+	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+
+	const currentRecords = useMemo(() => {
+		const rec: Record[] = [];
+
+		if (!recordData || !selectedUser) return rec;
+		recordData.objects.findRecord.results.forEach((record: Record) => {
+			if (record.user.objectId === selectedUser.value) {
+				rec.push(record);
+			}
+		});
+
+		return rec;
+	}, [recordData, selectedUser]);
 
 	const siteHeaderContent = useMemo(
 		() => (
@@ -38,101 +66,55 @@ const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
 				selectedMonth={selectedMonth}
 				setSelectedUser={setSelectedUser}
 				selectedUser={selectedUser}
+				staff={staffData?.objects.find_User.results || []}
 			/>
 		),
-		[selectedMonth, selectedUser]
+		[selectedMonth, selectedUser, staffData]
 	);
-
-	const rowStyles = useCallback((row: Row<TableData>) => {
-		if (isWeekend(row.original.date)) {
-			return { backgroundColor: "#f0f0f0" };
-		}
-		return { backgroundColor: "transparent" };
-	}, []);
-
-	const tableData = useMemo(() => {
-		const interval: DayData[] = [];
-		const startDay = new Date(year, selectedMonth.id, 1);
-		const endDay = new Date(year, selectedMonth.id + 1, 0);
-		const dayInterval = eachDayOfInterval(
-			{
-				start: startDay,
-				end: endDay
-			},
-			{ step: 1 }
-		);
-
-		dayInterval.forEach((element: Date) => {
-			const daysToFind = days.filter(
-				(day) =>
-					day.date ===
-					formatISO9075(element, { representation: "date" })
-			);
-
-			if (daysToFind.length === 1 && daysToFind[0]) {
-				const timeArray: DayData["time"] = [];
-				daysToFind.forEach((day) => {
-					if (day.time) {
-						timeArray.push({
-							...day.time,
-							day_id: day.objectId
-						});
-					}
-				});
-				interval.push({
-					date: daysToFind[0].date,
-					is_working_day: daysToFind[0].is_working_day,
-					default_time: daysToFind[0].default_time,
-					time: timeArray,
-					absence: daysToFind[0].absence,
-					type: daysToFind[0].type
-				});
-			} else if (daysToFind.length > 1 && daysToFind[0]) {
-				const timeArray: DayData["time"] = [];
-				daysToFind.forEach((day) => {
-					if (day.time) {
-						timeArray.push({
-							...day.time,
-							day_id: day.objectId
-						});
-					}
-				});
-
-				interval.push({
-					date: formatISO9075(element, { representation: "date" }),
-					is_working_day: true,
-					default_time: daysToFind[0].default_time,
-					time: timeArray,
-					absence: null,
-					type: daysToFind[0].type
-				});
-			} else {
-				interval.push({
-					date: formatISO9075(element, { representation: "date" }),
-					is_working_day: false,
-					default_time: null,
-					time: undefined,
-					absence: null,
-					type: "initial"
-				});
-			}
-		});
-
-		return interval;
-	}, [days, selectedMonth, year, loading]);
 
 	return (
 		<div>
+			<StaffRecord
+				days={days}
+				year={year}
+				staff={staffData?.objects.find_User.results || []}
+			/>
 			<div className="button_container">{siteHeaderContent}</div>
 			<Divider size="small" showLine={false} />
 			{selectedUser ? (
-				<div className="content_element no_padding">
-					<Table
-						data={tableData}
-						columns={columns}
-						rowStyles={rowStyles}
+				<>
+					<StaffWorkingTimes
+						days={days}
+						year={year}
+						month={selectedMonth}
+						refetch={refetch}
+						selectedUser={selectedUser}
+						records={currentRecords}
 					/>
-				</div>
+					<Divider size="large" showLine={false} />
+					<TimesSaldo
+						days={days}
+						year={year}
+						month={selectedMonth}
+						selectedUser={selectedUser}
+						records={currentRecords}
+					/>
+					<Divider size="large" showLine={false} />
+					<StaffSurcharges
+						days={days}
+						year={year}
+						month={selectedMonth}
+						projectId={projectId}
+					/>
+					<Divider size="large" showLine={false} />
+					<StaffVacation
+						days={days}
+						year={year}
+						month={selectedMonth}
+						records={currentRecords}
+					/>
+					<Divider size="large" showLine={false} />
+				</>
 			) : (
 				<div>
 					<p>Bitte wählen Sie einen Mitarbeiter aus</p>

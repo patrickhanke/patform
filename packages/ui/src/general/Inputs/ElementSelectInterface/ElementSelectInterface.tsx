@@ -3,20 +3,20 @@
 import { FC, Fragment, useCallback, useMemo, useState } from "react";
 import ListElement from "./components/ListElement";
 import { ElementSelectInterfaceProps, SelectElement } from "./types";
-import { cloneDeep } from "lodash-es";
-import styles from "./ElementSelectInterface.module.scss";
+import { cloneDeep, get, set } from "lodash-es";
 import { Divider } from "../../Layout";
+import "./styles.scss";
 
 const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 	title = "",
 	elements = [],
 	selectedElements = [],
 	onSelect,
-	min = 1,
 	max = 1,
 	isSearchable = false,
 	selectProperty = false,
-	useTiles = false
+	useTiles = false,
+	selectAll = false
 }) => {
 	const [searchInput, setSearchTerm] = useState("");
 
@@ -29,8 +29,16 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 					(el: SelectElement) => el?.value === element.value
 				);
 				if (elementIndex !== -1) {
-					elementsCopy[elementIndex].selected =
-						!elementsCopy[elementIndex].selected;
+					const elementSelectValue = get(
+						elementsCopy,
+						`[${elementIndex}].selected`,
+						false
+					);
+					set(
+						elementsCopy,
+						`[${elementIndex}].selected`,
+						!elementSelectValue
+					);
 				}
 				onSelect(elementsCopy);
 			} else {
@@ -118,7 +126,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 	}, [elements, selectedElements, searchInput]);
 
 	return (
-		<div className={styles.elements_container}>
+		<div className={"elements_container"}>
 			{title && (
 				<>
 					<h3>{title}</h3>
@@ -126,17 +134,42 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 				</>
 			)}
 			{isSearchable && (
-				<div className={styles.filter_container}>
+				<div className={"filter_container"}>
 					<input
 						onChange={(e) => setSearchTerm(e.target.value)}
 						placeholder="Suche ..."
 					/>
 				</div>
 			)}
-			<div
-				className={styles.elements_interface_container}
-				data-row={useTiles}
-			>
+			{selectAll && (
+				<>
+					<div className={"filter_container"}>
+						<ListElement
+							key={"select_all"}
+							element={{
+								value: "select_all",
+								label: "Alle auswählen"
+							}}
+							isSelected={
+								selectedElements.length === elements.length
+							}
+							onSelect={() => {
+								if (selectedElements.length === elements.length)
+									onSelect([]);
+								else {
+									const newElements = elements.filter(
+										(el: SelectElement) => !el.single
+									);
+									onSelect(newElements);
+								}
+							}}
+							// useTiles={useTiles}
+						/>
+					</div>
+					<Divider showLine size="small" />
+				</>
+			)}
+			<div className={"elements_interface_container"} data-row={useTiles}>
 				{filteredElements.map(
 					(element: SelectElement, index, elements) => (
 						<Fragment key={element.value}>

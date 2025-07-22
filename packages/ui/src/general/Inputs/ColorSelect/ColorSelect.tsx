@@ -17,7 +17,7 @@ const ColorSelect: FC<ColorSelectProps> = ({ value, onChange }) => {
 		<ElementSelectInterface
 			isSearchable
 			elements={[...colors]}
-			min={1}
+			// min={1}
 			max={1}
 			title="Farbe auswählen"
 			selectedElements={selectedValue}

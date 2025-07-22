@@ -12,9 +12,7 @@ export type FormikRenderProps = {
 	formSubmitHandler?: (values: FormikValues) => void;
 	formValidationHandler?: (t: boolean) => void;
 	useWithDebounce?: boolean;
-	afterSaveFunction?: (T?: object, V?: any) => void;
 	enableReinitialize?: boolean;
-	valueReturnFunction?: (T?: object, V?: any) => void;
 	apiClass?: string;
 	id?: string;
 	isHorizontal?: boolean;

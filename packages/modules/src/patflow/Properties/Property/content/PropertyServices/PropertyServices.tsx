@@ -7,28 +7,28 @@ import { PropertyServicesProps } from "./types";
 import AddService from "./content/AddService";
 
 const PropertyServices: FC<PropertyServicesProps> = ({
-  objectId,
-  addService,
-  setAddService,
+	objectId,
+	addService,
+	setAddService
 }) => {
-  const { data } = useQuery(FIND_PROPERTY_SERVICES, {
-    variables: { id: objectId },
-  });
-  const columns = useTableColumns();
+	const { data } = useQuery(FIND_PROPERTY_SERVICES, {
+		variables: { id: objectId }
+	});
+	const columns = useTableColumns();
 
-  return (
-    <div className="site_content">
-      <Table
-        columns={columns}
-        data={data ? data.objects.findService.results : []}
-      />
-      <AddService
-        propertyId={objectId}
-        addService={addService}
-        setAddService={setAddService}
-      />
-    </div>
-  );
+	return (
+		<div className="site_content">
+			<Table
+				columns={columns}
+				data={data ? data.objects.findService.results : []}
+			/>
+			<AddService
+				propertyId={objectId}
+				addService={addService}
+				setAddService={setAddService}
+			/>
+		</div>
+	);
 };
 
 export default PropertyServices;

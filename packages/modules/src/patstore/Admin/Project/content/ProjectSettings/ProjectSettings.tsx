@@ -16,6 +16,9 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 		if (data) {
 			const project = data?.objects.getProject;
 
+			console.log(project.settings.email);
+			
+
 			return [
 				{
 					id: "name",
@@ -32,12 +35,21 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 				},
 				{
 					id: "logo",
-					position: 1,
+					position: 2,
 					name: "logo",
 					type: "image",
 					label: "Logo",
 					value: project.logo,
 					options: { max_file_count: 1, return_type: "string" }
+				},
+				{
+					id: "email",
+					position: 3,
+					name: "settings.email",
+					type: "input",
+					label: "E-Mail",
+					value: project?.settings?.email
+					// options: { max_file_count: 1, return_type: "string" }
 				}
 			];
 		} else {
@@ -49,6 +61,8 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 	if (error) return <p>Error...</p>;
 
 	const project = data?.objects.getProject;
+
+	console.log({ project });
 
 	return (
 		<Form
@@ -62,7 +76,8 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 					objectId: project?.objectId,
 					updateObject: {
 						name: values.name,
-						logo: values.logo
+						logo: values?.logo,
+						settings: values.settings
 					},
 					feedback: "Projekt aktualisiert"
 				});
@@ -70,6 +85,8 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 				refetch();
 			}}
 			useWithDebounce
+			enableReinitialize
+			isHorizontal
 		/>
 	);
 };

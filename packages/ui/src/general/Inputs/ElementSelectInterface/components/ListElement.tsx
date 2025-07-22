@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { ListElementProps } from "../types";
-import styles from "../ElementSelectInterface.module.scss";
 import clsx from "clsx";
 import { Icon } from "@repo/ui";
+import "../styles.scss";
 
 const ListElement: FC<ListElementProps> = ({
 	element,
@@ -13,10 +13,7 @@ const ListElement: FC<ListElementProps> = ({
 	return (
 		<>
 			<button
-				className={clsx(
-					"content_element",
-					styles.list_element_container
-				)}
+				className={clsx("content_element", "list_element_container")}
 				data-tile={useTiles}
 				data-selected={isSelected}
 				onClick={() => onSelect(element)}

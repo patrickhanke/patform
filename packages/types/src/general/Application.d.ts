@@ -3,6 +3,7 @@ export type Params = {
   object_id: string;
   form_id: string;
   code: string;
+  user_id: string;
 };
 
 export type PageState = {

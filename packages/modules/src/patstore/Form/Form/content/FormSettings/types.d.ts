@@ -20,3 +20,8 @@ export type FormSettingsTextProps = {
 	settings: FormClass["settings"];
 	updateSettings: (T: FormClass["settings"]) => void;
 };
+
+export type FormSettingsInputProps = {
+	settings: FormClass["settings"];
+	updateSettings: (T: FormClass["settings"]) => void;
+};

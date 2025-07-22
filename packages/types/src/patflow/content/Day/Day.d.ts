@@ -72,7 +72,7 @@ type WorkDay = {
 };
 
 type AbsenceDay = {
-  time: null;
+  time: AbsenceTime;
   absence: Absence;
   type: "absence";
 };

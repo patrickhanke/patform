@@ -1,2 +1,2 @@
-export * from "../patflow/General";
-export * from "../patflow/content";
+export type * from "../patflow/General";
+export type * from "../patflow/content";

@@ -12,17 +12,17 @@ $light: #f4f4f6;
 $lightest: #fafafa;
 $white: #fff;
 
-$magenta: #f5c6ea;
+$magenta: #DE4FBC;
 $magenta_shaded: #721c65;
 $magenta_tinted: #f8d7f3;
 
-$blue: #b3daf9;
+$blue: #0D6A87;
 $blue_shaded: #0d3a7f;
 $blue_tinted: #ddeffd;
 
-$yellow: #ffeeba;
-$yellow_shaded: #856404;
-$yellow_tinted: #fff3cd;
+$yellow: #d5b61d;
+$yellow_shaded: #b99e19;
+$yellow_tinted: #f9d729;
 
 // $green: #70B588;
 // $green_shaded: #5dab78;
@@ -36,7 +36,7 @@ $violet: #d1c4e9;
 $violet_shaded: #512da8;
 $violet_tinted: #ede7f6;
 
-$green: #c3e6cb;
+$green: #7cc38d;
 $green_shaded: #155724;
 $green_tinted: #d4edda;
 
@@ -54,63 +54,162 @@ $tertiary_light: $yellow_tinted;
 
 @mixin colorgroup($color: "primary") {
   @if $color == "primary" {
-    background-color: $primary_tinted;
+    background-color: lighten($primary, 30%);
     color: $primary;
   }
   @if $color == "secondary" {
-    background-color: $secondary_light;
+    background-color: lighten($secondary, 30%);
     color: $secondary;
   }
   @if $color == "tertiary" {
-    background-color: $tertiary_light;
+    background-color: lighten($tertiary, 30%);
     color: $tertiary;
   }
+  @if $color == "magenta" {
+    background-color: lighten($color: $magenta, $amount: 30%);
+    color: $magenta;
+  }
+  @if $color == "magenta_tintend" {
+    background-color: lighten($magenta_tinted, 30%);
+    color: $magenta_tinted;
+  }
+  @if $color == "magenta_shaded" {
+    background-color: lighten($magenta_shaded, 30%);
+    color: $magenta_shaded;
+  }
   @if $color == "violet" {
-    background-color: $violet_tinted;
+    background-color: lighten($color: $violet, $amount: 30%);
+    color: $violet;
+  }
+  @if $color == "violet_tintend" {
+    background-color: lighten($violet_tinted, 30%);
+    color: $violet_tinted;
+  }
+  @if $color == "violet_shaded" {
+    background-color: lighten($violet_shaded, 30%);
     color: $violet_shaded;
   }
   @if $color == "green" {
-    background-color: $green_tinted;
+    background-color: lighten($color: $green, $amount: 30%);
+    color: $green;
+  }
+  @if $color == "green_tintend" {
+    background-color: lighten($green_tinted, 30%);
+    color: $green_tinted;
+  }
+  @if $color == "green_shaded" {
+    background-color: lighten($green_shaded, 30%);
     color: $green_shaded;
   }
   @if $color == "yellow" {
-    background-color: $yellow_tinted;
+    background-color: lighten($color: $yellow, $amount: 30%);
+    color: $yellow;
+  }
+  @if $color == "yellow_tintend" {
+    background-color: lighten($yellow_tinted, 30%);
+    color: $yellow_tinted;
+  }
+  @if $color == "yellow_shaded" {
+    background-color: lighten($yellow_shaded, 30%);
     color: $yellow_shaded;
   }
   @if $color == "red" {
-    background-color: $red_tinted;
+    background-color: lighten($color: $red, $amount: 30%);
+    color: $red !important;
+  }
+  @if $color == "red_tintend" {
+    background-color: lighten($red_tinted, 30%);
+    color: $red_tinted;
+  }
+  @if $color == "red_shaded" {
+    background-color: lighten($red_shaded, 30%);
     color: $red_shaded !important;
   }
   @if $color == "dark" {
-    background-color: $light;
+    background-color: lighten($color: $dark, $amount: 30%);
     color: $dark;
+  }
+  @if $color == "dark_tintend" {
+    background-color: lighten($dark_tinted, 30%);
+    color: $dark_tinted;
+  }
+  @if $color == "dark_shaded" {
+    background-color: lighten($dark_shaded, 30%);
+    color: $dark_shaded;
   }
   @if $color == "light" {
-    background-color: $light;
-    color: $dark;
+    background-color: lighten($color: $light, $amount: 30%);
+    color: $light;
   }
   @if $color == "success" {
-    background-color: $green_tinted;
-    color: $green_shaded;
+    background-color: lighten($color: $green, $amount: 30%);
+    color: $green;
   }
   @if $color == "warning" {
-    background-color: $yellow_tinted;
-    color: $yellow_shaded;
+    background-color: lighten($color: $yellow, $amount: 30%);
+    color: $yellow;
   }
   @if $color == "danger" {
-    background-color: $red_tinted;
-    color: $red_shaded;
+    background-color: lighten($color: $red, $amount: 30%);
+    color: $red;
   }
   @if $color == "info" {
-    background-color: $blue_tinted;
-    color: $blue_shaded;
+    background-color: lighten($color: $blue, $amount: 30%);
+    color: $blue;
   }
   @if $color == "lightest" {
     background-color: $lightest;
     color: $grey;
   }
   @if $color == "blue" {
-    background-color: $blue_tinted;
+    background-color: lighten($color: $blue, $amount: 30%);
+    color: $blue;
+  }
+  @if $color == "blue_tintend" {
+    background-color: lighten($blue_tinted, 30%);
+    color: $blue_tinted;
+  }
+  @if $color == "blue_shaded" {
+    background-color: lighten($blue_shaded, 30%);
     color: $blue_shaded;
   }
 }
+
+$color-map: (
+  "primary": "primary",
+  "primary_shaded": "primary_shaded",
+  "primary_tinted": "primary_tinted",
+  "secondary": "secondary",
+  "secondary_shaded": "secondary_shaded",
+  "secondary_light": "secondary_light",
+  "tertiary": "tertiary",
+  "tertiary_shaded": "tertiary_shaded",
+  "tertiary_light": "tertiary_light",
+  "magenta": "magenta",
+  "magenta_shaded": "magenta_shaded",
+  "magenta_tinted": "magenta_tinted",
+  "blue": "blue",
+  "blue_shaded": "blue_shaded",
+  "blue_tinted": "blue_tinted",
+  "yellow": "yellow",
+  "yellow_shaded": "yellow_shaded",
+  "yellow_tinted": "yellow_tinted",
+  "green": "green",
+  "green_shaded": "green_shaded",
+  "green_tinted": "green_tinted",
+  "red": "red",
+  "red_shaded": "red_shaded",
+  "red_tinted": "red_tinted",
+  "violet": "violet",
+  "violet_shaded": "violet_shaded",
+  "violet_tinted": "violet_tinted",
+  "dark": "dark",
+  "dark_shaded": "dark_shaded",
+  "dark_tinted": "dark_tinted",
+  "light": "light",
+  "lightest": "lightest",
+  "white": "white",
+  "grey_shaded": "grey_shaded",
+  "grey": "grey",
+  "grey_tinted": "grey_tinted"
+);

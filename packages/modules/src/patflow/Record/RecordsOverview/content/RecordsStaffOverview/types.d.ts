@@ -1,5 +1,5 @@
 import { months } from "@repo/provider";
-import { Day } from "@repo/types";
+import { Day, StaffMember } from "@repo/types";
 import { UserDisplayData } from "@repo/types";
 
 export type RecordsStaffOverviwProps = {
@@ -19,6 +19,7 @@ export type SiteHeaderContentProps = {
 	selectedMonth: MonthOptions[number];
 	setSelectedUser: Dispatch<SetStateAction<StaffOption>>;
 	selectedUser: StaffOption | null;
+	staff: StaffMember[];
 };
 
 export type TableData = Day;

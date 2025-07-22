@@ -45,6 +45,10 @@ const DatePicker: FC<DatePickerProps> = ({
 		[debouncedValue]
 	);
 
+	useEffect(() => {
+		setDateValue(defaultValue);
+	}, [defaultValue]);
+
 	return (
 		<>
 			{label && <label htmlFor={id}>{label}</label>}

@@ -1,0 +1,147 @@
+import { FC, useContext, useMemo, useState } from "react";
+import { ElementSelectInterface, IconButton, SlideIn } from "@repo/ui";
+import { useQuery } from "@apollo/client";
+import {
+	generateGraphQLQuery,
+	getDateString,
+	PatflowAppContext,
+	useDataHandler
+} from "@repo/provider";
+import { Record } from "@repo/types";
+import { RecordSelectProps, SelectRecordElement } from "../types";
+
+const RecordSelect: FC<RecordSelectProps> = ({
+	initialSelectedRecords = [],
+	refetch,
+	surchargeId
+}) => {
+	const { updateData } = useDataHandler();
+	const [open, setOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [connectedRecords, setConnectedRecords] = useState<string[]>(
+		initialSelectedRecords || []
+	);
+	const { year } = useContext(PatflowAppContext);
+	const { data } = useQuery(
+		generateGraphQLQuery({
+			objectName: "Record",
+			fields: [
+				"objectId",
+				"start_date",
+				"end_date",
+				"user { first_name family_name objectId }",
+				"year"
+			],
+			type: "find"
+		}),
+		{
+			variables: { params: { year: { _eq: year } } }
+		}
+	);
+
+	const elements = useMemo(() => {
+		const elementArray: SelectRecordElement[] = [];
+		data?.objects.findRecord.results.forEach((record: Record) => {
+			elementArray.push({
+				value: record.objectId,
+				label: `${record.user.first_name} ${record.user.family_name} / ${getDateString(record.start_date).date}-${getDateString(record.end_date).date}`,
+				user_id: record.user.objectId
+			});
+		});
+		return elementArray;
+	}, [data]);
+
+	const records = data?.objects.findRecord.results || [];
+
+	return (
+		<>
+			<IconButton
+				onClick={() => setOpen(true)}
+				text={`${initialSelectedRecords ? initialSelectedRecords.length : 0} Zeiterfassungen ausgewählt`}
+				icon="calendar"
+			/>
+			<SlideIn
+				header="Zeiterfassungen auswählen"
+				confirm={async () => {
+					setLoading(true);
+					await updateData({
+						className: "Surcharge",
+						objectId: surchargeId,
+						updateObject: {
+							connected_records: connectedRecords
+						}
+					});
+					const updateRecordArray: Promise<any[]>[] = [];
+
+					records.forEach((record: Record) => {
+						const surcharges = record.surcharges || [];
+						const isSelected = connectedRecords.includes(
+							record.objectId
+						);
+						console.log(isSelected);
+
+						if (isSelected && !surcharges.includes(surchargeId)) {
+							updateRecordArray.push(
+								updateData({
+									className: "Record",
+									objectId: record.objectId,
+									updateObject: {
+										surcharges: [...surcharges, surchargeId]
+									}
+								})
+							);
+						} else if (
+							!isSelected &&
+							surcharges.includes(surchargeId)
+						) {
+							updateRecordArray.push(
+								updateData({
+									className: "Record",
+									objectId: record.objectId,
+									updateObject: {
+										surcharges: surcharges.filter(
+											(surcharge: string) =>
+												surcharge !== surchargeId
+										)
+									}
+								})
+							);
+						}
+					});
+					await Promise.all(updateRecordArray);
+					await refetch();
+					setConnectedRecords(initialSelectedRecords);
+					setLoading(false);
+					setOpen(false);
+				}}
+				isOpen={open}
+				cancel={() => {
+					setOpen(false);
+				}}
+				showSecondaryContent={false}
+				disabled={[loading, loading]}
+				preventClickOutside
+			>
+				<ElementSelectInterface
+					selectedElements={
+						elements.filter((element: SelectRecordElement) =>
+							connectedRecords?.includes(element.value)
+						) || []
+					}
+					elements={elements}
+					onSelect={(selectedElement) => {
+						console.log("Selected Record ID:", selectedElement);
+						setConnectedRecords(
+							selectedElement.map((element) => element.value)
+						);
+					}}
+					title="Zeiterfassung auswählen"
+					max={100}
+					selectAll
+				/>
+			</SlideIn>
+		</>
+	);
+};
+
+export default RecordSelect;

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { MonthData, StaffRecordProps } from "./types";
 import {
 	convertMillisecondsToString,
@@ -10,16 +10,21 @@ import { Day } from "@repo/types";
 import { find_record } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import useTableColumns from "./hooks/useTableColumns";
-import { Table } from "@repo/ui";
+import { SelectElement, SlideIn, Table } from "@repo/ui";
+import SelectStaff from "./components/SelectStaff";
 
-const StaffRecord = ({ days, year, user }: StaffRecordProps) => {
+const StaffRecord = ({ days, year, staff }: StaffRecordProps) => {
+	const [selectedWorker, setSelectedWorker] = useState<SelectElement[]>([]);
 	const { data: recordData } = useQuery(find_record, {
 		variables: {
-			params: { year: { _eq: year }, user: { _eq: user.objectId } }
+			params: {
+				year: { _eq: year },
+				user: { _eq: selectedWorker[0]?.objectId }
+			}
 		},
-		skip: !year
+		skip: !year || selectedWorker.length === 0
 	});
-
+	const [displayStaffRecord, setDisplayStaffRecord] = useState(false);
 	const columns = useTableColumns();
 
 	const monthData = useMemo(() => {
@@ -102,20 +107,41 @@ const StaffRecord = ({ days, year, user }: StaffRecordProps) => {
 		return dataArray;
 	}, [days, year, recordData]);
 
+	const secondaryContent = useMemo(
+		() => (
+			<Table
+				data={monthData}
+				columns={columns}
+				rowStyles={() => ({ textAlign: "right" })}
+			/>
+		),
+		[monthData]
+	);
+
 	return (
 		<div className="flex col j-sb a-fs">
-			<div>
-				<h3>
-					{user.first_name} {user.family_name}
-				</h3>
-			</div>
-			<div className="content_element no_padding">
-				<Table
-					data={monthData}
-					columns={columns}
-					rowStyles={() => ({ textAlign: "right" })}
-				/>
-			</div>
+			{/* <button
+				className="full_button md dark"
+				onClick={() => setDisplayStaffRecord(true)}
+			>
+				Zeitüberblick
+			</button> */}
+			<SlideIn
+				header="Zeiten Übersicht"
+				cancel={() => setDisplayStaffRecord(false)}
+				isOpen={displayStaffRecord}
+				confirm={() => setDisplayStaffRecord(false)}
+				secondaryContent={secondaryContent}
+				showSecondaryContent={true}
+			>
+				<div>
+					<SelectStaff
+						staff={staff}
+						selectedWorker={selectedWorker}
+						setSelectedWorker={setSelectedWorker}
+					/>
+				</div>
+			</SlideIn>
 		</div>
 	);
 };

@@ -1,11 +1,11 @@
 const siteStates = [
 	{
-		value: "weeks",
-		label: "Wochenübersicht"
-	},
-	{
 		value: "workers",
 		label: "Mitarbeiterübersicht"
+	},
+	{
+		value: "weeks",
+		label: "Wochenübersicht"
 	},
 	{
 		value: "absence",

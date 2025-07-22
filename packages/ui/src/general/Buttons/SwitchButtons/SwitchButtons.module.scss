@@ -109,3 +109,7 @@
     }
   }
 }
+
+.buttons_container[data-show_bottom_line="true"] {
+  border-bottom: 1px solid constants.$grey;
+}

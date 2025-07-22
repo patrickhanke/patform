@@ -51,6 +51,13 @@ const FormData: FC<FormDataProps> = ({ formId, setSelectedDataRows }) => {
 	// 	);
 	// }, []);
 
+	console.log(
+		data.map((dataElement) => ({
+			...dataElement.data,
+			objectId: dataElement.objectId
+		})) || []
+	);
+
 	return (
 		<div>
 			{data.length === 0 ? (
@@ -61,6 +68,7 @@ const FormData: FC<FormDataProps> = ({ formId, setSelectedDataRows }) => {
 					data={
 						data.map((dataElement) => ({
 							...dataElement.data,
+							createdAt: dataElement.createdAt,
 							objectId: dataElement.objectId
 						})) || []
 					}

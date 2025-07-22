@@ -16,7 +16,6 @@ const useDataHandler = (useMasterKey = false) => {
 	const { user, userLoading } = useContext(PatstoreAppContext);
 	const netlifyHookHandler = useNetlifyHooks();
 
-
 	const updateData = useCallback(
 		async ({
 			className,
@@ -29,7 +28,13 @@ const useDataHandler = (useMasterKey = false) => {
 			className: string;
 			objectId: string;
 			updateObject: {
-				[key: string]: string | number | boolean | object | Array<any>;
+				[key: string]:
+					| string
+					| number
+					| boolean
+					| object
+					| Array<any>
+					| undefined;
 			};
 			afterSaveHandler?: (objectId: string) => void;
 			feedback?: string;

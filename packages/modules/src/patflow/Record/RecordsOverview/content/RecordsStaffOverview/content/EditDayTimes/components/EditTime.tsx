@@ -1,47 +1,25 @@
-import { getDateString } from "@repo/provider";
-import {
-	format,
-	formatISO9075,
-	millisecondsToMinutes,
-	minutesToMilliseconds
-} from "date-fns";
+import { millisecondsToMinutes } from "date-fns";
 import { FC, useCallback } from "react";
 import { EditTimeProps, WorkingTime } from "../types";
 import { useDebounceCallback } from "usehooks-ts";
-import { cloneDeep } from "lodash-es";
+import { cloneDeep, set } from "lodash-es";
 import "../styles.scss";
+import { v4 as generateUuid } from "uuid";
+import { IconButton } from "@repo/ui";
 
-const EditTime: FC<EditTimeProps> = ({ time, timeChangeHandler, date }) => {
-	console.log({ time });
-
+const EditTime: FC<EditTimeProps> = ({
+	time,
+	timeChangeHandler,
+	date,
+	errors
+}) => {
 	const updateHandler = useCallback(
-		(
-			key: "start" | "end" | "pause" | "comment" | "date",
-			value: string
-		) => {
-			console.log(key, value);
-
+		(key: string, value: string) => {
 			const timeCopy: WorkingTime = cloneDeep(time);
 			if (!time) {
 				return;
 			}
-			if (key === "start" || key === "end") {
-				const editDate = new Date(date as string);
-				const hours = value.split(":")[0];
-				const minutes = value.split(":")[1];
-				editDate.setHours(Number(hours));
-				editDate.setMinutes(Number(minutes));
-				const newDate = format(editDate, "yyyy-MM-dd'T'HH:mm:ss");
-
-				timeCopy[key] = newDate;
-			}
-			if (key === "pause") {
-				const pauseValue = minutesToMilliseconds(Number(value));
-				timeCopy.pause = pauseValue;
-			}
-			if (key === "comment") {
-				timeCopy.comment = value;
-			}
+			set(timeCopy, key, value);
 
 			timeChangeHandler(timeCopy);
 		},
@@ -50,63 +28,168 @@ const EditTime: FC<EditTimeProps> = ({ time, timeChangeHandler, date }) => {
 
 	const debounced = useDebounceCallback(updateHandler, 600);
 
+	const addPause = useCallback(() => {
+		if (time) {
+			const breakArray = time.breaks || [];
+			const pauseId = generateUuid();
+			breakArray.push({
+				start: time.start,
+				end: time.end,
+				id: pauseId
+			});
+			timeChangeHandler({
+				...time,
+				breaks: breakArray
+			});
+		}
+	}, [time]);
+
 	return (
 		<div>
-			<div>
-				<h3>{getDateString(formatISO9075(new Date(date))).date}</h3>
-			</div>
 			<form className="edit_day_edit_time_form" action="">
-				<div className="row_container">
-					<label htmlFor={"start"}>Start</label>
-					<input
-						aria-label="Time"
-						id={"start"}
-						name={"start"}
-						type="time"
-						// onChange={(e) => timeChangeHandler(dayKey as string, {...time, start: e.target.value as D})}
-						onChange={(e) => debounced("start", e.target.value)}
-						defaultValue={
-							time?.start
-								? formatISO9075(time.start, {
-										representation: "time"
-									}).slice(0, 5)
-								: ""
-						}
-						step={undefined}
-						disabled={!date}
-					/>
+				<div>
+					<h3>Start- und Endzeit angeben</h3>
 				</div>
-				<div className="row_container">
-					<label htmlFor={"end"}>Ende</label>
-					<input
-						aria-label="Time"
-						id={"end"}
-						name={"end"}
-						type="time"
-						onChange={(e) => debounced("end", e.target.value)}
-						defaultValue={
-							time?.end
-								? formatISO9075(time.end, {
-										representation: "time"
-									}).slice(0, 5)
-								: ""
-						}
-						step={undefined}
-						disabled={!date}
-					/>
+				<div className="vertical_container light_box gap-sm">
+					<div className="horizontal_container">
+						<label htmlFor={"start"}>Start</label>
+						<input
+							aria-label="Time"
+							id={"start"}
+							name={"start"}
+							type="datetime-local"
+							// onChange={(e) => timeChangeHandler(dayKey as string, {...time, start: e.target.value as D})}
+							onChange={(e) => {
+								if (e.target.value) {
+									debounced("start", e.target.value);
+								}
+							}}
+							defaultValue={time?.start || ""}
+							step={undefined}
+							disabled={!date}
+						/>
+					</div>
+					<div className="horizontal_container">
+						<label htmlFor={"end"}>Ende</label>
+						<input
+							aria-label="Time"
+							id={"end"}
+							name={"end"}
+							type="datetime-local"
+							onChange={(e) => {
+								if (e.target.value) {
+									debounced("end", e.target.value);
+								}
+							}}
+							defaultValue={time?.end || ""}
+							step={undefined}
+							disabled={!date}
+						/>
+					</div>
 				</div>
-				<div className="row_container">
-					<label htmlFor={"pause"}>Pause</label>
-					<input
-						aria-label="Time"
-						id={"pause"}
-						name={"pause"}
-						type="number"
-						onChange={(e) => debounced("pause", e.target.value)}
-						defaultValue={millisecondsToMinutes(time?.pause || 0)}
-						step={undefined}
-						disabled={false}
-					/>
+				<div>
+					<div className="horizontal_container">
+						<h3>Pausen angeben</h3>
+						<IconButton
+							color="light"
+							size={12}
+							key="add_pause"
+							onClick={() => addPause()}
+							icon="plus"
+							text="Pause hinzufügen"
+						/>
+					</div>
+					<div className="vertical_container gap-md">
+						{time?.breaks &&
+							time?.breaks.map((breakTime, index) => {
+								return (
+									<div
+										key={breakTime.id}
+										className="vertical_container light_box gap-sm"
+									>
+										<div className="horizontal_container">
+											<label
+												htmlFor={`break-start-${index}`}
+											>
+												Start
+											</label>
+											<input
+												data-error={errors.find(
+													(error) =>
+														error.id === breakTime.id
+												)}
+												aria-label="Time"
+												id={`break-start-${index}`}
+												name="break-start"
+												type="datetime-local"
+												onChange={(e) =>
+													debounced(
+														`breaks.${index}.start`,
+														e.target.value
+													)
+												}
+												defaultValue={
+													breakTime.start || ""
+												}
+												step={undefined}
+												disabled={!date}
+											/>
+										</div>
+										<div className="horizontal_container">
+											<label
+												htmlFor={`break-end-${index}`}
+											>
+												Ende
+											</label>
+											<input
+												data-error={errors.find(
+													(error) =>
+														error.id === breakTime.id
+												)}
+												aria-label="Time"
+												id={`break-end-${index}`}
+												name="break-end"
+												type="datetime-local"
+												onChange={(e) =>
+													debounced(
+														`breaks.${index}.end`,
+														e.target.value
+													)
+												}
+												defaultValue={
+													breakTime.end || ""
+												}
+												step={undefined}
+												disabled={!date}
+											/>
+										</div>
+										<button
+											className="full_button red sm"
+											onClick={() => {
+												const timeCopy =
+													cloneDeep(time);
+												timeCopy.breaks.splice(
+													index,
+													1
+												);
+												timeChangeHandler(timeCopy);
+											}}
+										>
+											Pause löschen
+										</button>
+									</div>
+								);
+							})}
+					</div>
+					<div className="horizontal_container">
+						<label htmlFor={"pause"}>Pausenzeit:</label>
+						<p>
+							<span style={{ fontWeight: "bold" }}>
+								{millisecondsToMinutes(time?.pause || 0)}
+							</span>{" "}
+							Minuten
+						</p>
+					</div>
 				</div>
 				<div>
 					<label htmlFor="comments">Kommentar</label>

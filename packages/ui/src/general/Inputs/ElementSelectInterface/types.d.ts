@@ -5,7 +5,7 @@ export type SelectElement = {
 	selected?: boolean;
 	single?: boolean;
 	disabled?: boolean;
-	[key: string]: any;
+	[key: string]: object | Array<> | string | number | boolean;
 };
 
 export type ElementSelectInterfaceProps = {
@@ -13,11 +13,11 @@ export type ElementSelectInterfaceProps = {
 	elements: SelectElement[];
 	selectedElements: SelectElement[];
 	onSelect: (elements: SelectElement[]) => void;
-	min?: number;
 	max?: number;
 	isSearchable?: boolean;
 	selectProperty?: boolean;
 	useTiles?: boolean;
+	selectAll?: boolean;
 };
 
 export type ListElementProps = {

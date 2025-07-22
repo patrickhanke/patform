@@ -1,0 +1,18 @@
+@use "@repo/styles/constants";
+
+.edit_day_edit_time_form {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: space-between,
+    $align: stretch
+  );
+  input {
+    flex-basis: 180px;
+    flex-shrink: 1;
+    flex-grow: 0;
+    min-width: 48px !important;
+  }
+  textarea {
+    min-height: 48px;
+  }
+}

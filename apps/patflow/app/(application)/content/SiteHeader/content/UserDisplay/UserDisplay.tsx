@@ -38,9 +38,6 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
         setClient(true);
     }, []);
 
-    console.log({userMenu});
-    
-
     return (
         <>
         <div className="button_container">
