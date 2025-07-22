@@ -59,7 +59,6 @@ const UserRole = ({
 				selectedElements={elements.filter(
 					(element) => selectedRole === element.id
 				)}
-				min={1}
 				onSelect={(selectValue) => {
 					if (!selectValue || selectValue.length === 0) {
 						setSelectedRole(undefined);

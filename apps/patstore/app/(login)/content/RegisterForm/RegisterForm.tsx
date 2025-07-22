@@ -70,6 +70,7 @@ const RegisterForm = ({
             email: email,
             projects: [project.objectId],
             is_superuser: false,
+            roles: []
           })
           .then(async () => {
             await axiosclient().post("functions/remove-invitation-key", {

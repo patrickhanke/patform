@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import { axiosclient, useAppContext } from "@repo/provider";
+import { axiosclient, useAppContext, useDataContext } from "@repo/provider";
 import { Page, RenderFilters, SlideIn, Table } from "@repo/ui";
 import useUserColumns from "./hooks/useUserColumns";
 import { UsersOverviewProps, UserObject } from "./types";
@@ -9,10 +9,15 @@ import { FC, useEffect, useState } from "react";
 import CreateUser from "./components/CreateUser";
 import useFindUser from "./hooks/useFindUser";
 import { Filter } from "@repo/types";
+import page_states from "./constants/page_states";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
 	const [createUser, setCreateUser] = useState(false);
+	const { feedbackHandler } = useDataContext();
+	const [pageState, setPageState] = useState<(typeof page_states)[number]>(
+		page_states[0]
+	);
 
 	const initialFilters: Filter[] = useMemo(
 		() => [
@@ -71,7 +76,14 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			});
 		}
 
+		feedbackHandler({
+			success: true,
+			message: "Einladung erfolgreich gesendet",
+			type: "success"
+		});
+
 		await refetch();
+		setCreateUser(false);
 		setLoading(false);
 	}, [user]);
 

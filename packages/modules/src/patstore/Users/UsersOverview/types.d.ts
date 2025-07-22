@@ -21,6 +21,13 @@ export type UserObject = {
 	name: string;
 };
 
+export type DeleteUserProps = {
+	username: string;
+	userId: string;
+	email: string;
+	refetch: ApolloRefetch;
+};
+
 export type AddUserProps = {
 	user?: UserObject;
 	setUser: Dispatch<SetStateAction<UserObject | undefined>>;
