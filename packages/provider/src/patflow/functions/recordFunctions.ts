@@ -118,6 +118,8 @@ export const createInitialTimes: (
 					breakStart.getTime() + minutesToMilliseconds(pauseDuration)
 				);
 
+				console.log(breakStart, breakEnd);
+
 				return [
 					{
 						start: `${formatISO9075(breakStart, { representation: "date" })}T${formatISO9075(
@@ -152,8 +154,8 @@ export const createInitialTimes: (
 
 	const dayInterval = eachDayOfInterval(
 		{
-			start: new Date(start_date),
-			end: new Date(end_date)
+			start: new Date(new Date(start_date)),
+			end: new Date(new Date(end_date))
 		},
 		{ step: 1 }
 	);

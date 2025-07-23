@@ -22,11 +22,6 @@ const Editrecord: React.FC<EditRecordProps> = ({
 		record.time_settings
 	);
 
-	console.log(timeSettings);
-	
-
-	console.log(timeSettings);
-	console.log(record);
 	const [startDate, setStartDate] = useState<string>(record.start_date);
 	const { updateData } = useDataHandler();
 	const { data: holidayData } = useQuery(
@@ -62,6 +57,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 
 		const holidayDates = getHolidayDates(record.year, holidays);
 		// Edit record
+
 		const { default_times } = createInitialTimes({
 			start_date: startDate,
 			end_date: record?.end_date,
@@ -80,7 +76,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 			className: "Record",
 			objectId: record.objectId,
 			updateObject: {
-				default_times: updatedTimes,
+				default_times: default_times,
 				time_settings: timeSettings
 			}
 		});
@@ -227,8 +223,6 @@ const Editrecord: React.FC<EditRecordProps> = ({
 						highlightChanges
 						formSubmitHandler={(values) => {
 							if (values) {
-								console.log({values});
-								
 								setTimeSettings(values as RecordTimeSettings);
 							}
 						}}

@@ -7,6 +7,6 @@ const page_states = [
 		value: " invitations",
 		label: "Einladungen"
 	}
-];
+] as const;
 
 export default page_states;
