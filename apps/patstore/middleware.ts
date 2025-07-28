@@ -48,29 +48,6 @@ export async function middleware(request: NextRequest) {
     isApplicationPath = false;
   }
 
- 
-
-  try {
-    const data = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
-      method: "GET",
-      headers: {
-        "X-Parse-Application-Id": process.env.SASHIDO_APP_ID || "",
-        "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY || "",
-      },
-    });
-
-    if (data.ok) {
-      const projects = await data.json();
-      projects.results.forEach((project: any) => {
-        projectArray.push(`/${project.path}`);
-      });
-    } else {
-      console.error("Failed to fetch projects:", data.status, data.statusText);
-    }
-  } catch (err: any) {
-    console.error("Error fetching projects:", err.message);
-  }
-
   if (projectArray.length > 0) {
     projectArray.forEach((project) => {
       if (request.nextUrl.pathname.includes(project)) {
@@ -124,6 +101,28 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
+
+  try {
+    const data = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
+      method: "GET",
+      headers: {
+        "X-Parse-Application-Id": process.env.SASHIDO_APP_ID || "",
+        "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY || "",
+      },
+    });
+
+    if (data.ok) {
+      const projects = await data.json();
+      projects.results.forEach((project: any) => {
+        projectArray.push(`/${project.path}`);
+      });
+    } else {
+      console.error("Failed to fetch projects:", data.status, data.statusText);
+    }
+  } catch (err: any) {
+    console.error("Error fetching projects:", err.message);
+  }
+
   const projectId = process.env.PROJECT_ID;
     
   let roleModuleArray: string[] = [];
