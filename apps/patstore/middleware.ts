@@ -12,6 +12,9 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/_next") || // exclude Next.js internals
     pathname.startsWith("/api") || //  exclude all API routes
     pathname.startsWith("/static") || // exclude static files ||
+    pathname.startsWith("/login") || // exclude login files ||
+    pathname.startsWith("/invite") || // exclude invite files ||
+    pathname.startsWith("/password") || // exclude password files ||
     PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
     return NextResponse.next();
@@ -24,6 +27,8 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   if (token) {
+      console.log({token})
+ 
      const httpHeaders = {
       "X-Parse-Session-Token": token || "",
       "X-Parse-Application-Id": process.env.SASHIDO_APP_ID || "",
@@ -38,10 +43,11 @@ export async function middleware(request: NextRequest) {
       .then((response) => response.json())
       .catch(() => {
         console.log("error");
+        return null;
       });
       console.log({userData})
 
-      if (userData) {
+      if (userData?.objectId) {
         user = userData;
       } else {
         response.cookies.set("patstore_token", "", { maxAge: 0 });
@@ -50,6 +56,8 @@ export async function middleware(request: NextRequest) {
   } else {
     return NextResponse.redirect(new URL("/login", request.url));
   }
+
+  console.log({user})
 
 
   let isApplicationPath = true;
