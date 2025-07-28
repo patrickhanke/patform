@@ -15,6 +15,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/login") || // exclude login files ||
     pathname.startsWith("/invite") || // exclude invite files ||
     pathname.startsWith("/password") || // exclude password files ||
+    pathname.startsWith("/datenschutz") || // exclude datenschutz files ||
+    pathname.startsWith("/impressum") || // exclude impressum files ||
     PUBLIC_FILE.test(pathname) // exclude all files in the public folder
   ) {
     return NextResponse.next();
@@ -59,27 +61,6 @@ export async function middleware(request: NextRequest) {
 
   console.log({user})
 
-
-  let isApplicationPath = true;
-
-  if (request.nextUrl.pathname.includes("/login")) {
-    isApplicationPath = false;
-  }
-
-  if (request.nextUrl.pathname.includes("/invite")) {
-    isApplicationPath = false;
-  }
-
-  if (request.nextUrl.pathname.includes("/password")) {
-    isApplicationPath = false;
-  }
-
-  if (!user && !isApplicationPath) {
-    return NextResponse.next();
-  } else if (!user && isApplicationPath) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
   // check if user has role access to route
 
   let projectArray: string[] = [];
@@ -103,14 +84,6 @@ export async function middleware(request: NextRequest) {
     }
   } catch (err: any) {
     console.error("Error fetching projects:", err.message);
-  }
-
-    if (projectArray.length > 0) {
-    projectArray.forEach((project) => {
-      if (request.nextUrl.pathname.includes(project)) {
-        isApplicationPath = false;
-      }
-    });
   }
 
   const projectId = process.env.PROJECT_ID;
