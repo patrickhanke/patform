@@ -33,6 +33,23 @@ export async function middleware(request: NextRequest) {
   let user: PatstoreUser | null = null as PatstoreUser | null;
 
   let projectArray: string[] = [];
+
+  let isApplicationPath = true;
+
+  if (request.nextUrl.pathname.includes("/login")) {
+    isApplicationPath = false;
+  }
+
+  if (request.nextUrl.pathname.includes("/invite")) {
+    isApplicationPath = false;
+  }
+
+  if (request.nextUrl.pathname.includes("/password")) {
+    isApplicationPath = false;
+  }
+
+ 
+
   try {
     const data = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
       method: "GET",
@@ -54,20 +71,6 @@ export async function middleware(request: NextRequest) {
     console.error("Error fetching projects:", err.message);
   }
 
-  let isApplicationPath = true;
-
-  if (request.nextUrl.pathname.includes("/login")) {
-    isApplicationPath = false;
-  }
-
-  if (request.nextUrl.pathname.includes("/invite")) {
-    isApplicationPath = false;
-  }
-
-  if (request.nextUrl.pathname.includes("/password")) {
-    isApplicationPath = false;
-  }
-
   if (projectArray.length > 0) {
     projectArray.forEach((project) => {
       if (request.nextUrl.pathname.includes(project)) {
@@ -79,10 +82,6 @@ export async function middleware(request: NextRequest) {
   if (!token && !isApplicationPath) {
     return NextResponse.next();
   } else if (!token && isApplicationPath) {
-
-    console.log("deleting cookie", request.cookies.get("patstore_token"));
-    request.cookies.delete("patstore_token");
-
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -104,7 +103,17 @@ export async function middleware(request: NextRequest) {
         loggedIn = false;
       });
   }
+
   const response = NextResponse.next();
+
+  if (!user && isApplicationPath === true) {
+    console.info("deleting cookie 110", request.cookies.get("patstore_token"));
+    response.cookies.set("patstore_token", "", { maxAge: 0 });
+    return NextResponse.redirect(new URL("/login", request.url));
+  } else if (isApplicationPath === false) {
+    console.info("deleting cookie 115", request.cookies.get("patstore_token"));
+    response.cookies.set("patstore_token", "", { maxAge: 0 });
+  }
 
   if (loggedIn) {
     response.cookies.set("patstore_logged_in", "true");
