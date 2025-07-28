@@ -79,6 +79,10 @@ export async function middleware(request: NextRequest) {
   if (!token && !isApplicationPath) {
     return NextResponse.next();
   } else if (!token && isApplicationPath) {
+
+    console.log("deleting cookie", request.cookies.get("patstore_token"));
+    request.cookies.delete("patstore_token");
+
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -106,6 +110,7 @@ export async function middleware(request: NextRequest) {
     response.cookies.set("patstore_logged_in", "true");
   } else {
     if (request.nextUrl.pathname.includes("/login")) {
+
       response.cookies.set("patstore_logged_in", "false");
       return NextResponse.redirect(new URL("/login", request.url));
     }
