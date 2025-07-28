@@ -5,6 +5,8 @@ import { PatstoreUser } from "@repo/types";
 const PUBLIC_FILE = /\.(.*)$/;
 
 export async function middleware(request: NextRequest) {
+
+  // exclude paths
   const { pathname } = request.nextUrl;
   if (
     pathname.startsWith("/_next") || // exclude Next.js internals
@@ -15,24 +17,40 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // handle token
   const token = request.cookies.get("patstore_token")?.value;
-  const loggedInCookie = request.cookies.get("patstore_logged_in")?.value || "";
-  let loggedIn = loggedInCookie === "true" || false;
-
-  if (!token) {
-    loggedIn = false;
-  }
-
-  const httpHeaders = {
-    "X-Parse-Session-Token": token || "",
-    "X-Parse-Application-Id": process.env.SASHIDO_APP_ID || "",
-    "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY || "",
-  };
-
-  const headers = new Headers(httpHeaders);
   let user: PatstoreUser | null = null as PatstoreUser | null;
 
-  let projectArray: string[] = [];
+  const response = NextResponse.next();
+
+  if (token) {
+     const httpHeaders = {
+      "X-Parse-Session-Token": token || "",
+      "X-Parse-Application-Id": process.env.SASHIDO_APP_ID || "",
+      "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY || "",
+    };
+
+    const headers = new Headers(httpHeaders);
+    const userData = await fetch(`${process.env.SASHIDO_API_URL}users/me`, {
+      method: "GET",
+      headers,
+    })
+      .then((response) => response.json())
+      .catch(() => {
+        console.log("error");
+      });
+      console.log({userData})
+
+      if (userData) {
+        user = userData;
+      } else {
+        response.cookies.set("patstore_token", "", { maxAge: 0 });
+        return NextResponse.redirect(new URL("/login", request.url));
+      }
+  } else {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
 
   let isApplicationPath = true;
 
@@ -48,59 +66,15 @@ export async function middleware(request: NextRequest) {
     isApplicationPath = false;
   }
 
-  if (projectArray.length > 0) {
-    projectArray.forEach((project) => {
-      if (request.nextUrl.pathname.includes(project)) {
-        isApplicationPath = false;
-      }
-    });
-  }
-
-  if (!token && !isApplicationPath) {
+  if (!user && !isApplicationPath) {
     return NextResponse.next();
-  } else if (!token && isApplicationPath) {
+  } else if (!user && isApplicationPath) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (token) {
-    await fetch(`${process.env.SASHIDO_API_URL}users/me`, {
-      method: "GET",
-      headers,
-    })
-      .then((response) => response.json())
-      .then((actualData: PatstoreUser & { sessionToken: string }) => {
-        if (actualData.sessionToken === token && !loggedIn) {
-          loggedIn = true;
-        }
-        user = actualData;
-      })
-      .catch(() => {
-        console.log("error");
+  // check if user has role access to route
 
-        loggedIn = false;
-      });
-  }
-
-  const response = NextResponse.next();
-
-  if (!user && isApplicationPath === true) {
-    console.info("deleting cookie 110", request.cookies.get("patstore_token"));
-    response.cookies.set("patstore_token", "", { maxAge: 0 });
-    return NextResponse.redirect(new URL("/login", request.url));
-  } else if (isApplicationPath === false) {
-    console.info("deleting cookie 115", request.cookies.get("patstore_token"));
-    response.cookies.set("patstore_token", "", { maxAge: 0 });
-  }
-
-  if (loggedIn) {
-    response.cookies.set("patstore_logged_in", "true");
-  } else {
-    if (request.nextUrl.pathname.includes("/login")) {
-
-      response.cookies.set("patstore_logged_in", "false");
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-  }
+  let projectArray: string[] = [];
 
   try {
     const data = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
@@ -121,6 +95,14 @@ export async function middleware(request: NextRequest) {
     }
   } catch (err: any) {
     console.error("Error fetching projects:", err.message);
+  }
+
+    if (projectArray.length > 0) {
+    projectArray.forEach((project) => {
+      if (request.nextUrl.pathname.includes(project)) {
+        isApplicationPath = false;
+      }
+    });
   }
 
   const projectId = process.env.PROJECT_ID;
@@ -188,7 +170,6 @@ export async function middleware(request: NextRequest) {
   }
 
   console.log({pathArray});
-  
 
   if (
     !pathArray.includes(request.nextUrl.pathname) &&
