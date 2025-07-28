@@ -10,6 +10,7 @@ import CreateUser from "./components/CreateUser";
 import useFindUser from "./hooks/useFindUser";
 import { Filter } from "@repo/types";
 import page_states from "./constants/page_states";
+import UserInvitations from "./content/UserInvitations";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
@@ -72,7 +73,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				username: user.username,
 				email: user.username,
 				name: user.name,
-				project_id: project.objectId
+				project_id: project.objectId,
+				initial_invitation: true
 			});
 		}
 
@@ -119,15 +121,24 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	}, []);
 
 	return (
-		<Page title="Nutzerübersicht" pageHeaderButtons={pageHeaderButtons}>
-			<Table
-				columns={columns}
-				data={users || []}
-				setPagination={setPagination}
-				pagination={pagination}
-				rowCount={count}
-				filterContent={renderFilters}
-			/>
+		<Page
+			title="Nutzerübersicht"
+			pageHeaderButtons={pageHeaderButtons}
+			pageStates={[...page_states]}
+			pageState={pageState}
+			setPageState={setPageState}
+		>
+			{pageState.value === "user" && (
+				<Table
+					columns={columns}
+					data={users || []}
+					setPagination={setPagination}
+					pagination={pagination}
+					rowCount={count}
+					filterContent={renderFilters}
+				/>
+			)}
+			{pageState.value === " invitations" && <UserInvitations />}
 			<SlideIn
 				header="Neuen Benutzer einladen"
 				isOpen={createUser}

@@ -12,11 +12,10 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const { project, roles } = useAppContext();
   
   const userRole = roles.find((role) => user.roles.includes(role.objectId));
-  
+
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [];
     if (project) {
-
       const modules = cloneDeep(project.modules.results).sort( (a: Module, b: Module) => a.position - b.position);
       modules.forEach((module: Module) => {
         if (user.is_superuser) {
@@ -38,7 +37,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
     }
 
     return menuItemsArray;
-  }, [project]);
+  }, [project, userRole]);
 
   if (!project) {
     return null;

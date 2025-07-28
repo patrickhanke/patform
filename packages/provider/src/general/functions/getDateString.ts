@@ -1,5 +1,6 @@
 export const getDateString = (datum: string | undefined | Date) => {
 	if (!datum) return { date: "", time: "", dateTime: "" };
+	console.log({ datum });
 
 	const date = new Date(datum);
 	const year = date.getFullYear();

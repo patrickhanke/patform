@@ -2,19 +2,6 @@ import { FormDataElement } from "@repo/ui";
 import { CategoryClass } from "./Category";
 import { PatstoreUser } from "./User";
 
-export type PatstoreProject = {
-  name: string;
-  description: string;
-  objectId: string;
-  content: { label: string; value: string; icon: string }[];
-  logo: string;
-  path: string;
-  modules: {
-    results: Module[];
-  };
-  settings: {};
-};
-
 export type ClassCategories = string[];
 
 export type ClassState = {

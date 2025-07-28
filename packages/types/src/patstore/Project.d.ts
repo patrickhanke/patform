@@ -1,0 +1,20 @@
+export type PatstoreProjectInvitation = {
+	email: string;
+    name: string;
+    key: string;
+    date: string;
+}
+
+export type PatstoreProject = {
+  name: string;
+  description: string;
+  objectId: string;
+  content: { label: string; value: string; icon: string }[];
+  logo: string;
+  path: string;
+  modules: {
+    results: Module[];
+  };
+  invitations: PatstoreProjectInvitation[];
+  settings: {};
+};

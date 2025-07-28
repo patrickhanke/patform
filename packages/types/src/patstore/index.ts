@@ -17,3 +17,4 @@ export type * from "./User";
 export type * from "./Date";
 export type * from "./Role";
 export type * from "./Content";
+export type * from "./Project";

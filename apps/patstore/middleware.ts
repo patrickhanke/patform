@@ -104,6 +104,11 @@ export async function middleware(request: NextRequest) {
 
   if (loggedIn) {
     response.cookies.set("patstore_logged_in", "true");
+  } else {
+    if (request.nextUrl.pathname.includes("/login")) {
+      response.cookies.set("patstore_logged_in", "false");
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
   }
   const projectId = process.env.PROJECT_ID;
     

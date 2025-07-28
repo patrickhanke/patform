@@ -48,7 +48,7 @@ const SelectRoleModules: FC<SelectRoleModulesProps> = ({
 						);
 					}
 				}}
-				max={6}
+				max={100}
 				isSearchable
 			/>
 		),
@@ -98,7 +98,7 @@ const SelectRoleModules: FC<SelectRoleModulesProps> = ({
 					setLoading(false);
 				}}
 				disabled={[loading, loading]}
-				header="Personen auswählen"
+				header="Module auswählen"
 			>
 				{selectModule}
 			</SlideIn>

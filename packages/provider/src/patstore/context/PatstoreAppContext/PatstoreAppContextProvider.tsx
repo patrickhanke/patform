@@ -17,6 +17,8 @@ const AppContextProvider = ({
 	const [user, setUser] = useState<PatstoreUser>({} as PatstoreUser);
 	const pathname = usePathname();
 
+	console.log({ user });
+
 	const currentModule = useMemo(() => {
 		return project.modules.results.find((module) =>
 			pathname.includes(module.path)
