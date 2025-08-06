@@ -181,7 +181,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		setDisabled([true, true]);
 
 		if (time) {
-			await axiosclient().post("/functions/create-time-new", {
+			await axiosclient().post("/functions/create-time", {
 				time: time,
 				date: date,
 				day_id: dayId,

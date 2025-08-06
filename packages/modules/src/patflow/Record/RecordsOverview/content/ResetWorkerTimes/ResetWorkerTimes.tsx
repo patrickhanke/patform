@@ -63,11 +63,12 @@ const ResetWorkerTimes: FC<ResetWorkerTimesProps> = ({
 			data.objects.findDay.results.forEach((day: Day) => {
 				if (day.time) {
 					updateArray.push(
-						axiosclient().post("/functions/create-time-new", {
+						axiosclient().post("/functions/create-time", {
 							time: day.time,
 							date: day.date,
 							day_id: day.objectId,
-							user_id: day.user.objectId
+							user_id: day.user.objectId,
+							type: day.type || "work"
 						})
 					);
 				}
