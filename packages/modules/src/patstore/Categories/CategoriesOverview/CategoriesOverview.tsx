@@ -35,6 +35,7 @@ const Categories = () => {
 	const columns = useCreateColumns<CategoryClass>({
 		data: [
 			{ id: "image", type: "edit_image", label: "Bild" },
+			{ id: "objectId", type: "string", label: "ID" },
 			{ id: "name", type: "edit_string", label: "Name" },
 			{
 				id: "description",
