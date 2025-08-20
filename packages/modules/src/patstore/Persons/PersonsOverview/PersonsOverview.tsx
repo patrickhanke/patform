@@ -96,6 +96,7 @@ const PersonsOverview = () => {
 			pageHeaderButtons={pageHeaderButtons}
 			createClass={create_person}
 			emptyContent={true}
+			refetch={refetch}
 		>
 			<Table
 				columns={columns}
