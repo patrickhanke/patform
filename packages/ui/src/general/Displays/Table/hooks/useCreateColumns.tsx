@@ -54,8 +54,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandler(false);
 
-	console.log({ refetch });
-
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
 			await updateData({
