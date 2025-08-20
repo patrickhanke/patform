@@ -35,6 +35,16 @@ const useNetlifyHooks = () => {
 					);
 				}
 			}
+			if (project.objectId === "JRxDkaxCoI") {
+				if (objectClass === "Person") {
+					axios.post(
+						"https://api.netlify.com/build_hooks/68a58efad44d4e2b1c6cb0d7"
+					);
+					// return axios.post(
+					// 	"https://api.vercel.com/v1/integrations/deploy/prj_OhGFYMtNJUrzaAoTTHMsBUVybA5G/zgrsBETrlk"
+					// );
+				}
+			}
 		},
 
 		[project]
