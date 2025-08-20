@@ -44,14 +44,11 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 					null
 				);
 
-				console.log({ response });
 				setData(newData);
 			},
 			skip: !isOpen
 		}
 	);
-
-	console.log({ data });
 
 	const [disabled, setDisabled] = useState<[boolean, boolean]>([
 		false,
