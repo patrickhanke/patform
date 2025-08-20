@@ -12,7 +12,14 @@ const useFindPerson: UseFindPersonsHook = ({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Person",
-			fields: ["objectId", "name", "portrait", "data", "categories"]
+			fields: [
+				"objectId",
+				"name",
+				"portrait",
+				"email",
+				"data",
+				"categories"
+			]
 		}),
 		{
 			variables: {
