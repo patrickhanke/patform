@@ -1,4 +1,4 @@
-import { Filter, Person } from "@repo/types";
+import { ApolloRefetch, Filter, Person } from "@repo/types";
 
 export type PersonsOverviewProps = {
 	projectId: string;
@@ -14,7 +14,7 @@ export type UseFindPersonsHook = ({
 }) => {
 	loading: boolean;
 	persons?: Person[];
-	refetch: () => void;
+	refetch: ApolloRefetch;
 	count: number;
 };
 

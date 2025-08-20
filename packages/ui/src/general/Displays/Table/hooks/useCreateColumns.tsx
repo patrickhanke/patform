@@ -54,7 +54,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandler(false);
 
-	console.log({ data });
+	console.log({ refetch });
 
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
@@ -72,12 +72,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 	);
 
 	const handleImageChange = useCallback(
-		(objectId, columnId) => (value) =>
-			updateColumnData({
-				objectId,
-				updateObject: { [columnId]: value },
-				feedback: "Bilder aktualisiert"
-			}),
+		(objectId: string, columnId: string | number) =>
+			(value: string | object | number) =>
+				updateColumnData({
+					objectId,
+					updateObject: { [columnId]: value },
+					feedback: "Bilder aktualisiert"
+				}),
 		[updateColumnData]
 	);
 
@@ -126,7 +127,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 							maxFileCount={
 								columnElement.type === "gallery" ? 20 : 1
 							}
-							onChange={handleImageChange(row.objectId, columnElement.id)}
+							onChange={handleImageChange(
+								row.objectId,
+								columnElement.id as string
+							)}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
