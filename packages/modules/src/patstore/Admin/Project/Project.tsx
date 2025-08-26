@@ -19,8 +19,6 @@ import ProjectSettings from "./content/ProjectSettings";
 import ProjectRoles from "./content/ProjectRoles";
 
 const Project = ({ params }: { params: { project_id: string } }) => {
-	console.log(params.project_id);
-
 	const { data: projectData } = useQuery(
 		generateGraphQLQuery({
 			type: "get",
