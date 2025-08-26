@@ -25,6 +25,7 @@ interface GetProjectsResponse {
 
 const getData = async () => {
 	const projectId = process.env.PROJECT_ID;
+	console.log({ "admin project_ud": projectId });
 
 	const client: ApolloClient<any> = serverClient(
 		process.env.SASHIDO_GQL_URL as string,
