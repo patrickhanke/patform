@@ -52,7 +52,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 				header={"Datei ändern"}
 				buttonDisabled={[false, !file]}
 			>
-				<FileUploader
+				{/* <FileUploader
 					type="file"
 					onChange={(imgUrl) => setFile(imgUrl as string)}
 					path={
@@ -60,7 +60,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 					}
 					returnType={"string"}
 					maxFileCount={1}
-				/>
+				/> */}
 			</Modal>
 		</>
 	);
