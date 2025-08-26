@@ -5,8 +5,6 @@ import PatstoreAppContext from "./PatstoreAppContext";
 import { Module, PatstoreProject, PatstoreUser } from "@repo/types";
 import { usePathname } from "next/navigation";
 import { axiosclient } from "../../../general";
-import { UppyContextProvider } from "@uppy/react";
-import Uppy from "@uppy/core";
 
 const PatstoreAppContextProvider = ({
 	project,
@@ -15,8 +13,6 @@ const PatstoreAppContextProvider = ({
 	project: PatstoreProject;
 	children: React.ReactNode;
 }) => {
-	const [uppy] = useState(() => new Uppy());
-
 	const [pageTitle, setPageTitle] = useState();
 	const [user, setUser] = useState<PatstoreUser>({} as PatstoreUser);
 	const pathname = usePathname();
@@ -59,7 +55,7 @@ const PatstoreAppContextProvider = ({
 
 	return (
 		<PatstoreAppContext.Provider value={appContextObject}>
-			<UppyContextProvider uppy={uppy}>{children}</UppyContextProvider>
+			{children}
 		</PatstoreAppContext.Provider>
 	);
 };

@@ -74,6 +74,8 @@ const Table: React.FC<TableTypes> = ({
 	const handleRowSelection = useCallback(
 		(rowId: string) => {
 			if (selectedRows && setSelectedRows) {
+				console.log(selectedRows);
+				console.log(setSelectedRows);
 				const idIndex = selectedRows.findIndex(
 					(selectedRow) => selectedRow === rowId
 				);
