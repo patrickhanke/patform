@@ -22,6 +22,8 @@ const Table: React.FC<TableTypes> = ({
 	cellBorders = false,
 	enableRowSelection = false,
 	onRowSelection,
+	selectedRows,
+	setSelectedRows,
 	rowCount,
 	pagination,
 	setPagination,
@@ -29,8 +31,6 @@ const Table: React.FC<TableTypes> = ({
 }) => {
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
-
-	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
 	const table = useReactTable({
 		data: tableData,
@@ -73,46 +73,52 @@ const Table: React.FC<TableTypes> = ({
 
 	const handleRowSelection = useCallback(
 		(rowId: string) => {
-			const idIndex = selectedRows.findIndex(
-				(selectedRow) => selectedRow === rowId
-			);
-
-			if (idIndex !== -1) {
-				const newSelectedRows = selectedRows.filter(
-					(selectedRow) => selectedRow !== rowId
+			if (selectedRows && setSelectedRows) {
+				const idIndex = selectedRows.findIndex(
+					(selectedRow) => selectedRow === rowId
 				);
-				setSelectedRows(newSelectedRows);
-				if (onRowSelection) {
-					onRowSelection(newSelectedRows);
-				}
-			} else {
-				setSelectedRows((prev) => [...prev, rowId]);
-				if (onRowSelection) {
-					onRowSelection([...selectedRows, rowId]);
+
+				if (idIndex !== -1) {
+					const newSelectedRows = selectedRows.filter(
+						(selectedRow) => selectedRow !== rowId
+					);
+					setSelectedRows(newSelectedRows);
+					if (onRowSelection) {
+						onRowSelection(newSelectedRows);
+					}
+				} else {
+					setSelectedRows((prev) => [...prev, rowId]);
+					if (onRowSelection) {
+						onRowSelection([...selectedRows, rowId]);
+					}
 				}
 			}
 		},
-		[selectedRows, onRowSelection]
+		[selectedRows, onRowSelection, setSelectedRows]
 	);
 
 	const handleSelectAll = useCallback(() => {
-		const allSelected =
-			selectedRows.length === table.getRowModel().rows.length;
-		if (allSelected) {
-			setSelectedRows([]);
-		} else {
-			const allRowIds = table
-				.getRowModel()
-				.rows.map((row) => row.original.objectId);
-			setSelectedRows(allRowIds);
-		}
-		if (onRowSelection) {
+		if (selectedRows && setSelectedRows) {
+			const allSelected =
+				selectedRows.length === table.getRowModel().rows.length;
 			if (allSelected) {
-				onRowSelection([]);
+				setSelectedRows([]);
 			} else {
-				onRowSelection(
-					table.getRowModel().rows.map((row) => row.original.objectId)
-				);
+				const allRowIds = table
+					.getRowModel()
+					.rows.map((row) => row.original.objectId);
+				setSelectedRows(allRowIds);
+			}
+			if (onRowSelection) {
+				if (allSelected) {
+					onRowSelection([]);
+				} else {
+					onRowSelection(
+						table
+							.getRowModel()
+							.rows.map((row) => row.original.objectId)
+					);
+				}
 			}
 		}
 	}, [selectedRows, table, onRowSelection]);
@@ -154,9 +160,11 @@ const Table: React.FC<TableTypes> = ({
 													handleSelectAll()
 												}
 												checked={
-													selectedRows.length ===
-													table.getRowModel().rows
-														.length
+													selectedRows
+														? selectedRows.length ===
+															table.getRowModel()
+																.rows.length
+														: false
 												}
 											/>
 										</th>
@@ -199,9 +207,12 @@ const Table: React.FC<TableTypes> = ({
 						</thead>
 						<tbody>
 							{table.getRowModel().rows.map((row) => {
-								const isSelected = selectedRows.includes(
-									row?.original?.objectId
-								);
+								const isSelected = selectedRows
+									? selectedRows.includes(
+											row?.original?.objectId
+										)
+									: false;
+
 								return (
 									<tr
 										key={row.id}

@@ -69,6 +69,7 @@ const TaskList = ({
 					filterContent={filterContent}
 					enableRowSelection={enableRowSelection}
 					onRowSelection={onRowSelection}
+					// selectedRows={}
 				/>
 				<Modal
 					isOpen={!!deleteTaskModal}

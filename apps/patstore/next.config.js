@@ -29,7 +29,6 @@ module.exports = {
     BYTESCALE_SECRET_KEY: process.env.BYTESCALE_SECRET_KEY,
     APP_NAME: "patstore",
     SESSION_TOKEN: "patstore_token",
-    BYTESCALE_IMAGE_FOLDER: "patstore",
     PROJECT_ID: "lt4HonzqK3",
     FIREBASE_API_KEY: "AIzaSyBC8ysrORfhs72H6zkAlR1-Atz0zKcSM34",
     FIREBASE_AUTH_DOMAIN: "patwork-3b6d7.firebaseapp.com",

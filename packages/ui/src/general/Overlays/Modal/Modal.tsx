@@ -13,7 +13,8 @@ const Modal: React.FC<ModalProps> = ({
 	confirmButtonHandler,
 	buttonDisabled = [false, false],
 	errors = [],
-	confirmButtonText = "Bestätigen"
+	confirmButtonText = "Bestätigen",
+	cancelButtonText = "Abbrechen"
 }) => {
 	if (isOpen === true)
 		return (
@@ -36,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({
 							onClick={() => cancelButtonHandler()}
 							disabled={buttonDisabled[0]}
 						>
-							Abbrechen
+							{cancelButtonText}
 						</button>
 						{confirmButtonHandler && (
 							<button

@@ -1,12 +1,11 @@
 "use client";
 
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import {
 	DataTransfer,
 	generateQuery,
 	Modal,
 	Page,
-	PatstoreDisplayImage,
 	PatstoreImageUploader,
 	RenderFilters,
 	Separator,
@@ -18,21 +17,15 @@ import { Filter, ImageClass } from "@repo/types";
 import {
 	convertDateToString,
 	getImageUrlFromBytescale,
-	Parse,
 	PatstoreAppContext,
 	useDataHandler
 } from "@repo/provider";
-import Cookies from "js-cookie";
 
 const ImagesOverview = () => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
-	const { deleteData, createData, updateImage } = useDataHandler(false);
+	const { deleteData, updateImage } = useDataHandler(false);
 
 	const [uploadImages, setUploadImages] = useState(false);
-	const [newImages, setNewImages] = useState<
-		{ filePath: string; fileName: string }[]
-	>([]);
-
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -48,41 +41,6 @@ const ImagesOverview = () => {
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
 	});
-
-	const resetUploadImages = () => {
-		setNewImages([]);
-		setUploadImages(false);
-	};
-
-	const imageUploadHandler = useCallback(async () => {
-		const uploadArray = newImages.map(async (image) => {
-			await createData({
-				className: "Image",
-				updateObject: {
-					name: image.fileName,
-					filePath: image.filePath,
-					categories: [],
-					description: "",
-					fields: [],
-					created_by: {
-						__type: "Pointer",
-						className: "_User",
-						objectId: user.objectId
-					},
-					connected_elements: [],
-					module: {
-						__type: "Pointer",
-						className: "Module",
-						objectId: currentModule.objectId
-					}
-				},
-				userId: user?.objectId
-			});
-		});
-
-		await Promise.all(uploadArray);
-		await refetch();
-	}, [currentModule, user, newImages, user]);
 
 	const [deleteModal, setDeleteModal] = useState(false);
 
@@ -180,6 +138,8 @@ const ImagesOverview = () => {
 		[user]
 	);
 
+	console.log(selectedRows);
+
 	return (
 		<Page
 			title="Bilder"
@@ -245,12 +205,8 @@ const ImagesOverview = () => {
 			/>
 			<Modal
 				isOpen={uploadImages}
-				buttonDisabled={[false, newImages.length === 0]}
-				cancelButtonHandler={() => resetUploadImages()}
-				confirmButtonHandler={async () => {
-					await imageUploadHandler();
-					resetUploadImages();
-				}}
+				buttonDisabled={[false, false]}
+				cancelButtonHandler={() => setUploadImages(false)}
 				header="Bilder hochladen"
 			>
 				<p>
@@ -258,24 +214,10 @@ const ImagesOverview = () => {
 				</p>
 				<PatstoreImageUploader
 					maxFileCount={20}
-					onChange={(newImages) => {
-						setNewImages(newImages);
+					afterUploadHandler={async () => {
+						await refetch();
 					}}
 				/>
-				{newImages.length > 0 && (
-					<div>
-						<p>{newImages.length} Bilder ausgewählt</p>
-						<div className="flex row ai-ce j-fs gap-sm wrap">
-							{newImages.map((image) => (
-								<PatstoreDisplayImage
-									key={image.filePath}
-									filePath={image.filePath}
-									name={image.fileName}
-								/>
-							))}
-						</div>
-					</div>
-				)}
 			</Modal>
 			<Modal
 				isOpen={deleteModal}

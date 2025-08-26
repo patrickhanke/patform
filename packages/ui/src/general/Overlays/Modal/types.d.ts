@@ -10,4 +10,5 @@ export type ModalProps = {
 	buttonDisabled?: [boolean, boolean];
 	errors?: ErrorMessage[];
 	confirmButtonText?: string;
+	cancelButtonText?: string;
 };

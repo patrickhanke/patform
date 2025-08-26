@@ -27,6 +27,8 @@ export type TableTypes = {
 	pagination?: PaginationState;
 	setPagination?: Dispatch<SetStateAction<PaginationState>>;
 	filterContent?: ReactNode;
+	selectedRows?: string[];
+	setSelectedRows?: Dispatch<SetStateAction<string[]>>;
 };
 
 export type ColumnDef<TData> = ColumnDef<TData>;

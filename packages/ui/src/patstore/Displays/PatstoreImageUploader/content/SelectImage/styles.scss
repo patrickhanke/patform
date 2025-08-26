@@ -1,5 +1,18 @@
 @use "@repo/styles/constants";
 
+.uppy_upload_container {
+  @include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: 12px);
+  width: 420px;
+  height: fit-content;
+  position: relative;
+  height: 480px;
+  .uppy-Container {
+    width: 100%;
+    position: relative;
+    max-height: 480px;
+  }
+}
+
 .upload_container {
   @include constants.flexbox($direction: column, $align: flex-star, $gap: 0);
   width: 100%;
