@@ -1,3 +1,5 @@
+"use client";
+
 export { default as TableColumnString } from "./TableColumnString";
 export { default as TableColumnImage } from "./TableColumnImage";
 export { default as TableColumnTextfield } from "./TableColumnTextfield";

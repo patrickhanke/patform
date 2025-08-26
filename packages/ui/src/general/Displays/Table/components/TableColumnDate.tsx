@@ -1,3 +1,5 @@
+"use client";
+
 import { getDateString } from "@repo/provider";
 import { Modal, DatePicker } from "@repo/ui";
 import { useState } from "react";

@@ -5,7 +5,11 @@ import { FC, useState } from "react";
 import { Filter } from "@repo/types";
 import { FormDataProps } from "./types";
 
-const FormData: FC<FormDataProps> = ({ formId, setSelectedDataRows }) => {
+const FormData: FC<FormDataProps> = ({
+	formId,
+	selectedDataRows,
+	setSelectedDataRows
+}) => {
 	const initialFilters: Filter[] = [
 		{
 			key: "reference_id",
@@ -76,7 +80,8 @@ const FormData: FC<FormDataProps> = ({ formId, setSelectedDataRows }) => {
 					pagination={pagination}
 					rowCount={count}
 					// filterContent={renderFilters}
-					onRowSelection={setSelectedDataRows}
+					setSelectedRows={setSelectedDataRows}
+					selectedRows={selectedDataRows}
 					enableRowSelection
 				/>
 			)}

@@ -108,7 +108,8 @@ const NewsOverview = () => {
 				pagination={pagination}
 				rowCount={count}
 				filterContent={renderFilters}
-				onRowSelection={setSelectedRows}
+				selectedRows={selectedRows}
+				setSelectedRows={setSelectedRows}
 				enableRowSelection
 			/>
 			<Modal

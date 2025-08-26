@@ -8,6 +8,7 @@ import useTableColumns from "./hooks/useTableColumns";
 import { Task } from "@repo/types";
 import { Modal, Table } from "@repo/ui";
 
+
 const TaskList = ({
 	taskList,
 	refetch,
@@ -17,7 +18,8 @@ const TaskList = ({
 	count,
 	filterContent,
 	enableRowSelection = false,
-	onRowSelection
+	selectedRows,
+	setSelectedRows
 }: TaskListComponent) => {
 	const { updateData, deleteData } = useDataHandler();
 	const [deleteTaskModal, setDeleteTaskModal] = useState<undefined | Task>(
@@ -68,8 +70,8 @@ const TaskList = ({
 					rowCount={count}
 					filterContent={filterContent}
 					enableRowSelection={enableRowSelection}
-					onRowSelection={onRowSelection}
-					// selectedRows={}
+					selectedRows={selectedRows}
+					setSelectedRows={setSelectedRows}
 				/>
 				<Modal
 					isOpen={!!deleteTaskModal}

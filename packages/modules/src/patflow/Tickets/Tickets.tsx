@@ -247,7 +247,8 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 					rowCount={count}
 					filterContent={siteHeaderContent}
 					enableRowSelection
-					onRowSelection={setSelectedRows}
+					selectedRows={selectedRows}
+					setSelectedRows={setSelectedRows}
 				/>
 			</div>
 			<Modal

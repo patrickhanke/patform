@@ -1,7 +1,9 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type FormDataProps = {
 	formId: string;
 	selectedDataRows: string[];
-	setSelectedDataRows: (selectedDataRows: string[]) => void;
+	setSelectedDataRows: Dispatch<SetStateAction<string[]>>;
 };
 
 export type UseFindFormDataHook = (T: {

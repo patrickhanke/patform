@@ -19,6 +19,7 @@ import site_states from "./constants/site_states";
 import { PatflowAppContext } from "@repo/provider";
 import { NotificationContext } from "@repo/provider";
 import TaskModal from "./components/TaskModal";
+import { set } from 'lodash-es';
 
 const Tasks = ({ id, className, pageState }: TasksComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
@@ -209,7 +210,8 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 					pagination={pagination}
 					setPagination={setPagination}
 					enableRowSelection={true}
-					onRowSelection={setSelectedRows}
+					setSelectedRows={setSelectedRows}
+					selectedRows={selectedRows}
 					count={count}
 					filterContent={
 						<SiteHeaderContent

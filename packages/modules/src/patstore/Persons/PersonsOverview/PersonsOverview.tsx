@@ -106,7 +106,8 @@ const PersonsOverview = () => {
 				pagination={pagination}
 				setPagination={setPagination}
 				enableRowSelection
-				onRowSelection={setSelectedRows}
+				selectedRows={selectedRows}
+				setSelectedRows={setSelectedRows}
 				filterContent={renderFilters}
 			/>
 			<Modal

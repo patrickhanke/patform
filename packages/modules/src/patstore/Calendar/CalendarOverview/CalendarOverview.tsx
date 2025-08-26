@@ -129,7 +129,8 @@ const CalendarOverview = () => {
 				pagination={pagination}
 				rowCount={count}
 				filterContent={renderFilters}
-				onRowSelection={setSelectedRows}
+				setSelectedRows={setSelectedRows}
+				selectedRows={selectedRows}
 				enableRowSelection
 			/>
 			<Modal

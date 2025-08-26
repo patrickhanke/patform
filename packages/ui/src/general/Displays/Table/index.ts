@@ -1,4 +1,5 @@
-import generatePagination from "./functions/generatePagination";
+"use client";
+
 export { default as Table } from "./Table";
 export { default as TableCheckbox } from "./components/TableCheckbox";
 export type * from "./types";
