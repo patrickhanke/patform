@@ -1,1 +1,1 @@
-export { default } from "./TableColumnEditContent";
+export { default as TableColumnEditContent } from "./TableColumnEditContent";

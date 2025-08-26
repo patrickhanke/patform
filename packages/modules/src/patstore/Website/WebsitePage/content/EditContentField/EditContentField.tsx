@@ -1,11 +1,18 @@
-import { IconButton, SlideIn, StatelessToggle } from "@repo/ui";
+import {
+	ElementSelectInterface,
+	IconButton,
+	SlideIn,
+	StateDisplay,
+	StatelessToggle
+} from "@repo/ui";
 import { EditContentFieldProps } from "./types";
-import { useState, FC, ReactNode, useEffect } from "react";
+import { useState, FC, ReactNode, useEffect, useContext, useMemo } from "react";
 import EditContent from "./components/EditContent";
-import { WebpageContent, WebpageContentTable } from "@repo/types";
+import { Filter, WebpageContent } from "@repo/types";
 import { cloneDeep, set } from "lodash-es";
-import { useDataHandler } from "@repo/provider";
-import EditTable from "./content/EditTable";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
+import useFindContent from "./hooks/useFindContent";
+import content_type_options from "./constants/content_type_options";
 
 const EditContentField: FC<EditContentFieldProps> = ({
 	initialField,
@@ -16,33 +23,84 @@ const EditContentField: FC<EditContentFieldProps> = ({
 	const { updateData } = useDataHandler();
 	const [editContent, setEditContent] = useState(false);
 	const [field, setField] = useState<WebpageContent>(initialField);
+	const { currentModule } = useContext(PatstoreAppContext);
+	const [pagination] = useState({
+		pageIndex: 0,
+		pageSize: 50
+	});
 
 	const [secondaryContent, setSecondaryContent] = useState<ReactNode | null>(
 		null
 	);
 
+	const [filters] = useState<Filter[]>([
+		{
+			id: "type",
+			key: "type",
+			operator: "_in",
+			value: ["table"]
+		}
+	]);
+
+	const { content: webpageContent } = useFindContent({
+		moduleId: currentModule.objectId,
+		filters,
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize
+	});
+
+	const selectElements = useMemo(() => {
+		if (!webpageContent) {
+			return [];
+		}
+		return webpageContent.map((element) => ({
+			value: element.objectId,
+			label: element.name
+		}));
+	}, [webpageContent]);
+	console.log({ type: field.type });
+	
 	useEffect(() => {
 		if (field.type === "table") {
+			console.log({ selectElements });
 			setSecondaryContent(
-				<EditTable
-					initialField={field["table"]}
-					onChange={(table: WebpageContentTable["table"]) =>
-						setField({
-							...field,
-							table: table
-						})
+				<ElementSelectInterface
+					title="Tabelle auswählen"
+					elements={selectElements}
+					selectedElements={
+						selectElements.filter(
+							(element) => element.value === field.table
+						) || []
 					}
+					onSelect={(value) => {
+						if (value.length > 1) {
+							return;
+						} else if (value.length === 1 && value[0]) {
+							setField({ ...field, table: value[0].value });
+						} else {
+							setField({ ...field, table: "" });
+						}
+					}}
 				/>
 			);
 		} else {
 			setSecondaryContent(null);
 		}
-	}, [field]);
+	}, [field, selectElements, webpageContent]);
 
 	return (
 		<div className="flex row a-ce j-sb gap-sm w-100">
 			<h3>{field.name}</h3>
 			<div className="button_container">
+				<StateDisplay
+					color="yellow"
+					label={
+						content_type_options.find(
+							(option) => option.value === field.type
+						)?.label || ""
+					}
+				/>
+				<p>|</p>
 				<p>Aktiv: </p>
 				<StatelessToggle
 					value={field.active}

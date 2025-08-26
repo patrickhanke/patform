@@ -20,6 +20,7 @@ module.exports = {
     SASHIDO_APP_ID: "6UL6mWiTgB6z9zsk4VDPwFghIDMg6q4qRQQXTaSl",
     SASHIDO_REST_KEY: "NkcV3C5kwXFrmi2WjnAcK1TEEQPQqhg4RSM6kQqq",
     SASHIDO_MASTER_KEY: "xeAPUQ5V801pU7kBfY3condMnGqQ8O6hQ4DqRSgQ",
+    SASHIDO_JS_KEY: "Ju3b7rDC9yD32R1mUXrgAtgJDQMRQi54q4sgSq6h",
     SASHIDO_FILE_URL:
       "https://uefbsna5l6ijyse42wipewpjwu804d.files-sashido.cloud/",
     SASHIDO_CLIENT_KEY: "51W77ssEooxl3BPTf1BH0mbQqDRQVMgqqFM64hQS",

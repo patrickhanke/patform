@@ -1,0 +1,34 @@
+@use "@repo/styles/constants";
+
+.table_edit_container {
+	min-height: 480px;
+	width: 720px;
+	position: relative;
+}
+
+
+.table_edit_columns_container {
+	@include constants.flexbox(
+		$direction: row,
+		$align: stretch,
+		$justify: center,
+		$gap: constants.$xs
+	);
+	width: 100%;
+	max-width: 960px;
+	padding: constants.$md 0;
+	overflow-x: scroll;
+}
+
+.table_edit_columns_element {
+	@include constants.flexbox(
+		$direction: column,
+		$align: stretch,
+		$justify: center,
+		$gap: constants.$xs
+	);
+	width: 300px;
+	padding: constants.$sm;
+	background-color: constants.$light;
+	border-radius: map-get($map: constants.$border_radius, $key: "md");
+}

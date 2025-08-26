@@ -17,7 +17,6 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 			const project = data?.objects.getProject;
 
 			console.log(project.settings.email);
-			
 
 			return [
 				{

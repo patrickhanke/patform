@@ -68,7 +68,7 @@ const UserMenu: FC<UserMenuProps> = ({
             {user.portrait ? (
               <Image
                 src={getImageUrl({
-                  filePath: user.portrait,
+                  fileName: user.portrait.name,
                   width: 80,
                   height: 80,
                 })}

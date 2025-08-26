@@ -1,5 +1,5 @@
 import { DisplayPersonInterfaceComponent } from "../types";
-import { getImageUrl } from "@repo/provider";
+import { getImageUrlFromBytescale } from "@repo/provider";
 import "../styles.scss";
 
 const DisplayPersonsInterface = ({
@@ -19,7 +19,7 @@ const DisplayPersonsInterface = ({
         <div className="display_person_interface_image_container">
           {person.portrait ? (
             <img
-              src={getImageUrl({
+              src={getImageUrlFromBytescale({
                 filePath: person.portrait,
                 height: 60,
                 width: 60,

@@ -13,7 +13,7 @@ import {
 import { TableTypes } from "./types";
 import clsx from "clsx";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
-import PaginationHandlers from "./content/PaginationHandlers";
+import { PaginationHandlers } from "./content";
 
 const Table: React.FC<TableTypes> = ({
 	data,

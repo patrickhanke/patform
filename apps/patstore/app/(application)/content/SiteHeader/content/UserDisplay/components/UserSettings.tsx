@@ -1,8 +1,8 @@
 import { FC, useCallback, useMemo, useState } from "react";
-import { ImageUploader, SlideIn, TextInput } from "@repo/ui";
+import { PatstoreImageUploader, SlideIn, TextInput } from "@repo/ui";
 import { UserSettingsProps } from "../types";
 import { ErrorMessage, PatstoreUser } from "@repo/types";
-import { generateImagePath, useAppContext, useDataHandler } from "@repo/provider";
+import { useAppContext, useDataHandler } from "@repo/provider";
 import * as yup from "yup";
 
 const UserSettings: FC<UserSettingsProps> = ({
@@ -13,7 +13,6 @@ const UserSettings: FC<UserSettingsProps> = ({
 }) => {
   const { updateData } = useDataHandler();
   const [data, setData] = useState<PatstoreUser>(user);
-  const { project } = useAppContext();
 
   const [loading, setLoading] = useState(false);
 
@@ -49,7 +48,7 @@ const UserSettings: FC<UserSettingsProps> = ({
         username: data.username,
       };
     }
-    if (user.portrait !== data.portrait) {
+    if (user?.portrait?.url !== data?.portrait?.url) {
       updatedata = {
         ...updatedata,
         portrait: data.portrait,
@@ -99,19 +98,12 @@ const UserSettings: FC<UserSettingsProps> = ({
           id="username"
           onChange={(value) => setData({ ...data, email: value })}
         />
-        <ImageUploader
-          path={generateImagePath(
-            process.env.APP_NAME as string,
-            project.path
-          )}
-          label="Profilbild"
-          onChange={(value) =>
-            setData({ ...data, portrait: value.length > 0 ? value[0] : "" })
-          }
+        <PatstoreImageUploader
           maxFileCount={1}
-          previewImage={data.portrait}
-          crop
-          preview
+          type="add"
+          className="User"
+          classKey="portrait"
+          classId={user.objectId}
         />
       </div>
     </SlideIn>

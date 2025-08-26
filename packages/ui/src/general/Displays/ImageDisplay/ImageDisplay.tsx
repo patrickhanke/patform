@@ -30,7 +30,7 @@ const ImageDisplay = ({ image, deleteHandler, maxFileCount }: ImageDisplayProps)
 		setLoading(false);
 	};
 
-	const getImageUrl = useCallback(() => {
+	const getImageUrlFromBytescale = useCallback(() => {
 		const url = Bytescale.UrlBuilder.url({
 			accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
 			filePath: image,
@@ -78,7 +78,7 @@ const ImageDisplay = ({ image, deleteHandler, maxFileCount }: ImageDisplayProps)
 				</>
 			) : (
 				<>
-					<Image src={getImageUrl()} alt={image} />
+					<Image src={getImageUrlFromBytescale()} alt={image} />
 					<div className={styles.image_icons}>
 						<IconButton
 							icon={"download"}

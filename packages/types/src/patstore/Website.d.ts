@@ -52,16 +52,7 @@ export type WebpageContentTable = {
     url: string;
     active: boolean;
     video: string;
-    table: {
-        columns: {name: string, id: string, textAlign: string}[];
-        rows: {data: {[key: number]: string}, id: string}[];
-        settings: {
-            title: string;
-            description: string;
-            footer: string;
-            showHeader: boolean;
-        }
-    }
+    table: string;
 };
 
 export type WebpageContentDivider = {
@@ -83,3 +74,32 @@ export type WebpageContent = (
     WebpageContentTable |
     WebpageContentDivider
 );
+
+export type WebpageComponentTable = {
+    columns: {name: string, id: string, textAlign: string}[];
+    rows: {data: {[key: number]: string}, id: string}[];
+    settings: {
+        title: string;
+        description: string;
+        footer: string;
+        showHeader: boolean;
+    }
+}
+
+export type WebpageComponentFaq = {
+     settings: {
+        title: string;
+        description: string;
+        footer: string;
+        showHeader: boolean;
+    },
+    elements: {
+        header: string;
+        content: string;
+    }[]
+}
+
+export type WebpageComponents =  (
+    WebpageComponentTable | 
+    WebpageComponentFaq
+)

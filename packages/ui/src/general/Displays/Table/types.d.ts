@@ -32,7 +32,7 @@ export type TableTypes = {
 export type ColumnDef<TData> = ColumnDef<TData>;
 
 export type TableColumnImageProps = {
-	url?: string;
+	file?: string | File;
 };
 
 export type TableColumnImagesProps = {
@@ -119,7 +119,8 @@ export type ColumnDataTypes =
 	| "content"
 	| "connected_elements"
 	| "updated_by"
-	| "created_by";
+	| "created_by"
+	| "edit_webpage_components";
 
 export type ColumnData<Class> = {
 	id: keyof Class;

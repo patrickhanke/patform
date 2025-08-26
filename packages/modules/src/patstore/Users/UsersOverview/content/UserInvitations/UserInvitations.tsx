@@ -22,8 +22,6 @@ const UserInvitations = () => {
 		pageSize: 10
 	});
 
-	console.log({ data });
-
 	const columns = useInvitationColumns({
 		refetch,
 		invitations: data ? data?.objects?.getProject?.invitations : [],
@@ -35,15 +33,13 @@ const UserInvitations = () => {
 	const projectData = data.objects.getProject;
 
 	return (
-		<div>
-			<Table
-				columns={columns}
-				data={projectData.invitations}
-				setPagination={setPagination}
-				pagination={pagination}
-				rowCount={projectData.invitations.length}
-			/>
-		</div>
+		<Table
+			columns={columns}
+			data={projectData.invitations}
+			setPagination={setPagination}
+			pagination={pagination}
+			rowCount={projectData.invitations.length}
+		/>
 	);
 };
 

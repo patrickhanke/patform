@@ -5,4 +5,5 @@ export { default as vercelHook } from "./vercelHook";
 export { default as getData } from "./getData";
 export { default as compileAxiosError } from "./compileAxiosError";
 export { default as useUploadAlgoliaData } from "./algolia/useUploadAlgoliaData";
+export { default as Parse } from "parse";
 export * from "./DataContext";

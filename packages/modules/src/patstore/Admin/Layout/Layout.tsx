@@ -2,7 +2,7 @@ import React from "react";
 import "@repo/styles/global";
 import "@repo/styles/layout";
 import { ApolloClient, OperationVariables } from "@apollo/client";
-import { Project } from "@repo/types";
+import { PatstoreProject } from "@repo/types";
 import { serverClient } from "@repo/provider";
 import RenderSidebar from "./components/RenderSidebar";
 import Head from "next/head";
@@ -18,7 +18,7 @@ export const metadata = {
 interface GetProjectsResponse {
 	objects: {
 		findProject: {
-			results: Project[];
+			results: PatstoreProject[];
 		};
 	};
 }
@@ -58,10 +58,12 @@ export default async function RootLayout({
 			</Head>
 			<body>
 				<div className={"layout"}>
-					<AdminLayoutContext projects={data.objects.findProject.results}>
+					<AdminLayoutContext
+						projects={data.objects.findProject.results}
+					>
 						<RenderSidebar
 							menuItems={data.objects.findProject.results.map(
-								(project: Project) => ({
+								(project: PatstoreProject) => ({
 									label: project.name,
 									icon: undefined,
 									value: `/admin/project/${project.objectId}`

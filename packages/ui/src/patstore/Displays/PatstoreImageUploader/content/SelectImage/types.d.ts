@@ -40,10 +40,13 @@ export type DisplayImageElementProps = {
 };
 
 export type ImageUploaderProps = {
-	onChange: (
-		V: { filePath: string; fileName: string }[]
-	) => void | Promise<void>;
+	onComplete?: () => void | Promise<void>;
+	afterUploadHandler?: (images: string[]) => void | Promise<void>;
 	maxFileCount: number;
+	type?: "create" | "add";
+	className?: string;
+	classKey?: string;
+	classId?: string;
 };
 
 export type SelectImagesInterfaceProps = {

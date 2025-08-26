@@ -1,8 +1,7 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { SlideIn } from "@repo/ui";
 import { TableColumnEditDateProps } from "./types";
 import { getDateString } from "@repo/provider";
-import { useImmer } from "use-immer";
 import { EventDate } from "@repo/types";
 import DateEdit from "./components/DateEdit";
 import initialDateValues from "./constants/initialDateValues";
@@ -13,7 +12,7 @@ const TableColumnEditDate: FC<TableColumnEditDateProps> = ({
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const [date, setDate] = useImmer<EventDate>(value || initialDateValues);
+	const [date, setDate] = useState<EventDate>(value || initialDateValues);
 
 	return (
 		<div>
@@ -44,7 +43,7 @@ const TableColumnEditDate: FC<TableColumnEditDateProps> = ({
 					setLoading(false);
 				}}
 				disabled={[loading, loading]}
-				header="Personen auswählen"
+				header="Datum bearbeiten"
 			>
 				<DateEdit date={date} setDate={setDate} />
 			</SlideIn>

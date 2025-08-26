@@ -21,7 +21,10 @@ export type PatstoreUser = {
   type: string;
   name: string;
   role: PatstoreUserRole;
-  portrait: ApplicationTypes.Image;
+  portrait: {
+    url: string;
+    name: string;
+  };
   password: string;
   projects: string[];
   roles: string[];

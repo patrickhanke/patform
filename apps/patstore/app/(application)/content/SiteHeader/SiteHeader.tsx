@@ -8,27 +8,6 @@ import { PatstoreAppContext } from "@repo/provider";
 
 const SiteHeader = ({ title }: SiteHeaderComponent) => {
   const { pageTitle } = useContext(PatstoreAppContext);
-  // const pathname = usePathname();
-
-  // const modules: Module[] = useMemo(() => {
-  //   return project.modules.results.map((module: Module) => ({
-  //     name: module.name,
-  //     path: module.path,
-  //     objectId: module.objectId
-  //   }));
-  // }, [project])
-  
-  // Generate breadcrumbs from the current route
-  // const breadcrumbs = pathname
-  //   .split("/")
-  //   .filter((segment) => segment) // Remove empty segments
-  //   .map((segment, index, array) => ({
-  //     name: modules.find(module => module.path === segment.replace(/-/g, " "))?.name, // Replace dashes with spaces
-  //     href: "/" + array.slice(0, index + 1).join("/"), // Construct the path
-  //   }));
-
-  //   console.log({breadcrumbs, pathname, modules});
-    
 
   return (
     <>

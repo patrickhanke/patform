@@ -1,6 +1,6 @@
 import * as Bytescale from "@bytescale/sdk";
 
-export const getImageUrl = ({
+export const getImageUrlFromBytescale = ({
 	filePath,
 	height,
 	width
@@ -69,4 +69,25 @@ export const getFileUrl = (filePath: string) => {
 		accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
 		filePath
 	});
+};
+
+export const getImageUrl = ({
+	fileName,
+	height,
+	width
+}: {
+	fileName: string;
+	height?: number;
+	width?: number;
+}) => {
+	const baseUrl = `${process.env.SASHIDO_FILE_URL}${fileName}`;
+	const params = new URLSearchParams();
+
+	if (width) params.set("w", width.toString());
+	if (height) params.set("h", height.toString());
+	if (width && height) params.set("crop", "true");
+
+	const hasParams = Array.from(params.keys()).length > 0;
+
+	return hasParams ? `${baseUrl}?${params.toString()}` : baseUrl;
 };

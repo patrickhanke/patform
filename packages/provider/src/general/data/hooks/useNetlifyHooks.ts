@@ -15,7 +15,12 @@ const useNetlifyHooks = () => {
 				if (
 					objectClass === "Article" ||
 					objectClass === "Webpage" ||
-					objectClass === "Content"
+					objectClass === "Content" ||
+					objectClass === "News" ||
+					objectClass === "Event" ||
+					objectClass === "Form" ||
+					objectClass === "Image" ||
+					objectClass === "Group"
 				) {
 					return axios.post(
 						"https://api.netlify.com/build_hooks/682ae7fb29acb184f8de3d77"

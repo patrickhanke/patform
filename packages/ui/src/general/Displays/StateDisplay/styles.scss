@@ -51,7 +51,7 @@
 }
 
 @each $key, $color in constants.$color-map {
-  .state_display_container[data-color="{#$color}"] {
+  .state_display_container[data-color="{$color}"] {
     @include constants.colorgroup($color);
   }
 }

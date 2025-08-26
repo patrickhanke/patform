@@ -1,1 +1,1 @@
-export { default } from "./TableColumnEditDate";
+export { default as TableColumnEditDate } from "./TableColumnEditDate";

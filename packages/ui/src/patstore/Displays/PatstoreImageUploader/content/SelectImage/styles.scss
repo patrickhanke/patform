@@ -5,6 +5,11 @@
   width: 100%;
   height: fit-content;
   position: relative;
+  .uppy-Container {
+    width: 100%;
+    position: relative;
+    max-height: 480px;
+  }
 }
 
 .upload_zone {

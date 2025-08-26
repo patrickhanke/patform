@@ -11,7 +11,11 @@ const CreateUser: FC<CreateUserProps> = ({ user, setUser }) => {
 				name: "username",
 				type: "input",
 				value: user.username,
-				placeholder: "beispiel@email.de"
+				placeholder: "beispiel@email.de",
+				validation: {
+					required: "Bitte geben Sie eine E-Mail-Adresse ein",
+					email: true
+				}
 			} as Field,
 			{
 				label: `Benutzername`,
@@ -19,22 +23,23 @@ const CreateUser: FC<CreateUserProps> = ({ user, setUser }) => {
 				type: "input",
 				value: user.name,
 				dataType: "string",
-				placeholder: "Vor- und Nachname"
+				placeholder: "Vor- und Nachname",
+				validation: {
+					required: true
+				}
 			}
 		],
 		[user]
 	);
 
 	return (
-		<div>
-			<Form
-				fields={formFields as Field[]}
-				data={user}
-				formSubmitHandler={(data) => {
-					setUser(data as UserObject);
-				}}
-			/>
-		</div>
+		<Form
+			fields={formFields as Field[]}
+			data={user}
+			formSubmitHandler={(data) => {
+				setUser(data as UserObject);
+			}}
+		/>
 	);
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import axiosclient from "./axios";
 import { useDataContext } from "./DataContext";
@@ -8,6 +8,10 @@ import compileAxiosError from "./compileAxiosError";
 import { cloneDeep, set } from "lodash-es";
 import { PatstoreAppContext } from "../../patstore";
 import useNetlifyHooks from "./hooks/useNetlifyHooks";
+import Parse from "./parse";
+import { UppyFile } from "@uppy/core";
+import { formatISO9075 } from "date-fns";
+import Cookies from "js-cookie";
 
 const useDataHandler = (useMasterKey = false) => {
 	const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
@@ -210,22 +214,179 @@ const useDataHandler = (useMasterKey = false) => {
 		[user]
 	);
 
-	const returnFunctions = useMemo(() => {
-		return {
-			loading,
-			updateData,
-			createData,
-			deleteData,
-			getData
-		};
-	}, [user]);
+	const createImage = useCallback(
+		async ({
+			file,
+			name,
+			afterSaveHandler,
+			feedback,
+			moduleId
+		}: {
+			file: UppyFile<{ type: string }, Record<string, never>>;
+			name: string;
+			afterSaveHandler?: (data: any) => void;
+			feedback?: string;
+			moduleId: string;
+		}) => {
+			const parseFile = new Parse.File(file.name, file.data);
+			await parseFile.save();
+
+			console.log("File saved to Parse:", parseFile);
+
+			const FileObject = Parse.Object.extend("Image");
+			const obj = new FileObject();
+			obj.set("file", parseFile);
+			obj.set("connected_elements", []);
+			obj.set("categories", []);
+			obj.set("fields", []);
+			obj.set("description", "");
+			obj.set("date", formatISO9075(new Date()));
+			obj.set("name", name || file.name);
+			obj.set("module", {
+				__type: "Pointer",
+				className: "Module",
+				objectId: moduleId
+			});
+			obj.set("created_by", {
+				__type: "Pointer",
+				className: "_User",
+				objectId: user.objectId
+			});
+
+			await obj
+				.save(null, {
+					sessionToken: Cookies.get("patstore_token")
+				})
+				.then((response: any) => {
+					if (feedback) {
+						feedbackHandler({
+							success: true,
+							message: feedback,
+							type: "success"
+						});
+					}
+					if (afterSaveHandler) {
+						console.log("afterSaveHandler", afterSaveHandler);
+						afterSaveHandler(response.data);
+					}
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+
+			return obj;
+		},
+		[]
+	);
+
+	const addImage = useCallback(
+		async ({
+			file,
+			afterSaveHandler,
+			feedback,
+			className,
+			classId,
+			classKey
+		}: {
+			file: UppyFile<{ type: string }, Record<string, never>>;
+			afterSaveHandler?: (data: any) => void;
+			feedback?: string;
+			className: string;
+			classId: string;
+			classKey: string;
+		}) => {
+			const parseFile = new Parse.File(file.name, file.data);
+			await parseFile.save();
+
+			console.log("File saved to Parse:", parseFile);
+
+			const classQuery = new Parse.Query(className);
+			const classObject = await classQuery.get(classId);
+			classObject.set(classKey, parseFile);
+
+			await classObject
+				.save(null, {
+					sessionToken: Cookies.get("patstore_token")
+				})
+				.then((response: any) => {
+					if (feedback) {
+						feedbackHandler({
+							success: true,
+							message: feedback,
+							type: "success"
+						});
+					}
+					if (afterSaveHandler) {
+						console.log("afterSaveHandler", afterSaveHandler);
+						afterSaveHandler(response.data);
+					}
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+
+			return classObject;
+		},
+		[]
+	);
+
+	const updateImage = useCallback(
+		async ({
+			file,
+			name,
+			imageId,
+			afterSaveHandler,
+			feedback
+		}: {
+			file: Blob;
+			name: string;
+			afterSaveHandler?: (data: any) => void;
+			feedback?: string;
+			imageId: string;
+		}) => {
+			const parseFile = new Parse.File(name, file);
+			await parseFile.save();
+
+			console.log("File saved to Parse:", parseFile);
+
+			const imageQuery = new Parse.Query("Image");
+			const image = await imageQuery.get(imageId);
+			image.set("file", parseFile);
+
+			await image
+				.save(null, {
+					sessionToken: Cookies.get("patstore_token")
+				})
+				.then((response: any) => {
+					if (feedback) {
+						feedbackHandler({
+							success: true,
+							message: feedback,
+							type: "success"
+						});
+					}
+					if (afterSaveHandler) {
+						console.log("afterSaveHandler", afterSaveHandler);
+
+						afterSaveHandler(response.data);
+					}
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		},
+		[]
+	);
 
 	return {
 		loading,
 		updateData,
 		createData,
 		deleteData,
-		getData
+		getData,
+		createImage,
+		updateImage,
+		addImage
 	};
 };
 

@@ -19,7 +19,8 @@ const useFindImages: UseFindImagesHook = ({
 				"name",
 				"description",
 				"categories",
-				"connected_elements"
+				"connected_elements",
+				"file {name url}"
 			]
 		}),
 		{

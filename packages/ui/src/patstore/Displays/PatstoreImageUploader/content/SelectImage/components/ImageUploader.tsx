@@ -1,105 +1,157 @@
-import { FC, useMemo } from "react";
+"use client";
+
+import { FC, useContext, useEffect, useState } from "react";
 import "../styles.scss";
-import {
-	UploadDropzone,
-	UploadDropzoneConfig
-} from "@bytescale/upload-widget-react";
+
 import { ErrorDisplay } from "@repo/ui";
-import { generateImagePath, useAppContext } from "@repo/provider";
+import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import { ImageUploaderProps } from "../types";
+import { Dashboard } from "@uppy/react";
+import Uppy from "@uppy/core";
+// import "@uppy/core/dist/style.min.css";
+import "@uppy/dashboard/css/style.min.css";
+import German from "@uppy/locales/lib/de_DE";
+import { ImageClass, Module } from "@repo/types";
 
-const ImageUploader: FC<ImageUploaderProps> = ({ onChange, maxFileCount }) => {
-	const { project } = useAppContext();
+const ImageUploader: FC<ImageUploaderProps> = ({
+	onComplete,
+	maxFileCount,
+	afterUploadHandler,
+	type = "create",
+	className,
+	classKey,
+	classId
+}) => {
+	const { modules } = useContext(PatstoreAppContext);
+	const [isComplete, setIsComplete] = useState(false);
+	const { createImage, addImage } = useDataHandler();
 
-	const options = useMemo(() => {
-		const configObject: UploadDropzoneConfig = {
-			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string,
-			maxFileCount: maxFileCount || 20,
-			showFinishButton: true,
-			editor: {
-				images: {
-					preview: true,
-					crop: true
+	const imageModule =
+		modules && modules.find((module: Module) => module.path === "/images");
+
+	const uppy = new Uppy({
+		debug: true,
+		locale: German,
+		meta: { type: "avatar" },
+		restrictions: {
+			maxNumberOfFiles: type === "add" ? 1 : maxFileCount || 5,
+			allowedFileTypes: [
+				"image/jpeg",
+				"image/jpg",
+				"image/png",
+				"image/gif",
+				"image/webp"
+			],
+
+			maxFileSize: 2000000
+		},
+		autoProceed: false
+	});
+
+	// Optional: Add event listeners
+	uppy.on("upload-success", (file, response) => {
+		console.log("Upload successful:", file?.name, response);
+	});
+
+	uppy.on("upload-error", (file, error, response) => {
+		console.error("Upload error:", file?.name, error, response);
+	});
+
+	useEffect(() => {
+		// Custom upload logic
+		uppy.on("upload", async () => {
+			const files = uppy.getFiles();
+			if (!imageModule) {
+				return;
+			}
+			const imageArray: string[] = [];
+			if (type === "create") {
+				for (const file of files) {
+					try {
+						await createImage({
+							file,
+							name: file.name as string,
+							moduleId: imageModule.objectId,
+							feedback: "Bild erfolgreich hochgeladen",
+							afterSaveHandler: (image: ImageClass) => {
+								imageArray.push(image.file.url);
+							}
+						});
+					} catch (error) {
+						console.error(error);
+					}
 				}
-			},
-			locale: {
-				addAnotherFileBtn: "Weitere Datei ...",
-				addAnotherImageBtn: "Weiteres Bild ...",
-				cancelBtn: "abbrechen",
-				cancelBtnClicked: "abgebrochen",
-				cancelPreviewBtn: "Abbrechen",
-				continueBtn: "Weiter",
-				cropBtn: "Zuschneiden",
-				customValidationFailed: "Failed to validate file.",
-				doneBtn: "Fertig",
-				fileSizeLimitPrefix: "Dateigrößenlimit:",
-				finishBtn: "Fertig",
-				finishBtnIcon: true,
-				imageCropNumberPrefix: "Bild",
-				maxFilesReachedPrefix: "Dateillimit erreicht",
-				maxImagesReachedPrefix: "Bildlimit erreicht",
-				orDragDropFile: "...oder eine Datei hierher ziehen.",
-				orDragDropFileMulti: "...oder Dateien hierher ziehen.",
-				orDragDropImage: "...order Bild hierher ziehen.",
-				orDragDropImageMulti: "...oder Bilder hierher ziehen.",
-				processingFile: "Verarbeite Datei...",
-				removeBtn: "entfernen",
-				removeBtnClicked: "enfernt",
-				submitBtnError: "Fehler!",
-				submitBtnLoading: "Bitte warten...",
-				unsupportedFileType: "Datei nicht unterstützt.",
-				uploadFileBtn: "Datei hochladen",
-				uploadFileMultiBtn: "Dateien Hochladen",
-				uploadImageBtn: "Bild hochladen",
-				uploadImageMultiBtn: "Bilder hochladen",
-				xOfY: "of"
-			},
-			path: {
-				folderPath: `${generateImagePath(
-					process.env.APP_NAME as string,
-					project.path
-				)}`
-			},
-			showRemoveButton: true,
-			styles: {
-				colors: {
-					primary: "#3F9A82",
-					active: "#2d3d38"
+			} else if (type === "add") {
+				for (const file of files) {
+					if (!className || !classKey || !classId) {
+						console.error(
+							"className or classKey or classId is not defined"
+						);
+						return;
+					}
+					try {
+						await addImage({
+							file,
+							className,
+							classKey,
+							classId,
+							feedback: "Bild erfolgreich hinzugefügt",
+							afterSaveHandler: (image: ImageClass) => {
+								imageArray.push(image.file.url);
+							}
+						});
+					} catch (error) {
+						console.error(error);
+					}
 				}
 			}
-		};
-		return configObject;
-	}, [maxFileCount]);
 
-	// const reinitializeHandler = useCallback(() => {
-	// 	setReinitialize(false);
-	// 	setTimeout(() => {
-	// 		setReinitialize(true);
-	// 	}, 100);
-	// }, []);
+			uppy.emit("complete", {
+				successful: uppy.getFiles().filter((f) => !f.error),
+				failed: uppy.getFiles().filter((f) => f.error)
+			});
+			setIsComplete(true);
+			if (afterUploadHandler) {
+				afterUploadHandler(imageArray);
+			}
+		});
+
+		return () => uppy.clear();
+	}, [uppy]);
+
+	if (isComplete) {
+		return (
+			<>
+				<p>Dateien wurden erfolgreich hochgeladen</p>
+				<div className="button_container">
+					{onComplete && (
+						<button
+							className="full_button md primary"
+							onClick={() => onComplete()}
+						>
+							Zurück
+						</button>
+					)}
+					<button
+						className="full_button md secondary"
+						onClick={() => setIsComplete(false)}
+					>
+						Weitere Bilder hochladen
+					</button>
+				</div>
+			</>
+		);
+	}
 
 	return (
 		<div className={"upload_container"}>
-			<UploadDropzone
-				options={options}
-				onComplete={(uploadedFiles) => {
-					onChange(
-						uploadedFiles.map((file) => {
-							return {
-								filePath: file.filePath,
-								fileName:
-									file.originalFile.originalFileName ||
-									file.filePath
-							};
-						})
-					);
-					// reinitializeHandler();
-				}}
-				onUpdate={(files) => console.log({ files })}
-				width="100%"
-				height="fit-content"
-				className={"upload_zone"}
+			<Dashboard
+				theme="light"
+				uppy={uppy}
+				width={"100%"}
+				height="360px"
 			/>
+			;
 			<ErrorDisplay id="uloader" errors={[]} />
 		</div>
 	);

@@ -17,13 +17,16 @@ import useGetImages from "./hooks/useGetImages";
 import { Filter, ImageClass } from "@repo/types";
 import {
 	convertDateToString,
+	getImageUrlFromBytescale,
+	Parse,
 	PatstoreAppContext,
 	useDataHandler
 } from "@repo/provider";
+import Cookies from "js-cookie";
 
 const ImagesOverview = () => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
-	const { deleteData, createData, updateData } = useDataHandler(false);
+	const { deleteData, createData, updateImage } = useDataHandler(false);
 
 	const [uploadImages, setUploadImages] = useState(false);
 	const [newImages, setNewImages] = useState<
@@ -85,7 +88,7 @@ const ImagesOverview = () => {
 
 	const columns = useCreateColumns<ImageClass>({
 		data: [
-			{ id: "filePath", type: "image", label: "Vorschau" },
+			{ id: "file", type: "image", label: "Vorschau" },
 			{ id: "date", type: "date", label: "Datum" },
 			{ id: "name", type: "edit_string", label: "Name" },
 			{
@@ -188,17 +191,41 @@ const ImagesOverview = () => {
 				<>
 					<button
 						onClick={async () => {
+							const filteredImages = images.filter(
+								(image) => !image.file && image.filePath
+							);
+
+							console.log(filteredImages);
+
 							await Promise.all(
-								images.map(async (image) => {
-									await updateData({
-										className: "Image",
-										objectId: image.objectId,
-										updateObject: {
-											name: image.name
-										}
+								filteredImages.map(async (image) => {
+									const bsUrl = getImageUrlFromBytescale({
+										filePath: image.filePath
+									});
+
+									console.log(bsUrl);
+									const response = await fetch(bsUrl);
+									const blob = await response.blob();
+
+									console.log(blob);
+									const fileUrl =
+										bsUrl.split("/").pop() || image.name;
+
+									console.log(fileUrl);
+
+									updateImage({
+										file: blob,
+										name: fileUrl.replace(
+											/[^a-zA-Z0-9._-]/g,
+											"_"
+										),
+										imageId: image.objectId,
+										feedback: "Bild erfolgreich hochgeladen"
 									});
 								})
 							);
+
+							refetch();
 						}}
 					>
 						Bilder aktualisieren

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { isArray } from "lodash-es";
 import { UseRenderPreviewContentHook } from "../types";
-import { getImageUrl } from "@repo/provider";
+import { getImageUrlFromBytescale } from "@repo/provider";
 import FilePreview from "../components/FilePreview";
 
 const useRenderPreviewContent: UseRenderPreviewContentHook = ({
@@ -13,14 +13,14 @@ const useRenderPreviewContent: UseRenderPreviewContentHook = ({
       return (
         <div className="image_uploader_display_container">
           {value.map((image) => (
-            <img key={image} src={getImageUrl({ filePath: image })} />
+            <img key={image} src={getImageUrlFromBytescale({ filePath: image })} />
           ))}
         </div>
       );
     } else if (type === "image" && typeof value === "string") {
       return (
         <div className="image_uploader_display_container">
-          <img src={getImageUrl({ filePath: value })} />
+          <img src={getImageUrlFromBytescale({ filePath: value })} />
         </div>
       );
     } else if (type === "file" && isArray(value)) {

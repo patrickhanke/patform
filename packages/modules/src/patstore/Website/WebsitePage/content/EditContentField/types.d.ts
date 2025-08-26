@@ -17,3 +17,15 @@ export type EditContentProps = {
 	content: WebpageContent;
 	setContent: Dispatch<SetStateAction<WebpageContent>>;
 };
+
+export type UseFindContentHook = (T: {
+	moduleId: string;
+	filters: Filter[];
+	skip: number;
+	limit: number;
+}) => {
+	loading: boolean;
+	content: ContentClass[];
+	refetch: ApolloRefetch;
+	count: number;
+};

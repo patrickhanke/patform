@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { isArray } from "lodash";
-import { generateGraphQLQuery, getImageUrl } from "@repo/provider";
+import { generateGraphQLQuery, getImageUrlFromBytescale } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { RenderButtonsProps } from "../types";
@@ -73,7 +73,7 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 			<div onClick={() => onClick()} style={{ cursor: "pointer" }}>
 				<Image
 					alt={data?.objects.getImage.name}
-					src={getImageUrl({
+					src={getImageUrlFromBytescale({
 						filePath: data?.objects.getImage.filePath,
 						height: imageSizes.height * 2,
 						width: imageSizes.width * 2

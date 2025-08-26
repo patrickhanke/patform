@@ -3,7 +3,7 @@
 import styles from "./UserDisplay.module.scss";
 import { Icon } from "@repo/ui";
 import { FC, useCallback, useEffect, useState } from "react";
-import { axiosclient, getImageUrl } from "@repo/provider";
+import { axiosclient, getImageUrl, getImageUrlFromBytescale } from "@repo/provider";
 import { UserDisplayProps } from "./types";
 import UserSettings from "./components/UserSettings";
 import { PatstoreUser } from "@repo/types";
@@ -12,6 +12,7 @@ import UserMenu from "./content/UserMenu/UserMenu";
 import UserPassword from "./components/UserPassword";
 import ProjectSelection from "./components/ProjectSelection";
 import Image from "next/image";
+import { isArray } from "lodash-es";
 
 const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
   const [userSettings, setUserSettings] = useState(false);
@@ -46,6 +47,7 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
       nameParts.length > 1 &&
       nameParts[0] &&
       nameParts[nameParts.length - 1] &&
+      isArray(nameParts[nameParts.length - 1]) &&
       nameParts[nameParts.length - 1].length > 0
     ) {
       return `${nameParts[0]?.[0] ?? ""}${nameParts[nameParts.length - 1]?.[0] ?? ""}`;
@@ -69,10 +71,10 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
         onClick={() => setUserMenu(!userMenu)}
       >
         <div className={styles.user_image_container}>
-          {user.portrait ? (
+          {user.portrait?.url ? (
             <Image
               src={getImageUrl({
-                filePath: user?.portrait,
+                fileName: user?.portrait?.name,
                 width: 60,
                 height: 60,
               })}

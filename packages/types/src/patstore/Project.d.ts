@@ -10,7 +10,10 @@ export type PatstoreProject = {
   description: string;
   objectId: string;
   content: { label: string; value: string; icon: string }[];
-  logo: string;
+  logo: {
+    url: string;
+    name: string;
+  };
   path: string;
   modules: {
     results: Module[];

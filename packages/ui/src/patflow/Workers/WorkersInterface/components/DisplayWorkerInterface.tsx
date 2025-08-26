@@ -7,7 +7,7 @@ import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { Absence, Day } from "@repo/types";
 import { StateDisplay } from "@repo/ui";
-import { getImageUrl } from "@repo/provider";
+import { getImageUrlFromBytescale } from "@repo/provider";
 
 const DisplayWorkerInterface = ({
   worker,
@@ -66,7 +66,7 @@ const DisplayWorkerInterface = ({
         <div className={styles.display_worker_image_container}>
           {worker.portrait ? (
             <img
-              src={getImageUrl({
+              src={getImageUrlFromBytescale({
                 filePath: worker.portrait,
                 height: 60,
                 width: 60,

@@ -4,7 +4,7 @@ import { find_day } from "@repo/provider";
 import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
-import { getImageUrl, shadeColor } from "@repo/provider";
+import { getImageUrlFromBytescale, shadeColor } from "@repo/provider";
 import { Loader, StateDisplay } from "@repo/ui";
 import { Absence, Day } from "@repo/types";
 import "./styles.scss";
@@ -75,7 +75,7 @@ const DisplayWorker = ({
 						data-onlyimage={onlyImage}
 					>
 						<img
-							src={getImageUrl({
+							src={getImageUrlFromBytescale({
 								filePath: worker.portrait,
 								height: 60,
 								width: 60

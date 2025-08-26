@@ -117,13 +117,13 @@ const DataTransfer = <T extends Classes, D extends object>({
 	return (
 		<div>
 			<button
-				className="button_full md light"
+				className="full_button md light"
 				onClick={() => fetchQuery(true)}
 			>
 				Preview
 			</button>
 			<button
-				className="button_full md dark"
+				className="full_button md dark"
 				onClick={() => fetchQuery(false)}
 			>
 				Transport

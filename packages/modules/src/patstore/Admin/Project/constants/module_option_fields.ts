@@ -15,6 +15,11 @@ export const module_option_fields: ModuleOptionsField = {
 		connected_class: "Webpage",
 		sub_menu: [
 			{
+				label: "Komponenten",
+				value: "/components",
+				icon: "extended_list"
+			},
+			{
 				label: "Inhalte",
 				value: "/content",
 				icon: "content"

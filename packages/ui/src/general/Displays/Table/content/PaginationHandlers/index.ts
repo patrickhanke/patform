@@ -1,1 +1,1 @@
-export { default } from "./PaginationHandlers";
+export { default as PaginationHandlers } from "./PaginationHandlers";

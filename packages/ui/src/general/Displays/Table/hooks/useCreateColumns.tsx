@@ -7,40 +7,48 @@ import {
 	UpdateColumnData
 } from "../types";
 import { ColumnDef } from "@tanstack/react-table";
-import TableColumnString from "../components/TableColumnString";
 import { useDataHandler } from "@repo/provider";
-import TableColumnImage from "../components/TableColumnImage";
-import TableColumnTextfield from "../components/TableColumnTextfield";
-import TableColumnCategory from "../components/TableColumnCategory";
-import TableColumnEditField from "../content/TableColumnEditField";
-import TableColumnDeleteField from "../content/TableColumnDeleteField/TableColumnDeleteField";
-import TableColumnDatesField from "../content/TableColumnDatesField";
 import {
 	ClassState,
 	EventDate,
 	EventTime,
 	PersonClass,
 	Team,
+	WebpageComponents,
 	WebpageContent
 } from "@repo/types";
-import TableColumnDate from "../components/TableColumnDate";
-import TableColumnTexteditor from "../components/TableColumnTexteditor";
-import TableColumnGeopoint from "../components/TableColumnGeopoint";
-import { ColorValues, LatitudeLongitude, PatstoreSelectImages } from "@repo/ui";
-import TableColumnEditState from "../components/TableColumnEditState";
+import {
+	ColorValues,
+	LatitudeLongitude,
+	PatstoreSelectImages,
+	TableColumnCategory,
+	TableColumnConnectedElements,
+	TableColumnEditBoolean,
+	TableColumnEditColor,
+	TableColumnEditState,
+	TableColumnEditTeam,
+	TableColumnFiles,
+	TableColumnGeopoint,
+	TableColumnImage,
+	TableColumnPerson,
+	TableColumnPersons,
+	TableColumnString,
+	TableColumnTexteditor,
+	TableColumnTextfield,
+	TableColumnDate,
+	TableColumnImages
+} from "@repo/ui";
 import { get } from "lodash-es";
-import TableColumnPerson from "../components/TableColumnPerson";
-import TableColumnTimesField from "../content/TableColumnTimesField";
-import TableColumnPersons from "../components/TableColumnPersons";
-import TableColumnFiles from "../components/TableColumnFiles";
 import { IconButton } from "../../../Buttons";
-import { TableColumnEditTeam } from "../content/TableColumnEditTeam";
-import TableColumnEditColor from "../components/TableColumnEditColor";
-import TableColumnEditDate from "../content/TableColumnEditDate";
-import TableColumnEditContent from "../content/TableColumnEditContent";
-import TableColumnEditBoolean from "../components/TableColumnEditBoolean";
-import TableColumnImages from "../components/TableColumnImages";
-import TableColumnConnectedElements from "../components/TableColumnConnectedElements";
+import {
+	TableColumnDatesField,
+	TableColumnDeleteField,
+	TableColumnEditContent,
+	TableColumnEditDate,
+	TableColumnEditField,
+	TableColumnTimesField
+} from "../content";
+import TableColumnEditWebpageComponents from "../content/TableColumnEditWebpageComponents/TableColumnEditWebpageComponents";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -322,7 +330,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnImage
-							url={row[columnElement.id] as string}
+							file={row[columnElement.id] as string | File}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
@@ -600,6 +608,31 @@ const useCreateColumns = <T extends ColumnClasses>({
 						<TableColumnEditContent
 							initialData={
 								row[columnElement.id] as WebpageContent[]
+							}
+							onChange={(value: WebpageContent[]) =>
+								updateColumnData({
+									objectId: row.objectId,
+									updateObject: { [columnElement.id]: value },
+									feedback: "Inhalt aktualisiert"
+								})
+							}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "edit_webpage_components") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnEditWebpageComponents
+							type={row.type}
+							initialData={
+								row[columnElement.id] as WebpageComponents
 							}
 							onChange={(value: WebpageContent[]) =>
 								updateColumnData({

@@ -1,5 +1,5 @@
 import React from "react";
-import { getImageUrl } from "@repo/provider";
+import { getImageUrlFromBytescale } from "@repo/provider";
 import { FileUploader, ImageField, Modal } from "@repo/ui";
 import { useState } from "react";
 
@@ -29,7 +29,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
 				<button onClick={() => setIsOpen(true)}>
 					{fieldValues.value ? (
 						<img
-							src={getImageUrl({
+							src={getImageUrlFromBytescale({
 								filePath: fieldValues.value,
 								width: 60
 							})}

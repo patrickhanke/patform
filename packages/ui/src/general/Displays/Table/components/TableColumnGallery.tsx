@@ -1,10 +1,14 @@
 "use client";
 
-import { generateImagePath, getImageUrl, useAppContext } from "@repo/provider";
+import {
+	generateImagePath,
+	getImageUrlFromBytescale,
+	useAppContext
+} from "@repo/provider";
 import { TableColumnGalleryProps } from "../types";
 import { Modal } from "@repo/ui";
 import { useState } from "react";
-import { ImageUploader } from "@repo/modules";
+import { PatstoreImageUploader } from "@repo/ui";
 import "../styles.scss";
 import { isArray } from "lodash-es";
 
@@ -13,7 +17,6 @@ const TableColumnGallery = ({
 	onChange,
 	maxFileCount = 0
 }: TableColumnGalleryProps) => {
-	const { project } = useAppContext();
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState<string[]>([]);
 
@@ -38,15 +41,9 @@ const TableColumnGallery = ({
 				header={"Bilder ändern"}
 				buttonDisabled={[false, !image]}
 			>
-				<ImageUploader
-					label="Bild"
-					onChange={(imgUrl) => setImage(imgUrl as string[])}
-					path={generateImagePath(
-						process.env.APP_NAME as string,
-						project.path
-					)}
-					returnType="array"
+				<PatstoreImageUploader
 					maxFileCount={maxFileCount}
+					afterUploadHandler={(images) => setImage(images)}
 				/>
 				{isArray(value) && value.length > 0 && (
 					<div>
@@ -54,7 +51,7 @@ const TableColumnGallery = ({
 						{value.map((url: string) => (
 							<div key={url}>
 								<img
-									src={getImageUrl({
+									src={getImageUrlFromBytescale({
 										filePath: url,
 										width: 240
 									})}

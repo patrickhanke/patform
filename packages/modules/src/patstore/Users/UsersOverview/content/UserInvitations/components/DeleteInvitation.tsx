@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
 import { IconButton, Modal } from "@repo/ui";
-import { axiosclient, useDataHandler } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import { DeleteInvitationProps } from "../types";
+import { cloneDeep } from "lodash-es";
 
 const DeleteInvitation: FC<DeleteInvitationProps> = ({
 	username,
@@ -29,15 +30,23 @@ const DeleteInvitation: FC<DeleteInvitationProps> = ({
 				isOpen={deleteUserModal}
 				confirmButtonHandler={async () => {
 					setLoading(true);
-					const invitationIndex = invitations.findIndex(
+					const invitationsCopy = cloneDeep(invitations);
+					const invitationIndex = invitationsCopy.findIndex(
 						(invitation) => invitation.key === id
 					);
-					invitations.splice(invitationIndex, 1);
+
+					if (invitationIndex === -1) {
+						setLoading(false);
+						setDeleteUserModal(false);
+					}
+
+					invitationsCopy.splice(invitationIndex, 1);
+
 					await updateData({
-						className: "_Project",
+						className: "Project",
 						objectId: projectId,
 						updateObject: {
-							invitations
+							invitations: invitationsCopy
 						},
 						feedback: "Einladung erfolgreich gelöscht"
 					});

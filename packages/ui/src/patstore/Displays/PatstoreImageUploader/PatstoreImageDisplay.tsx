@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, getImageUrl } from "@repo/provider";
+import { generateGraphQLQuery, getImageUrlFromBytescale } from "@repo/provider";
 import { Loader } from "@repo/ui";
 import { SquareX } from "lucide-react";
 import Image from "next/image";
@@ -28,7 +28,7 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 	if (id && id.length !== 10) {
 		return (
 			<Image
-				src={getImageUrl({
+				src={getImageUrlFromBytescale({
 					filePath: id,
 					width: width * 3,
 					height: height * 3
@@ -60,7 +60,7 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 		const { filePath, name } = data.objects.getImage;
 		return (
 			<Image
-				src={getImageUrl({
+				src={getImageUrlFromBytescale({
 					filePath,
 					width: width * 3,
 					height: height * 3

@@ -1,5 +1,5 @@
 import { EventDate } from "@repo/types";
-import { Updater } from "use-immer";
+import { Dispatch, SetStateAction } from "react";
 
 export type TableColumnEditDateProps = {
 	value: EventDate | undefined;
@@ -8,5 +8,5 @@ export type TableColumnEditDateProps = {
 
 export type DateEditProps = {
 	date: EventDate;
-	setDate: Updater<EventDate>;
+	setDate: Dispatch<SetStateAction<EventDate>>;
 };

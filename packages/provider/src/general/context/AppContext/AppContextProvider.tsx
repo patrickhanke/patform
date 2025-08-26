@@ -30,7 +30,11 @@ const ProjectContextProvider = ({
 	const initialProjectId = useMemo(() => {
 		if (typeof window !== "undefined") {
 			const localId = localStorage.getItem(project_id);
-			return localId ? localId : projects[0];
+			if (localId && projects.includes(localId)) {
+				return localId;
+			} else {
+				return projects[0];
+			}
 		}
 		return projects[0];
 	}, [projects]);
@@ -45,7 +49,7 @@ const ProjectContextProvider = ({
 				"objectId",
 				"name",
 				"path",
-				"logo",
+				"logo {url name}",
 				"modules {results {objectId name path icon settings fields categories connected_class sub_menu position}}"
 			];
 		} else if (appId === "patflow") {

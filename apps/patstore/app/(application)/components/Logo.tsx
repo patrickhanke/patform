@@ -5,10 +5,10 @@ import Image from "next/image";
 import React from "react";
 import { patstoreLogo } from "@repo/assets";
 
-const Logo = ({ logo, alt = "patwork" }: { logo: string; alt?: string }) => {
+const Logo = ({ logo, alt = "patwork" }: { logo: {name: string, url: string}; alt?: string }) => {
   return logo ? (
     <Image
-      src={getImageUrl({ filePath: logo, width: 60, height: 60 })}
+      src={getImageUrl({ fileName: logo.name, width: 60, height: 60 })}
       width={21}
       height={21}
       alt={alt}

@@ -35,6 +35,8 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 		}
 	);
 
+	console.log({ date });
+
 	const locationOptions = useMemo(() => {
 		if (!locationData) return [];
 
@@ -53,6 +55,8 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 				| EventDate[keyof EventDate]
 				| EventDate["place"][keyof EventDate["place"]]
 		) => {
+			console.log(key, value);
+
 			if (date) {
 				setDates((draft: EventDate[]) => {
 					const index: number = draft.findIndex(
@@ -119,7 +123,10 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 					}
 					changeHandler={(
 						value: (typeof locationButtonStates)[number]
-					) => changeHandler("place.type", value.value)}
+					) => {
+						console.log(value);
+						changeHandler("place.type", value.value);
+					}}
 				/>
 				<div className="table_columns_dates_location_container">
 					{date.place.type === "address" && (

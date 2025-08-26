@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import "./styles.scss";
 import { useOnClickOutside } from "usehooks-ts";
 import { Divider, Icon } from "@repo/ui";
-import { getImageUrl, logoutUser } from "@repo/provider";
+import { getImageUrlFromBytescale, logoutUser } from "@repo/provider";
 import { UserMenuProps } from "./types";
 import Image from "next/image";
 
@@ -55,7 +55,7 @@ const UserMenu: FC<UserMenuProps> = ({
           <div className="user_menu_portrait_container">
             {user.portrait ? (
               <Image
-                src={getImageUrl({
+                src={getImageUrlFromBytescale({
                   filePath: user.portrait,
                   width: 80,
                   height: 80,
