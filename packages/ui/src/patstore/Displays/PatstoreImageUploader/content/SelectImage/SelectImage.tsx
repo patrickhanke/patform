@@ -2,8 +2,7 @@
 
 import { FC, useState } from "react";
 import select_states from "./constants/select_states";
-import { Divider, SwitchButtons } from "@repo/ui";
-import ImageUploader from "./components/ImageUploader";
+import { Divider, FileUploader, SwitchButtons } from "@repo/ui";
 import { SelectImageProps } from "./types";
 import { useAppContext } from "@repo/provider";
 import { Module } from "@repo/types";
@@ -37,9 +36,13 @@ const SelectImage: FC<SelectImageProps> = ({
 			/>
 			<Divider size="small" />
 			{selectState.value === "upload" && (
-				<ImageUploader
+				<FileUploader
+					type="image"
+					classKey="image"
+					className="Image"
 					onComplete={onImageChange}
 					maxFileCount={maxFileCount}
+					inline
 				/>
 			)}
 			{moduleId && selectState.value === "select" && (

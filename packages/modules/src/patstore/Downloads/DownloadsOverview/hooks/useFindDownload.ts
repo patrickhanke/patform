@@ -12,7 +12,7 @@ const useFindDownload: UseFindDownloadHook = ({ moduleId, filters }) => {
 				"label",
 				"title",
 				"image",
-				"file",
+				"file{name url}",
 				"categories"
 			]
 		}),

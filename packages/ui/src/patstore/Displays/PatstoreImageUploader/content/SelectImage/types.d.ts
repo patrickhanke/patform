@@ -35,7 +35,7 @@ export type PaginationHandlersProps = {
 };
 
 export type DisplayImageElementProps = {
-	filePath: string;
+	fileName: string;
 	name: string;
 };
 

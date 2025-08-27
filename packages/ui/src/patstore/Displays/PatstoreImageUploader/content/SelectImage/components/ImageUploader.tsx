@@ -9,32 +9,10 @@ import { ImageUploaderProps } from "../types";
 import Uppy from "@uppy/core";
 // import "@uppy/core/dist/style.min.css";
 import "@uppy/dashboard/css/style.min.css";
-import { Dashboard, UploadButton, useUppyState } from "@uppy/react";
+import { Dashboard, UploadButton } from "@uppy/react";
 import German from "@uppy/locales/lib/de_DE";
 import { ImageClass, Module } from "@repo/types";
-
-const createUppyInstance = (type: string, maxFileCount: number) =>
-	new Uppy({
-		logger: {
-			debug: console.log,
-			warn: console.warn,
-			error: console.error
-		},
-		locale: German,
-		meta: { type: "avatar" },
-		restrictions: {
-			maxNumberOfFiles: type === "add" ? 1 : maxFileCount || 5,
-			allowedFileTypes: [
-				"image/jpeg",
-				"image/jpg",
-				"image/png",
-				"image/gif",
-				"image/webp"
-			],
-			maxFileSize: 20000000
-		},
-		autoProceed: false
-	});
+import createUppyInstance from "../../../../../../general/Inputs/FileUploader/functions/createUppyInstance";
 
 const ImageUploader: FC<ImageUploaderProps> = ({
 	onComplete,

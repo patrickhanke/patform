@@ -40,7 +40,7 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 					label: image.name,
 					element: (
 						<DisplayImageElement
-							filePath={image.filePath}
+							fileName={image.file.name}
 							name={image.name}
 						/>
 					)

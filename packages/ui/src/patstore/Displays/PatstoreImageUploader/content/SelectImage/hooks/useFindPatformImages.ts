@@ -19,8 +19,11 @@ const query = gql`
 			) {
 				results {
 					objectId
-					filePath
 					name
+					file {
+						name
+						url
+					}
 				}
 				count
 			}

@@ -1,16 +1,16 @@
 import { FC } from "react";
 import Image from "next/image";
-import { getImageUrlFromBytescale } from "@repo/provider";
+import { getImageUrl, getImageUrlFromBytescale } from "@repo/provider";
 import { DisplayImageElementProps } from "../types";
 
 const DisplayImageElement: FC<DisplayImageElementProps> = ({
-	filePath,
+	fileName,
 	name
 }) => {
 	return (
 		<div className="flex col ai-st j-fs">
 			<Image
-				src={getImageUrlFromBytescale({ filePath, width: 256 })}
+				src={getImageUrl({ fileName, width: 256 })}
 				width={106}
 				height={66}
 				style={{ objectFit: "contain" }}

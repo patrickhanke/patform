@@ -9,15 +9,23 @@ type FileUploadValue = string[] | string;
 
 export type FileUplaoderProps = {
 	type: FileUploadType;
-	value?: FileUploadValue;
-	onChange: (F: string[] | string) => void;
-	label?: string;
+	name?: string;
+	onComplete?: () => void | Promise<void>;
+	afterUploadHandler?: (images: string[]) => void | Promise<void>;
 	maxFileCount?: number;
-	returnType?: "array" | "string";
+	className: "Download" | "Image";
+	classKey: string;
+	classId?: string;
 	setSecondaryContent?: Dispatch<SetStateAction<ReactNode>> | undefined;
+	existingFiles?: number;
+	inline?: boolean;
 };
 
 export type UseRenderPreviewContentHook = ({
 	type: FileUploadType,
 	value: FileUploadValue
 }) => React.ReactNode | null;
+
+export type UploadFileProps = {
+	modules: Module[];
+};

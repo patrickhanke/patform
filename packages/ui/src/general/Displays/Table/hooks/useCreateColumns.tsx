@@ -38,7 +38,7 @@ import {
 	TableColumnDate,
 	TableColumnImages
 } from "@repo/ui";
-import { get } from "lodash-es";
+import { get, isArray } from "lodash-es";
 import { IconButton } from "../../../Buttons";
 import {
 	TableColumnDatesField,
@@ -483,16 +483,17 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnFiles
-							url={row[columnElement.id] as string}
-							onChange={(value: string | string[]) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Datei aktualisiert"
-								})
-							}
-							maxFileCount={
-								columnElement.type === "file" ? 1 : 10
+							classKey={columnElement.id as string}
+							className={className as "Download" | "Image"}
+							id={row.objectId}
+							onChange={() => refetch()}
+							maxFileCount={row[columnElement.id] ? 1 : 10}
+							fileNumber={
+								isArray(row[columnElement.id])
+									? row[columnElement.id].length
+									: row[columnElement.id]
+										? 1
+										: 0
 							}
 						/>
 					),

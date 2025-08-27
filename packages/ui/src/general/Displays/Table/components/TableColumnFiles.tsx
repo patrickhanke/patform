@@ -1,28 +1,36 @@
 "use client";
 
 import { FileUploader } from "@repo/ui";
-import "../styles.scss";
 
 type TableColumnFilesProps = {
-	url: string | string[];
-	onChange: (files: string[] | string) => void;
+	className: "Download" | "Image";
+	classKey: string;
+	id: string;
+	onChange: () => void;
 	maxFileCount: number;
+	fileNumber: number;
 };
 
 const TableColumnFiles = ({
-	url,
 	onChange,
-	maxFileCount
+	maxFileCount,
+	className,
+	classKey,
+	id,
+	fileNumber
 }: TableColumnFilesProps) => {
+	console.log({ fileNumber });
+
 	return (
 		<>
 			<FileUploader
 				type="file"
-				label="Bild"
-				value={url}
-				onChange={(files) => onChange(files)}
-				returnType={maxFileCount === 1 ? "string" : "array"}
+				className={className}
+				classKey={classKey}
+				classId={id}
+				afterUploadHandler={onChange}
 				maxFileCount={maxFileCount}
+				existingFiles={fileNumber}
 			/>
 		</>
 	);
