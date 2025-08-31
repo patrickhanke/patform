@@ -52,8 +52,7 @@ const PersonsOverview = () => {
 		fields: currentModule.fields,
 		className: "Person",
 		refetch,
-		categories: currentModule?.categories,
-		
+		categories: currentModule?.categories
 	});
 
 	const renderFilters = useMemo(() => {

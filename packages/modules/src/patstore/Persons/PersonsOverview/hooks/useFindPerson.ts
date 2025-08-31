@@ -15,7 +15,7 @@ const useFindPerson: UseFindPersonsHook = ({
 			fields: [
 				"objectId",
 				"name",
-				"portrait { url name }",
+				"portrait",
 				"email",
 				"data",
 				"categories"
