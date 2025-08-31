@@ -126,7 +126,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 						// subField={{ id: moduleId, field: "categories" }}
 					/>
 				</div>
-				<div className="head_container flex col a-fs j-sb gap-sm w-33">
+				<div className="head_container flex col a-st j-sb gap-sm w-33">
 					<h3>Inhalte</h3>
 					<div>
 						<label>Pfad der Seite</label>

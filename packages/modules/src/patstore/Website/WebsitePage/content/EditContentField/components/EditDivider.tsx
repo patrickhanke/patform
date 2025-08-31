@@ -7,11 +7,15 @@ export type DividerType = {
 };
 
 interface EditDividerProps {
-	divider: DividerType;
+	divider?: DividerType;
 	onChange: (divider: DividerType) => void;
 }
 
 const EditDivider: React.FC<EditDividerProps> = ({ divider, onChange }) => {
+	if (!divider) {
+		return null;
+	}
+
 	return (
 		<div className="flex col gap-md">
 			<h3>Divider bearbeiten</h3>

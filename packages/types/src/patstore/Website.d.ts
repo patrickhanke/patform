@@ -16,9 +16,8 @@ export type WebpageContentText = {
     id: string;
     type: 'text';
     position: number;
-    text: string;
-    url: null;
     active: boolean;
+    value?: string;
 };
 
 export type WebpageContentImage = {
@@ -26,10 +25,8 @@ export type WebpageContentImage = {
     id: string;
     type: 'image';
     position: number;
-    text: string;
-    url: string;
     active: boolean;
-    image: string;
+    value?: string;
 };
 
 export type WebpageContentVideo = {
@@ -37,10 +34,8 @@ export type WebpageContentVideo = {
     id: string;
     type: 'video';
     position: number;
-    text: string;
-    url: string;
     active: boolean;
-    video: string;
+    value?: string;
 };
 
 export type WebpageContentTable = {
@@ -48,11 +43,8 @@ export type WebpageContentTable = {
     id: string;
     type: 'table';
     position: number;
-    text: string;
-    url: string;
     active: boolean;
-    video: string;
-    table: string;
+    value?: string;
 };
 
 export type WebpageContentDivider = {
@@ -61,7 +53,7 @@ export type WebpageContentDivider = {
     type: 'divider';
     position: number;
     active: boolean;
-    divider: {
+    value?: {
         size: "small" | "medium" | "large";
         showLine: boolean;
     }

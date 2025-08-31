@@ -18,8 +18,8 @@ const WebsitesOverview = () => {
 				"objectId",
 				"path",
 				"title",
-				"updated_by { objectId label portrait }",
-				"created_by { objectId label portrait }",
+				"updated_by { objectId label portrait { name url } }",
+				"created_by { objectId label portrait { name url } }",
 				"createdAt"
 			]
 		}),

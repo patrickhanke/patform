@@ -15,7 +15,7 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 				value === "table" &&
 				!("table" in contentCopy)
 			) {
-				set(contentCopy, "table", {
+				set(contentCopy, "value", {
 					columns: [],
 					rows: [],
 					settings: {
@@ -31,7 +31,7 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 				value === "divider" &&
 				!("divider" in contentCopy)
 			) {
-				set(contentCopy, "divider", {
+				set(contentCopy, "value", {
 					size: "medium",
 					showLine: false
 				});
@@ -64,7 +64,7 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 			{content.type === "text" && (
 				<Editor
 					label="Textinhalt"
-					content={content.text || ""}
+					content={content.value || ""}
 					onChange={(value) => updateContent("text", value)}
 				/>
 			)}
@@ -85,12 +85,12 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 						updateContent(content.type, value as string)
 					}
 					maxFileCount={1}
-					image={content[content.type]}
+					image={content.value as string}
 				/>
 			)}
 			{content.type === "divider" && (
 				<EditDivider
-					divider={content.divider}
+					divider={content.value}
 					onChange={(value) => updateContent(content.type, value)}
 				/>
 			)}

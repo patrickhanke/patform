@@ -59,7 +59,7 @@ const EditContentField: FC<EditContentFieldProps> = ({
 		}));
 	}, [webpageContent]);
 	console.log({ type: field.type });
-	
+
 	useEffect(() => {
 		if (field.type === "table") {
 			console.log({ selectElements });
@@ -69,16 +69,16 @@ const EditContentField: FC<EditContentFieldProps> = ({
 					elements={selectElements}
 					selectedElements={
 						selectElements.filter(
-							(element) => element.value === field.table
+							(element) => element.value === field.value
 						) || []
 					}
 					onSelect={(value) => {
 						if (value.length > 1) {
 							return;
 						} else if (value.length === 1 && value[0]) {
-							setField({ ...field, table: value[0].value });
+							setField({ ...field, value: value[0].value });
 						} else {
-							setField({ ...field, table: "" });
+							setField({ ...field, value: "" });
 						}
 					}}
 				/>

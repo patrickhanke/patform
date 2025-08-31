@@ -6,9 +6,8 @@ const initial_content_element: WebpageContent = {
 	position: 1,
 	type: "text",
 	id: generateUuid(),
-	url: null,
-	text: "",
-	active: false
+	active: false,
+	value: undefined
 };
 
 export default initial_content_element;
