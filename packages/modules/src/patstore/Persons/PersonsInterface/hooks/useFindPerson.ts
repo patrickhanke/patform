@@ -7,7 +7,7 @@ const useFindPerson: UseFindPersonsHook = ({ moduleId, filters }) => {
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Person",
-			fields: ["objectId", "label", "portrait"]
+			fields: ["objectId", "label", "portrait {url name}"]
 		}),
 		{
 			variables: { params: paramsHandler({ moduleId }) },
@@ -20,7 +20,7 @@ const useFindPerson: UseFindPersonsHook = ({ moduleId, filters }) => {
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Person",
-			fields: ["objectId", "label", "portrait"]
+			fields: ["objectId", "label", "portrait {url name}"]
 		}),
 		{
 			variables: { params: paramsHandler({ moduleId, filters }) },

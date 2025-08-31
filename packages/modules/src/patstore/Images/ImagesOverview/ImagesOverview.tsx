@@ -122,7 +122,7 @@ const ImagesOverview = () => {
 				appId="E24kTRGCLBzXhUOQvwFNekgPpoMPeHRNITT67YiR"
 				query={generateQuery({
 					objectName: "Uebungsleiter",
-					fields: ["username", "portrait"]
+					fields: ["username", "portrait {url name}"]
 				})}
 				propertyMapping={(person) => ({
 					name: person.username,
