@@ -26,7 +26,7 @@ const TableColumnPerson = ({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Person",
-			fields: ["objectId", "label", "portrait {url name}"]
+			fields: ["objectId", "label", "portrait "]
 		}),
 		{
 			variables: {
