@@ -141,7 +141,10 @@
 }
 
 .sidebar_open {
-  width: 40px;
+  width: 40px !important;
+  h1 {
+    display: none
+  }
 }
 
 .sidebar_divider_container {

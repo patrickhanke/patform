@@ -21,6 +21,10 @@
   overflow: hidden;
 }
 
+.layout_sidebar_container .sidebar_open {
+  width: 30px;
+}
+
 .header {
   @include constants.flexbox(
     $direction: row,
@@ -49,7 +53,7 @@
   width: 100%;
   box-sizing: border-box;
   height: 42px;
-  padding: map-get(constants.$padding, "lg");
+  padding: 6px;
 }
 
 .sidebar_header_content {
