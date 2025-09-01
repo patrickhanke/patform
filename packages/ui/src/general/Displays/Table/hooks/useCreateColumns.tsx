@@ -749,8 +749,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 				sortingFn: undefined
 			});
 
-		console.log(columnArray);
-
 		return columnArray;
 	}, [
 		data,
