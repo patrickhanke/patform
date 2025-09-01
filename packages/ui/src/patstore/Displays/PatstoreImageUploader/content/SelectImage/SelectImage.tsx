@@ -38,7 +38,7 @@ const SelectImage: FC<SelectImageProps> = ({
 			{selectState.value === "upload" && (
 				<FileUploader
 					type="image"
-					classKey="image"
+					classKey="file"
 					className="Image"
 					onComplete={onImageChange}
 					maxFileCount={maxFileCount}

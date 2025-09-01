@@ -1,12 +1,16 @@
 import { FC } from "react";
 import Image from "next/image";
-import { getImageUrl, getImageUrlFromBytescale } from "@repo/provider";
+import { getImageUrl } from "@repo/provider";
 import { DisplayImageElementProps } from "../types";
 
 const DisplayImageElement: FC<DisplayImageElementProps> = ({
 	fileName,
 	name
 }) => {
+	if (!fileName) {
+		return null;
+	}
+
 	return (
 		<div className="flex col ai-st j-fs">
 			<Image

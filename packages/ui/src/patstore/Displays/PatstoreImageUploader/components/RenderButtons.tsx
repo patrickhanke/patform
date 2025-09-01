@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { isArray } from "lodash";
-import { generateGraphQLQuery, getImageUrlFromBytescale } from "@repo/provider";
+import { generateGraphQLQuery, getImageUrl } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { RenderButtonsProps } from "../types";
@@ -15,7 +15,7 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 		generateGraphQLQuery({
 			type: "get",
 			objectName: "Image",
-			fields: ["objectId", "filePath", "name"]
+			fields: ["objectId", "file", "name"]
 		}),
 		{
 			variables: { id: selectedImages[0] },
@@ -73,8 +73,8 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 			<div onClick={() => onClick()} style={{ cursor: "pointer" }}>
 				<Image
 					alt={data?.objects.getImage.name}
-					src={getImageUrlFromBytescale({
-						filePath: data?.objects.getImage.filePath,
+					src={getImageUrl({
+						fileName: data?.objects.getImage?.file?.name,
 						height: imageSizes.height * 2,
 						width: imageSizes.width * 2
 					})}

@@ -312,16 +312,30 @@ const useDataHandler = (useMasterKey = false) => {
 			};
 			const fileName = replaceUmlaute(file.name as string);
 			console.log({ fileName });
+			console.log({ classKey, className, classId });
 
 			const parseFile = new Parse.File(fileName, file.data);
 			await parseFile.save();
 
 			console.log("File saved to Parse:", parseFile);
 
-			const classQuery = new Parse.Query(className);
-			const classObject = await classQuery.get(classId);
+			let existingClassObject;
 
-			if (!classObject) {
+			if (classId && className) {
+				const classQuery = new Parse.Query(className);
+				const classObject = await classQuery
+					.get(classId)
+					.catch((error) => {
+						console.error(error);
+						return undefined;
+					});
+
+				if (classObject) {
+					existingClassObject = classObject;
+				}
+			}
+
+			if (!existingClassObject) {
 				const obj = new Parse.Object(className);
 				obj.set(classKey, parseFile);
 				obj.set("categories", []);
@@ -329,6 +343,7 @@ const useDataHandler = (useMasterKey = false) => {
 				obj.set("description", "");
 				obj.set("date", formatISO9075(new Date()));
 				obj.set("name", name || file.name);
+				obj.set("active", false);
 				obj.set("module", {
 					__type: "Pointer",
 					className: "Module",
@@ -360,9 +375,9 @@ const useDataHandler = (useMasterKey = false) => {
 						console.log(error);
 					});
 			} else {
-				classObject.set(classKey, parseFile);
+				existingClassObject.set(classKey, parseFile);
 
-				await classObject
+				await existingClassObject
 					.save(null, {
 						sessionToken: Cookies.get("patstore_token")
 					})

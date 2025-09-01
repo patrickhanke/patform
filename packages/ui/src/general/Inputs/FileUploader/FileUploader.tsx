@@ -90,7 +90,7 @@ const FileUploader = ({
 		return () => {
 			uppy.off("upload", uploadSuccessHandler);
 		};
-	}, [uppy, isComplete]);
+	}, [uppy, isComplete, className, classKey, classId]);
 
 	const buttonText = useMemo(() => {
 		if (type === "image" && maxFileCount === 1) {

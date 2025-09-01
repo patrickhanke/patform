@@ -40,8 +40,8 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 					label: image.name,
 					element: (
 						<DisplayImageElement
-							fileName={image.file.name}
-							name={image.name}
+							fileName={image?.file?.name}
+							name={image?.name}
 						/>
 					)
 				});
@@ -125,7 +125,7 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 						setSelectedImages(imageArray);
 					}}
 					useTiles
-					min={1}
+					// min={1}
 					max={maxFileCount}
 				/>
 			</div>
