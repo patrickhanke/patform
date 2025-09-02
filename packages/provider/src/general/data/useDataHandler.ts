@@ -308,7 +308,9 @@ const useDataHandler = (useMasterKey = false) => {
 					.replace(/Ö/g, "Oe")
 					.replace(/ü/g, "ue")
 					.replace(/Ü/g, "Ue")
-					.replace(/ß/g, "ss");
+					.replace(/ß/g, "ss")
+					.replace(/\(/g, "")
+					.replace(/\)/g, "");
 			};
 			const fileName = replaceUmlaute(file.name as string);
 			console.log({ fileName });
