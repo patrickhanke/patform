@@ -104,12 +104,12 @@ const DateEdit: FC<DateEditProps> = ({ date, setDate }) => {
 				/>
 			</div>
 			<div>
-				<label>Text?</label>
+				<label>Text</label>
 				<input
 					type="textarea"
 					defaultValue={date.text}
 					value={date.text}
-					onChange={(value) => changeHandler("text", value)}
+					onChange={(e) => changeHandler("text", e.target.value)}
 				/>
 			</div>
 			<div>
