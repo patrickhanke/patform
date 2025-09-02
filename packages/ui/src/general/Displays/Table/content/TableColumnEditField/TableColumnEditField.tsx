@@ -29,7 +29,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	const [secondaryContent, setSecondaryContent] =
 		useState<React.ReactNode>(null);
 
-	const { loading } = useQuery(
+	const { loading, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "get",
 			objectName: className,
@@ -65,6 +65,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 			},
 			feedback: "Daten aktualisiert"
 		});
+		await refetch();
 		setDisabled([false, false]);
 		setIsOpen(false);
 	}, [data]);
