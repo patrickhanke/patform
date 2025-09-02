@@ -17,7 +17,7 @@ export const module_option_fields: ModuleOptionsField = {
 			{
 				label: "Komponenten",
 				value: "/components",
-				icon: "extended_list"
+				icon: "tasks"
 			},
 			{
 				label: "Inhalte",

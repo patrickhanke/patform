@@ -18,7 +18,9 @@ const Dashboard = () => {
 
 	return (
 		<Page title="Dashboard" pageHeaderButtons={pageHeaderButtons}>
-			<InfoBox text="Bis Änderungen auf der Webseite erscheinen, dauert es einige Minuten bis die Änderungen in der Datenbank übernommen werden." />
+			<div>
+				<InfoBox text="Bis Änderungen auf der Webseite erscheinen, dauert es einige Minuten bis die Änderungen in der Datenbank übernommen werden." />
+			</div>
 		</Page>
 	);
 };

@@ -15,7 +15,7 @@ const SelectedImages: FC<SelectedImagesProps> = ({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Image",
-			fields: ["objectId", "filePath", "name"]
+			fields: ["objectId", "file {name url}", "name"]
 		}),
 		{
 			variables: {
