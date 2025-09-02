@@ -113,6 +113,15 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
 				/>
 			</div>
 			<div>
+				<label>Text</label>
+				<input
+					type="textarea"
+					defaultValue={time.text}
+					value={time.text}
+					onChange={(e) => changeHandler("text", e.target.value)}
+				/>
+			</div>
+			<div>
 				<label>Ort</label>
 				<SwitchButtons
 					buttonStates={locationButtonStates}

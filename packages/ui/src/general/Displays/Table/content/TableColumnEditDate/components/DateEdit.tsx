@@ -103,6 +103,7 @@ const DateEdit: FC<DateEditProps> = ({ date, setDate }) => {
 					onChange={(value) => changeHandler("full_day", value)}
 				/>
 			</div>
+			<p>DateEdit</p>
 			<div>
 				<label>Text</label>
 				<input
