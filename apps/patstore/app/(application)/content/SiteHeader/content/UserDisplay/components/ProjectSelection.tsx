@@ -1,15 +1,19 @@
-import { generateGraphQLQuery, ProjectContext, useAppContext } from "@repo/provider";
-import React, { FC, useCallback, useContext, useState } from "react";
+import { generateGraphQLQuery, useAppContext } from "@repo/provider";
+import React, { FC, useCallback, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ProjectSelectionProps } from "../types";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
 import { PatstoreProject } from "@repo/types";
+import { useRouter } from "next/navigation";
+
 
 const ProjectSelection: FC<ProjectSelectionProps> = ({
   projects,
   selectProject,
   setSelectProject,
 }) => {
+	const router = useRouter();
+
   const { project, loadProject } = useAppContext();
   const [selectedProject, setSelectedProject] = useState<SelectElement[]>([
     { value: project.objectId, label: project.name },
@@ -51,14 +55,15 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
     return false;
   }, [selectedProject, project]);
 
-  console.log(selectedProject);
-
   return (
     <SlideIn
       header="Projektauswahle"
       isOpen={selectProject}
       cancel={() => setSelectProject(false)}
-      confirm={() => projectSelectHandler()}
+      confirm={() => {
+        router.push("/");
+        projectSelectHandler()
+      }}
       preventClickOutside
       disabled={[false, disabled()]}
       errors={[]}

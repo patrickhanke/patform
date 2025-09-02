@@ -24,6 +24,7 @@ export type EventTime = {
   start: string;
   end: string;
   place: EventLocation;
+  text?: string;
   id: string;
 };
 

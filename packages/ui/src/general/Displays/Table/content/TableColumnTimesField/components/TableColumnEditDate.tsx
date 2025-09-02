@@ -139,6 +139,7 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
 						<div>
 							<label>Adresse</label>
 							<input
+								key={time.id}
 								type="textarea"
 								defaultValue={time.place.address}
 								onChange={(e) =>

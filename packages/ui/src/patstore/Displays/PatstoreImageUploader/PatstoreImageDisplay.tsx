@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, getImageUrlFromBytescale } from "@repo/provider";
+import { generateGraphQLQuery, getImageUrl } from "@repo/provider";
 import { Loader } from "@repo/ui";
 import { SquareX } from "lucide-react";
 import Image from "next/image";
@@ -15,7 +15,7 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 		generateGraphQLQuery({
 			type: "get",
 			objectName: "Image",
-			fields: ["objectId", "filePath", "name"]
+			fields: ["objectId", "file {name url}", "name"]
 		}),
 		{
 			variables: {
@@ -24,21 +24,6 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 			skip: !id || id.length !== 10
 		}
 	);
-
-	if (id && id.length !== 10) {
-		return (
-			<Image
-				src={getImageUrlFromBytescale({
-					filePath: id,
-					width: width * 3,
-					height: height * 3
-				})}
-				alt={`${id}`}
-				width={width}
-				height={height}
-			/>
-		);
-	}
 
 	if (loading) {
 		return (
@@ -57,17 +42,19 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 	}
 
 	if (data) {
-		const { filePath, name } = data.objects.getImage;
+		const { file, name } = data.objects.getImage;
 		return (
 			<Image
-				src={getImageUrlFromBytescale({
-					filePath,
+				src={getImageUrl({
+					fileName: file?.name,
 					width: width * 3,
 					height: height * 3
 				})}
 				alt={`${name}`}
 				width={width}
 				height={height}
+				style={{ objectFit: "cover" }}
+				unoptimized
 			/>
 		);
 	}

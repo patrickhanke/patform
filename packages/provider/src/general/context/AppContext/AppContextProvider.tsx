@@ -14,6 +14,7 @@ import { generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import ProjectLoader from "./components/ProjectLoader";
 import useFindRoles from "./hooks/useFindRoles";
+import { useRouter } from "next/navigation";
 
 const ProjectContextProvider = ({
 	projects,
@@ -25,6 +26,7 @@ const ProjectContextProvider = ({
 	const appId = process.env.APP_NAME as string;
 	const project_id = `${appId}_project_id`;
 	const project_path = `${appId}_project_path`;
+	const router = useRouter();
 
 	const [currentProject, setCurrentProject] = useState<PatstoreProject>();
 	const initialProjectId = useMemo(() => {
@@ -96,6 +98,8 @@ const ProjectContextProvider = ({
 	}, [currentProject]);
 
 	const loadProject = useCallback((projectId: string, initial?: boolean) => {
+		router.push("/");
+		console.log("afterPush")
 		if (initial) {
 			const localId = localStorage.getItem(project_id);
 			if (localId) {

@@ -24,7 +24,7 @@ const TableColumnPersons = ({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Person",
-			fields: ["objectId", "label", "portrait "]
+			fields: ["objectId", "label", "portrait"]
 		}),
 		{
 			variables: {
@@ -61,11 +61,31 @@ const TableColumnPersons = ({
 	}, [personData]);
 
 	const currentPersons: SelectElement[] = useMemo(() => {
-		const elementData: SelectElement[] = newPersons.map((vl) =>
-			elements.find((element) => element.id === vl)
-		) as SelectElement[];
+		const elementData: SelectElement[] = [];
+		const invalidIds: string[] = [];
+
+		if (elements.length === 0) {
+			return [];
+		}
+
+		newPersons.forEach((vl) => {
+			const person = elements.find((element) => element.id === vl);
+			if (person) {
+				elementData.push(person);
+			} else {
+				console.log(vl);
+				invalidIds.push(vl);
+			}
+		});
+		if (invalidIds.length > 0) {
+			console.log(invalidIds);
+			onChange(elementData.map((element) => element.id));
+		}
+
 		return elementData || [];
 	}, [elements, newPersons]);
+
+	console.log(currentPersons);
 
 	const selectPerson = useMemo(
 		() => (
