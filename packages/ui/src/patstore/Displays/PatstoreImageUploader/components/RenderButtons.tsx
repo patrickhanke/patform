@@ -15,7 +15,7 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 		generateGraphQLQuery({
 			type: "get",
 			objectName: "Image",
-			fields: ["objectId", "file", "name"]
+			fields: ["objectId", "file {name url}", "name"]
 		}),
 		{
 			variables: { id: selectedImages[0] },

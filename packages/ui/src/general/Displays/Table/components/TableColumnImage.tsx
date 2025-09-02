@@ -4,7 +4,7 @@ import { getImageUrlFromBytescale } from "@repo/provider";
 import { TableColumnImageProps } from "../types";
 import "../styles.scss";
 import Image from "next/image";
-import { getImageUrl } from "../../../../../../provider/src/general/functions/getImageUrl";
+import { getImageUrl } from "@repo/provider";
 
 const TableColumnImage = ({ file }: TableColumnImageProps) => {
 	if (typeof file === "string") {
