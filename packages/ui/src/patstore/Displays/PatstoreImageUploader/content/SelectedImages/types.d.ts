@@ -20,7 +20,10 @@ export type UseFindImagesHook = (T: {
 
 export type DisplaySelectedImagesProps = {
 	id: string;
-	image: string;
+	image: {
+		name: string;
+		url: string;
+	};
 	name: string;
 	maxFileCount: number;
 	removeImageHandler: (t: string) => void;

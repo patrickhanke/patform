@@ -1,9 +1,9 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import "../styles.scss";
 import { DisplaySelectedImagesProps } from "../types";
 import Image from "next/image";
 import { IconButton } from "@repo/ui";
-import { getImageUrlFromBytescale } from "@repo/provider";
+import { getImageUrl } from "@repo/provider";
 
 const DisplaySelectedImages: FC<DisplaySelectedImagesProps> = ({
 	id,
@@ -18,7 +18,7 @@ const DisplaySelectedImages: FC<DisplaySelectedImagesProps> = ({
 			data-hasfullwidth={maxFileCount === 1}
 		>
 			<Image
-				src={getImageUrlFromBytescale({ filePath: image, width: 1024 })}
+				src={getImageUrl({ fileName: image.name, width: 1024 })}
 				alt={name}
 				width={maxFileCount === 1 ? 360 : 120}
 				height={maxFileCount === 1 ? 202.5 : 63}
