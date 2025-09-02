@@ -12,13 +12,17 @@ const DisplaySelectedImages: FC<DisplaySelectedImagesProps> = ({
 	maxFileCount,
 	removeImageHandler
 }) => {
+	if (!image) {
+		return <p>Bild nicht gefunden</p>;
+	}
+
 	return (
 		<div
 			className="selected_image_container"
 			data-hasfullwidth={maxFileCount === 1}
 		>
 			<Image
-				src={getImageUrl({ fileName: image.name, width: 1024 })}
+				src={getImageUrl({ fileName: image?.name, width: 1024 })}
 				alt={name}
 				width={maxFileCount === 1 ? 360 : 120}
 				height={maxFileCount === 1 ? 202.5 : 63}
