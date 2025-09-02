@@ -104,6 +104,15 @@ const DateEdit: FC<DateEditProps> = ({ date, setDate }) => {
 				/>
 			</div>
 			<div>
+				<label>Text?</label>
+				<input
+					type="textarea"
+					defaultValue={date.text}
+					value={date.text}
+					onChange={(value) => changeHandler("text", value)}
+				/>
+			</div>
+			<div>
 				<label>Ort</label>
 				<SwitchButtons
 					buttonStates={[...locationButtonStates]}

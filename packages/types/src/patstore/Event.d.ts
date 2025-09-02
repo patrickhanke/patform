@@ -16,6 +16,7 @@ export type EventDate = {
   place: EventLocation;
   full_day: boolean;
   id: string;
+  text: string;
 };
 
 export type EventTime = {
