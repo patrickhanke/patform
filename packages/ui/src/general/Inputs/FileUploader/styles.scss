@@ -2,14 +2,54 @@
 
 .uppy_upload_container {
   @include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: 12px);
-  width: 420px;
+  width: 100%;
+  position: relative;
   height: fit-content;
   position: relative;
   height: 480px;
-  .uppy-Container {
+  .uppy-content {
     width: 100%;
     position: relative;
     max-height: 480px;
+  }
+  div[data-uppy-element='dropzone'] {
+    width: 100%;
+    position: relative;
+    text-align: center;
+    margin-bottom: 12px;
+    p {
+      display: none;
+      font-size: 0;
+    }
+  }
+  div[data-uppy-element='files-list'] {
+    width: 100%;
+    position: relative;
+    text-align: center;
+    margin-bottom: 12px;
+    p {
+      display: none;
+      font-size: 0;
+    }
+  }
+  button[data-uppy-element='upload-button'][data-state='init'] {
+    background-color: constants.$grey;
+  }
+  button[data-uppy-element='upload-button'][data-state='ready'] {
+    background-color: constants.$primary;
+  }
+
+  button[data-uppy-element='upload-button'][data-state='uploading'] {
+    background-color: constants.$yellow;
+    cursor: wait;
+  }
+
+  button[data-uppy-element='upload-button'][data-state='complete'] {
+    background-color: constants.$green;
+  }
+
+  button[data-uppy-element='upload-button'][data-state='error'] {
+    background-color: constants.$red;
   }
 }
 

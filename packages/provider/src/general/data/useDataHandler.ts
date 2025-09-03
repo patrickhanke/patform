@@ -9,7 +9,7 @@ import { cloneDeep, set } from "lodash-es";
 import { PatstoreAppContext } from "../../patstore";
 import useNetlifyHooks from "./hooks/useNetlifyHooks";
 import Parse from "./parse";
-import { UppyFile } from "@uppy/core";
+import { Meta, UppyFile } from "@uppy/core";
 import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
 import { ClientParseError } from "@apollo/client";
@@ -291,7 +291,7 @@ const useDataHandler = (useMasterKey = false) => {
 			feedback,
 			moduleId
 		}: {
-			file: UppyFile<{ type: string }, Record<string, never>>;
+			file: UppyFile<Meta , Record<string, never>>;
 			name: string;
 			className: "Download" | "Image";
 			classKey: string;
