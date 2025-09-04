@@ -3,10 +3,15 @@ import { UplaoderProps } from "../types";
 import { useDataHandler, PatstoreAppContext } from "@repo/provider";
 import { Modal } from "@repo/ui";
 import { ImageClass } from "@repo/types";
-import { Dropzone, FilesList, UploadButton, useUppyState } from "@uppy/react";
+import {
+	Dropzone,
+	FilesList,
+	UploadButton,
+	UppyContext,
+	useUppyState
+} from "@uppy/react";
 
 const Uploader: React.FC<UplaoderProps> = ({
-	uppy,
 	type = "image",
 	name,
 	onComplete,
@@ -19,8 +24,8 @@ const Uploader: React.FC<UplaoderProps> = ({
 	existingFiles = 0,
 	inline = false
 }) => {
-	const data = useUppyState(uppy, (state) => state);
-	console.log({ data });
+	const { uppy } = useContext(UppyContext);
+
 	const { modules } = useContext(PatstoreAppContext);
 	const { createUpdateFile } = useDataHandler();
 
