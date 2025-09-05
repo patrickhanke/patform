@@ -6,7 +6,7 @@ type FileUploadValue = string[] | string;
 export type FileUplaoderProps = {
 	type: FileUploadType;
 	name?: string;
-	onComplete?: () => void | Promise<void>;
+	onComplete?: () => void;
 	afterUploadHandler?: (images: string[]) => void | Promise<void>;
 	maxFileCount?: number;
 	className: "Download" | "Image";
@@ -21,7 +21,7 @@ export type UplaoderProps = {
 	uppy: Uppy;
 	type: FileUploadType;
 	name?: string;
-	onComplete?: () => void | Promise<void>;
+	onComplete?: () => void;
 	afterUploadHandler?: (images: string[]) => void | Promise<void>;
 	maxFileCount?: number;
 	className: "Download" | "Image";

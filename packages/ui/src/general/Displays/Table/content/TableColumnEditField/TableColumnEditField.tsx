@@ -70,12 +70,6 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		setIsOpen(false);
 	}, [data]);
 
-	// useEffect(() => {
-	// 	if (isOpen) {
-	// 		refetch();
-	// 	}
-	// }, [isOpen]);
-
 	return (
 		<>
 			<IconButton

@@ -13,11 +13,13 @@ import PersonSelect from "./components/PersonSelect";
 import { get } from "lodash-es";
 import SelectToggle from "./components/SelectToggle";
 import DatePickerField from "./components/DatePickerField";
+import { FileSelect } from "./content";
 
 const fieldDisabledHandler = (
 	field: Field,
 	values: RenderFieldsType["values"]
 ) => {
+	console.log(field);
 	if (field.disabled) {
 		if (typeof field.disabled === "boolean") {
 			return field.disabled;
@@ -40,6 +42,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 }) => (
 	<>
 		{fields.map((field: Field) => {
+			console.log(field);
 			return (
 				<div
 					key={field.id ? field.id : field.name}
@@ -240,6 +243,19 @@ const RenderFields: FC<RenderFieldsType> = ({
 							isHorizontal={isHorizontal}
 						/>
 					)}
+					{(field.type === "download" ||
+						field.type === "downloads") && (
+						<FileSelect
+							name={field.name}
+							label={field.label}
+							onChange={(value) =>
+								setFieldValue(field.name, value, true)
+							}
+							values={values}
+							isHorizontal={isHorizontal}
+							setSecondaryContent={setSecondaryContent}
+						/>
+					)}
 					{(field.type === "week" ||
 						field.type === "date" ||
 						field.type === "month" ||
@@ -279,7 +295,6 @@ const RenderFields: FC<RenderFieldsType> = ({
 								: getFieldMeta(field.name).error}
 						</div>
 					) : null}
-					{/* {isHorizontal && <div className='form_divider' />} */}
 				</div>
 			);
 		})}

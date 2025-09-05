@@ -38,6 +38,10 @@ const fieldTypes = [
 	{
 		value: "image",
 		label: "Bild wählen"
+	},
+	{
+		value: "download",
+		label: "Download wählen"
 	}
 ] as const;
 

@@ -23,6 +23,7 @@ const FormikRender: FC<FormikRenderProps> = ({
 	setSecondaryContent,
 	highlightChanges = false
 }) => {
+	console.log(fields)
 	return (
 		<Formik
 			initialValues={

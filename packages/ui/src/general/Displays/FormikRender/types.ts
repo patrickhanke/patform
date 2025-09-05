@@ -39,7 +39,9 @@ export type FieldTypes =
 	| "toggle"
 	| "texteditor"
 	| "pointer_select"
-	| "persons_select";
+	| "persons_select"
+	| "downloads"
+	| "download";
 
 export type ValidationTypes = {
 	required?: string;
@@ -180,6 +182,16 @@ export type PersonsSelectField = BasicField & {
 	type: "persons_select";
 };
 
+export type DownloadField = BasicField & {
+	value?: string;
+	type: "download";
+};
+
+export type DownloadsField = BasicField & {
+	value?: string[];
+	type: "downloads";
+};
+
 export type ColorField = BasicField & {
 	type: "color";
 	value?: string;
@@ -208,7 +220,9 @@ export type Field =
 	| PointerSelectField
 	| ColorField
 	| PersonsSelectField
-	| DateField;
+	| DateField
+	| DownloadField
+	| DownloadsField;
 
 export type FieldValidationArray = Array<
 	Field & { validation?: ValidationTypes }

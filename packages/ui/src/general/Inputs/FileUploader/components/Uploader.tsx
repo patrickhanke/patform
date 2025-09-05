@@ -3,15 +3,10 @@ import { UplaoderProps } from "../types";
 import { useDataHandler, PatstoreAppContext } from "@repo/provider";
 import { Modal } from "@repo/ui";
 import { ImageClass } from "@repo/types";
-import {
-	Dropzone,
-	FilesList,
-	UploadButton,
-	UppyContext,
-	useUppyState
-} from "@uppy/react";
+import { Dropzone, FilesList, UploadButton } from "@uppy/react";
 
 const Uploader: React.FC<UplaoderProps> = ({
+	uppy,
 	type = "image",
 	name,
 	onComplete,
@@ -24,8 +19,6 @@ const Uploader: React.FC<UplaoderProps> = ({
 	existingFiles = 0,
 	inline = false
 }) => {
-	const { uppy } = useContext(UppyContext);
-
 	const { modules } = useContext(PatstoreAppContext);
 	const { createUpdateFile } = useDataHandler();
 
@@ -125,6 +118,16 @@ const Uploader: React.FC<UplaoderProps> = ({
 		[]
 	);
 
+	useEffect(() => {
+		const el = document.querySelector(
+			'[data-uppy-element="upload-button"]'
+		);
+		if (el) {
+			console.log(el.textContent);
+			el.textContent = "Hochladen";
+		}
+	}, []);
+
 	if (isComplete) {
 		return (
 			<div className="uppy_upload_container">
@@ -148,18 +151,6 @@ const Uploader: React.FC<UplaoderProps> = ({
 			</div>
 		);
 	}
-
-	useEffect(() => {
-		const el = document.querySelector(
-			'[data-uppy-element="upload-button"]'
-		);
-		if (el) {
-			console.log(el.textContent);
-			el.textContent = "Hochladen";
-		}
-	}, []);
-
-	console.log({ inline });
 
 	if (inline) {
 		return DashboardContent;

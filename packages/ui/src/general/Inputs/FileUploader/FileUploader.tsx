@@ -5,19 +5,9 @@ import { FileUplaoderProps } from "./types";
 import "./styles.scss";
 
 import "@uppy/react/css/style.css";
-import Dashboard from "@uppy/react/dashboard";
 
-import {
-	Dropzone,
-	FilesList,
-	UploadButton,
-	UppyContext,
-	FilesGrid
-} from "@uppy/react";
-import { Uppy } from "@uppy/core";
-import { useContext, useEffect, useState } from "react";
-import Module from "module";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
+import { UppyContext } from "@uppy/react";
+import { useContext } from "react";
 import Uploader from "./components/Uploader";
 
 const FileUploader = ({

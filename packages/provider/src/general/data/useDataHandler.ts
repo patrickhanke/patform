@@ -291,7 +291,7 @@ const useDataHandler = (useMasterKey = false) => {
 			feedback,
 			moduleId
 		}: {
-			file: UppyFile<Meta , Record<string, never>>;
+			file: UppyFile<Meta, Record<string, never>>;
 			name: string;
 			className: "Download" | "Image";
 			classKey: string;
@@ -339,23 +339,41 @@ const useDataHandler = (useMasterKey = false) => {
 
 			if (!existingClassObject) {
 				const obj = new Parse.Object(className);
-				obj.set(classKey, parseFile);
-				obj.set("categories", []);
-				obj.set("fields", []);
-				obj.set("description", "");
-				obj.set("date", formatISO9075(new Date()));
-				obj.set("name", name || file.name);
-				obj.set("active", false);
-				obj.set("module", {
-					__type: "Pointer",
-					className: "Module",
-					objectId: moduleId
-				});
-				obj.set("created_by", {
-					__type: "Pointer",
-					className: "_User",
-					objectId: user.objectId
-				});
+				// at a certain point, the save method must be inferre from types associated with className
+				if (className === "Download") {
+					obj.set("file", parseFile);
+					obj.set(classKey, parseFile);
+					obj.set("categories", []);
+					obj.set("title", name || fileName);
+					obj.set("module", {
+						__type: "Pointer",
+						className: "Module",
+						objectId: moduleId
+					});
+					obj.set("created_by", {
+						__type: "Pointer",
+						className: "_User",
+						objectId: user.objectId
+					});
+				} else {
+					obj.set(classKey, parseFile);
+					obj.set("categories", []);
+					obj.set("fields", []);
+					obj.set("description", "");
+					obj.set("date", formatISO9075(new Date()));
+					obj.set("name", name || fileName);
+					obj.set("active", false);
+					obj.set("module", {
+						__type: "Pointer",
+						className: "Module",
+						objectId: moduleId
+					});
+					obj.set("created_by", {
+						__type: "Pointer",
+						className: "_User",
+						objectId: user.objectId
+					});
+				}
 				await obj
 					.save(null, {
 						sessionToken: Cookies.get("patstore_token")
