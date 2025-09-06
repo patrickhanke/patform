@@ -4,50 +4,52 @@ import { CreateProjectProps } from "./types";
 import { useDataHandler } from "@repo/provider";
 
 const initialProject = {
-  name: "",
-  description: "",
+	name: "",
+	description: ""
 };
 
 const CreateProject: FC<CreateProjectProps> = ({
-  createProject,
-  setCreateProject,
+	createProject,
+	setCreateProject
 }) => {
-  const createData = useDataHandler("createProject");
+	const createData = useDataHandler("createProject");
 
-  const [project, setProject] = useState<typeof initialProject>({
-    name: "",
-    description: "",
-  });
+	const [project, setProject] = useState<typeof initialProject>({
+		name: "",
+		description: ""
+	});
 
-  const createProjectHandler = useCallback(() => {}, [project]);
+	const createProjectHandler = useCallback(() => {}, [project]);
 
-  return (
-    <>
-      <SlideIn
-        isOpen={createProject}
-        cancel={() => setCreateProject(false)}
-        header="Neues Projekt"
-        confirm={() => setCreateProject(false)}
-        preventClickOutside
-      >
-        <div>
-          <h2>Neues Projekt</h2>
+	return (
+		<>
+			<SlideIn
+				isOpen={createProject}
+				cancel={() => setCreateProject(false)}
+				header="Neues Projekt"
+				confirm={() => setCreateProject(false)}
+				preventClickOutside
+			>
+				<div>
+					<h2>Neues Projekt</h2>
 
-          <div>
-            <label htmlFor="name">Name</label>
+					<div>
+						<label htmlFor="name">Name</label>
 
-            <TextInput
-              onChange={(value) => setProject({ ...project, name: value })}
-              placeholder="Name"
-              id="name"
-            />
+						<TextInput
+							onChange={(value) =>
+								setProject({ ...project, name: value })
+							}
+							placeholder="Name"
+							id="name"
+						/>
 
-            <input type="file" />
-          </div>
-        </div>
-      </SlideIn>
-    </>
-  );
+						<input type="file" />
+					</div>
+				</div>
+			</SlideIn>
+		</>
+	);
 };
 
 export default CreateProject;
