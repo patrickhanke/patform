@@ -1,1 +1,3 @@
-export { AdminDashboard as default } from "@repo/modules";
+export default function Page() {
+  return <div>Admin Page</div>;
+}
