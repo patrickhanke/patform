@@ -96,7 +96,7 @@ const Sidebar: FC<SidebarProps> = ({
 				{user?.is_superuser && (
 					<li>
 						<MenuItem
-							link="/admin"
+							link="/admin-dashboard"
 							label="Admin"
 							icon="admin"
 							subMenu={[]}
