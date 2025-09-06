@@ -1,5 +1,3 @@
-import { AdminDashboard } from "@repo/modules";
-
 export default function Page() {
-  return <AdminDashboard />;
+  return <div>Admin</div>;
 }
