@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
 import { UseFindDownloadHook } from "../types";
+import { useMemo } from "react";
 
 const useFindDownload: UseFindDownloadHook = ({ moduleId, filters }) => {
 	const { loading, data, refetch } = useQuery(
@@ -22,11 +23,16 @@ const useFindDownload: UseFindDownloadHook = ({ moduleId, filters }) => {
 		}
 	);
 
-	return {
-		loading,
-		downloads: data ? data.objects.findDownload.results : undefined,
-		refetch
-	};
+	const returnValue = useMemo(
+		() => ({
+			loading,
+			downloads: data ? data.objects.findDownload.results : undefined,
+			refetch
+		}),
+		[data, loading]
+	);
+
+	return returnValue;
 };
 
 export default useFindDownload;

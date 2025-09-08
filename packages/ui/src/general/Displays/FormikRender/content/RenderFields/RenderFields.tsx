@@ -42,7 +42,6 @@ const RenderFields: FC<RenderFieldsType> = ({
 }) => (
 	<>
 		{fields.map((field: Field) => {
-			console.log(field);
 			return (
 				<div
 					key={field.id ? field.id : field.name}
@@ -246,11 +245,10 @@ const RenderFields: FC<RenderFieldsType> = ({
 					{(field.type === "download" ||
 						field.type === "downloads") && (
 						<FileSelect
-							name={field.name}
 							onChange={(value) =>
 								setFieldValue(field.name, value, true)
 							}
-							values={values}
+							values={values[field.name]}
 							setSecondaryContent={setSecondaryContent}
 						/>
 					)}

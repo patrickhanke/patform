@@ -16,15 +16,13 @@ import DownloadSelect from "./components/DownloadSelect";
 import { DownloadOption } from "./types";
 
 interface FileSelectProps {
-	name: string;
 	onChange: (value: string | string[]) => void;
-	values: { [key: string]: string | string[] | undefined };
+	values: string | string[] | undefined;
 	isMulti?: boolean;
 	setSecondaryContent?: Dispatch<SetStateAction<React.ReactNode | null>>;
 }
 
 const FileSelect: React.FC<FileSelectProps> = ({
-	name,
 	onChange,
 	values,
 	isMulti = false,
@@ -32,7 +30,7 @@ const FileSelect: React.FC<FileSelectProps> = ({
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [fieldValue, setFieldValue] = useState<string | string[] | undefined>(
-		values[name]
+		values ? values : isMulti ? [] : undefined
 	);
 	const { modules } = useContext(PatstoreAppContext);
 	const { downloads: downloadData, refetch } = useFindDownload({
@@ -40,8 +38,6 @@ const FileSelect: React.FC<FileSelectProps> = ({
 			?.objectId,
 		filters: []
 	});
-
-	console.log(downloadData);
 
 	useEffect(() => {
 		refetch();
@@ -60,37 +56,25 @@ const FileSelect: React.FC<FileSelectProps> = ({
 		return optionsArray;
 	}, [downloadData]);
 
-	console.log({ values });
-	console.log({ options });
-
 	const elementSelect = useMemo(
 		() => (
 			<DownloadSelect
 				isMulti={isMulti}
-				setFieldValue={setFieldValue}
+				setFieldValue={(values) => {
+					setFieldValue(values);
+					onChange(values);
+				}}
 				options={options}
-				values={values[name] ? values[name] : isMulti ? [] : undefined}
+				values={fieldValue}
 				refetch={refetch}
 			/>
 		),
-		[
-			options,
-			values,
-			onChange,
-			isMulti,
-			values,
-			downloadData,
-			setFieldValue
-		]
+		[options, values, onChange, isMulti, downloadData, fieldValue]
 	);
 
 	const buttonClickHandler = useCallback(() => {
-		if (setSecondaryContent) {
-			setSecondaryContent(elementSelect);
-		} else {
-			setIsOpen(!isOpen);
-		}
-	}, [isOpen, setSecondaryContent, values]);
+		setIsOpen(!isOpen);
+	}, [isOpen, setSecondaryContent, values, fieldValue]);
 
 	const currentValues = useMemo(() => {
 		if (fieldValue) {
@@ -123,6 +107,7 @@ const FileSelect: React.FC<FileSelectProps> = ({
 				}}
 				header={isMulti ? "Dateien wählen" : "Datei wählen"}
 				buttonDisabled={[false, !fieldValue]}
+				styles={{ width: "360px", height: "480px" }}
 			>
 				{elementSelect}
 			</Modal>

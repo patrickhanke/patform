@@ -14,7 +14,8 @@ const Modal: React.FC<ModalProps> = ({
 	buttonDisabled = [false, false],
 	errors = [],
 	confirmButtonText = "Bestätigen",
-	cancelButtonText = "Abbrechen"
+	cancelButtonText = "Abbrechen",
+	styles = {},
 }) => {
 	if (isOpen === true)
 		return (
@@ -27,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({
 					<div className={"modal_header"}>
 						<h3>{header}</h3>
 					</div>
-					<div className={"modal_content"}>
+					<div className={"modal_content"} style={styles}>
 						{isOpen && children}
 						<ErrorDisplay errors={errors} />
 					</div>

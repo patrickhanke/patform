@@ -38,16 +38,12 @@ const DownloadSelect: FC<DownloadSelectProps> = ({
 					}
 				});
 
-				console.log(returnArray);
 				return returnArray;
 			}
 		} else {
 			return [];
 		}
 	}, [values, options]);
-
-	console.log({ options });
-	console.log({ values });
 
 	return (
 		<div>
@@ -71,7 +67,7 @@ const DownloadSelect: FC<DownloadSelectProps> = ({
 							}
 						}
 					}}
-					max={isMulti ? 1 : 10}
+					max={isMulti ? 10 : 1}
 					selectedElements={getSelectedElements() || []}
 				/>
 			)}
@@ -83,7 +79,8 @@ const DownloadSelect: FC<DownloadSelectProps> = ({
 						refetch();
 						setSiteState({ ...site_states[0] });
 					}}
-					afterUploadHandler={(imageArray: string[]) => {
+					afterUploadHandler={async (imageArray: string[]) => {
+						await refetch();
 						setFieldValue(imageArray);
 					}}
 					maxFileCount={1}

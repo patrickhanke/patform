@@ -8,7 +8,7 @@ import "./styles.scss";
 import { FormikRenderProps } from "./types";
 import createYupSchema from "./functions/createYupSchema";
 import getFieldsWithValidation from "./functions/getFieldsWithValidation";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Divider } from "@repo/ui";
 
 const FormikRender: FC<FormikRenderProps> = ({
@@ -23,7 +23,12 @@ const FormikRender: FC<FormikRenderProps> = ({
 	setSecondaryContent,
 	highlightChanges = false
 }) => {
-	console.log(fields)
+	useEffect(() => {
+		if (setSecondaryContent) {
+			setSecondaryContent(null);
+		}
+	}, []);
+
 	return (
 		<Formik
 			initialValues={
