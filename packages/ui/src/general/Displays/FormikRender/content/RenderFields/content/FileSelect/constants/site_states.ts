@@ -1,7 +1,7 @@
 const site_states = [
 	{
 		value: "select",
-		label: "Ausählen"
+		label: "Auswählen"
 	},
 	{
 		value: "upload",

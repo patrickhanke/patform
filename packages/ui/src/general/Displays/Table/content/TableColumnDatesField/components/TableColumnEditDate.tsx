@@ -2,7 +2,6 @@ import { useCallback, useContext, useMemo } from "react";
 import { Map, Select, StatelessToggle, SwitchButtons } from "@repo/ui";
 import { EventDate, LocationClass } from "@repo/types";
 import { TableColumnEditDateProps } from "../types";
-import locationButtonStates from "../constants/locationButtonStates";
 import { set, cloneDeep } from "lodash-es";
 import { useQuery } from "@apollo/client";
 import {
@@ -10,9 +9,15 @@ import {
 	generateGraphQLQuery,
 	paramsHandler
 } from "@repo/provider";
+import locationButtonStates from "../constants/locationButtonStates";
 
 const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 	const { modules } = useContext(PatstoreAppContext);
+
+	const locationModule = modules.find(
+		(module) => module.path === "/location"
+	);
+
 	const { data: locationData } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
@@ -24,18 +29,17 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 				filters: [
 					{
 						key: "module",
-						value: modules.find(
-							(module) => module.path === "/location"
-						)?.objectId as string,
+						value: locationModule?.objectId as string,
 						operator: "_eq",
 						id: "moduleId"
 					}
 				]
-			})
+			}),
+			skip: !locationModule
 		}
 	);
 
-	console.log({ date });
+	console.log({ locationData });
 
 	const locationOptions = useMemo(() => {
 		if (!locationData) return [];
@@ -55,8 +59,6 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 				| EventDate[keyof EventDate]
 				| EventDate["place"][keyof EventDate["place"]]
 		) => {
-			console.log(key, value);
-
 			if (date) {
 				setDates((draft: EventDate[]) => {
 					const index: number = draft.findIndex(
@@ -115,15 +117,21 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 			<div>
 				<label>Ort</label>
 				<SwitchButtons
-					buttonStates={locationButtonStates}
+					buttonStates={locationButtonStates({
+						locationModule: !!locationModule
+					})}
 					currentStates={
-						locationButtonStates.find(
+						locationButtonStates({
+							locationModule: !!locationModule
+						}).find(
 							(button) => button.value === date.place.type
 						) as { label: string; value: string }
 					}
-					changeHandler={(
-						value: (typeof locationButtonStates)[number]
-					) => {
+					changeHandler={(value: {
+						value: string;
+						label: string;
+						disabled?: boolean;
+					}) => {
 						console.log(value);
 						changeHandler("place.type", value.value);
 					}}

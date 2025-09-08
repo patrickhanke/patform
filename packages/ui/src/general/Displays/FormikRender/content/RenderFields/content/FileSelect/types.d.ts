@@ -8,7 +8,7 @@ export type DownloadSelectProps = {
 	isMulti?: boolean;
 	setFieldValue: (value: string | string[]) => void;
 	options: DownloadOption[];
-	values: string | string[];
+	values: string | string[] | undefined;
 	refetch: ApolloRefetch;
 	name?: string;
 };

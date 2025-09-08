@@ -3,35 +3,31 @@ import React, {
 	SetStateAction,
 	useCallback,
 	useContext,
+	useEffect,
 	useMemo,
 	useState
 } from "react";
 import { PatstoreAppContext } from "@repo/provider";
 import { useFindDownload } from "@repo/modules";
 import { DownloadClass } from "@repo/types";
-import { ElementSelectInterface, Modal } from "@repo/ui";
+import { Modal } from "@repo/ui";
 import { isArray } from "lodash";
 import DownloadSelect from "./components/DownloadSelect";
 import { DownloadOption } from "./types";
-import { all } from "lowlight";
 
 interface FileSelectProps {
 	name: string;
-	label?: string;
 	onChange: (value: string | string[]) => void;
-	values: { [key: string]: any };
-	isHorizontal?: boolean;
+	values: { [key: string]: string | string[] | undefined };
 	isMulti?: boolean;
 	setSecondaryContent?: Dispatch<SetStateAction<React.ReactNode | null>>;
 }
 
 const FileSelect: React.FC<FileSelectProps> = ({
 	name,
-	label,
 	onChange,
 	values,
 	isMulti = false,
-	isHorizontal,
 	setSecondaryContent
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -46,6 +42,10 @@ const FileSelect: React.FC<FileSelectProps> = ({
 	});
 
 	console.log(downloadData);
+
+	useEffect(() => {
+		refetch();
+	}, [isOpen]);
 
 	const options: DownloadOption[] = useMemo(() => {
 		const optionsArray: DownloadOption[] = [];
@@ -106,9 +106,7 @@ const FileSelect: React.FC<FileSelectProps> = ({
 
 	return (
 		<>
-			<div className={isHorizontal ? "form_horizontal_container" : ""}>
-				<label htmlFor={name}>{label || name} </label>
-
+			<div>
 				<button
 					className="full_button sm primary"
 					onClick={() => buttonClickHandler()}

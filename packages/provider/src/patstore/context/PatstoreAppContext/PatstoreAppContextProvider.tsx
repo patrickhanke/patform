@@ -17,8 +17,6 @@ const PatstoreAppContextProvider = ({
 	const [user, setUser] = useState<PatstoreUser>({} as PatstoreUser);
 	const pathname = usePathname();
 
-	console.log({ user });
-
 	const currentModule = useMemo(() => {
 		return project.modules.results.find((module) =>
 			pathname.includes(module.path)
@@ -52,6 +50,8 @@ const PatstoreAppContextProvider = ({
 		}),
 		[pageTitle, project, currentModule, user]
 	);
+
+	console.log({ project });
 
 	return (
 		<PatstoreAppContext.Provider value={appContextObject}>

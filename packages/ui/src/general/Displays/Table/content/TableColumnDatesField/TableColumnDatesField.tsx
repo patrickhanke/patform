@@ -1,4 +1,4 @@
-import { CreateButton, IconButton, SlideIn } from "@repo/ui";
+import { CreateButton, SlideIn } from "@repo/ui";
 import { TableColumnDatesFieldProps } from "./types";
 import { useCallback, useState } from "react";
 import { EventDate } from "@repo/types";
@@ -35,7 +35,10 @@ const TableColumnDatesField = ({
 	return (
 		<>
 			<div className="button_container">
-				<button className="full_button sm light">
+				<button
+					className="full_button sm light"
+					onClick={() => setEditDates(!editDates)}
+				>
 					{dates && dates.length > 0
 						? dates.map(
 								(date) =>
@@ -43,10 +46,6 @@ const TableColumnDatesField = ({
 							)
 						: "+ Termin hinzufügen"}
 				</button>
-				<IconButton
-					icon="edit"
-					onClick={() => setEditDates(!editDates)}
-				/>
 			</div>
 			<SlideIn
 				cancel={() => setEditDates(false)}
@@ -62,26 +61,28 @@ const TableColumnDatesField = ({
 				}
 				disabled={[loading, loading]}
 			>
-				<CreateButton
-					text="Termin hinzufügen"
-					size="small"
-					onClick={() => {
-						setDates((draft) => {
-							draft.push({
-								...initialDateValues,
-								id: v4() as string
+				<div>
+					<CreateButton
+						text="Termin hinzufügen"
+						size="small"
+						onClick={() => {
+							setDates((draft) => {
+								draft.push({
+									...initialDateValues,
+									id: v4() as string
+								});
 							});
-						});
-					}}
-				/>
-				<div className="table_columns_dates_list">
-					{dates.map((date) => (
-						<TableColumnDate
-							key={date.id}
-							date={date}
-							setActiveDate={setActiveDate}
-						/>
-					))}
+						}}
+					/>
+					<div className="table_columns_dates_list">
+						{dates.map((date) => (
+							<TableColumnDate
+								key={date.id}
+								date={date}
+								setActiveDate={setActiveDate}
+							/>
+						))}
+					</div>
 				</div>
 			</SlideIn>
 		</>

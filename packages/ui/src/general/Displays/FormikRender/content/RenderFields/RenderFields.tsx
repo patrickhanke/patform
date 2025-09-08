@@ -247,12 +247,10 @@ const RenderFields: FC<RenderFieldsType> = ({
 						field.type === "downloads") && (
 						<FileSelect
 							name={field.name}
-							label={field.label}
 							onChange={(value) =>
 								setFieldValue(field.name, value, true)
 							}
 							values={values}
-							isHorizontal={isHorizontal}
 							setSecondaryContent={setSecondaryContent}
 						/>
 					)}
