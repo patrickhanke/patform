@@ -40,7 +40,7 @@ const getData = async () => {
 	return data;
 };
 
-export default async function AdminLayout({
+export default async function RootLayout({
 	children
 }: {
 	children: React.ReactNode;

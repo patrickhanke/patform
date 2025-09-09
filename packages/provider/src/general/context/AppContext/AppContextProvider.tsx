@@ -15,6 +15,7 @@ import { useQuery } from "@apollo/client";
 import ProjectLoader from "./components/ProjectLoader";
 import useFindRoles from "./hooks/useFindRoles";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const ProjectContextProvider = ({
 	projects,
@@ -31,7 +32,7 @@ const ProjectContextProvider = ({
 	const [currentProject, setCurrentProject] = useState<PatstoreProject>();
 	const initialProjectId = useMemo(() => {
 		if (typeof window !== "undefined") {
-			const localId = localStorage.getItem(project_id);
+			const localId = Cookies.get(project_id);
 			if (localId && projects.includes(localId)) {
 				return localId;
 			} else {
@@ -92,16 +93,15 @@ const ProjectContextProvider = ({
 
 	useEffect(() => {
 		if (currentProject) {
-			localStorage.setItem(project_id, currentProject.objectId);
-			localStorage.setItem(project_path, `${currentProject.path}`);
+			Cookies.set(project_id, currentProject.objectId);
+			Cookies.set(project_path, `${currentProject.path}`);
 		}
 	}, [currentProject]);
 
 	const loadProject = useCallback((projectId: string, initial?: boolean) => {
 		router.push("/");
-		console.log("afterPush")
 		if (initial) {
-			const localId = localStorage.getItem(project_id);
+			const localId = Cookies.get(project_id);
 			if (localId) {
 				setProjectId(localId);
 			} else {

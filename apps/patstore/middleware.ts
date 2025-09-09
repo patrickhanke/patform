@@ -86,8 +86,9 @@ export async function middleware(request: NextRequest) {
     console.error("Error fetching projects:", err.message);
   }
 
-  const projectId = "lt4HonzqK3";
-    
+  const projectId = request.cookies.get("patstore_project_id")?.value;
+  
+  console.log({projectId})
   let roleModuleArray: string[] = [];
   try {
     const data = await fetch(
