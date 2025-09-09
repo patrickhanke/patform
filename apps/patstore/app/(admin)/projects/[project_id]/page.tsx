@@ -1,7 +1,9 @@
-import { Project } from "@repo/modules";
 
 const AdminProject = ({ params }: { params: { project_id: string } }) => (
-  <Project params={params} />
+  <div>
+    <p>
+    </p>
+  </div>
 );
 
 export default AdminProject;
