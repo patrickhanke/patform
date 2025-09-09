@@ -67,7 +67,7 @@ export default async function RootLayout({
 								(project: PatstoreProject) => ({
 									label: project.name,
 									icon: undefined,
-									value: `/admin/project/${project.objectId}`
+									value: `/projects/${project.objectId}`
 								})
 							)}
 						/>
