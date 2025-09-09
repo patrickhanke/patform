@@ -19,21 +19,6 @@ const createDownload: PageCreateClassObject<DownloadClass> = {
 			}
 		},
 		{
-			id: "file",
-			position: 2,
-			name: "file",
-			type: "file",
-			label: "Datei",
-			options: {
-				return_type: "string",
-				max_file_count: 1
-			},
-			validation: {
-				validate: true,
-				required: "Pflichtfeld"
-			}
-		},
-		{
 			id: "info",
 			position: 3,
 			name: "info",
