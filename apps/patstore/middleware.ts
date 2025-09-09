@@ -86,7 +86,7 @@ export async function middleware(request: NextRequest) {
     console.error("Error fetching projects:", err.message);
   }
 
-  const projectId = process.env.PROJECT_ID;
+  const projectId = "lt4HonzqK3";
     
   let roleModuleArray: string[] = [];
   try {

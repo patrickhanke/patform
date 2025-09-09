@@ -24,9 +24,6 @@ interface GetProjectsResponse {
 }
 
 const getData = async () => {
-	const projectId = process.env.PROJECT_ID;
-	console.log({ "admin project_ud": projectId });
-
 	const client: ApolloClient<any> = serverClient(
 		process.env.SASHIDO_GQL_URL as string,
 		process.env.SASHIDO_APP_ID as string,
@@ -37,14 +34,13 @@ const getData = async () => {
 		GetProjectsResponse,
 		OperationVariables
 	>({
-		query: find_initial_projects,
-		variables: { id: projectId || "H7eK6Fv3cn" }
+		query: find_initial_projects
 	});
 
 	return data;
 };
 
-export default async function RootLayout({
+export default async function AdminLayout({
 	children
 }: {
 	children: React.ReactNode;
