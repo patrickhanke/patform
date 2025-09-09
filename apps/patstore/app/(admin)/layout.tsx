@@ -4,7 +4,6 @@ import "@repo/styles/layout";
 import { ApolloClient, OperationVariables } from "@apollo/client";
 import { PatstoreProject } from "@repo/types";
 import { serverClient } from "@repo/provider";
-import Head from "next/head";
 import SiteHeader from "./content/SiteHeader";
 import { AdminLayoutContext, find_initial_projects } from "@repo/modules";
 import RenderSidebar from "./components/RenderSidebar";
@@ -52,10 +51,6 @@ export default async function RootLayout({
 
 	return (
 		<html lang="de">
-			<Head>
-				<link rel="icon" href="/favicon.ico" />
-				<title>patwork</title>
-			</Head>
 			<body>
 				<div className={"layout"}>
 					<AdminLayoutContext
