@@ -4,6 +4,8 @@ import "@repo/styles/layout";
 // import { PatstoreProject } from "@repo/types";
 import SiteHeader from "./content/SiteHeader";
 import { AdminLayoutContext } from "@repo/modules";
+import RenderSidebar from "./components/RenderSidebar";
+import { PatstoreProject } from "@repo/types";
 
 
 
@@ -12,6 +14,8 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
+
+	const projects: PatstoreProject[] = [];
 	return (
 		<html lang="de">
 			<body>
@@ -19,15 +23,15 @@ export default async function RootLayout({
 					<AdminLayoutContext
 						projects={[]}
 					>
-						{/* <RenderSidebar
-							menuItems={data.objects.findProject.results.map(
+						<RenderSidebar
+							menuItems={projects.map(
 								(project: PatstoreProject) => ({
 									label: project.name,
 									icon: undefined,
 									value: `/projects/${project.objectId}`
 								})
 							)}
-						/> */}
+						/>
 
 						<div className={"main_content"} id="main_content">
 							<div
