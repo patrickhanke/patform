@@ -3,6 +3,7 @@ import "@repo/styles/global";
 import "@repo/styles/layout";
 // import { PatstoreProject } from "@repo/types";
 import SiteHeader from "./content/SiteHeader";
+import { AdminLayoutContext } from "@repo/modules";
 
 
 
@@ -15,7 +16,7 @@ export default async function RootLayout({
 		<html lang="de">
 			<body>
 				<div className={"layout"}>
-					{/* <AdminLayoutContext */}
+					<AdminLayoutContext
 						projects={[]}
 					>
 						{/* <RenderSidebar
@@ -39,7 +40,7 @@ export default async function RootLayout({
 								</div>
 							</div>
 						</div>
-					{/* </AdminLayoutContext> */}
+					</AdminLayoutContext>
 				</div>
 			</body>
 		</html>
