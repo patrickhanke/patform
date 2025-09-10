@@ -1,13 +1,9 @@
 import React from "react";
 import "@repo/styles/global";
 import "@repo/styles/layout";
-// import { PatstoreProject } from "@repo/types";
-import SiteHeader from "./content/SiteHeader";
-import { AdminLayoutContext } from "@repo/modules";
-import RenderSidebar from "./components/RenderSidebar";
 import { PatstoreProject } from "@repo/types";
 import { cookies } from "next/headers";
-
+import {AdminRenderSidebar, AdminLayoutContext, AdminSiteHeader} from "@repo/modules";
 
 const getData = async () => {
   const cookieStore = cookies();
@@ -21,12 +17,12 @@ const getData = async () => {
 
   const headers = new Headers(httpHeaders);
 
-  const projects = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
+  const response = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
     method: "GET",
     headers,
   }).then((response) => response.json());
 
-  return projects;
+  return response.results;
 };
 
 export default async function RootLayout({
@@ -36,6 +32,8 @@ export default async function RootLayout({
 }) {
 
 	const projects: PatstoreProject[] = await getData();
+
+	console.log(projects)
 	return (
 		<html lang="de">
 			<body>
@@ -43,12 +41,12 @@ export default async function RootLayout({
 					<AdminLayoutContext
 						projects={[]}
 					>
-						<RenderSidebar
+						<AdminRenderSidebar
 							menuItems={projects.map(
 								(project: PatstoreProject) => ({
 									label: project.name,
 									icon: undefined,
-									value: `/projects/${project.objectId}`,
+									value: `/admin/projects/${project.objectId}`,
 									sub_menu: []
 								})
 							)}
@@ -59,7 +57,7 @@ export default async function RootLayout({
 								className={"content_container"}
 								id="page_content"
 							>
-								<SiteHeader />
+								<AdminSiteHeader />
 								<div className={"content"} id="content">
 									{children}
 								</div>

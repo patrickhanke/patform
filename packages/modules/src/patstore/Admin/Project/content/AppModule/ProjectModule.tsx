@@ -44,6 +44,7 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 					moduleId={id}
 					initialSettings={module.settings}
 					refetch={refetch}
+					modulePath={module.path}
 				/>
 			)}
 			<AppModuleEditCategories

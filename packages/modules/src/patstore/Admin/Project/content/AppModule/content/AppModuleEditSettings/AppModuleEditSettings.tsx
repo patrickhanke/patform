@@ -10,7 +10,8 @@ import AppModuleSettings from "./content/AppModuleSettings";
 const AppModuleEditSettings = ({
 	moduleId,
 	initialSettings,
-	refetch
+	refetch,
+	modulePath
 }: AppModuleEditSettingsProps) => {
 	const { updateData } = useDataHandler();
 	const [editSettings, setEditSettings] = React.useState(false);
@@ -54,10 +55,11 @@ const AppModuleEditSettings = ({
 	return (
 		<>
 			<button
-				className="full_button sm green"
+				className="full_button sm secondary"
 				onClick={() => setEditSettings(true)}
+				disabled={loading || modulePath !== "/categories"}
 			>
-				Einstellungen
+				Einträge bearbeiten
 			</button>
 			<SlideIn
 				cancel={() => setEditSettings(false)}
@@ -66,7 +68,7 @@ const AppModuleEditSettings = ({
 					slideInConfirmHandler();
 				}}
 				isOpen={editSettings}
-				header="Einstelltungen"
+				header="Einstellungen"
 				showSecondaryContent={!!activeSetting}
 				secondaryContent={editSettingsComponent}
 				disabled={[loading, loading]}

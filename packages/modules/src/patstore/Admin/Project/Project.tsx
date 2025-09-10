@@ -23,7 +23,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 		generateGraphQLQuery({
 			type: "get",
 			objectName: "Project",
-			fields: ["objectId", "name", "createdAt", "logo"]
+			fields: ["objectId", "name", "createdAt", "logo { url name }"]
 		}),
 		{
 			variables: { id: params.project_id }
@@ -131,6 +131,8 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 	if (!data && !projectData) return <div> loading ...</div>;
 
 	const modules = data?.objects.findModule.results;
+
+	console.log({ projectData });
 
 	return (
 		<AdminPage
