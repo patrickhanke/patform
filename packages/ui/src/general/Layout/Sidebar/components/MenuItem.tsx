@@ -73,7 +73,7 @@ const MenuItem = ({
 								: "menu_item"
 						)}
 					>
-						<Icons icon={icon} />
+						{icon && <Icons icon={icon} />}
 						<div className="sidebar_label">{label}</div>
 						{!disabled && (
 							<div
@@ -95,7 +95,7 @@ const MenuItem = ({
 						)}
 						href={link}
 					>
-						<Icons icon={icon} />
+						{icon && <Icons icon={icon} />}
 						<div className={"sidebar_label"}>{label}</div>
 					</Link>
 				)}
@@ -125,7 +125,11 @@ const MenuItem = ({
 											)}
 											href={`${link}${subMenuItem.value}`}
 										>
-											<Icons icon={subMenuItem.icon} />
+											{icon && (
+												<Icons
+													icon={subMenuItem.icon}
+												/>
+											)}
 											<div className="sidebar_label">
 												{subMenuItem.label}
 											</div>
@@ -145,7 +149,7 @@ const MenuItem = ({
 													: "menu_item"
 											)}
 										>
-											<Icons icon={icon} />
+											{icon && <Icons icon={icon} />}
 											<div className="sidebar_label">
 												{subMenuItem.label}
 											</div>

@@ -3,7 +3,7 @@ import React from "react";
 
 export type SidebarProps = {
 	menuItems: MenuItem[];
-	user: PatstoreUser | PatflowUser;
+	user?: PatstoreUser | PatflowUser;
 	children?: React.ReactNode;
 	appVersion?: string;
 	appName?: string;
@@ -12,7 +12,7 @@ export type SidebarProps = {
 export type MenuItem = Readonly<{
 	value: string;
 	label: string;
-	icon: string;
+	icon?: string;
 	disabled?: boolean;
 	divider?: string;
 	sub_menu: {
@@ -26,7 +26,7 @@ export type MenuItem = Readonly<{
 export type MenuItemProps = {
 	link: string;
 	label: string;
-	icon: string;
+	icon?: string;
 	subMenu: MenuItem["sub_menu"];
 	disabled?: boolean;
 	divider?: string;

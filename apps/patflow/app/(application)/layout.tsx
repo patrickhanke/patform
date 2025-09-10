@@ -14,7 +14,7 @@ export const metadata = {
 
 const getData = async () => {
   const cookieStore = cookies();
-  const token = cookieStore.get(process.env.SESSION_TOKEN)?.value;
+  const token = cookieStore.get(process.env.SESSION_TOKEN as string)?.value;
 
   const httpHeaders = {
     "X-Parse-Session-Token": token || "",
