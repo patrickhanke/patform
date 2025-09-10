@@ -15,7 +15,7 @@ const Modal: React.FC<ModalProps> = ({
 	errors = [],
 	confirmButtonText = "Bestätigen",
 	cancelButtonText = "Abbrechen",
-	styles = {},
+	styles = {}
 }) => {
 	if (isOpen === true)
 		return (

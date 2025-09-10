@@ -9,7 +9,6 @@ import create_person from "./constants/create_person";
 
 const PersonsOverview = () => {
 	const { deleteData } = useDataHandler(false);
-
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({

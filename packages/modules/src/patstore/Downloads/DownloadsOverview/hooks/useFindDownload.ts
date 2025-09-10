@@ -3,7 +3,12 @@ import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
 import { UseFindDownloadHook } from "../types";
 import { useMemo } from "react";
 
-const useFindDownload: UseFindDownloadHook = ({ moduleId, filters }) => {
+const useFindDownload: UseFindDownloadHook = ({
+	moduleId,
+	filters,
+	limit,
+	skip
+}) => {
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
@@ -18,7 +23,11 @@ const useFindDownload: UseFindDownloadHook = ({ moduleId, filters }) => {
 			]
 		}),
 		{
-			variables: { params: paramsHandler({ moduleId, filters }) },
+			variables: {
+				params: paramsHandler({ moduleId, filters }),
+				limit,
+				skip
+			},
 			notifyOnNetworkStatusChange: true
 		}
 	);
@@ -27,7 +36,8 @@ const useFindDownload: UseFindDownloadHook = ({ moduleId, filters }) => {
 		() => ({
 			loading,
 			downloads: data ? data.objects.findDownload.results : undefined,
-			refetch
+			refetch,
+			count: data ? data.objects.findPerson.count : 0
 		}),
 		[data, loading]
 	);
