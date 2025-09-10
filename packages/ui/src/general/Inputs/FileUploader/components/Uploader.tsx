@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { UplaoderProps } from "../types";
 import { useDataHandler, PatstoreAppContext } from "@repo/provider";
 import { ImageClass } from "@repo/types";
-import { Dropzone, FilesList, UploadButton } from "@uppy/react";
+import { Dropzone, FilesList, UploadButton, UppyContext } from "@uppy/react";
 
 const Uploader: React.FC<UplaoderProps> = ({
-	uppy,
+	type = "image",
 	name,
 	onComplete,
 	afterUploadHandler,
@@ -16,6 +16,7 @@ const Uploader: React.FC<UplaoderProps> = ({
 }) => {
 	const { modules } = useContext(PatstoreAppContext);
 	const { createUpdateFile } = useDataHandler();
+	const { uppy } = useContext(UppyContext);
 
 	const [isUploading, setIsUploading] = useState(false);
 	const [isComplete, setIsComplete] = useState(false);
@@ -41,7 +42,10 @@ const Uploader: React.FC<UplaoderProps> = ({
 								className,
 								classKey,
 								classId,
-								feedback: "Bild erfolgreich hochgeladen",
+								feedback:
+									type === "image"
+										? "Bild erfolgreich hochgeladen"
+										: "Datei erfolgreich hochgeladen",
 								afterSaveHandler: (image: ImageClass) => {
 									imageArray.push(image.file.url);
 								}
@@ -127,7 +131,7 @@ const Uploader: React.FC<UplaoderProps> = ({
 
 	return (
 		<div className={"uppy_upload_container"}>
-			<Dropzone note="Dateien hier ablegen oder clicken um sie auszuwählen" />
+			<Dropzone note="Dateien hier ablegen oder klicken um sie auszuwählen" />
 			<div id="uppy-files-list">
 				<FilesList key="files-list" />
 			</div>

@@ -113,7 +113,6 @@ export type ColumnDataTypes =
 	| "edit_times"
 	| "file"
 	| "edit_team"
-	| "files"
 	| "edit_color"
 	| "edit_content"
 	| "date_picker"

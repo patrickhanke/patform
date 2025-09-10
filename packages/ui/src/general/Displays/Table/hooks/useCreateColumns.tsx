@@ -38,7 +38,7 @@ import {
 	TableColumnDate,
 	TableColumnImages
 } from "@repo/ui";
-import { get, isArray } from "lodash-es";
+import { get } from "lodash-es";
 import { IconButton } from "../../../Buttons";
 import {
 	TableColumnDatesField,
@@ -476,27 +476,22 @@ const useCreateColumns = <T extends ColumnClasses>({
 					sortingFn: columnElement.sortingFn
 				} as ColumnDef<T>);
 			}
-			if (
-				columnElement.type === "file" ||
-				columnElement.type === "files"
-			) {
+			if (columnElement.type === "file") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnFiles
-							classKey={columnElement.id as string}
-							className={className as "Download" | "Image"}
-							id={row.objectId}
-							onChange={() => refetch()}
-							maxFileCount={row[columnElement.id] ? 1 : 10}
-							fileNumber={
-								isArray(row[columnElement.id])
-									? row[columnElement.id].length
-									: row[columnElement.id]
-										? 1
-										: 0
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						console.log({ row });
+						console.log(columnElement.id);
+						return (
+							<TableColumnFiles
+								classKey={columnElement.id as string}
+								className={className as "Download" | "Image"}
+								id={row.objectId}
+								onChange={() => refetch()}
+								maxFileCount={1}
+								value={row[columnElement.id]}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),

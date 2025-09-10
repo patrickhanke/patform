@@ -2,6 +2,10 @@ import Uppy from "@uppy/core";
 
 type FileUploadType = "image" | "file";
 type FileUploadValue = string[] | string;
+type FileObject = {
+	name: string;
+	url: string;
+};
 
 export type FileUplaoderProps = {
 	type: FileUploadType;
@@ -13,11 +17,12 @@ export type FileUplaoderProps = {
 	classKey: string;
 	classId?: string;
 	setSecondaryContent?: Dispatch<SetStateAction<ReactNode>> | undefined;
-	existingFiles?: number;
+	existingFile?: FileObject;
 	inline?: boolean;
 };
 
 export type UplaoderProps = {
+	type?: "image" | "file";
 	uppy: Uppy;
 	name?: string;
 	onComplete?: () => void;

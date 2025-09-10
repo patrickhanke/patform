@@ -12,7 +12,7 @@ export const UppyContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [uppy] = useState(
 		() =>
 			new Uppy({
-				logger: {    
+				logger: {
 					debug: console.log,
 					warn: console.warn,
 					error: console.error
@@ -21,32 +21,30 @@ export const UppyContextProvider: React.FC<{ children: React.ReactNode }> = ({
 				meta: { type: "avatar" },
 				restrictions: {
 					maxNumberOfFiles: 10,
-					allowedFileTypes: [
-						"image/jpeg",
-						"image/jpg",
-						"image/png",
-						"image/gif",
-						"image/webp",
-						"image/svg+xml",
-						"image/svg",
-						"application/pdf",
-						"application/x-pdf",
-						"application/vnd.ms-excel",
-						"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-						"application/vnd.ms-powerpoint",
-						"application/vnd.openxmlformats-officedocument.presentationml.presentation",
-						"text/plain",
-						"text/csv",
-						"text/html"
-					],
+					// allowedFileTypes: [
+					// 	"image/jpeg",
+					// 	"image/jpg",
+					// 	"image/png",
+					// 	"image/gif",
+					// 	"image/webp",
+					// 	"image/svg+xml",
+					// 	"image/svg",
+					// 	"application/pdf",
+					// 	"application/x-pdf",
+					// 	"application/vnd.ms-excel",
+					// 	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+					// 	"application/vnd.ms-powerpoint",
+					// 	"application/vnd.openxmlformats-officedocument.presentationml.presentation",
+					// 	"text/plain",
+					// 	"text/csv",
+					// 	"text/html"
+					// ],
 
 					maxFileSize: 20000000
 				},
 				autoProceed: false
 			})
 	);
-
-	console.log(uppy.getPlugin("ImageEditor"));
 
 	return <UContextProvider uppy={uppy}>{children}</UContextProvider>;
 };

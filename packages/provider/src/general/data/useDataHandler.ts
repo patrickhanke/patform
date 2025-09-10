@@ -215,71 +215,6 @@ const useDataHandler = (useMasterKey = false) => {
 		[user]
 	);
 
-	const createImage = useCallback(
-		async ({
-			file,
-			name,
-			afterSaveHandler,
-			feedback,
-			moduleId
-		}: {
-			file: UppyFile<{ type: string }, Record<string, never>>;
-			name: string;
-			afterSaveHandler?: (data: any) => void;
-			feedback?: string;
-			moduleId: string;
-		}) => {
-			const parseFile = new Parse.File(file.name, file.data);
-			await parseFile.save();
-
-			console.log("File saved to Parse:", parseFile);
-
-			const FileObject = Parse.Object.extend("Image");
-			const obj = new FileObject();
-			obj.set("file", parseFile);
-			obj.set("connected_elements", []);
-			obj.set("categories", []);
-			obj.set("fields", []);
-			obj.set("description", "");
-			obj.set("date", formatISO9075(new Date()));
-			obj.set("name", name || file.name);
-			obj.set("module", {
-				__type: "Pointer",
-				className: "Module",
-				objectId: moduleId
-			});
-			obj.set("created_by", {
-				__type: "Pointer",
-				className: "_User",
-				objectId: user.objectId
-			});
-
-			await obj
-				.save(null, {
-					sessionToken: Cookies.get("patstore_token")
-				})
-				.then((response: any) => {
-					if (feedback) {
-						feedbackHandler({
-							success: true,
-							message: feedback,
-							type: "success"
-						});
-					}
-					if (afterSaveHandler) {
-						console.log("afterSaveHandler", afterSaveHandler);
-						afterSaveHandler(response.data);
-					}
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-
-			return obj;
-		},
-		[]
-	);
-
 	const createUpdateFile = useCallback(
 		async ({
 			file,
@@ -418,69 +353,7 @@ const useDataHandler = (useMasterKey = false) => {
 						console.log(error);
 					});
 			}
-		},
-		[]
-	);
-
-	const addImage = useCallback(
-		async ({
-			file,
-			afterSaveHandler,
-			feedback,
-			className,
-			classId,
-			classKey
-		}: {
-			file: UppyFile<{ type: string }, Record<string, never>>;
-			afterSaveHandler?: (data: any) => void;
-			feedback?: string;
-			className: string;
-			classId: string;
-			classKey: string;
-		}) => {
-			const replaceUmlaute = (fileName: string): string => {
-				return fileName
-					.replace(/ä/g, "ae")
-					.replace(/Ä/g, "Ae")
-					.replace(/ö/g, "oe")
-					.replace(/Ö/g, "Oe")
-					.replace(/ü/g, "ue")
-					.replace(/Ü/g, "Ue")
-					.replace(/ß/g, "ss");
-			};
-			const fileName = replaceUmlaute(file.name as string);
-			console.log({ fileName });
-			const parseFile = new Parse.File(fileName, file.data);
-			await parseFile.save();
-
-			console.log("File saved to Parse:", parseFile);
-
-			const classQuery = new Parse.Query(className);
-			const classObject = await classQuery.get(classId);
-			classObject.set(classKey, parseFile);
-
-			await classObject
-				.save(null, {
-					sessionToken: Cookies.get("patstore_token")
-				})
-				.then((response: any) => {
-					if (feedback) {
-						feedbackHandler({
-							success: true,
-							message: feedback,
-							type: "success"
-						});
-					}
-					if (afterSaveHandler) {
-						console.log("afterSaveHandler", afterSaveHandler);
-						afterSaveHandler(response.data);
-					}
-				})
-				.catch((error) => {
-					console.log(error);
-				});
-
-			return classObject;
+			netlifyHookHandler(className);
 		},
 		[]
 	);
@@ -539,10 +412,8 @@ const useDataHandler = (useMasterKey = false) => {
 		createData,
 		deleteData,
 		getData,
-		createImage,
 		updateImage,
-		createUpdateFile,
-		addImage
+		createUpdateFile
 	};
 };
 

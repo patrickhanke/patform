@@ -86,7 +86,7 @@ const DownloadSelect: FC<DownloadSelectProps> = ({
 					maxFileCount={1}
 					classKey="file"
 					className="Download"
-					existingFiles={values ? values.length : 0}
+					existingFiles={values}
 					inline
 				/>
 			)}

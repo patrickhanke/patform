@@ -1,6 +1,6 @@
 "use client";
 
-import { FileUploader } from "@repo/ui";
+import { FileObject, FileUploader } from "@repo/ui";
 
 type TableColumnFilesProps = {
 	className: "Download" | "Image";
@@ -8,7 +8,7 @@ type TableColumnFilesProps = {
 	id: string;
 	onChange: () => void;
 	maxFileCount: number;
-	fileNumber: number;
+	value?: FileObject;
 };
 
 const TableColumnFiles = ({
@@ -17,9 +17,9 @@ const TableColumnFiles = ({
 	className,
 	classKey,
 	id,
-	fileNumber
+	value
 }: TableColumnFilesProps) => {
-	console.log({ fileNumber });
+	console.log({ value });
 
 	return (
 		<>
@@ -31,7 +31,7 @@ const TableColumnFiles = ({
 				classId={id}
 				afterUploadHandler={onChange}
 				maxFileCount={maxFileCount}
-				existingFiles={fileNumber}
+				existingFile={value}
 			/>
 		</>
 	);
