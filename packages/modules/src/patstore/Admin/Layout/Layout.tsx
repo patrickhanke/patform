@@ -2,13 +2,12 @@ import React from "react";
 import "@repo/styles/global";
 import "@repo/styles/layout";
 import { ApolloClient, OperationVariables } from "@apollo/client";
-import { PatstoreProject } from "@repo/types";
-import { serverClient } from "@repo/provider";
+// import { PatstoreProject } from "@repo/types";
 import RenderSidebar from "./components/RenderSidebar";
-import Head from "next/head";
 import SiteHeader from "./content/SiteHeader";
 import find_initial_projects from "./constants/find_initial_projects";
 import AdminLayoutContext from "./components/AdminLayoutContext";
+import serverClient from "./components/serverClient";
 
 export const metadata = {
 	title: "Patwork Admin",
@@ -49,10 +48,6 @@ export default async function RootLayout({
 
 	return (
 		<html lang="de">
-			<Head>
-				<link rel="icon" href="/favicon.ico" />
-				<title>patwork</title>
-			</Head>
 			<body>
 				<div className={"layout"}>
 					<AdminLayoutContext
