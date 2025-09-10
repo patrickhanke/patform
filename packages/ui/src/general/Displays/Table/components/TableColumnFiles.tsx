@@ -24,6 +24,7 @@ const TableColumnFiles = ({
 	return (
 		<>
 			<FileUploader
+				key={id}
 				type="file"
 				className={className}
 				classKey={classKey}

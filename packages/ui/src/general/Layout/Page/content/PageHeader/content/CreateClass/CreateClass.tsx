@@ -39,6 +39,7 @@ const CreateClass = <T extends Classes>({
 				},
 				...data
 			},
+			feedback: "Neue Daten erstellt",
 			userId: user?.objectId
 		});
 		setDisabled([false, false]);

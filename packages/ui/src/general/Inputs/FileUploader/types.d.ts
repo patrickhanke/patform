@@ -19,16 +19,12 @@ export type FileUplaoderProps = {
 
 export type UplaoderProps = {
 	uppy: Uppy;
-	type: FileUploadType;
 	name?: string;
 	onComplete?: () => void;
 	afterUploadHandler?: (images: string[]) => void | Promise<void>;
-	maxFileCount?: number;
 	className: "Download" | "Image";
 	classKey: string;
 	classId?: string;
-	setSecondaryContent?: Dispatch<SetStateAction<ReactNode>> | undefined;
-	existingFiles?: number;
 	inline?: boolean;
 };
 

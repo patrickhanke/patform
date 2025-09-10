@@ -37,7 +37,7 @@ const useFindDownload: UseFindDownloadHook = ({
 			loading,
 			downloads: data ? data.objects.findDownload.results : undefined,
 			refetch,
-			count: data ? data.objects.findPerson.count : 0
+			count: data ? data.objects.findDownload.count : 0
 		}),
 		[data, loading]
 	);

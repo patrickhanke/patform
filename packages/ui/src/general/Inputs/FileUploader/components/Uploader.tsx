@@ -1,28 +1,22 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { UplaoderProps } from "../types";
 import { useDataHandler, PatstoreAppContext } from "@repo/provider";
-import { Modal } from "@repo/ui";
 import { ImageClass } from "@repo/types";
 import { Dropzone, FilesList, UploadButton } from "@uppy/react";
 
 const Uploader: React.FC<UplaoderProps> = ({
 	uppy,
-	type = "image",
 	name,
 	onComplete,
 	afterUploadHandler,
-	maxFileCount = 5,
 	className,
 	classKey,
 	classId,
-	setSecondaryContent,
-	existingFiles = 0,
 	inline = false
 }) => {
 	const { modules } = useContext(PatstoreAppContext);
 	const { createUpdateFile } = useDataHandler();
 
-	const [uploadModal, setUploadModal] = useState(false);
 	const [isUploading, setIsUploading] = useState(false);
 	const [isComplete, setIsComplete] = useState(false);
 
@@ -80,31 +74,6 @@ const Uploader: React.FC<UplaoderProps> = ({
 		};
 	}, [uppy, isComplete, className, classKey, classId]);
 
-	const buttonText = useMemo(() => {
-		if (type === "image" && maxFileCount === 1) {
-			if (existingFiles && existingFiles > 0) {
-				return existingFiles > 1 ? `${existingFiles} Bilder` : "1 Bild";
-			}
-			return "Bild hochladen";
-		} else if (type === "image" && maxFileCount > 1) {
-			if (existingFiles && existingFiles > 0) {
-				return existingFiles > 1 ? `${existingFiles} Bilder` : "1 Bild";
-			}
-			return "Bilder hochladen";
-		} else if (type === "file") {
-			if (existingFiles && existingFiles > 0) {
-				return existingFiles > 1
-					? `${existingFiles} Dateien`
-					: "1 Datei";
-			}
-			return "Datei hochladen";
-		} else {
-			return "Dateien hochladen";
-		}
-	}, [existingFiles]);
-
-	console.log({ isUploading });
-
 	const DashboardContent = useMemo(
 		() => (
 			<div className={"uppy_upload_container"}>
@@ -157,29 +126,14 @@ const Uploader: React.FC<UplaoderProps> = ({
 	}
 
 	return (
-		<div className={"upload_container"}>
-			<button
-				type="button"
-				className="full_button sm grey"
-				onClick={() => {
-					if (setSecondaryContent) {
-						return setSecondaryContent(DashboardContent);
-					}
-					setUploadModal(true);
-				}}
-			>
-				{buttonText}
-			</button>
-			{!setSecondaryContent && (
-				<Modal
-					isOpen={uploadModal}
-					cancelButtonHandler={() => setUploadModal(false)}
-					cancelButtonText="Schließen"
-					header="Upload Image"
-				>
-					{DashboardContent}
-				</Modal>
-			)}
+		<div className={"uppy_upload_container"}>
+			<Dropzone note="Dateien hier ablegen oder clicken um sie auszuwählen" />
+			<div id="uppy-files-list">
+				<FilesList key="files-list" />
+			</div>
+			<UploadButton>
+				{isUploading ? "Wird hochgeladen..." : "Dateien hochladen"}
+			</UploadButton>
 		</div>
 	);
 };
