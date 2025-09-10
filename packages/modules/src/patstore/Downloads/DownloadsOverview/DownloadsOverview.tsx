@@ -46,7 +46,7 @@ const DownloadsOverview = () => {
 				fields={[
 					{
 						type: "input",
-						key: "name",
+						key: "title",
 						operator: "_regex",
 						value: "",
 						placeholder: "Suchwort"
@@ -61,7 +61,7 @@ const DownloadsOverview = () => {
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
-				text: "Donwloads löschen",
+				text: "Downloads löschen",
 				onClick: () => {
 					setDeleteModal(true);
 				},

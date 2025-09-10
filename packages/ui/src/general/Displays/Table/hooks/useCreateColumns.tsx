@@ -478,20 +478,16 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "file") {
 				columnArray.push({
-					accessorFn: (row) => {
-						console.log({ row });
-						console.log(columnElement.id);
-						return (
-							<TableColumnFiles
-								classKey={columnElement.id as string}
-								className={className as "Download" | "Image"}
-								id={row.objectId}
-								onChange={() => refetch()}
-								maxFileCount={1}
-								value={row[columnElement.id]}
-							/>
-						);
-					},
+					accessorFn: (row) => (
+						<TableColumnFiles
+							classKey={columnElement.id as string}
+							className={className as "Download" | "Image"}
+							id={row.objectId}
+							onChange={() => refetch()}
+							maxFileCount={1}
+							value={row[columnElement.id]}
+						/>
+					),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
