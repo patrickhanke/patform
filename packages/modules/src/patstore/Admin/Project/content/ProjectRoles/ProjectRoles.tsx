@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { ProjectRolesProps } from "./types";
@@ -80,6 +80,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 					});
 					await refetch();
 					setLoading(false);
+					setCreateRole(false);
 				}}
 				disabled={[loading, loading]}
 				preventClickOutside
