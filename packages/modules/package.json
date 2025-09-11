@@ -12,6 +12,8 @@
   "dependencies": {
     "@bytescale/sdk": "^3.39.0",
     "@bytescale/upload-widget-react": "^4.19.0",
+    "@types/papaparse": "^5.3.16",
+    "papaparse": "^5.5.3",
     "react-select": "^5.10.1"
   },
   "devDependencies": {

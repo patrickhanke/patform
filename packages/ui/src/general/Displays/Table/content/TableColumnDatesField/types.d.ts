@@ -9,6 +9,7 @@ export type TableColumnDatesFieldProps = {
 export type TableColumnDateProps = {
 	date: EventDate;
 	setActiveDate: (id: string) => void;
+	onDelete: (id: string) => void;
 };
 
 export type TableColumnEditDateProps = {

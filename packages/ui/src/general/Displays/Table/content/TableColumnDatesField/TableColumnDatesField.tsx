@@ -1,12 +1,13 @@
 import { CreateButton, SlideIn } from "@repo/ui";
 import { TableColumnDatesFieldProps } from "./types";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { EventDate } from "@repo/types";
 import { useImmer } from "use-immer";
 import TableColumnEditDate from "./components/TableColumnEditDate";
 import TableColumnDate from "./components/TableColumnDate";
 import { v4 } from "uuid";
 import initialDateValues from "./constants/initialDateValues";
+import { getDateString } from "@repo/provider";
 
 const TableColumnDatesField = ({
 	initialDates,
@@ -32,6 +33,31 @@ const TableColumnDatesField = ({
 		[dates]
 	);
 
+	const renderButtonText = useMemo(() => {
+		if (dates && dates.length > 0) {
+			return dates
+				.map((date) => {
+					console.log({ date });
+					let label = date.label ? `${date.label} / ` : "";
+					if (date.start) {
+						label += date.full_day
+							? getDateString(new Date(date.start)).date
+							: getDateString(new Date(date.start)).dateTime;
+					}
+					if (date.end) {
+						label += date.full_day
+							? ` - ${getDateString(new Date(date.end)).date}`
+							: ` - ${getDateString(new Date(date.end)).dateTime}`;
+					}
+
+					return label;
+				})
+				.join(", ");
+		} else {
+			return "+ Termin hinzufügen";
+		}
+	}, [dates]);
+
 	return (
 		<>
 			<div className="button_container">
@@ -39,12 +65,7 @@ const TableColumnDatesField = ({
 					className="full_button sm light"
 					onClick={() => setEditDates(!editDates)}
 				>
-					{dates && dates.length > 0
-						? dates.map(
-								(date) =>
-									`${date.label} / ${date.start} - ${date.end}`
-							)
-						: "+ Termin hinzufügen"}
+					{renderButtonText}
 				</button>
 			</div>
 			<SlideIn
@@ -80,6 +101,16 @@ const TableColumnDatesField = ({
 								key={date.id}
 								date={date}
 								setActiveDate={setActiveDate}
+								onDelete={(id: string) => {
+									setDates((draft) => {
+										draft.splice(
+											draft.findIndex(
+												(field) => field.id === id
+											),
+											1
+										);
+									});
+								}}
 							/>
 						))}
 					</div>

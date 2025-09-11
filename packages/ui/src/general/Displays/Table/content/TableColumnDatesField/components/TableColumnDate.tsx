@@ -4,7 +4,11 @@ import { TableColumnDateProps } from "../types";
 import { useMemo } from "react";
 import { formatISO9075 } from "date-fns";
 
-const TableColumnDate = ({ date, setActiveDate }: TableColumnDateProps) => {
+const TableColumnDate = ({
+	date,
+	setActiveDate,
+	onDelete
+}: TableColumnDateProps) => {
 	const title = useMemo(() => {
 		if (date.label) {
 			return date.label;
@@ -25,7 +29,7 @@ const TableColumnDate = ({ date, setActiveDate }: TableColumnDateProps) => {
 					icon="edit"
 					onClick={() => setActiveDate(date.id)}
 				/>
-				<IconButton icon="delete" onClick={() => null} />
+				<IconButton icon="delete" onClick={() => onDelete(date.id)} />
 			</div>
 		</div>
 	);

@@ -19,7 +19,6 @@ const fieldDisabledHandler = (
 	field: Field,
 	values: RenderFieldsType["values"]
 ) => {
-	console.log(field);
 	if (field.disabled) {
 		if (typeof field.disabled === "boolean") {
 			return field.disabled;

@@ -11,6 +11,7 @@ import useFindUser from "./hooks/useFindUser";
 import { Filter } from "@repo/types";
 import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
+import FileImporter from "./components/FileImporter";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
@@ -128,6 +129,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			pageState={pageState}
 			setPageState={setPageState}
 		>
+			{process.env.NODE_ENV === "development" && <FileImporter />}
 			{pageState.value === "user" && (
 				<Table
 					columns={columns}
