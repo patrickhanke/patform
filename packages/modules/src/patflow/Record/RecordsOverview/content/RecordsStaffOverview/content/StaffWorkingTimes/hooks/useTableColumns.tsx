@@ -63,6 +63,7 @@ const useTableColumns = ({
 			{
 				accessorFn: (row) => (
 					<ColumnWorkingTime
+						absence={row.absence}
 						type={row.type}
 						time={row.time}
 						date={row.date}

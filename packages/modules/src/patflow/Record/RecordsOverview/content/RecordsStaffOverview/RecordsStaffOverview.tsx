@@ -17,7 +17,11 @@ import { StaffSurcharges } from "./content/StaffSurcharges";
 import { StaffVacation } from "./content/StaffVacation";
 import { StaffWorkingTimes } from "./content/StaffWorkingTimes";
 
-const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
+const RecordsStaffOverview = ({
+	year,
+	selectedUser,
+	setSelectedUser
+}: RecordsStaffOverviwProps) => {
 	const { projectId } = useContext(UserContext);
 
 	const [selectedMonth, setSelectedMonth] = React.useState<
@@ -26,9 +30,6 @@ const RecordsStaffOverview = ({ year }: RecordsStaffOverviwProps) => {
 		months.find(
 			(month) => month.id === new Date().getMonth()
 		) as (typeof months)[number]
-	);
-	const [selectedUser, setSelectedUser] = React.useState<StaffOption | null>(
-		null
 	);
 
 	const { days, refetch } = useGetDay({

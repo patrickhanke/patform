@@ -13,6 +13,7 @@ import { Filter } from "@repo/types";
 import RecordsSettings from "./content/RecordsSettings";
 import { Page } from "@repo/ui";
 import ResetWorkerTimes from "./content/ResetWorkerTimes";
+import { StaffOption } from "./types";
 
 const RecordsOverview = () => {
 	const { year } = useContext(PatflowAppContext);
@@ -25,6 +26,10 @@ const RecordsOverview = () => {
 	);
 	const [editAbsence, setEditAbsence] = useState(false);
 	const [resetWorkerTimes, setResetWorkerTimes] = useState(false);
+
+	const [selectedUser, setSelectedUser] = React.useState<StaffOption | null>(
+		null
+	);
 
 	const pageHeaderButtons = useMemo(() => {
 		if (siteState.value === "workers") {
@@ -77,13 +82,19 @@ const RecordsOverview = () => {
 				/>
 			)}
 			{siteState.value === "workers" && (
-				<RecordsStaffOverview year={year} />
+				<RecordsStaffOverview
+					year={year}
+					setSelectedUser={setSelectedUser}
+					selectedUser={selectedUser}
+				/>
 			)}
 			{siteState.value === "absence" && (
 				<RecordsAbsence
 					records={records}
 					editAbsence={editAbsence}
 					setEditAbsence={setEditAbsence}
+					selectedUser={selectedUser}
+					setSelectedUser={setSelectedUser}
 				/>
 			)}
 			{siteState.value === "calendar" && (

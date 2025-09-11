@@ -1,9 +1,11 @@
 import { ColumnWorkingTimeProps } from "../types";
-import { getDateString } from "@repo/provider";
+import { absence_type_options, getDateString } from "@repo/provider";
 import { FC } from "react";
 import EditDayTimes from "../../EditDayTimes";
+import { StateDisplay } from "@repo/ui";
 
 const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
+	absence,
 	type,
 	time,
 	date,
@@ -20,9 +22,24 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 			)
 		: [];
 
-	if (type === "absence") {
+	if (type === "absence" && absence) {
+		console.log({ sortedTime });
+		console.log({ absence });
+
 		return (
 			<div className="button_container">
+				<StateDisplay
+					label={
+						absence_type_options?.find(
+							(option) => option.value === absence?.type
+						)?.label || absence_type_options[0].label
+					}
+					color={
+						absence_type_options?.find(
+							(option) => option.value === absence?.type
+						)?.color || absence_type_options[0].color
+					}
+				/>
 				{sortedTime?.map((timeValue, index) => {
 					if (!timeValue) {
 						return null;

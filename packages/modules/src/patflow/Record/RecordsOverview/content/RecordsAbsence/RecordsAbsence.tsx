@@ -13,14 +13,12 @@ import { Divider, Table } from "@repo/ui";
 const RecordAbsence = ({
 	records,
 	editAbsence,
-	setEditAbsence
+	setEditAbsence,
+	selectedUser,
+	setSelectedUser
 }: RecordAbsenceProps) => {
 	const { year } = useContext(PatflowAppContext);
 	const { data: staffData } = useQuery(FIND_ALL_STAFF);
-	const [selectedStaff, setSelectedStaff] = useState<{
-		value: string;
-		label: string;
-	} | null>(null);
 
 	const siteHeaderContent = useMemo(() => {
 		let staffOptions = [] as { value: string; label: string }[];
@@ -39,14 +37,14 @@ const RecordAbsence = ({
 					label=""
 					width="150px"
 					options={staffOptions}
-					value={selectedStaff}
-					onChange={(value) => setSelectedStaff(value)}
+					value={selectedUser}
+					onChange={(value) => setSelectedUser(value)}
 					placeholder="Mitarbeiter..."
 					isClearable
 				/>
 			</div>
 		);
-	}, [year, staffData, selectedStaff]);
+	}, [year, staffData, selectedUser]);
 
 	const { data, refetch, loading } = useQuery(
 		generateGraphQLQuery({
@@ -65,10 +63,10 @@ const RecordAbsence = ({
 		}),
 		{
 			variables: {
-				params: selectedStaff
+				params: selectedUser
 					? {
 							year: { _eq: year },
-							user: { _eq: selectedStaff.value }
+							user: { _eq: selectedUser.value }
 						}
 					: { year: { _eq: year } }
 			},
@@ -87,7 +85,7 @@ const RecordAbsence = ({
 		}
 
 		return absenceArray;
-	}, [selectedStaff, data]);
+	}, [selectedUser, data]);
 
 	const columns = useRecordAbsenceColumns({ refetch });
 

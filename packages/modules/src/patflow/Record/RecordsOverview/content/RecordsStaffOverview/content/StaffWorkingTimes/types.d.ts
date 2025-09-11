@@ -23,6 +23,7 @@ export type DayData = {
 };
 
 export type ColumnWorkingTimeProps = {
+	absence: DayData["absence"];
 	type: DayData["type"];
 	time: DayData["time"];
 	date: string;

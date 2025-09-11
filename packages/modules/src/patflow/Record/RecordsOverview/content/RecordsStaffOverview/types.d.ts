@@ -2,8 +2,12 @@ import { months } from "@repo/provider";
 import { Day, StaffMember } from "@repo/types";
 import { UserDisplayData } from "@repo/types";
 
+export type StaffOption = { value: string; label: string } & UserDisplayData;
+
 export type RecordsStaffOverviwProps = {
 	year: number;
+	selectedUser: StaffOption | null;
+	setSelectedUser: Dispatch<SetStateAction<StaffOption | null>>;
 };
 
 export type MonthOptions = {
@@ -11,8 +15,6 @@ export type MonthOptions = {
 	value: "all";
 	label: "Alle Monate";
 } & typeof months;
-
-export type StaffOption = { value: string; label: string } & UserDisplayData;
 
 export type SiteHeaderContentProps = {
 	setSelectedMonth: Dispatch<SetStateAction<tMonthOptions[number]>>;
