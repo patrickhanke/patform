@@ -8,7 +8,6 @@ const useFindContent: UseFindContentHook = ({
 	limit,
 	skip
 }) => {
-	console.log({ filters });
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",

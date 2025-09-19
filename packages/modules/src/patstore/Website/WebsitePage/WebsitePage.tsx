@@ -60,15 +60,14 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 
 	const removeContentHandler = useCallback(
 		async (contentId: string) => {
-			console.log(content.filter((item) => item.id !== contentId));
-			// await updateData({
-			// 	className: "Webpage",
-			// 	objectId: websiteId,
-			// 	updateObject: {
-			// 		content: content.filter((item) => item.id !== contentId)
-			// 	}
-			// });
-			// await refetch();
+			await updateData({
+				className: "Webpage",
+				objectId: websiteId,
+				updateObject: {
+					content: content.filter((item) => item.id !== contentId)
+				}
+			});
+			await refetch();
 		},
 		[content, refetch, updateData, websiteId]
 	);

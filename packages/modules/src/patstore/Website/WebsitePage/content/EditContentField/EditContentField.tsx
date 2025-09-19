@@ -32,6 +32,7 @@ const EditContentField: FC<EditContentFieldProps> = ({
 	});
 
 	const [deleteModal, setDeleteModal] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const [secondaryContent, setSecondaryContent] = useState<ReactNode | null>(
 		null
@@ -127,7 +128,10 @@ const EditContentField: FC<EditContentFieldProps> = ({
 				/>
 				<p>|</p>
 				<IconButton icon="edit" onClick={() => setEditContent(true)} />
-				<IconButton icon="delete" onClick={() => null} />
+				<IconButton
+					icon="delete"
+					onClick={() => setDeleteModal(true)}
+				/>
 			</div>
 			<SlideIn
 				cancel={() => setEditContent(false)}
@@ -168,12 +172,16 @@ const EditContentField: FC<EditContentFieldProps> = ({
 				header="Element löschen"
 				isOpen={deleteModal}
 				cancelButtonHandler={() => setDeleteModal(false)}
+				buttonDisabled={[loading, loading]}
 				confirmButtonHandler={async () => {
+					setLoading(true);
 					await removeContentHandler(field.id);
+					setLoading(false);
 					setDeleteModal(false);
 				}}
 			>
-				Sind Sie sicher, dass Sie dieses Element löschen möchten?
+				Sind Sie sicher, dass Sie das Element &quot;{field.name}&quot;
+				löschen möchten?
 			</Modal>
 		</div>
 	);
