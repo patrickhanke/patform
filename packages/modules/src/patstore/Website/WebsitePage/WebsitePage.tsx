@@ -58,15 +58,9 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 		}
 	}, [pageData]);
 
-	if (!pageData) {
-		return null;
-	}
-
-	const webPage: WebpageClass = pageData.objects.getWebpage;
-
 	const removeContentHandler = useCallback(
 		async (contentId: string) => {
-			console.log(content.filter((item) => item.id !== contentId))
+			console.log(content.filter((item) => item.id !== contentId));
 			// await updateData({
 			// 	className: "Webpage",
 			// 	objectId: websiteId,
@@ -78,6 +72,12 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 		},
 		[content, refetch, updateData, websiteId]
 	);
+
+	if (!pageData) {
+		return null;
+	}
+
+	const webPage: WebpageClass = pageData.objects.getWebpage;
 
 	return (
 		<Page
