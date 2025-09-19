@@ -10,7 +10,7 @@
   position: relative;
   overflow: hidden;
   font-family: Geist, sans-serif;
-  padding: map-get($map: constants.$padding, $key: "sm");
+  padding: map-get($map: constants.$padding, $key: "xs");
   width: fit-content;
   font-weight: 500;
   letter-spacing: 1.2px;

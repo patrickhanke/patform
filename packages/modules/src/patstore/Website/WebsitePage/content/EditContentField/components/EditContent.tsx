@@ -41,6 +41,7 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 		},
 		[content, setContent]
 	);
+	
 	return (
 		<div className="flex col a-st gap-md">
 			<div>
@@ -65,14 +66,14 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 				<Editor
 					label="Textinhalt"
 					content={content.value || ""}
-					onChange={(value) => updateContent("text", value)}
+					onChange={(value) => updateContent("value", value)}
 				/>
 			)}
 			{content.type === "video" && (
 				<ImageUploader
 					label="Videoinhalt"
 					onChange={(value) =>
-						updateContent("video", value as string)
+						updateContent("value", value as string)
 					}
 					maxFileCount={1}
 					returnType="string"
@@ -82,7 +83,7 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 			{content.type === "image" && (
 				<PatstoreSelectImages
 					onChange={(value) =>
-						updateContent(content.type, value as string)
+						updateContent("value", value as string)
 					}
 					maxFileCount={1}
 					image={content.value as string}
@@ -91,7 +92,7 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 			{content.type === "divider" && (
 				<EditDivider
 					divider={content.value}
-					onChange={(value) => updateContent(content.type, value)}
+					onChange={(value) => updateContent("value", value)}
 				/>
 			)}
 		</div>

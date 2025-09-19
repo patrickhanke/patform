@@ -58,11 +58,9 @@ const EditContentField: FC<EditContentFieldProps> = ({
 			label: element.name
 		}));
 	}, [webpageContent]);
-	console.log({ type: field.type });
 
 	useEffect(() => {
 		if (field.type === "table") {
-			console.log({ selectElements });
 			setSecondaryContent(
 				<ElementSelectInterface
 					title="Tabelle auswählen"

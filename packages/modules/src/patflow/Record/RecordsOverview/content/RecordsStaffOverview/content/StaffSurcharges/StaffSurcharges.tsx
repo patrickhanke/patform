@@ -103,8 +103,6 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 		return surcharges;
 	}, [data, days, month, year]);
 
-	console.log({ surchargeData });
-
 	return (
 		<div>
 			<h3>Zuschläge</h3>
@@ -117,8 +115,6 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 							month: month.id,
 							year
 						});
-						console.log(surcharge);
-						console.log(overtimeSaldo);
 
 						return (
 							<div key={surcharge.objectId}>

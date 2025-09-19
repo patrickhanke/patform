@@ -46,21 +46,21 @@ export default async function RootLayout({
         <title>patflow</title>
       </Head>
       <body>
-        <div className="layout">
-          <LayoutContext user={user}>
-            <RenderSidebar user={user} />
+        <LayoutContext user={user}>
+          <div className="layout">
+              <RenderSidebar user={user} />
 
-            <div className="main_content" id="main_content">
-              <div className="content_container" id="page_content">
-                <SiteHeader />
+              <div className="main_content" id="main_content">
+                <div className="content_container" id="page_content">
+                  <SiteHeader />
 
-                <div className="content" id="content">
-                  {children}
+                  <div className="content" id="content">
+                    {children}
+                  </div>
                 </div>
               </div>
-            </div>
-          </LayoutContext>
-        </div>
+          </div>
+        </LayoutContext>
       </body>
     </html>
   );

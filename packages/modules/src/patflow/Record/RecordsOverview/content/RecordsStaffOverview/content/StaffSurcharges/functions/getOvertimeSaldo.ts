@@ -37,8 +37,6 @@ const getOvertimeSaldo = ({
 		set(weeks, week.toString(), currentWeek);
 	});
 
-	console.log({ weeks });
-
 	// push the last week if it has days
 
 	const saldo = 0;
@@ -57,10 +55,7 @@ const getOvertimeSaldo = ({
 						weekSaldo += surcharge.saldo;
 					}
 				}
-				console.log(week);
-				console.log(weekSaldo);
 				if (day.saldo && day.saldo < 0) {
-					console.log({ saldo: day.saldo });
 					weekSaldo += day.saldo;
 				}
 			});

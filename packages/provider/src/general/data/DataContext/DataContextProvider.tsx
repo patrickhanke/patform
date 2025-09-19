@@ -4,6 +4,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { Response } from "@repo/types";
 import Feedback from "./components/Feedback";
 import DataContext, { DataContextProps } from "./DataContext";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 
 export const DataContextProvider = ({
 	children
@@ -46,8 +47,10 @@ export const DataContextProvider = ({
 
 	return (
 		<DataContext.Provider value={appContextObject}>
-			<Feedback feedback={feedback} />
-			{children}
+			<ChakraProvider value={defaultSystem}>
+				<Feedback feedback={feedback} />
+				{children}
+			</ChakraProvider>
 		</DataContext.Provider>
 	);
 };

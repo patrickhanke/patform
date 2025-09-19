@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import React, { FC } from "react";
+import { FC } from "react";
 import useTableColumns from "./hooks/useTableColumns";
 import { FIND_ALL_USERS } from "@repo/provider";
 import CreateStaffMember from "./content/CreateStaffMember";

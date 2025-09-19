@@ -20,7 +20,9 @@ const LayoutContext = ({ user, children }: { user: PatflowUser, children: React.
         <UserContextProvider>
           <PatflowAppContextProvider>
             <NotificationContextProvider>
-              <DataContextProvider>{children}</DataContextProvider>
+              <DataContextProvider>
+                {children}
+                </DataContextProvider>
             </NotificationContextProvider>
           </PatflowAppContextProvider>
         </UserContextProvider>

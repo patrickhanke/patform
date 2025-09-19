@@ -12,6 +12,7 @@
   "devDependencies": {
     "@manypkg/cli": "^0.23.0",
     "@types/lodash-es": "^4.17.12",
+    "react-email": "4.2.11",
     "syncpack": "^13.0.0",
     "turbo": "latest"
   },
@@ -24,6 +25,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@react-email/components": "0.5.3",
     "firebase": "^11.1.0",
     "idb": "^8.0.1",
     "js-cookie": "^3.0.5",
