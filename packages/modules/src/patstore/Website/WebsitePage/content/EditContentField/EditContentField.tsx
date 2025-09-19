@@ -1,6 +1,7 @@
 import {
 	ElementSelectInterface,
 	IconButton,
+	Modal,
 	SlideIn,
 	StateDisplay,
 	StatelessToggle
@@ -18,7 +19,8 @@ const EditContentField: FC<EditContentFieldProps> = ({
 	initialField,
 	content,
 	pageId,
-	refetch
+	refetch,
+	removeContentHandler
 }) => {
 	const { updateData } = useDataHandler();
 	const [editContent, setEditContent] = useState(false);
@@ -28,6 +30,8 @@ const EditContentField: FC<EditContentFieldProps> = ({
 		pageIndex: 0,
 		pageSize: 50
 	});
+
+	const [deleteModal, setDeleteModal] = useState(false);
 
 	const [secondaryContent, setSecondaryContent] = useState<ReactNode | null>(
 		null
@@ -160,6 +164,17 @@ const EditContentField: FC<EditContentFieldProps> = ({
 			>
 				<EditContent content={field} setContent={setField} />
 			</SlideIn>
+			<Modal
+				header="Element löschen"
+				isOpen={deleteModal}
+				cancelButtonHandler={() => setDeleteModal(false)}
+				confirmButtonHandler={async () => {
+					await removeContentHandler(field.id);
+					setDeleteModal(false);
+				}}
+			>
+				Sind Sie sicher, dass Sie dieses Element löschen möchten?
+			</Modal>
 		</div>
 	);
 };

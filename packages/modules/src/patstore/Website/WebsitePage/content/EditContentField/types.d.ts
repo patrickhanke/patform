@@ -11,6 +11,7 @@ export type EditContentFieldProps = {
 	content: WebpageContent[];
 	pageId: string;
 	refetch: ApolloRefetch;
+	removeContentHandler: (contentId: string) => Promise<void>;
 };
 
 export type EditContentProps = {

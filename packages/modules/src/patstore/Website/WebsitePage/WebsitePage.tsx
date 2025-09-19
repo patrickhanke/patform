@@ -17,7 +17,7 @@ import {
 	sortItemsByPosition,
 	TextInput
 } from "@repo/ui";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useCallback } from "react";
 import initial_content_element from "./constants/initial_content_element";
 import { v4 } from "uuid";
 import { cloneDeep } from "lodash-es";
@@ -64,6 +64,21 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 
 	const webPage: WebpageClass = pageData.objects.getWebpage;
 
+	const removeContentHandler = useCallback(
+		async (contentId: string) => {
+			console.log(content.filter((item) => item.id !== contentId))
+			// await updateData({
+			// 	className: "Webpage",
+			// 	objectId: websiteId,
+			// 	updateObject: {
+			// 		content: content.filter((item) => item.id !== contentId)
+			// 	}
+			// });
+			// await refetch();
+		},
+		[content, refetch, updateData, websiteId]
+	);
+
 	return (
 		<Page
 			title={`${webPage.title} - Inhalte`}
@@ -108,6 +123,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 								pageId={websiteId}
 								refetch={refetch}
 								key={id}
+								removeContentHandler={removeContentHandler}
 							/>
 						)}
 						onChange={(items) => {
