@@ -25,9 +25,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		holidays: currentHolidays
 	});
 
-	console.log(records);
-	console.log(currentHolidays);
-
 	const rowStyles = useCallback(
 		(row: Row<Day>) => {
 			if (

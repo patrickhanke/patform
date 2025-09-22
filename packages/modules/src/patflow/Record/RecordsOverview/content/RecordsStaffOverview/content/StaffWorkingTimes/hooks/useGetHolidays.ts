@@ -11,7 +11,7 @@ const useGetHolidays = ({
 	records: Record[];
 }) => {
 	const { projectId } = useContext(UserContext);
-	const { data: holidayData, refetch: refetchHolidays } = useQuery(
+	const { data: holidayData } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Holiday",
