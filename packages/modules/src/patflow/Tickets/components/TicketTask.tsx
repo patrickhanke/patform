@@ -1,9 +1,8 @@
 import styles from "../Tickets.module.scss";
-import clsx from "clsx";
 import Link from "next/link";
 import { findTaskRoute } from "@repo/provider";
 import { TicketTaskProps } from "../types";
-import { Icon } from "@repo/ui";
+import { IconButton } from "@repo/ui";
 import { CreateTask } from "../../Tasks";
 
 const TicketTask = ({
@@ -15,13 +14,12 @@ const TicketTask = ({
 	ticketState
 }: TicketTaskProps) => {
 	const Button = ({ onClick }: { onClick: () => void }) => (
-		<button
+		<IconButton
 			onClick={() => onClick()}
-			className={clsx("full_button", "sm", "light")}
 			disabled={ticketState === "closed"}
-		>
-			<Icon type="plus" size={11} /> Aufgabe hinzufügen
-		</button>
+			icon="plus"
+			text="Aufgabe hinzufügen"
+		/>
 	);
 
 	return (

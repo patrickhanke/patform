@@ -3,7 +3,6 @@ import { formatISO9075 } from "date-fns";
 import { DayTime, ErrorMessage } from "@repo/types";
 import { UseErrors } from "../types";
 import { findDefaultTimeForDate } from "@repo/provider";
-import { isArray } from "lodash-es";
 
 const useErrors: UseErrors = ({
 	date,
@@ -162,6 +161,7 @@ const useErrors: UseErrors = ({
 		}
 
 		if (dayType === "absence") {
+			console.log({ records });
 			const disabledArray: [boolean, boolean] = [false, false];
 			const errorArray: ErrorMessage[] = [];
 
@@ -169,9 +169,6 @@ const useErrors: UseErrors = ({
 				date,
 				records
 			).default_time;
-
-			if (isArray(times)) {
-			}
 
 			if (!defaultTime) {
 				disabledArray[1] = true;

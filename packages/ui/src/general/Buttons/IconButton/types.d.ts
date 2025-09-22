@@ -1,3 +1,5 @@
+import { ButtonProps } from "@chakra-ui/react";
+
 export type IconTypes =
 	| "delete"
 	| "edit"
@@ -68,5 +70,5 @@ export type IconButtonProps = {
 	text?: string;
 	noBorder?: boolean;
 	size?: number;
-	color?: string;
+	color?: ButtonProps["color"];
 };

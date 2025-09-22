@@ -11,14 +11,7 @@ import {
 	UserContext
 } from "@repo/provider";
 import { useDataHandler, generateGraphQLQuery } from "@repo/provider";
-import React, {
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState
-} from "react";
-import styles from "./EditRecordsAbsence.module.scss";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { DatePicker, DisplayWorker, Select } from "@repo/ui";
 import { EditRecordAbsenceComponent } from "./types";
 import { Day, ErrorMessage, StaffMember } from "@repo/types";
@@ -48,12 +41,6 @@ const EditRecordAbsence = ({
 		year,
 		userId: absenceState?.user?.objectId as string
 	});
-	// const {data: recordData} = useQuery(find_records_for_user, {
-	// 	variables: {
-	// 		user: absenceState?.user?.objectId
-	// 	},
-	// 	skip: !absenceState?.user
-	// });
 
 	const { updateData, createData, deleteData, loading } = useDataHandler();
 	const { data: dayData } = useQuery(find_day, {
@@ -411,7 +398,7 @@ const EditRecordAbsence = ({
 			errors={errors}
 			disabled={[loading, errors.length > 0 || loading]}
 		>
-			<div className={styles.add_vacation_container}>
+			<div className="flex col gap-sm">
 				<form>
 					{type === "create" && staffData && (
 						<Select
@@ -450,6 +437,7 @@ const EditRecordAbsence = ({
 									start_date: value
 								});
 							}}
+							disabled={!record || type === "edit"}
 							type="date"
 							label="Anfangsdatum"
 							width={300}
@@ -466,11 +454,11 @@ const EditRecordAbsence = ({
 									end_date: value
 								})
 							}
+							disabled={!record || type === "edit" || !absenceState.start_date}
 							type="date"
 							label="Enddatum"
 							width={300}
 							onlyDate
-							disabled={!absenceState.start_date}
 						/>
 					</div>
 					<div>
@@ -486,7 +474,7 @@ const EditRecordAbsence = ({
 							placeholder="Art der Abwesenheit"
 							label="Art der Abwesenheit"
 							width={300}
-							isDisabled={!record}
+							isDisabled={!record || type === "edit"}
 						/>
 					</div>
 					<div style={{ position: "relative" }}>

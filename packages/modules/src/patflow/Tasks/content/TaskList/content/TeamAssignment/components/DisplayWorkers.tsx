@@ -10,6 +10,7 @@ import { formatISO9075 } from "date-fns";
 import { ElementSelectInterface, SlideInRight } from "@repo/ui";
 import { DisplayWorkerProps, WorkerOption } from "../types";
 import "../styles.scss";
+import { Avatar, AvatarGroup } from "@chakra-ui/react";
 
 const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	taskId,
@@ -109,17 +110,19 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	if (data)
 		return !showAsButton ? (
 			<>
-				{data.objects.getTask.assigned_staff.map(
-					(workerId: Worker["objectId"]) => (
-						<DisplayWorker
-							key={workerId}
-							workerId={workerId}
-							nextDate={nextDate}
-							showAvailability
-							onlyImage={false}
-						/>
-					)
-				)}
+				<AvatarGroup>
+					{data.objects.getTask.assigned_staff.map(
+						(workerId: Worker["objectId"]) => (
+							<DisplayWorker
+								key={workerId}
+								workerId={workerId}
+								nextDate={nextDate}
+								showAvailability
+								onlyImage={false}
+							/>
+						)
+					)}
+				</AvatarGroup>
 				{(taskState === "created" || taskState === "assigned") && (
 					<button
 						className="full_button sm light"

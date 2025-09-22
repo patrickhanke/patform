@@ -1,3 +1,4 @@
+import colors from "../../../../ui/src/general/Inputs/ColorSelect/constants/colors";
 import { Image } from "./Application";
 
 export type PatflowUserRoleTypes = "worker" | "office" | "admin";
@@ -23,7 +24,7 @@ export type PatflowUser = {
   family_name: string;
   is_superuser: boolean;
   type: string;
-  color: string;
+  color: typeof colors[number]["value"];
   role: PatflowUserRole;
   is_worker: boolean;
   portrait: Image;

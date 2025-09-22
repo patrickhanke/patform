@@ -1,7 +1,14 @@
-import { HolidayTemplate, User, UserDisplayData } from "@/types/General";
+import { User, UserDisplayData } from "@/types/General";
 import { Absence } from "../Worker";
 import { DayTime, TimeObject } from "./Times";
 import { AbsenceStateOptions, Surcharge } from "@repo/types";
+
+export type HolidayTemplate = {
+  objectId: string;
+  name: string;
+  holidays: string[];
+  type: "holiday"
+}
 
 export type RecordTimeSettings = {
   hours: number;

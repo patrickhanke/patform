@@ -92,7 +92,13 @@ const menu_items = [
     value: "/settings/times",
     icon: "calendar",
     sub_menu: [],
-  },
+  }
+  // {
+  //   label: "Logs",
+  //   value: "/settings/logs",
+  //   icon: "calendar",
+  //   sub_menu: [],
+  // },
 ];
 
 const RenderSidebar = ({ user }: { user: PatflowUser }) => {

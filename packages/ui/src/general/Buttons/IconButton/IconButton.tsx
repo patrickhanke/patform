@@ -1,10 +1,9 @@
 import { IconButtonProps } from "./types";
 import Link from "next/link";
 import "./styles.scss";
-import styles from "./IconButton.module.scss";
-import clsx from "clsx";
 import Icons from "./Icons";
 import { FC } from "react";
+import { Button } from "@chakra-ui/react";
 
 const IconButton: FC<IconButtonProps> = ({
 	icon,
@@ -12,56 +11,48 @@ const IconButton: FC<IconButtonProps> = ({
 	isBlank,
 	link,
 	onClick,
-	isDarkButton = false,
 	disabled,
 	text,
-	noBorder = false,
 	size = 12,
 	color
 }) => {
 	if (!isLink && onClick)
 		return (
-			<button
+			<Button
 				type="button"
 				onClick={() => onClick()}
-				className={styles.icon_button_container}
-				data-isdark={isDarkButton}
+				variant="subtle"
+				size="2xs"
+				scale={0.9}
 				disabled={disabled}
-				data-haslabel={text ? true : false}
-				data-noborder={noBorder}
+				color={color}
 			>
-				<div
-					className={styles.icon_container}
-					style={{ fontSize: size }}
-				>
-					<Icons icon={icon} color={color} />
-				</div>
-				<div className={clsx("label", styles.icon_label)}>{text}</div>
-			</button>
+				<Icons icon={icon} />
+				{text}
+			</Button>
 		);
 
 	if (isLink && link)
 		return (
-			<Link
-				href={link}
-				target={isBlank ? "_blank" : "_self"}
-				style={{ fontSize: size }}
+			<Button
+				type="button"
+				onClick={() => null}
+				variant="subtle"
+				size="2xs"
+				scale={0.9}
+				disabled={disabled}
+				color={color}
+				asChild
 			>
-				<button
-					type="button"
-					onClick={() => null}
-					className={styles.icon_button_container}
-					data-isdark={isDarkButton}
-					disabled={disabled}
-					data-haslabel={text ? true : false}
-					data-noborder={noBorder}
+				<Link
+					href={link}
+					target={isBlank ? "_blank" : "_self"}
+					style={{ fontSize: size }}
 				>
-					<div className={styles.icon_container}>
-						<Icons icon={icon} color={color} />
-					</div>
-					<div className="label">{text}</div>
-				</button>
-			</Link>
+					<Icons icon={icon} />
+					{text}
+				</Link>
+			</Button>
 		);
 
 	return null;

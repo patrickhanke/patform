@@ -1,9 +1,8 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { Property, StaffMember } from "@repo/types";
 import { FIND_ALL_PROPERTY, FIND_ALL_STAFF } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { SiteHeaderContentComponent } from "../types";
-import styles from "../Tasks.module.scss";
 import { filterChangeHandler } from "@repo/provider";
 import { Select, TextInput } from "@repo/ui";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -49,7 +48,7 @@ const SiteHeaderContent = ({
 	}, [objectData, staffData]);
 
 	return (
-		<div className={styles.siteheader_content}>
+		<div className="flex row j-sb a-ce">
 			<div className="button_container">
 				<TextInput
 					label=""
@@ -122,21 +121,21 @@ const SiteHeaderContent = ({
 						isClearable
 					/>
 				)}
+				<button
+					className="full_button md secondary"
+					onClick={() => {
+						if (searchParams.get("task")) {
+							router.push(pathname);
+						}
+						setFilters(initialFilters());
+					}}
+				>
+					<RefreshCcw
+						size={12}
+						style={{ transform: "translateY(2px)" }}
+					/>
+				</button>
 			</div>
-			<button
-				className="full_button md secondary"
-				onClick={() => {
-					if (searchParams.get("task")) {
-						router.push(pathname);
-					}
-					setFilters(initialFilters());
-				}}
-			>
-				<RefreshCcw
-					size={12}
-					style={{ transform: "translateY(2px)" }}
-				/>
-			</button>
 		</div>
 	);
 };

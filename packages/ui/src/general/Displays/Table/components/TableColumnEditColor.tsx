@@ -4,6 +4,7 @@ import { TableColumnEditColorProps } from "../types";
 import { useState } from "react";
 import "../styles.scss";
 import { Modal, IconButton, ColorSelect } from "@repo/ui";
+import colors from "../../../Inputs/ColorSelect/constants/colors";
 
 const TableColumnEditColor = ({
 	value,
@@ -15,8 +16,11 @@ const TableColumnEditColor = ({
 	return (
 		<>
 			<div className="table_column_textfield_container">
-				{value ? value : "-"}
-				<IconButton icon="edit" onClick={() => setIsOpen(!isOpen)} />
+				<IconButton
+					icon="edit"
+					text={colors.find((color) => color.value === value)?.label}
+					onClick={() => setIsOpen(!isOpen)}
+				/>
 			</div>
 			<Modal
 				isOpen={isOpen}
@@ -25,7 +29,7 @@ const TableColumnEditColor = ({
 					onChange(string);
 					setIsOpen(false);
 				}}
-				header={"Beschreibung ändern"}
+				header={"Farbe ändern"}
 				buttonDisabled={[false, !string]}
 			>
 				<div className={"table_column_textfield_textarea_container"}>

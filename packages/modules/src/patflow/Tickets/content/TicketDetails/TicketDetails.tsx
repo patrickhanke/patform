@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import styles from "./TicketDetails.module.scss";
 import clsx from "clsx";
 import { TicketDetailsProps } from "@repo/types";
-import { Icon, ImagesDisplay, Modal, SlideInRight } from "@repo/ui";
+import { Icon, IconButton, ImagesDisplay, Modal, SlideInRight } from "@repo/ui";
 
 const TicketDetails = ({
 	ticket,
@@ -25,12 +25,11 @@ const TicketDetails = ({
 	return (
 		<>
 			<div>
-				<button
-					className={clsx("full_button", "sm", "primary")}
+				<IconButton
+					text="Infos"
 					onClick={() => setShowDetails(true)}
-				>
-					<Icon type="info" size={11} /> Infos
-				</button>
+					icon="info"
+				/>
 				<SlideInRight
 					isOpen={showDetails}
 					setIsOpen={setShowDetails}

@@ -1,10 +1,13 @@
-import { User } from "@repo/types";
+import { ApolloRefetch, PatflowUser } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import StaffMemberSettings from "../content/StaffMemberSettings";
+import { TableColumnEditColor } from "@repo/ui";
+import { useDataHandler } from "@repo/provider";
 
-const useTableColumns = () => {
-	const columns: ColumnDef<User>[] = useMemo(
+const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
+	const { updateData } = useDataHandler();
+	const columns: ColumnDef<PatflowUser>[] = useMemo(
 		() => [
 			{
 				accessorFn: (row) => `${row.first_name} ${row.family_name}`,
@@ -21,6 +24,27 @@ const useTableColumns = () => {
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,
 				enableSorting: false
+			},
+			{
+				accessorFn: (row) => (
+					<TableColumnEditColor
+						value={row.color}
+						onChange={async (value) => {
+							await updateData({
+								className: "_User",
+								objectId: row.objectId,
+								updateObject: {
+									color: value
+								}
+							});
+							refetch();
+						}}
+					/>
+				),
+				header: () => <span>Farbe</span>,
+				id: "color",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id
 			},
 			{
 				accessorFn: (row) => (

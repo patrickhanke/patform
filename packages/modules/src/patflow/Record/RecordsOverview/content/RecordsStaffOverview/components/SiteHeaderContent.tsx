@@ -49,11 +49,11 @@ const SiteHeaderContent = ({
 						isClearable
 					/>
 				) : (
-					<Loader height="30px" width="150px" />
+					<Loader height="30px" width="240px" />
 				)}
 				<Select
 					label=""
-					width="90px"
+					width="240px"
 					options={selectOptions.monthOptions}
 					value={selectedMonth}
 					onChange={(value) => setSelectedMonth(value)}

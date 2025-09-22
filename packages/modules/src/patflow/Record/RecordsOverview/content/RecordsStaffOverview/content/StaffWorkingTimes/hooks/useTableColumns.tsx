@@ -7,25 +7,29 @@ import {
 	paramsHandler,
 	UserContext
 } from "@repo/provider";
-import ColumnType from "../components/ColumnType";
 import ColumnWorkingTime from "../components/ColumnWorkingTime";
 import ColumnWorkingHours from "../components/ColumnWorkingHours";
-import { ApolloRefetch, Record } from "@repo/types";
+import { ApolloRefetch, Holiday, Record } from "@repo/types";
 import EditDayTimes from "../../EditDayTimes";
 import { DayData } from "../types";
 import ColumnWorkingTarget from "../components/ColumnWorkingTarget";
 import ColumnWorkingSaldo from "../components/ColumnWorkingSaldo";
 import ColumnWorkingSurcharges from "../components/ColumnWorkingSurcharges";
 import { useQuery } from "@apollo/client";
+import { Tooltip } from "@repo/ui";
+import { Button } from "@chakra-ui/react";
+import { LuInfo } from "react-icons/lu";
 
 const useTableColumns = ({
 	refetch,
 	userId,
-	records
+	records,
+	holidays
 }: {
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];
+	holidays: Holiday[];
 }) => {
 	const { projectId } = useContext(UserContext);
 	const { data } = useQuery(
@@ -53,7 +57,25 @@ const useTableColumns = ({
 	const columns: ColumnDef<DayData>[] = useMemo(
 		() => [
 			{
-				accessorFn: (row) => getDateString(row.date).date,
+				accessorFn: (row) => {
+					const year = new Date(row?.date).getFullYear();
+					const holiday = holidays.find(
+						(holiday) =>
+							holiday.dates[year.toString()] === row?.date
+					);
+					return (
+						<div>
+							{getDateString(row.date).date}
+							{holiday && (
+								<Tooltip content={holiday.name}>
+									<Button size="2xs" variant="ghost">
+										<LuInfo />
+									</Button>
+								</Tooltip>
+							)}
+						</div>
+					);
+				},
 				header: () => <span>Datum</span>,
 				id: "date",
 				cell: (info) => info.getValue(),
@@ -168,7 +190,7 @@ const useTableColumns = ({
 				footer: (info) => info.column.id
 			}
 		],
-		[userId, refetch, data]
+		[userId, refetch, data, holidays]
 	);
 
 	return columns;

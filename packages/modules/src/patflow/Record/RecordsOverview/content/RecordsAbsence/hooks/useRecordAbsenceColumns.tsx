@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { AbsenceWithRecordIs, UseRecordAbsenceColumnsProps } from "../types";
-import { DisplayWorker } from "@repo/ui";
+import { DisplayWorker, StateDisplay } from "@repo/ui";
 import {
 	absence_state_options,
 	absence_type_options,
@@ -34,10 +34,17 @@ const useRecordAbsenceColumns = ({ refetch }: UseRecordAbsenceColumnsProps) => {
 			},
 			{
 				accessorFn: (row) => (
-					<StateSelect
-						type="state"
-						state={row.type}
-						stateOptions={absence_type_options}
+					<StateDisplay
+						label={
+							absence_type_options.find(
+								(option) => option.value === row.type
+							)?.label || ""
+						}
+						color={
+							absence_type_options.find(
+								(option) => option.value === row.type
+							)?.color || ""
+						}
 					/>
 				),
 				header: () => <span>Typ</span>,
@@ -48,11 +55,17 @@ const useRecordAbsenceColumns = ({ refetch }: UseRecordAbsenceColumnsProps) => {
 			},
 			{
 				accessorFn: (row) => (
-					<StateSelect
-						type="state"
-						state={row.state}
-						stateOptions={absence_state_options}
-						displayInterface={false}
+					<StateDisplay
+						label={
+							absence_state_options.find(
+								(option) => option.value === row.state
+							)?.label || ""
+						}
+						color={
+							absence_state_options.find(
+								(option) => option.value === row.state
+							)?.color || ""
+						}
 					/>
 				),
 				header: () => <span>Status</span>,

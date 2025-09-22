@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { Absence, StaffMember } from "@repo/types";
 import { PatflowAppContext } from "@repo/provider";
 import { generateGraphQLQuery } from "@repo/provider";
@@ -35,7 +35,7 @@ const RecordAbsence = ({
 			<div className="horizontal_container">
 				<Select
 					label=""
-					width="150px"
+					width="180px"
 					options={staffOptions}
 					value={selectedUser}
 					onChange={(value) => setSelectedUser(value)}

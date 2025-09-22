@@ -4,10 +4,11 @@ import { find_day } from "@repo/provider";
 import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
-import { getImageUrlFromBytescale, shadeColor } from "@repo/provider";
+import { getImageUrlFromBytescale } from "@repo/provider";
 import { Loader, StateDisplay } from "@repo/ui";
 import { Absence, Day } from "@repo/types";
 import "./styles.scss";
+import { Avatar, defineStyle } from "@chakra-ui/react";
 
 const DisplayWorker = ({
 	workerId,
@@ -59,6 +60,14 @@ const DisplayWorker = ({
 
 	const worker = workers?.find((worker) => worker.objectId === workerId);
 
+	const ringCss = defineStyle({
+		outlineWidth: "2px",
+		outlineColor: workerAbsence.isAbsent ? workerAbsence.color : "green",
+		// outlineOffset: "2px",
+		outlineStyle: "solid",
+		scale: 0.82
+	});
+
 	if (dayLoading) return <Loader width={"24px"} height={"24px"} />;
 
 	if (worker) {
@@ -68,40 +77,23 @@ const DisplayWorker = ({
 				data-isabsent={workerAbsence.isAbsent}
 				data-onlyimage={onlyImage}
 			>
-				{worker.portrait ? (
-					<div
-						className="display_worker_image_container"
-						data-isabsent={workerAbsence.isAbsent}
-						data-onlyimage={onlyImage}
-					>
-						<img
-							src={getImageUrlFromBytescale({
-								filePath: worker.portrait,
-								height: 60,
-								width: 60
-							})}
-							alt={`${worker.first_name} ${worker.family_name}`}
-							width={onlyImage ? "24px" : "18px"}
-							height={onlyImage ? "24px" : "18px"}
-						/>
-					</div>
-				) : (
-					<div
-						className="display_worker_no_image"
-						data-onlyimage={onlyImage}
-					>
-						<div
-							className="display_worker_no_image_background"
-							style={{
-								backgroundColor: shadeColor(worker?.color, 240)
-							}}
-						/>
-						<div
-							className="display_worker_no_image_character"
-							style={{ color: worker?.color }}
-						>{`${worker.first_name.charAt(0)}${worker.family_name.charAt(0)}`}</div>
-					</div>
-				)}
+				<Avatar.Root
+					colorPalette={worker.color}
+					size={"2xs"}
+					css={ringCss}
+				>
+					<Avatar.Fallback
+						name={`${worker.first_name} ${worker.family_name}`}
+					/>
+					<Avatar.Image
+						src={getImageUrlFromBytescale({
+							filePath: worker.portrait,
+							height: 60,
+							width: 60
+						})}
+					/>
+				</Avatar.Root>
+
 				{!onlyImage && (
 					<div>{`${worker.first_name} ${worker.family_name}`}</div>
 				)}

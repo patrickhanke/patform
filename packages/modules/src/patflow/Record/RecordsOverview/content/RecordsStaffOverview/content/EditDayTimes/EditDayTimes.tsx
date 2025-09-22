@@ -177,8 +177,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		setDeleteModal(false);
 	}, []);
 
-	console.log({ time });
-
 	const confirmButtonHandler = useCallback(async () => {
 		setDisabled([true, true]);
 
@@ -348,7 +346,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 						onClick={() => setSlideIn(true)}
 						text="Zeit hinzufügen"
 						disabled={addButtonDisabled}
-						color="secondary"
+						color="dark"
 					/>
 				)}
 			</div>

@@ -6,6 +6,8 @@ input {
   font-weight: 500;
   border: 1px solid constants.$grey_shaded;
   padding: map-get($map: constants.$padding, $key: "md");
+  padding-top: 4.5px;
+  padding-bottom: 4.5px;
   outline: none;
   box-sizing: border-box;
   transition:
@@ -23,9 +25,9 @@ input {
   }
 }
 
-input:not([type="checkbox"]) {
-  min-width: 240px;
-}
+// input:not([type="checkbox"]) {
+//   min-width: 240px;
+// }
 
 input[data-error] {
   border: 1px solid constants.$red;

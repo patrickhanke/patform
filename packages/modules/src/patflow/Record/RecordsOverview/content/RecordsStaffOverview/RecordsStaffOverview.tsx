@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from "react";
-import { RecordsStaffOverviwProps, StaffOption } from "./types";
+import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
 import {
 	FIND_ALL_STAFF,
@@ -56,9 +56,9 @@ const RecordsStaffOverview = ({
 				rec.push(record);
 			}
 		});
-
+		console.log({ rec });
 		return rec;
-	}, [recordData, selectedUser]);
+	}, [recordData, selectedUser, setSelectedMonth]);
 
 	const siteHeaderContent = useMemo(
 		() => (

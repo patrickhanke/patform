@@ -7,6 +7,7 @@ import { Row } from "@tanstack/react-table";
 import { Day } from "@repo/types";
 import { findDefaultTimeForDate } from "@repo/provider";
 import { set, get, cloneDeep, isArray } from "lodash-es";
+import useGetHolidays from "./hooks/useGetHolidays";
 
 const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	days,
@@ -16,18 +17,35 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	selectedUser,
 	records
 }) => {
+	const { currentHolidays } = useGetHolidays({ year, records });
 	const columns = useTableColumns({
 		refetch,
 		userId: selectedUser?.value,
-		records
+		records,
+		holidays: currentHolidays
 	});
 
-	const rowStyles = useCallback((row: Row<Day>) => {
-		if (isWeekend(row.original.date)) {
-			return { backgroundColor: "#f0f0f0" };
-		}
-		return { backgroundColor: "transparent" };
-	}, []);
+	console.log(records);
+	console.log(currentHolidays);
+
+	const rowStyles = useCallback(
+		(row: Row<Day>) => {
+			if (
+				currentHolidays.find(
+					(holiday) =>
+						holiday.dates[year.toString()] === row.original.date
+				)
+			) {
+				return { backgroundColor: "rgba(86, 138, 212, 0.4)" };
+			}
+			if (isWeekend(row.original.date)) {
+				return { backgroundColor: "#f5f5f5ff" };
+			}
+
+			return { backgroundColor: "transparent" };
+		},
+		[currentHolidays, year]
+	);
 
 	const tableData = useMemo(() => {
 		const interval: DayData[] = [];

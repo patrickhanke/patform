@@ -8,7 +8,6 @@ import useTableColumns from "./hooks/useTableColumns";
 import { Task } from "@repo/types";
 import { Modal, Table } from "@repo/ui";
 
-
 const TaskList = ({
 	taskList,
 	refetch,
