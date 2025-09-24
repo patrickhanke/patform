@@ -1,44 +1,38 @@
 import { useCallback, useEffect } from "react";
-import {
-	axiosclient,
-	generateGraphQLQuery,
-	generateUuid
-} from "@repo/provider";
-import { useQuery } from "@apollo/client";
-import { User } from "@repo/types";
+import { axiosclient } from "@repo/provider";
+import { PatflowUser } from "@repo/types";
+import { v4 } from "uuid";
+import { isArray } from "lodash-es";
 
 const useInstallations = ({
 	user,
 	firebaseToken,
-	hasInstallation = false
 }: {
-	user?: User;
+	user?: PatflowUser;
 	firebaseToken: string | null;
-	hasInstallation: boolean;
 }) => {
-	const { data: installationData, refetch } = useQuery(
-		generateGraphQLQuery({
-			objectName: "_Installation",
-			type: "find",
-			fields: ["objectId"]
-		}),
-		{
-			variables: {
-				params: {
-					user: { _eq: user?.objectId },
-					deviceType: { _eq: "web" }
+	const findInstallation = async (userIds: string[]) => {
+		try {
+			const response = await axiosclient().post(
+				"functions/find-installations",
+				{
+					userIds: userIds
 				}
-			},
-			skip: !user || !hasInstallation
+			);
+			return response.data.result;
+		} catch (error) {
+			console.log(error);
 		}
-	);
+
+		return null;
+	};
 
 	const installationHandler = useCallback(async () => {
-		if (installationData && user && firebaseToken) {
-			const installations =
-				installationData.objects.find_Installation.results;
+		if (user && firebaseToken) {
+			const data = await findInstallation([user.objectId]);
+			const installations = data.webDevices || [];
 
-			if (installations.length === 0) {
+			if (isArray(installations) && installations.length === 0) {
 				await axiosclient().post("functions/create-installation", {
 					deviceType: "web",
 					deviceToken: firebaseToken,
@@ -50,20 +44,19 @@ const useInstallations = ({
 					localeIdentifier: "de-DE",
 					timeZone: "GMT",
 					user: user.objectId,
-					installationId: generateUuid(),
+					installationId: v4(),
 					GCMSenderId: process.env.GCMS_SENDER_ID,
 					pushType: "gcm"
 				});
-				await refetch();
 			}
 		}
-	}, [installationData]);
+	}, [user, firebaseToken]);
 
 	useEffect(() => {
-		if (installationData || user) {
+		if (user) {
 			installationHandler();
 		}
-	}, [installationData]);
+	}, [user]);
 };
 
 export default useInstallations;

@@ -49,8 +49,7 @@ const NotificationContextProvider = ({
 
 	useInstallations({
 		user,
-		firebaseToken: token,
-		hasInstallation: true
+		firebaseToken: token
 	});
 
 	const [notifications, setNotifications] = useState<Notification[]>([]);
