@@ -34,7 +34,7 @@ const create_person: PageCreateClassObject<PersonClass> = {
 			id: "image",
 			position: 3,
 			name: "portrait",
-			type: "image",
+			type: "image_select",
 			label: "Portrait",
 			options: {
 				return_type: "string",

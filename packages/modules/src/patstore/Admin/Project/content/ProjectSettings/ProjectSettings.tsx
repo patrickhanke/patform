@@ -36,7 +36,7 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 					id: "logo",
 					position: 2,
 					name: "logo",
-					type: "image",
+					type: "image_upload",
 					label: "Logo",
 					value: project.logo,
 					options: { max_file_count: 1, return_type: "string" }

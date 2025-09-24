@@ -44,7 +44,7 @@ const CreateCategory = ({
 				id: "image",
 				position: 3,
 				name: "image",
-				type: "image",
+				type: "image_select",
 				label: "Bild",
 				options: {
 					max_file_count: 1,

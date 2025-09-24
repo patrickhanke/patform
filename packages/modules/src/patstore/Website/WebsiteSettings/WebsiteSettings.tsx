@@ -38,7 +38,7 @@ const WebsiteSettings = ({ settings, moduleId }: WebsiteSettingsProps) => {
 				label: "Logo",
 				name: "logo",
 				id: "logo",
-				type: "image",
+				type: "image_select",
 				options: {
 					return_type: "string",
 					max_file_count: 1
@@ -49,7 +49,7 @@ const WebsiteSettings = ({ settings, moduleId }: WebsiteSettingsProps) => {
 				label: "Favicon",
 				name: "logo_square",
 				id: "logo_square",
-				type: "image",
+				type: "image_select",
 				options: {
 					return_type: "string",
 					max_file_count: 1

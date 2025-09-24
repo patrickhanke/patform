@@ -23,7 +23,7 @@ const createLocation: PageCreateClassObject<LocationClass> = {
 			id: "image",
 			position: 2,
 			name: "image",
-			type: "image",
+			type: "image_select",
 			label: "Bild",
 			options: {
 				return_type: "string",

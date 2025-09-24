@@ -52,7 +52,7 @@ const create_module: (pojectId: string) => PageCreateClassObject = (
 			id: "portait",
 			position: 3,
 			name: "portrait",
-			type: "image",
+			type: "image_upload",
 			label: "Bild",
 			options: {
 				return_type: "string",

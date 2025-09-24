@@ -38,7 +38,7 @@ const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
 			},
 			{
 				label: "Logo",
-				type: "image",
+				type: "image_upload",
 				name: "logo",
 				dataType: "string",
 				value: project.logo,
