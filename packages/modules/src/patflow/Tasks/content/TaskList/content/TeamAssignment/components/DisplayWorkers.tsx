@@ -54,7 +54,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 					workerOptionsArray.push({
 						value: worker.objectId,
 						id: worker.objectId,
-						label: `${worker.first_name} ${worker.family_name}`,
+						label: `${worker.first_name} ${worker.last_name}`,
 						element: (
 							<DisplayWorker
 								workerId={worker.objectId}

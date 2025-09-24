@@ -24,7 +24,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 	const [errors] = useState([] as unknown as ErrorMessage[]);
 	const [staffMember, setStaffMember] = useImmer({
 		first_name: "",
-		family_name: "",
+		last_name: "",
 		email: "",
 		role: null,
 		portrait: undefined as unknown as Image
@@ -37,7 +37,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 		onCompleted(data) {
 			setStaffMember((draft) => {
 				draft.first_name = data.objects.get_User.first_name;
-				draft.family_name = data.objects.get_User.family_name;
+				draft.last_name = data.objects.get_User.last_name;
 				draft.email = data.objects.get_User.email;
 				draft.role = data.objects.get_User.role.objectId;
 				draft.portrait = data.objects.get_User.portrait;
@@ -124,7 +124,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 						)}
 
 						<ImageUploader
-							filename={`${staffMember.first_name}_${staffMember.family_name}_${new Date()}_portrait.jpg`}
+							filename={`${staffMember.first_name}_${staffMember.last_name}_${new Date()}_portrait.jpg`}
 							label="Portrait"
 							onChange={(images) => {
 								if (

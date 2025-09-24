@@ -55,7 +55,7 @@ const ProperyDocuments = ({ id }: { id: string }) => {
       },
       {
         accessorFn: (row) =>
-          `${row.created_by.first_name} ${row.created_by.family_name}`,
+          `${row.created_by.first_name} ${row.created_by.last_name}`,
         header: () => <span>Erstellt von</span>,
         id: "created_by",
         cell: (info) => info.getValue(),

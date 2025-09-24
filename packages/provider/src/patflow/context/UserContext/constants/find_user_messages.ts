@@ -12,7 +12,7 @@ const find_user_messages = gql`
           created_by {
             objectId
             first_name
-            family_name
+            last_name
             email
           }
           task {

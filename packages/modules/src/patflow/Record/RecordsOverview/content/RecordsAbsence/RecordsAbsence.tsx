@@ -26,7 +26,7 @@ const RecordAbsence = ({
 			staffOptions = staffData.objects.find_User.results.map(
 				(staff: StaffMember) => ({
 					value: staff.objectId,
-					label: `${staff.first_name} ${staff.family_name}`
+					label: `${staff.first_name} ${staff.last_name}`
 				})
 			);
 		}
@@ -55,7 +55,7 @@ const RecordAbsence = ({
 				"start_date",
 				"end_date",
 				"state",
-				"user{objectId first_name family_name portrait}",
+				"user{objectId first_name last_name portrait}",
 				"comment",
 				"type",
 				"year"

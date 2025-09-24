@@ -39,7 +39,7 @@ const SiteHeaderContent = ({
 			staffOptions = staffData.objects.find_User.results.map(
 				(staff: StaffMember) => ({
 					value: staff.objectId,
-					label: `${staff.first_name} ${staff.family_name}`
+					label: `${staff.first_name} ${staff.last_name}`
 				})
 			);
 		}

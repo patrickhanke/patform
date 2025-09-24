@@ -27,7 +27,7 @@ const CreateComment = ({ addCommentHandler }: CreateCommentProps) => {
           onClick={() => {
             addCommentHandler({
               userId: user.objectId,
-              username: `${user.first_name} ${user.family_name}`,
+              username: `${user.first_name} ${user.last_name}`,
               createdAt: new Date().toISOString(),
               text: comment,
             });

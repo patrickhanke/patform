@@ -9,7 +9,7 @@ const get_object_service_workers = gql`
           results {
             objectId
             first_name
-            family_name
+            last_name
             portrait
           }
         }

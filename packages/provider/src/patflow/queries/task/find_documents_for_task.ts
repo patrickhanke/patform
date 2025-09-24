@@ -11,7 +11,7 @@ const find_documents_for_task = gql`
           created_by {
             objectId
             first_name
-            family_name
+            last_name
             portrait
           }
           file {

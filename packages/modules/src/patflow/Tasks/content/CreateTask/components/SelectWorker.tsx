@@ -33,7 +33,7 @@ const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
 					workerOptionsArray.push({
 						value: worker.objectId,
 						id: worker.objectId,
-						label: `${worker.first_name} ${worker.family_name}`,
+						label: `${worker.first_name} ${worker.last_name}`,
 						element: (
 							<div className={"worker_display_container"}>
 								<DisplayWorker workerId={worker.objectId} />

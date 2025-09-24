@@ -47,7 +47,7 @@ const EditRecords: FC<EditRecordsProps> = ({
           refetch={refetch}
           projectId={projectId}
           person={{
-            label: `${selectedUser?.first_name} ${selectedUser?.family_name}`,
+            label: `${selectedUser?.first_name} ${selectedUser?.last_name}`,
             portrait: selectedUser.portrait,
           }}
         />

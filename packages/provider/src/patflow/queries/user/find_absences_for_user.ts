@@ -19,7 +19,7 @@ const find_vacations_for_user = gql`
             objectId
             username
             first_name
-            family_name
+            last_name
             email
             portrait
           }
@@ -27,7 +27,7 @@ const find_vacations_for_user = gql`
             objectId
             username
             first_name
-            family_name
+            last_name
             email
             portrait
           }

@@ -14,12 +14,12 @@ const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {
     if (users) {
       return users.map((user: Worker) => ({
         value: user.objectId,
-        label: `${user.first_name} ${user.family_name}`,
+        label: `${user.first_name} ${user.last_name}`,
         user: user,
         element: (
           <PersonDisplay
             person={{
-              label: `${user.first_name} ${user.family_name}`,
+              label: `${user.first_name} ${user.last_name}`,
               portrait: user.portrait,
             }}
           />

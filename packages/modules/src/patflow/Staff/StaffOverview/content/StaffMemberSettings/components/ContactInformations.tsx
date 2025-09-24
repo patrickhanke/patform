@@ -79,9 +79,6 @@ const ContactInformation: React.FC<ChangeUserSettingsProps> = ({
 		[]
 	);
 
-	console.log(fields);
-	console.log(data);
-
 	return (
 		<div>
 			<h4>Kontakteinstellungen</h4>

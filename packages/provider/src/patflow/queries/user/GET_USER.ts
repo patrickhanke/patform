@@ -9,7 +9,7 @@ const GET_USER = gql`
 				email
 				portrait
 				first_name
-				family_name
+				last_name
 				time_settings
 			}
 		}

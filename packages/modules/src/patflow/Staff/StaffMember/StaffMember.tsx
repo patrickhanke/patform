@@ -31,7 +31,7 @@ const StaffMember = ({ params }: { params: Params }) => {
 			<Page
 				title={
 					data &&
-					`${data.objects.get_User.first_name} ${data.objects.get_User.family_name}`
+					`${data.objects.get_User.first_name} ${data.objects.get_User.last_name}`
 				}
 				pageStates={siteStates}
 				pageState={siteState}

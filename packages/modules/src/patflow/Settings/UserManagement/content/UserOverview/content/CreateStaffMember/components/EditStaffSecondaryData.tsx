@@ -17,7 +17,7 @@ const EditStaffSecondaryData: FC<EditStaffSecondaryDataProps> = ({
 					process.env.APP_NAME as string,
 					project.path
 				)}
-				filename={`${staffMember.first_name}_${staffMember.family_name}_${new Date()}_portrait.jpg`}
+				filename={`${staffMember.first_name}_${staffMember.last_name}_${new Date()}_portrait.jpg`}
 				previewImage={staffMember.portrait || undefined}
 				onChange={(images) =>
 					setStaffMember((draft) => {

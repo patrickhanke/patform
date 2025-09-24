@@ -24,6 +24,7 @@ export type PatflowUser = {
   last_name: string;
   is_superuser: boolean;
   type: string;
+  number: number;
   color: typeof colors[number]["value"];
   role: PatflowUserRole;
   is_worker: boolean;
@@ -39,10 +40,10 @@ export type PatflowUser = {
 
 export type PatflowUserDisplayData = Pick<
   PatflowUser,
-  "objectId" | "family_name" | "first_name" | "email" | "portrait" | "color"
+  "objectId" | "last_name" | "first_name" | "email" | "portrait" | "color"
 >;
 
 export type CreatePatflowUser = Pick<
   PatflowUser,
-  "family_name" | "first_name" | "email" | "portrait" | "color"
+  "last_name" | "first_name" | "email" | "portrait" | "color"
 > & { password: string; repeat_password: string; role: string };

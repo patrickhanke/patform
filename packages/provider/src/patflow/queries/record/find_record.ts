@@ -8,7 +8,7 @@ const find_record = gql`
 					user {
 						objectId
 						first_name
-						family_name
+						last_name
 						settings
 					}
 					objectId

@@ -36,7 +36,6 @@ const StaffMemberSettings = ({ userId }: { userId: string }) => {
 			variables: { id: userId },
 			onCompleted: (data) => {
 				const user = data.objects.get_User;
-				console.log({ user });
 				setData({
 					first_name: user.first_name,
 					last_name: user.last_name,
@@ -46,8 +45,6 @@ const StaffMemberSettings = ({ userId }: { userId: string }) => {
 			}
 		}
 	);
-
-	console.log(data);
 
 	if (!data) {
 		return null;

@@ -20,11 +20,11 @@ const SelectUser = () => {
       <ElementSelectInterface
         elements={users.map((user) => ({
           value: user.objectId,
-          label: `${user.first_name} ${user.family_name}`,
+          label: `${user.first_name} ${user.last_name}`,
           element: (
             <PersonDisplay
               person={{
-                label: `${user.first_name} ${user.family_name}`,
+                label: `${user.first_name} ${user.last_name}`,
                 portrait: user.portrait,
               }}
             />

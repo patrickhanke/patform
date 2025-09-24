@@ -53,7 +53,7 @@ const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 									dataColor: user.color,
 									dataLength: dayInterval.length,
 									dataIndex: index,
-									dataTitle: `${user.first_name} ${user.family_name} - ${absence_type_options.find((option) => option.value === absence.type)?.label}`
+									dataTitle: `${user.first_name} ${user.last_name} - ${absence_type_options.find((option) => option.value === absence.type)?.label}`
 								}
 							]);
 						} else if (data[day]) {

@@ -24,7 +24,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 	const { data: roleData } = useQuery(FIND_ALL_ROLES);
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
 	const [worker, setWorker] = useImmer<CreateUser>({
-		family_name: "",
+		last_name: "",
 		first_name: "",
 		portrait: "",
 		email: "",
@@ -38,13 +38,13 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 		const errorArray: ErrorMessage[] = [];
 		workers.forEach((existingWorker: Worker) => {
 			if (
-				existingWorker.family_name === worker.family_name &&
+				existingWorker.last_name === worker.last_name &&
 				existingWorker.first_name === worker.first_name
 			) {
 				errorArray.push({
 					message: "Dieser Name existiert bereits",
-					key: "family_name_group",
-					id: "family_name"
+					key: "last_name_group",
+					id: "last_name"
 				});
 			}
 		});
@@ -55,11 +55,11 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 				id: "first_name"
 			});
 		}
-		if (!worker.family_name) {
+		if (!worker.last_name) {
 			errorArray.push({
 				message: "Bitte einen Nachnamen angeben",
-				key: "family_name",
-				id: "family_name"
+				key: "last_name",
+				id: "last_name"
 			});
 		}
 		if (!worker.role) {
@@ -110,7 +110,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 			className: "_User",
 			updateObject: {
 				username: worker.email,
-				family_name: worker.family_name,
+				last_name: worker.last_name,
 				first_name: worker.first_name,
 				role: {
 					__type: "Pointer",

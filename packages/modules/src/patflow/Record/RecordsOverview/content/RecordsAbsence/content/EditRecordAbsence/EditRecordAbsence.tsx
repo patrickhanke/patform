@@ -62,7 +62,7 @@ const EditRecordAbsence = ({
 				"start_date",
 				"end_date",
 				"state",
-				"user{objectId first_name family_name portrait}",
+				"user{objectId first_name last_name portrait}",
 				"comment",
 				"type",
 				"year"
@@ -375,7 +375,7 @@ const EditRecordAbsence = ({
 			staffOptions = staffData.objects.find_User.results.map(
 				(staff: StaffMember) => ({
 					value: staff.objectId,
-					label: `${staff.first_name} ${staff.family_name}`,
+					label: `${staff.first_name} ${staff.last_name}`,
 					...staff
 				})
 			);
@@ -411,7 +411,7 @@ const EditRecordAbsence = ({
 									: {
 											...absenceState.user,
 											value: user?.objectId,
-											label: `${user?.first_name} ${user?.family_name}`
+											label: `${user?.first_name} ${user?.last_name}`
 										}
 							}
 							onChange={(value) => {

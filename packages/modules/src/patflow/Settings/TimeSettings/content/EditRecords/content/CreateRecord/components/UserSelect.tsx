@@ -11,7 +11,7 @@ const UserSelect = ({ worker, isSelected, onChange }: UserSelectProps) => {
     >
       <div className={styles.display_worker_container_pers_data}>
         <div className={styles.display_worker_image_container} />
-        <h4>{`${worker.first_name} ${worker.family_name}`}</h4>
+        <h4>{`${worker.first_name} ${worker.last_name}`}</h4>
       </div>
     </button>
   );

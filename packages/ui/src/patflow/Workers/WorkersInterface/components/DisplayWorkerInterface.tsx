@@ -71,13 +71,13 @@ const DisplayWorkerInterface = ({
                 height: 60,
                 width: 60,
               })}
-              alt={`${worker.first_name} ${worker.family_name}`}
+              alt={`${worker.first_name} ${worker.last_name}`}
               width={"24px"}
               height={"24px"}
             />
           ) : null}
         </div>
-        <h4>{`${worker.first_name} ${worker.family_name}`}</h4>
+        <h4>{`${worker.first_name} ${worker.last_name}`}</h4>
       </div>
       {workerAbsence.isAbsent &&
         workerAbsence.type &&

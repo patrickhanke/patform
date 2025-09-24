@@ -23,10 +23,10 @@ const EditStaffData: FC<EditStaffDataProps> = ({
       />
       <TextInput
         label="Nachname"
-        id={"family_name"}
+        id={"last_name"}
         onChange={(value) =>
           setStaffMember((draft) => {
-            draft.family_name = value;
+            draft.last_name = value;
           })
         }
         errors={errors}

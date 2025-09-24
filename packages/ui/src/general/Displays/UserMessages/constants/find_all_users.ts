@@ -3,11 +3,11 @@ import { gql } from "@apollo/client";
 const find_all_users = gql`
   query findAllUsers {
     objects {
-      find_User(order: family_name_ASC) {
+      find_User(order: last_name_ASC) {
         results {
           objectId
           first_name
-          family_name
+          last_name
           is_worker
           portrait
           role {

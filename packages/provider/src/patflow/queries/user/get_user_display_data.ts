@@ -9,7 +9,7 @@ const get_user_display_data = gql`
         email
         portrait
         first_name
-        family_name
+        last_name
         color
         role {
           objectId

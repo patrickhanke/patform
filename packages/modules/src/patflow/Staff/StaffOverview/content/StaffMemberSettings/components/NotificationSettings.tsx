@@ -12,8 +12,6 @@ const NotificationSettings: React.FC<ChangeUserSettingsProps> = ({
 		if (data && data.notification_settings) {
 			const settings = data.notification_settings;
 			for (const [key, value] of Object.entries(settings)) {
-				console.log(value);
-
 				settingsArray.push({
 					type: "toggle",
 					id: key,

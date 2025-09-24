@@ -12,7 +12,7 @@ const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 	const columns = useMemo<ColumnDef<PatflowUser>[]>(
 		() => [
 			{
-				accessorFn: (row) => `${row.first_name} ${row.family_name}`,
+				accessorFn: (row) => `${row.first_name} ${row.last_name}`,
 				header: () => <span>Name</span>,
 				id: "name",
 				cell: (info) => info.getValue(),

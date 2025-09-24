@@ -113,7 +113,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 
 		// Download the PDF
 		doc.save(
-			`worker-record-${worker.first_name}-${worker.family_name}.pdf`
+			`worker-record-${worker.first_name}-${worker.last_name}.pdf`
 		);
 	};
 
@@ -123,7 +123,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 				<div key={index} className="worker-card">
 					<div className="worker-info">
 						<h3>
-							{worker.first_name} {worker.family_name}
+							{worker.first_name} {worker.last_name}
 						</h3>
 					</div>
 					<button

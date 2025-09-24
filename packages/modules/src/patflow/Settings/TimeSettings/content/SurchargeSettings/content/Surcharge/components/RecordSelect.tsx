@@ -29,7 +29,7 @@ const RecordSelect: FC<RecordSelectProps> = ({
 				"objectId",
 				"start_date",
 				"end_date",
-				"user { first_name family_name objectId }",
+				"user { first_name last_name objectId }",
 				"year"
 			],
 			type: "find"
@@ -44,7 +44,7 @@ const RecordSelect: FC<RecordSelectProps> = ({
 		data?.objects.findRecord.results.forEach((record: Record) => {
 			elementArray.push({
 				value: record.objectId,
-				label: `${record.user.first_name} ${record.user.family_name} / ${getDateString(record.start_date).date}-${getDateString(record.end_date).date}`,
+				label: `${record.user.first_name} ${record.user.last_name} / ${getDateString(record.start_date).date}-${getDateString(record.end_date).date}`,
 				user_id: record.user.objectId
 			});
 		});

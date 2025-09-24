@@ -14,7 +14,7 @@ const StaffMemberOverview = ({ userId }: { userId: string }) => {
     if (data) {
       return {
         Vorname: data.objects.get_User.first_name || ("" as string),
-        Nachname: data.objects.get_User.family_name || ("" as string),
+        Nachname: data.objects.get_User.last_name || ("" as string),
         Rolle: data.objects.get_User.role.name || ("" as string),
         "E-Mail": data.objects.get_User.email || ("" as string),
       } as const;

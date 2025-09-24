@@ -42,7 +42,7 @@ const WorkerSelect = ({
 						value: worker.objectId,
 						id: worker.objectId,
 						portrait: worker.portrait,
-						label: `${worker.first_name} ${worker.family_name}`
+						label: `${worker.first_name} ${worker.last_name}`
 					})
 				)
 			);
@@ -58,7 +58,7 @@ const WorkerSelect = ({
 						workerOptionsArray.push({
 							value: worker.objectId,
 							id: worker.objectId,
-							label: `${worker.first_name} ${worker.family_name}`,
+							label: `${worker.first_name} ${worker.last_name}`,
 							portrait: worker.portrait
 						});
 					}

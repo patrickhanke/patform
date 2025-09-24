@@ -25,7 +25,7 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
             width: 60,
             height: 60,
             }),
-            alt: `${user.first_name} ${user.family_name}`,
+            alt: `${user.first_name} ${user.last_name}`,
         };
         }
         return {

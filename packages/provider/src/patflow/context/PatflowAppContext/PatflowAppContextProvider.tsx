@@ -34,7 +34,7 @@ const PatflowAppContextProvider = ({
 			fields: [
 				"objectId",
 				"first_name",
-				"family_name",
+				"last_name",
 				"email",
 				"portrait",
 				"color"
@@ -59,7 +59,7 @@ const PatflowAppContextProvider = ({
 			fields: [
 				"objectId",
 				"name",
-				"created_by { objectId first_name family_name portrait }"
+				"created_by { objectId first_name last_name portrait }"
 			]
 		}),
 		{

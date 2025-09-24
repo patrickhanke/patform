@@ -83,7 +83,7 @@ const DisplayWorker = ({
 					css={ringCss}
 				>
 					<Avatar.Fallback
-						name={`${worker.first_name} ${worker.family_name}`}
+						name={`${worker.first_name} ${worker.last_name}`}
 					/>
 					<Avatar.Image
 						src={getImageUrlFromBytescale({
@@ -95,7 +95,7 @@ const DisplayWorker = ({
 				</Avatar.Root>
 
 				{!onlyImage && (
-					<div>{`${worker.first_name} ${worker.family_name}`}</div>
+					<div>{`${worker.first_name} ${worker.last_name}`}</div>
 				)}
 				<div>
 					{showState &&

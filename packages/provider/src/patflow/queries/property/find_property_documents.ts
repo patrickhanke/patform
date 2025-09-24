@@ -12,7 +12,7 @@ const find_object_documents = gql`
           created_by {
             objectId
             first_name
-            family_name
+            last_name
           }
           property {
             objectId

@@ -16,7 +16,7 @@ const find_absence = gql`
             objectId
             username
             first_name
-            family_name
+            last_name
             email
             color
             portrait
@@ -25,7 +25,7 @@ const find_absence = gql`
             objectId
             username
             first_name
-            family_name
+            last_name
             email
             portrait
           }

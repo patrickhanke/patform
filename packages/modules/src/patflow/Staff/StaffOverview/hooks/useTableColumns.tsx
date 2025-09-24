@@ -4,13 +4,14 @@ import { useMemo } from "react";
 import StaffMemberSettings from "../content/StaffMemberSettings";
 import { TableColumnEditColor } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
+import { StateDisplay } from "@repo/ui";
 
 const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 	const { updateData } = useDataHandler();
 	const columns: ColumnDef<PatflowUser>[] = useMemo(
 		() => [
 			{
-				accessorFn: (row) => `${row.first_name} ${row.family_name}`,
+				accessorFn: (row) => `${row.first_name} ${row.last_name}`,
 				header: () => <span>Name</span>,
 				id: "name",
 				cell: (info) => info.getValue(),
@@ -18,9 +19,22 @@ const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => row.role.name,
+				accessorFn: (row) => (
+					<StateDisplay
+						label={row.role.name}
+						color={row.role.color}
+					/>
+				),
 				header: () => <span>Rolle</span>,
 				id: "role",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				accessorFn: (row) => row.number,
+				header: () => <span>Nummer</span>,
+				id: "number",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,
 				enableSorting: false
