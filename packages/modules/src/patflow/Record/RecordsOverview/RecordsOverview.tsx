@@ -26,6 +26,7 @@ const RecordsOverview = () => {
 	);
 	const [editAbsence, setEditAbsence] = useState(false);
 	const [resetWorkerTimes, setResetWorkerTimes] = useState(false);
+	const [printWorkerTimes, setprintWorkerTimes] = useState(false);
 
 	const [selectedUser, setSelectedUser] = React.useState<StaffOption | null>(
 		null
@@ -41,6 +42,15 @@ const RecordsOverview = () => {
 						setResetWorkerTimes(true);
 					},
 					color: "light",
+					is_add_button: false
+				},
+				{
+					type: "button",
+					text: "Monatsdaten drucken",
+					onClick: () => {
+						setprintWorkerTimes(true);
+					},
+					color: "primary",
 					is_add_button: false
 				}
 			];
@@ -86,6 +96,8 @@ const RecordsOverview = () => {
 					year={year}
 					setSelectedUser={setSelectedUser}
 					selectedUser={selectedUser}
+					printWorkerTimes={printWorkerTimes}
+					setPrintWorkerTimes={setprintWorkerTimes}
 				/>
 			)}
 			{siteState.value === "absence" && (

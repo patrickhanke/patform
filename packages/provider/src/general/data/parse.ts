@@ -11,6 +11,4 @@ if (!Parse.applicationId) {
 	Parse.serverURL = process.env.SASHIDO_API_URL;
 }
 
-console.log(Parse.applicationId);
-
 export default Parse;

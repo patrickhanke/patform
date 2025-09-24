@@ -16,11 +16,14 @@ import { Record } from "@repo/types";
 import { StaffSurcharges } from "./content/StaffSurcharges";
 import { StaffVacation } from "./content/StaffVacation";
 import { StaffWorkingTimes } from "./content/StaffWorkingTimes";
+import { PrintWorkerTimes } from "./content";
 
 const RecordsStaffOverview = ({
 	year,
 	selectedUser,
-	setSelectedUser
+	setSelectedUser,
+	printWorkerTimes,
+	setPrintWorkerTimes
 }: RecordsStaffOverviwProps) => {
 	const { projectId } = useContext(UserContext);
 
@@ -121,6 +124,10 @@ const RecordsStaffOverview = ({
 					<p>Bitte wählen Sie einen Mitarbeiter aus</p>
 				</div>
 			)}
+			<PrintWorkerTimes
+				printWorkerTimes={printWorkerTimes}
+				setPrintWorkerTimes={setPrintWorkerTimes}
+			/>
 		</div>
 	);
 };

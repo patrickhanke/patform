@@ -7,6 +7,7 @@ const get_project = gql`
 				objectId
 				name
 				time_settings
+				data
 			}
 		}
 	}

@@ -10,6 +10,7 @@ import createYupSchema from "./functions/createYupSchema";
 import getFieldsWithValidation from "./functions/getFieldsWithValidation";
 import { FC, useEffect } from "react";
 import { Divider } from "@repo/ui";
+import getChangedValues from "./functions/getChangedValues";
 
 const FormikRender: FC<FormikRenderProps> = ({
 	fields,
@@ -42,10 +43,10 @@ const FormikRender: FC<FormikRenderProps> = ({
 						)
 			}
 			onSubmit={(values) => {
-				console.log(values);
+				const changedValues = getChangedValues(values, data);
 
-				if (formSubmitHandler) {
-					formSubmitHandler(values);
+				if (formSubmitHandler && changedValues) {
+					formSubmitHandler(changedValues);
 				}
 			}}
 			validationSchema={Yup.object().shape(

@@ -14,7 +14,9 @@
     "@bytescale/upload-widget-react": "^4.19.0",
     "@types/papaparse": "^5.3.16",
     "papaparse": "^5.5.3",
-    "react-select": "^5.10.1"
+    "react-select": "^5.10.1",
+    "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2"
   },
   "devDependencies": {
     "@repo/eslint": "1.0.0",

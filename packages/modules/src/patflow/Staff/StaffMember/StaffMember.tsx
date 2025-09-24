@@ -22,8 +22,6 @@ const StaffMember = ({ params }: { params: Params }) => {
 	);
 	const { projectId } = useContext(UserContext);
 
-	
-
 	if (loading || !projectId) {
 		return <p>Lädt...</p>;
 	}

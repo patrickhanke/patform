@@ -1,5 +1,5 @@
 import { ApolloRefetch, months } from "@repo/provider";
-import { Day } from "@repo/types";
+import { Day, DayTime } from "@repo/types";
 
 export type StaffWorkingTimesProps = {
 	month: (typeof months)[number];
@@ -10,7 +10,7 @@ export type StaffWorkingTimesProps = {
 	records: Record[];
 };
 
-export type DayDataTime = Day["time"] & { day_id?: string };
+export type DayDataTime = DayTime & { day_id?: string };
 
 export type DayData = {
 	type: Day["type"];

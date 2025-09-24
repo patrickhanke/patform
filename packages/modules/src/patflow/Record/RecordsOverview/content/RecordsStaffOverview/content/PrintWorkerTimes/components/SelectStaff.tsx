@@ -1,0 +1,56 @@
+import { FC, useMemo } from "react";
+import { DisplayWorker, ElementSelectInterface, SelectElement } from "@repo/ui";
+import { SelectStaffProps } from "../types";
+import { Worker } from "@repo/types";
+import { useQuery } from "@apollo/client";
+import { FIND_ALL_STAFF } from "@repo/provider";
+
+const SelectStaff: FC<SelectStaffProps> = ({
+	selectedWorker,
+	setSelectedWorker
+}) => {
+	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+
+	const elements = useMemo(() => {
+		const workerOptionsArray: SelectElement[] = [];
+
+		if (staffData) {
+			const staff = staffData.objects.find_User.results;
+			staff.forEach((worker: Worker) => {
+				if (worker) {
+					workerOptionsArray.push({
+						value: worker.objectId,
+						id: worker.objectId,
+						label: `${worker.first_name} ${worker.family_name}`,
+						data: worker,
+						element: (
+							<div>
+								<DisplayWorker workerId={worker.objectId} />
+							</div>
+						)
+					});
+				}
+			});
+		}
+		workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
+
+		return workerOptionsArray;
+	}, [staffData]);
+
+	return (
+		<div>
+			<ElementSelectInterface
+				title="Arbeiter auswählen"
+				elements={elements}
+				selectedElements={selectedWorker}
+				onSelect={(values) => {
+					setSelectedWorker(values.length > 0 ? values : []);
+				}}
+				max={100}
+				isSearchable
+			/>
+		</div>
+	);
+};
+
+export default SelectStaff;

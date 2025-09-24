@@ -16,6 +16,7 @@ const nextConfig = {
       "https://ks588wtqbcwvgvbc096gr40cedytjy.files-sashido.cloud/",
     SASHIDO_CLIENT_KEY: "Ie7BJ19MtDnEREkISIAnidh9hQrfdANk7p33VNFT",
     BYTESCALE_ACCOUNT_ID: "FW25c4N",
+    SASHIDO_JS_KEY: "sdz5K3XFXMwb4vatxyO0v8NdNpkOKi9QhTVF34OA",
     APP_NAME: "patflow",
     BYTESCALE_PUBLIC_KEY: "public_FW25c4N3qgCzxTQoAXJY5CbtXHZf",
     BYTESCALE_SECRET_KEY: "secret_FW25c4NG3DufL64qbUVs4y91SAuX",
@@ -37,7 +38,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "ks588wtqbcwvgvbc096gr40cedytjy.files-sashido.cloud/",
+        hostname: "ks588wtqbcwvgvbc096gr40cedytjy.files-sashido.cloud",
         port: "",
         pathname: "/**",
       },

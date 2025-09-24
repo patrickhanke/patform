@@ -23,9 +23,6 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 		: [];
 
 	if (type === "absence" && absence) {
-		console.log({ sortedTime });
-		console.log({ absence });
-
 		return (
 			<div className="button_container">
 				<StateDisplay

@@ -1,8 +1,9 @@
 import * as Yup from "yup";
-import { FormikHandlers, FormikValues } from "formik";
+import { FormikHandlers, FormikValues, Formik } from "formik";
 import { Dispatch, SetStateAction } from "react";
 import { Pointer } from "@repo/types";
 import { DatePickerTypes } from "@repo/ui";
+import ParseFile from "parse/types/ParseFile";
 
 export type handleFormData<V extends FormDataElement> = (data: V) => void;
 
@@ -41,7 +42,9 @@ export type FieldTypes =
 	| "pointer_select"
 	| "persons_select"
 	| "downloads"
-	| "download";
+	| "download"
+	| "image_select"
+	| "image_upload";
 
 export type ValidationTypes = {
 	required?: string;
@@ -151,6 +154,29 @@ export type ImageField = BasicField & {
 	};
 };
 
+export type ImageSelectField = BasicField & {
+	type: "image_select";
+	value?: string;
+	options: {
+		return_type: "array" | "string";
+		max_file_count: number;
+	};
+	validation?: {
+		validate?: boolean;
+		required?: string;
+		max_file_count?: number;
+	};
+};
+
+export type ImageUploadField = BasicField & {
+	type: "image_upload";
+	value?: ParseFile;
+	validation?: {
+		validate?: boolean;
+		required?: string;
+	};
+};
+
 export type FileField = BasicField & {
 	type: "file";
 	value?: string | string[];
@@ -222,7 +248,9 @@ export type Field =
 	| PersonsSelectField
 	| DateField
 	| DownloadField
-	| DownloadsField;
+	| DownloadsField
+	| FileUploadField
+	| ImageSelectField;
 
 export type FieldValidationArray = Array<
 	Field & { validation?: ValidationTypes }
@@ -238,3 +266,9 @@ export type CreateYupSchemaFunction = (
 ) => Yup.ISchema<any, any, any, any> | Yup.Reference<unknown>;
 
 export type FormDataElement = { [key: string]: any };
+
+export type FormActionBarProps = {
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	handleSubmit: FormikHandlers["handleSubmit"];
+};

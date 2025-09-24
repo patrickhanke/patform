@@ -8,6 +8,8 @@ export type RecordsStaffOverviwProps = {
 	year: number;
 	selectedUser: StaffOption | null;
 	setSelectedUser: Dispatch<SetStateAction<StaffOption | null>>;
+	printWorkerTimes: boolean;
+	setPrintWorkerTimes: Dispatch<SetStateAction<boolean>>;
 };
 
 export type MonthOptions = {

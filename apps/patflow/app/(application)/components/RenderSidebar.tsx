@@ -4,6 +4,7 @@ import React from "react";
 import Logo from "./Logo";
 import { Sidebar } from "@repo/ui";
 import { PatflowUser } from "@repo/types";
+import { useAppContext } from "@repo/provider";
 
 const menu_items = [
   {
@@ -92,7 +93,13 @@ const menu_items = [
     value: "/settings/times",
     icon: "calendar",
     sub_menu: [],
-  }
+  },
+  {
+    label: "Projekt",
+    value: "/settings/project",
+    icon: "project",
+    sub_menu: [],
+  },
   // {
   //   label: "Logs",
   //   value: "/settings/logs",
@@ -102,10 +109,18 @@ const menu_items = [
 ];
 
 const RenderSidebar = ({ user }: { user: PatflowUser }) => {
+  const { project } = useAppContext();
+
+  console.log({project})
+  if (!project) {
+    return null;
+  }
+
   return (
     <div className="layout_sidebar_container" id="sidebar">
       <div className="layout_sidebar_header">
-        <Logo />
+        <Logo logo={project.logo} alt={project.name} />
+        <h1>{project.name ? project.name : "patflow"}</h1>
       </div>
       <Sidebar menuItems={menu_items} user={user} />
     </div>

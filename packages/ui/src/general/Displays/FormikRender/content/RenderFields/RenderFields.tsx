@@ -14,6 +14,7 @@ import { get } from "lodash-es";
 import SelectToggle from "./components/SelectToggle";
 import DatePickerField from "./components/DatePickerField";
 import { FileSelect } from "./content";
+import ImageSelect from "./components/ImageSelect";
 
 const fieldDisabledHandler = (
 	field: Field,
@@ -116,19 +117,30 @@ const RenderFields: FC<RenderFieldsType> = ({
 							style={{ minWidth: "240px", minHeight: "80px" }}
 						/>
 					)}
-					{field.type === "image" && (
-						<div>
-							<FastField name={field.name}>
-								{({ field: fieldValues }: FastFieldProps) => (
-									<ImageUpload
-										fieldValues={fieldValues}
-										field={field}
-										setFieldValue={setFieldValue}
-										isHorizontal={isHorizontal}
-									/>
-								)}
-							</FastField>
-						</div>
+					{field.type === "image_select" && (
+						<FastField name={field.name}>
+							{({ field: fieldValues }: FastFieldProps) => (
+								<ImageSelect
+									fieldValues={fieldValues}
+									field={field}
+									onChange={(value) =>
+										setFieldValue(field.name, value, true)
+									}
+								/>
+							)}
+						</FastField>
+					)}
+					{field.type === "image_upload" && (
+						<FastField name={field.name}>
+							{({ field: fieldValues }: FastFieldProps) => (
+								<ImageUpload
+									value={fieldValues.value}
+									onChange={(value) =>
+										setFieldValue(field.name, value, true)
+									}
+								/>
+							)}
+						</FastField>
 					)}
 					{field.type === "file" && (
 						<FileUploader

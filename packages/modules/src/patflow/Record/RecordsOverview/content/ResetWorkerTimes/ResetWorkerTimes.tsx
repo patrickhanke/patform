@@ -152,7 +152,7 @@ const ResetWorkerTimes: FC<ResetWorkerTimesProps> = ({
 					<div>
 						<p>
 							Möchten Sie die Monatsdaten aktualisieren? Dieser
-							Vorganng kann nicht rückgängig gemacht werden.
+							Vorgang kann nicht rückgängig gemacht werden.
 						</p>
 						<Divider showLine={false} size="small" />
 						<h3>Daten:</h3>

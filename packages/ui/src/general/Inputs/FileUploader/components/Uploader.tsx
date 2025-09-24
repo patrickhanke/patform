@@ -28,11 +28,11 @@ const Uploader: React.FC<UplaoderProps> = ({
 	useEffect(() => {
 		const uploadSuccessHandler = async () => {
 			setIsUploading(true);
-			const files = uppy.getFiles();
+			const files = uppy?.getFiles();
 			const imageArray: string[] = [];
 			if (!isComplete) {
 				console.log({ className, classKey, moduleId });
-				if (className && classKey && moduleId) {
+				if (files && className && classKey && moduleId) {
 					for (const file of files) {
 						try {
 							await createUpdateFile({

@@ -49,6 +49,7 @@ const FileUploader = ({
 			}
 		});
 	}, [uppy]);
+	
 
 	if (inline) {
 		<UppyContextProvider maxFileCount={maxFileCount} type={type}>
@@ -65,6 +66,7 @@ const FileUploader = ({
 			/>
 		</UppyContextProvider>;
 	}
+
 	const buttonText = () => {
 		if (existingFile && existingFile.name) {
 			return getOriginalFileName(existingFile);

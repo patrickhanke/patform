@@ -248,8 +248,6 @@ const useDataHandler = (useMasterKey = false) => {
 					.replace(/\)/g, "");
 			};
 			const fileName = replaceUmlaute(file.name as string);
-			console.log({ fileName });
-			console.log({ classKey, className, classId });
 
 			const parseFile = new Parse.File(fileName, file.data);
 			await parseFile.save();
@@ -358,6 +356,51 @@ const useDataHandler = (useMasterKey = false) => {
 		[]
 	);
 
+	const uploadFile = useCallback(async ({ file }) => {
+		const replaceUmlaute = (fileName: string): string => {
+			return fileName
+				.replace(/ä/g, "ae")
+				.replace(/Ä/g, "Ae")
+				.replace(/ö/g, "oe")
+				.replace(/Ö/g, "Oe")
+				.replace(/ü/g, "ue")
+				.replace(/Ü/g, "Ue")
+				.replace(/ß/g, "ss")
+				.replace(/\(/g, "")
+				.replace(/\)/g, "");
+		};
+
+		// Convert file to base64
+		const toBase64 = (file: File): Promise<string> => {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = () => {
+					const base64String = reader.result as string;
+					// Remove the data URL prefix (e.g., "data:image/jpeg;base64,")
+					const base64 = base64String.split(",")[1];
+					resolve(base64);
+				};
+				reader.onerror = (error) => reject(error);
+			});
+		};
+
+		try {
+			const fileName = replaceUmlaute(file.name as string);
+			// const base64 = await toBase64(file);
+
+			const parseFile = new Parse.File(fileName, file);
+			await parseFile.save(null, {
+				sessionToken: Cookies.get("patstore_token")
+			});
+
+			return parseFile;
+		} catch (error) {
+			console.error("Error uploading file:", error);
+			throw error;
+		}
+	}, []);
+
 	const updateImage = useCallback(
 		async ({
 			file,
@@ -413,7 +456,8 @@ const useDataHandler = (useMasterKey = false) => {
 		deleteData,
 		getData,
 		updateImage,
-		createUpdateFile
+		createUpdateFile,
+		uploadFile
 	};
 };
 

@@ -1,4 +1,5 @@
 import {
+	PatflowProject,
 	PatflowUser,
 	PatflowUserRoleTypes,
 	Property,
@@ -35,6 +36,7 @@ export type ContextValues = {
 		color: string;
 		users: { objectId: string; username: string }[];
 	}[];
+	project: PatflowProject;
 	roleUsers: RoleUsers;
 };
 
