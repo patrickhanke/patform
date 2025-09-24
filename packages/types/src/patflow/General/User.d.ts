@@ -21,7 +21,7 @@ export type PatflowUser = {
   email: string;
   username: string;
   first_name: string;
-  family_name: string;
+  last_name: string;
   is_superuser: boolean;
   type: string;
   color: typeof colors[number]["value"];
@@ -29,6 +29,12 @@ export type PatflowUser = {
   is_worker: boolean;
   portrait: Image;
   projects: string[];
+  notification_settings: {[key: string]: boolean};
+  data: {
+    street: string;
+    zip: string;
+    city: string;
+  }
 };
 
 export type PatflowUserDisplayData = Pick<

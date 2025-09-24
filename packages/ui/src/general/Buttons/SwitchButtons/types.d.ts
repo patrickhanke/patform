@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SetStateAction } from "react";
 
 export type SwitchButton = {
 	value: string | number | boolean;
@@ -10,7 +10,7 @@ export type SwitchButton = {
 export type SwitchButtonProps = {
 	buttonStates: Array<SwitchButton>;
 	currentStates: SwitchButton;
-	changeHandler: React.SetStateAction.Dispatch<SwitchButton>;
+	changeHandler: React.Dispatch<SetStateAction<SwitchButton>>;
 	underlineButtons?: boolean;
 	useFragment?: boolean;
 	showBottomLine?: boolean;

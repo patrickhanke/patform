@@ -111,7 +111,6 @@ const menu_items = [
 const RenderSidebar = ({ user }: { user: PatflowUser }) => {
   const { project } = useAppContext();
 
-  console.log({project})
   if (!project) {
     return null;
   }

@@ -40,6 +40,11 @@ const FormSubmitStore = ({
 		if (useWithDebounce) {
 			const dataHasChanged = !isEqual(initialValues, formValues);
 			if (dataHasChanged) {
+				submitForm();
+			}
+		} else if (!useWithDebounce) {
+			const dataHasChanged = !isEqual(initialValues, formValues);
+			if (dataHasChanged) {
 				setOpen(true);
 			}
 		}
