@@ -5,7 +5,11 @@ import "jspdf-autotable";
 import autoTable from "jspdf-autotable";
 import { Worker } from "@repo/types";
 import renderDayData from "./functions/renderDayData";
-import { convertMillisecondsToString, getDateString } from "@repo/provider";
+import {
+	convertMillisecondsToString,
+	getDateString,
+	useAppContext
+} from "@repo/provider";
 import { DayDataTime } from "../../../StaffWorkingTimes";
 
 const RenderRecordData: FC<RenderRecordDataProps> = ({
@@ -14,6 +18,9 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 	workers,
 	days
 }) => {
+	const { project } = useAppContext();
+
+	console.log({ project });
 	const generatePDF = (worker: Worker) => {
 		const workerDays = days.filter(
 			(day) => day.user.objectId === worker.objectId
@@ -31,26 +38,38 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 		const doc = new jsPDF();
 
 		// Add company logo/header
-		doc.setFontSize(20);
-		doc.text("Worker Record", 20, 20);
+		doc.setFontSize(10);
+		doc.text(
+			`Zeitnachweis: ${getDateString(new Date(year, month, 1)).date} - ${getDateString(new Date(year, month + 1, 0)).date}`,
+			20,
+			10
+		);
+		doc.text(project.data.name, 20, 16);
+		doc.text(`Erstellt: ${new Date().toLocaleString()}`, 130, 16);
 
 		// Add basic information
-		doc.setFontSize(12);
-		doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 30);
+		doc.setFontSize(10);
 
 		// Personal Information Section
-		doc.setFontSize(16);
-		doc.text("Personal Information", 20, 45);
+		doc.setFontSize(10);
+		doc.text("Herr", 20, 30);
+		doc.text(`${worker.first_name} ${worker.last_name}`, 20, 35);
+		doc.text(worker.data?.street, 20, 40);
+		doc.text(`${worker.data?.zip} ${worker.data?.city}`, 20, 45);
 
-		// Create table for personal information
+		doc.setFontSize(12);
+		doc.text(`EinzelErgebnisse`, 20, 55);
+
 		autoTable(doc, {
-			startY: 50,
-			head: [["Datum", "Arbeitszeit", "Soll", "Ist", "Saldo"]],
+			startY: 60,
+			head: [["Datum", "Arbeitszeit", "Pause", "Soll", "Ist", "Saldo"]],
 
 			body: dayData.map((day) => {
 				let startEnd = "";
 				let saldoInt = 0;
 				let hoursInt = 0;
+				let breaks = "";
+
 				if (
 					day &&
 					day.default_time &&
@@ -61,12 +80,39 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 						day.default_time.duration - day.default_time.pause;
 					day?.time?.forEach((timeValue: DayDataTime) => {
 						if (timeValue) {
+							timeValue.breaks.forEach(
+								(
+									breakValue: DayDataTime["breaks"][number],
+									index
+								) => {
+									if (index > 0) {
+										breaks += " / ";
+									}
+									if (breakValue) {
+										breaks += `${getDateString(breakValue.start).time} - ${getDateString(breakValue.end).time}`;
+									}
+								}
+							);
 							saldoInt -= timeValue.duration - timeValue.pause;
 						}
 					});
 				} else if (day) {
 					day?.time?.forEach((timeValue: DayDataTime) => {
 						if (timeValue) {
+							console.log({ timeValue });
+							timeValue.breaks.forEach(
+								(
+									breakValue: DayDataTime["breaks"][number],
+									index
+								) => {
+									if (index > 0) {
+										breaks += " / ";
+									}
+									if (breakValue) {
+										breaks += `${getDateString(breakValue.start).time} - ${getDateString(breakValue.end).time}`;
+									}
+								}
+							);
 							saldoInt -= timeValue.duration - timeValue.pause;
 						}
 					});
@@ -88,13 +134,14 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 				return [
 					getDateString(day.date).date,
 					startEnd,
+					breaks,
 					convertMillisecondsToString(target || 0),
 					convertMillisecondsToString(hoursInt || 0),
 					convertMillisecondsToString(saldoInt)
 				];
 			}),
 
-			styles: { fontSize: 10 },
+			styles: { fontSize: 8 },
 			headStyles: { fillColor: [66, 139, 202] }
 		});
 
@@ -112,9 +159,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 		}
 
 		// Download the PDF
-		doc.save(
-			`worker-record-${worker.first_name}-${worker.last_name}.pdf`
-		);
+		doc.save(`worker-record-${worker.first_name}-${worker.last_name}.pdf`);
 	};
 
 	return (

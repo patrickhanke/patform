@@ -16,6 +16,7 @@ const find_all_staff = gql`
 					color
 					time_settings
 					number
+					data
 					role {
 						objectId
 						name

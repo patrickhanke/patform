@@ -182,11 +182,6 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 				)}
 				{pageState.value === "confirm" && (
 					<div>
-						<p>
-							Möchten Sie die Monatsdaten aktualisieren? Dieser
-							Vorgang kann nicht rückgängig gemacht werden.
-						</p>
-						<Divider showLine={false} size="small" />
 						<h3>Daten:</h3>
 						<div className="horizontal_container">
 							<p className="label">Ausgewählte Arbeiter</p>

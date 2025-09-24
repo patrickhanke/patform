@@ -62,7 +62,8 @@ const ProjectContextProvider = ({
 				"path",
 				"time_settings",
 				"record_settings",
-				"logo {name url}"
+				"logo {name url}",
+				"data"
 			];
 		} else return [];
 	}, []);

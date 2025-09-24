@@ -1,4 +1,4 @@
-import { User } from "@repo/types";
+import { PatflowUser, User } from "@repo/types";
 
 export type Worker = {
   objectId: string;
@@ -8,6 +8,7 @@ export type Worker = {
   portrait: ApplicationTypes.Image;
   created_by?: User;
   time_settings?: User["time_settings"];
+  data: PatflowUser["data"]
 };
 
 export type WorkerSelect = {
