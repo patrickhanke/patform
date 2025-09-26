@@ -5,8 +5,6 @@ import "../styles.scss";
 
 import { FileUploader } from "@repo/ui";
 import { ImageUploaderProps } from "../types";
-// import "@uppy/core/dist/style.min.css";
-import "@uppy/dashboard/css/style.min.css";
 
 const ImageUploader: FC<ImageUploaderProps> = ({
 	onComplete,
