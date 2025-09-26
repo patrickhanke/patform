@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useContext, useState } from "react";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import axiosclient from "./axios";
 import { useDataContext } from "./DataContext";
 import compileAxiosError from "./compileAxiosError";
@@ -9,7 +9,6 @@ import { cloneDeep, set } from "lodash-es";
 import { PatstoreAppContext } from "../../patstore";
 import useNetlifyHooks from "./hooks/useNetlifyHooks";
 import Parse from "./parse";
-import { Meta, UppyFile } from "@uppy/core";
 import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
 import { ClientParseError } from "@apollo/client";
@@ -226,7 +225,7 @@ const useDataHandler = (useMasterKey = false) => {
 			feedback,
 			moduleId
 		}: {
-			file: UppyFile<Meta, Record<string, never>>;
+			file: File;
 			name: string;
 			className: "Download" | "Image";
 			classKey: string;
@@ -249,7 +248,7 @@ const useDataHandler = (useMasterKey = false) => {
 			};
 			const fileName = replaceUmlaute(file.name as string);
 
-			const parseFile = new Parse.File(fileName, file.data);
+			const parseFile = new Parse.File(fileName, file);
 			await parseFile.save();
 
 			console.log("File saved to Parse:", parseFile);
@@ -320,12 +319,17 @@ const useDataHandler = (useMasterKey = false) => {
 							});
 						}
 						if (afterSaveHandler) {
-							console.log("afterSaveHandler", afterSaveHandler);
 							afterSaveHandler(response.data);
 						}
+						return response.data;
 					})
 					.catch((error: ClientParseError) => {
 						console.log(error);
+						feedbackHandler({
+							success: true,
+							message: error.message,
+							type: "success"
+						});
 					});
 			} else {
 				existingClassObject.set(classKey, parseFile);
@@ -341,14 +345,23 @@ const useDataHandler = (useMasterKey = false) => {
 								message: feedback,
 								type: "success"
 							});
+							if (afterSaveHandler) {
+								afterSaveHandler(response.data);
+							}
+							return response.data;
 						}
 						if (afterSaveHandler) {
 							console.log("afterSaveHandler", afterSaveHandler);
 							afterSaveHandler(response.data);
 						}
 					})
-					.catch((error) => {
+					.catch((error: AxiosError) => {
 						console.log(error);
+						feedbackHandler({
+							success: true,
+							message: error.message,
+							type: "success"
+						});
 					});
 			}
 			netlifyHookHandler(className);

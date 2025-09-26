@@ -52,7 +52,8 @@ export type IconTypes =
 	| "archive"
 	| "time"
 	| "plus"
-	| "minus";
+	| "minus"
+	| "upload";
 
 export type IconProps = {
 	icon: IconTypes;
@@ -71,4 +72,5 @@ export type IconButtonProps = {
 	noBorder?: boolean;
 	size?: number;
 	color?: ButtonProps["color"];
+	loading?: boolean;
 };

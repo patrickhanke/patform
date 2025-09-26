@@ -1,6 +1,6 @@
 "use client";
 
-import { ApolloAppProvider, AppContext, AppContextProvider, UppyContextProvider } from "@repo/provider";
+import { ApolloAppProvider, AppContext, AppContextProvider } from "@repo/provider";
 import { PatstoreUser } from "@repo/types";
 import {
   PatstoreAppContextProvider,
@@ -29,9 +29,7 @@ const LayoutContext = ({
             return (
               <PatstoreAppContextProvider project={project}>
                 <DataContextProvider>
-                  <UppyContextProvider>
                     {children}
-                  </UppyContextProvider>
                 </DataContextProvider>
               </PatstoreAppContextProvider>
             );

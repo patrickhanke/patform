@@ -97,9 +97,6 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 		}
 	);
 
-	console.log("projectData", projectData);
-	console.log("user", user);
-
 	const userContextObject = useMemo(
 		() => ({
 			user: getItem("user", "session", "object") || ({} as PatflowUser),

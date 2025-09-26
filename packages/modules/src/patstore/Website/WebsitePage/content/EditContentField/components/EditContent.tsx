@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import content_type_options from "../constants/content_type_options";
-import { Editor, ImageUploader, PatstoreSelectImages, Select } from "@repo/ui";
+import { Editor, PatstoreSelectImages, Select } from "@repo/ui";
 import { EditContentProps } from "../types";
 import { cloneDeep, set } from "lodash";
 import EditDivider from "./EditDivider";
@@ -41,7 +41,7 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 		},
 		[content, setContent]
 	);
-	
+
 	return (
 		<div className="flex col a-st gap-md">
 			<div>
@@ -70,15 +70,10 @@ const EditContent: FC<EditContentProps> = ({ content, setContent }) => {
 				/>
 			)}
 			{content.type === "video" && (
-				<ImageUploader
-					label="Videoinhalt"
-					onChange={(value) =>
-						updateContent("value", value as string)
-					}
-					maxFileCount={1}
-					returnType="string"
-					preview={false}
-				/>
+				<p>
+					Videoinhalte werden noch nicht unterstützt. Bitte nutzen Sie
+					stattdessen einen Text-Inhalt.
+				</p>
 			)}
 			{content.type === "image" && (
 				<PatstoreSelectImages

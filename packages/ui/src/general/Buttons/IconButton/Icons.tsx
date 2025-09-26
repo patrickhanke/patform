@@ -2,7 +2,8 @@ import React from "react";
 import {
 	AiFillCopy,
 	AiOutlineMinus,
-	AiOutlineShoppingCart
+	AiOutlineShoppingCart,
+	AiOutlineUpload
 } from "react-icons/ai";
 import {
 	BsFillBarChartFill,
@@ -205,6 +206,9 @@ const Icons: React.FC<IconProps> = ({ icon, color }) => {
 	}
 	if (icon === "minus") {
 		return <AiOutlineMinus color={color || "inherit"} />;
+	}
+	if (icon === "upload") {
+		return <AiOutlineUpload color={color || "inherit"} />;
 	}
 
 	return null;

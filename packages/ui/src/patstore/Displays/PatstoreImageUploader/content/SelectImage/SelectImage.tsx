@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import select_states from "./constants/select_states";
-import { Divider, FileUploader, SwitchButtons } from "@repo/ui";
+import { Divider, FileUploader, SwitchButton, SwitchButtons } from "@repo/ui";
 import { SelectImageProps } from "./types";
 import { useAppContext } from "@repo/provider";
 import { Module } from "@repo/types";
@@ -19,9 +19,9 @@ const SelectImage: FC<SelectImageProps> = ({
 		(module: Module) => module.path === "/images"
 	)?.objectId;
 
-	const [selectState, setSelectState] = useState<
-		(typeof select_states)[number]
-	>(select_states[0]);
+	const [selectState, setSelectState] = useState<SwitchButton>(
+		select_states[0]
+	);
 
 	const onImageChange = () => {
 		setSelectState(select_states[0]);
@@ -40,7 +40,7 @@ const SelectImage: FC<SelectImageProps> = ({
 					type="image"
 					classKey="file"
 					className="Image"
-					onComplete={onImageChange}
+					afterUploadHandler={onImageChange}
 					maxFileCount={maxFileCount}
 					inline
 				/>

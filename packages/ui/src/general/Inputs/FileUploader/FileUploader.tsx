@@ -4,19 +4,13 @@ import "./styles.scss";
 import { FileUplaoderProps } from "./types";
 import "./styles.scss";
 
-import "@uppy/react/css/style.css";
-
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import Uploader from "./components/Uploader";
 import { Modal } from "../../Overlays";
-import Uppy from "@uppy/core";
-import { UppyContextProvider } from "./components/UppyContextProvider";
 import getOriginalFileName from "./functions/getOriginalFileName";
 
 const FileUploader = ({
 	type = "image",
-	name,
-	onComplete,
 	afterUploadHandler,
 	maxFileCount = 5,
 	className,
@@ -27,45 +21,6 @@ const FileUploader = ({
 	inline = false
 }: FileUplaoderProps) => {
 	const [uploadModal, setUploadModal] = useState(false);
-
-	// const { uppy } = useContext(UppyContext);
-
-	const uppy = useMemo(
-		() =>
-			new Uppy({
-				restrictions: {
-					maxNumberOfFiles: 1 // default
-				}
-			}),
-		[]
-	);
-
-	// Update restrictions whenever maxFiles changes
-	useEffect(() => {
-		uppy.setOptions({
-			restrictions: {
-				...uppy.opts.restrictions, // preserve existing restrictions
-				maxNumberOfFiles: 1
-			}
-		});
-	}, [uppy]);
-	
-
-	if (inline) {
-		<UppyContextProvider maxFileCount={maxFileCount} type={type}>
-			<Uploader
-				type={type}
-				uppy={uppy}
-				classKey={classKey}
-				className={className}
-				classId={classId}
-				afterUploadHandler={afterUploadHandler}
-				inline={inline}
-				name={name}
-				onComplete={onComplete}
-			/>
-		</UppyContextProvider>;
-	}
 
 	const buttonText = () => {
 		if (existingFile && existingFile.name) {
@@ -81,60 +36,60 @@ const FileUploader = ({
 		}
 	};
 
-	return (
-		<UppyContextProvider maxFileCount={maxFileCount} type={type}>
-			<div className={"upload_container"}>
-				<button
-					type="button"
-					className="full_button sm grey"
-					onClick={() => {
-						if (setSecondaryContent) {
-							return setSecondaryContent(
-								<Uploader
-									uppy={uppy}
-									type={type}
-									classKey={classKey}
-									className={className}
-									classId={classId}
-									afterUploadHandler={afterUploadHandler}
-									inline={inline}
-									name={name}
-									onComplete={onComplete}
-								/>
-							);
-						}
-						setUploadModal(true);
-					}}
-				>
-					{buttonText()}
-				</button>
+	if (inline === true) {
+		return (
+			<Uploader
+				type={type}
+				classKey={classKey}
+				className={className}
+				classId={classId}
+				afterUploadHandler={afterUploadHandler}
+			/>
+		);
+	}
 
-				{!setSecondaryContent && uploadModal && (
-					<Modal
-						isOpen={uploadModal}
-						cancelButtonHandler={() => setUploadModal(false)}
-						cancelButtonText="Schließen"
-						header={
-							type === "image"
-								? "Bild hochladen"
-								: "Datei hochladen"
-						}
-					>
-						<Uploader
-							uppy={uppy}
-							type={type}
-							classKey={classKey}
-							className={className}
-							classId={classId}
-							afterUploadHandler={afterUploadHandler}
-							inline={inline}
-							name={name}
-							onComplete={onComplete}
-						/>
-					</Modal>
-				)}
-			</div>
-		</UppyContextProvider>
+	return (
+		<div className={"upload_container"}>
+			<button
+				type="button"
+				className="full_button sm grey"
+				onClick={() => {
+					if (setSecondaryContent) {
+						return setSecondaryContent(
+							<Uploader
+								type={type}
+								classKey={classKey}
+								className={className}
+								classId={classId}
+								afterUploadHandler={afterUploadHandler}
+							/>
+						);
+					}
+					setUploadModal(true);
+				}}
+			>
+				{buttonText()}
+			</button>
+
+			{!setSecondaryContent && uploadModal && (
+				<Modal
+					isOpen={uploadModal}
+					cancelButtonHandler={() => setUploadModal(false)}
+					cancelButtonText="Schließen"
+					header={
+						type === "image" ? "Bild hochladen" : "Datei hochladen"
+					}
+				>
+					<Uploader
+						type={type}
+						classKey={classKey}
+						className={className}
+						classId={classId}
+						afterUploadHandler={afterUploadHandler}
+					/>
+				</Modal>
+			)}
+		</div>
 	);
 };
 

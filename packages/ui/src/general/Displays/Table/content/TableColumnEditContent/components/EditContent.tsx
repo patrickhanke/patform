@@ -1,6 +1,6 @@
 import { FC, useCallback } from "react";
 import content_type_options from "../constants/content_type_options";
-import { Editor, ImageUploader, Select } from "@repo/ui";
+import { Editor, Select } from "@repo/ui";
 import { EditContentProps } from "../types";
 import { cloneDeep, set } from "lodash";
 
@@ -42,20 +42,15 @@ const EditContent: FC<EditContentProps> = ({
 			{content[activeIndex]?.type === "text" && (
 				<Editor
 					label="Textinhalt"
-					content={content[activeIndex]?.text || ""}
+					content={content[activeIndex]?.value || ""}
 					onChange={(value) => updateContent("text", value)}
 				/>
 			)}
 			{content[activeIndex]?.type === "video" && (
-				<ImageUploader
-					label="Videoinhalt"
-					onChange={(value) =>
-						updateContent("video", value as string)
-					}
-					maxFileCount={1}
-					returnType="string"
-					preview={false}
-				/>
+				<p>
+					Videoinhalte werden noch nicht unterstützt. Bitte nutzen Sie
+					stattdessen einen Text-Inhalt.
+				</p>
 			)}
 		</div>
 	);

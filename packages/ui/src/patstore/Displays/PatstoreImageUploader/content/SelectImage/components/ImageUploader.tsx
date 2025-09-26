@@ -47,7 +47,6 @@ const ImageUploader: FC<ImageUploaderProps> = ({
 			classId={classId}
 			afterUploadHandler={afterUploadHandler}
 			maxFileCount={maxFileCount}
-			existingFiles={0}
 			type="image"
 			inline
 		/>

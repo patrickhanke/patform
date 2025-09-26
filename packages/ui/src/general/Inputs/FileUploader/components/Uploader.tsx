@@ -1,143 +1,94 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { UplaoderProps } from "../types";
 import { useDataHandler, PatstoreAppContext } from "@repo/provider";
-import { ImageClass } from "@repo/types";
-import { Dropzone, FilesList, UploadButton, UppyContext } from "@uppy/react";
+import { ErrorMessage } from "@repo/types";
+import { Box, FileUpload, Icon } from "@chakra-ui/react";
+import { LuUpload } from "react-icons/lu";
+import { ErrorDisplay, IconButton } from "@repo/ui";
+import getAcceptedFiles from "../constants/getAcceptedFiles";
 
 const Uploader: React.FC<UplaoderProps> = ({
 	type = "image",
-	name,
-	onComplete,
 	afterUploadHandler,
 	className,
 	classKey,
-	classId,
-	inline = false
+	classId
 }) => {
-	const { modules } = useContext(PatstoreAppContext);
 	const { createUpdateFile } = useDataHandler();
-	const { uppy } = useContext(UppyContext);
+	const { modules } = useContext(PatstoreAppContext);
+	const [files, setFiles] = useState<FileList>();
+	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 
 	const [isUploading, setIsUploading] = useState(false);
-	const [isComplete, setIsComplete] = useState(false);
 
 	const moduleId = modules.find(
 		(module) => module.connected_class === className
 	)?.objectId;
 
-	useEffect(() => {
-		const uploadSuccessHandler = async () => {
-			setIsUploading(true);
-			const files = uppy?.getFiles();
-			const imageArray: string[] = [];
-			if (!isComplete) {
-				console.log({ className, classKey, moduleId });
-				if (files && className && classKey && moduleId) {
-					for (const file of files) {
-						try {
-							await createUpdateFile({
-								file,
-								name: name || (file.name as string),
-								moduleId: moduleId,
-								className,
-								classKey,
-								classId,
-								feedback:
-									type === "image"
-										? "Bild erfolgreich hochgeladen"
-										: "Datei erfolgreich hochgeladen",
-								afterSaveHandler: (image: ImageClass) => {
-									imageArray.push(image.file.url);
-								}
-							});
-						} catch (error) {
-							console.error(error);
-						}
-					}
-				}
-
-				uppy.emit("complete", {
-					successful: uppy.getFiles().filter((f) => !f.error),
-					failed: uppy.getFiles().filter((f) => f.error)
+	const uploadHandler = useCallback(async () => {
+		setIsUploading(true);
+		console.log(files);
+		if (moduleId && files) {
+			const uploads = Array.from(files).map((file) => {
+				const fileName: string = file.name;
+				return createUpdateFile({
+					file: file,
+					moduleId,
+					name: fileName,
+					classKey,
+					classId,
+					className
 				});
+			});
+			const images: any[] = await Promise.all(uploads);
 
-				setIsComplete(true);
-
-				if (afterUploadHandler) {
-					afterUploadHandler(imageArray);
-				}
+			if (afterUploadHandler) {
+				afterUploadHandler(images);
 			}
-			setIsUploading(false);
-		};
-		uppy.clear();
-		uppy.on("upload", uploadSuccessHandler);
-
-		// Clean up by removing the listener
-		return () => {
-			uppy.off("upload", uploadSuccessHandler);
-		};
-	}, [uppy, isComplete, className, classKey, classId]);
-
-	const DashboardContent = useMemo(
-		() => (
-			<div className={"uppy_upload_container"}>
-				<Dropzone note="Dateien hier ablegen oder clicken um sie auszuwählen" />
-				<div id="uppy-files-list">
-					<FilesList key="files-list" />
-				</div>
-				<UploadButton>Dateien hochladen</UploadButton>
-			</div>
-		),
-		[]
-	);
-
-	useEffect(() => {
-		const el = document.querySelector(
-			'[data-uppy-element="upload-button"]'
-		);
-		if (el) {
-			console.log(el.textContent);
-			el.textContent = "Hochladen";
+		} else {
+			setErrors([
+				{
+					id: "1",
+					key: "moduleId",
+					message: "Modul ID nicht gefunden"
+				}
+			]);
 		}
-	}, []);
-
-	if (isComplete) {
-		return (
-			<div className="uppy_upload_container">
-				<p>Dateien wurden erfolgreich hochgeladen</p>
-				<div className="button_container">
-					{onComplete && (
-						<button
-							className="full_button md primary"
-							onClick={() => onComplete()}
-						>
-							Zurück
-						</button>
-					)}
-					<button
-						className="full_button md secondary"
-						onClick={() => setIsComplete(false)}
-					>
-						Weitere Bilder hochladen
-					</button>
-				</div>
-			</div>
-		);
-	}
-
-	if (inline) {
-		return DashboardContent;
-	}
+		setIsUploading(false);
+	}, [files, moduleId]);
 
 	return (
 		<div className={"uppy_upload_container"}>
-			<Dropzone note="Dateien hier ablegen oder klicken um sie auszuwählen" />
-			<div id="uppy-files-list">
-				<FilesList key="files-list" />
-			</div>
-			<UploadButton>
-				{isUploading ? "Wird hochgeladen..." : "Dateien hochladen"}
-			</UploadButton>
+			<FileUpload.Root
+				accept={getAcceptedFiles(type)}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+					if (e.target.files) {
+						setFiles(e.target.files);
+					}
+				}}
+				maxW="xl"
+				alignItems="stretch"
+				maxFiles={10}
+			>
+				<FileUpload.HiddenInput />
+				<FileUpload.Dropzone>
+					<Icon size="md" color="fg.muted">
+						<LuUpload />
+					</Icon>
+					<FileUpload.DropzoneContent>
+						<Box>Drag and drop files here</Box>
+						<Box color="fg.muted">.png, .jpg up to 5MB</Box>
+					</FileUpload.DropzoneContent>
+				</FileUpload.Dropzone>
+				<FileUpload.List clearable />
+			</FileUpload.Root>
+			<IconButton
+				icon="upload"
+				text="Hochladen"
+				onClick={() => uploadHandler()}
+				loading={isUploading}
+			/>
+			<ErrorDisplay errors={errors} />
 		</div>
 	);
 };

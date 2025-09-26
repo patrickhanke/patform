@@ -14,7 +14,8 @@ const IconButton: FC<IconButtonProps> = ({
 	disabled,
 	text,
 	size = 12,
-	color
+	color,
+	loading = false
 }) => {
 	if (!isLink && onClick)
 		return (
@@ -26,6 +27,7 @@ const IconButton: FC<IconButtonProps> = ({
 				scale={0.9}
 				disabled={disabled}
 				color={color}
+				loading={loading}
 			>
 				<Icons icon={icon} />
 				{text}
