@@ -9,7 +9,7 @@ const createForm: PageCreateClassObject = {
 			static_form: false,
 			response: false,
 			notification: false,
-			notification_text: "",
+			response_text: "",
 			recipients: []
 		}
 	},

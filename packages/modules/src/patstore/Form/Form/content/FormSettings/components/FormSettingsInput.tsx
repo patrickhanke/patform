@@ -8,7 +8,7 @@ const FormSettingsInput: FC<FormSettingsInputProps> = ({
 	return (
 		<div>
 			<input
-				content={settings.notification_text || ""}
+				content={settings.response_text || ""}
 				onChange={(e) =>
 					updateSettings({
 						...settings,

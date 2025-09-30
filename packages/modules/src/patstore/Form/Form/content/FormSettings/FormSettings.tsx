@@ -40,7 +40,8 @@ const FormSettings = ({ formId }: { formId: string }) => {
 				updateObject: {
 					objectId: formId,
 					settings: st
-				}
+				},
+				feedback: "Formulareinstellungen aktualisiert"
 			});
 
 			await refetch();

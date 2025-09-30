@@ -5,7 +5,7 @@ export function convertMillisecondsToString(ms: number | undefined): string {
 	if (ms) {
 		const milsec = ms < 0 ? -ms : ms;
 		const hours = Math.floor(milsec / (1000 * 60 * 60));
-		let minutes: string | number = Math.floor(
+		let minutes: string | number = Math.ceil(
 			(milsec % (1000 * 60 * 60)) / (1000 * 60)
 		);
 		minutes = minutes < 10 ? "0" + minutes : minutes;

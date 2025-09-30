@@ -16,7 +16,7 @@ export type FormClass = ClassProperties & {
         response: boolean;
         static_form: boolean;
         notification: boolean;
-        notification_text: string;
+        response_text: string;
         sender_email: string;
         server: {
             host: string;

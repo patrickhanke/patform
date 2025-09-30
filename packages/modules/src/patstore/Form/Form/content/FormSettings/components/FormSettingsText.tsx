@@ -9,11 +9,11 @@ const FormSettingsText: FC<FormSettingsTextProps> = ({
 	return (
 		<div>
 			<Editor
-				content={settings.notification_text || ""}
+				content={settings.response_text || ""}
 				onChange={(value) =>
 					updateSettings({
 						...settings,
-						notification_text: value
+						response_text: value
 					})
 				}
 				placeholder="Benachrichtigungstext"
