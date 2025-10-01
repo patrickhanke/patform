@@ -22,7 +22,7 @@ const useFormDataColumns = ({
 							} else if (data.label) {
 								return `${data.label} `;
 							} else if (data.data) {
-								return JSON.parse(data.data);
+								return JSON.stringify(data.data);
 							} else {
 								return JSON.stringify(data);
 							}
