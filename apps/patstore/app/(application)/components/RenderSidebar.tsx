@@ -6,7 +6,7 @@ import { MenuItem, Sidebar } from "@repo/ui";
 import { Module, PatstoreUser } from "@repo/types";
 import packageJson from "../../../package.json";
 import { useAppContext } from "@repo/provider";
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, truncate } from 'lodash-es';
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const { project, roles } = useAppContext();
@@ -47,7 +47,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
     <div className={"layout_sidebar_container"} id="sidebar">
       <div className={"layout_sidebar_header"}>
         <Logo logo={project.logo} alt={project.name} />
-        <h1>{project.name ? project.name : "patstore"}</h1>
+        <h1>{project.name ? truncate(project.name, {length: 12}) : "patstore"}</h1>
       </div>
       <Sidebar
         menuItems={menuItems}

@@ -17,10 +17,14 @@ const useFormDataColumns = ({
 			...geneateFormColumns(
 				isArray(data)
 					? data.map((data) => {
-							if (typeof data.data === "string") {
-								return data.data;
-							} else {
+							if (typeof data === "string") {
+								return `${data} `;
+							} else if (data.label) {
+								return `${data.label} `;
+							} else if (data.data) {
 								return JSON.parse(data.data);
+							} else {
+								return JSON.stringify(data);
 							}
 						})
 					: []
