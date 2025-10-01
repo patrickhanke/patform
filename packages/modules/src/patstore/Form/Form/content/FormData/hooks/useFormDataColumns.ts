@@ -15,7 +15,15 @@ const useFormDataColumns = ({
 		data: [
 			{ id: "createdAt", type: "date", label: "Datum" },
 			...geneateFormColumns(
-				isArray(data) ? data.map((data) => data.data) : []
+				isArray(data)
+					? data.map((data) => {
+							if (typeof data.data === "string") {
+								return data.data;
+							} else {
+								return JSON.parse(data.data);
+							}
+						})
+					: []
 			)
 		],
 		fields: [],
