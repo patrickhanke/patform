@@ -1,11 +1,11 @@
 "use client";
 
-import { useCallback, useContext, useEffect, useState } from "react";
-import { SlideIn } from "@repo/ui";
+import { useCallback, useContext, useState } from "react";
+import { SlideInForm } from "@repo/ui";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
-import { Form } from "@repo/ui";
 import { CreateClassProps } from "./types";
 import { Classes } from "@repo/types";
+import { FormikValues } from "formik";
 
 const CreateClass = <T extends Classes>({
 	initialData,
@@ -17,43 +17,28 @@ const CreateClass = <T extends Classes>({
 	const { createData } = useDataHandler();
 	const { currentModule, user } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
-	const [data, setData] =
-		useState<CreateClassProps<T>["initialData"]>(initialData);
-	const [secondaryContent, setSecondaryContent] =
-		useState<React.ReactNode | null>(null);
 
-	const [disabled, setDisabled] = useState<[boolean, boolean]>([
-		false,
-		false
-	]);
-
-	const dataHandler = useCallback(async () => {
-		setDisabled([true, true]);
-		await createData({
-			className: className,
-			updateObject: {
-				module: {
-					__type: "Pointer",
-					className: "Module",
-					objectId: currentModule.objectId
+	const dataHandler = useCallback(
+		async (data: FormikValues) => {
+			await createData({
+				className: className,
+				updateObject: {
+					module: {
+						__type: "Pointer",
+						className: "Module",
+						objectId: currentModule.objectId
+					},
+					...data
 				},
-				...data
-			},
-			feedback: "Neue Daten erstellt",
-			userId: user?.objectId
-		});
-		setDisabled([false, false]);
-		setIsOpen(false);
-		if (refetch) {
-			refetch();
-		}
-	}, [data, user]);
-
-	useEffect(() => {
-		if (!isOpen) {
-			setData(initialData);
-		}
-	}, [isOpen]);
+				feedback: "Neue Daten erstellt",
+				userId: user?.objectId
+			});
+			if (refetch) {
+				await refetch();
+			}
+		},
+		[user]
+	);
 
 	return (
 		<>
@@ -64,27 +49,14 @@ const CreateClass = <T extends Classes>({
 			>
 				{text}
 			</button>
-			<SlideIn
+			<SlideInForm
 				isOpen={isOpen}
-				header={text}
-				cancel={() => setIsOpen(false)}
-				confirm={() => dataHandler()}
-				disabled={disabled}
-				secondaryContent={secondaryContent}
-				showSecondaryContent={secondaryContent ? true : false}
-			>
-				{fields && (
-					<Form
-						fields={fields}
-						data={data}
-						formSubmitHandler={(values) => setData(values)}
-						formValidationHandler={(isValid) =>
-							setDisabled([false, !isValid])
-						}
-						setSecondaryContent={setSecondaryContent}
-					/>
-				)}
-			</SlideIn>
+				title={text}
+				setIsOpen={setIsOpen}
+				fields={fields}
+				data={initialData}
+				dataHandler={(values) => dataHandler(values)}
+			/>
 		</>
 	);
 };

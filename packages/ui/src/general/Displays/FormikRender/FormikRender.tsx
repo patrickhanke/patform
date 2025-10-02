@@ -85,7 +85,6 @@ const FormikRender: FC<FormikRenderProps> = ({
 					<FormSubmitStore
 						formValidationHandler={formValidationHandler}
 						useWithDebounce={useWithDebounce}
-						submitForm={handleSubmit}
 					/>
 					<Divider showLine={false} />
 					<h6>* Pflichtfeld</h6>

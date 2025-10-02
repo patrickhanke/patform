@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { FormikHandlers, FormikValues, Formik } from "formik";
+import { FormikErrors, FormikHandlers, FormikValues } from "formik";
 import { Dispatch, SetStateAction } from "react";
 import { Pointer } from "@repo/types";
 import { DatePickerTypes } from "@repo/ui";
@@ -21,10 +21,32 @@ export type FormikRenderProps = {
 	highlightChanges?: boolean;
 };
 
+export type FormikRenderSlideInProps = {
+	title: string;
+	isOpen: boolean;
+	setIsOpen: Dispatch<SetStateAction<boolean>>;
+	dataHandler: (values: FormikValues) => void | Promise<void>;
+
+	fields: Field[];
+	data?: FormDataElement;
+	apiClass?: string;
+	id?: string;
+	isHorizontal?: boolean;
+	highlightChanges?: boolean;
+};
+
 export type FormSubmitStoreProps = {
 	formValidationHandler?: (t: boolean) => void;
 	useWithDebounce?: boolean;
-	submitForm: FormikHandlers["handleSubmit"];
+	noSubmit?: boolean;
+	setErrors?: (errors: FormikErrors<FormikValues>) => void;
+};
+
+export type SlideInFormSubmitStoreProps = {
+	formValidationHandler?: (t: boolean) => void;
+	useWithDebounce?: boolean;
+	noSubmit?: boolean;
+	setErrors?: (errors: FormikErrors<FormikValues>) => void;
 };
 
 export type FieldTypes =
