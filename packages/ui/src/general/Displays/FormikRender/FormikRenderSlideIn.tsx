@@ -1,3 +1,5 @@
+"use client";
+
 import * as Yup from "yup";
 import { Formik, FormikErrors, FormikProps, FormikValues } from "formik";
 import RenderFields from "./content/RenderFields";
