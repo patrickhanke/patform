@@ -12,6 +12,7 @@ import {
 	StateDisplay
 } from "@repo/ui";
 import { Classes } from "@repo/types";
+import { isArray } from "lodash";
 
 const TableColumnCategory = ({
 	category,
@@ -52,7 +53,11 @@ const TableColumnCategory = ({
 		if (data) {
 			data.objects[`find${category.connected_class}`].results.forEach(
 				(cat: Classes) => {
-					if (category.category_ids.length > 0) {
+					if (
+						category &&
+						isArray(category.category_ids) &&
+						category.category_ids.length > 0
+					) {
 						if (
 							cat.category_id &&
 							category.category_ids.includes(cat.category_id)
