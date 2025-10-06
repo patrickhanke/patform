@@ -25,6 +25,8 @@ const FormikRenderSlideIn: FC<FormikRenderSlideInProps> = ({
 	const [secondaryContent, setSecondaryContent] =
 		useState<React.ReactNode | null>(null);
 	const ref = useRef<FormikProps<FormikValues>>(null);
+	const [loading, setLoading] = useState(false);
+
 	useEffect(() => {
 		if (setSecondaryContent) {
 			setSecondaryContent(null);
@@ -32,8 +34,6 @@ const FormikRenderSlideIn: FC<FormikRenderSlideInProps> = ({
 	}, []);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 	const [isValid, setIsValid] = useState<boolean>(false);
-
-	console.log(ref);
 
 	return (
 		<SlideIn
@@ -48,7 +48,7 @@ const FormikRenderSlideIn: FC<FormikRenderSlideInProps> = ({
 				setIsOpen(false);
 			}}
 			confirm={async () => {
-				console.log(ref.current);
+				setLoading(true);
 				const currentValues = ref.current?.values || data;
 				if (currentValues) {
 					await dataHandler(currentValues);
@@ -58,11 +58,13 @@ const FormikRenderSlideIn: FC<FormikRenderSlideInProps> = ({
 					ref.current.resetForm();
 				}
 				setSecondaryContent(null);
+				setLoading(false);
 				setIsOpen(false);
 			}}
 			disabled={[false, !isValid]}
 			secondaryContent={secondaryContent}
 			showSecondaryContent={secondaryContent ? true : false}
+			loading={loading}
 		>
 			<Formik
 				innerRef={ref}

@@ -7,6 +7,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import { motion, AnimatePresence } from "motion/react";
 import { SlideInProps } from "./types";
 import { ErrorDisplay, IconButton } from "@repo/ui";
+import { Button } from "@chakra-ui/react";
 
 const SlideIn: React.FC<SlideInProps> = ({
 	header,
@@ -20,7 +21,8 @@ const SlideIn: React.FC<SlideInProps> = ({
 	showCancelButton = true,
 	disabled = [false, false],
 	errors,
-	confirmText
+	confirmText,
+	loading = false
 }) => {
 	const ref = useRef(null);
 	useOnClickOutside(ref, () => {
@@ -83,21 +85,23 @@ const SlideIn: React.FC<SlideInProps> = ({
 						<div className="slidein_footer">
 							<div className="button_container">
 								{showCancelButton && (
-									<button
+									<Button
 										className="full_button md light"
 										disabled={disabled[0]}
 										onClick={() => cancel()}
+										loading={loading}
 									>
 										Abbrechen
-									</button>
+									</Button>
 								)}
-								<button
+								<Button
 									className="full_button md primary"
 									disabled={disabled[1]}
 									onClick={() => confirm()}
+									loading={loading}
 								>
 									{confirmText ? confirmText : "Speichern"}
-								</button>
+								</Button>
 							</div>
 						</div>
 					</motion.div>

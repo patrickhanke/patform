@@ -2,7 +2,6 @@ import { useFormikContext } from "formik";
 import { isEqual } from "lodash-es";
 import { useEffect, useState } from "react";
 import { SlideInFormSubmitStoreProps } from "../types";
-import { useDebounceValue } from "usehooks-ts";
 import FormActionBar from "./FormActionBar";
 
 const SlideInFormSubmitStore = ({
@@ -21,7 +20,6 @@ const SlideInFormSubmitStore = ({
 	} = useFormikContext();
 	// const [formValues, setFormValues] = useDebounceValue(initialValues, 2000);
 
-	console.log(values);
 	useEffect(() => {
 		const dataHasChanged = !isEqual(values, initialValues);
 		if (formValidationHandler) {

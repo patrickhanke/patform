@@ -12,6 +12,7 @@ export type SlideInProps = {
 	disabled?: [boolean, boolean];
 	errors?: ErrorMessage[];
 	confirmText?: string;
+	loading?: boolean;
 };
 
 export type SlideInStoreProps = {
