@@ -1,8 +1,8 @@
 import { useCallback, useContext, useMemo, useState } from "react";
-import { Field, SlideIn } from "@repo/ui";
+import { Field, SlideInForm } from "@repo/ui";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
-import { Form } from "@repo/ui";
 import { CreateCategoryProps } from "../types";
+import { FormikValues } from "formik";
 
 const CreateCategory = ({
 	refetch,
@@ -13,11 +13,6 @@ const CreateCategory = ({
 	const { createData } = useDataHandler();
 	const { currentModule, user } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
-	const [data, setData] = useState({} as { [key: string]: number | string });
-	const [disabled, setDisabled] = useState<[boolean, boolean]>([
-		false,
-		false
-	]);
 
 	const categoryFields = useMemo(() => {
 		const constantFields: Field[] = [
@@ -55,24 +50,27 @@ const CreateCategory = ({
 		return constantFields;
 	}, []);
 
-	const handleSubmit = useCallback(async () => {
-		await createData({
-			className: "Category",
-			updateObject: {
-				...data,
-				type: type ? type : "default",
-				category_id: typeId,
-				module: {
-					__type: "Pointer",
-					className: "Module",
-					objectId: currentModule.objectId
-				}
-			},
-			userId: user?.objectId
-		});
-		refetch();
-		setIsOpen(false);
-	}, [data, createData, user, refetch, typeId]);
+	const handleSubmit = useCallback(
+		async (data: FormikValues) => {
+			await createData({
+				className: "Category",
+				updateObject: {
+					...data,
+					type: type ? type : "default",
+					category_id: typeId,
+					module: {
+						__type: "Pointer",
+						className: "Module",
+						objectId: currentModule.objectId
+					}
+				},
+				userId: user?.objectId
+			});
+			refetch();
+			setIsOpen(false);
+		},
+		[createData, user, refetch, typeId]
+	);
 
 	return (
 		<div>
@@ -80,25 +78,14 @@ const CreateCategory = ({
 				className="full_button primary md"
 				onClick={() => setIsOpen(true)}
 			>{`Eintrag zu ${typeLabel} hinzufügen`}</button>
-			<SlideIn
-				header="Eintrag hinzufügen"
+			<SlideInForm
 				isOpen={isOpen}
-				cancel={() => setIsOpen(false)}
-				confirm={handleSubmit}
-				disabled={disabled}
-			>
-				<Form
-					fields={categoryFields}
-					data={data}
-					formSubmitHandler={(values) => setData(values)}
-					formValidationHandler={(value) => {
-						const disabledCopy = [...disabled];
-						if (disabledCopy[1] !== !value) {
-							setDisabled([false, !value]);
-						}
-					}}
-				/>
-			</SlideIn>
+				setIsOpen={() => setIsOpen(false)}
+				fields={categoryFields}
+				// data={}
+				dataHandler={(values) => handleSubmit(values)}
+				title="Eintrag hinzufügen"
+			/>
 		</div>
 	);
 };

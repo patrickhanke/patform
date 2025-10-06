@@ -37,7 +37,6 @@ const TableColumnDatesField = ({
 		if (dates && dates.length > 0) {
 			return dates
 				.map((date) => {
-					console.log({ date });
 					let label = date.label ? `${date.label} / ` : "";
 					if (date.start) {
 						label += date.full_day

@@ -1,21 +1,11 @@
-import { FC, useCallback, useMemo, useState } from "react";
-import { Field, Form, SlideIn } from "@repo/ui";
-import { PatstoreProject } from "@repo/types";
+import { FC, useCallback, useMemo } from "react";
+import { Field, SlideInForm } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";
 import { AddProjectProps } from "../types";
+import { FormikValues } from "formik";
 
 const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
 	const { createData } = useDataHandler();
-	const [loading, setLoading] = useState(false);
-	const [project, setProject] = useState<
-		Omit<PatstoreProject, "objectId" | "modules">
-	>({
-		name: "",
-		description: "",
-		content: [],
-		logo: "",
-		settings: {}
-	});
 
 	const formFields = useMemo(
 		() => [
@@ -24,7 +14,6 @@ const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
 				id: "name",
 				name: "name",
 				type: "input",
-				value: project.name,
 				placeholder: "Projektname"
 			} as Field,
 			{
@@ -32,7 +21,6 @@ const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
 				id: "description",
 				name: "description",
 				type: "textarea",
-				value: project.description,
 				dataType: "string",
 				placeholder: "Projektbeschreibung"
 			},
@@ -41,46 +29,34 @@ const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
 				type: "image_upload",
 				name: "logo",
 				dataType: "string",
-				value: project.logo,
 				options: {
 					return_type: "string"
 				}
 			}
 		],
-		[project]
+		[]
 	);
 
-	const createProjectHandler = useCallback(async () => {
-		setLoading(true);
-
-		if (project.name) {
+	const createProjectHandler = useCallback(async (data: FormikValues) => {
+		if (data.name) {
 			await createData({
 				className: "Project",
-				updateObject: project
+				updateObject: data
 			});
 		}
 
-		setLoading(false);
 		setAddProject(false);
 		window.location.reload();
-	}, [project]);
+	}, []);
 
 	return (
-		<SlideIn
-			header="Neues Projekt erstellen"
+		<SlideInForm
 			isOpen={addProject}
-			cancel={() => setAddProject(false)}
-			confirm={() => createProjectHandler()}
-			disabled={[loading, !project.name || loading]}
-		>
-			<Form
-				fields={formFields as Field[]}
-				data={project}
-				formSubmitHandler={(data) => {
-					setProject(data as PatstoreProject);
-				}}
-			/>
-		</SlideIn>
+			setIsOpen={() => setAddProject(false)}
+			fields={formFields as Field[]}
+			title="Projekt erstellen"
+			dataHandler={createProjectHandler}
+		/>
 	);
 };
 

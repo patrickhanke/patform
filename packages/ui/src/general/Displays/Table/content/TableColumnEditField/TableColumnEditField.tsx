@@ -1,20 +1,20 @@
 "use client";
 
-import React, { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useQuery } from "@apollo/client";
-import { IconButton, SlideIn } from "@repo/ui";
+import { IconButton, SlideInForm } from "@repo/ui";
 import {
 	PatstoreAppContext,
 	generateGraphQLQuery,
 	useDataHandler
 } from "@repo/provider";
-import { Form } from "@repo/ui";
 import {
 	TableColumnEditFieldComponent,
 	TableColumnEditFieldProps
 } from "./types";
 import { Classes } from "@repo/types";
 import { get } from "lodash-es";
+import { FormikValues } from "formik";
 
 const TableColumnEditField: TableColumnEditFieldComponent = <
 	Class extends Classes
@@ -26,8 +26,6 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [data, setData] = useState(null as unknown as Class["data"]);
 	const [isOpen, setIsOpen] = useState(false);
-	const [secondaryContent, setSecondaryContent] =
-		useState<React.ReactNode>(null);
 
 	const { loading, refetch } = useQuery(
 		generateGraphQLQuery({
@@ -50,25 +48,21 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		}
 	);
 
-	const [disabled, setDisabled] = useState<[boolean, boolean]>([
-		false,
-		false
-	]);
-
-	const dataHandler = useCallback(async () => {
-		setDisabled([true, true]);
-		await updateData({
-			objectId: objectId,
-			className,
-			updateObject: {
-				data
-			},
-			feedback: "Daten aktualisiert"
-		});
-		await refetch();
-		setDisabled([false, false]);
-		setIsOpen(false);
-	}, [data]);
+	const dataHandler = useCallback(
+		async (values: FormikValues) => {
+			await updateData({
+				objectId: objectId,
+				className,
+				updateObject: {
+					...values
+				},
+				feedback: "Daten aktualisiert"
+			});
+			await refetch();
+			setIsOpen(false);
+		},
+		[data]
+	);
 
 	return (
 		<>
@@ -77,35 +71,13 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 				onClick={() => setIsOpen(true)}
 				disabled={loading}
 			/>
-			<SlideIn
+			<SlideInForm
 				isOpen={isOpen}
-				header="Objekt bearbeiten"
-				cancel={() => setIsOpen(false)}
-				confirm={() => dataHandler()}
-				disabled={disabled}
-				showSecondaryContent={!!secondaryContent}
-				secondaryContent={secondaryContent}
-				preventClickOutside
-			>
-				{currentModule.fields && (
-					<Form
-						fields={currentModule.fields}
-						data={data}
-						formSubmitHandler={(values) => {
-							setData(values);
-						}}
-						setSecondaryContent={setSecondaryContent}
-						formValidationHandler={(isValid) => {
-							if (!isValid) {
-								setDisabled([false, true]);
-							} else if (disabled[1] === true) {
-								setDisabled([false, false]);
-							}
-						}}
-						useWithDebounce
-					/>
-				)}
-			</SlideIn>
+				setIsOpen={() => setIsOpen(false)}
+				fields={currentModule.fields || []}
+				title="Objekt bearbeiten"
+				dataHandler={dataHandler}
+			/>
 		</>
 	);
 };
