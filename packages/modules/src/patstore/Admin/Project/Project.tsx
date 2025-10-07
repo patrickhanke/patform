@@ -132,8 +132,6 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 
 	const modules = data?.objects.findModule.results;
 
-	console.log({ projectData });
-
 	return (
 		<AdminPage
 			title={`${projectData?.objects.getProject?.name} - ${siteState.label}`}

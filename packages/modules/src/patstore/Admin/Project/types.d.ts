@@ -6,7 +6,7 @@ export type SelectModule = {
 	value: keyof typeof module_option_fields;
 	label: string;
 	fields: module_option_fields[keyof typeof module_option_fields];
-	disabled: boolean;
+	isDisabled: boolean;
 };
 
 export type CreateModuleProps = {

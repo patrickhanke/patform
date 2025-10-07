@@ -64,6 +64,7 @@ const AppModuleEditFields = ({
 						setFields={setFields}
 					/>
 				}
+				loading={loading}
 				disabled={[loading, loading]}
 			>
 				<div>

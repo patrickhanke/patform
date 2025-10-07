@@ -27,10 +27,9 @@ const CreateModule: React.FC<CreateModuleProps> = ({
 				value: moduleFieldKey,
 				label: module_option_fields[moduleFieldKey].name,
 				fields: module_option_fields[moduleFieldKey],
-				disabled: modules.find(
-					(module) =>
-						module.path ===
-						module_option_fields[moduleFieldKey].path
+				isDisabled: modules.find(
+					(md) =>
+						md.path === module_option_fields[moduleFieldKey].path
 				)
 					? true
 					: false
@@ -59,8 +58,9 @@ const CreateModule: React.FC<CreateModuleProps> = ({
 				!selectedModule || !moduleName || loading
 			]}
 		>
-			<div className="vertical_container">
+			<div className="vertical_container gap-md">
 				<p>Neues Modul erstellen</p>
+				<label>Modul auswählen</label>
 				<Select
 					id="module_select"
 					value={selectedModule}
@@ -68,7 +68,10 @@ const CreateModule: React.FC<CreateModuleProps> = ({
 					options={modalSelectOptions}
 					placeholder="Modul auswählen"
 				/>
+				<label>Modulname</label>
 				<input
+					placeholder="Modulname"
+					type="text"
 					defaultValue={selectedModule?.label}
 					onChange={(e) => setModuleName(e.target.value)}
 				/>
