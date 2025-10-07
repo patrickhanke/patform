@@ -18,7 +18,8 @@ const FormSubmitStore = ({
 		values,
 		initialValues,
 		isValid: formIsValid,
-		errors
+		errors,
+		resetForm
 	} = useFormikContext();
 	const [formValues, setFormValues] = useDebounceValue(initialValues, 2000);
 
@@ -36,10 +37,6 @@ const FormSubmitStore = ({
 		if (setErrors) {
 			setErrors(errors);
 		}
-
-		// setDataHasChanged(dataHasChanged);
-		// setIsValid(formIsValid);
-		// setFormSubmitHandler(submitForm);
 	}, [values, initialValues, formIsValid, errors]);
 
 	useEffect(() => {
@@ -63,6 +60,7 @@ const FormSubmitStore = ({
 			open={open}
 			setOpen={setOpen}
 			handleSubmit={submitForm}
+			resetForm={resetForm}
 		/>
 	);
 };

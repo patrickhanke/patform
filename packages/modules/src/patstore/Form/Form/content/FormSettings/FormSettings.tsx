@@ -7,10 +7,13 @@ import { FormClass } from "@repo/types";
 import FormRecipients from "./content/FormReceipients";
 import FormSettingsText from "./components/FormSettingsText";
 import FormSettingsInput from "./components/FormSettingsInput";
+import { Form } from "@repo/ui";
+import form_fields_response from "./constants/form_fields_response";
+import { FormikValues } from "formik";
 
 const FormSettings = ({ formId }: { formId: string }) => {
 	const { updateData } = useDataHandler();
-	const [settings, setSettings] = useState();
+	const [settings, setSettings] = useState<FormClass["settings"]>();
 	const { data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "get",
@@ -34,13 +37,16 @@ const FormSettings = ({ formId }: { formId: string }) => {
 
 	const updateSettingsHandler = useCallback(
 		async (st: FormClass["settings"]) => {
+			const updateObject = {
+				settings: {
+					...settings,
+					...st
+				}
+			};
 			await updateData({
 				className: "Form",
 				objectId: formId,
-				updateObject: {
-					objectId: formId,
-					settings: st
-				},
+				updateObject,
 				feedback: "Formulareinstellungen aktualisiert"
 			});
 
@@ -49,6 +55,8 @@ const FormSettings = ({ formId }: { formId: string }) => {
 		},
 		[settings, data, loading]
 	);
+
+	console.log(settings);
 
 	if (!settings) {
 		return null;
@@ -90,48 +98,62 @@ const FormSettings = ({ formId }: { formId: string }) => {
 					);
 				} else if (key === "response") {
 					return (
-						<div key={key} className="flex col a-st gap-sm w-100">
-							<div
-								key={key}
-								className="flex row a-ce j-sb gap-sm"
-							>
-								<div className="flex col a-st">
-									<label>{setting.label}</label>
-									<p>{setting.description}</p>
-								</div>
-								<FormSettingToggle
-									settingsKey={
-										key as keyof FormClass["settings"]
-									}
-									loading={loading}
-									settings={settings}
-									updateSettings={updateSettingsHandler}
-								/>
-							</div>
-							<div
-								key={key}
-								className="flex row a-ce j-sb gap-sm"
-							>
-								<div className="flex col a-st">
-									<label>Absender E-Mail</label>
-									<p>
-										Geben Sie die Absender E-Mail Adresse
-										für das Formular an. Diese muss auf die
-										Domain Ihrer Webseite enden.
-									</p>
-								</div>
+						<Form
+							key={key}
+							fields={form_fields_response}
+							data={settings}
+							formSubmitHandler={(value: FormikValues) =>
+								updateSettingsHandler(
+									value as FormClass["settings"]
+								)
+							}
+							// useWithDebounce
+							isHorizontal
+						/>
 
-								<FormSettingsInput
-									settings={settings}
-									updateSettings={updateSettingsHandler}
-								/>
-							</div>
+						// 	<div key={key} className="flex col a-st gap-sm w-100">
+						// 		<div
+						// 			key={key}
+						// 			className="flex row a-ce j-sb gap-sm"
+						// 		>
+						// 			<div className="flex col a-st">
+						// 				<label>{setting.label}</label>
+						// 				<p>{setting.description}</p>
+						// 			</div>
+						// 			<FormSettingToggle
+						// 				settingsKey={
+						// 					key as keyof FormClass["settings"]
+						// 				}
+						// 				loading={loading}
+						// 				settings={settings}
+						// 				updateSettings={updateSettingsHandler}
+						// 			/>
+						// 		</div>
+						// 		<div
+						// 			key={key}
+						// 			className="flex row a-ce j-sb gap-sm"
+						// 		>
+						// 			<div className="flex col a-st">
+						// 				<label>Absender E-Mail</label>
+						// 				<p>
+						// 					Geben Sie die Absender E-Mail Adresse
+						// 					für das Formular an. Diese muss auf die
+						// 					Domain Ihrer Webseite enden.
+						// 				</p>
+						// 			</div>
 
-							<FormSettingsText
-								settings={settings}
-								updateSettings={updateSettingsHandler}
-							/>
-						</div>
+						// 			<FormSettingsInput
+						// 				settings={settings}
+						// 				updateSettings={updateSettingsHandler}
+						// 			/>
+						// 		</div>
+
+						// 		<FormSettingsText
+						// 			settings={settings}
+						// 			updateSettings={updateSettingsHandler}
+						// 		/>
+						// 	</div>
+						// </Formik>
 					);
 				} else {
 					return (

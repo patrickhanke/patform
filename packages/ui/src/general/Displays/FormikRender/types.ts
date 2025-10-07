@@ -1,5 +1,11 @@
 import * as Yup from "yup";
-import { FormikErrors, FormikHandlers, FormikValues } from "formik";
+import {
+	FormikErrors,
+	FormikHandlers,
+	FormikHelpers,
+	FormikValues,
+	Formik
+} from "formik";
 import { Dispatch, SetStateAction } from "react";
 import { Pointer } from "@repo/types";
 import { DatePickerTypes } from "@repo/ui";
@@ -293,4 +299,5 @@ export type FormActionBarProps = {
 	open: boolean;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	handleSubmit: FormikHandlers["handleSubmit"];
+	resetForm: FormikHelpers<FormikValues>["resetForm"];
 };

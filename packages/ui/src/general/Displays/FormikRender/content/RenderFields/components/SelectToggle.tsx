@@ -1,36 +1,28 @@
 import { FC } from "react";
-import styles from "../RenderFields.module.scss";
 import { SelectToggleProps } from "../types";
+import { Switch } from "@chakra-ui/react";
 
 const SelectToggle: FC<SelectToggleProps> = ({
 	value,
 	valueChangeHandler,
-	disabled,
-	labelBefore
+	disabled
 }) => {
 	return (
-		<div
-			className={styles.select_toggle_content}
-			data-labelbefore={labelBefore}
+		<Switch.Root
+			checked={value}
+			onCheckedChange={({ checked }) => {
+				valueChangeHandler(checked);
+			}}
+			disabled={disabled}
+			size={"sm"}
+			colorPalette={"green"}
 		>
-			<button
-				onClick={() => valueChangeHandler(false)}
-				className={styles.select_toggle_button}
-				data-isactive={value === false}
-				disabled={disabled}
-			>
-				Nein
-			</button>
-			<div className={styles.select_toggle_divider} />
-			<button
-				onClick={() => valueChangeHandler(true)}
-				className={styles.select_toggle_button}
-				data-isactive={value === true}
-				disabled={disabled}
-			>
-				Ja
-			</button>
-		</div>
+			<Switch.HiddenInput />
+			<Switch.Control>
+				<Switch.Thumb />
+			</Switch.Control>
+			<Switch.Label />
+		</Switch.Root>
 	);
 };
 

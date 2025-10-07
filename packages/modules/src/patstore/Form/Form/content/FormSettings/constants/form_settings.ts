@@ -13,7 +13,24 @@ const form_settings = {
 	response: {
 		label: "Antwort",
 		value: true,
-		description: "Automatische Antwort bei Eingang einer Anfrage"
+		description: "Automatische Antwort bei Eingang einer Anfrage",
+		fields: [
+			{
+				
+			},
+			{
+				label: "Antworttext",
+				value: "response_text",
+				description: "Antworttext",
+				type: "text"
+			},
+			{
+				label: "Absender E-Mail",
+				value: "sender_email",
+				description: "Absender E-Mail",
+				type: "text"
+			}
+		]
 	},
 	static_form: {
 		label: "Statisches Formular",
