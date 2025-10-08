@@ -75,6 +75,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 			/>
 			<SlideInForm
 				isOpen={isOpen}
+				data={data}
 				setIsOpen={() => setIsOpen(false)}
 				fields={currentModule.fields || []}
 				title="Objekt bearbeiten"
