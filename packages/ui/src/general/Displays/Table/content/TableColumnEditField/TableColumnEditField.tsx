@@ -54,7 +54,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 				objectId: objectId,
 				className,
 				updateObject: {
-					data{
+					data: {
 						...values
 					}
 				},
