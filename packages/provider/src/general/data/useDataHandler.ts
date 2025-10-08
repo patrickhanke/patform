@@ -17,7 +17,7 @@ const useDataHandler = (useMasterKey = false) => {
 	const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
 	const [loading, setLoading] = useState(false);
 	const { feedbackHandler } = useDataContext();
-	const { user, userLoading } = useContext(PatstoreAppContext);
+	const { user, userLoading, project } = useContext(PatstoreAppContext);
 	const netlifyHookHandler = useNetlifyHooks();
 
 	const updateData = useCallback(
@@ -55,6 +55,11 @@ const useDataHandler = (useMasterKey = false) => {
 					objectId: user.objectId
 				});
 			}
+			set(updateObjectCopy, "project", {
+				__type: "Pointer",
+				className: "Project",
+				objectId: project.objectId
+			});
 
 			await axiosclient(useMasterKey)
 				.put(
@@ -86,7 +91,7 @@ const useDataHandler = (useMasterKey = false) => {
 			setLoading(false);
 			return data;
 		},
-		[user, userLoading]
+		[user, userLoading, project]
 	);
 
 	const deleteData = useCallback(
@@ -155,6 +160,13 @@ const useDataHandler = (useMasterKey = false) => {
 					objectId: userId
 				});
 			}
+
+			set(updateObjectCopy, "project", {
+				__type: "Pointer",
+				className: "Project",
+				objectId: project.objectId
+			});
+
 			await axiosclient(useMasterKey)
 				.post(
 					`classes/${className}`,
@@ -181,7 +193,7 @@ const useDataHandler = (useMasterKey = false) => {
 			setLoading(false);
 			return data;
 		},
-		[user]
+		[user, project]
 	);
 
 	const getData = useCallback(
