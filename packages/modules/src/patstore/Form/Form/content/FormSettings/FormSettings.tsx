@@ -5,8 +5,6 @@ import form_settings from "./constants/form_settings";
 import FormSettingToggle from "./components/FormSettingToggle";
 import { FormClass } from "@repo/types";
 import FormRecipients from "./content/FormReceipients";
-import FormSettingsText from "./components/FormSettingsText";
-import FormSettingsInput from "./components/FormSettingsInput";
 import { Form } from "@repo/ui";
 import form_fields_response from "./constants/form_fields_response";
 import { FormikValues } from "formik";
