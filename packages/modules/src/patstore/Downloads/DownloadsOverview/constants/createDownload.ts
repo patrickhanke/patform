@@ -14,14 +14,14 @@ const createDownload: PageCreateClassObject<DownloadClass> = {
 			label: "Titel",
 			validation: {
 				required: "Pflichtfeld",
-				min_length: 5,
-				max_length: 64
+				min_length: 4,
+				max_length: 128
 			}
 		},
 		{
-			id: "info",
+			id: "description",
 			position: 3,
-			name: "info",
+			name: "description",
 			type: "textarea",
 			label: "Infotext"
 		}
