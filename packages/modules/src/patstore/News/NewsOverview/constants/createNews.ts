@@ -24,19 +24,6 @@ const createClass: PageCreateClassObject<NewsClass> = {
 			}
 		},
 		{
-			id: "text",
-			position: 3,
-			name: "text",
-			type: "textarea",
-			label: "Beschreibung",
-			validation: {
-				validate: true,
-				required: "Pflichtfeld",
-				min_length: 30,
-				max_length: 240
-			}
-		},
-		{
 			id: "date",
 			position: 4,
 			name: "date",

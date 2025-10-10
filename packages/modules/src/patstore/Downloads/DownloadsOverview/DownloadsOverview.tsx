@@ -34,7 +34,7 @@ const DownloadsOverview = () => {
 
 	const columns = useCreateColumns<DownloadClass>({
 		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.fields,
+		fields: currentModule.data_fields,
 		className: "Download",
 		refetch,
 		categories: currentModule?.categories
