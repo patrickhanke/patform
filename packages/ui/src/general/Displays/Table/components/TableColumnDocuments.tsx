@@ -93,7 +93,7 @@ const TableColumnDocuments = ({
 						setNewDownloads(selectValue.map((value) => value.id));
 					}
 				}}
-				max={6}
+				max={20}
 				isSearchable
 			/>
 		),
