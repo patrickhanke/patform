@@ -23,7 +23,8 @@ const useFindDownload: UseFindDownloadHook = ({
 			variables: {
 				params: paramsHandler({ moduleId: module.objectId, filters }),
 				limit,
-				skip
+				skip,
+				order: "createdAt_DESC"
 			},
 			notifyOnNetworkStatusChange: true
 		}
