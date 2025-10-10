@@ -10,7 +10,7 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 	const { data, loading, error, refetch } = useQuery(get_project_settings, {
 		variables: { id: projectId }
 	});
-	const { updateData } = useDataHandler();
+	const { updateData } = useDataHandler(true, false);;
 
 	const settingsFields: Field[] = useMemo(() => {
 		if (data) {

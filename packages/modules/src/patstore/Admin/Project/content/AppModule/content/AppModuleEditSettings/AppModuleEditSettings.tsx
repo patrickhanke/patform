@@ -13,7 +13,7 @@ const AppModuleEditSettings = ({
 	refetch,
 	modulePath
 }: AppModuleEditSettingsProps) => {
-	const { updateData } = useDataHandler();
+	const { updateData } = useDataHandler(true, false);
 	const [editSettings, setEditSettings] = React.useState(false);
 	const [loading, setLoading] = useState(false);
 	const [settings, setSettings] = useImmer<ModuleSettings>(

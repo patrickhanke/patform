@@ -15,7 +15,7 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 		generateGraphQLQuery({
 			type: "get",
 			objectName: "Image",
-			fields: ["objectId", "file {name url}", "name"]
+			fields: ["objectId", "file {name url}", "title"]
 		}),
 		{
 			variables: {

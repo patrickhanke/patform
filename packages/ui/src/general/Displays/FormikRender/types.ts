@@ -3,8 +3,7 @@ import {
 	FormikErrors,
 	FormikHandlers,
 	FormikHelpers,
-	FormikValues,
-	Formik
+	FormikValues
 } from "formik";
 import { Dispatch, SetStateAction } from "react";
 import { Pointer } from "@repo/types";
@@ -25,6 +24,7 @@ export type FormikRenderProps = {
 	isHorizontal?: boolean;
 	setSecondaryContent?: Dispatch<SetStateAction<React.ReactNode | null>>;
 	highlightChanges?: boolean;
+	showRequired?: boolean;
 };
 
 export type FormikRenderSlideInProps = {

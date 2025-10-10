@@ -83,6 +83,12 @@ export type TableColumnPersonProps = {
 	onChange?: (person: string) => Promise<void>;
 };
 
+export type TableColumnDocumentsProps = {
+	value: string[];
+	isEditable?: boolean;
+	onChange: (docs: string[]) => Promise<void>;
+};
+
 export type TableColumnPersonsProps = {
 	value: string[];
 	isEditable?: boolean;
@@ -121,7 +127,8 @@ export type ColumnDataTypes =
 	| "connected_elements"
 	| "updated_by"
 	| "created_by"
-	| "edit_webpage_components";
+	| "edit_webpage_components"
+	| "files";
 
 export type ColumnData<Class> = {
 	id: keyof Class;
@@ -133,10 +140,10 @@ export type ColumnData<Class> = {
 };
 
 export type CreateColumnHookProps<Class> = {
-	data: Array<ColumnData<Class>>;
+	data: ColumnData<Class>[];
 	categories: ModuleCategory[];
 	className: string;
-	fields?: Module["fields"];
+	fields?: Module["data_fields"];
 	refetch: () => void;
 	constants?: { [key: string]: object };
 	editLink?: string; // if muttiple links, use "link1/link2"

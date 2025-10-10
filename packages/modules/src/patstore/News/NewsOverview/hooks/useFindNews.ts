@@ -1,27 +1,22 @@
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import {
+	generateGraphQLQuery,
+	generateQueryFromFields,
+	paramsHandler
+} from "@repo/provider";
 import { UseFindNewsHook } from "../types";
 
-const useFindNews: UseFindNewsHook = ({ moduleId, filters, limit, skip }) => {
+const useFindNews: UseFindNewsHook = ({ module, filters, limit, skip }) => {
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "News",
-			fields: [
-				"objectId",
-				"title",
-				"image",
-				"createdAt",
-				"text",
-				"data",
-				"date",
-				"categories"
-			]
+			fields: generateQueryFromFields(module.fields)
 		}),
 		{
 			variables: {
 				order: "date_DESC",
-				params: paramsHandler({ moduleId, filters }),
+				params: paramsHandler({ moduleId: module.objectId, filters }),
 				skip,
 				limit
 			},

@@ -14,7 +14,7 @@ const useFindLocation: UseFindLocationHook = ({
 			objectName: "Location",
 			fields: [
 				"objectId",
-				"name",
+				"title",
 				"image",
 				"createdAt",
 				"description",

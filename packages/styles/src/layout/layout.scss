@@ -160,6 +160,10 @@ label {
   letter-spacing: 0.02rem;
 }
 
+label[data-is_horizontal="true"] {
+  margin:0 !important;
+}
+
 label.no_margin {
   margin: 0;
 }

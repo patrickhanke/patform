@@ -1,0 +1,91 @@
+import { ModuleField } from "@repo/types";
+
+const special_fields = (modulePath: string): ModuleField[] => {
+	if (modulePath === "/arcticles") {
+		return [
+			{
+				id: "author",
+				label: "Autor",
+				required: false,
+				type: "edit_person",
+				active: true,
+				position: 1,
+				default: true
+			}
+		];
+	}
+	if (modulePath === "/events") {
+		return [
+			{
+				id: "location",
+				label: "Ort",
+				required: false,
+				type: "location",
+				active: true,
+				position: 1,
+				default: true
+			}
+		];
+	}
+	if (modulePath === "/groups") {
+		return [
+			{
+				id: "team",
+				label: "Team",
+				required: false,
+				type: "edit_team",
+				active: false,
+				position: 8,
+				default: false
+			},
+			{
+				id: "persons",
+				label: "Personen",
+				required: false,
+				type: "edit_persons",
+				active: false,
+				position: 8,
+				default: false
+			}
+		];
+	}
+	if (modulePath === "/locations") {
+		return [
+			{
+				id: "coordinates",
+				label: "Ort",
+				required: false,
+				type: "edit_geopoint",
+				active: true,
+				position: 6,
+				default: false
+			},
+			{
+				id: "address",
+				label: "Adresse",
+				required: true,
+				type: "adit_textfield",
+				active: false,
+				position: 6,
+				default: false
+			}
+		];
+	}
+	if (modulePath === "/persons") {
+		return [
+			{
+				id: "email",
+				label: "E-Mail",
+				required: false,
+				type: "edit_string",
+				active: true,
+				position: 6,
+				default: false
+			}
+		];
+	}
+
+	return [];
+};
+
+export default special_fields;

@@ -1,14 +1,16 @@
 import { AppModuleSettingsCategoriesProps } from "../types";
 
 const AppModuleSettingsCategories = ({
-  setting,
-  setActiveSetting,
+	setting,
+	setActiveSetting
 }: AppModuleSettingsCategoriesProps) => {
-  return (
-    <div>
-      <button onClick={() => setActiveSetting(setting)}>Kategorien</button>
-    </div>
-  );
+	return (
+		<div>
+			<button onClick={() => setActiveSetting(setting)}>
+				Kategorien
+			</button>
+		</div>
+	);
 };
 
 export default AppModuleSettingsCategories;

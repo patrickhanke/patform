@@ -2,9 +2,12 @@ import { generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { Loader } from "@repo/ui";
 import "./styles.scss";
-import AppModuleEditFields from "./content/AppModuleEditFields";
-import AppModuleEditCategories from "./content/AppModuleEditCategories";
-import AppModuleEditSettings from "./content/AppModuleEditSettings";
+import {
+	AppModuleEditCategories,
+	AppModuleEditDataFields,
+	AppModuleEditFields,
+	AppModuleEditSettings
+} from "./content";
 
 const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 	const { data, loading, refetch } = useQuery(
@@ -22,7 +25,8 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 				"name",
 				"position",
 				"categories",
-				"connected_class"
+				"connected_class",
+				"data_fields"
 			]
 		}),
 		{
@@ -52,7 +56,16 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 				initialCategories={module.categories}
 				projectId={projectId}
 			/>
-			<AppModuleEditFields moduleId={id} initialFields={module.fields} />
+			<AppModuleEditFields
+				moduleId={id}
+				modulePath={module.path}
+				initialFields={module.fields}
+				refetch={refetch}
+			/>
+			<AppModuleEditDataFields
+				moduleId={id}
+				initialFields={module.data_fields}
+			/>
 		</div>
 	);
 };

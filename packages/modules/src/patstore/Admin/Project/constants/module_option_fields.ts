@@ -10,6 +10,8 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
+		default_fields: [],
 		position: 1,
 		categories: [],
 		connected_class: "Webpage",
@@ -44,10 +46,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 2,
 		categories: [],
 		connected_class: "Article",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title", "text", "image"]
 	},
 	"/events": {
 		path: "/events",
@@ -57,10 +61,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 3,
 		categories: [],
 		connected_class: "Event",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title", "dates"]
 	},
 	"/news": {
 		path: "/news",
@@ -70,10 +76,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 4,
 		categories: [],
 		connected_class: "News",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title", "text"]
 	},
 	"/categories": {
 		path: "/categories",
@@ -83,10 +91,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 5,
 		categories: [],
 		connected_class: "Category",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title"]
 	},
 	"/persons": {
 		path: "/persons",
@@ -96,10 +106,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 6,
 		categories: [],
 		connected_class: "Person",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title", "image"]
 	},
 	"/images": {
 		path: "/images",
@@ -109,10 +121,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 7,
 		categories: [],
 		connected_class: "Image",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title", "file"]
 	},
 	"/groups": {
 		path: "/groups",
@@ -122,10 +136,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 2,
 		categories: [],
 		connected_class: "Group",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title"]
 	},
 	"/training-group": {
 		path: "/training-group",
@@ -134,6 +150,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: []
 		},
+		data_fields: [],
 		fields: [
 			{
 				id: generateUuid(),
@@ -163,7 +180,8 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 2,
 		categories: [],
 		connected_class: "Group",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title"]
 	},
 	"/downloads": {
 		path: "/downloads",
@@ -173,10 +191,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 9,
 		categories: [],
 		connected_class: "Download",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title", "file"]
 	},
 	"/forms": {
 		path: "/forms",
@@ -186,10 +206,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 10,
 		categories: [],
 		connected_class: "Form",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title", "text"]
 	},
 	"/users": {
 		path: "/users",
@@ -199,10 +221,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 10,
 		categories: [],
 		connected_class: "_User",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: []
 	},
 	"/locations": {
 		path: "/locations",
@@ -212,10 +236,12 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 11,
 		categories: [],
 		connected_class: "Location",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: ["title"]
 	},
 	"/calendar": {
 		path: "/calendar",
@@ -225,9 +251,11 @@ export const module_option_fields: ModuleOptionsField = {
 			categories: []
 		},
 		fields: [],
+		data_fields: [],
 		position: 12,
 		categories: [],
 		connected_class: "Dates",
-		sub_menu: []
+		sub_menu: [],
+		default_fields: []
 	}
 };

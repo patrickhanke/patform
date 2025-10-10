@@ -13,7 +13,7 @@ const useFindImages: UseFindImagesHook = ({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Image",
-			fields: ["objectId", "filePath", "name"]
+			fields: ["objectId", "filePath", "title"]
 		}),
 		{
 			variables: {

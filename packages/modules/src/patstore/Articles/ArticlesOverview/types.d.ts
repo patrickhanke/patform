@@ -1,10 +1,10 @@
-import { Filter, ArticleClass, ApolloRefetch } from "@repo/types";
+import { Filter, ArticleClass, ApolloRefetch, Module } from "@repo/types";
 import { PageCreateClassObject } from "@repo/ui";
 
 type FilterArray = Filter[];
 
 export type UseFindArticlesHook = (T: {
-	moduleId: string;
+	module: Module;
 	filters: FilterArray;
 	limit?: number;
 	skip?: number;

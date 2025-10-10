@@ -1,9 +1,13 @@
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import {
+	generateGraphQLQuery,
+	generateQueryFromFields,
+	paramsHandler
+} from "@repo/provider";
 import { UseFindPersonsHook } from "../types";
 
 const useFindPerson: UseFindPersonsHook = ({
-	moduleId,
+	module,
 	filters,
 	limit,
 	skip
@@ -12,19 +16,12 @@ const useFindPerson: UseFindPersonsHook = ({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Person",
-			fields: [
-				"objectId",
-				"name",
-				"portrait",
-				"email",
-				"data",
-				"categories"
-			]
+			fields: generateQueryFromFields(module.fields)
 		}),
 		{
 			variables: {
 				order: "name_ASC",
-				params: paramsHandler({ moduleId, filters }),
+				params: paramsHandler({ moduleId: module.objectId, filters }),
 				limit,
 				skip
 			},

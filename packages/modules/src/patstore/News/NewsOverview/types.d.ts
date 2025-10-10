@@ -1,9 +1,9 @@
-import { ApolloRefetch, Filter, NewsClass } from "@repo/types";
+import { ApolloRefetch, Filter, Module, NewsClass } from "@repo/types";
 
 export type FilterArray = Filter[];
 
 export type UseFindNewsHook = (T: {
-	moduleId: string;
+	module: Module;
 	filters: FilterArray;
 	skip: number;
 	limit: number;

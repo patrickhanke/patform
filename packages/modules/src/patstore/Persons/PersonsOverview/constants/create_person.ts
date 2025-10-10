@@ -7,9 +7,9 @@ const create_person: PageCreateClassObject<PersonClass> = {
 	text: "Neue Person erstellen",
 	fields: [
 		{
-			id: "name",
+			id: "title",
 			position: 1,
-			name: "name",
+			name: "title",
 			type: "input",
 			label: "Name",
 			validation: {

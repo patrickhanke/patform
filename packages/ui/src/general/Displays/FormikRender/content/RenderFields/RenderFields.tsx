@@ -56,6 +56,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 								? "highlight"
 								: ""
 						}
+						data-is_horizontal={isHorizontal}
 					>
 						{field.label || field.name}
 						{field?.validation?.validate &&

@@ -21,7 +21,7 @@ const AppModuleEditCategories = ({
 	initialCategories,
 	projectId
 }: AppModuleEditCategorysProps) => {
-	const { updateData } = useDataHandler();
+	const { updateData } = useDataHandler(true, false);;
 	const [editCategories, setEditCategories] = React.useState(false);
 	const [loading, setLoading] = useState(false);
 	const [categories, setCategories] = useImmer<ModuleCategory[]>(

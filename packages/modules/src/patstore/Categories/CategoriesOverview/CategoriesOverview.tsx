@@ -36,7 +36,7 @@ const Categories = () => {
 		data: [
 			{ id: "image", type: "edit_image", label: "Bild" },
 			{ id: "objectId", type: "string", label: "ID" },
-			{ id: "name", type: "edit_string", label: "Name" },
+			{ id: "title", type: "edit_string", label: "Name" },
 			{
 				id: "description",
 				type: "edit_textfield",

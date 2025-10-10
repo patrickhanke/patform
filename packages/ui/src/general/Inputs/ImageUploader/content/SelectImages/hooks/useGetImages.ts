@@ -9,7 +9,7 @@ const useGetImages: UseGetImagesHook = ({ moduleId, filters }) => {
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Image",
-			fields: ["objectId", "createdAt", "name", "filePath"]
+			fields: ["objectId", "createdAt", "title", "filePath"]
 		}),
 		{
 			variables: { params: paramsHandler({ moduleId, filters }) },

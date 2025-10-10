@@ -1,0 +1,27 @@
+@use "@repo/styles/constants";
+
+.app_module_field_container {
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: 0
+  );
+  background-color: constants.$white;
+}
+
+.app_module_option_container {
+  background-color: constants.$light;
+  margin-top: constants.$sm;
+  margin-bottom: constants.$sm;
+}
+
+.app_module_option {
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: space-between,
+    $gap: 0
+  );
+  padding: map-get($map: constants.$padding, $key: 'xs' )
+}

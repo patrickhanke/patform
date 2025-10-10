@@ -34,4 +34,8 @@
 .drag_content {
   width: calc(100% - 12px);
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
 }

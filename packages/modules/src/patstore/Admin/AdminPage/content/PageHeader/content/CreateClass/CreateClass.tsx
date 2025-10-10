@@ -15,7 +15,7 @@ const CreateClass = <T extends Classes>({
 	refetch,
 	projectId
 }: CreateClassProps<T>) => {
-	const { createData } = useDataHandler();
+	const { createData } = useDataHandler(true, false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [data, setData] =
 		useState<CreateClassProps<T>["initialData"]>(initialData);

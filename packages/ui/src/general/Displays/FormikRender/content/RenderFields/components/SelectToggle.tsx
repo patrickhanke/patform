@@ -11,17 +11,19 @@ const SelectToggle: FC<SelectToggleProps> = ({
 		<Switch.Root
 			checked={value}
 			onCheckedChange={({ checked }) => {
+				console.log(checked);
 				valueChangeHandler(checked);
 			}}
 			disabled={disabled}
 			size={"sm"}
 			colorPalette={"green"}
+			data-is_horizontal={true}
+			// as={"div"}
 		>
 			<Switch.HiddenInput />
 			<Switch.Control>
 				<Switch.Thumb />
 			</Switch.Control>
-			<Switch.Label />
 		</Switch.Root>
 	);
 };

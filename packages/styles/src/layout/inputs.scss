@@ -26,9 +26,9 @@ input {
   }
 }
 
-// input:not([type="checkbox"]) {
-//   min-width: 240px;
-// }
+input:is([type="checkbox"], [type="radio"]) {
+  min-width: 30px;
+}
 
 input[data-error] {
   border: 1px solid constants.$red;

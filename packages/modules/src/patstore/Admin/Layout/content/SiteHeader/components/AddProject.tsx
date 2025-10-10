@@ -5,7 +5,7 @@ import { AddProjectProps } from "../types";
 import { FormikValues } from "formik";
 
 const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
-	const { createData } = useDataHandler();
+	const { createData } = useDataHandler(true, false);;
 
 	const formFields = useMemo(
 		() => [

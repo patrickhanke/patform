@@ -1,7 +1,14 @@
 "use client";
 
 import { useContext, useMemo, useState } from "react";
-import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import {
+	generateColumnsFromFields,
+	Modal,
+	Page,
+	RenderFilters,
+	Table,
+	useCreateColumns
+} from "@repo/ui";
 import { Filter, PersonClass } from "@repo/types";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindPerson from "./hooks/useFindPerson";
@@ -18,7 +25,7 @@ const PersonsOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const { persons, refetch, count } = useFindPerson({
-		moduleId: currentModule.objectId,
+		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
@@ -27,28 +34,8 @@ const PersonsOverview = () => {
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
 	const columns = useCreateColumns<PersonClass>({
-		data: [
-			{ id: "portrait", type: "edit_image", label: "Portrait" },
-			{
-				id: "name",
-				type: "edit_string",
-				label: "Name",
-				enableSorting: true,
-				sortingFn(a, b) {
-					return a.original.name.localeCompare(b.original.name);
-				}
-			},
-			{
-				id: "email",
-				type: "edit_string",
-				label: "E-Mail",
-				enableSorting: true,
-				sortingFn(a, b) {
-					return a.original.name.localeCompare(b.original.name);
-				}
-			}
-		],
-		fields: currentModule.fields,
+		data: generateColumnsFromFields(currentModule.fields),
+		fields: currentModule.data_fields,
 		className: "Person",
 		refetch,
 		categories: currentModule?.categories

@@ -10,3 +10,4 @@ export { sortArrayForDivider } from "./sortArrayForDivider";
 export { default as filterChangeHandler } from "./filterChangeHandler";
 export { default as dataTransporter } from "./dataTransporter";
 export { default as convertDateToString } from "./convertDateToString";
+export { default as generateQueryFromFields } from "./generateQueryFromFields";

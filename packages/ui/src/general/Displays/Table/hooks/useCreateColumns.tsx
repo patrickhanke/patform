@@ -49,6 +49,7 @@ import {
 	TableColumnTimesField
 } from "../content";
 import TableColumnEditWebpageComponents from "../content/TableColumnEditWebpageComponents/TableColumnEditWebpageComponents";
+import TableColumnDocuments from "../components/TableColumnDocuments";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -486,6 +487,28 @@ const useCreateColumns = <T extends ColumnClasses>({
 							onChange={() => refetch()}
 							maxFileCount={1}
 							value={row[columnElement.id]}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "files") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnDocuments
+							value={row[columnElement.id] || ([] as string[])}
+							onChange={(value: string[]) =>
+								updateColumnData({
+									objectId: row.objectId,
+									updateObject: { [columnElement.id]: value },
+									feedback: "Dokumente aktualisiert"
+								})
+							}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,

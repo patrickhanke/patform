@@ -1,32 +1,23 @@
 import { UseFindImagesHook } from "../types";
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import {
+	generateGraphQLQuery,
+	generateQueryFromFields,
+	paramsHandler
+} from "@repo/provider";
 import { useMemo } from "react";
 
-const useFindImages: UseFindImagesHook = ({
-	moduleId,
-	filters,
-	limit,
-	skip
-}) => {
+const useFindImages: UseFindImagesHook = ({ module, filters, limit, skip }) => {
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Image",
-			fields: [
-				"objectId",
-				"filePath",
-				"name",
-				"description",
-				"categories",
-				"connected_elements",
-				"file {name url}"
-			]
+			fields: generateQueryFromFields(module.fields)
 		}),
 		{
 			variables: {
 				order: "createdAt_DESC",
-				params: paramsHandler({ moduleId, filters }),
+				params: paramsHandler({ moduleId: module.objectId, filters }),
 				limit,
 				skip
 			},

@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useState, useMemo } from "react";
-import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import { generateColumnsFromFields, Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindArticles from "./hooks/useFindArticles";
 import { ArticleClass, Filter } from "@repo/types";
@@ -18,7 +18,7 @@ const ArticlesOverview = () => {
 		pageSize: 10
 	});
 	const { articles, refetch, count } = useFindArticles({
-		moduleId: currentModule.objectId,
+		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
@@ -28,15 +28,7 @@ const ArticlesOverview = () => {
 	const [loading, setLoading] = useState(false);
 
 	const columns = useCreateColumns<ArticleClass>({
-		data: [
-			{ id: "image", type: "edit_image", label: "Bild" },
-			{ id: "date", type: "date_picker", label: "Datum" },
-			{ id: "title", type: "edit_string", label: "Titel" },
-			{ id: "text", type: "texteditor", label: "Text" },
-			{ id: "state", type: "edit_state", label: "Status" },
-			{ id: "gallery", type: "gallery", label: "Galerie" },
-			{ id: "author", type: "edit_person", label: "Autor" }
-		],
+		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.fields,
 		className: "Article",
 		refetch,

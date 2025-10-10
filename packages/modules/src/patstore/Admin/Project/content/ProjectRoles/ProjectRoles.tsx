@@ -13,7 +13,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 	modules
 }) => {
 	const [loading, setLoading] = useState(false);
-	const { createData } = useDataHandler();
+	const { createData } = useDataHandler(true, false);;
 	const [role, setRole] = useState({
 		name: ""
 	});

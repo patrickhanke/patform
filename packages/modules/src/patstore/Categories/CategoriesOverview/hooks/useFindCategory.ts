@@ -9,7 +9,7 @@ const useFindCategory: UseFindCategoryHook = ({ moduleId, filters }) => {
 			objectName: "Category",
 			fields: [
 				"objectId",
-				"name",
+				"title",
 				"image",
 				"createdAt",
 				"data",

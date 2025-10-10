@@ -137,6 +137,8 @@
     $justify: space-between,
     $gap: constants.$md
   );
+  margin-top: constants.$sm;
+  margin-bottom: constants.$sm;
 }
 
 .form_divider {

@@ -1,4 +1,4 @@
-import { ApolloRefetch, DownloadClass, Filter } from "@repo/types";
+import { ApolloRefetch, DownloadClass, Filter, Module } from "@repo/types";
 
 export type PersonsOverviewProps = {
 	projectId: string;
@@ -6,11 +6,11 @@ export type PersonsOverviewProps = {
 
 export type FilterArray = Filter[];
 
-export type UseFindDownloadHook = ({
-	moduleId: string,
-	filters: FilterArray,
-	limit: number,
-	skip: number
+export type UseFindDownloadHook = (T: {
+	module: Module;
+	filters: FilterArray;
+	limit: number;
+	skip: number;
 }) => {
 	loading: boolean;
 	downloads?: DownloadClass[];

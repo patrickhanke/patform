@@ -12,7 +12,7 @@ const CreateProject: FC<CreateProjectProps> = ({
 	createProject,
 	setCreateProject
 }) => {
-	const createData = useDataHandler("createProject");
+	const createData = useDataHandler(true, false);;
 
 	const [project, setProject] = useState<typeof initialProject>({
 		name: "",

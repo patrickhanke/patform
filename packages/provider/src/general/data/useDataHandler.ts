@@ -13,7 +13,7 @@ import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
 import { ClientParseError } from "@apollo/client";
 
-const useDataHandler = (useMasterKey = false) => {
+const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 	const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
 	const [loading, setLoading] = useState(false);
 	const { feedbackHandler } = useDataContext();
@@ -55,11 +55,13 @@ const useDataHandler = (useMasterKey = false) => {
 					objectId: user.objectId
 				});
 			}
-			set(updateObjectCopy, "project", {
-				__type: "Pointer",
-				className: "Project",
-				objectId: project.objectId
-			});
+			if (useProjectKey) {
+				set(updateObjectCopy, "project", {
+					__type: "Pointer",
+					className: "Project",
+					objectId: project.objectId
+				});
+			}
 
 			await axiosclient(useMasterKey)
 				.put(

@@ -1,7 +1,14 @@
 "use client";
 
 import { useContext, useState, useMemo } from "react";
-import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import {
+	generateColumnsFromFields,
+	Modal,
+	Page,
+	RenderFilters,
+	Table,
+	useCreateColumns
+} from "@repo/ui";
 import { Filter, NewsClass } from "@repo/types";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindNews from "./hooks/useFindNews";
@@ -9,7 +16,8 @@ import createNews from "./constants/createNews";
 
 const NewsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
-	const { deleteData, updateData } = useDataHandler();
+	const { deleteData } = useDataHandler();
+	console.log({ currentModule });
 
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
@@ -17,7 +25,7 @@ const NewsOverview = () => {
 		pageSize: 10
 	});
 	const { news, refetch, count } = useFindNews({
-		moduleId: currentModule.objectId,
+		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
@@ -26,13 +34,8 @@ const NewsOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const columns = useCreateColumns<NewsClass>({
-		data: [
-			{ id: "image", type: "edit_image", label: "Bild" },
-			{ id: "title", type: "edit_string", label: "Titel" },
-			{ id: "date", type: "date_picker", label: "Datum" },
-			{ id: "text", type: "edit_texteditor", label: "Text" }
-		],
-		fields: currentModule.fields,
+		data: generateColumnsFromFields(currentModule.fields),
+		fields: currentModule.data_fields,
 		className: "News",
 		refetch,
 		categories: currentModule?.categories
@@ -80,27 +83,6 @@ const NewsOverview = () => {
 			createClass={createNews}
 			refetch={refetch}
 		>
-			{process.env.NODE_ENV === "development" && (
-				<>
-					<button
-						onClick={async () => {
-							await Promise.all(
-								news.map(async (nw) => {
-									await updateData({
-										className: "News",
-										objectId: nw.objectId,
-										updateObject: {
-											title: nw.title
-										}
-									});
-								})
-							);
-						}}
-					>
-						News aktualisieren
-					</button>
-				</>
-			)}
 			<Table
 				columns={columns}
 				data={news || []}

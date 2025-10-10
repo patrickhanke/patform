@@ -23,7 +23,7 @@ const AppUsers: FC<AppUsersProps> = ({
 	addUser,
 	setAddUser
 }) => {
-	const { updateData, createData } = useDataHandler();
+	const { updateData, createData } = useDataHandler(true, false);;
 	const { data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",

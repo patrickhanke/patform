@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import { FC, useCallback } from "react";
 import { DefaultRoleProps } from "../types";
 import { StatelessToggle } from "@repo/ui";
 import { useDataHandler } from "@repo/provider";

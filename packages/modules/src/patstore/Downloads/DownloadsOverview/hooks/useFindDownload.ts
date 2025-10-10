@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import { generateGraphQLQuery, generateQueryFromFields, paramsHandler } from "@repo/provider";
 import { UseFindDownloadHook } from "../types";
 import { useMemo } from "react";
 
 const useFindDownload: UseFindDownloadHook = ({
-	moduleId,
+	module,
 	filters,
 	limit,
 	skip
@@ -13,18 +13,11 @@ const useFindDownload: UseFindDownloadHook = ({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: "Download",
-			fields: [
-				"objectId",
-				"label",
-				"title",
-				"image",
-				"file{name url}",
-				"categories"
-			]
+			fields: generateQueryFromFields(module.fields)
 		}),
 		{
 			variables: {
-				params: paramsHandler({ moduleId, filters }),
+				params: paramsHandler({ moduleId: module.objectId, filters }),
 				limit,
 				skip
 			},

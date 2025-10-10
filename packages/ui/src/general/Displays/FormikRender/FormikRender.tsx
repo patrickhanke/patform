@@ -22,7 +22,8 @@ const FormikRender: FC<FormikRenderProps> = ({
 	useWithDebounce,
 	isHorizontal = false,
 	setSecondaryContent,
-	highlightChanges = false
+	highlightChanges = false,
+	showRequired = true
 }) => {
 	useEffect(() => {
 		if (setSecondaryContent) {
@@ -44,6 +45,7 @@ const FormikRender: FC<FormikRenderProps> = ({
 			}
 			onSubmit={(values) => {
 				const changedValues = getChangedValues(values, data);
+				console.log(changedValues);
 
 				if (formSubmitHandler && changedValues) {
 					formSubmitHandler(changedValues);
@@ -86,8 +88,15 @@ const FormikRender: FC<FormikRenderProps> = ({
 						formValidationHandler={formValidationHandler}
 						useWithDebounce={useWithDebounce}
 					/>
-					<Divider showLine={false} />
-					<h6>* Pflichtfeld</h6>
+					{showRequired && (
+						<div className="form_required">
+							<Divider size="small" showLine={false} />
+							<p>
+								* Pflichtfelder sind mit einem{" "}
+								<span className="required">*</span> markiert
+							</p>
+						</div>
+					)}
 				</form>
 			)}
 		</Formik>

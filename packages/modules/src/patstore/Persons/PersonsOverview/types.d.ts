@@ -1,4 +1,4 @@
-import { ApolloRefetch, Filter, Person } from "@repo/types";
+import { ApolloRefetch, Filter, Person, Module } from "@repo/types";
 
 export type PersonsOverviewProps = {
 	projectId: string;
@@ -6,11 +6,11 @@ export type PersonsOverviewProps = {
 
 export type FilterArray = Filter[];
 
-export type UseFindPersonsHook = ({
-	moduleId: string,
-	filters: FilterArray,
-	limit: number,
-	skip: number
+export type UseFindPersonsHook = (T: {
+	module: Module;
+	filters: FilterArray;
+	limit: number;
+	skip: number;
 }) => {
 	loading: boolean;
 	persons?: Person[];

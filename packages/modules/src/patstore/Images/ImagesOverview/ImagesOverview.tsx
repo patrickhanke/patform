@@ -3,6 +3,7 @@
 import { useContext, useMemo, useState } from "react";
 import {
 	DataTransfer,
+	generateColumnsFromFields,
 	generateQuery,
 	Modal,
 	Page,
@@ -36,7 +37,7 @@ const ImagesOverview = () => {
 	const [loading, setLoading] = useState(false);
 
 	const { images, refetch, count } = useGetImages({
-		moduleId: currentModule.objectId,
+		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
@@ -45,22 +46,8 @@ const ImagesOverview = () => {
 	const [deleteModal, setDeleteModal] = useState(false);
 
 	const columns = useCreateColumns<ImageClass>({
-		data: [
-			{ id: "file", type: "image", label: "Vorschau" },
-			{ id: "date", type: "date", label: "Datum" },
-			{ id: "name", type: "edit_string", label: "Name" },
-			{
-				id: "description",
-				type: "edit_textfield",
-				label: "Beschreibung"
-			},
-			{
-				id: "connected_elements",
-				type: "connected_elements",
-				label: "Verknüpfungen"
-			}
-		],
-		fields: currentModule.fields,
+		data: generateColumnsFromFields(currentModule.fields),
+		fields: currentModule.data_fields,
 		className: "Image",
 		refetch,
 		categories: currentModule?.categories

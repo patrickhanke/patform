@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useState, useMemo } from "react";
-import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import { generateColumnsFromFields, Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import useFindDownload from "./hooks/useFindDownload";
 import { DownloadClass, Filter } from "@repo/types";
@@ -19,19 +19,14 @@ const DownloadsOverview = () => {
 	});
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const { downloads, refetch, count } = useFindDownload({
-		moduleId: currentModule.objectId,
+		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
 	});
 
 	const columns = useCreateColumns<DownloadClass>({
-		data: [
-			{ id: "image", type: "edit_image", label: "Bild" },
-			{ id: "title", type: "edit_string", label: "Titel" },
-			{ id: "info", type: "edit_textfield", label: "Text" },
-			{ id: "file", type: "file", label: "Datei" }
-		],
+		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.fields,
 		className: "Download",
 		refetch,

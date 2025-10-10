@@ -1,9 +1,8 @@
 import { ClassProperties } from "./Classes";
 
 export type ImageClass = ClassProperties & {
-  name: string;
+  title: string;
   date: string;
-  filePath: string;
   description: string;
   connected_elements: {value: string, label: string}[];
   file: {

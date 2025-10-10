@@ -1,4 +1,4 @@
-import { Filter } from "@repo/types";
+import { Filter, Module } from "@repo/types";
 
 export type UseGetImagesHookReturnValue = {
 	loading: boolean;
@@ -16,7 +16,7 @@ type GreetFunction = ({
 }) => void;
 
 export type UseFindImagesHook = (T: {
-	moduleId: string;
+	module: Module;
 	filters: Filter[];
 	limit?: number;
 	skip?: number;

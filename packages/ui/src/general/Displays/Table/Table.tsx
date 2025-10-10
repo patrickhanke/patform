@@ -157,6 +157,9 @@ const Table: React.FC<TableTypes> = ({
 									{enableRowSelection && (
 										<th>
 											<input
+												style={{
+													minWidth: "30px !important"
+												}}
 												type="checkbox"
 												onChange={() =>
 													handleSelectAll()
@@ -226,6 +229,10 @@ const Table: React.FC<TableTypes> = ({
 										{enableRowSelection && (
 											<td>
 												<input
+													style={{
+														minWidth:
+															"30px !important"
+													}}
 													type="checkbox"
 													checked={isSelected}
 													onChange={() =>

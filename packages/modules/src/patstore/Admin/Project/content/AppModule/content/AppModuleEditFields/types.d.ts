@@ -1,17 +1,21 @@
-import { ImmerHook, Updater, useImmer } from "use-immer";
-import { Field } from "@repo/types";
+import { Updater } from "use-immer";
+import { Field, ApolloRefetch } from "@repo/types";
+
+export type ModuleFieldsPartial = ModuleField[];
 
 export type AppModuleEditFieldsProps = {
-  initialFields: Field[];
-  moduleId: string;
+	initialFields: ModuleFieldsPartial;
+	moduleId: string;
+	modulePath: string;
+	refetch: ApolloRefetch;
 };
 
 export type AppModuleFieldProps = {
-  field: Field;
-  setActiveField: (C: string) => void;
+	field: ModuleField;
+	changeField: (field: ModuleField) => void;
 };
 
 export type AppModuleEditFieldProps = {
-  field?: Field;
-  setFields: Updater<Field[]>;
+	field?: Field;
+	setFields: Updater<Field[]>;
 };
