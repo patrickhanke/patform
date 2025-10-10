@@ -51,8 +51,6 @@ const PatstoreAppContextProvider = ({
 		[pageTitle, project, currentModule, user]
 	);
 
-	console.log({ project });
-
 	return (
 		<PatstoreAppContext.Provider value={appContextObject}>
 			{children}

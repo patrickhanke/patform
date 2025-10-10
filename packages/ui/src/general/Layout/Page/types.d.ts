@@ -1,9 +1,11 @@
-import { PageState } from "@repo/types";
+import { Module, PageState } from "@repo/types";
 import { Field } from "../../Displays";
 import { ReactNode } from "react";
 
-export type CreateClassProps<T> = {
-	initialData?: { [key: keyof T]: any };
+export type CreateClassProps = {
+	initialData?: {
+		[key: keyof T]: string | number | boolean | Array<> | object;
+	};
 	fields: Array<Field>;
 	text: string;
 	className: string;
@@ -38,3 +40,12 @@ export type PageProps = {
 	createClass?: PageCreateClassObject;
 	emptyContent?: boolean;
 };
+
+export type CreateClassData = (T: {
+	className: string;
+	text: string;
+	fields: Module["fields"];
+	initialData?: {
+		[key: keyof T]: string | number | boolean | Array<> | object;
+	};
+}) => CreateClassProps;

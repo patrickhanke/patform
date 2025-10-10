@@ -29,6 +29,7 @@ export type TableTypes = {
 	filterContent?: ReactNode;
 	selectedRows?: string[];
 	setSelectedRows?: Dispatch<SetStateAction<string[]>>;
+	setOrder?: Dispatch<SetStateAction<string>>;
 };
 
 export type ColumnDef<TData> = ColumnDef<TData>;

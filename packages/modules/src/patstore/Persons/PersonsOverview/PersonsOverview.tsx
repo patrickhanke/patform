@@ -10,8 +10,11 @@ import {
 	useCreateColumns
 } from "@repo/ui";
 import { Filter, PersonClass } from "@repo/types";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
-import useFindPerson from "./hooks/useFindPerson";
+import {
+	PatstoreAppContext,
+	useDataHandler,
+	useFindModuleData
+} from "@repo/provider";
 import create_person from "./constants/create_person";
 
 const PersonsOverview = () => {
@@ -24,11 +27,13 @@ const PersonsOverview = () => {
 	});
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
-	const { persons, refetch, count } = useFindPerson({
+	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const { data, refetch, count } = useFindModuleData<PersonClass>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
+		skip: pagination.pageIndex * pagination.pageSize,
+		order
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -86,7 +91,7 @@ const PersonsOverview = () => {
 		>
 			<Table
 				columns={columns}
-				data={persons || []}
+				data={data || []}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
@@ -94,6 +99,7 @@ const PersonsOverview = () => {
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				filterContent={renderFilters}
+				setOrder={setOrder}
 			/>
 			<Modal
 				isOpen={deleteModal}

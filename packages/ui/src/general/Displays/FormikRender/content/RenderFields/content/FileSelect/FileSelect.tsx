@@ -8,8 +8,8 @@ import React, {
 	useState
 } from "react";
 import { PatstoreAppContext } from "@repo/provider";
-import { useFindDownload } from "@repo/modules";
-import { DownloadClass } from "@repo/types";
+import { useFindDownload } from "@repo/provider";
+import { DownloadClass, Module, Filter } from "@repo/types";
 import { Modal } from "@repo/ui";
 import { isArray } from "lodash";
 import DownloadSelect from "./components/DownloadSelect";
@@ -34,9 +34,12 @@ const FileSelect: React.FC<FileSelectProps> = ({
 	);
 	const { modules } = useContext(PatstoreAppContext);
 	const { downloads: downloadData, refetch } = useFindDownload({
-		moduleId: modules.find((module) => module.path === "/downloads")
-			?.objectId,
-		filters: []
+		module: modules.find(
+			(module) => module.path === "/downloads"
+		) as Module,
+		filters: [] as Filter[],
+		limit: 0,
+		skip: 0
 	});
 
 	useEffect(() => {

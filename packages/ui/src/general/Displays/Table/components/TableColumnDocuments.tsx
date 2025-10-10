@@ -67,19 +67,15 @@ const TableColumnDocuments = ({
 			if (person) {
 				elementData.push(person);
 			} else {
-				console.log(vl);
 				invalidIds.push(vl);
 			}
 		});
 		if (invalidIds.length > 0) {
-			console.log(invalidIds);
 			onChange(elementData.map((element) => element.id));
 		}
 
 		return elementData || [];
 	}, [elements, newDownloads]);
-
-	console.log(currentDownloads);
 
 	const selectDownload = useMemo(
 		() => (

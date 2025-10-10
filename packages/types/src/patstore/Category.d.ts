@@ -1,7 +1,7 @@
 import { ClassProperties } from "./Classes";
 
 export type CategoryClass = ClassProperties & {
-  name: string;
+  title: string;
   image: string;
   icon: string;
   connected_class: string;

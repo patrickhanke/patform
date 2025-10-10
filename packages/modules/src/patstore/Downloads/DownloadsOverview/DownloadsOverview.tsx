@@ -2,6 +2,7 @@
 
 import { useContext, useState, useMemo } from "react";
 import {
+	createClassData,
 	generateColumnsFromFields,
 	Modal,
 	Page,
@@ -9,10 +10,12 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
-import useFindDownload from "./hooks/useFindDownload";
+import {
+	PatstoreAppContext,
+	useDataHandler,
+	useFindModuleData
+} from "@repo/provider";
 import { DownloadClass, Filter } from "@repo/types";
-import createDownload from "./constants/createDownload";
 
 const DownloadsOverview = () => {
 	const { deleteData } = useDataHandler(false);
@@ -25,11 +28,13 @@ const DownloadsOverview = () => {
 		pageSize: 10
 	});
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
-	const { downloads, refetch, count } = useFindDownload({
+	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const { data, refetch, count } = useFindModuleData<DownloadClass>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
+		skip: pagination.pageIndex * pagination.pageSize,
+		order
 	});
 
 	const columns = useCreateColumns<DownloadClass>({
@@ -78,13 +83,17 @@ const DownloadsOverview = () => {
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
-			createClass={createDownload}
+			createClass={createClassData({
+				className: "Download",
+				text: "Neuen Download erstellen",
+				fields: currentModule.fields
+			})}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
 		>
 			<Table
 				columns={columns}
-				data={downloads || []}
+				data={data || []}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
@@ -92,6 +101,7 @@ const DownloadsOverview = () => {
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				filterContent={renderFilters}
+				setOrder={setOrder}
 			/>
 			<Modal
 				isOpen={deleteModal}

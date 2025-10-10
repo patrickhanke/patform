@@ -74,10 +74,10 @@ const module_fields: ModuleField[] = [
 		default: false
 	},
 	{
-		id: "file {name url}",
+		id: "file",
+		type: "file",
 		label: "Datei",
 		required: false,
-		type: "file",
 		active: false,
 		position: 12,
 		default: false

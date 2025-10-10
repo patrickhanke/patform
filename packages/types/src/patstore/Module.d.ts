@@ -2,7 +2,9 @@ import { Module } from './Module.d';
 import { Field } from "@repo/ui";
 import { Project } from "./Classes";
 
-export type ModuleFieldIds = "title" | "description" | "text" | "image" | "date" | "dates" | "gallery" | "color" | "data" | "content" | "file" | "documents" | "link" | "state" | "active";
+export type ModulePath = "/arcticles" | "/events" | "/groups" | "/locations" | "/persons" | "/downloads" | "/forms" | "/news" | "/categories" | "/images";
+
+export type ModuleFieldIds = "title" | "description" | "text" | "image" | "date" | "dates" | "gallery" | "color" | "data" | "content" | "file" | "documents" | "link" | "state" | "active" ;
 
 export type ModuleDataFieldsSpecific = "team" | "author" | "location" | "coordinates" | "address" | "email" ;
 
@@ -42,7 +44,7 @@ export type ModuleField = {
 export type Module = {
   objectId: string;
   name: string;
-  path: string;
+  path: ModulePath;
   icon: string;
   fields: ModuleField[];
   data_fields: Field[];

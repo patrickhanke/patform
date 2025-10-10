@@ -13,7 +13,6 @@ const AppModuleEditFields: React.FC<AppModuleEditFieldsProps> = ({
 	initialFields,
 	refetch
 }) => {
-	console.log({ initialFields });
 	const { updateData } = useDataHandler(false, false);
 	const [editFields, setEditFields] = React.useState(false);
 	const [loading, setLoading] = useState(false);
@@ -24,7 +23,6 @@ const AppModuleEditFields: React.FC<AppModuleEditFieldsProps> = ({
 	}, [editFields, modulePath]);
 
 	const slideInConfirmHandler = useCallback(async () => {
-		console.log({ fields });
 		setLoading(true);
 
 		const fieldsCopy = [...fields].sort((a, b) => a.position - b.position);
@@ -85,6 +83,7 @@ const AppModuleEditFields: React.FC<AppModuleEditFieldsProps> = ({
 								key={item.id}
 								field={item as ModuleField}
 								changeField={changeField}
+								modulePath={modulePath}
 							/>
 						)}
 						onChange={(newFields) => {

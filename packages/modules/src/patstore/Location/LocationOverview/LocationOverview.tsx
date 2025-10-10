@@ -1,11 +1,21 @@
 "use client";
 
 import { useContext, useState, useMemo } from "react";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
-import useFindLocation from "./hooks/useFindLocation";
-import { Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import {
+	PatstoreAppContext,
+	useDataHandler,
+	useFindModuleData
+} from "@repo/provider";
+import {
+	createClassData,
+	generateColumnsFromFields,
+	Modal,
+	Page,
+	RenderFilters,
+	Table,
+	useCreateColumns
+} from "@repo/ui";
 import { Filter, LocationClass } from "@repo/types";
-import createLocation from "./constants/createLocation";
 
 const LocationOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
@@ -20,28 +30,19 @@ const LocationOverview = () => {
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
-
-	const { locations, refetch, count } = useFindLocation({
-		moduleId: currentModule.objectId,
+	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const { data, refetch, count } = useFindModuleData<LocationClass>({
+		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
+		skip: pagination.pageIndex * pagination.pageSize,
+		order
 	});
 
 	const columns = useCreateColumns<LocationClass>({
-		data: [
-			{ id: "image", type: "edit_image", label: "Bild" },
-			{ id: "name", type: "edit_string", label: "Name" },
-			{ id: "address", type: "edit_textfield", label: "Adresse" },
-			{
-				id: "description",
-				type: "edit_textfield",
-				label: "Beschreibung"
-			},
-			{ id: "coordinates", type: "edit_geopoint", label: "Koordinaten" }
-		],
-		fields: currentModule.fields,
-		className: "Location",
+		data: generateColumnsFromFields(currentModule.fields),
+		fields: currentModule.data_fields,
+		className: "Download",
 		refetch,
 		categories: currentModule?.categories
 	});
@@ -84,19 +85,24 @@ const LocationOverview = () => {
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
-			createClass={createLocation}
+			createClass={createClassData({
+				className: "Location",
+				text: "Neuen Ort erstellen",
+				fields: currentModule.fields
+			})}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
 		>
 			<Table
 				columns={columns}
-				data={locations || []}
+				data={data || []}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
 				filterContent={renderFilters}
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
+				setOrder={setOrder}
 				enableRowSelection
 			/>
 			<Modal

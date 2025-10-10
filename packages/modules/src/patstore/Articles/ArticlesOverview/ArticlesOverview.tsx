@@ -1,27 +1,40 @@
 "use client";
 
 import { useContext, useState, useMemo } from "react";
-import { generateColumnsFromFields, Modal, Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
-import useFindArticles from "./hooks/useFindArticles";
+import {
+	createClassData,
+	generateColumnsFromFields,
+	Modal,
+	Page,
+	RenderFilters,
+	Table,
+	useCreateColumns
+} from "@repo/ui";
+import {
+	PatstoreAppContext,
+	useDataHandler,
+	useFindModuleData
+} from "@repo/provider";
+
 import { ArticleClass, Filter } from "@repo/types";
-import createArticle from "./constants/createArticle";
 import state from "./constants/articleState";
 
 const ArticlesOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
-	const { deleteData, updateData } = useDataHandler();
+	const { deleteData } = useDataHandler();
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
 	});
-	const { articles, refetch, count } = useFindArticles({
+	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const { data, refetch, count } = useFindModuleData<ArticleClass>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
+		skip: pagination.pageIndex * pagination.pageSize,
+		order
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -29,7 +42,7 @@ const ArticlesOverview = () => {
 
 	const columns = useCreateColumns<ArticleClass>({
 		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.fields,
+		fields: currentModule.data_fields,
 		className: "Article",
 		refetch,
 		categories: currentModule?.categories,
@@ -75,33 +88,16 @@ const ArticlesOverview = () => {
 			title={currentModule.name}
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
-			createClass={createArticle}
+			createClass={createClassData({
+				className: "Article",
+				text: "Neuen Bericht erstellen",
+				fields: currentModule.fields
+			})}
 			refetch={refetch}
 		>
-			{process.env.NODE_ENV === "development" && (
-				<>
-					<button
-						onClick={async () => {
-							await Promise.all(
-								articles.map(async (article) => {
-									await updateData({
-										className: "Article",
-										objectId: article.objectId,
-										updateObject: {
-											title: article.title
-										}
-									});
-								})
-							);
-						}}
-					>
-						Artikel aktualisieren
-					</button>
-				</>
-			)}
 			<Table
 				columns={columns}
-				data={articles || []}
+				data={data || []}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
@@ -109,6 +105,7 @@ const ArticlesOverview = () => {
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				filterContent={renderFilters}
+				setOrder={setOrder}
 			/>
 			<Modal
 				isOpen={deleteModal}

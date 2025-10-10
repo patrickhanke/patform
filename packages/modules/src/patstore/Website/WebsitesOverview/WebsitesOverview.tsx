@@ -46,7 +46,7 @@ const WebsitesOverview = () => {
 				label: "Erstellt am"
 			}
 		],
-		fields: currentModule.fields,
+		fields: currentModule.data_fields,
 		className: "Webpage",
 		refetch,
 		categories: currentModule?.categories,

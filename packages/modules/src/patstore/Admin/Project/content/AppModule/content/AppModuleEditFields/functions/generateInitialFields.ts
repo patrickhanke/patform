@@ -1,15 +1,14 @@
+import default_fields from "../constants/default_fields";
 import module_fields from "../constants/module_fields";
 import special_fields from "../constants/special_fields";
 import { ModuleFieldsPartial } from "../types";
+import { Module } from "@repo/types";
 
 const generateInitialFields = (
 	initialFields: ModuleFieldsPartial,
-	modulePath: string
+	modulePath: Module["path"]
 ) => {
-	console.log(modulePath);
-
 	const allfields = [...module_fields, ...special_fields(modulePath)];
-	console.log(allfields);
 
 	const fields: ModuleFieldsPartial = allfields.map((field) => {
 		const initialField = initialFields.find(
@@ -17,13 +16,15 @@ const generateInitialFields = (
 		);
 		if (initialField) {
 			console.log(initialField);
+			const isDefault = default_fields[modulePath]?.includes(field.id);
+			console.log({ isDefault });
 
 			return {
 				...field,
-				active: initialField.active,
+				active: isDefault || initialField.active,
 				required: initialField.required,
 				position: initialField.position,
-				default: initialField.default
+				default: isDefault || initialField.default
 			};
 		} else {
 			return field;

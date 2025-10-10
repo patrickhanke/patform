@@ -1,41 +1,59 @@
 "use client";
 
-import { Page, Table, useCreateColumns } from "@repo/ui";
+import {
+	createClassData,
+	generateColumnsFromFields,
+	Page,
+	Table,
+	useCreateColumns
+} from "@repo/ui";
 import { useContext, useState } from "react";
-import useFindForm from "./hooks/useFindForm";
-import { FormClass } from "@repo/types";
-import { PatstoreAppContext } from "@repo/provider";
-import createForm from "./constants/createForm";
+import { Filter, FormClass } from "@repo/types";
+import { PatstoreAppContext, useFindModuleData } from "@repo/provider";
 
 const FormsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
-	const [filters] = useState([]);
-	const { forms, refetch } = useFindForm({
-		moduleId: currentModule.objectId,
-		filters
+	const [filters] = useState<Filter[]>([]);
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10
+	});
+	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const { data, refetch, count } = useFindModuleData<FormClass>({
+		module: currentModule,
+		filters,
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize,
+		order
 	});
 
 	const columns = useCreateColumns<FormClass>({
-		data: [
-			{ id: "name", type: "edit_string", label: "Name" },
-			{ id: "objectId", type: "string", label: "ID" },
-			{ id: "description", type: "edit_textfield", label: "Text" }
-		],
-		fields: currentModule.fields,
-		className: "Field",
+		data: generateColumnsFromFields(currentModule.fields),
+		fields: currentModule.data_fields,
+		className: "Download",
 		refetch,
-		categories: currentModule?.categories,
-		editLink: "forms"
+		categories: currentModule?.categories
 	});
 
 	return (
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
-			createClass={createForm}
+			createClass={createClassData({
+				className: "Form",
+				text: "Neues Formular erstellen",
+				fields: currentModule.fields
+			})}
 			refetch={refetch}
 		>
-			<Table columns={columns} data={forms || []} />
+			<Table
+				columns={columns}
+				data={data || []}
+				rowCount={count}
+				pagination={pagination}
+				setPagination={setPagination}
+				setOrder={setOrder}
+			/>
 		</Page>
 	);
 };

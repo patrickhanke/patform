@@ -277,7 +277,7 @@ export type Field =
 	| DateField
 	| DownloadField
 	| DownloadsField
-	| FileUploadField
+	// | FileUploadField
 	| ImageSelectField;
 
 export type FieldValidationArray = Array<

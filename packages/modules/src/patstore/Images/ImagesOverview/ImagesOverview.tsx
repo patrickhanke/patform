@@ -2,9 +2,8 @@
 
 import { useContext, useMemo, useState } from "react";
 import {
-	DataTransfer,
+	createClassData,
 	generateColumnsFromFields,
-	generateQuery,
 	Modal,
 	Page,
 	PatstoreImageUploader,
@@ -13,18 +12,16 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import useGetImages from "./hooks/useGetImages";
-import { Filter, ImageClass } from "@repo/types";
+import { DownloadClass, Filter, ImageClass } from "@repo/types";
 import {
-	convertDateToString,
-	getImageUrlFromBytescale,
 	PatstoreAppContext,
-	useDataHandler
+	useDataHandler,
+	useFindModuleData
 } from "@repo/provider";
 
 const ImagesOverview = () => {
-	const { currentModule, user } = useContext(PatstoreAppContext);
-	const { deleteData, updateImage } = useDataHandler(false);
+	const { currentModule } = useContext(PatstoreAppContext);
+	const { deleteData } = useDataHandler(false);
 
 	const [uploadImages, setUploadImages] = useState(false);
 	const [filters, setFilters] = useState<Filter[]>([]);
@@ -35,12 +32,13 @@ const ImagesOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
 	const [loading, setLoading] = useState(false);
-
-	const { images, refetch, count } = useGetImages({
+	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const { data, refetch, count } = useFindModuleData<DownloadClass>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
+		skip: pagination.pageIndex * pagination.pageSize,
+		order
 	});
 
 	const [deleteModal, setDeleteModal] = useState(false);
@@ -84,105 +82,28 @@ const ImagesOverview = () => {
 				disabled: selectedRows.length === 0
 			},
 			{
-				text: "Bilder hochladen",
+				text: "Mehrere Bilder hochladen",
 				onClick: () => setUploadImages(true)
 			}
 		],
 		[selectedRows]
 	);
 
-	const dataTransfer = useMemo(
-		() => (
-			<DataTransfer<
-				ImageClass,
-				{
-					username: string;
-					portrait: object;
-				}
-			>
-				sourceClassName="Uebungsleiter"
-				targetClassName="Image"
-				moduleId={currentModule.objectId}
-				userId={user.objectId}
-				url="https://pg-app-mvx9tbt2yit00ef2pzlktzg3k81djj.scalabl.cloud/graphql/"
-				masterKey="POcP3f5vEluCLVT1txftBPf5XGTIPYSki6UR7VRH"
-				appId="E24kTRGCLBzXhUOQvwFNekgPpoMPeHRNITT67YiR"
-				query={generateQuery({
-					objectName: "Uebungsleiter",
-					fields: ["username", "portrait {url name}"]
-				})}
-				propertyMapping={(person) => ({
-					name: person.username,
-					filePath: person.portrait as unknown as string,
-					categories: [],
-					description: "",
-					fields: [],
-					date: convertDateToString(new Date()),
-					connected_elements: []
-				})}
-			/>
-		),
-		[user]
-	);
-
-	console.log(selectedRows);
-
 	return (
 		<Page
 			title="Bilder"
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
+			createClass={createClassData({
+				className: "Image",
+				text: "Neue Bilder erstellen",
+				fields: currentModule.fields
+			})}
 		>
-			{process.env.NODE_ENV === "development" && dataTransfer}
-			{process.env.NODE_ENV === "development" && (
-				<>
-					<button
-						onClick={async () => {
-							const filteredImages = images.filter(
-								(image) => !image.file && image.filePath
-							);
-
-							console.log(filteredImages);
-
-							await Promise.all(
-								filteredImages.map(async (image) => {
-									const bsUrl = getImageUrlFromBytescale({
-										filePath: image.filePath
-									});
-
-									console.log(bsUrl);
-									const response = await fetch(bsUrl);
-									const blob = await response.blob();
-
-									console.log(blob);
-									const fileUrl =
-										bsUrl.split("/").pop() || image.name;
-
-									console.log(fileUrl);
-
-									updateImage({
-										file: blob,
-										name: fileUrl.replace(
-											/[^a-zA-Z0-9._-]/g,
-											"_"
-										),
-										imageId: image.objectId,
-										feedback: "Bild erfolgreich hochgeladen"
-									});
-								})
-							);
-
-							refetch();
-						}}
-					>
-						Bilder aktualisieren
-					</button>
-				</>
-			)}
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}
-				data={images || []}
+				data={data || []}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
@@ -190,6 +111,7 @@ const ImagesOverview = () => {
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				filterContent={renderFilters}
+				setOrder={setOrder}
 			/>
 			<Modal
 				isOpen={uploadImages}

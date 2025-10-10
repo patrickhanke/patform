@@ -44,7 +44,7 @@ const Categories = () => {
 			},
 			{ id: "color", type: "edit_color", label: "Farbe" }
 		],
-		fields: currentModule.fields,
+		fields: currentModule.data_fields,
 		className: "Category",
 		refetch,
 		categories: currentModule?.categories

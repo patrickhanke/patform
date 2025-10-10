@@ -5,10 +5,14 @@ const generateQueryFromFields = (fields: Module["fields"]) => {
 
 	fields.forEach((field) => {
 		if (field.active) {
-			staticFields.push(field.id);
+			if (field.type === "file") {
+				staticFields.push("file {name url}");
+			} else {
+				staticFields.push(field.id);
+			}
 		}
 	});
-	console.log({ staticFields });
+
 	return staticFields;
 };
 

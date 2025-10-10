@@ -10,8 +10,11 @@ import {
 	useCreateColumns
 } from "@repo/ui";
 import { Filter, NewsClass } from "@repo/types";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
-import useFindNews from "./hooks/useFindNews";
+import {
+	PatstoreAppContext,
+	useDataHandler,
+	useFindModuleData
+} from "@repo/provider";
 import createNews from "./constants/createNews";
 
 const NewsOverview = () => {
@@ -24,11 +27,13 @@ const NewsOverview = () => {
 		pageIndex: 0,
 		pageSize: 10
 	});
-	const { news, refetch, count } = useFindNews({
+	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const { data, refetch, count } = useFindModuleData<NewsClass>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
+		skip: pagination.pageIndex * pagination.pageSize,
+		order
 	});
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -85,13 +90,14 @@ const NewsOverview = () => {
 		>
 			<Table
 				columns={columns}
-				data={news || []}
+				data={data || []}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
 				filterContent={renderFilters}
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
+				setOrder={setOrder}
 				enableRowSelection
 			/>
 			<Modal

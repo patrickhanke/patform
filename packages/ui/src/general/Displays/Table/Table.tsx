@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import "./styles.scss";
 import {
 	useReactTable,
 	getCoreRowModel,
-	getSortedRowModel,
 	flexRender,
 	SortingState,
 	Column
@@ -14,6 +13,7 @@ import { TableTypes } from "./types";
 import clsx from "clsx";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
 import { PaginationHandlers } from "./content";
+import { isArray } from "lodash";
 
 const Table: React.FC<TableTypes> = ({
 	data,
@@ -27,10 +27,23 @@ const Table: React.FC<TableTypes> = ({
 	rowCount,
 	pagination,
 	setPagination,
-	filterContent
+	filterContent,
+	setOrder
 }) => {
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
+
+	useEffect(() => {
+		if (setOrder) {
+			if (isArray(sorting) && sorting.length > 0) {
+				if (sorting[0]?.desc === true) {
+					setOrder(sorting[0].id + "_DESC");
+				} else if (sorting[0]?.desc === false) {
+					setOrder(sorting[0].id + "_ASC");
+				}
+			}
+		}
+	}, [sorting]);
 
 	const table = useReactTable({
 		data: tableData,
@@ -42,9 +55,10 @@ const Table: React.FC<TableTypes> = ({
 		},
 		enableRowSelection,
 		getCoreRowModel: getCoreRowModel(),
-		getSortedRowModel: getSortedRowModel(),
+		// getSortedRowModel: getSortedRowModel(),
 		getRowId: (row) => row.objectId,
 		manualPagination: true,
+		manualSorting: true,
 		rowCount: rowCount || tableData.length,
 		onSortingChange: setSorting,
 		debugTable: false,
@@ -74,8 +88,6 @@ const Table: React.FC<TableTypes> = ({
 	const handleRowSelection = useCallback(
 		(rowId: string) => {
 			if (selectedRows && setSelectedRows) {
-				console.log(selectedRows);
-				console.log(setSelectedRows);
 				const idIndex = selectedRows.findIndex(
 					(selectedRow) => selectedRow === rowId
 				);

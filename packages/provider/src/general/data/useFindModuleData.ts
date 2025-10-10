@@ -4,19 +4,32 @@ import {
 	generateQueryFromFields,
 	paramsHandler
 } from "@repo/provider";
-import { UseFindDownloadHook } from "../types";
 import { useMemo } from "react";
+import { ApolloRefetch, Classes, Filter, Module } from "@repo/types";
+import { get } from "lodash-es";
 
-const useFindDownload: UseFindDownloadHook = ({
+function useFindModuleData<T extends Classes>({
 	module,
 	filters,
 	limit,
-	skip
-}) => {
+	skip,
+	order
+}: {
+	module: Module;
+	filters: Filter[];
+	limit: number;
+	skip: number;
+	order?: string;
+}): {
+	loading: boolean;
+	data?: T[];
+	refetch: ApolloRefetch;
+	count: number;
+} {
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
-			objectName: "Download",
+			objectName: module.connected_class,
 			fields: generateQueryFromFields(module.fields)
 		}),
 		{
@@ -24,23 +37,26 @@ const useFindDownload: UseFindDownloadHook = ({
 				params: paramsHandler({ moduleId: module.objectId, filters }),
 				limit,
 				skip,
-				order: "createdAt_DESC"
+				order: order || "createdAt_DESC"
 			},
 			notifyOnNetworkStatusChange: true
 		}
 	);
-
 	const returnValue = useMemo(
 		() => ({
 			loading,
-			downloads: data ? data.objects.findDownload.results : undefined,
+			data: get(
+				data,
+				`objects.find${module.connected_class}.results`,
+				[]
+			),
 			refetch,
-			count: data ? data.objects.findDownload.count : 0
+			count: get(data, `objects.find${module.connected_class}.count`, 0)
 		}),
 		[data, loading]
 	);
 
 	return returnValue;
-};
+}
 
-export default useFindDownload;
+export default useFindModuleData;
