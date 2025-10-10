@@ -481,7 +481,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnFiles
-							classKey={columnElement.id as string}
+							classKey={"file"}
 							className={className as "Download" | "Image"}
 							id={row.objectId}
 							onChange={() => refetch()}
