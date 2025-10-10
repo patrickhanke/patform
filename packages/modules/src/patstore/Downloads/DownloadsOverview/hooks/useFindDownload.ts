@@ -1,5 +1,9 @@
 import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, generateQueryFromFields, paramsHandler } from "@repo/provider";
+import {
+	generateGraphQLQuery,
+	generateQueryFromFields,
+	paramsHandler
+} from "@repo/provider";
 import { UseFindDownloadHook } from "../types";
 import { useMemo } from "react";
 
