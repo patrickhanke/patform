@@ -27,7 +27,6 @@ import {
 	TableColumnEditColor,
 	TableColumnEditState,
 	TableColumnEditTeam,
-	TableColumnFiles,
 	TableColumnGeopoint,
 	TableColumnImage,
 	TableColumnPerson,
@@ -46,10 +45,10 @@ import {
 	TableColumnEditContent,
 	TableColumnEditDate,
 	TableColumnEditField,
-	TableColumnTimesField
+	TableColumnTimesField,
+	TableColumnEditWebpageComponents
 } from "../content";
-import TableColumnEditWebpageComponents from "../content/TableColumnEditWebpageComponents/TableColumnEditWebpageComponents";
-import TableColumnDocuments from "../components/TableColumnDocuments";
+import { TableColumnFile, TableColumnDocuments } from "../components";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -480,13 +479,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 			if (columnElement.type === "file") {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnFiles
-							classKey={"file"}
+						<TableColumnFile
+							classKey={columnElement.id as string}
 							className={className as "Download" | "Image"}
 							id={row.objectId}
 							onChange={() => refetch()}
 							maxFileCount={1}
-							value={row[columnElement.id]}
+							value={row["file"]}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,

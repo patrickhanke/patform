@@ -2,7 +2,7 @@
 
 import { FileObject, FileUploader } from "@repo/ui";
 
-type TableColumnFilesProps = {
+type TableColumnFileProps = {
 	className: "Download" | "Image";
 	classKey: string;
 	id: string;
@@ -11,14 +11,14 @@ type TableColumnFilesProps = {
 	value?: FileObject;
 };
 
-const TableColumnFiles = ({
+const TableColumnFile = ({
 	onChange,
 	maxFileCount,
 	className,
 	classKey,
 	id,
 	value
-}: TableColumnFilesProps) => {
+}: TableColumnFileProps) => {
 	console.log({ value });
 
 	return (
@@ -37,4 +37,4 @@ const TableColumnFiles = ({
 	);
 };
 
-export default TableColumnFiles;
+export default TableColumnFile;

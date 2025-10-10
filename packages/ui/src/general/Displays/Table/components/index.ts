@@ -9,7 +9,7 @@ export { default as TableColumnConnectedElements } from "./TableColumnConnectedE
 export { default as TableColumnEditBoolean } from "./TableColumnEditBoolean";
 export { default as TableColumnEditColor } from "./TableColumnEditColor";
 export { default as TableColumnEditState } from "./TableColumnEditState";
-export { default as TableColumnFiles } from "./TableColumnFiles";
+export { default as TableColumnFile } from "./TableColumnFile";
 export { default as TableColumnGallery } from "./TableColumnGallery";
 export { default as TableColumnGeopoint } from "./TableColumnGeopoint";
 export { default as TableColumnPerson } from "./TableColumnPerson";
@@ -17,3 +17,4 @@ export { default as TableColumnPersons } from "./TableColumnPersons";
 export { default as TableColumnTexteditor } from "./TableColumnTexteditor";
 export { default as TableColumnDate } from "./TableColumnDate";
 export { default as TableColumnImages } from "./TableColumnImages";
+export { default as TableColumnDocuments } from "./TableColumnDocuments";
