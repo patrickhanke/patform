@@ -55,7 +55,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 					objectId: user.objectId
 				});
 			}
-			if (useProjectKey) {
+			if (useProjectKey && project) {
 				set(updateObjectCopy, "project", {
 					__type: "Pointer",
 					className: "Project",
@@ -163,11 +163,13 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 				});
 			}
 
-			set(updateObjectCopy, "project", {
-				__type: "Pointer",
-				className: "Project",
-				objectId: project.objectId
-			});
+			if (project) {
+				set(updateObjectCopy, "project", {
+					__type: "Pointer",
+					className: "Project",
+					objectId: project.objectId
+				});
+			}
 
 			await axiosclient(useMasterKey)
 				.post(
