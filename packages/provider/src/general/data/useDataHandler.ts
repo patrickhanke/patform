@@ -185,8 +185,6 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 						});
 					}
 					if (afterSaveHandler) {
-						console.log("afterSaveHandler", afterSaveHandler);
-
 						afterSaveHandler(response.data);
 					}
 				})
@@ -266,8 +264,6 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 
 			const parseFile = new Parse.File(fileName, file);
 			await parseFile.save();
-
-			console.log("File saved to Parse:", parseFile);
 
 			let existingClassObject;
 
@@ -367,12 +363,10 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 							return response.data;
 						}
 						if (afterSaveHandler) {
-							console.log("afterSaveHandler", afterSaveHandler);
 							afterSaveHandler(response.data);
 						}
 					})
 					.catch((error: AxiosError) => {
-						console.log(error);
 						feedbackHandler({
 							success: true,
 							message: error.message,
@@ -447,8 +441,6 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 			const parseFile = new Parse.File(name, file);
 			await parseFile.save();
 
-			console.log("File saved to Parse:", parseFile);
-
 			const imageQuery = new Parse.Query("Image");
 			const image = await imageQuery.get(imageId);
 			image.set("file", parseFile);
@@ -466,8 +458,6 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 						});
 					}
 					if (afterSaveHandler) {
-						console.log("afterSaveHandler", afterSaveHandler);
-
 						afterSaveHandler(response.data);
 					}
 				})

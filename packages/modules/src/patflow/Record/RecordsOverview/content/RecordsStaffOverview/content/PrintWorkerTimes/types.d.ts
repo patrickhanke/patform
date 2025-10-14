@@ -28,8 +28,20 @@ export type SelectFieldsProps = {
 	setFields: Dispatch<SetStateAction<string[]>>;
 };
 
-export type UseGetDays = (P: { month: number; users: string[] }) => {
+export type UseFindDays = (P: { year: number; users: string[] }) => {
 	loading: boolean;
 	days: Day[];
+	refetch: ApolloRefetch;
+};
+
+export type UseFindRecord = (P: { year: number; users: string[] }) => {
+	loading: boolean;
+	records: Record[];
+	refetch: ApolloRefetch;
+};
+
+export type UseFindSurcharges = (P: { year: number; users: string[] }) => {
+	loading: boolean;
+	surcharges: Surcharge[];
 	refetch: ApolloRefetch;
 };

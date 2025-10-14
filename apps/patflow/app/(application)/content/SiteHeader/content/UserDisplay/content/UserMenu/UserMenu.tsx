@@ -62,7 +62,7 @@ const UserMenu: FC<UserMenuProps> = ({
                 })}
                 height={40}
                 width={40}
-                alt={user.label}
+                alt={user.email}
               />
             ) : (
               <Icon

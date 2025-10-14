@@ -5,9 +5,9 @@ import { axiosclient } from "@repo/provider";
 import { useFormik } from "formik";
 import Cookies from "js-cookie";
 import * as Yup from "yup";
-import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import PasswordForm from "./components/PasswordForm";
+import { PatflowLoginForm } from "@repo/modules";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -60,59 +60,7 @@ const LoginForm = () => {
 
   return (
     <div>
-      <form onSubmit={formik.handleSubmit} className={"login_form_container"}>
-        <div>
-          <h2>Login</h2>
-          <label htmlFor="email">E-Mail Adresse</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            className={clsx(formik.errors.email && "error")}
-          />
-          <div>
-            {formik.errors.email && (
-              <div className="error_message">{formik.errors.email}</div>
-            )}
-          </div>
-        </div>
-        <div>
-          <label htmlFor="password">Passwort</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-            className={clsx(formik.errors.email && "error")}
-          />
-          <div>
-            {formik.errors.email && (
-              <div className="error_message">{formik.errors.password}</div>
-            )}
-          </div>
-        </div>
-        <div className="patflow_login_divider" />
-        <div className="button_container">
-          <button
-            type="submit"
-            className="full_button md primary"
-            disabled={disabled}
-          >
-            Anmelden
-          </button>
-          {/* <button
-            type="button"
-            className="full_button md grey"
-            disabled={disabled}
-            onClick={() => setPasswordReset(true)}
-          >
-            Passwort vergessen?
-          </button> */}
-        </div>
-      </form>
+        <PatflowLoginForm />
       <div className="error_message">{error && error}</div>
 
       <PasswordForm

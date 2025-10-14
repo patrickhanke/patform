@@ -121,43 +121,49 @@ const DatePicker: FC<DatePickerProps> = ({
 				</>
 			)}
 			{type === "datetime" && (
-				<div className="button_container">
-					<input
-						aria-label="Date"
-						id={id}
-						name={id}
-						type={"date"}
-						style={{ width: 110 }}
-						onChange={(e) =>
-							timeChangeHandler("date", e.target.value)
-						}
-						defaultValue={
-							defaultValue.length > 10
-								? defaultValue.split("T")[0]
-								: defaultValue
-						}
-						step={undefined}
-						disabled={disabled}
-						min={min}
-						max={max}
-					/>
-					<input
-						aria-label="Time"
-						id={id}
-						name={id}
-						type={"time"}
-						style={{ width: 80 }}
-						onChange={(e) =>
-							timeChangeHandler("time", e.target.value)
-						}
-						defaultValue={
-							defaultValue.length > 10
-								? defaultValue.split("T")[1]
-								: ""
-						}
-						step={undefined}
-						disabled={isNaN(new Date(debouncedValue).getTime())}
-					/>
+				<div className="flex col">
+					<label htmlFor={id}>
+						Datum <br />
+						<input
+							aria-label="Date"
+							id={id}
+							name={id}
+							type={"date"}
+							style={{ width: 110 }}
+							onChange={(e) =>
+								timeChangeHandler("date", e.target.value)
+							}
+							defaultValue={
+								defaultValue.length > 10
+									? defaultValue.split("T")[0]
+									: defaultValue
+							}
+							step={undefined}
+							disabled={disabled}
+							min={min}
+							max={max}
+						/>
+					</label>
+					<label htmlFor={id}>
+						Uhrzeit <br />
+						<input
+							aria-label="Time"
+							id={id}
+							name={id}
+							type={"time"}
+							style={{ width: 80 }}
+							onChange={(e) =>
+								timeChangeHandler("time", e.target.value)
+							}
+							defaultValue={
+								defaultValue.length > 10
+									? defaultValue.split("T")[1]
+									: ""
+							}
+							step={undefined}
+							disabled={isNaN(new Date(debouncedValue).getTime())}
+						/>
+					</label>
 				</div>
 			)}
 		</>

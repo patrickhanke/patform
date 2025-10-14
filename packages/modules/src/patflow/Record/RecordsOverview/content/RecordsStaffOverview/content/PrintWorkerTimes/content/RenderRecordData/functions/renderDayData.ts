@@ -1,9 +1,8 @@
 import { eachDayOfInterval, formatISO9075 } from "date-fns";
 import { Day } from "@repo/types";
-import { DayData } from "../../../../StaffWorkingTimes";
 import { cloneDeep, get, isArray, set } from "lodash-es";
 import { findDefaultTimeForDate } from "@repo/provider";
-import { RenderDayData } from "../types";
+import { DayData, RenderDayData } from "../types";
 
 const renderDayData: RenderDayData = ({ year, month, days, records }) => {
 	const interval: DayData[] = [];

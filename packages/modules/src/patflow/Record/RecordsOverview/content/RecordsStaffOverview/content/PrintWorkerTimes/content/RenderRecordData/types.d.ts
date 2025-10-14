@@ -1,10 +1,12 @@
-import { Day, Worker } from "@repo/types";
+import { Day, Record, Surcharge, Worker } from "@repo/types";
 
 export type RenderRecordDataProps = {
-	workers: Worker[];
+	worker: Worker;
 	days: Day[];
 	year: number;
 	month: number;
+	records: Record[];
+	surcharges: Surcharge[];
 };
 
 export type RenderDayData = (P: {
@@ -13,3 +15,15 @@ export type RenderDayData = (P: {
 	days: Day[];
 	records: Record[];
 }) => DayData[];
+
+export type DayData = {
+	type: Day["type"];
+	date: Day["date"];
+	is_working_day: Day["is_working_day"];
+	default_time: Day["default_time"];
+	absence: Day["absence"];
+	time?: Array<DayDataTime> | null;
+	surcharges: Day["surcharges"];
+};
+
+export type DayDataTime = DayTime & { day_id?: string };

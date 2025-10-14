@@ -14,7 +14,9 @@ import { useLazyQuery } from "@apollo/client";
 import { Day } from "@repo/types";
 import SelectFields from "./components/SelectFields";
 import { RenderRecordData } from "./content";
-import useGetDays from "./hooks/useGetDays";
+import useFindDays from "./hooks/useFindDays";
+import useFindRecord from "./hooks/useFindRecord";
+import useFindSurcharges from "./hooks/useFindSurcharges";
 
 const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 	printWorkerTimes,
@@ -32,8 +34,18 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 		month: number;
 	}>({ year: new Date().getFullYear(), month: new Date().getMonth() });
 	const [selectedFields, setSelectedFields] = useState<string[]>([]);
-	const { days } = useGetDays({
-		month: selectedTimes.month,
+	const { days } = useFindDays({
+		year: selectedTimes.year,
+		users: selectedWorker.map((worker) => worker.value)
+	});
+
+	const { records } = useFindRecord({
+		year: selectedTimes.year,
+		users: selectedWorker.map((worker) => worker.value)
+	});
+
+	const { surcharges } = useFindSurcharges({
+		year: selectedTimes.year,
 		users: selectedWorker.map((worker) => worker.value)
 	});
 
@@ -95,6 +107,9 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 
 		setLoading(false);
 	}, [data]);
+
+	console.log({ records });
+	console.log({ selectedWorker });
 
 	const modalButtons: ModalButtons = useMemo(() => {
 		if (pageState.value === "workers") {
@@ -201,14 +216,21 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 								)?.label
 							}
 						</div>
-						<RenderRecordData
-							workers={selectedWorker.map(
-								(worker) => worker.data
-							)}
-							days={days}
-							year={selectedTimes.year}
-							month={selectedTimes.month}
-						/>
+						{records &&
+							surcharges &&
+							selectedWorker.map((worker) => (
+								<RenderRecordData
+									key={worker.id}
+									worker={worker.data}
+									days={days}
+									year={selectedTimes.year}
+									month={selectedTimes.month}
+									records={records.filter(
+										(rc) => rc.user.objectId === worker.id
+									)}
+									surcharges={surcharges}
+								/>
+							))}
 					</div>
 				)}
 			</div>

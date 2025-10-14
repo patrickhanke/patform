@@ -201,6 +201,14 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 					},
 					icon: "archive",
 					disabled: selectedRows.length === 0
+				},
+				{
+					text: "Tickets löschen",
+					onClick: () => {
+						setDeleteTickets(true);
+					},
+					icon: "delete",
+					disabled: selectedRows.length === 0
 				}
 			];
 		} else if (pageState === "open") {
@@ -225,6 +233,14 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 						setLoading(false);
 					},
 					icon: "archive",
+					disabled: selectedRows.length === 0
+				},
+				{
+					text: "Tickets löschen",
+					onClick: () => {
+						setDeleteTickets(true);
+					},
+					icon: "delete",
 					disabled: selectedRows.length === 0
 				}
 			];

@@ -1,12 +1,12 @@
 import { find_day } from "@repo/provider";
 import { useQuery } from "@apollo/client";
-import { UseGetDays } from "../types";
+import { UseFindDays } from "../types";
 
-const useGetDays: UseGetDays = ({ month, users = [] }) => {
+const useFindDays: UseFindDays = ({ year, users = [] }) => {
 	const { loading, data, refetch } = useQuery(find_day, {
-		variables: { params: { month: { _eq: month }, user: { _in: users } } },
+		variables: { params: { year: { _eq: year }, user: { _in: users } } },
 		notifyOnNetworkStatusChange: true,
-		skip: !month || users.length === 0
+		skip: !year || users.length === 0
 	});
 
 	console.log({ data });
@@ -18,4 +18,4 @@ const useGetDays: UseGetDays = ({ month, users = [] }) => {
 	};
 };
 
-export default useGetDays;
+export default useFindDays;

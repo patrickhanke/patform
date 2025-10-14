@@ -1,14 +1,13 @@
 import { FC, useMemo } from "react";
 import {
 	convertMillisecondsToString,
-	createDateIntervalForMonth,
 	generateGraphQLQuery,
+	getSurchargeData,
 	paramsHandler
 } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { StaffSurchargesProps } from "./types";
-import { Day, Surcharge } from "@repo/types";
-import { get, set } from "lodash-es";
+import { Surcharge } from "@repo/types";
 import getOvertimeSaldo from "./functions/getOvertimeSaldo";
 
 const StaffSurcharges: FC<StaffSurchargesProps> = ({
@@ -54,49 +53,11 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 	const surchargeData = useMemo(() => {
 		let surcharges: (Surcharge & { saldo: number })[] = [];
 		if (data) {
-			surcharges =
-				data.objects.findSurcharge.results.map((sc: Surcharge) => ({
-					...sc,
-					saldo: 0
-				})) || [];
-			const dateInterval = createDateIntervalForMonth(year, month.id);
-
-			dateInterval.forEach((dayString) => {
-				const dayArray = days.filter(
-					(dayToFind: Day) => dayToFind.date === dayString
-				);
-
-				if (dayArray.length > 0) {
-					dayArray.forEach((day: Day) => {
-						if (
-							day &&
-							day.surcharges &&
-							day.surcharges.length > 0
-						) {
-							day.surcharges.forEach(
-								(surcharge: Day["surcharges"][number]) => {
-									const surchargeIndex = surcharges.findIndex(
-										(s) =>
-											s.objectId ===
-											surcharge.surcharge_id
-									);
-									if (surchargeIndex !== -1) {
-										const saldo = get(
-											surcharges,
-											`[${surchargeIndex}].saldo`,
-											0
-										);
-										set(
-											surcharges,
-											`[${surchargeIndex}].saldo`,
-											saldo + surcharge.saldo
-										);
-									}
-								}
-							);
-						}
-					});
-				}
+			surcharges = getSurchargeData({
+				surcharges: data?.objects.findSurcharge.results || [],
+				days,
+				month,
+				year
 			});
 		}
 

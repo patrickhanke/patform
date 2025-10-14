@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import { axiosclient, useFirebaseMessaging } from "@repo/provider";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import clsx from "clsx";
-import styles from "../Login.module.scss";
-import { User } from "@repo/types";
+import { PatflowUser } from "@repo/types";
 import { loginUser } from "@repo/provider";
 
 const LoginSchema = Yup.object().shape({
@@ -26,7 +27,7 @@ const LoginForm = () => {
 			password: ""
 		},
 
-		onSubmit: async (values, actions) => {
+		onSubmit: async (values) => {
 			setDisabled(true);
 			const userData = await axiosclient().post(
 				"/functions/get-user-data",
@@ -35,7 +36,7 @@ const LoginForm = () => {
 				}
 			);
 
-			const user: (User & { has_access: boolean }) | undefined =
+			const user: (PatflowUser & { has_access: boolean }) | undefined =
 				userData?.data?.result;
 
 			if (!user) {
@@ -43,17 +44,16 @@ const LoginForm = () => {
 					"Für diese E-Mail Adresse ist kein Nutzer hinterlegt"
 				);
 				setDisabled(false);
-				return [] as User[];
+				return [] as PatflowUser[];
 			}
 
 			if (user) {
 				if (user.has_access === true) {
 					const login = await loginUser({
 						email: values.email,
-						password: values.password,
-						token
+						password: values.password
 					});
-
+					console.log("login: ", login);
 					if (login) {
 						if (login.error) {
 							setError(login.message);
@@ -78,10 +78,7 @@ const LoginForm = () => {
 
 	return (
 		<div>
-			<form
-				onSubmit={formik.handleSubmit}
-				className={styles.form_container}
-			>
+			<form onSubmit={formik.handleSubmit} className={"flex col"}>
 				<label htmlFor="email">E-Mail Adresse</label>
 				<input
 					id="email"

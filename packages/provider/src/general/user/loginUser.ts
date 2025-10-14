@@ -1,17 +1,14 @@
 "use client";
 
 import { axiosclient } from "../data";
-import { User } from "@repo/types";
+import { PatflowUser } from "@repo/types";
 import Cookies from "js-cookie";
 import { v4 as generateUuid } from "uuid";
 import axios from "axios";
+import { requestPermissionAndGetToken } from "../firebase/initializeFirebase";
 
-type LoginUser = (T: {
-	email: string;
-	password: string;
-	token: string;
-}) => Promise<{
-	user: User | null;
+type LoginUser = (T: { email: string; password: string }) => Promise<{
+	user: PatflowUser | null;
 	error: boolean;
 	message: string;
 } | null>;
@@ -27,7 +24,7 @@ const loginclient = (installationId: string) => {
 	});
 };
 
-export const loginUser: LoginUser = async ({ email, password, token }) => {
+export const loginUser: LoginUser = async ({ email, password }) => {
 	let returnValue = {
 		user: null,
 		error: true,
@@ -38,6 +35,8 @@ export const loginUser: LoginUser = async ({ email, password, token }) => {
 		email: email
 	});
 
+	console.log({ response });
+
 	const responseData = response?.data?.result;
 
 	if (!responseData) {
@@ -46,7 +45,7 @@ export const loginUser: LoginUser = async ({ email, password, token }) => {
 		window.alert(responseData.message);
 	} else {
 		const installationId = generateUuid();
-
+		let sessionToken;
 		await loginclient(installationId)
 			.post("login", {
 				username: email,
@@ -54,6 +53,8 @@ export const loginUser: LoginUser = async ({ email, password, token }) => {
 			})
 			.then(async (response) => {
 				if (response.data.sessionToken) {
+					sessionToken = response.data.sessionToken;
+					console.log({ sessionToken });
 					if (process.env.SESSION_TOKEN) {
 						Cookies.set(
 							process.env.SESSION_TOKEN,
@@ -65,48 +66,6 @@ export const loginUser: LoginUser = async ({ email, password, token }) => {
 						);
 					} else {
 						console.error("SESSION_TOKEN is not defined");
-					}
-
-					const installationIdKey =
-						process.env.INSTALLATION_ID ||
-						"default_installation_id";
-					Cookies.set(installationIdKey, installationId, {
-						expires: 365,
-						sameSite: "strict"
-					});
-					if (token === undefined) {
-						console.log("FcmToken could not be generated");
-
-						returnValue = {
-							error: true,
-							message: "Das Einloggen ist leider fehlgeschlagen",
-							user: null
-						};
-					} else {
-						await axiosclient().post(
-							"functions/create-installation",
-							{
-								deviceType: "web",
-								deviceToken: token,
-								channels: [],
-								appIdentifier: process.env.FIREBASE_APP_ID,
-								appName: "patflow_web",
-								appVersion: "0.6.0",
-								parseVersion: "3.6.0",
-								localeIdentifier: "de-DE",
-								timeZone: "GMT",
-								user: response.data.objectId,
-								GCMSenderId: process.env.GCMS_SENDER_ID,
-								pushType: "gcm",
-								installationId: installationId
-							}
-						);
-
-						returnValue = {
-							error: false,
-							message: "Erfolgreich eingeloggt",
-							user: response.data
-						};
 					}
 				}
 			})
@@ -125,6 +84,59 @@ export const loginUser: LoginUser = async ({ email, password, token }) => {
 					};
 				}
 			});
+
+		console.log("sessionToken: ", sessionToken);
+
+		if (sessionToken) {
+			const installationIdKey =
+				process.env.INSTALLATION_ID || "default_installation_id";
+			Cookies.set(installationIdKey, installationId, {
+				expires: 365,
+				sameSite: "strict"
+			});
+
+			const token = await requestPermissionAndGetToken();
+
+			if (token === undefined) {
+				console.log("FcmToken could not be generated");
+
+				returnValue = {
+					error: true,
+					message: "Es konnte kein FCM Token generiert werden",
+					user: null
+				};
+			} else {
+				console.log("FcmToken: ", token);
+
+				await axiosclient().post("functions/create-installation", {
+					deviceType: "web",
+					deviceToken: token,
+					channels: [],
+					appIdentifier: process.env.FIREBASE_APP_ID,
+					appName: "patflow_web",
+					appVersion: "0.6.0",
+					parseVersion: "3.6.0",
+					localeIdentifier: "de-DE",
+					timeZone: "GMT",
+					user: response.data.result.objectId,
+					GCMSenderId: process.env.GCMS_SENDER_ID,
+					pushType: "gcm",
+					installationId: installationId
+				});
+
+				returnValue = {
+					error: false,
+					message: "Erfolgreich eingeloggt und Token wurde generiert",
+					user: response.data
+				};
+			}
+		} else {
+			returnValue = {
+				error: true,
+				message: "Es konnte kein Session Token generiert werden",
+				user: null
+			};
+		}
 	}
 
 	return returnValue;
