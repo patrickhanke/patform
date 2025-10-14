@@ -15,7 +15,7 @@ const LoginSchema = Yup.object().shape({
 	password: Yup.string().required("Ein Passwort muss eingegeben werden")
 });
 
-const LoginForm = () => {
+const PatflowLoginForm = () => {
 	const [disabled, setDisabled] = useState(false);
 	const [error, setError] = useState("");
 	const { token } = useFirebaseMessaging({ initialize: false });
@@ -118,4 +118,4 @@ const LoginForm = () => {
 	);
 };
 
-export default LoginForm;
+export default PatflowLoginForm;

@@ -6,12 +6,6 @@ const Framework = () => {
     <>
       <div className="patflow_login_logo_container">
         <img
-          src={"https://flow.patwork.net/patflow_logo.png"}
-          alt={"patstore"}
-          height={24}
-          width={24}
-        />
-        <img
           src={"https://flow.patwork.net/patflow_logo_lettering.png"}
           alt={"patstore"}
           height={24}

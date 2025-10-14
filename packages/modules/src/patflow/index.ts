@@ -7,5 +7,4 @@ export { StaffOverview } from "./Staff";
 export { WasteOverview } from "./Waste";
 export * from "./Settings";
 export * from "./Record";
-export * from "./Login";
 export * from "./Project";
