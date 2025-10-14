@@ -29,13 +29,20 @@ const renderDayTable = ({
 			let hoursInt = 0;
 			let breaks = "";
 
+			let weekday =
+				weekdays.find((weekday) => weekday.day === getDay(day.date))
+					?.short || "";
+
 			if (day) {
 				// has absence
 				if (day.absence && day.absence.type && day.default_time) {
-					start =
+					console.log(day.absence);
+					const absenceLabel =
 						absence_type_options.find(
 							(option) => option.value === day?.absence?.type
 						)?.label || "frei";
+					weekday += " - " + absenceLabel;
+
 					hoursInt =
 						day.default_time.duration - day.default_time.pause;
 					saldoInt = 0;
@@ -115,12 +122,9 @@ const renderDayTable = ({
 				? day.default_time?.duration - day.default_time?.pause
 				: 0;
 
-			const weekday = weekdays.find(
-				(weekday) => weekday.day === getDay(day.date)
-			);
 			return [
 				getDateString(day.date).date,
-				weekday ? weekday.short : "",
+				weekday ? weekday : "",
 				start,
 				breaks,
 				end,

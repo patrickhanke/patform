@@ -7,6 +7,7 @@ export type RenderRecordDataProps = {
 	month: number;
 	records: Record[];
 	surcharges: Surcharge[];
+	fields: Array<(typeof table_fields)[number]["value"]>;
 };
 
 export type RenderDayData = (P: {

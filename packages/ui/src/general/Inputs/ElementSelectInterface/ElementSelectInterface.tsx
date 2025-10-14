@@ -1,32 +1,32 @@
 "use client";
 
-import { FC, Fragment, useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 import ListElement from "./components/ListElement";
 import { ElementSelectInterfaceProps, SelectElement } from "./types";
 import { cloneDeep, get, set } from "lodash-es";
 import { Divider } from "../../Layout";
 import "./styles.scss";
 
-const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
+const ElementSelectInterface = <T extends SelectElement[]>({
 	title = "",
-	elements = [],
-	selectedElements = [],
+	elements,
+	selectedElements,
 	onSelect,
 	max = 1,
 	isSearchable = false,
 	selectProperty = false,
 	useTiles = false,
 	selectAll = false
-}) => {
+}: ElementSelectInterfaceProps<T>) => {
 	const [searchInput, setSearchTerm] = useState("");
 
 	const elementChangeHandler = useCallback(
-		(element: SelectElement) => {
+		(element: T[number]) => {
 			const elementsCopy = cloneDeep(selectedElements);
 
 			if (selectProperty) {
 				const elementIndex = elementsCopy.findIndex(
-					(el: SelectElement) => el?.value === element.value
+					(el) => el?.value === element.value
 				);
 				if (elementIndex !== -1) {
 					const elementSelectValue = get(
@@ -43,39 +43,39 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 				onSelect(elementsCopy);
 			} else {
 				const isSelected = !!elementsCopy.find(
-					(el: SelectElement) => el.value === element.value
+					(el) => el.value === element.value
 				);
 				if (isSelected) {
 					if (element.single) {
-						onSelect([]);
+						onSelect([] as unknown as T);
 					} else {
 						const newElements = elementsCopy.filter(
-							(el: SelectElement) => el.value !== element.value
-						);
+							(el) => el.value !== element.value
+						) as unknown as T;
 						onSelect(newElements);
 					}
 				}
 
 				if (isSelected === false) {
 					if (element.single) {
-						onSelect([element]);
+						onSelect([element] as unknown as T);
 					} else {
 						if (elementsCopy.length < max) {
 							elementsCopy.push(element);
 
 							const newElements = elementsCopy.filter(
-								(el: SelectElement) => !el.single
+								(el) => !el.single
 							);
-							onSelect(newElements);
+							onSelect(newElements as unknown as T);
 						}
 						if (elementsCopy.length === max) {
 							elementsCopy.shift();
 							elementsCopy.push(element);
 							const newElements = elementsCopy.filter(
-								(el: SelectElement) => !el.single
+								(el) => !el.single
 							);
 
-							onSelect(newElements);
+							onSelect(newElements as unknown as T);
 						}
 					}
 				}
@@ -84,11 +84,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 		[elements, onSelect, selectedElements]
 	);
 
-	const checkForHeader = (
-		header: string,
-		index: number,
-		elements: SelectElement[]
-	) => {
+	const checkForHeader = (header: string, index: number, elements: T) => {
 		if (!header) {
 			return false;
 		}
@@ -106,7 +102,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 	};
 
 	const filteredElements = useMemo(() => {
-		const ele: SelectElement[] = [];
+		const ele = [] as unknown as T;
 		if (!searchInput) {
 			return elements;
 		}
@@ -160,7 +156,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 									const newElements = elements.filter(
 										(el: SelectElement) => !el.single
 									);
-									onSelect(newElements);
+									onSelect(newElements as unknown as T);
 								}
 							}}
 							// useTiles={useTiles}
@@ -176,7 +172,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 							{checkForHeader(
 								element.header,
 								index,
-								elements
+								elements as unknown as T
 							) && <label>{element.header}</label>}
 							<ListElement
 								key={element.value}

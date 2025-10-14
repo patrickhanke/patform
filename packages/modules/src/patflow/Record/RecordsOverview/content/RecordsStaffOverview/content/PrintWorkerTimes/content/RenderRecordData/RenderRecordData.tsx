@@ -9,6 +9,7 @@ import { getDateString, months, useAppContext } from "@repo/provider";
 import renderMonthTabel from "./functions/renderMonthTable";
 import renderSurchargeTable from "./functions/renderSurchargeTable";
 import renderDayTable from "./functions/renderDayTable";
+import { DisplayWorker } from "@repo/ui";
 
 const RenderRecordData: FC<RenderRecordDataProps> = ({
 	year,
@@ -16,7 +17,8 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 	worker,
 	days,
 	records,
-	surcharges
+	surcharges,
+	fields
 }) => {
 	const { project } = useAppContext();
 
@@ -66,38 +68,50 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 		);
 
 		doc.setFontSize(12);
-
-		renderDayTable({
-			doc,
-			dayData
-		});
+		if (fields.includes("day_table")) {
+			renderDayTable({
+				doc,
+				dayData
+			});
+		}
 
 		doc.setFontSize(10);
 
 		const currentMonth = months.find((m) => m.id === month);
 		const finalYDayTable = doc.lastAutoTable.finalY || 30;
 		if (currentMonth) {
-			doc.text(`Zeitübersicht ${month} ${year}`, 20, finalYDayTable + 10);
-			renderMonthTabel({
-				doc,
-				days,
-				month: currentMonth,
-				year,
-				records,
-				position: finalYDayTable + 15
-			});
+			if (fields.includes("month_table")) {
+				doc.text(
+					`Zeitübersicht ${month} ${year}`,
+					20,
+					finalYDayTable + 10
+				);
+				renderMonthTabel({
+					doc,
+					days,
+					month: currentMonth,
+					year,
+					records,
+					position: finalYDayTable + 15
+				});
+			}
 			console.log(doc.lastAutoTable);
-
-			const finalYMonthTable = doc.lastAutoTable.finalY || 30;
-			doc.text(`Zuschläge ${month} ${year}`, 20, finalYMonthTable + 10);
-			renderSurchargeTable({
-				doc,
-				days,
-				month: currentMonth,
-				year,
-				surcharges: surcharges,
-				position: finalYMonthTable + 15
-			});
+			if (fields.includes("surcharge_table")) {
+				const finalYMonthTable = doc.lastAutoTable.finalY || 30;
+				doc.text(
+					`Zuschläge ${month} ${year}`,
+					20,
+					finalYMonthTable + 10
+				);
+				renderSurchargeTable({
+					doc,
+					days,
+					month: currentMonth,
+					year,
+					surcharges: surcharges,
+					position: finalYMonthTable + 15
+				});
+			}
 		}
 
 		// Add footer
@@ -118,20 +132,16 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 	};
 
 	return (
-		<div className="workers-grid">
-			<div className="worker-card">
-				<div className="worker-info">
-					<h3>
-						{worker.first_name} {worker.last_name}
-					</h3>
-				</div>
-				<button
-					onClick={() => generatePDF(worker)}
-					className="download-btn"
-				>
-					Download PDF
-				</button>
+		<div className="horizontal_container">
+			<div>
+				<DisplayWorker workerId={worker.objectId} />
 			</div>
+			<button
+				onClick={() => generatePDF(worker)}
+				className="full_button sm light"
+			>
+				Download PDF
+			</button>
 		</div>
 	);
 };

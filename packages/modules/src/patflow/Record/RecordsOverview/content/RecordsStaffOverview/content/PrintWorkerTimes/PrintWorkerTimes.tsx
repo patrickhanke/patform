@@ -17,6 +17,7 @@ import { RenderRecordData } from "./content";
 import useFindDays from "./hooks/useFindDays";
 import useFindRecord from "./hooks/useFindRecord";
 import useFindSurcharges from "./hooks/useFindSurcharges";
+import table_fields from "./constants/table_fields";
 
 const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 	printWorkerTimes,
@@ -33,7 +34,9 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 		year: number;
 		month: number;
 	}>({ year: new Date().getFullYear(), month: new Date().getMonth() });
-	const [selectedFields, setSelectedFields] = useState<string[]>([]);
+	const [selectedFields, setSelectedFields] = useState<
+		Array<(typeof table_fields)[number]["value"]>
+	>(table_fields.map((field) => field.value));
 	const { days } = useFindDays({
 		year: selectedTimes.year,
 		users: selectedWorker.map((worker) => worker.value)
@@ -193,44 +196,42 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 					/>
 				)}
 				{pageState.value === "fields" && (
-					<SelectFields setFields={setSelectedFields} />
+					<SelectFields
+						setFields={setSelectedFields}
+						fields={selectedFields}
+					/>
 				)}
 				{pageState.value === "confirm" && (
 					<div>
 						<h3>Daten:</h3>
 						<div className="horizontal_container">
-							<p className="label">Ausgewählte Arbeiter</p>
-							{selectedWorker.map((worker) => (
-								<p key={worker.id}>{worker.label}</p>
-							))}
-						</div>
-						<div className="horizontal_container">
-							<p className="label">Jahr</p>
-							{selectedTimes.year}
-						</div>
-						<div className="horizontal_container">
-							<p className="label">Monat</p>
-							{
+							<p className="label">Monat / Jahre</p>
+							<p>{`${
 								months.find(
 									(month) => month.id === selectedTimes.month
 								)?.label
-							}
+							} / ${selectedTimes.year}`}</p>
 						</div>
-						{records &&
-							surcharges &&
-							selectedWorker.map((worker) => (
-								<RenderRecordData
-									key={worker.id}
-									worker={worker.data}
-									days={days}
-									year={selectedTimes.year}
-									month={selectedTimes.month}
-									records={records.filter(
-										(rc) => rc.user.objectId === worker.id
-									)}
-									surcharges={surcharges}
-								/>
-							))}
+						<Divider size="small" showLine={false} />
+						<div>
+							{records &&
+								surcharges &&
+								selectedWorker.map((worker) => (
+									<RenderRecordData
+										key={worker.id}
+										worker={worker.data}
+										days={days}
+										year={selectedTimes.year}
+										month={selectedTimes.month}
+										records={records.filter(
+											(rc) =>
+												rc.user.objectId === worker.id
+										)}
+										surcharges={surcharges}
+										fields={selectedFields}
+									/>
+								))}
+						</div>
 					</div>
 				)}
 			</div>

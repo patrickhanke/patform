@@ -1,5 +1,6 @@
 import { SelectElement } from "@repo/ui";
 import { Dispatch, SetStateAction } from "react";
+import table_fields from "./constants/table_fields";
 
 export type PrintWorkerTimesProps = {
 	printWorkerTimes: boolean;
@@ -25,7 +26,10 @@ export type SelectTimesProps = {
 export type YearOptions = { value: number; label: string }[];
 
 export type SelectFieldsProps = {
-	setFields: Dispatch<SetStateAction<string[]>>;
+	setFields: Dispatch<
+		SetStateAction<(typeof table_fields)[number]["value"][]>
+	>;
+	fields: (typeof table_fields)[number]["value"][];
 };
 
 export type UseFindDays = (P: { year: number; users: string[] }) => {

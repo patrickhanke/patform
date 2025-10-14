@@ -7,7 +7,6 @@ const useNetlifyHooks = () => {
 
 	const netlifyHookHandler = useCallback(
 		(objectClass: string) => {
-			console.log("project", project);
 			if (!project) {
 				return;
 			}

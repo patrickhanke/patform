@@ -22,8 +22,8 @@ const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 			{
 				accessorFn: (row) => (
 					<StateDisplay
-						label={row.role.name}
-						color={row.role.color}
+						label={row.role?.name}
+						color={row.role?.color}
 					/>
 				),
 				header: () => <span>Rolle</span>,
