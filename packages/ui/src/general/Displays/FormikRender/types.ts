@@ -278,7 +278,8 @@ export type Field =
 	| DownloadField
 	| DownloadsField
 	// | FileUploadField
-	| ImageSelectField;
+	| ImageSelectField
+	| ImageUploadField;
 
 export type FieldValidationArray = Array<
 	Field & { validation?: ValidationTypes }

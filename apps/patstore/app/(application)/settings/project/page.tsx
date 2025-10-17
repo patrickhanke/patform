@@ -1,0 +1,1 @@
+export {PatstoreProject as default } from "@repo/modules"

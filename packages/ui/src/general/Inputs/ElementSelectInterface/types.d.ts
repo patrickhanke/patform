@@ -8,11 +8,11 @@ export type SelectElement = {
 	[key: string]: object | Array<> | string | number | boolean;
 };
 
-export type ElementSelectInterfaceProps<T extends SelectElement[]> = {
+export type ElementSelectInterfaceProps = {
 	title?: string;
-	elements: T;
-	selectedElements: T;
-	onSelect: (elements: T | []) => void;
+	elements: SelectElement[];
+	selectedElements: SelectElement[];
+	onSelect: (elements: SelectElement[]) => void;
 	max?: number;
 	isSearchable?: boolean;
 	selectProperty?: boolean;

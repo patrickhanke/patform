@@ -76,7 +76,7 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
               value: project.objectId,
               label: project.name,
             }) as const,
-        )}
+        ) || []}
         onSelect={(value) => setSelectedProject(value)}
         selectedElements={selectedProject}
         max={1}

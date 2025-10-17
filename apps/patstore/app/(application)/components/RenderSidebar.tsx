@@ -15,6 +15,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
 
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [];
+
     if (project) {
       const modules = cloneDeep(project.modules.results).sort( (a: Module, b: Module) => a.position - b.position);
       modules.forEach((module: Module) => {
@@ -35,6 +36,14 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
         }
       });
     }
+
+    menuItemsArray.push({
+      divider: "Einstellungen",
+      label: "Projekt",
+      value: "/settings/project",
+      icon: "project",
+      sub_menu: [],
+    })
 
     return menuItemsArray;
   }, [project, userRole]);

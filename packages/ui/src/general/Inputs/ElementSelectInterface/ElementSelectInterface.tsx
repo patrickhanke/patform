@@ -7,9 +7,9 @@ import { cloneDeep, get, set } from "lodash-es";
 import { Divider } from "../../Layout";
 import "./styles.scss";
 
-const ElementSelectInterface = <T extends SelectElement[]>({
+const ElementSelectInterface: React.FC<ElementSelectInterfaceProps> = ({
 	title = "",
-	elements,
+	elements = [],
 	selectedElements,
 	onSelect,
 	max = 1,
@@ -17,7 +17,7 @@ const ElementSelectInterface = <T extends SelectElement[]>({
 	selectProperty = false,
 	useTiles = false,
 	selectAll = false
-}: ElementSelectInterfaceProps<T>) => {
+}) => {
 	const [searchInput, setSearchTerm] = useState("");
 
 	const elementChangeHandler = useCallback(
@@ -47,18 +47,18 @@ const ElementSelectInterface = <T extends SelectElement[]>({
 				);
 				if (isSelected) {
 					if (element.single) {
-						onSelect([] as unknown as T);
+						onSelect([]);
 					} else {
 						const newElements = elementsCopy.filter(
 							(el) => el.value !== element.value
-						) as unknown as T;
+						);
 						onSelect(newElements);
 					}
 				}
 
 				if (isSelected === false) {
 					if (element.single) {
-						onSelect([element] as unknown as T);
+						onSelect([element]);
 					} else {
 						if (elementsCopy.length < max) {
 							elementsCopy.push(element);
@@ -66,7 +66,7 @@ const ElementSelectInterface = <T extends SelectElement[]>({
 							const newElements = elementsCopy.filter(
 								(el) => !el.single
 							);
-							onSelect(newElements as unknown as T);
+							onSelect(newElements);
 						}
 						if (elementsCopy.length === max) {
 							elementsCopy.shift();
@@ -75,7 +75,7 @@ const ElementSelectInterface = <T extends SelectElement[]>({
 								(el) => !el.single
 							);
 
-							onSelect(newElements as unknown as T);
+							onSelect(newElements);
 						}
 					}
 				}
@@ -102,7 +102,7 @@ const ElementSelectInterface = <T extends SelectElement[]>({
 	};
 
 	const filteredElements = useMemo(() => {
-		const ele = [] as unknown as T;
+		const ele: SelectElement[] = [];
 		if (!searchInput) {
 			return elements;
 		}
@@ -120,6 +120,8 @@ const ElementSelectInterface = <T extends SelectElement[]>({
 
 		return ele;
 	}, [elements, selectedElements, searchInput]);
+
+	console.log({ filteredElements, elements });
 
 	return (
 		<div className={"elements_container"}>
@@ -156,7 +158,7 @@ const ElementSelectInterface = <T extends SelectElement[]>({
 									const newElements = elements.filter(
 										(el: SelectElement) => !el.single
 									);
-									onSelect(newElements as unknown as T);
+									onSelect(newElements);
 								}
 							}}
 							// useTiles={useTiles}
@@ -172,7 +174,7 @@ const ElementSelectInterface = <T extends SelectElement[]>({
 							{checkForHeader(
 								element.header,
 								index,
-								elements as unknown as T
+								elements
 							) && <label>{element.header}</label>}
 							<ListElement
 								key={element.value}
