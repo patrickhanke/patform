@@ -719,6 +719,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 							<TableColumnEditField
 								objectId={row.objectId}
 								className={className}
+								dataFields={fields}
 							/>
 						)}
 						<TableColumnDeleteField

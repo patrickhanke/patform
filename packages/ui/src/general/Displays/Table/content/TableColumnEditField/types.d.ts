@@ -1,6 +1,9 @@
+import { Field } from "@repo/types";
+
 export type TableColumnEditFieldProps = {
 	objectId: string;
 	className: string;
+	dataFields: Field[];
 };
 
 export type TableColumnEditFieldComponent = (

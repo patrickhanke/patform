@@ -72,7 +72,10 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 		return (
 			<div onClick={() => onClick()} style={{ cursor: "pointer" }}>
 				<Image
-					alt={data?.objects.getImage.name}
+					alt={
+						data?.objects.getImage.title ||
+						data?.objects.getImage.objectId
+					}
 					src={getImageUrl({
 						fileName: data?.objects.getImage?.file?.name,
 						height: imageSizes.height * 2,

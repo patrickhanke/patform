@@ -1,13 +1,9 @@
 "use client";
 
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { IconButton, SlideInForm } from "@repo/ui";
-import {
-	PatstoreAppContext,
-	generateGraphQLQuery,
-	useDataHandler
-} from "@repo/provider";
+import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import {
 	TableColumnEditFieldComponent,
 	TableColumnEditFieldProps
@@ -20,12 +16,14 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	Class extends Classes
 >({
 	objectId,
-	className
+	className,
+	dataFields
 }: TableColumnEditFieldProps) => {
 	const { updateData } = useDataHandler();
-	const { currentModule } = useContext(PatstoreAppContext);
 	const [data, setData] = useState(null as unknown as Class["data"]);
 	const [isOpen, setIsOpen] = useState(false);
+
+	console.log(dataFields);
 
 	const { loading, refetch } = useQuery(
 		generateGraphQLQuery({
@@ -77,7 +75,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 				isOpen={isOpen}
 				data={data}
 				setIsOpen={() => setIsOpen(false)}
-				fields={currentModule.fields || []}
+				fields={dataFields || []}
 				title="Objekt bearbeiten"
 				dataHandler={dataHandler}
 			/>

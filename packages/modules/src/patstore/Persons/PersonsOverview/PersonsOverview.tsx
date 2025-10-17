@@ -38,6 +38,8 @@ const PersonsOverview = () => {
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
+	console.log(currentModule);
+
 	const columns = useCreateColumns<PersonClass>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
