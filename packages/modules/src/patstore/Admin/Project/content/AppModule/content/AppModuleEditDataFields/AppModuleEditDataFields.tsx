@@ -56,7 +56,7 @@ const AppModuleEditDataFields = ({
 				cancel={() => setEditFields(false)}
 				confirm={() => slideInConfirmHandler()}
 				isOpen={editFields}
-				header="Felder bearbeiten"
+				header="Felder erstellen"
 				showSecondaryContent={!!activeField}
 				secondaryContent={
 					<AppModuleEditField

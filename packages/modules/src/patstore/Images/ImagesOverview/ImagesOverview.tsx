@@ -12,7 +12,7 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { DownloadClass, Filter, ImageClass } from "@repo/types";
+import { Filter, ImageClass } from "@repo/types";
 import {
 	PatstoreAppContext,
 	useDataHandler,
@@ -33,7 +33,7 @@ const ImagesOverview = () => {
 
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<DownloadClass>({
+	const { data, refetch, count } = useFindModuleData<ImageClass>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,

@@ -11,20 +11,23 @@ const AppModuleEditFields: React.FC<AppModuleEditFieldsProps> = ({
 	moduleId,
 	modulePath,
 	initialFields,
-	refetch
+	refetch,
+	moduleName
 }) => {
 	const { updateData } = useDataHandler(false, false);
 	const [editFields, setEditFields] = React.useState(false);
 	const [loading, setLoading] = useState(false);
 	const [fields, setFields] = useImmer<ModuleFieldsPartial>([]);
-
+	console.log("modulePath");
+	console.log(modulePath);
+	console.log("initialFields");
+	console.log(initialFields);
 	useEffect(() => {
 		setFields(generateInitialFields(initialFields, modulePath));
-	}, [editFields, modulePath]);
+	}, [editFields, initialFields, modulePath]);
 
 	const slideInConfirmHandler = useCallback(async () => {
 		setLoading(true);
-
 		const fieldsCopy = [...fields].sort((a, b) => a.position - b.position);
 		await updateData({
 			className: "Module",
@@ -69,7 +72,7 @@ const AppModuleEditFields: React.FC<AppModuleEditFieldsProps> = ({
 				cancel={() => setEditFields(false)}
 				confirm={() => slideInConfirmHandler()}
 				isOpen={editFields}
-				header="Felder bearbeiten"
+				header={`Felder für ${moduleName || "Modul"} bearbeiten`}
 				loading={loading}
 				disabled={[loading, loading]}
 			>

@@ -55,12 +55,14 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 				moduleId={id}
 				initialCategories={module.categories}
 				projectId={projectId}
+				moduleName={module.name}
 			/>
 			<AppModuleEditFields
 				moduleId={id}
 				modulePath={module.path}
 				initialFields={module.fields}
 				refetch={refetch}
+				moduleName={module.name}
 			/>
 			<AppModuleEditDataFields
 				moduleId={id}

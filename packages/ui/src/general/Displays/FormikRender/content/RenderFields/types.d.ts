@@ -61,4 +61,5 @@ export type SelectToggleProps = {
 	value: boolean;
 	valueChangeHandler: (value: boolean) => void;
 	disabled: boolean;
+	name: string;
 };

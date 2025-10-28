@@ -169,23 +169,28 @@ const RenderFields: FC<RenderFieldsType> = ({
 							/>
 						)}
 						{field.type === "toggle" && (
-							<FastField name={field.name}>
-								{({ field: fieldValues }: FastFieldProps) => (
-									<SelectToggle
-										value={fieldValues.value}
-										valueChangeHandler={(value: boolean) =>
-											setFieldValue(
-												field.name,
-												value,
-												true
-											)
-										}
-										disabled={fieldDisabledHandler(
-											field,
-											values
-										)}
-									/>
-								)}
+							<FastField key={field.name} name={field.name}>
+								{({ field: fieldValues }: FastFieldProps) => {
+									return (
+										<SelectToggle
+											value={fieldValues.value}
+											name={fieldValues.name}
+											valueChangeHandler={(
+												value: boolean
+											) =>
+												setFieldValue(
+													field.name,
+													value,
+													true
+												)
+											}
+											disabled={fieldDisabledHandler(
+												field,
+												values
+											)}
+										/>
+									);
+								}}
 							</FastField>
 						)}
 						{field.type === "select" && (

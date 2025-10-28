@@ -8,6 +8,7 @@ export type AppModuleEditFieldsProps = {
 	moduleId: string;
 	modulePath: Module["path"];
 	refetch: ApolloRefetch;
+	moduleName?: string;
 };
 
 export type AppModuleFieldProps = {

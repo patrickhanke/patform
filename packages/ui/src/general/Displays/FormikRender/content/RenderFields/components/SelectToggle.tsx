@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import { SelectToggleProps } from "../types";
 import { Switch } from "@chakra-ui/react";
 
@@ -11,14 +11,12 @@ const SelectToggle: FC<SelectToggleProps> = ({
 		<Switch.Root
 			checked={value}
 			onCheckedChange={({ checked }) => {
-				console.log(checked);
 				valueChangeHandler(checked);
 			}}
 			disabled={disabled}
 			size={"sm"}
 			colorPalette={"green"}
 			data-is_horizontal={true}
-			// as={"div"}
 		>
 			<Switch.HiddenInput />
 			<Switch.Control>
@@ -28,4 +26,4 @@ const SelectToggle: FC<SelectToggleProps> = ({
 	);
 };
 
-export default SelectToggle;
+export default memo(SelectToggle);

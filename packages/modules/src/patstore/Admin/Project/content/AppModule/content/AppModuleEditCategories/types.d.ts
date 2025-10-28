@@ -5,6 +5,7 @@ export type AppModuleEditCategorysProps = {
 	initialCategories: ModuleCategory[];
 	moduleId: string;
 	projectId: string;
+	moduleName?: string;
 };
 
 export type AppModuleCategoryProps = {

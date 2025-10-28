@@ -1,4 +1,4 @@
-import { Form } from "@repo/ui";
+import { Field, Form } from "@repo/ui";
 
 import { AppModuleFieldProps } from "../types";
 import { useMemo } from "react";
@@ -19,7 +19,7 @@ const AppModuleField = ({
 				name: "active",
 				type: "toggle" as const,
 				value: field.active,
-				disabled: () => isDefault
+				disabled: false
 			},
 			{
 				id: "required",
@@ -46,7 +46,7 @@ const AppModuleField = ({
 				<h3>{field.label}</h3>
 			</div>
 			<Form
-				fields={formFields}
+				fields={formFields as Field[]}
 				data={field}
 				formSubmitHandler={(values) =>
 					changeField({ ...field, ...values })

@@ -168,7 +168,7 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 
 	return (
 		<Modal
-			header="Monatsdaten aktualisieren"
+			header="Monatsdaten drucken"
 			isOpen={printWorkerTimes}
 			cancelButtonHandler={() => closeModal()}
 			confirmButtonHandler={modalButtons.onClick}

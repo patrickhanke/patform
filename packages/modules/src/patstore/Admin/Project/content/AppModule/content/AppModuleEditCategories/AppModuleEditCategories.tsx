@@ -19,9 +19,10 @@ import { AppModuleEditCategorysProps } from "./types";
 const AppModuleEditCategories = ({
 	moduleId,
 	initialCategories,
-	projectId
+	projectId,
+	moduleName
 }: AppModuleEditCategorysProps) => {
-	const { updateData } = useDataHandler(true, false);;
+	const { updateData } = useDataHandler(true, false);
 	const [editCategories, setEditCategories] = React.useState(false);
 	const [loading, setLoading] = useState(false);
 	const [categories, setCategories] = useImmer<ModuleCategory[]>(
@@ -62,7 +63,7 @@ const AppModuleEditCategories = ({
 				cancel={() => setEditCategories(false)}
 				confirm={() => slideInConfirmHandler()}
 				isOpen={editCategories}
-				header="Felder bearbeiten"
+				header={`Kategorien für ${moduleName || "Modul"} bearbeiten`}
 				showSecondaryContent={!!activeCategory}
 				secondaryContent={
 					<AppModuleEditCategory

@@ -21,7 +21,7 @@ const generateInitialFields = (
 
 			return {
 				...field,
-				active: isDefault || initialField.active,
+				active: initialField.active,
 				required: initialField.required,
 				position: initialField.position,
 				default: isDefault || initialField.default
