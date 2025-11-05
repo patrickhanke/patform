@@ -100,8 +100,8 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 					placeholder="Suche nach Bildnamen"
 					onChange={(e) => {
 						const filter: Filter = {
-							id: "name",
-							key: "name",
+							id: "title",
+							key: "title",
 							operator: "_regex",
 							value: e
 						};

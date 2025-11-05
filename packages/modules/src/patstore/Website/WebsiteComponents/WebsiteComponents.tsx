@@ -86,7 +86,7 @@ const WebsiteComponents = () => {
 				fields={[
 					{
 						type: "input",
-						key: "name",
+						key: "title",
 						operator: "_regex",
 						value: "",
 						placeholder: "Suchwort"
