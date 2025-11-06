@@ -37,11 +37,11 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 			images.forEach((image) => {
 				imagesArray.push({
 					value: image.objectId,
-					label: image.name,
+					label: image.title,
 					element: (
 						<DisplayImageElement
 							fileName={image?.file?.name}
-							name={image?.name}
+							name={image?.title}
 						/>
 					)
 				});

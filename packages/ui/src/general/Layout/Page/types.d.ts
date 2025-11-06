@@ -1,12 +1,11 @@
-import { Module, PageState } from "@repo/types";
-import { Field } from "../../Displays";
+import { ApolloRefetch, Module, ModuleField, PageState } from "@repo/types";
 import { ReactNode } from "react";
 
 export type CreateClassProps = {
 	initialData?: {
 		[key: keyof T]: string | number | boolean | Array<> | object;
 	};
-	fields: Array<Field>;
+	fields: ModuleField[];
 	text: string;
 	className: string;
 	refetch?: () => void;
@@ -36,16 +35,7 @@ export type PageProps = {
 	pageStates?: PageState[];
 	pageState?: PageState;
 	setPageState?: Dispatch<SetStateAction<PageState>>;
-	refetch?: () => void;
+	refetch?: ApolloRefetch;
 	createClass?: PageCreateClassObject;
 	emptyContent?: boolean;
 };
-
-export type CreateClassData = (T: {
-	className: string;
-	text: string;
-	fields: Module["fields"];
-	initialData?: {
-		[key: keyof T]: string | number | boolean | Array<> | object;
-	};
-}) => CreateClassProps;

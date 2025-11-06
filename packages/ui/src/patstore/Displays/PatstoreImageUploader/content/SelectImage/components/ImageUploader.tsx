@@ -10,7 +10,8 @@ const ImageUploader: FC<ImageUploaderProps> = ({
 	onComplete,
 	maxFileCount,
 	afterUploadHandler,
-	classId
+	classId,
+	setLoading
 }) => {
 	const [isComplete, setIsComplete] = useState(false);
 
@@ -47,6 +48,7 @@ const ImageUploader: FC<ImageUploaderProps> = ({
 			maxFileCount={maxFileCount}
 			type="image"
 			inline
+			setLoading={setLoading}
 		/>
 	);
 };

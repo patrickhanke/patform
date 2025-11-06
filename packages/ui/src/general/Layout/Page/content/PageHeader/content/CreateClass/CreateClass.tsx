@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useContext, useState } from "react";
-import { SlideInForm } from "@repo/ui";
+import { getDatabaseDefaultFields, SlideInForm } from "@repo/ui";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import { CreateClassProps } from "./types";
 import { Classes } from "@repo/types";
@@ -39,6 +39,8 @@ const CreateClass = <T extends Classes>({
 		},
 		[user]
 	);
+	console.log(fields);
+	console.log(getDatabaseDefaultFields(fields));
 
 	return (
 		<>
@@ -53,7 +55,7 @@ const CreateClass = <T extends Classes>({
 				isOpen={isOpen}
 				title={text}
 				setIsOpen={setIsOpen}
-				fields={fields}
+				fields={getDatabaseDefaultFields(fields)}
 				data={initialData}
 				dataHandler={(values) => dataHandler(values)}
 			/>

@@ -5,6 +5,8 @@ export type SelectImageProps = {
 	maxFileCount: number;
 	selectedImages: string[];
 	setSelectedImages: Dispatch<SetStateAction<string[]>>;
+	loading?: boolean;
+	setLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
 export type UseFindImagesHook = (T: {
@@ -47,6 +49,7 @@ export type ImageUploaderProps = {
 	className?: string;
 	classKey?: string;
 	classId?: string;
+	setLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
 export type SelectImagesInterfaceProps = {

@@ -22,7 +22,7 @@ const useNetlifyHooks = () => {
 					objectClass === "Group"
 				) {
 					axios.post(
-						"ttps://api.netlify.com/build_hooks/690c760578610ba16cc20019"
+						"https://api.netlify.com/build_hooks/690c760578610ba16cc20019"
 					);
 					return axios.post(
 						"https://api.netlify.com/build_hooks/682ae7fb29acb184f8de3d77"

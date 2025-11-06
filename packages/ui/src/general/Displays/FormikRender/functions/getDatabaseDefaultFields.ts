@@ -5,9 +5,8 @@ import { Field } from "../types";
 const getDatabaseDefaultFields = (fields: ModuleField[]) => {
 	const formFields: Field[] = [];
 	fields.forEach((field) => {
-		console.log({ field });
 
-		if (field.default && field.active) {
+		if (field.required && field.active) {
 			const databaseField = database_fields.find(
 				(f) => f.id === field.id
 			);

@@ -101,6 +101,15 @@ const module_fields: ModuleField[] = [
 		default: false
 	},
 	{
+		id: "times",
+		label: "Zeiten",
+		required: false,
+		type: "edit_times",
+		active: true,
+		position: 4,
+		default: false
+	},
+	{
 		id: "link",
 		label: "Link",
 		required: false,

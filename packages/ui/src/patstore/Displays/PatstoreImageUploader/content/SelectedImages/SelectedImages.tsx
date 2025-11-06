@@ -55,7 +55,7 @@ const SelectedImages: FC<SelectedImagesProps> = ({
 							key={image.objectId}
 							id={image.objectId}
 							image={image.file}
-							name={image.name}
+							name={image.title || image.file?.name || ""}
 							maxFileCount={maxFileCount}
 							removeImageHandler={removeImageHandler}
 						/>

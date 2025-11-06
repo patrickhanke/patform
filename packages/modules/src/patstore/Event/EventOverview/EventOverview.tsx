@@ -2,7 +2,6 @@
 
 import { useContext, useMemo, useState } from "react";
 import {
-	createClassData,
 	generateColumnsFromFields,
 	Page,
 	RenderFilters,
@@ -62,11 +61,12 @@ const EventOverview = () => {
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
-			createClass={createClassData({
+			createClass={{
 				className: "Event",
 				text: "Neue Veranstaltung erstellen",
-				fields: currentModule.fields
-			})}
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			refetch={refetch}
 		>
 			<Table

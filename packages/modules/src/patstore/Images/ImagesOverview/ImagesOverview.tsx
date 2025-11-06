@@ -2,7 +2,6 @@
 
 import { useContext, useMemo, useState } from "react";
 import {
-	createClassData,
 	generateColumnsFromFields,
 	Modal,
 	Page,
@@ -94,11 +93,12 @@ const ImagesOverview = () => {
 			title="Bilder"
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
-			createClass={createClassData({
+			createClass={{
 				className: "Image",
 				text: "Neue Bilder erstellen",
-				fields: currentModule.fields
-			})}
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 		>
 			<Separator size="xs" noLine />
 			<Table

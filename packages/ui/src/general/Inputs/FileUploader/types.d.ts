@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 type FileUploadType = "image" | "file";
 type FileUploadValue = string[] | string;
 type FileObject = {
@@ -17,6 +19,7 @@ export type FileUplaoderProps = {
 	setSecondaryContent?: Dispatch<SetStateAction<ReactNode>> | undefined;
 	existingFile?: FileObject;
 	inline?: boolean;
+	setLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
 export type UplaoderProps = {
@@ -25,6 +28,7 @@ export type UplaoderProps = {
 	className: "Download" | "Image";
 	classKey: string;
 	classId?: string;
+	setLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
 export type UseRenderPreviewContentHook = ({

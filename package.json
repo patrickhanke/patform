@@ -5,6 +5,8 @@
   "scripts": {
     "build": "dotenv -- turbo build",
     "dev": "dotenv -- turbo dev",
+    "dev:patstore": "dotenv -- turbo dev --filter=patstore",
+    "dev:patflow": "dotenv -- turbo dev --filter=patflow",
     "lint": "turbo lint",
     "gen": "turbo gen",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

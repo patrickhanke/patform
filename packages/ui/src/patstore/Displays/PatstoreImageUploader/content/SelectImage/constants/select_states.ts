@@ -1,12 +1,15 @@
-const select_states = [
-	{
-		label: "Bilder auswählen",
-		value: "select"
-	},
-	{
-		label: "Bilder hochladen",
-		value: "upload"
-	}
-] as const;
+const select_states = (loading: boolean) =>
+	[
+		{
+			label: "Bilder auswählen",
+			value: "select",
+			disabled: loading
+		},
+		{
+			label: "Bilder hochladen",
+			value: "upload",
+			disabled: loading
+		}
+	] as const;
 
 export default select_states;

@@ -18,7 +18,8 @@ const FileUploader = ({
 	classId,
 	setSecondaryContent,
 	existingFile,
-	inline = false
+	inline = false,
+	setLoading
 }: FileUplaoderProps) => {
 	const [uploadModal, setUploadModal] = useState(false);
 
@@ -44,6 +45,7 @@ const FileUploader = ({
 				className={className}
 				classId={classId}
 				afterUploadHandler={afterUploadHandler}
+				setLoading={setLoading}
 			/>
 		);
 	}
@@ -62,6 +64,7 @@ const FileUploader = ({
 								className={className}
 								classId={classId}
 								afterUploadHandler={afterUploadHandler}
+								setLoading={setLoading}
 							/>
 						);
 					}
@@ -86,6 +89,7 @@ const FileUploader = ({
 						className={className}
 						classId={classId}
 						afterUploadHandler={afterUploadHandler}
+						setLoading={setLoading}
 					/>
 				</Modal>
 			)}

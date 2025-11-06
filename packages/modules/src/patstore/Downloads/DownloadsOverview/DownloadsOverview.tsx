@@ -2,7 +2,6 @@
 
 import { useContext, useState, useMemo } from "react";
 import {
-	createClassData,
 	generateColumnsFromFields,
 	Modal,
 	Page,
@@ -83,11 +82,12 @@ const DownloadsOverview = () => {
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
-			createClass={createClassData({
+			createClass={{
 				className: "Download",
 				text: "Neuen Download erstellen",
-				fields: currentModule.fields
-			})}
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
 		>

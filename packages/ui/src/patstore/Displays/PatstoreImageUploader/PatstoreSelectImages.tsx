@@ -33,6 +33,7 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 	const [selectedImages, setSelectedImages] = useState<string[]>(
 		checkForImages(image, maxFileCount)
 	);
+	const [loading, setLoading] = useState(false);
 
 	const secondaryContent = useMemo(() => {
 		if (!selectImages) {
@@ -43,9 +44,11 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 				maxFileCount={maxFileCount}
 				selectedImages={selectedImages}
 				setSelectedImages={setSelectedImages}
+				loading={loading}
+				setLoading={setLoading}
 			/>
 		);
-	}, [selectedImages, selectImages, maxFileCount]);
+	}, [selectedImages, selectImages, maxFileCount, loading]);
 
 	const confirmHandler = useCallback(async () => {
 		await onChange(maxFileCount > 1 ? selectedImages : selectedImages[0]);
@@ -69,6 +72,7 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 				confirm={() => confirmHandler()}
 				secondaryContent={secondaryContent}
 				showSecondaryContent
+				loading={loading}
 			>
 				<SelectedImages
 					selectedImages={selectedImages}

@@ -2,7 +2,6 @@
 
 import { useContext, useState, useMemo } from "react";
 import {
-	createClassData,
 	generateColumnsFromFields,
 	Modal,
 	Page,
@@ -83,16 +82,19 @@ const ArticlesOverview = () => {
 		);
 	}, []);
 
+	console.log(currentModule);
+
 	return (
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
-			createClass={createClassData({
+			createClass={{
 				className: "Article",
 				text: "Neuen Bericht erstellen",
-				fields: currentModule.fields
-			})}
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			refetch={refetch}
 		>
 			<Table

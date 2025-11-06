@@ -2,7 +2,6 @@
 
 import { useContext, useState, useMemo } from "react";
 import {
-	createClassData,
 	generateColumnsFromFields,
 	Modal,
 	Page,
@@ -87,11 +86,12 @@ const GroupOverview = () => {
 			title={currentModule.name}
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
-			createClass={createClassData({
+			createClass={{
 				className: "Group",
 				text: "Neue Gruppe erstellen",
-				fields: currentModule.fields
-			})}
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			refetch={refetch}
 		>
 			{/* {process.env.NODE_ENV === "development" && (

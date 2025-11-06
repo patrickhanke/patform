@@ -11,7 +11,9 @@ import SelectImagesInterface from "./components/SelectImagesInterface";
 const SelectImage: FC<SelectImageProps> = ({
 	maxFileCount,
 	selectedImages,
-	setSelectedImages
+	setSelectedImages,
+	loading = false,
+	setLoading
 }) => {
 	const { project } = useAppContext();
 
@@ -20,17 +22,17 @@ const SelectImage: FC<SelectImageProps> = ({
 	)?.objectId;
 
 	const [selectState, setSelectState] = useState<SwitchButton>(
-		select_states[0]
+		select_states(loading)[0]
 	);
 
 	const onImageChange = () => {
-		setSelectState(select_states[0]);
+		setSelectState(select_states(loading)[0]);
 	};
 
 	return (
 		<div className="flex col a-st gap-xs">
 			<SwitchButtons
-				buttonStates={[...select_states]}
+				buttonStates={[...select_states(loading)]}
 				changeHandler={setSelectState}
 				currentStates={selectState}
 			/>
@@ -43,6 +45,7 @@ const SelectImage: FC<SelectImageProps> = ({
 					afterUploadHandler={onImageChange}
 					maxFileCount={maxFileCount}
 					inline
+					setLoading={setLoading}
 				/>
 			)}
 			{moduleId && selectState.value === "select" && (

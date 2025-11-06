@@ -18,9 +18,9 @@ const DisplayImageElement: FC<DisplayImageElementProps> = ({
 				width={106}
 				height={66}
 				style={{ objectFit: "contain" }}
-				alt={name}
+				alt={name || fileName}
 			/>
-			<h3>{name}</h3>
+			<h3>{name || fileName}</h3>
 		</div>
 	);
 };

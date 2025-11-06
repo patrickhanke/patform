@@ -284,31 +284,37 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_state"
 			) {
 				columnArray.push({
-					accessorFn: (row) =>
-						get(constants, columnElement.id, undefined) ? (
-							<TableColumnEditState
-								value={row[columnElement.id] as string}
-								isEditable={
-									columnElement.disabled
-										? columnElement.disabled(row)
-										: true
+					accessorFn: (row) => (
+						<TableColumnEditState
+							value={row[columnElement.id] as string}
+							isEditable={
+								columnElement.disabled
+									? columnElement.disabled(row)
+									: true
+							}
+							options={get(constants, columnElement.id, [
+								{
+									value: "published",
+									label: "Veröffentlicht",
+									color: "green"
+								},
+								{
+									value: "draft",
+									label: "Entwurf",
+									color: "yellow"
 								}
-								options={get(constants, columnElement.id, [])}
-								onChange={(value: ClassState) =>
-									updateColumnData({
-										objectId: row.objectId,
-										updateObject: {
-											[columnElement.id]: value.value
-										},
-										feedback: "Status aktualisiert"
-									})
-								}
-							/>
-						) : (
-							<p className="error_message">
-								Keinen korrekten Status übergeben
-							</p>
-						),
+							])}
+							onChange={(value: ClassState) =>
+								updateColumnData({
+									objectId: row.objectId,
+									updateObject: {
+										[columnElement.id]: value.value
+									},
+									feedback: "Status aktualisiert"
+								})
+							}
+						/>
+					),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),

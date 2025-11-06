@@ -1,7 +1,6 @@
 "use client";
 
 import {
-	createClassData,
 	generateColumnsFromFields,
 	Page,
 	Table,
@@ -39,11 +38,12 @@ const FormsOverview = () => {
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
-			createClass={createClassData({
+			createClass={{
 				className: "Form",
 				text: "Neues Formular erstellen",
-				fields: currentModule.fields
-			})}
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			refetch={refetch}
 		>
 			<Table

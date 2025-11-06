@@ -7,7 +7,6 @@ import {
 	useFindModuleData
 } from "@repo/provider";
 import {
-	createClassData,
 	generateColumnsFromFields,
 	Modal,
 	Page,
@@ -85,11 +84,12 @@ const LocationOverview = () => {
 		<Page
 			title={currentModule.name}
 			emptyContent={true}
-			createClass={createClassData({
+			createClass={{
 				className: "Location",
 				text: "Neuen Ort erstellen",
-				fields: currentModule.fields
-			})}
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
 		>

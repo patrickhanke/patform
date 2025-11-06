@@ -12,7 +12,8 @@ const Uploader: React.FC<UplaoderProps> = ({
 	afterUploadHandler,
 	className,
 	classKey,
-	classId
+	classId,
+	setLoading
 }) => {
 	const { createUpdateFile } = useDataHandler();
 	const { modules } = useContext(PatstoreAppContext);
@@ -27,7 +28,9 @@ const Uploader: React.FC<UplaoderProps> = ({
 
 	const uploadHandler = useCallback(async () => {
 		setIsUploading(true);
-		console.log(files);
+		if (setLoading) {
+			setLoading(true);
+		}
 		if (moduleId && files) {
 			const uploads = Array.from(files).map((file) => {
 				const fileName: string = file.name;
@@ -55,6 +58,9 @@ const Uploader: React.FC<UplaoderProps> = ({
 			]);
 		}
 		setIsUploading(false);
+		if (setLoading) {
+			setLoading(false);
+		}
 	}, [files, moduleId]);
 
 	return (
@@ -69,6 +75,7 @@ const Uploader: React.FC<UplaoderProps> = ({
 				maxW="xl"
 				alignItems="stretch"
 				maxFiles={10}
+				disabled={isUploading}
 			>
 				<FileUpload.HiddenInput />
 				<FileUpload.Dropzone>
@@ -76,17 +83,18 @@ const Uploader: React.FC<UplaoderProps> = ({
 						<LuUpload />
 					</Icon>
 					<FileUpload.DropzoneContent>
-						<Box>Drag and drop files here</Box>
-						<Box color="fg.muted">.png, .jpg up to 5MB</Box>
+						<Box>Ziehe Dateien hierher</Box>
+						<Box color="fg.muted">.png, .jpg bis 5MB</Box>
 					</FileUpload.DropzoneContent>
 				</FileUpload.Dropzone>
-				<FileUpload.List clearable />
+				<FileUpload.List clearable={!isUploading} />
 			</FileUpload.Root>
 			<IconButton
 				icon="upload"
 				text="Hochladen"
 				onClick={() => uploadHandler()}
 				loading={isUploading}
+				size={16}
 			/>
 			<ErrorDisplay errors={errors} />
 		</div>
