@@ -14,7 +14,7 @@ const useFindContent: UseFindContentHook = ({
 			objectName: "Content",
 			fields: [
 				"objectId",
-				"name",
+				"title",
 				"content_id",
 				"type",
 				"createdAt",

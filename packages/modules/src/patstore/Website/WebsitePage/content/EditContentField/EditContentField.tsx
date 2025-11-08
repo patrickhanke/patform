@@ -60,7 +60,7 @@ const EditContentField: FC<EditContentFieldProps> = ({
 		}
 		return webpageContent.map((element) => ({
 			value: element.objectId,
-			label: element.name
+			label: element.title
 		}));
 	}, [webpageContent]);
 
@@ -93,7 +93,7 @@ const EditContentField: FC<EditContentFieldProps> = ({
 
 	return (
 		<div className="flex row a-ce j-sb gap-sm w-100">
-			<h3>{field.name}</h3>
+			<h3>{field.title}</h3>
 			<div className="button_container">
 				<StateDisplay
 					color="yellow"
@@ -180,7 +180,7 @@ const EditContentField: FC<EditContentFieldProps> = ({
 					setDeleteModal(false);
 				}}
 			>
-				Sind Sie sicher, dass Sie das Element &quot;{field.name}&quot;
+				Sind Sie sicher, dass Sie das Element &quot;{field.title}&quot;
 				löschen möchten?
 			</Modal>
 		</div>

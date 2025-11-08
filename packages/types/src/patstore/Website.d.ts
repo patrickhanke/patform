@@ -12,7 +12,7 @@ export type WebpageClass = ClassProperties & {
 };
 
 export type WebpageContentText = {
-    name: string;
+    title: string;
     id: string;
     type: 'text';
     position: number;
@@ -21,7 +21,7 @@ export type WebpageContentText = {
 };
 
 export type WebpageContentImage = {
-    name: string;
+    title: string;
     id: string;
     type: 'image';
     position: number;
@@ -30,7 +30,7 @@ export type WebpageContentImage = {
 };
 
 export type WebpageContentVideo = {
-    name: string;
+    title: string;
     id: string;
     type: 'video';
     position: number;
@@ -39,7 +39,7 @@ export type WebpageContentVideo = {
 };
 
 export type WebpageContentTable = {
-    name: string;
+    title: string;
     id: string;
     type: 'table';
     position: number;
@@ -48,7 +48,7 @@ export type WebpageContentTable = {
 };
 
 export type WebpageContentDivider = {
-    name: string;
+    title: string;
     id: string;
     type: 'divider';
     position: number;
