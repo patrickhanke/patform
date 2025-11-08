@@ -1,6 +1,5 @@
 import { IconButtonProps } from "./types";
 import Link from "next/link";
-import "./styles.scss";
 import Icons from "./Icons";
 import { FC } from "react";
 import { Button } from "@chakra-ui/react";
@@ -28,6 +27,8 @@ const IconButton: FC<IconButtonProps> = ({
 				disabled={disabled}
 				color={color}
 				loading={loading}
+				style={{ transformOrigin: "center", height: "auto" }}
+				padding={text ? "auto" : "8px"}
 			>
 				<Icons icon={icon} />
 				{text}
@@ -41,7 +42,7 @@ const IconButton: FC<IconButtonProps> = ({
 				onClick={() => null}
 				variant="subtle"
 				size="2xs"
-				scale={0.9}
+				// scale={0.9}
 				disabled={disabled}
 				color={color}
 				asChild

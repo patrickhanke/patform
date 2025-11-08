@@ -45,7 +45,7 @@ import { IoDocumentsOutline } from "react-icons/io5";
 import { LiaCommentsSolid } from "react-icons/lia";
 import { MdOutlinePassword } from "react-icons/md";
 import { IoImagesOutline } from "react-icons/io5";
-import { LuArchive } from "react-icons/lu";
+import { LuArchive, LuRefreshCcw } from "react-icons/lu";
 import { TfiList, TfiViewList } from "react-icons/tfi";
 import { IoIosTimer } from "react-icons/io";
 import { IconProps } from "./types";
@@ -209,6 +209,9 @@ const Icons: React.FC<IconProps> = ({ icon, color }) => {
 	}
 	if (icon === "upload") {
 		return <AiOutlineUpload color={color || "inherit"} />;
+	}
+	if (icon === "refresh") {
+		return <LuRefreshCcw color={color || "inherit"} />;
 	}
 
 	return null;

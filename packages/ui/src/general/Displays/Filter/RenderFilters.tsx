@@ -7,8 +7,8 @@ import FilterSelect from "./components/FilterSelect";
 import "./styles.scss";
 import { Select } from "../../Inputs";
 import filterChangeHandler from "./functions/filterChangeHandler";
-import { RefreshCcw } from "lucide-react";
 import { useDebounceValue } from "usehooks-ts";
+import { IconButton } from "../../Buttons";
 
 const RenderFilters = ({
 	categories,
@@ -93,17 +93,11 @@ const RenderFilters = ({
 		<div className="filter_container">
 			<div className="button_container">{renderFilters}</div>
 			<div>
-				<button
-					className="full_button primary md"
+				<IconButton
+					icon="refresh"
 					onClick={() => setFilters(initialFilters)}
-				>
-					<span>
-						<RefreshCcw
-							size={12}
-							style={{ transform: "translateY(2px)" }}
-						/>
-					</span>
-				</button>
+					size={16}
+				/>
 			</div>
 		</div>
 	);

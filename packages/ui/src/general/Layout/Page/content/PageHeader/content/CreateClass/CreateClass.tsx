@@ -39,8 +39,6 @@ const CreateClass = <T extends Classes>({
 		},
 		[user]
 	);
-	console.log(fields);
-	console.log(getDatabaseDefaultFields(fields));
 
 	return (
 		<>

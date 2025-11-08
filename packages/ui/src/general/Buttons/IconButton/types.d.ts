@@ -53,7 +53,8 @@ export type IconTypes =
 	| "time"
 	| "plus"
 	| "minus"
-	| "upload";
+	| "upload"
+	| "refresh";
 
 export type IconProps = {
 	icon: IconTypes;
