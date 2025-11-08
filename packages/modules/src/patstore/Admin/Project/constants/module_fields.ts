@@ -1,7 +1,7 @@
 const module_fields = [
 	{
-		id: "name",
-		label: "Name",
+		id: "title",
+		label: "Titel",
 		required: false,
 		type: "edit_string",
 		active: true

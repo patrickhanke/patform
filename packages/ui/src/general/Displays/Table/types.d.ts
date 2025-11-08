@@ -129,7 +129,8 @@ export type ColumnDataTypes =
 	| "updated_by"
 	| "created_by"
 	| "edit_webpage_components"
-	| "files";
+	| "files"
+	| "image_preview";
 
 export type ColumnData<Class> = {
 	id: keyof Class;

@@ -18,10 +18,6 @@ const AppModuleEditFields: React.FC<AppModuleEditFieldsProps> = ({
 	const [editFields, setEditFields] = React.useState(false);
 	const [loading, setLoading] = useState(false);
 	const [fields, setFields] = useImmer<ModuleFieldsPartial>([]);
-	console.log("modulePath");
-	console.log(modulePath);
-	console.log("initialFields");
-	console.log(initialFields);
 	useEffect(() => {
 		setFields(generateInitialFields(initialFields, modulePath));
 	}, [editFields, initialFields, modulePath]);
@@ -83,7 +79,7 @@ const AppModuleEditFields: React.FC<AppModuleEditFieldsProps> = ({
 						}
 						ItemComponent={({ item }) => (
 							<AppModuleField
-								key={item.id}
+								key={`${item.id}_${item.type}`}
 								field={item as ModuleField}
 								changeField={changeField}
 								modulePath={modulePath}

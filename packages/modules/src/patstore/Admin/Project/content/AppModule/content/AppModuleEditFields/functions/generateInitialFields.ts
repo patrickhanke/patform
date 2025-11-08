@@ -1,37 +1,52 @@
 import default_fields from "../constants/default_fields";
+import disabled_fields from "../constants/disabled_fields";
 import module_fields from "../constants/module_fields";
 import special_fields from "../constants/special_fields";
 import { ModuleFieldsPartial } from "../types";
-import { Module } from "@repo/types";
+import { Module, ModuleField } from "@repo/types";
 
 const generateInitialFields = (
 	initialFields: ModuleFieldsPartial,
 	modulePath: Module["path"]
 ) => {
-	const allfields = [...module_fields, ...special_fields(modulePath)];
+	const generateFields = () => {
+		const allFieldsArray = [
+			...special_fields(modulePath),
+			...module_fields
+		];
+		const fieldArray: ModuleField[] = [];
+		allFieldsArray.forEach((field) => {
+			if (!fieldArray.find((f) => f.id === field.id)) {
+				fieldArray.push(field);
+			}
+		});
+		const filteredFieldArray = fieldArray.filter(
+			(field) => !disabled_fields[modulePath]?.includes(field.id)
+		);
+
+		return filteredFieldArray;
+	};
+	const allfields = generateFields();
 
 	const fields: ModuleFieldsPartial = allfields.map((field) => {
 		const initialField = initialFields.find(
 			(initialField) => initialField.id === field.id
 		);
 		if (initialField) {
-			console.log(initialField);
 			const isDefault = default_fields[modulePath]?.includes(field.id);
-			console.log({ isDefault });
 
 			return {
 				...field,
-				active: initialField.active,
+				active: isDefault ? true : initialField.active,
 				required: initialField.required,
 				position: initialField.position,
-				default: isDefault || initialField.default
+				default: isDefault || initialField.default,
+				disabled: isDefault
 			};
 		} else {
 			return field;
 		}
 	});
-
-	console.log({ fields });
 
 	return fields;
 };

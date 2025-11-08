@@ -1,6 +1,19 @@
 import { ModuleField } from "@repo/types";
 
 const special_fields = (modulePath: string): ModuleField[] => {
+	if (modulePath === "/images") {
+		return [
+			{
+				id: "file",
+				label: "Vorschaubild",
+				required: false,
+				type: "image_preview",
+				active: true,
+				position: 1,
+				default: true
+			}
+		];
+	}
 	if (modulePath === "/arcticles") {
 		return [
 			{

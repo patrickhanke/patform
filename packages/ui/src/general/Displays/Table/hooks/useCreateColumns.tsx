@@ -322,12 +322,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 					enableSorting: columnElement.enableSorting ?? false
 				} as ColumnDef<T>);
 			}
-			if (columnElement.type === "image") {
+			if (
+				columnElement.type === "image" ||
+				columnElement.type === "image_preview"
+			) {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnImage
-							file={row[columnElement.id] as string | File}
-						/>
+						<TableColumnImage file={row[columnElement.id]} />
 					),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,

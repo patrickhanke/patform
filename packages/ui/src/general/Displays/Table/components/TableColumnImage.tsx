@@ -33,6 +33,8 @@ const TableColumnImage = ({ file }: TableColumnImageProps) => {
 			</>
 		);
 	}
+
+	console.log({ file });
 	return (
 		<>
 			<div className="horizontal_container">

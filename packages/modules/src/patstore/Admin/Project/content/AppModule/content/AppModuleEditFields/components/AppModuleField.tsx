@@ -2,15 +2,8 @@ import { Field, Form } from "@repo/ui";
 
 import { AppModuleFieldProps } from "../types";
 import { useMemo } from "react";
-import default_fields from "../constants/default_fields";
 
-const AppModuleField = ({
-	field,
-	changeField,
-	modulePath
-}: AppModuleFieldProps) => {
-	const isDefault = default_fields[modulePath]?.includes(field.id);
-
+const AppModuleField = ({ field, changeField }: AppModuleFieldProps) => {
 	const formFields = useMemo(
 		() => [
 			{
@@ -19,7 +12,7 @@ const AppModuleField = ({
 				name: "active",
 				type: "toggle" as const,
 				value: field.active,
-				disabled: false
+				disabled: field.default
 			},
 			{
 				id: "required",
@@ -43,7 +36,11 @@ const AppModuleField = ({
 	return (
 		<>
 			<div>
-				<h3>{field.label}</h3>
+				<h3>
+					{field.default === false
+						? field.label
+						: ` ${field.label} (Standardfeld)`}
+				</h3>
 			</div>
 			<Form
 				fields={formFields as Field[]}

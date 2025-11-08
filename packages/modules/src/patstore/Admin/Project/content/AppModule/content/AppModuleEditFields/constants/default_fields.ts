@@ -9,10 +9,10 @@ const default_fields: {
 	"/locations": ["title"],
 	"/persons": ["title", "description", "text", "image", "date", "gallery"],
 	"/downloads": ["title", "description", "file"],
-	"/forms": [],
-	"/images": ["title", "description", "file"],
+	"/forms": ["title"],
+	"/images": ["title", "description"],
 	"/news": ["title", "date"],
-	"/categories": []
+	"/categories": ["title"]
 };
 
 export default default_fields;
