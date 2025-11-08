@@ -44,6 +44,11 @@ const ImagesOverview = () => {
 
 	const columns = useCreateColumns<ImageClass>({
 		data: [
+			{
+				id: "image",
+				type: "image",
+				label: "Bild"
+			},
 			...generateColumnsFromFields(currentModule.fields),
 			{
 				id: "connected_elements",
