@@ -43,14 +43,7 @@ const ImagesOverview = () => {
 	const [deleteModal, setDeleteModal] = useState(false);
 
 	const columns = useCreateColumns<ImageClass>({
-		data: [
-			...generateColumnsFromFields(currentModule.fields),
-			{
-				id: "connected_elements",
-				type: "connected_elements",
-				label: "Verbundene Elemente"
-			}
-		],
+		data: [...generateColumnsFromFields(currentModule.fields)],
 		fields: currentModule.data_fields,
 		className: "Image",
 		refetch,

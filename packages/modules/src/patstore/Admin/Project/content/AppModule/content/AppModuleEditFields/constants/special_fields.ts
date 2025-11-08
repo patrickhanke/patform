@@ -11,6 +11,15 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				active: true,
 				position: 1,
 				default: true
+			},
+			{
+				id: "connected_elements",
+				label: "Verbundene Elemente",
+				required: false,
+				type: "connected_elements",
+				active: true,
+				position: 10,
+				default: true
 			}
 		];
 	}

@@ -15,14 +15,18 @@ const generateInitialFields = (
 			...module_fields
 		];
 		const fieldArray: ModuleField[] = [];
+		
 		allFieldsArray.forEach((field) => {
 			if (!fieldArray.find((f) => f.id === field.id)) {
 				fieldArray.push(field);
 			}
 		});
+		console.log({ allFieldsArray });
 		const filteredFieldArray = fieldArray.filter(
 			(field) => !disabled_fields[modulePath]?.includes(field.id)
 		);
+
+		console.log({ filteredFieldArray });
 
 		return filteredFieldArray;
 	};

@@ -328,7 +328,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			) {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnImage file={row[columnElement.id]} />
+						<TableColumnImage file={row["file"]} />
 					),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
