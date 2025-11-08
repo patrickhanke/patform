@@ -305,7 +305,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 					obj.set("fields", []);
 					obj.set("description", "");
 					obj.set("date", formatISO9075(new Date()));
-					obj.set("name", name || fileName);
+					obj.set("title", name || fileName);
 					obj.set("active", false);
 					obj.set("module", {
 						__type: "Pointer",
