@@ -299,6 +299,13 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 						className: "_User",
 						objectId: user.objectId
 					});
+					if (project) {
+						obj.set("project", {
+							__type: "Pointer",
+							className: "Project",
+							objectId: project.objectId
+						});
+					}
 				} else {
 					obj.set(classKey, parseFile);
 					obj.set("categories", []);
@@ -317,6 +324,13 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 						className: "_User",
 						objectId: user.objectId
 					});
+					if (project) {
+						obj.set("project", {
+							__type: "Pointer",
+							className: "Project",
+							objectId: project.objectId
+						});
+					}
 				}
 				await obj
 					.save(null, {
