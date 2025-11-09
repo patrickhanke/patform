@@ -42,7 +42,7 @@ const GroupOverview = () => {
 	const columns = useCreateColumns<GroupClass>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
-		className: "Download",
+		className: "Group",
 		refetch,
 		categories: currentModule?.categories
 	});

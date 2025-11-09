@@ -30,7 +30,7 @@ function useFindModuleData<T extends Classes>({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: module.connected_class,
-			fields: generateQueryFromFields(module.fields)
+			fields: [...generateQueryFromFields(module.fields), "data"]
 		}),
 		{
 			variables: {
