@@ -36,14 +36,15 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
         }
       });
     }
-
-    menuItemsArray.push({
-      divider: "Einstellungen",
-      label: "Projekt",
-      value: "/settings/project",
-      icon: "project",
-      sub_menu: [],
-    })
+    if ((userRole && userRole.name === "Administrator") || user.is_superuser) {
+      menuItemsArray.push({
+        divider: "Einstellungen",
+        label: "Projekt",
+        value: "/settings/project",
+        icon: "project",
+        sub_menu: [],
+      })
+    }
 
     return menuItemsArray;
   }, [project, userRole]);

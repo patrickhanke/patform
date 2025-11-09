@@ -3,6 +3,8 @@
 import React from "react";
 import { ChakraProvider, createSystem, defaultConfig } from "@chakra-ui/react";
 import { chakraConfig } from "@repo/provider";
+import "@repo/styles/global";
+import "@repo/styles/layout";
 
 const Framework = ({children}: {children: React.ReactNode}) => {
   return (
@@ -11,8 +13,8 @@ const Framework = ({children}: {children: React.ReactNode}) => {
         <img
           src={"https://store.patwork.net/logo.png"}
           alt={"patstore"}
-          height={24}
-          width={24}
+          height={60}
+          width={60}
         />
       </div>
       <ChakraProvider value={createSystem(defaultConfig, chakraConfig)}>

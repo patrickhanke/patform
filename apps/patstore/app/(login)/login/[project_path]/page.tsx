@@ -1,5 +1,5 @@
 import { compileAxiosError } from "@repo/provider";
-import { DisplayProject, LoginForm } from "../content";
+import { DisplayProject, LoginForm } from "../../content";
 import axios from "axios";
 
 const fetchProject = async (path: string) => {
@@ -20,8 +20,10 @@ const fetchProject = async (path: string) => {
   }
 };
 
+
 const Login = async ({ params }: { params: { project_path: string } }) => {
   const response = await fetchProject(`${params.project_path}`);
+  console.log(response);
 
   if (response.success === false) {
     return (

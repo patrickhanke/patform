@@ -8,7 +8,8 @@ import * as Yup from "yup";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import PasswordForm from "./components/PasswordForm";
-import { IconButton } from "@repo/ui";
+import { Button } from "@chakra-ui/react";
+
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -22,7 +23,7 @@ const LoginForm = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [passwordReset, setPasswordReset] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const formik = useFormik({
     validationSchema: LoginSchema,
     initialValues: {
@@ -30,7 +31,7 @@ const LoginForm = () => {
       password: "",
     },
     onSubmit: async (values) => {
-      setDisabled(false);
+      setLoading(true);
 
       await axiosclient()
         .post("login", {
@@ -54,7 +55,7 @@ const LoginForm = () => {
             setDisabled(false);
           }
         });
-      setDisabled(false);
+      setLoading(false);
       router.push("/");
     },
   });
@@ -63,7 +64,7 @@ const LoginForm = () => {
     <div>
       <form onSubmit={formik.handleSubmit} className={"login_form_container"}>
         <div>
-          <h2>Login</h2>
+          <h4>Login</h4>
           <label htmlFor="email">E-Mail Adresse</label>
           <input
             id="email"
@@ -96,19 +97,25 @@ const LoginForm = () => {
           </div>
         </div>
         <div className="button_container">
-          <IconButton
+        <Button
             type="submit"
-            icon="login"
-            text="Anmelden"
-            disabled={disabled}
-            onClick={formik.handleSubmit}
-          />
-          <IconButton
-            icon="password"
-            text="Passwort vergessen?"
-            disabled={disabled}
+            className="full_button md primary"
+            disabled={loading}
+            onClick={() => confirm()}
+            loading={loading}
+          >
+            Anmelden
+          </Button>
+        <Button
+            type="button"
+            className="full_button md light"
+            disabled={loading}
             onClick={() => setPasswordReset(true)}
-          />
+            loading={loading}
+          >
+            Passwort vergessen?
+          </Button>
+        
         </div>
       </form>
       <div className="error_message">{error && error}</div>

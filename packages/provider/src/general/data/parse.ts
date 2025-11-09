@@ -1,7 +1,5 @@
 import Parse from "parse/dist/parse.min.js";
 
-console.log(process.env.SASHIDO_APP_ID);
-
 if (!Parse.applicationId) {
 	Parse.initialize(
 		process.env.SASHIDO_APP_ID,

@@ -29,7 +29,7 @@ const IconButton: FC<IconButtonProps> = ({
 				color={color}
 				loading={loading}
 				style={{ transformOrigin: "center", height: "auto" }}
-				padding={text ? "auto" : "8px"}
+				padding={text ? "6px 12px" : "8px"}
 			>
 				<Icons icon={icon} />
 				{text}
