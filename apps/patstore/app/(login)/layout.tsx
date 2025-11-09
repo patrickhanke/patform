@@ -2,6 +2,8 @@ import React from "react";
 import "@repo/styles/global";
 import "./styles.scss";
 import Framework from "./content/Framework";
+import { ChakraProvider, createSystem, defaultConfig } from "@chakra-ui/react";
+import { chakraConfig } from "@repo/provider";
 
 export const metadata = {
   title: "Patstore Login",
@@ -17,7 +19,9 @@ export default async function RootLayout({
     <html lang="de">
       <body className={"login_layout"}>
         <Framework />
-        <div className="login_content">{children}</div>
+        <ChakraProvider value={createSystem(defaultConfig, chakraConfig)}>
+          <div className="login_content">{children}</div>
+        </ChakraProvider>
       </body>
     </html>
   );
