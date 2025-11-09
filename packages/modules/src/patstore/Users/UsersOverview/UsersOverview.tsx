@@ -53,30 +53,16 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	});
 	const columns = useUserColumns({ refetch });
 
-	const [user, setUser] = useState<UserObject | undefined>();
-
-	useEffect(() => {
-		if (!user && createUser) {
-			setUser({
-				username: "",
-				value: "",
-				name: "",
-				projects: [project.objectId]
-			});
-		}
-	}, [createUser, user]);
-
 	const updateUserHandler = useCallback(
-		async ({ email, name }: { email: string; name: string }) => {
-			if (createUser && user) {
-				axiosclient().post("/functions/send-user-invitation", {
-					username: name,
-					email: email,
-					name: user.name,
-					project_id: project.objectId,
-					initial_invitation: true
-				});
-			}
+		async (values) => {
+			console.log(values);
+			axiosclient().post("/functions/send-user-invitation", {
+				username: values.username,
+				email: values.username,
+				name: values.name,
+				project_id: project.objectId,
+				initial_invitation: true
+			});
 
 			feedbackHandler({
 				success: true,
@@ -87,7 +73,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			await refetch();
 			setCreateUser(false);
 		},
-		[user]
+		[project]
 	);
 
 	const pageHeaderButtons = useMemo(

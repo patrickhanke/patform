@@ -8,8 +8,8 @@ const DisplayProject = ({ project }: { project?: PatstoreProject }) => {
         <img
           src={"https://store.patwork.net/logo.png"}
           alt={"pattstore"}
-          height={50}
-          width={50}
+          height={120}
+          width={120}
         />
         <h2>patwork</h2>
       </div>
@@ -18,8 +18,8 @@ const DisplayProject = ({ project }: { project?: PatstoreProject }) => {
 
   return (
     <div className="flex col a-ce gap-md ta-ce">
-      <img src={project.logo.url} alt={project.name} height={50}
-          width={50} />
+      <img src={project.logo.url} alt={project.name} height={120}
+          width={120} />
       <h2>{project.name}</h2>
     </div>
   );

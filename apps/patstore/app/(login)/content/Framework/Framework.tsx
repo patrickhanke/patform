@@ -14,11 +14,6 @@ const Framework = ({children}: {children: React.ReactNode}) => {
           height={24}
           width={24}
         />
-        <img
-          src={"https://store.patwork.net/lettering.png"}
-          alt={"patstore"}
-          height={24}
-        />
       </div>
       <ChakraProvider value={createSystem(defaultConfig, chakraConfig)}>
           <div className="login_content">{children}</div>
