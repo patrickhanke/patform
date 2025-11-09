@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import PasswordForm from "./components/PasswordForm";
+import { IconButton } from "@repo/ui";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -95,21 +96,19 @@ const LoginForm = () => {
           </div>
         </div>
         <div className="button_container">
-          <button
+          <IconButton
             type="submit"
-            className="full_button md primary"
+            icon="login"
+            text="Anmelden"
             disabled={disabled}
-          >
-            Anmelden
-          </button>
-          <button
-            type="button"
-            className="full_button md grey"
+            onClick={formik.handleSubmit}
+          />
+          <IconButton
+            icon="password"
+            text="Passwort vergessen?"
             disabled={disabled}
             onClick={() => setPasswordReset(true)}
-          >
-            Passwort vergessen?
-          </button>
+          />
         </div>
       </form>
       <div className="error_message">{error && error}</div>

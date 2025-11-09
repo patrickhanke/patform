@@ -54,7 +54,8 @@ export type IconTypes =
 	| "plus"
 	| "minus"
 	| "upload"
-	| "refresh";
+	| "refresh"
+	| "login";
 
 export type IconProps = {
 	icon: IconTypes;
@@ -74,4 +75,5 @@ export type IconButtonProps = {
 	size?: number;
 	color?: ButtonProps["color"];
 	loading?: boolean;
+	type?: "button" | "submit" | "reset";
 };

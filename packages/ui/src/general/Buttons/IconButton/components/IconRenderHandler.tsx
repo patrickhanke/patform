@@ -5,6 +5,7 @@ import {
 	AiOutlineArrowRight,
 	AiOutlineDownload,
 	AiOutlineFileText,
+	AiOutlineLogin,
 	AiOutlineMail
 } from "react-icons/ai";
 
@@ -86,6 +87,9 @@ const IconRenderHandler = ({ icon }: { icon: IconTypes }) => {
 	}
 	if (icon === "password") {
 		return <MdOutlinePassword />;
+	}
+	if (icon === "login") {
+		return <AiOutlineLogin />;
 	}
 	return null;
 };

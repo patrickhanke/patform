@@ -14,12 +14,13 @@ const IconButton: FC<IconButtonProps> = ({
 	text,
 	size = 12,
 	color,
-	loading = false
+	loading = false,
+	type = "button"
 }) => {
 	if (!isLink && onClick)
 		return (
 			<Button
-				type="button"
+				type={type}
 				onClick={() => onClick()}
 				variant="subtle"
 				size="2xs"

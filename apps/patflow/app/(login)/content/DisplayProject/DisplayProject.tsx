@@ -1,7 +1,7 @@
 import React from "react";
-import { PatstoreProject } from "@repo/types";
+import { PatflowProject, PatstoreProject } from "@repo/types";
 
-const DisplayProject = ({ project }: { project?: PatstoreProject }) => {
+const DisplayProject = ({ project }: { project?: PatflowProject }) => {
   if (!project) {
     return (
       <div className="flex col a-ce gap-md ta-ce">

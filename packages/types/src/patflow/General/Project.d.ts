@@ -2,6 +2,10 @@ import { ColorValues } from "@repo/ui";
 
 export type PatflowProject = {
   objectId: string;
+  logo: {
+    url: string;
+    name: string;
+  };
   name: string;
   path: string;
   time_settings: TimeSettings;
