@@ -19,7 +19,10 @@ const useNetlifyHooks = () => {
 					objectClass === "Event" ||
 					objectClass === "Form" ||
 					objectClass === "Image" ||
-					objectClass === "Group"
+					objectClass === "Group" ||
+					objectClass === "Download" ||
+					objectClass === "Person" ||
+					objectClass === "Category"
 				) {
 					axios.post(
 						"https://api.netlify.com/build_hooks/690c760578610ba16cc20019"
