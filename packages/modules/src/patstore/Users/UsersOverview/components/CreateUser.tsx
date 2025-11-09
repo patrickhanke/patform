@@ -39,6 +39,7 @@ const CreateUser: FC<CreateUserProps> = ({ user, setUser }) => {
 			formSubmitHandler={(data) => {
 				setUser(data as UserObject);
 			}}
+			useWithDebounce={true}
 		/>
 	);
 };

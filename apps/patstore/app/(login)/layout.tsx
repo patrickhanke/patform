@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import "@repo/styles/global";
 import "./styles.scss";

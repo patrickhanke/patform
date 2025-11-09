@@ -2,16 +2,16 @@
 
 import { useCallback, useMemo } from "react";
 import { axiosclient, useAppContext, useDataContext } from "@repo/provider";
-import { Page, RenderFilters, SlideIn, Table } from "@repo/ui";
+import { Page, RenderFilters, SlideIn, SlideInForm, Table } from "@repo/ui";
 import useUserColumns from "./hooks/useUserColumns";
 import { UsersOverviewProps, UserObject } from "./types";
 import { FC, useEffect, useState } from "react";
-import CreateUser from "./components/CreateUser";
 import useFindUser from "./hooks/useFindUser";
 import { Filter } from "@repo/types";
 import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
 import FileImporter from "./components/FileImporter";
+import create_user_fieds from "./constants/create_user_fields";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
@@ -141,20 +141,13 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				/>
 			)}
 			{pageState.value === " invitations" && <UserInvitations />}
-			<SlideIn
-				header="Neuen Benutzer einladen"
+			<SlideInForm
+				title="Neuen Benutzer einladen"
 				isOpen={createUser}
-				cancel={() => setCreateUser(false)}
-				confirm={() => updateUserHandler()}
-				disabled={[loading, loading]}
-				preventClickOutside
-			>
-				<div>
-					{createUser && user && (
-						<CreateUser user={user} setUser={setUser} />
-					)}
-				</div>
-			</SlideIn>
+				setIsOpen={setCreateUser}
+				dataHandler={updateUserHandler}
+				fields={create_user_fieds}
+			/>
 		</Page>
 	);
 };
