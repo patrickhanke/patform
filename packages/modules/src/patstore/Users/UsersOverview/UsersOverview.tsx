@@ -54,7 +54,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const columns = useUserColumns({ refetch });
 
 	const [user, setUser] = useState<UserObject | undefined>();
-	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		if (!user && createUser) {
@@ -67,28 +66,29 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		}
 	}, [createUser, user]);
 
-	const updateUserHandler = useCallback(async () => {
-		setLoading(true);
-		if (createUser && user) {
-			axiosclient().post("/functions/send-user-invitation", {
-				username: user.username,
-				email: user.username,
-				name: user.name,
-				project_id: project.objectId,
-				initial_invitation: true
+	const updateUserHandler = useCallback(
+		async ({ email, name }: { email: string; name: string }) => {
+			if (createUser && user) {
+				axiosclient().post("/functions/send-user-invitation", {
+					username: name,
+					email: email,
+					name: user.name,
+					project_id: project.objectId,
+					initial_invitation: true
+				});
+			}
+
+			feedbackHandler({
+				success: true,
+				message: "Einladung erfolgreich gesendet",
+				type: "success"
 			});
-		}
 
-		feedbackHandler({
-			success: true,
-			message: "Einladung erfolgreich gesendet",
-			type: "success"
-		});
-
-		await refetch();
-		setCreateUser(false);
-		setLoading(false);
-	}, [user]);
+			await refetch();
+			setCreateUser(false);
+		},
+		[user]
+	);
 
 	const pageHeaderButtons = useMemo(
 		() => [

@@ -1,6 +1,10 @@
-import React from "react";
+"use client";
 
-const Framework = () => {
+import React from "react";
+import { ChakraProvider, createSystem, defaultConfig } from "@chakra-ui/react";
+import { chakraConfig } from "@repo/provider";
+
+const Framework = ({children}: {children: React.ReactNode}) => {
   return (
     <>
       <div className="login_logo_container">
@@ -16,6 +20,9 @@ const Framework = () => {
           height={24}
         />
       </div>
+      <ChakraProvider value={createSystem(defaultConfig, chakraConfig)}>
+          <div className="login_content">{children}</div>
+        </ChakraProvider>
       <div className="login_footer_container">
         <a href="https://patwork.net/impressum">Impressum</a>
         <a href="https://patwork.net/datenschutz">Datenschutz</a>
