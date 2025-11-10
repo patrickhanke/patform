@@ -34,7 +34,21 @@ const CalendarOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
 	const columns = useCreateColumns<DateClass>({
-		data: generateColumnsFromFields(currentModule.fields),
+		data: [
+			{
+				id: "date",
+				type: "edit_date",
+				label: "Datum",
+				enableSorting: true,
+				sortingFn(a, b) {
+					return (
+						new Date(a.original.date.start).getTime() -
+						new Date(b.original.date.start).getTime()
+					);
+				}
+			},
+			...generateColumnsFromFields(currentModule.fields)
+		],
 		fields: currentModule.data_fields,
 		className: "Date",
 		refetch,
