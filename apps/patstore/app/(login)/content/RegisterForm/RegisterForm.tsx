@@ -53,8 +53,6 @@ const RegisterForm = ({
           project_id: project.objectId,
         })
         .then((response) => {
-          console.log(response);
-
           return response.data.result;
         })
         .catch(() => {
@@ -70,7 +68,7 @@ const RegisterForm = ({
             email: email,
             projects: [project.objectId],
             is_superuser: false,
-            roles: []
+            roles: response.roles || []
           })
           .then(async () => {
             await axiosclient().post("functions/remove-invitation-key", {

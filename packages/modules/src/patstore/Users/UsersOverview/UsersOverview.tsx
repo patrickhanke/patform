@@ -2,19 +2,22 @@
 
 import { useCallback, useMemo } from "react";
 import { axiosclient, useAppContext, useDataContext } from "@repo/provider";
-import { Page, RenderFilters, SlideIn, SlideInForm, Table } from "@repo/ui";
+import { Page, RenderFilters, SlideInForm, Table } from "@repo/ui";
 import useUserColumns from "./hooks/useUserColumns";
-import { UsersOverviewProps, UserObject } from "./types";
-import { FC, useEffect, useState } from "react";
+import { UserObject, UsersOverviewProps } from "./types";
+import { FC, useState } from "react";
 import useFindUser from "./hooks/useFindUser";
-import { Filter } from "@repo/types";
+import { Filter, PatstoreRoleClass } from "@repo/types";
 import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
 import FileImporter from "./components/FileImporter";
 import create_user_fieds from "./constants/create_user_fields";
+import useFindRoles from "./hooks/useFindRoles";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
+	const { roles } = useFindRoles({ projectId: project.objectId });
+
 	const [createUser, setCreateUser] = useState(false);
 	const { feedbackHandler } = useDataContext();
 	const [pageState, setPageState] = useState<(typeof page_states)[number]>(
@@ -56,22 +59,23 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const updateUserHandler = useCallback(
 		async (values) => {
 			console.log(values);
-			axiosclient().post("/functions/send-user-invitation", {
-				username: values.username,
-				email: values.username,
-				name: values.name,
-				project_id: project.objectId,
-				initial_invitation: true
-			});
+			// axiosclient().post("/functions/send-user-invitation", {
+			// 	username: values.username,
+			// 	email: values.username,
+			// 	name: values.name,
+			// 	roles: [values.role],
+			// 	project_id: project.objectId,
+			// 	initial_invitation: true
+			// });
 
-			feedbackHandler({
-				success: true,
-				message: "Einladung erfolgreich gesendet",
-				type: "success"
-			});
+			// feedbackHandler({
+			// 	success: true,
+			// 	message: "Einladung erfolgreich gesendet",
+			// 	type: "success"
+			// });
 
-			await refetch();
-			setCreateUser(false);
+			// await refetch();
+			// setCreateUser(false);
 		},
 		[project]
 	);
@@ -132,7 +136,12 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				isOpen={createUser}
 				setIsOpen={setCreateUser}
 				dataHandler={updateUserHandler}
-				fields={create_user_fieds}
+				fields={create_user_fieds(
+					roles?.map((role: PatstoreRoleClass) => ({
+						value: role.objectId,
+						label: role.name
+					})) || []
+				)}
 			/>
 		</Page>
 	);

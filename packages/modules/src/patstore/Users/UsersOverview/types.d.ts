@@ -19,6 +19,7 @@ export type UserObject = {
 	projects: string[];
 	value: string;
 	name: string;
+	role: string;
 };
 
 export type DeleteUserProps = {
