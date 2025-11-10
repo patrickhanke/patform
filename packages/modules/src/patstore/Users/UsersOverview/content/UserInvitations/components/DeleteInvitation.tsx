@@ -16,6 +16,8 @@ const DeleteInvitation: FC<DeleteInvitationProps> = ({
 	const [deleteUserModal, setDeleteUserModal] = useState(false);
 	const { updateData } = useDataHandler();
 
+	if (!invitations || invitations.length === 0) return null;
+
 	return (
 		<>
 			<IconButton
@@ -31,6 +33,8 @@ const DeleteInvitation: FC<DeleteInvitationProps> = ({
 				confirmButtonHandler={async () => {
 					setLoading(true);
 					const invitationsCopy = cloneDeep(invitations);
+					console.log(invitationsCopy);
+
 					const invitationIndex = invitationsCopy.findIndex(
 						(invitation) => invitation.key === id
 					);
@@ -41,6 +45,7 @@ const DeleteInvitation: FC<DeleteInvitationProps> = ({
 					}
 
 					invitationsCopy.splice(invitationIndex, 1);
+					console.log(invitationsCopy);
 
 					await updateData({
 						className: "Project",

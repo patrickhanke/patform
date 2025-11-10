@@ -81,7 +81,7 @@ const useInvitationColumns = ({
 				enableSorting: false
 			}
 		],
-		[]
+		[invitations]
 	);
 
 	return columns;

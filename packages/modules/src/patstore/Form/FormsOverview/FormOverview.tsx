@@ -29,7 +29,8 @@ const FormsOverview = () => {
 	const columns = useCreateColumns<FormClass>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
-		className: "Download",
+		className: "Form",
+		editLink: "forms",
 		refetch,
 		categories: currentModule?.categories
 	});

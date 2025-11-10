@@ -16,9 +16,6 @@ const form_settings = {
 		description: "Automatische Antwort bei Eingang einer Anfrage",
 		fields: [
 			{
-				
-			},
-			{
 				label: "Antworttext",
 				value: "response_text",
 				description: "Antworttext",
