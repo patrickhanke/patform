@@ -515,24 +515,27 @@ const useCreateColumns = <T extends ColumnClasses>({
 			if (columnElement.type === "edit_date") {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnEditDate
-							value={row[columnElement.id] as EventDate}
-							onChange={(value: EventDate) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: {
-										[columnElement.id]: value
-									},
-									feedback: "Datum aktualisiert"
-								})
-							}
-						/>
+						<>
+							<TableColumnEditDate
+								value={row[columnElement.id] as EventDate}
+								onChange={(value: EventDate) =>
+									updateColumnData({
+										objectId: row.objectId,
+										updateObject: {
+											[columnElement.id]: value
+										},
+										feedback: "Datum aktualisiert"
+									})
+								}
+							/>
+						</>
 					),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
-					enableSorting: false
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: columnElement.sortingFn ?? undefined
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "user") {

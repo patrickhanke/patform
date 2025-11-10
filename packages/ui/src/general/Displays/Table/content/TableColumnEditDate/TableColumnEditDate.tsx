@@ -13,7 +13,7 @@ const TableColumnEditDate: FC<TableColumnEditDateProps> = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [date, setDate] = useState<EventDate>(value || initialDateValues);
-
+	console.log(value)
 	return (
 		<div>
 			{!value ? (

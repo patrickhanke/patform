@@ -10,7 +10,11 @@ const TableColumnTime = ({ time, setActiveTime }: TableColumnTimeProps) => {
 		if (time.weekday) {
 			const day = weekdays.find((day) => day.value === time.weekday);
 			return day?.label || "Kein Wochentag";
-		} else if (time.start && time.start.length > 2) {
+		} else if (
+			time.start &&
+			time.start.length > 2 &&
+			new Date(time.start)
+		) {
 			return formatISO9075(new Date(time.start));
 		} else {
 			return "Kein Datum";

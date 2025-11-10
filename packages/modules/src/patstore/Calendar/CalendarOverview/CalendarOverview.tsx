@@ -38,7 +38,7 @@ const CalendarOverview = () => {
 			{
 				id: "date",
 				type: "edit_date",
-				label: "Datum",
+				label: "Datum 123",
 				enableSorting: true,
 				sortingFn(a, b) {
 					return (

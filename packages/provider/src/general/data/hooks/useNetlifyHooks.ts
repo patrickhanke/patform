@@ -22,13 +22,11 @@ const useNetlifyHooks = () => {
 					objectClass === "Group" ||
 					objectClass === "Download" ||
 					objectClass === "Person" ||
-					objectClass === "Category"
+					objectClass === "Category" ||
+					objectClass === "Date"
 				) {
-					axios.post(
-						"https://api.netlify.com/build_hooks/690c760578610ba16cc20019"
-					);
 					return axios.post(
-						"https://api.netlify.com/build_hooks/682ae7fb29acb184f8de3d77"
+						"https://api.netlify.com/build_hooks/690c760578610ba16cc20019"
 					);
 				}
 			}

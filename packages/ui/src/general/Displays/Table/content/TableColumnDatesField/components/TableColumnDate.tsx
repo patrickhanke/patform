@@ -12,7 +12,7 @@ const TableColumnDate = ({
 	const title = useMemo(() => {
 		if (date.label) {
 			return date.label;
-		} else if (date.start) {
+		} else if (date.start && new Date(date.start)) {
 			return formatISO9075(new Date(date.start));
 		} else {
 			return "Kein Datum";
