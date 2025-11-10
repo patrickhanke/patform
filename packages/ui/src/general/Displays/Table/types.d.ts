@@ -9,7 +9,8 @@ import {
 	GroupClass,
 	LocationClass,
 	DateClass,
-	PageClass
+	PageClass,
+	PatstoreUser
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -130,7 +131,8 @@ export type ColumnDataTypes =
 	| "created_by"
 	| "edit_webpage_components"
 	| "files"
-	| "image_preview";
+	| "image_preview"
+	| "user";
 
 export type ColumnData<Class> = {
 	id: keyof Class;
@@ -185,3 +187,7 @@ export type UpdateColumnData = (t: {
 	};
 	feedback: string;
 }) => Promise<void>;
+
+export type TableColumnUserProps = {
+	value: PatstoreUser;
+};

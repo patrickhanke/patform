@@ -12,6 +12,7 @@ import {
 	ClassState,
 	EventDate,
 	EventTime,
+	PatstoreUser,
 	PersonClass,
 	Team,
 	WebpageComponents,
@@ -48,7 +49,11 @@ import {
 	TableColumnTimesField,
 	TableColumnEditWebpageComponents
 } from "../content";
-import { TableColumnFile, TableColumnDocuments } from "../components";
+import {
+	TableColumnFile,
+	TableColumnDocuments,
+	TableColumnUser
+} from "../components";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -521,6 +526,20 @@ const useCreateColumns = <T extends ColumnClasses>({
 									feedback: "Datum aktualisiert"
 								})
 							}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: false
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "user") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnUser
+							value={row[columnElement.id] as PatstoreUser}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,

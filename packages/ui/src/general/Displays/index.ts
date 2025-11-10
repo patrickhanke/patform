@@ -5,6 +5,7 @@ export * from "./DnD";
 export * from "./Filter";
 export * from "./Map";
 export * from "./PersonDisplay";
+export * from "./UserDisplay";
 export * from "./InfoBox";
 export * from "./Icon";
 export * from "./DateDisplay";

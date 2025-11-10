@@ -128,19 +128,19 @@ const module_fields: ModuleField[] = [
 		default: false
 	},
 	{
-		id: "createdBy",
+		id: "created_by",
 		label: "Erstellt von",
 		required: false,
-		type: "person",
+		type: "user",
 		active: false,
 		position: 5,
 		default: false
 	},
 	{
-		id: "updatedBy",
+		id: "updated_by",
 		label: "Aktualisiert von",
 		required: false,
-		type: "person",
+		type: "user",
 		active: false,
 		position: 18,
 		default: false

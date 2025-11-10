@@ -115,7 +115,7 @@ const RegisterForm = ({
     <p>
       Sie haben sich erfolgreich für das Projekt {project.name} registriert. Sie
       können sich jetzt{" "}
-      <a href={`https://store.patwork.net/${project.path}`}>hier</a> einloggen.
+      <a href={`https://store.patwork.net/login/${project.path}`}>hier</a> einloggen.
     </p>
   ) : (
     <div>
