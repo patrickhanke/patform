@@ -7,7 +7,7 @@ const default_fields: {
 	"/events": ["title", "description", "dates"],
 	"/groups": ["title", "description", "text", "image"],
 	"/locations": ["title"],
-	"/persons": ["title", "description", "text", "image", "date", "gallery"],
+	"/persons": ["title", "description", "text", "image"],
 	"/downloads": ["title", "description", "file"],
 	"/forms": ["title"],
 	"/images": ["title", "description"],
