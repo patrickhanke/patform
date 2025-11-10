@@ -5,7 +5,7 @@ const default_fields: {
 } = {
 	"/arcticles": ["title", "text", "image", "date"],
 	"/events": ["title", "description", "dates"],
-	"/groups": ["title", "description", "text", "image", "date", "gallery"],
+	"/groups": ["title", "description", "text", "image"],
 	"/locations": ["title"],
 	"/persons": ["title", "description", "text", "image", "date", "gallery"],
 	"/downloads": ["title", "description", "file"],
