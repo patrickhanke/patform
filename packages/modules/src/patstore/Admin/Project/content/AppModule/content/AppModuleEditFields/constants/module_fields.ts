@@ -88,7 +88,7 @@ const module_fields: ModuleField[] = [
 		required: false,
 		type: "date_picker",
 		active: false,
-		position: 4,
+		position: 13,
 		default: false
 	},
 	{
@@ -97,7 +97,7 @@ const module_fields: ModuleField[] = [
 		required: false,
 		type: "edit_dates",
 		active: false,
-		position: 5,
+		position: 14,
 		default: false
 	},
 	{
@@ -106,7 +106,7 @@ const module_fields: ModuleField[] = [
 		required: false,
 		type: "edit_times",
 		active: true,
-		position: 4,
+		position: 15,
 		default: false
 	},
 	{
@@ -115,7 +115,7 @@ const module_fields: ModuleField[] = [
 		required: false,
 		type: "edit_string",
 		active: false,
-		position: 5,
+		position: 16,
 		default: false
 	},
 	{
@@ -124,9 +124,28 @@ const module_fields: ModuleField[] = [
 		required: false,
 		type: "files",
 		active: false,
+		position: 17,
+		default: false
+	},
+	{
+		id: "createdBy",
+		label: "Erstellt von",
+		required: false,
+		type: "person",
+		active: false,
 		position: 5,
 		default: false
+	},
+	{
+		id: "updatedBy",
+		label: "Aktualisiert von",
+		required: false,
+		type: "person",
+		active: false,
+		position: 18,
+		default: false
 	}
+
 	// {
 	// 	id: "webpage_components",
 	// 	label: "Inhalt",

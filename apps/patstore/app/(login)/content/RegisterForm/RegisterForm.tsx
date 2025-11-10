@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { axiosclient } from "@repo/provider";
+import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import clsx from "clsx";
@@ -38,6 +38,14 @@ const RegisterForm = ({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  const axiosclient = axios.create({
+    baseURL: process.env.SASHIDO_API_URL,
+    headers: {
+      "X-Parse-Application-Id": process.env.SASHIDO_APP_ID,
+      "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY,
+    },
+  });
+
   const formik = useFormik({
     validationSchema: SignupSchema,
     initialValues: {
@@ -47,7 +55,7 @@ const RegisterForm = ({
     },
     onSubmit: async (values) => {
       setDisabled(true);
-      const response = await axiosclient()
+      const response = await axiosclient
         .post("functions/check-for-invite", {
           email,
           project_id: project.objectId,
@@ -60,7 +68,7 @@ const RegisterForm = ({
         });
 
       if (response.key && invitationKey === response.key) {
-        await axiosclient()
+        await axiosclient
           .post("users", {
             username: email,
             name: values.username,
@@ -71,7 +79,8 @@ const RegisterForm = ({
             roles: response.roles || []
           })
           .then(async () => {
-            await axiosclient().post("functions/remove-invitation-key", {
+            await axiosclient
+            .post("functions/remove-invitation-key", {
               key: response.key,
               project_id: project.objectId,
             });
