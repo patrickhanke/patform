@@ -2,6 +2,7 @@
 
 import { useContext, useState, useMemo } from "react";
 import {
+	generateColumnsFromFields,
 	Modal,
 	Page,
 	RenderFilters,
@@ -11,7 +12,6 @@ import {
 } from "@repo/ui";
 import { PatstoreAppContext, useDataHandler } from "@repo/provider";
 import { DateClass, Filter } from "@repo/types";
-import createDate from "./constants/createCalendar";
 import useFindDate from "./hooks/useFindDate";
 
 const CalendarOverview = () => {
@@ -34,24 +34,8 @@ const CalendarOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
 	const columns = useCreateColumns<DateClass>({
-		data: [
-			{ id: "image", type: "edit_image", label: "Bild" },
-			{ id: "title", type: "edit_string", label: "Titel" },
-			{
-				id: "date",
-				type: "edit_date",
-				label: "Datum",
-				enableSorting: true,
-				sortingFn(a, b) {
-					return (
-						new Date(a.original.date.start).getTime() -
-						new Date(b.original.date.start).getTime()
-					);
-				}
-			},
-			{ id: "description", type: "edit_textfield", label: "Beschreibung" }
-		],
-		fields: currentModule.fields,
+		data: generateColumnsFromFields(currentModule.fields),
+		fields: currentModule.data_fields,
 		className: "Date",
 		refetch,
 		categories: currentModule?.categories,
@@ -97,7 +81,12 @@ const CalendarOverview = () => {
 			title={currentModule.name}
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
-			createClass={createDate}
+			createClass={{
+				className: "Date",
+				text: "Neuen Kalendereintrag erstellen",
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			refetch={refetch}
 		>
 			{process.env.NODE_ENV === "development" && (
