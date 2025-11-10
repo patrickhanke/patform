@@ -44,6 +44,14 @@ const AppModuleEditDataFields = ({
 		[dataFields, editFields, activeField]
 	);
 
+	const deleteField = useCallback(
+		(id: string) => {
+			setDataFields((draft) => {
+				return draft.filter((field) => field.id !== id);
+			});
+		},
+		[dataFields]
+	);
 	return (
 		<div>
 			<button
@@ -98,6 +106,7 @@ const AppModuleEditDataFields = ({
 								<AppModuleField
 									field={item as Field}
 									setActiveField={setActiveField}
+									deleteField={deleteField}
 								/>
 							)}
 							objectClass="Module"

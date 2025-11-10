@@ -24,7 +24,7 @@ const useFindDate: UseFindDateHook = ({ moduleId, filters, limit, skip }) => {
 				params: paramsHandler({ moduleId, filters }),
 				skip,
 				limit,
-				order: "date_DESC"
+				order: "createdAt_DESC"
 			},
 			notifyOnNetworkStatusChange: true
 		}

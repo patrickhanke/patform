@@ -2,7 +2,11 @@ import { IconButton } from "@repo/ui";
 
 import { AppModuleFieldProps } from "../types";
 
-const AppModuleField = ({ field, setActiveField }: AppModuleFieldProps) => {
+const AppModuleField = ({
+	field,
+	setActiveField,
+	deleteField
+}: AppModuleFieldProps) => {
 	return (
 		<div>
 			<div>
@@ -13,7 +17,10 @@ const AppModuleField = ({ field, setActiveField }: AppModuleFieldProps) => {
 					icon="edit"
 					onClick={() => setActiveField(field.id)}
 				/>
-				<IconButton icon="delete" onClick={() => null} />
+				<IconButton
+					icon="delete"
+					onClick={() => deleteField(field.id)}
+				/>
 			</div>
 		</div>
 	);

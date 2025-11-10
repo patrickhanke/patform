@@ -38,14 +38,7 @@ const CalendarOverview = () => {
 			{
 				id: "date",
 				type: "edit_date",
-				label: "Datum 123",
-				enableSorting: true,
-				sortingFn(a, b) {
-					return (
-						new Date(a.original.date.start).getTime() -
-						new Date(b.original.date.start).getTime()
-					);
-				}
+				label: "Datum"
 			},
 			...generateColumnsFromFields(currentModule.fields)
 		],
