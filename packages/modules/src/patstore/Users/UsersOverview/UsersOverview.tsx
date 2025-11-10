@@ -4,7 +4,7 @@ import { useCallback, useMemo } from "react";
 import { axiosclient, useAppContext, useDataContext } from "@repo/provider";
 import { Page, RenderFilters, SlideInForm, Table } from "@repo/ui";
 import useUserColumns from "./hooks/useUserColumns";
-import { UserObject, UsersOverviewProps } from "./types";
+import { UsersOverviewProps } from "./types";
 import { FC, useState } from "react";
 import useFindUser from "./hooks/useFindUser";
 import { Filter, PatstoreRoleClass } from "@repo/types";
@@ -59,23 +59,23 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const updateUserHandler = useCallback(
 		async (values) => {
 			console.log(values);
-			// axiosclient().post("/functions/send-user-invitation", {
-			// 	username: values.username,
-			// 	email: values.username,
-			// 	name: values.name,
-			// 	roles: [values.role],
-			// 	project_id: project.objectId,
-			// 	initial_invitation: true
-			// });
+			axiosclient().post("/functions/send-user-invitation", {
+				username: values.username,
+				email: values.username,
+				name: values.name,
+				roles: [values.role],
+				project_id: project.objectId,
+				initial_invitation: true
+			});
 
-			// feedbackHandler({
-			// 	success: true,
-			// 	message: "Einladung erfolgreich gesendet",
-			// 	type: "success"
-			// });
+			feedbackHandler({
+				success: true,
+				message: "Einladung erfolgreich gesendet",
+				type: "success"
+			});
 
-			// await refetch();
-			// setCreateUser(false);
+			await refetch();
+			setCreateUser(false);
 		},
 		[project]
 	);
