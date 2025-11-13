@@ -8,7 +8,7 @@ export type Recipient = {
 };
 
 export type FormClass = ClassProperties & {
-    name: string;
+    title: string;
     fields: FormField[];
     description: string;
     settings: {

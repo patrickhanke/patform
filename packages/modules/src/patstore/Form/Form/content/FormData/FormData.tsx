@@ -35,33 +35,6 @@ const FormData: FC<FormDataProps> = ({
 		refetch
 	});
 
-	// const renderFilters = useMemo(() => {
-	// 	return (
-	// 		<RenderFilters
-	// 			filters={filters}
-	// 			setFilters={setFilters}
-	// 			fields={[
-	// 				{
-	// 					type: "input",
-	// 					key: "title",
-	// 					operator: "_regex",
-	// 					value: "",
-	// 					placeholder: "Suchwort"
-	// 				}
-	// 			]}
-	// 			categories={[]}
-	// 			initialFilters={initialFilters}
-	// 		/>
-	// 	);
-	// }, []);
-
-	console.log(
-		data.map((dataElement) => ({
-			...dataElement.data,
-			objectId: dataElement.objectId
-		})) || []
-	);
-
 	return (
 		<div>
 			{data.length === 0 ? (

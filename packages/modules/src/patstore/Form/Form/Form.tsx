@@ -67,7 +67,7 @@ const Form = ({ params }: { params: Params }) => {
 
 	return (
 		<Page
-			title={form ? form?.name : "Lädt ..."}
+			title={form ? form?.title : "Lädt ..."}
 			emptyContent={true}
 			refetch={refetch}
 			pageStates={siteStates}

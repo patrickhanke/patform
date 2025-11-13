@@ -42,6 +42,10 @@ const FormRecipients: React.FC<FormRecipientsProps> = ({
 			if (index !== -1) {
 				recipientsCopy.splice(index, 1);
 				setRecipients(recipientsCopy);
+				updateSettings({
+					...settings,
+					[settingsKey]: recipientsCopy
+				});
 			}
 		},
 		[recipients]
