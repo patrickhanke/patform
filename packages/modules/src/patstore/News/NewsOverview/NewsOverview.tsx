@@ -15,7 +15,6 @@ import {
 	useDataHandler,
 	useFindModuleData
 } from "@repo/provider";
-import createNews from "./constants/createNews";
 
 const NewsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
@@ -85,7 +84,12 @@ const NewsOverview = () => {
 			title={currentModule.name}
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
-			createClass={createNews}
+			createClass={{
+				className: "News",
+				text: "Neue News erstellen",
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			refetch={refetch}
 		>
 			<Table
