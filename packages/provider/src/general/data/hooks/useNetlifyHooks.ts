@@ -10,6 +10,11 @@ const useNetlifyHooks = () => {
 			if (!project) {
 				return;
 			}
+			if (project.path === "coloproktologen") {
+				return axios.post(
+					"https://api.netlify.com/build_hooks/6917327aaad5ac286e994e72"
+				);
+			}
 			if (project.path === "tvstg") {
 				if (
 					objectClass === "Article" ||
