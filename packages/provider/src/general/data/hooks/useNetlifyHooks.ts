@@ -10,7 +10,7 @@ const useNetlifyHooks = () => {
 			if (!project) {
 				return;
 			}
-			if (project.path === "coloproktologen") {
+			if (project.path === "bcd") {
 				return axios.post(
 					"https://api.netlify.com/build_hooks/6917327aaad5ac286e994e72"
 				);
