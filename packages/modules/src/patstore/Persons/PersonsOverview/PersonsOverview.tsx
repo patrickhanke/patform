@@ -15,7 +15,6 @@ import {
 	useDataHandler,
 	useFindModuleData
 } from "@repo/provider";
-import create_person from "./constants/create_person";
 
 const PersonsOverview = () => {
 	const { deleteData } = useDataHandler(false);
@@ -87,7 +86,12 @@ const PersonsOverview = () => {
 			title={currentModule.name}
 			// pageHeaderContent={<CreatePerson refetch={refetch} />}
 			pageHeaderButtons={pageHeaderButtons}
-			createClass={create_person}
+			createClass={{
+				className: "Person",
+				text: "Neue Person erstellen",
+				fields: currentModule.fields,
+				refetch: refetch
+			}}
 			emptyContent={true}
 			refetch={refetch}
 		>
