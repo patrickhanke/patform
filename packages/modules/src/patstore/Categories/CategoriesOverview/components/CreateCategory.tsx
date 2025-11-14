@@ -17,9 +17,9 @@ const CreateCategory = ({
 	const categoryFields = useMemo(() => {
 		const constantFields: Field[] = [
 			{
-				id: "name",
+				id: "title",
 				position: 1,
-				name: "name",
+				name: "title",
 				type: "input",
 				label: "Name",
 				validation: {
