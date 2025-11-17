@@ -33,7 +33,8 @@ const CalendarOverview = () => {
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		additionalFields: ["date"]
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);

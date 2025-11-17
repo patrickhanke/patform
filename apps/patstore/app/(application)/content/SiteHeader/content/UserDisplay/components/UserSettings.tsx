@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { Divider, FileUploader, PatstoreImageUploader, SlideIn, TextInput } from "@repo/ui";
+import { Divider, FileObject, FileUploader, SlideIn, TextInput } from "@repo/ui";
 import { UserSettingsProps } from "../types";
-import { ErrorMessage, PatstoreUser } from "@repo/types";
-import { getImageUrl, useAppContext, useDataHandler } from "@repo/provider";
+import { ErrorMessage,PatstoreUser } from "@repo/types";
+import { getImageUrl, useDataHandler } from "@repo/provider";
 import * as yup from "yup";
 import { Image } from "@chakra-ui/react"
 
@@ -36,7 +36,7 @@ const UserSettings: FC<UserSettingsProps> = ({
   }, [data]);
 
   const updateObject = useMemo(() => {
-    let updatedata;
+    let updatedata: { email?: string; username?: string; portrait?: FileObject } = {};
     if (user.email !== data.email) {
       updatedata = {
         email: data.email,

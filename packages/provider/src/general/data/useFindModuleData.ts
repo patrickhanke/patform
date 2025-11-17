@@ -13,13 +13,15 @@ function useFindModuleData<T extends Classes>({
 	filters,
 	limit,
 	skip,
-	order
+	order,
+	additionalFields = []
 }: {
 	module: Module;
 	filters: Filter[];
 	limit: number;
 	skip: number;
 	order?: string;
+	additionalFields?: string[];
 }): {
 	loading: boolean;
 	data?: T[];
@@ -30,7 +32,11 @@ function useFindModuleData<T extends Classes>({
 		generateGraphQLQuery({
 			type: "find",
 			objectName: module.connected_class,
-			fields: [...generateQueryFromFields(module.fields), "data"]
+			fields: [
+				...generateQueryFromFields(module.fields),
+				...additionalFields,
+				"data"
+			]
 		}),
 		{
 			variables: {

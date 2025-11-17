@@ -61,7 +61,7 @@ export type Pointer<T> = {
   objectId: string;
 };
 
-export type Image = string; // filePath to Image
+export type Image = string; // Image ID
 
 export type ApolloRefetch = () => Promise<ApolloQueryResult<any>>;
 

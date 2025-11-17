@@ -13,7 +13,7 @@ export type FileUplaoderProps = {
 	onComplete?: () => void;
 	afterUploadHandler?: (images: string[]) => void | Promise<void>;
 	maxFileCount?: number;
-	className: "Download" | "Image";
+	className: "Download" | "Image" | "_User";
 	classKey: string;
 	classId?: string;
 	setSecondaryContent?: Dispatch<SetStateAction<ReactNode>> | undefined;
@@ -25,7 +25,7 @@ export type FileUplaoderProps = {
 export type UplaoderProps = {
 	type?: "image" | "file";
 	afterUploadHandler?: (images: string[]) => void | Promise<void>;
-	className: "Download" | "Image";
+	className: "Download" | "Image" | "_User";
 	classKey: string;
 	classId?: string;
 	setLoading?: Dispatch<SetStateAction<boolean>>;

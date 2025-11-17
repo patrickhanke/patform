@@ -80,6 +80,7 @@ export const getImageUrl = ({
 	height?: number;
 	width?: number;
 }) => {
+	if (!fileName) return "";
 	const baseUrl = `${process.env.SASHIDO_FILE_URL}${fileName}`;
 	const params = new URLSearchParams();
 
