@@ -121,7 +121,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 			if (!aSelected && bSelected) {
 				return 1;
 			}
-			return a.label.localeCompare(b.label);
+			return a?.label?.localeCompare(b.label);
 		};
 
 		if (!searchInput) {
@@ -140,7 +140,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 		});
 
 		return ele.sort(sortHandler);
-	}, [elements, selectedElements, searchInput]);
+	}, [searchInput]);
 
 	return (
 		<div className={"elements_container"}>
