@@ -5,7 +5,11 @@ import { formatISO9075 } from "date-fns";
 import { TableColumnTimeProps } from "../types";
 import { weekdays } from "@repo/provider";
 
-const TableColumnTime = ({ time, setActiveTime }: TableColumnTimeProps) => {
+const TableColumnTime = ({
+	time,
+	setActiveTime,
+	onDeleteTime
+}: TableColumnTimeProps) => {
 	const title = useMemo(() => {
 		if (time.weekday) {
 			const day = weekdays.find((day) => day.value === time.weekday);
@@ -32,7 +36,12 @@ const TableColumnTime = ({ time, setActiveTime }: TableColumnTimeProps) => {
 					icon="edit"
 					onClick={() => setActiveTime(time.id)}
 				/>
-				<IconButton icon="delete" onClick={() => null} />
+				<IconButton
+					icon="delete"
+					onClick={() => {
+						onDeleteTime(time.id);
+					}}
+				/>
 			</div>
 		</div>
 	);

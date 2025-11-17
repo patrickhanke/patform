@@ -86,7 +86,7 @@ const UserMenu: FC<UserMenuProps> = ({
             )}
           </div>
           <div>
-            <h4>{user.label}</h4>
+            <h4>{user.name}</h4>
             <p>{user.email}</p>
           </div>
         </div>

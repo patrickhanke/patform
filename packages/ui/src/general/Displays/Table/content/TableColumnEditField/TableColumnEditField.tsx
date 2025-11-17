@@ -23,8 +23,6 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	const [data, setData] = useState(null as unknown as Class["data"]);
 	const [isOpen, setIsOpen] = useState(false);
 
-	console.log(dataFields);
-
 	const { loading, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "get",

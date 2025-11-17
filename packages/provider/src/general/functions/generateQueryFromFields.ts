@@ -15,6 +15,10 @@ const generateQueryFromFields = (fields: Module["fields"]) => {
 				staticFields.push(
 					"updated_by {objectId label name portrait {name url}}"
 				);
+			} else if (field.id === "portrait") {
+				staticFields.push("portrait {name url}");
+			} else if (field.id === "coordinates") {
+				staticFields.push("coordinates {latitude longitude}");
 			} else {
 				staticFields.push(field.id);
 			}

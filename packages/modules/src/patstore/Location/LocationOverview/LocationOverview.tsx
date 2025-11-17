@@ -41,7 +41,7 @@ const LocationOverview = () => {
 	const columns = useCreateColumns<LocationClass>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
-		className: "Download",
+		className: "Location",
 		refetch,
 		categories: currentModule?.categories
 	});

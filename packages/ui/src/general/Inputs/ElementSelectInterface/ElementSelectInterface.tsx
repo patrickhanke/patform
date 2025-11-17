@@ -1,13 +1,13 @@
 "use client";
 
-import { Fragment, useCallback, useMemo, useState } from "react";
+import { FC, Fragment, useCallback, useMemo, useState } from "react";
 import ListElement from "./components/ListElement";
 import { ElementSelectInterfaceProps, SelectElement } from "./types";
 import { cloneDeep, get, set } from "lodash-es";
 import { Divider } from "../../Layout";
 import "./styles.scss";
 
-const ElementSelectInterface: React.FC<ElementSelectInterfaceProps> = ({
+const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 	title = "",
 	elements = [],
 	selectedElements,
@@ -21,7 +21,7 @@ const ElementSelectInterface: React.FC<ElementSelectInterfaceProps> = ({
 	const [searchInput, setSearchTerm] = useState("");
 
 	const elementChangeHandler = useCallback(
-		(element: T[number]) => {
+		(element: SelectElement[number]) => {
 			const elementsCopy = cloneDeep(selectedElements);
 
 			if (selectProperty) {
@@ -84,7 +84,11 @@ const ElementSelectInterface: React.FC<ElementSelectInterfaceProps> = ({
 		[elements, onSelect, selectedElements]
 	);
 
-	const checkForHeader = (header: string, index: number, elements: T) => {
+	const checkForHeader = (
+		header: string,
+		index: number,
+		elements: SelectElement[]
+	) => {
 		if (!header) {
 			return false;
 		}
@@ -103,8 +107,25 @@ const ElementSelectInterface: React.FC<ElementSelectInterfaceProps> = ({
 
 	const filteredElements = useMemo(() => {
 		const ele: SelectElement[] = [];
+
+		const sortHandler = (a: SelectElement, b: SelectElement) => {
+			const aSelected = selectedElements.find(
+				(el) => el.value === a.value
+			);
+			const bSelected = selectedElements.find(
+				(el) => el.value === b.value
+			);
+			if (aSelected && !bSelected) {
+				return -1;
+			}
+			if (!aSelected && bSelected) {
+				return 1;
+			}
+			return a.label.localeCompare(b.label);
+		};
+
 		if (!searchInput) {
-			return elements;
+			return elements.sort(sortHandler);
 		}
 
 		elements.forEach((element: SelectElement) => {
@@ -118,10 +139,8 @@ const ElementSelectInterface: React.FC<ElementSelectInterfaceProps> = ({
 			}
 		});
 
-		return ele;
+		return ele.sort(sortHandler);
 	}, [elements, selectedElements, searchInput]);
-
-	console.log({ filteredElements, elements });
 
 	return (
 		<div className={"elements_container"}>

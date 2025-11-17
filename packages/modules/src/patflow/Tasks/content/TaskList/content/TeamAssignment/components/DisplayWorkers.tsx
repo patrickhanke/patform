@@ -10,7 +10,7 @@ import { formatISO9075 } from "date-fns";
 import { ElementSelectInterface, SlideInRight } from "@repo/ui";
 import { DisplayWorkerProps, WorkerOption } from "../types";
 import "../styles.scss";
-import { Avatar, AvatarGroup } from "@chakra-ui/react";
+import { AvatarGroup } from "@chakra-ui/react";
 
 const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	taskId,

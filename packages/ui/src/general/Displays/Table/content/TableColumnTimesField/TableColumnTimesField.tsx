@@ -19,7 +19,6 @@ const TableColumnTimesField = ({
 	const [activeDate, setActiveTime] = useState<EventTime["id"] | null>(null);
 
 	console.log(initialTimes);
-	
 
 	const slideInConfirmHandler = useCallback(async () => {
 		setLoading(true);
@@ -45,7 +44,7 @@ const TableColumnTimesField = ({
 						className="full_button sm light"
 						onClick={() => setEditDates(!editDates)}
 					>
-						{times.length > 3 ? (
+						{times.length > 2 ? (
 							<div>{times.length} Zeiten</div>
 						) : (
 							times.map((time) => (
@@ -66,7 +65,10 @@ const TableColumnTimesField = ({
 				)}
 			</div>
 			<SlideIn
-				cancel={() => setEditDates(false)}
+				cancel={() => {
+					setTimes(initialTimes || []);
+					setEditDates(false);
+				}}
 				confirm={() => slideInConfirmHandler()}
 				isOpen={editDates}
 				header="Felder bearbeiten"
@@ -98,6 +100,16 @@ const TableColumnTimesField = ({
 								key={time.id}
 								time={time}
 								setActiveTime={setActiveTime}
+								onDeleteTime={(id: string) => {
+									setTimes((draft) => {
+										draft.splice(
+											draft.findIndex(
+												(field) => field.id === id
+											),
+											1
+										);
+									});
+								}}
 							/>
 						))}
 					</div>

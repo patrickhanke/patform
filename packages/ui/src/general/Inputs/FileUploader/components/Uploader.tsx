@@ -78,7 +78,7 @@ const Uploader: React.FC<UplaoderProps> = ({
 				disabled={isUploading}
 			>
 				<FileUpload.HiddenInput />
-				<FileUpload.Dropzone>
+				<FileUpload.Dropzone maxH={180} height={180} minH={180}>
 					<Icon size="md" color="fg.muted">
 						<LuUpload />
 					</Icon>

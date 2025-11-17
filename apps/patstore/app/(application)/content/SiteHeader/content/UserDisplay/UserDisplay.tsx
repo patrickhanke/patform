@@ -11,8 +11,7 @@ import { AnimatePresence } from "motion/react";
 import UserMenu from "./content/UserMenu/UserMenu";
 import UserPassword from "./components/UserPassword";
 import ProjectSelection from "./components/ProjectSelection";
-import Image from "next/image";
-import { isArray } from "lodash-es";
+import { Avatar } from "@chakra-ui/react";
 
 const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
   const [userSettings, setUserSettings] = useState(false);
@@ -32,30 +31,6 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
       .catch((error) => console.error(error.message));
   }, []);
 
-  const userShort = (username: string) => {
-    console.log(username);
-
-    if (!username) {
-      return "U";
-    }
-
-    const nameParts = username.split(" ");
-
-    if (nameParts.length === 1 && nameParts[0]) {
-      return nameParts[0][0];
-    } else if (
-      nameParts.length > 1 &&
-      nameParts[0] &&
-      nameParts[nameParts.length - 1] &&
-      isArray(nameParts[nameParts.length - 1]) &&
-      nameParts[nameParts.length - 1].length > 0
-    ) {
-      return `${nameParts[0]?.[0] ?? ""}${nameParts[nameParts.length - 1]?.[0] ?? ""}`;
-    }
-
-    return "U";
-  };
-
   useEffect(() => {
     getUser();
   }, []);
@@ -71,32 +46,20 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
         onClick={() => setUserMenu(!userMenu)}
       >
         <div className={styles.user_image_container}>
-          {user.portrait?.url ? (
-            <Image
-              src={getImageUrl({
-                fileName: user?.portrait?.name,
-                width: 60,
-                height: 60,
-              })}
-              alt={user.label}
-              width={24}
-              height={24}
-            />
-          ) : (
-            <div className={styles.display_user_no_image} data-onlyimage={true}>
-              <div
-                className={styles.display_user_no_image_background}
-                style={{ backgroundColor: "#B3DAF9" }}
-              />
-
-              <div
-                className={styles.display_user_no_image_character}
-                style={{ color: "#0D3A7F" }}
-              >
-                {userShort(user.label)}
-              </div>
-            </div>
-          )}
+        <Avatar.Root
+					// colorPalette={worker.color}
+					size={"2xs"}
+					// css={ringCss}
+				>
+					<Avatar.Fallback name={`${user.name}`} />
+					<Avatar.Image
+						src={getImageUrl({
+							fileName: user?.portrait?.name || "",
+							width:  24 * 4 ,
+							height:  24 * 4 
+						})}
+					/>
+				</Avatar.Root>
         </div>
 
         <Icon type="arrow-down" size={15} strokeWidth={2} />

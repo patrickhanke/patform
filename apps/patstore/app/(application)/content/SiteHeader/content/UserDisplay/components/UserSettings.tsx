@@ -1,9 +1,10 @@
-import { FC, useCallback, useMemo, useState } from "react";
-import { PatstoreImageUploader, SlideIn, TextInput } from "@repo/ui";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { Divider, FileUploader, PatstoreImageUploader, SlideIn, TextInput } from "@repo/ui";
 import { UserSettingsProps } from "../types";
 import { ErrorMessage, PatstoreUser } from "@repo/types";
-import { useAppContext, useDataHandler } from "@repo/provider";
+import { getImageUrl, useAppContext, useDataHandler } from "@repo/provider";
 import * as yup from "yup";
+import { Image } from "@chakra-ui/react"
 
 const UserSettings: FC<UserSettingsProps> = ({
   user,
@@ -23,7 +24,6 @@ const UserSettings: FC<UserSettingsProps> = ({
       email: yup.string().email().required(),
     });
     schema.validate(data).catch((errors) => {
-      console.log(errors.message);
 
       errorArray.push({
         message: errors.errors[0],
@@ -72,6 +72,12 @@ const UserSettings: FC<UserSettingsProps> = ({
     setUserSettings(false);
   }, [data, updateObject]);
 
+  useEffect(() => {
+    setData(user);
+  }, [user]);
+
+  console.log(getImageUrl({ fileName: data.portrait?.name }))
+
   return (
     <SlideIn
       header="Nutzereinstellungen"
@@ -91,19 +97,28 @@ const UserSettings: FC<UserSettingsProps> = ({
           label="Nutzername"
           id="label"
           onChange={(value) => setData({ ...data, username: value })}
+          disabled
         />
         <TextInput
           defaultValue={data.email}
           label="E-Mail"
           id="username"
           onChange={(value) => setData({ ...data, email: value })}
+          disabled
         />
-        <PatstoreImageUploader
+        <label>
+          Portrait
+        </label>
+        <Image rounded="md" src={ getImageUrl({ fileName: data.portrait?.name, width: 100, height: 100 }) } alt="Portrait" width={100} height={100} objectFit="cover" />
+        <Divider showLine={false} />
+        <FileUploader
           maxFileCount={1}
-          type="add"
-          className="User"
+          type="image"
+          className="_User"
           classKey="portrait"
           classId={user.objectId}
+          afterUploadHandler={() => getUser()}
+          inline
         />
       </div>
     </SlideIn>

@@ -9,6 +9,7 @@ export type TableColumnTimesFieldProps = {
 export type TableColumnTimeProps = {
 	time: EventTime;
 	setActiveTime: (id: string) => void;
+	onDeleteTime: (id: string) => void;
 };
 
 export type TableColumnEditTimeProps = {

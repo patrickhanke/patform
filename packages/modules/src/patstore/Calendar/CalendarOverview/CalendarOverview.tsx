@@ -10,12 +10,15 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
+import {
+	PatstoreAppContext,
+	useDataHandler,
+	useFindModuleData
+} from "@repo/provider";
 import { DateClass, Filter } from "@repo/types";
-import useFindDate from "./hooks/useFindDate";
 
 const CalendarOverview = () => {
-	const { deleteData, updateData } = useDataHandler();
+	const { deleteData } = useDataHandler();
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -23,11 +26,14 @@ const CalendarOverview = () => {
 		pageIndex: 0,
 		pageSize: 10
 	});
-	const { dates, refetch, count } = useFindDate({
-		moduleId: currentModule.objectId,
+	const [order, setOrder] = useState<string>("createdAt_DESC");
+
+	const { data, refetch, count } = useFindModuleData<DateClass>({
+		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
+		skip: pagination.pageIndex * pagination.pageSize,
+		order
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -96,37 +102,17 @@ const CalendarOverview = () => {
 			}}
 			refetch={refetch}
 		>
-			{process.env.NODE_ENV === "development" && (
-				<>
-					<button
-						onClick={async () => {
-							await Promise.all(
-								dates.map(async (date) => {
-									await updateData({
-										className: "Date",
-										objectId: date.objectId,
-										updateObject: {
-											title: date.title
-										}
-									});
-								})
-							);
-						}}
-					>
-						Daten aktualisieren
-					</button>
-				</>
-			)}
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}
-				data={dates || []}
+				data={data || []}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
 				filterContent={renderFilters}
-				setSelectedRows={setSelectedRows}
 				selectedRows={selectedRows}
+				setSelectedRows={setSelectedRows}
+				setOrder={setOrder}
 				enableRowSelection
 			/>
 			<Modal
