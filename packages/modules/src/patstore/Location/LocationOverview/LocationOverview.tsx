@@ -38,6 +38,8 @@ const LocationOverview = () => {
 		order
 	});
 
+	console.log({ count });
+
 	const columns = useCreateColumns<LocationClass>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
@@ -114,7 +116,7 @@ const LocationOverview = () => {
 					await Promise.all(
 						selectedRows.map(async (objectId) => {
 							await deleteData({
-								className: "Group",
+								className: "Location",
 								objectId
 							});
 						})

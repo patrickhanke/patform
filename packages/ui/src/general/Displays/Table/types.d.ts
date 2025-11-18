@@ -132,7 +132,8 @@ export type ColumnDataTypes =
 	| "edit_webpage_components"
 	| "files"
 	| "image_preview"
-	| "user";
+	| "user"
+	| "edit_role";
 
 export type ColumnData<Class> = {
 	id: keyof Class;
@@ -148,7 +149,7 @@ export type CreateColumnHookProps<Class> = {
 	categories: ModuleCategory[];
 	className: string;
 	fields?: Module["data_fields"];
-	refetch: () => void;
+	refetch: ApolloRefetch;
 	constants?: { [key: string]: object };
 	editLink?: string; // if muttiple links, use "link1/link2"
 	disableCategory?: (row: Class, label: ModuleCategory["label"]) => boolean;

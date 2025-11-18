@@ -3,7 +3,10 @@ import { format } from "date-fns";
 const convertDateToString = (date: Date | string): string => {
 	let dateValue: Date = new Date();
 	if (date) {
-		dateValue = new Date(date);
+		const newDateValue = new Date(date);
+		if (isNaN(newDateValue.getTime())) {
+			dateValue = new Date();
+		}
 	}
 	const formattedDate = format(dateValue, "yyyy-MM-dd'T'HH:mm:ss");
 

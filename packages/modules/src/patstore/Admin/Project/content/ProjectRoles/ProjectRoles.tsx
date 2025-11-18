@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { ProjectRolesProps } from "./types";
-import { SlideIn, Table } from "@repo/ui";
+import { SlideIn, SlideInForm, Table } from "@repo/ui";
 import CreateRole from "./components/CreateRole";
 import useRoleColumns from "./hooks/useRoleColumns";
 
@@ -13,7 +13,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 	modules
 }) => {
 	const [loading, setLoading] = useState(false);
-	const { createData } = useDataHandler(true, false);;
+	const { createData } = useDataHandler(true, false);
 	const [role, setRole] = useState({
 		name: ""
 	});
@@ -51,7 +51,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				data={data?.objects.find_Role.results || []}
 				columns={columns}
 			/>
-			<SlideIn
+			{/* <SlideIn
 				header="Neue Rolle erstellen"
 				isOpen={createRole}
 				cancel={() => setCreateRole(false)}
@@ -88,7 +88,51 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				<div>
 					{createRole && <CreateRole role={role} setRole={setRole} />}
 				</div>
-			</SlideIn>
+			</SlideIn> */}
+			<SlideInForm
+				title="Neue Rolle erstellen"
+				isOpen={createRole}
+				setIsOpen={setCreateRole}
+				dataHandler={async (data) => {
+					setLoading(true);
+					if (data.name) {
+						await createData({
+							className: "_Role",
+							updateObject: {
+								name: data.name,
+								default: false,
+								project: {
+									__type: "Pointer",
+									className: "Project",
+									objectId: projectId
+								},
+								ACL: {
+									"*": {
+										read: true
+									},
+									Lr6euLiF4e: {
+										read: true,
+										write: true
+									}
+								}
+							}
+						});
+						await refetch();
+						setLoading(false);
+						setCreateRole(false);
+					}
+				}}
+				fields={[
+					{
+						label: `Name`,
+						id: "name",
+						name: "name",
+						type: "input",
+						initialValue: role.name,
+						placeholder: "Admin"
+					}
+				]}
+			/>
 		</div>
 	);
 };

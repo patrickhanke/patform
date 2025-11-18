@@ -52,7 +52,8 @@ import {
 import {
 	TableColumnFile,
 	TableColumnDocuments,
-	TableColumnUser
+	TableColumnUser,
+	TableColumnUserRole
 } from "../components";
 
 const useCreateColumns = <T extends ColumnClasses>({
@@ -574,6 +575,18 @@ const useCreateColumns = <T extends ColumnClasses>({
 					footer: (info) => info.column.id,
 					enableSorting: columnElement.enableSorting ?? false
 				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "edit_role") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnUserRole user={row} refetch={refetch} />
+					),
+					header: () => <span>Rolle</span>,
+					id: "role",
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: false
+				});
 			}
 			if (columnElement.type === "content") {
 				columnArray.push({

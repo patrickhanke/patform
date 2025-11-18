@@ -106,6 +106,46 @@ const special_fields = (modulePath: string): ModuleField[] => {
 			}
 		];
 	}
+	if (modulePath === "/users") {
+		return [
+			{
+				id: "name",
+				label: "Name",
+				required: true,
+				type: "edit_string",
+				active: true,
+				position: 1,
+				default: true
+			},
+			{
+				id: "username",
+				label: "Benutzername",
+				required: false,
+				type: "string",
+				active: true,
+				position: 2,
+				default: true
+			},
+			{
+				id: "email",
+				label: "E-Mail",
+				required: false,
+				type: "edit_string",
+				active: true,
+				position: 3,
+				default: true
+			},
+			{
+				id: "roles",
+				label: "Rolle",
+				required: false,
+				type: "edit_role",
+				active: true,
+				position: 4,
+				default: true
+			}
+		];
+	}
 
 	return [];
 };

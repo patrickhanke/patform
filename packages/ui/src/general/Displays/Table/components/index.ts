@@ -19,3 +19,4 @@ export { default as TableColumnDate } from "./TableColumnDate";
 export { default as TableColumnImages } from "./TableColumnImages";
 export { default as TableColumnDocuments } from "./TableColumnDocuments";
 export { default as TableColumnUser } from "./TableColumnUser";
+export { default as TableColumnUserRole } from "./TableColumnUserRole";

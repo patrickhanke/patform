@@ -18,8 +18,6 @@ const TableColumnTimesField = ({
 	const [times, setTimes] = useImmer<EventTime[]>(initialTimes || []);
 	const [activeDate, setActiveTime] = useState<EventTime["id"] | null>(null);
 
-	console.log(initialTimes);
-
 	const slideInConfirmHandler = useCallback(async () => {
 		setLoading(true);
 		await onChange(times);

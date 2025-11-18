@@ -1,21 +1,35 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
-import { axiosclient, useAppContext, useDataContext } from "@repo/provider";
-import { Page, RenderFilters, SlideInForm, Table } from "@repo/ui";
-import useUserColumns from "./hooks/useUserColumns";
+import { useCallback, useContext, useMemo } from "react";
+import {
+	axiosclient,
+	PatstoreAppContext,
+	useAppContext,
+	useDataContext,
+	useFindModuleData
+} from "@repo/provider";
+import {
+	generateColumnsFromFields,
+	Page,
+	RenderFilters,
+	SlideInForm,
+	Table,
+	useCreateColumns
+} from "@repo/ui";
 import { UsersOverviewProps } from "./types";
 import { FC, useState } from "react";
-import useFindUser from "./hooks/useFindUser";
-import { Filter, PatstoreRoleClass } from "@repo/types";
+import { Filter, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
 import FileImporter from "./components/FileImporter";
 import create_user_fieds from "./constants/create_user_fields";
 import useFindRoles from "./hooks/useFindRoles";
+import { useDataHandler } from "@repo/provider";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
+	const { deleteData } = useDataHandler(true);
 	const { project } = useAppContext();
+	const { currentModule } = useContext(PatstoreAppContext);
 	const { roles } = useFindRoles({ projectId: project.objectId });
 
 	const [createUser, setCreateUser] = useState(false);
@@ -27,10 +41,10 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const initialFilters: Filter[] = useMemo(
 		() => [
 			{
-				key: "projects",
+				key: "project",
 				value: project.objectId,
-				operator: "_in",
-				id: "projects"
+				operator: "_eq",
+				id: "project"
 			},
 			{
 				key: "is_superuser",
@@ -49,16 +63,28 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		pageSize: 10
 	});
 
-	const { users, refetch, count } = useFindUser({
+	const {
+		data: users,
+		refetch,
+		count
+	} = useFindModuleData<PatstoreUser>({
+		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
+		skip: pagination.pageIndex * pagination.pageSize,
+		order: "name_ASC"
 	});
-	const columns = useUserColumns({ refetch });
+
+	const columns = useCreateColumns<PatstoreUser>({
+		data: generateColumnsFromFields(currentModule.fields),
+		fields: currentModule.data_fields,
+		className: "_User",
+		refetch,
+		categories: currentModule?.categories
+	});
 
 	const updateUserHandler = useCallback(
 		async (values) => {
-			console.log(values);
 			axiosclient().post("/functions/send-user-invitation", {
 				username: values.username,
 				email: values.username,
@@ -119,7 +145,24 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			pageState={pageState}
 			setPageState={setPageState}
 		>
-			{process.env.NODE_ENV === "development" && <FileImporter />}
+			{process.env.NODE_ENV === "development" && (
+				<button
+					onClick={async () => {
+						if (!users) return;
+						const deleteUsers = users.map(async (user) => {
+							return await deleteData({
+								className: "_User",
+								objectId: user.objectId,
+							});
+						});
+
+						await Promise.all(deleteUsers);
+						await refetch();
+					}}
+				>
+					alle Löschen
+				</button>
+			)}
 			{pageState.value === "user" && (
 				<Table
 					columns={columns}

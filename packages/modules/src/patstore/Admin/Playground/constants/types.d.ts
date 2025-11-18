@@ -1,0 +1,34 @@
+export interface Specialist {
+	id: number;
+	publish_specialist: number;
+	anrede: string;
+	titel: string;
+	vorname: string;
+	nachname: string;
+	mitgliedschaft: string;
+	fachrichtung: string;
+	klinikposition: string;
+	belegklinik: string;
+	tel: string;
+	fax: string;
+	email: string;
+	email_invalid: string;
+	private_email: string | null;
+	private_email_invalid: string;
+	newsletter: number;
+	homepage: string;
+	spezialist: string | null;
+	praxis: number;
+	perma_url: string;
+	ci_perma_url: string;
+	login: string;
+	passwd: string;
+	passwort_clear: string;
+	LAST_MODIFIED: string;
+	newsletter_optin: string;
+	newsletter_optin_date: string;
+	newsletter_optout_date: string | null;
+	sent: number;
+	updated: string;
+	changes: string;
+  }
