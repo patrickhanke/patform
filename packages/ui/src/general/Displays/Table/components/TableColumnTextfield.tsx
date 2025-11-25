@@ -18,7 +18,7 @@ const TableColumnTextfield = ({
 			<div className="table_column_textfield_container">
 				{value ? (
 					<span>
-						{value.length > 90 ? `${value.slice(0, 90)}...` : value}
+						{value.length > 60 ? `${value.slice(0, 60)}...` : value}
 					</span>
 				) : (
 					"-"

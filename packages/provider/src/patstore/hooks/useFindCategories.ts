@@ -45,6 +45,7 @@ export const useFindCategoryPageStates = ({
 		const fields = [
 			"objectId",
 			"label",
+			"title",
 			"category_id",
 			"description",
 			"color"
@@ -82,7 +83,7 @@ export const useFindCategoryPageStates = ({
 			categories.forEach((category: CategoryClass) => {
 				pageStates.push({
 					value: category.objectId,
-					label: category.label
+					label: category.title || category.label
 				});
 			});
 		}

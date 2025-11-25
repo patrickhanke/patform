@@ -83,7 +83,7 @@ const NewsOverview = () => {
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
-				text: "News löschen",
+				text: `${selectedRows.length} ${currentModule.name} löschen`,
 				onClick: () => {
 					setDeleteModal(true);
 				},
@@ -101,7 +101,7 @@ const NewsOverview = () => {
 			emptyContent={true}
 			createClass={{
 				className: "News",
-				text: "Neue News erstellen",
+				text: `Neue ${currentModule.name} erstellen`,
 				fields: currentModule.fields,
 				refetch: refetch
 			}}
