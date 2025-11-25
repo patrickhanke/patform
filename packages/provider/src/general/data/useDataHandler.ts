@@ -241,7 +241,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 		}: {
 			file: File;
 			name: string;
-			className: "Download" | "Image";
+			className: "Download" | "Image" | "_User";
 			classKey: string;
 			classId?: string;
 			afterSaveHandler?: (data: any) => void;

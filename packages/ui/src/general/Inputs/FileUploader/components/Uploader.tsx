@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { UplaoderProps } from "../types";
 import { useDataHandler, PatstoreAppContext } from "@repo/provider";
 import { ErrorMessage } from "@repo/types";
-import { Box, FileUpload, Icon } from "@chakra-ui/react";
+import { Box, FileUpload, Icon, Input } from "@chakra-ui/react";
 import { LuUpload } from "react-icons/lu";
 import { ErrorDisplay, IconButton } from "@repo/ui";
 import getAcceptedFiles from "../constants/getAcceptedFiles";
@@ -19,6 +19,9 @@ const Uploader: React.FC<UplaoderProps> = ({
 	const { modules } = useContext(PatstoreAppContext);
 	const [files, setFiles] = useState<FileList>();
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
+	const [customFileNames, setCustomFileNames] = useState<Map<string, string>>(
+		new Map()
+	);
 
 	const [isUploading, setIsUploading] = useState(false);
 
@@ -33,7 +36,8 @@ const Uploader: React.FC<UplaoderProps> = ({
 		}
 		if (moduleId && files) {
 			const uploads = Array.from(files).map((file) => {
-				const fileName: string = file.name;
+				const fileName: string =
+					customFileNames.get(file.name) || file.name;
 				return createUpdateFile({
 					file: file,
 					moduleId,
@@ -61,7 +65,17 @@ const Uploader: React.FC<UplaoderProps> = ({
 		if (setLoading) {
 			setLoading(false);
 		}
-	}, [files, moduleId]);
+	}, [
+		files,
+		moduleId,
+		customFileNames,
+		createUpdateFile,
+		classKey,
+		classId,
+		className,
+		afterUploadHandler,
+		setLoading
+	]);
 
 	return (
 		<div className={"uppy_upload_container"}>
@@ -87,7 +101,48 @@ const Uploader: React.FC<UplaoderProps> = ({
 						<Box color="fg.muted">.png, .jpg bis 5MB</Box>
 					</FileUpload.DropzoneContent>
 				</FileUpload.Dropzone>
-				<FileUpload.List clearable={!isUploading} />
+				<FileUpload.ItemGroup>
+					<FileUpload.Context>
+						{({ acceptedFiles }) =>
+							acceptedFiles.map((file) => (
+								<FileUpload.Item key={file.name} file={file}>
+									{file.type.includes("image") ? (
+										<FileUpload.ItemPreviewImage
+											width={"100px"}
+											height={"60px"}
+											borderRadius={"md"}
+											objectFit={"cover"}
+											alt={file.name}
+										/>
+									) : (
+										<FileUpload.ItemPreview />
+									)}
+									<Input
+										defaultValue={file.name}
+										placeholder="Dateiname"
+										onChange={(e) => {
+											setCustomFileNames((prev) => {
+												const newMap = new Map(prev);
+												newMap.set(
+													file.name,
+													e.target.value
+												);
+												return newMap;
+											});
+										}}
+										width={"180px"}
+										minWidth={"180px"}
+										disabled={isUploading}
+										size="sm"
+										flex="1"
+									/>
+									<FileUpload.ItemSizeText />
+									<FileUpload.ItemDeleteTrigger />
+								</FileUpload.Item>
+							))
+						}
+					</FileUpload.Context>
+				</FileUpload.ItemGroup>
 			</FileUpload.Root>
 			<IconButton
 				icon="upload"
@@ -95,6 +150,7 @@ const Uploader: React.FC<UplaoderProps> = ({
 				onClick={() => uploadHandler()}
 				loading={isUploading}
 				size={16}
+				color="dark"
 			/>
 			<ErrorDisplay errors={errors} />
 		</div>

@@ -140,7 +140,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 		});
 
 		return ele.sort(sortHandler);
-	}, [searchInput]);
+	}, [searchInput, elements]);
 
 	return (
 		<div className={"elements_container"}>

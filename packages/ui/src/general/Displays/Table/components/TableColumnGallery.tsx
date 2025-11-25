@@ -1,10 +1,6 @@
 "use client";
 
-import {
-	generateImagePath,
-	getImageUrlFromBytescale,
-	useAppContext
-} from "@repo/provider";
+import { getImageUrlFromBytescale } from "@repo/provider";
 import { TableColumnGalleryProps } from "../types";
 import { Modal } from "@repo/ui";
 import { useState } from "react";

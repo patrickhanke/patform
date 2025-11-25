@@ -19,8 +19,6 @@ const TableColumnFile = ({
 	id,
 	value
 }: TableColumnFileProps) => {
-	console.log({ value });
-
 	return (
 		<>
 			<FileUploader

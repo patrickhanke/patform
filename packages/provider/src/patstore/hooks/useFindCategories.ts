@@ -1,3 +1,5 @@
+"use client";
+
 import { generateGraphQLQuery } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { CategoryClass, Filter, ModuleCategory, SiteState } from "@repo/types";
@@ -106,8 +108,6 @@ export const useFindCategoryPageStates = ({
 		if (filterIndex !== -1) {
 			filterCopy.splice(filterIndex, 1);
 		}
-
-		console.log({ filterCopy });
 
 		if (activePage?.value === "") {
 			setFilters([...filterCopy]);

@@ -20,6 +20,7 @@ const query = gql`
 				results {
 					objectId
 					name
+					title
 					file {
 						name
 						url

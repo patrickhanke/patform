@@ -20,7 +20,7 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
-		pageSize: 10
+		pageSize: 12
 	});
 
 	const { images, count } = useFindPatformImages({
@@ -48,7 +48,7 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 			});
 		}
 		return imagesArray;
-	}, [images]);
+	}, [images, images.length]);
 
 	return (
 		<div>
@@ -59,7 +59,7 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 					firstPage={() =>
 						setPagination({
 							pageIndex: 0,
-							pageSize: 10
+							pageSize: 12
 						})
 					}
 					pageCount={Math.ceil((count || 0) / pagination.pageSize)}
