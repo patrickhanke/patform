@@ -34,8 +34,6 @@ const PatstoreSelectImages: FC<PatstoreSelectImagesProps> = ({
 		checkForImages(image, maxFileCount)
 	);
 
-	console.log(selectedImages);
-	console.log(selectedImages[0]);
 	const [loading, setLoading] = useState(false);
 
 	const secondaryContent = useMemo(() => {

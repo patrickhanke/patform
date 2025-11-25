@@ -1,5 +1,5 @@
 import { generateGraphQLQuery, useAppContext } from "@repo/provider";
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ProjectSelectionProps } from "../types";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
@@ -34,6 +34,7 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
       },
     },
   );
+
   const projectSelectHandler = useCallback(() => {
     if (
       selectedProject &&
@@ -55,9 +56,19 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
     return false;
   }, [selectedProject, project]);
 
+const selectElements = useMemo(() => {
+  return data?.objects.findProject.results.map((project: PatstoreProject) => ({
+    value: project.objectId,
+    label: project.name,
+  }));
+}, [data, selectProject]);
+
+console.log(selectElements)
+console.log(data)
+
   return (
     <SlideIn
-      header="Projektauswahle"
+      header="Projektauswahl"
       isOpen={selectProject}
       cancel={() => setSelectProject(false)}
       confirm={() => {
@@ -69,18 +80,12 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
       errors={[]}
     >
       <label>{projects.length > 1 ? "Projekte" : "Projekt"}</label>
-      <ElementSelectInterface
-        elements={data?.objects.findProject.results.map(
-          (project: PatstoreProject) =>
-            ({
-              value: project.objectId,
-              label: project.name,
-            }) as const,
-        ) || []}
+      {selectElements.length > 0 && <ElementSelectInterface
+        elements={selectElements}
         onSelect={(value) => setSelectedProject(value)}
         selectedElements={selectedProject}
         max={1}
-      />
+      /> }
     </SlideIn>
   );
 };

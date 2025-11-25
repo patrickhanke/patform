@@ -105,6 +105,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnString
 							value={row[columnElement.id] as string}
+							isLink={columnElement.id === "link"}
 							isEditable={
 								columnElement.type === "edit_string"
 									? true

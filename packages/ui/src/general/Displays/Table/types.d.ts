@@ -55,6 +55,7 @@ export type TableColumnCategoryProps = {
 export type TableColumnStringProps = {
 	value: string;
 	isEditable?: boolean;
+	isLink?: boolean;
 	onChange: (image: string) => void;
 };
 

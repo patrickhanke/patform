@@ -21,7 +21,7 @@ const FormSubmitStore = ({
 		errors,
 		resetForm
 	} = useFormikContext();
-	const [formValues, setFormValues] = useDebounceValue(initialValues, 2000);
+	const [formValues, setFormValues] = useDebounceValue(initialValues, 1000);
 
 	useEffect(() => {
 		const dataHasChanged = !isEqual(values, initialValues);

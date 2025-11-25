@@ -6,7 +6,7 @@ const module_fields: ModuleField[] = [
 		label: "Titel",
 		required: false,
 		type: "edit_string",
-		active: false,
+		active: true,
 		position: 1,
 		default: false
 	},
@@ -105,7 +105,7 @@ const module_fields: ModuleField[] = [
 		label: "Zeiten",
 		required: false,
 		type: "edit_times",
-		active: true,
+		active: false,
 		position: 15,
 		default: false
 	},

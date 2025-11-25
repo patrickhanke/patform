@@ -41,10 +41,10 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const initialFilters: Filter[] = useMemo(
 		() => [
 			{
-				key: "project",
-				value: project.objectId,
-				operator: "_eq",
-				id: "project"
+				key: "projects",
+				value: [project.objectId],
+				operator: "_in",
+				id: "projects"
 			},
 			{
 				key: "is_superuser",

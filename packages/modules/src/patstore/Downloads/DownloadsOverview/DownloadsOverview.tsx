@@ -12,7 +12,9 @@ import {
 import {
 	PatstoreAppContext,
 	useDataHandler,
-	useFindModuleData
+	useFindCategoryPageStates,
+	useFindModuleData,
+	filterModuleCategories
 } from "@repo/provider";
 import { DownloadClass, Filter } from "@repo/types";
 
@@ -22,6 +24,19 @@ const DownloadsOverview = () => {
 	const [loading, setLoading] = useState(false);
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
+
+	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
+		{
+			categories:
+				filterModuleCategories(currentModule.categories).categoryIds ||
+				[],
+			categoryModuleId: filterModuleCategories(currentModule.categories)
+				.categoryModuleId,
+			filters,
+			setFilters
+		}
+	);
+
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
@@ -90,6 +105,9 @@ const DownloadsOverview = () => {
 			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
+			pageStates={pageStates}
+			pageState={activePage}
+			setPageState={setActivePage}
 		>
 			<Table
 				columns={columns}

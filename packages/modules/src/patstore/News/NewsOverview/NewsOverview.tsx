@@ -15,13 +15,28 @@ import {
 	useDataHandler,
 	useFindModuleData
 } from "@repo/provider";
+import {
+	filterModuleCategories,
+	useFindCategoryPageStates
+} from "@repo/provider";
 
 const NewsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
 	const { deleteData } = useDataHandler();
-	console.log({ currentModule });
 
 	const [filters, setFilters] = useState<Filter[]>([]);
+	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
+		{
+			categories:
+				filterModuleCategories(currentModule.categories).categoryIds ||
+				[],
+			categoryModuleId: filterModuleCategories(currentModule.categories)
+				.categoryModuleId,
+			filters,
+			setFilters
+		}
+	);
+
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
@@ -90,6 +105,9 @@ const NewsOverview = () => {
 				fields: currentModule.fields,
 				refetch: refetch
 			}}
+			pageStates={pageStates}
+			setPageState={setActivePage}
+			pageState={activePage}
 			refetch={refetch}
 		>
 			<Table
