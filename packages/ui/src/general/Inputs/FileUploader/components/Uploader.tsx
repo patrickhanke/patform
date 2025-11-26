@@ -81,7 +81,7 @@ const Uploader: React.FC<UplaoderProps> = ({
 		<div className={"uppy_upload_container"}>
 			<Alert.Root status="info">
 				<Alert.Indicator />
-				<Alert.Title>
+				<Alert.Title fontSize="xs">
 					Es können nur Dateien bis 5MB und maximal 10 Dateien auf
 					einmal hochgeladen werden.
 				</Alert.Title>
