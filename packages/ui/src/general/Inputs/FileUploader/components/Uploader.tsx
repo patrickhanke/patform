@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from "react";
 import { UplaoderProps } from "../types";
 import { useDataHandler, PatstoreAppContext } from "@repo/provider";
 import { ErrorMessage } from "@repo/types";
-import { Box, FileUpload, Icon, Input } from "@chakra-ui/react";
+import { Alert, Box, FileUpload, Icon, Input } from "@chakra-ui/react";
 import { LuUpload } from "react-icons/lu";
 import { ErrorDisplay, IconButton } from "@repo/ui";
 import getAcceptedFiles from "../constants/getAcceptedFiles";
@@ -79,6 +79,13 @@ const Uploader: React.FC<UplaoderProps> = ({
 
 	return (
 		<div className={"uppy_upload_container"}>
+			<Alert.Root status="info">
+				<Alert.Indicator />
+				<Alert.Title>
+					Es können nur Dateien bis 5MB und maximal 10 Dateien auf
+					einmal hochgeladen werden.
+				</Alert.Title>
+			</Alert.Root>
 			<FileUpload.Root
 				accept={getAcceptedFiles(type)}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
