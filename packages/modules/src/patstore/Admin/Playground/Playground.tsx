@@ -2,11 +2,13 @@
 
 import { AdminPage } from "@repo/modules";
 import { Coloproktologen } from "./content/Coloproktologen";
+import { Koloproktologie } from "./content";
 
 const Playground = () => {
 	return (
 		<AdminPage title={"Playground"} emptyContent={true}>
-			<Coloproktologen />
+			{/* <Coloproktologen /> */}
+			<Koloproktologie />
 		</AdminPage>
 	);
 };

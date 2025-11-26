@@ -13,7 +13,9 @@ import {
 import {
 	PatstoreAppContext,
 	useDataHandler,
-	useFindModuleData
+	useFindCategoryPageStates,
+	useFindModuleData,
+	filterModuleCategories
 } from "@repo/provider";
 import { Filter, GroupClass } from "@repo/types";
 
@@ -21,6 +23,17 @@ const GroupOverview = () => {
 	const { deleteData } = useDataHandler();
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
+	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
+		{
+			categories:
+				filterModuleCategories(currentModule.categories).categoryIds ||
+				[],
+			categoryModuleId: filterModuleCategories(currentModule.categories)
+				.categoryModuleId,
+			filters,
+			setFilters
+		}
+	);
 	const [loading, setLoading] = useState(false);
 
 	const [pagination, setPagination] = useState({
@@ -93,6 +106,9 @@ const GroupOverview = () => {
 				refetch: refetch
 			}}
 			refetch={refetch}
+			pageStates={pageStates}
+			setPageState={setActivePage}
+			pageState={activePage}
 		>
 			{/* {process.env.NODE_ENV === "development" && (
 				<DataTransfer<

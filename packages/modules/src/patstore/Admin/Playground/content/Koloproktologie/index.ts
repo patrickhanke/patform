@@ -1,1 +1,1 @@
-export { default as Coloproktologen } from "./Coloproktologen";
+export { default as Koloproktologie } from "./Koloproktologie";
