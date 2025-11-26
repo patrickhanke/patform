@@ -5,13 +5,12 @@ import { useAppContext } from "@repo/provider";
 
 const Dashboard = () => {
 	const { project } = useAppContext();
-
-	console.log(project);
 	const dashboardContent = project?.data?.dashboard?.content;
+
 	return (
 		<Page title="Dashboard">
 			<div>
-				<InfoBox text="Bis Änderungen auf der Webseite erscheinen, dauert es einige Minuten bis die Änderungen in der Datenbank übernommen werden." />
+				<InfoBox text="Nach dem Speichern eines Eintrages, dauert es einige Minuten bis die Änderungen auf der Webseite erscheinen." />
 			</div>
 			<Divider />
 			{dashboardContent && <HtmlContent content={dashboardContent} />}
