@@ -13,14 +13,10 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange }) => {
-	console.log(value);
-
 	const { uploadFile } = useDataHandler();
 	const [previewUrl, setPreviewUrl] = useState<string>("");
-	console.log({ previewUrl });
 	const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
 		const files = event.target.files;
-		console.log(files);
 		if (files && files.length > 0) {
 			const file: File | null = files[0] || null;
 
@@ -28,7 +24,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ value, onChange }) => {
 				// Create preview URL
 				const imageUrl = URL.createObjectURL(file);
 				setPreviewUrl(imageUrl);
-				console.log({ file });
 
 				const uploadedFile = await uploadFile({ file });
 				onChange(uploadedFile);

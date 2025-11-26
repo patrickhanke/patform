@@ -53,6 +53,7 @@ const ProjectContextProvider = ({
 				"name",
 				"path",
 				"logo {url name}",
+				"data",
 				"modules {results {objectId name path icon settings fields categories connected_class sub_menu position data_fields}}"
 			];
 		} else if (appId === "patflow") {

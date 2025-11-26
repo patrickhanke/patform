@@ -18,3 +18,5 @@ export * from "./ImagesDisplay";
 export * from "./LoadingIndicator";
 export * from "./Feedback";
 export * from "./Steps";
+export * from "./ActionBar";
+export * from "./HtmlContent";

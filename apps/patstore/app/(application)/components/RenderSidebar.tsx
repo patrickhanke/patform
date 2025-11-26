@@ -14,7 +14,12 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const userRole = roles.find((role) => user.roles.includes(role.objectId));
 
   const menuItems = useMemo(() => {
-    const menuItemsArray: MenuItem[] = [];
+    const menuItemsArray: MenuItem[] = [{
+      label: "Dashboard",
+      icon: "dashboard",
+      value: "/",
+      sub_menu: [],
+    }];
 
     if (project) {
       const modules = cloneDeep(project.modules.results).sort( (a: Module, b: Module) => a.position - b.position);
