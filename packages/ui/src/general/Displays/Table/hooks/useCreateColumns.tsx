@@ -137,7 +137,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 							key={row.objectId}
 							image={row[columnElement.id] as string | string[]}
 							maxFileCount={
-								columnElement.type === "gallery" ? 20 : 1
+								columnElement.type === "gallery" ? 60 : 1
 							}
 							onChange={handleImageChange(
 								row.objectId,
