@@ -57,10 +57,14 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
   }, [selectedProject, project]);
 
 const selectElements = useMemo(() => {
-  return data?.objects.findProject.results.map((project: PatstoreProject) => ({
-    value: project.objectId,
-    label: project.name,
-  }));
+  if (data) {
+    return data?.objects.findProject.results.map((project: PatstoreProject) => ({
+      value: project.objectId,
+      label: project.name,
+    }));
+
+  }
+  return []
 }, [data, selectProject]);
 
 console.log(selectElements)
@@ -80,7 +84,7 @@ console.log(data)
       errors={[]}
     >
       <label>{projects.length > 1 ? "Projekte" : "Projekt"}</label>
-      {selectElements.length > 0 && <ElementSelectInterface
+      {selectElements?.length > 0 && <ElementSelectInterface
         elements={selectElements}
         onSelect={(value) => setSelectedProject(value)}
         selectedElements={selectedProject}
