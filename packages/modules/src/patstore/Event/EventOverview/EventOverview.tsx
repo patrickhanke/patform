@@ -9,11 +9,28 @@ import {
 	useCreateColumns
 } from "@repo/ui";
 import { EventClass, Filter } from "@repo/types";
-import { PatstoreAppContext, useFindModuleData } from "@repo/provider";
+import {
+	filterModuleCategories,
+	PatstoreAppContext,
+	useFindCategoryPageStates,
+	useFindModuleData
+} from "@repo/provider";
 
 const EventOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
+	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
+		{
+			categories:
+				filterModuleCategories(currentModule.categories).categoryIds ||
+				[],
+			categoryModuleId: filterModuleCategories(currentModule.categories)
+				.categoryModuleId,
+			filters,
+			setFilters
+		}
+	);
+
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
@@ -68,6 +85,9 @@ const EventOverview = () => {
 				refetch: refetch
 			}}
 			refetch={refetch}
+			pageStates={pageStates}
+			setPageState={setActivePage}
+			pageState={activePage}
 		>
 			<Table
 				columns={columns}

@@ -147,6 +147,7 @@ const Table: React.FC<TableTypes> = ({
 						<div />
 					)}
 					<PaginationHandlers
+						rowCount={rowCount}
 						pagination={pagination}
 						setPagination={setPagination}
 						previousPage={table.previousPage}

@@ -21,7 +21,6 @@ import { FC, useState } from "react";
 import { Filter, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
-import FileImporter from "./components/FileImporter";
 import create_user_fieds from "./constants/create_user_fields";
 import useFindRoles from "./hooks/useFindRoles";
 import { useDataHandler } from "@repo/provider";
@@ -32,7 +31,9 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
 	const { roles } = useFindRoles({ projectId: project.objectId });
 
-	const [createUser, setCreateUser] = useState(false);
+	const [inviteUser, setInviteUser] = useState(false);
+	const [_createUser, setCreateUser] = useState(false);
+
 	const { feedbackHandler } = useDataContext();
 	const [pageState, setPageState] = useState<(typeof page_states)[number]>(
 		page_states[0]
@@ -101,16 +102,27 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			});
 
 			await refetch();
-			setCreateUser(false);
+			setInviteUser(false);
 		},
 		[project]
 	);
 
+	console.log(project.id);
+
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
-				text: "Neuen Benutzer einladen",
+				text: "Neuen Benutzer erstellen",
 				onClick: () => setCreateUser(true),
+				is_add_button: true,
+				disabled: false
+				// !(
+				// 	project.id !== "EgRR0prozh" || project.id !== "JRxDkaxCoI"
+				// )
+			},
+			{
+				text: "Neuen Benutzer einladen",
+				onClick: () => setInviteUser(true),
 				is_add_button: true
 			}
 		],
@@ -152,7 +164,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 						const deleteUsers = users.map(async (user) => {
 							return await deleteData({
 								className: "_User",
-								objectId: user.objectId,
+								objectId: user.objectId
 							});
 						});
 
@@ -176,8 +188,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			{pageState.value === " invitations" && <UserInvitations />}
 			<SlideInForm
 				title="Neuen Benutzer einladen"
-				isOpen={createUser}
-				setIsOpen={setCreateUser}
+				isOpen={inviteUser}
+				setIsOpen={setInviteUser}
 				dataHandler={updateUserHandler}
 				fields={create_user_fieds(
 					roles?.map((role: PatstoreRoleClass) => ({

@@ -9,6 +9,7 @@ import {
 import { Select } from "@repo/ui";
 
 const PaginationHandlers: FC<PaginationHandlersProps> = ({
+	rowCount,
 	pagination,
 	setPagination,
 	nextPage,
@@ -53,6 +54,12 @@ const PaginationHandlers: FC<PaginationHandlersProps> = ({
 	return (
 		<div className="w-100 flex row a-ce gap-sm j-fe">
 			<div className="flex row a-ce gap-xs">
+				{rowCount && (
+					<>
+						<p>{rowCount}</p>
+						<p>|</p>
+					</>
+				)}
 				<Select
 					options={options}
 					value={options.find(

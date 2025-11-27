@@ -2,11 +2,15 @@
 
 import { AdminPage } from "@repo/modules";
 import { gql, useQuery } from "@apollo/client";
-import { useDataHandler } from "@repo/provider";
+import { convertDateToString, useDataHandler } from "@repo/provider";
 import { useCallback } from "react";
 import data from "./constants/data.json";
-import aerzte from "./constants/aerzte.json";
+import aerzte_dgk from "./constants/aerzte_dgk.json";
+import aerzte_bcd from "./constants/aerzte_bcd.json";
 import { Specialist } from "./constants/types";
+import { KoloproktologieUser } from "./types";
+import { LocationClass } from "../../../../../../../types/src/patstore";
+import { set } from "lodash-es";
 
 const getDescrition = (header_1?: string, header_2?: string) => {
 	let newString = "";
@@ -20,6 +24,18 @@ const getDescrition = (header_1?: string, header_2?: string) => {
 };
 
 const Koloproktologen = () => {
+	const { data: locationData } = useQuery(gql`
+		query {
+			objects {
+				findLocation(where: { project: { _eq: "EgRR0prozh" } }) {
+					results {
+						objectId
+						data
+					}
+				}
+			}
+		}
+	`);
 	const { data: userData } = useQuery(gql`
 		query {
 			objects {
@@ -35,26 +51,215 @@ const Koloproktologen = () => {
 			}
 		}
 	`);
-	console.log({ userData });
-	console.log({ aerzte });
 
 	const { updateData, createData } = useDataHandler(true, false);
 
-	const updateUsers = useCallback(() => {
+	const updateUsers = useCallback(async () => {
 		const users = userData?.objects.find_User.results;
+		console.log(users);
 
-		console.log(aerzte);
+		console.log(aerzte_dgk);
+		console.log(
+			aerzte_bcd.filter((arzt) => arzt.mitgliedschaft === "Mitglied")
+				.length
+		);
 
-		// users.forEach((user) => {
-		// 	updateData({
-		// 		className: "_User",
-		// 		objectId: user.objectId,
-		// 		updateObject: {
-		// 			projects: ["JRxDkaxCoI"]
-		// 		}
-		// 	});
-		// });
-	}, [userData]);
+		const filteredAerzteBcd = aerzte_bcd.filter((arzt) => !!arzt.login);
+
+		const isEqual = [];
+
+		const aerzteDGK = aerzte_dgk.map((arzt) => {
+			return {
+				type: "dgk",
+				username: arzt.login,
+				first_name: arzt.name,
+				last_name: arzt.lname,
+				password: arzt.passwd,
+				email: null,
+				title: arzt.title,
+				address: arzt.salut,
+				data: {
+					dgk: {
+						address: arzt.salut,
+						title: arzt.title,
+						name: arzt.name + " " + arzt.lname,
+						postal_code: arzt.wp_zip.toString() || "",
+						city: arzt.wp_city || "",
+						country: arzt.wp_country || ""
+					},
+					bcd: {
+						klinikposition: "",
+						fachrichtung: "",
+						belegklinik: "",
+						tel: "",
+						fax: "",
+						email: "",
+						location: ""
+					}
+				},
+				settings: {
+					dgk: {
+						accept_search: arzt.publish === 1 ? true : false
+					},
+					bcd: {
+						publish_specialist: false
+					},
+					newsletter: arzt.newsletter_optin === 1 ? true : false,
+					newsletter_email: "other",
+					newsletter_email_address: arzt.nlemail || "",
+					newsletter_optin_date: convertDateToString(
+						arzt.newsletter_optin_date
+							? new Date(arzt.newsletter_optin_date)
+							: new Date()
+					),
+					newsletter_optout_date: arzt.newsletter_optout_date
+						? convertDateToString(
+								new Date(arzt.newsletter_optout_date)
+							)
+						: null
+				}
+			} as KoloproktologieUser;
+		});
+
+		const aerzteBcD = [];
+		const locations = locationData?.objects.findLocation.results;
+
+		filteredAerzteBcd.forEach((arzt) => {
+			const findArztDGKIndex = aerzteDGK.findIndex(
+				(a: KoloproktologieUser) => a.username === arzt.login
+			);
+			const location = locations?.find(
+				(location: LocationClass) =>
+					location?.data?.id === Number(arzt?.praxis)
+			);
+
+			const bcdArzt = {
+				type: "bcd",
+				username: arzt.login,
+				first_name: arzt.vorname,
+				last_name: arzt.nachname,
+				email: arzt.email,
+				title: arzt.titel,
+				address: arzt.anrede,
+				location: location ? location.objectId : null,
+				password: arzt.passwd,
+				data: {
+					dgk: {
+						address: "",
+						title: "",
+						name: "",
+						postal_code: "",
+						city: "",
+						country: ""
+					},
+					bcd: {
+						fachrichtung: arzt.fachrichtung || "",
+						klinikposition: arzt.klinikposition || "",
+						belegklinik: arzt.belegklinik || "",
+						tel: arzt.tel || "",
+						fax: arzt.fax || "",
+						email: arzt.email || ""
+					}
+				},
+				settings: {
+					bcd: {
+						publish_specialist:
+							arzt.publish_specialist.toString() === "1"
+								? true
+								: false
+					},
+					dgk: {
+						accept_search: false
+					},
+					newsletter: arzt.newsletter === "1" ? true : false,
+					newsletter_optin:
+						arzt.newsletter_optin?.toString() === "1"
+							? true
+							: false,
+					newsletter_email:
+						arzt.newsletter === "1" && arzt.private_email
+							? "other"
+							: "existing",
+					newsletter_email_address: arzt.private_email
+						? arzt.private_email
+						: "",
+					newsletter_optin_date: convertDateToString(
+						arzt.newsletter_optin_date
+							? new Date(arzt.newsletter_optin_date)
+							: new Date()
+					),
+					newsletter_optout_date: arzt.newsletter_optout_date
+						? convertDateToString(
+								new Date(arzt.newsletter_optout_date)
+							)
+						: null
+				}
+			} as KoloproktologieUser;
+
+			if (findArztDGKIndex !== -1) {
+				isEqual.push({
+					arzt
+				});
+				const arztCopy = aerzteDGK[findArztDGKIndex];
+				if (arztCopy) {
+					set(arztCopy, "data.bcd", bcdArzt.data.bcd);
+					set(arztCopy, "settings.bcd", bcdArzt.settings.bcd);
+					set(arztCopy, "location", bcdArzt.location);
+					set(arztCopy, "type", "dgk/bcd");
+					set(arztCopy, "email", bcdArzt.email);
+					set(aerzteDGK, findArztDGKIndex, arztCopy);
+				}
+			} else {
+				aerzteBcD.push({
+					...bcdArzt
+				});
+			}
+		});
+
+		console.log({
+			aerzteBcD: aerzteBcD.sort((a, b) =>
+				a.username.localeCompare(b.username)
+			)
+		});
+		console.log({ aerzteDGK: aerzteDGK.filter((arzt) => !!arzt.username) });
+		console.log({ isEqual });
+
+		const createArray = aerzteDGK.map(async (arzt) => {
+			const updateObject = {
+				...arzt,
+				projects:
+					arzt.type === "dgk"
+						? ["JRxDkaxCoI"]
+						: ["JRxDkaxCoI", "EgRR0prozh"],
+				roles:
+					arzt.type === "dgk"
+						? ["tEsx6N2IUm"]
+						: ["kKQapdCCs9", "tEsx6N2IUm"],
+				emailVerified: false,
+				module: {
+					__type: "Pointer",
+					className: "Module",
+					objectId: "qKRBi8FYD6"
+				},
+				project: {
+					__type: "Pointer",
+					className: "Project",
+					objectId: "JRxDkaxCoI"
+				}
+			};
+
+			if (updateObject.email === null) {
+				delete updateObject.email;
+			}
+			
+			return await createData({
+				className: "_User",
+				updateObject
+			});
+		});
+
+		await Promise.all(createArray);
+	}, [userData, locationData]);
 
 	const dataHandler = useCallback(async () => {
 		const users = userData?.objects.find_User.results;
@@ -78,39 +283,6 @@ const Koloproktologen = () => {
 					onClick={() => updateUsers()}
 				>
 					Update Users
-				</button>
-				<button
-					disabled={!data}
-					className="full_button primary"
-					onClick={() => {
-						const aerzteArray = aerzte.filter(
-							(arz: Specialist) =>
-								arz.mitgliedschaft !== "Mitglied"
-						);
-						const aerzteArray2 = aerzte.filter(
-							(arz: Specialist) =>
-								arz.mitgliedschaft === "Mitglied"
-						);
-						const users = userData?.objects.find_User.results;
-						const userArray = aerzte.filter(
-							(arz: Specialist) =>
-								!users.find(
-									(user: UserClass) =>
-										user.username === arz.login
-								)
-						);
-						console.log(userArray);
-						console.log(aerzte.length);
-						console.log(
-							` ${aerzteArray.length} users with Mitgliedschaft`
-						);
-						console.log(
-							` ${aerzteArray2.length} users without Mitgliefschaft`
-						);
-						console.log(userData?.objects.find_User.results.length);
-					}}
-				>
-					Filter Ärzte
 				</button>
 			</div>
 		</AdminPage>
