@@ -35,7 +35,8 @@ function useFindModuleData<T extends Classes>({
 			fields: [
 				...generateQueryFromFields(module.fields),
 				...additionalFields,
-				"data"
+				"data",
+				"roles"
 			]
 		}),
 		{

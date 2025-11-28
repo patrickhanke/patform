@@ -107,8 +107,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		[project]
 	);
 
-	console.log(project.id);
-
 	const pageHeaderButtons = useMemo(
 		() => [
 			{

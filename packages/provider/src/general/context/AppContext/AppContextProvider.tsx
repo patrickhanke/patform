@@ -58,7 +58,7 @@ const ProjectContextProvider = ({
 			];
 		} else if (appId === "patflow") {
 			return [
-				"name",	
+				"name",
 				"objectId",
 				"path",
 				"time_settings",
