@@ -11,6 +11,7 @@ import { Specialist } from "./constants/types";
 import { KoloproktologieUser } from "./types";
 import { LocationClass } from "../../../../../../../types/src/patstore";
 import { set } from "lodash-es";
+import { v4 as uuidv4 } from "uuid";
 
 const getDescrition = (header_1?: string, header_2?: string) => {
 	let newString = "";
@@ -53,6 +54,8 @@ const Koloproktologen = () => {
 	`);
 
 	const { updateData, createData } = useDataHandler(true, false);
+
+	console.log({ userData });
 
 	const updateUsers = useCallback(async () => {
 		const users = userData?.objects.find_User.results;
@@ -224,41 +227,80 @@ const Koloproktologen = () => {
 		console.log({ aerzteDGK: aerzteDGK.filter((arzt) => !!arzt.username) });
 		console.log({ isEqual });
 
-		const createArray = aerzteDGK.map(async (arzt) => {
-			const updateObject = {
-				...arzt,
-				projects:
-					arzt.type === "dgk"
-						? ["JRxDkaxCoI"]
-						: ["JRxDkaxCoI", "EgRR0prozh"],
-				roles:
-					arzt.type === "dgk"
-						? ["tEsx6N2IUm"]
-						: ["kKQapdCCs9", "tEsx6N2IUm"],
-				emailVerified: false,
-				module: {
-					__type: "Pointer",
-					className: "Module",
-					objectId: "qKRBi8FYD6"
-				},
-				project: {
-					__type: "Pointer",
-					className: "Project",
-					objectId: "JRxDkaxCoI"
-				}
-			};
+		const filteredArray = aerzteDGK.filter(
+			(arzt) => !users.find((user) => user.username === arzt.username)
+		);
+		console.log({ filteredArray });
 
-			if (updateObject.email === null) {
-				delete updateObject.email;
-			}
-			
-			return await createData({
-				className: "_User",
-				updateObject
-			});
-		});
+		// const createArray = filteredArray.map((arzt) => {
+		// 	const updateObject = {
+		// 		...arzt,
+		// 		projects:
+		// 			arzt.type === "dgk"
+		// 				? ["JRxDkaxCoI"]
+		// 				: ["JRxDkaxCoI", "EgRR0prozh"],
+		// 		roles:
+		// 			arzt.type === "dgk"
+		// 				? ["tEsx6N2IUm"]
+		// 				: ["kKQapdCCs9", "tEsx6N2IUm"],
+		// 		emailVerified: false,
+		// 		module: {
+		// 			__type: "Pointer",
+		// 			className: "Module",
+		// 			objectId: "qKRBi8FYD6"
+		// 		},
+		// 		project: {
+		// 			__type: "Pointer",
+		// 			className: "Project",
+		// 			objectId: "JRxDkaxCoI"
+		// 		},
+		// 		password: uuidv4()
+		// 	};
 
-		await Promise.all(createArray);
+		// 	if (updateObject.email === null) {
+		// 		delete updateObject.email;
+		// 	}
+		// 	if (!updateObject.username) {
+		// 		updateObject["username"] =
+		// 			`${arzt.first_name.toLowerCase().replace(/\s+/g, ".")}.${arzt.last_name.toLowerCase().replace(/\s+/g, ".")}`;
+		// 	}
+
+		// 	return createData({
+		// 		className: "_User",
+		// 		updateObject
+		// 	});
+		// });
+
+		// console.log({ createArray });
+
+		// const createArray = aerzteBcD.map(async (arzt) => {
+		// 	const updateObject = {
+		// 		...arzt,
+		// 		projects: ["EgRR0prozh"],
+		// 		roles: ["kKQapdCCs9"],
+		// 		emailVerified: false,
+		// 		module: {
+		// 			__type: "Pointer",
+		// 			className: "Module",
+		// 			objectId: "yTGwUVZ8oF"
+		// 		},
+		// 		project: {
+		// 			__type: "Pointer",
+		// 			className: "Project",
+		// 			objectId: "EgRR0prozh"
+		// 		}
+		// 	};
+		// 	if (updateObject.email === null) {
+		// 		delete updateObject.email;
+		// 	}
+
+		// 	return await createData({
+		// 		className: "_User",
+		// 		updateObject
+		// 	});
+		// });
+
+		// await Promise.all(createArray);
 	}, [userData, locationData]);
 
 	const dataHandler = useCallback(async () => {

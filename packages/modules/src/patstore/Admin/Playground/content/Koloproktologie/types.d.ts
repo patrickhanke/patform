@@ -30,7 +30,8 @@ export type KoloproktologieUser = {
 	title: string;
 	address: string;
 	password?: string;
-	data?: {
+	location?: string;
+	data: {
 		dgk: {
 			address: string;
 			title: string;
@@ -40,15 +41,16 @@ export type KoloproktologieUser = {
 			country: string;
 		};
 		bcd: {
+			fachrichtung: string;
 			klinikposition: string;
 			belegklinik: string;
 			tel: string;
 			fax: string;
 			email: string;
-			location?: string;
+			country?: string
 		};
 	};
-	settings?: {
+	settings: {
 		bcd: {
 			publish_specialist: boolean;
 		};
@@ -58,7 +60,6 @@ export type KoloproktologieUser = {
 		newsletter: boolean;
 		newsletter_email?: "existing" | "other";
 		newsletter_email_address?: string;
-		newsletter_optin: boolean;
 		newsletter_optin_date: string;
 		newsletter_optout_date: string | null;
 	};

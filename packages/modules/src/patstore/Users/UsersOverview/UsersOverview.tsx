@@ -5,8 +5,7 @@ import {
 	axiosclient,
 	PatstoreAppContext,
 	useAppContext,
-	useDataContext,
-	useFindModuleData
+	useDataContext
 } from "@repo/provider";
 import {
 	generateColumnsFromFields,
@@ -24,6 +23,7 @@ import UserInvitations from "./content/UserInvitations";
 import create_user_fieds from "./constants/create_user_fields";
 import useFindRoles from "./hooks/useFindRoles";
 import { useDataHandler } from "@repo/provider";
+import useFindUserData from "./hooks/useFindUserData";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { deleteData } = useDataHandler(true);
@@ -68,7 +68,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		data: users,
 		refetch,
 		count
-	} = useFindModuleData<PatstoreUser>({
+	} = useFindUserData<PatstoreUser>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
@@ -137,10 +137,17 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				fields={[
 					{
 						type: "input",
-						key: "name",
+						key: "last_name",
 						operator: "_regex",
 						value: "",
-						placeholder: "Suchwort"
+						placeholder: "Nachname"
+					},
+					{
+						type: "input",
+						key: "first_name",
+						operator: "_regex",
+						value: "",
+						placeholder: "Vorname"
 					}
 				]}
 				categories={[]}

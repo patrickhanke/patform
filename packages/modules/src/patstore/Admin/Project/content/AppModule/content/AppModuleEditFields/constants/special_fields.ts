@@ -109,7 +109,7 @@ const special_fields = (modulePath: string): ModuleField[] => {
 	if (modulePath === "/users") {
 		return [
 			{
-				id: "name",
+				id: "label",
 				label: "Name",
 				required: true,
 				type: "edit_string",
