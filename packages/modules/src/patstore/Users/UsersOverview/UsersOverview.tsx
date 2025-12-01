@@ -81,7 +81,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		fields: currentModule.data_fields,
 		className: "_User",
 		refetch,
-		categories: currentModule?.categories
+		categories: currentModule?.categories,
+		useMasterKey: true
 	});
 
 	const updateUserHandler = useCallback(
@@ -114,9 +115,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				onClick: () => setCreateUser(true),
 				is_add_button: true,
 				disabled: false
-				// !(
-				// 	project.id !== "EgRR0prozh" || project.id !== "JRxDkaxCoI"
-				// )
 			},
 			{
 				text: "Neuen Benutzer einladen",
@@ -135,17 +133,10 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				fields={[
 					{
 						type: "input",
-						key: "last_name",
+						key: "label",
 						operator: "_regex",
 						value: "",
-						placeholder: "Nachname"
-					},
-					{
-						type: "input",
-						key: "first_name",
-						operator: "_regex",
-						value: "",
-						placeholder: "Vorname"
+						placeholder: "Vor- oder Nachname"
 					}
 				]}
 				categories={[]}

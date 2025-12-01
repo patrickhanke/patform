@@ -154,6 +154,7 @@ export type CreateColumnHookProps<Class> = {
 	constants?: { [key: string]: object };
 	editLink?: string; // if muttiple links, use "link1/link2"
 	disableCategory?: (row: Class, label: ModuleCategory["label"]) => boolean;
+	useMasterKey?: boolean;
 };
 
 export type ColumnClasses =

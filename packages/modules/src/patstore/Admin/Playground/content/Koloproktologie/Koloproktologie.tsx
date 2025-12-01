@@ -11,8 +11,11 @@ const Koloproktologen = () => {
 	const { data: userData } = useQuery(gql`
 		query {
 			objects {
-				find_User(where: { projects: { _in: "EgRR0prozh" } }) {
+				find_User(
+					where: { projects: { _in: ["EgRR0prozh", "JRxDkaxCoI"] } }
+				) {
 					results {
+						label
 						objectId
 						username
 						data
@@ -29,42 +32,19 @@ const Koloproktologen = () => {
 
 		console.log(users);
 
-		const updateArray = [];
+		const dublicates = [];
 
 		users.forEach((user) => {
-			const userResult = aerzte_bcd.find(
-				(aerzte) => aerzte.login === user.username
+			const userResult = users.filter(
+				(aerzte) => aerzte.label === user.label
 			);
-			if (!userResult) {
-				return;
-			}
-			const updateObject = {
-				data: {
-					...user.data,
-					bcd: {
-						...user.data.bcd,
-						spezialist:
-							userResult.spezialist === "1" ? true : false,
-						publish_specialist:
-							userResult.publish_specialist === "1" ? true : false
-					}
-				}
-			};
-
 			console.log(userResult);
-
-			console.log(updateObject);
-
-			updateArray.push(
-				updateData({
-					className: "_User",
-					objectId: user.objectId,
-					updateObject
-				})
-			);
+			if (userResult.length > 1) {
+				dublicates.push(...userResult);
+			}
 		});
 
-		await Promise.all(updateArray);
+		console.log(dublicates);
 	}, [userData]);
 
 	return (

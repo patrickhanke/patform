@@ -11,7 +11,8 @@ const axiosclient = (useMasterKey = false) => {
 	};
 
 	if (useMasterKey) {
-		headers["X-Parse-Master-Key"] = process.env.SASHIDO_MASTER_KEY as string;
+		headers["X-Parse-Master-Key"] = process.env
+			.SASHIDO_MASTER_KEY as string;
 	}
 
 	return axios.create({

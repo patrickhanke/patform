@@ -64,9 +64,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 	refetch,
 	constants,
 	editLink,
-	disableCategory
+	disableCategory,
+	useMasterKey = false
 }: CreateColumnHookProps<T>) => {
-	const { updateData } = useDataHandler(false);
+	const { updateData } = useDataHandler(useMasterKey);
 
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {

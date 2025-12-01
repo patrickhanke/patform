@@ -5,13 +5,14 @@ import {
 	SlideIn,
 	StateDisplay
 } from "@repo/ui";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ApolloRefetch, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 
-const findRoleFromUserId = (userId: string, roles: PatstoreRoleClass[]) => {
-	const role = roles.find((role) =>
-		role?.users?.results?.some((user) => user.objectId === userId)
-	);
+const findRoleFromUserId = (
+	userRoles: string[],
+	roles: PatstoreRoleClass[]
+) => {
+	const role = roles.find((role) => userRoles.includes(role.objectId));
 	return role ? role : undefined;
 };
 
@@ -26,9 +27,7 @@ const TableColumnUserRole = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [initialRole, setInitialRole] = useState<string | undefined>(
-		findRoleFromUserId(user.objectId, roles)
-			? findRoleFromUserId(user.objectId, roles)?.objectId
-			: undefined
+		findRoleFromUserId(user.roles, roles)?.objectId
 	);
 
 	const [selectedRole, setSelectedRole] = useState<string | undefined>(
@@ -51,6 +50,12 @@ const TableColumnUserRole = ({
 
 		return personOptionsArray;
 	}, [roles]);
+
+	useEffect(() => {
+		if (initialRole && !selectedRole) {
+			setSelectedRole(initialRole);
+		}
+	}, [initialRole]);
 
 	const selectRole = useMemo(
 		() => (
