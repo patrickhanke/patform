@@ -82,6 +82,9 @@ const FileUploader = ({
 					header={
 						type === "image" ? "Bild hochladen" : "Datei hochladen"
 					}
+					styles={{
+						minHeight: "480px"
+					}}
 				>
 					<Uploader
 						type={type}
