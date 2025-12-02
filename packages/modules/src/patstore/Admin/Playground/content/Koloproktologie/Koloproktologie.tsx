@@ -19,32 +19,25 @@ const Koloproktologen = () => {
 						objectId
 						username
 						data
+						settings
 					}
 				}
 			}
 		}
 	`);
 
+	console.log(userData);
+
 	const { updateData, createData } = useDataHandler(true, false);
 
 	const updateUsers = useCallback(async () => {
 		const users = userData?.objects.find_User.results;
 
-		console.log(users);
+		const newsletterUsers = users.filter(
+			(user) => user.settings.newsletter === true
+		);
 
-		const dublicates = [];
-
-		users.forEach((user) => {
-			const userResult = users.filter(
-				(aerzte) => aerzte.label === user.label
-			);
-			console.log(userResult);
-			if (userResult.length > 1) {
-				dublicates.push(...userResult);
-			}
-		});
-
-		console.log(dublicates);
+		console.log(newsletterUsers);
 	}, [userData]);
 
 	return (
