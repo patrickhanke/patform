@@ -49,7 +49,9 @@ const sortTasksForList: (array: Array<Task>) => TaskSection = (
 					const currentWeek = getWeek(new Date(), {
 						weekStartsOn: 1
 					});
+
 					const currentYear = getYear(new Date());
+
 					if (year === currentYear) {
 						if (week === currentWeek) {
 							date = formatISO9075(new Date(), {
@@ -78,6 +80,10 @@ const sortTasksForList: (array: Array<Task>) => TaskSection = (
 						currentWeek ===
 							getWeek(lastDayOfYear(new Date(currentYear)))
 					) {
+						label = "Ab nächster Woche";
+						titleValue = "next_week";
+						date = arrayDate;
+					} else if (year > currentYear) {
 						label = "Ab nächster Woche";
 						titleValue = "next_week";
 						date = arrayDate;
