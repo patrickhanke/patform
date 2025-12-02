@@ -1,9 +1,10 @@
 export type TableColumnDeleteFieldProps = {
-  objectId: string;
-  className: string;
-  refetch: () => void;
+	objectId: string;
+	className: string;
+	refetch: () => void;
+	useMasterKey?: boolean;
 };
 
 export type TableColumnDeleteFieldComponent = (
-  params: TableColumnDeleteFieldProps,
+	params: TableColumnDeleteFieldProps
 ) => ReactElement;

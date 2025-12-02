@@ -770,6 +770,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 							objectId={row.objectId}
 							className={className}
 							refetch={refetch}
+							useMasterKey={useMasterKey}
 						/>
 					</div>
 				),

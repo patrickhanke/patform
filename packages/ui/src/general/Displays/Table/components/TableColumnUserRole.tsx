@@ -12,6 +12,9 @@ const findRoleFromUserId = (
 	userRoles: string[],
 	roles: PatstoreRoleClass[]
 ) => {
+	if (!userRoles || userRoles.length === 0) {
+		return undefined;
+	}
 	const role = roles.find((role) => userRoles.includes(role.objectId));
 	return role ? role : undefined;
 };

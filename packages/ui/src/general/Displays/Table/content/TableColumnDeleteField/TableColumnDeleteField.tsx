@@ -11,10 +11,11 @@ import {
 const TableColumnDeleteField: TableColumnDeleteFieldComponent = ({
 	objectId,
 	className,
-	refetch
+	refetch,
+	useMasterKey
 }: TableColumnDeleteFieldProps) => {
 	const [deleteModal, setDeleteModal] = useState(false);
-	const { deleteData } = useDataHandler();
+	const { deleteData } = useDataHandler(useMasterKey);
 
 	const deleteItem = useCallback(async () => {
 		await deleteData({
