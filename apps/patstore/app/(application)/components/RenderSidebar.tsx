@@ -31,7 +31,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
             value: module.path,
             sub_menu: module.sub_menu || [],
           });
-        } else if (userRole && userRole.modules.includes(module.objectId)) {
+        } else if (userRole && userRole?.modules?.includes(module.objectId)) {
           menuItemsArray.push({
             label: module.name,
             icon: module.icon,

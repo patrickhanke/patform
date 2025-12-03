@@ -45,11 +45,11 @@ const sortTasksForList: (array: Array<Task>) => TaskSection = (
 					const week = getWeek(new Date(arrayDate), {
 						weekStartsOn: 1
 					});
-					const year = getYear(new Date(arrayDate));
 					const currentWeek = getWeek(new Date(), {
 						weekStartsOn: 1
 					});
 
+					const year = getYear(new Date(arrayDate));
 					const currentYear = getYear(new Date());
 
 					if (year === currentYear) {

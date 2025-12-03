@@ -152,9 +152,10 @@ export async function middleware(request: NextRequest) {
   }
 
   console.log({pathArray});
+  const hasAcces = !!pathArray.find((path) => request.nextUrl.pathname.includes(path));
 
   if (
-    !pathArray.includes(request.nextUrl.pathname) &&
+    !hasAcces &&
     user?.is_superuser === false
   ) {
     return NextResponse.redirect(new URL("/", request.url));
