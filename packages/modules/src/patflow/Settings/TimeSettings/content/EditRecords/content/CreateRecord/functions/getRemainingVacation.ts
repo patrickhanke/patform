@@ -13,7 +13,6 @@ const getRemainingVacation: (
 		new Date(end_date),
 		new Date(start_date)
 	);
-	console.log(initial_vacation);
 
 	let vacation = 0;
 	if (difference === 12) {
@@ -22,9 +21,6 @@ const getRemainingVacation: (
 		vacation = Math.ceil((initial_vacation / 12) * difference);
 	}
 
-	console.log(difference);
-	console.log(days);
-
 	days.forEach((day) => {
 		const date = new Date(day.date).getTime();
 
@@ -32,7 +28,7 @@ const getRemainingVacation: (
 			date >= new Date(start_date).getTime() &&
 			date <= new Date(end_date).getTime() &&
 			day.type === "absence" &&
-			day.absence.type === "vacation"
+			day?.absence?.type === "vacation"
 		) {
 			if (day?.default_time?.type === "regular") {
 				vacation -= 1;

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { CreateRecordProps } from "./types";
 import { useQuery } from "@apollo/client";
 import { find_records_for_user } from "@repo/provider";
@@ -540,8 +540,10 @@ const CreateRecord: FC<CreateRecordProps> = ({
 								formSubmitHandler={(values) => {
 									setNextRecord({
 										...nextRecord,
-										time_settings:
-											values as RecordTimeSettings
+										time_settings: {
+											...nextRecord.time_settings,
+											...(values as RecordTimeSettings)
+										}
 									});
 								}}
 								useWithDebounce

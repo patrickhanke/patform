@@ -16,7 +16,8 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 	isSearchable = false,
 	selectProperty = false,
 	useTiles = false,
-	selectAll = false
+	selectAll = false,
+	setSelectedToTop = false
 }) => {
 	const [searchInput, setSearchTerm] = useState("");
 
@@ -124,7 +125,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 			return a?.label?.localeCompare(b.label);
 		};
 
-		if (!searchInput) {
+		if (!searchInput && setSelectedToTop) {
 			return elements.sort(sortHandler);
 		}
 
@@ -139,7 +140,11 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 			}
 		});
 
-		return ele.sort(sortHandler);
+		if (setSelectedToTop) {
+			return ele.sort(sortHandler);
+		}
+
+		return ele;
 	}, [searchInput, elements]);
 
 	return (

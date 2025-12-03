@@ -93,12 +93,15 @@ export const createInitialTimes: (
 		};
 
 		if (isWorkingDay) {
+			console.log({ day });
 			const startTime = `${day}T${timeSettings.start || "08:00"}`;
+			console.log({ timeSettings });
 			const durationMs =
 				hoursToMilliseconds(
 					timeSettings.hours / timeSettings.weekdays
 				) + minutesToMilliseconds(timeSettings.pause);
-
+			console.log({ durationMs });
+			console.log({ startTime: new Date(startTime).getTime() });
 			const endTime = new Date(
 				new Date(startTime).getTime() + durationMs
 			);
@@ -134,6 +137,8 @@ export const createInitialTimes: (
 					}
 				];
 			};
+
+			console.log(endTime);
 
 			timeObject.default_time = {
 				type: "regular",
