@@ -6,7 +6,6 @@ import { axiosclient, generateGraphQLQuery } from "@repo/provider";
 import Cookies from "js-cookie";
 import useStorage from "./hooks/useStorage";
 import { PatflowProject, PatflowUser } from "@repo/types";
-import { useRouter } from "next/navigation";
 import { useQuery } from "@apollo/client";
 import find_user_messages from "./constants/find_user_messages";
 
@@ -29,8 +28,6 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 		skip: !getItem("user", "session", "object")
 	});
 
-	const router = useRouter();
-
 	const userMessages = useMemo(() => {
 		if (messageData) {
 			return messageData.objects.findMessage.results;
@@ -39,35 +36,6 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 	}, [messageData]);
 
 	// get user
-	const loginUser = async ({
-		username,
-		password
-	}: {
-		username: string;
-		password: string;
-	}) => {
-		await axiosclient()
-			.post("login", {
-				username: username,
-				password: password
-			})
-			.then((response) => {
-				Cookies.set("patstore_token", response.data.sessionToken, {
-					expires: 90
-				});
-				setItem("user", response.data, "session", "object");
-				setItem("project", response.data.project.objectId, "session");
-				router.push("/");
-			})
-
-			.catch((error) => {
-				if (error.message === "Invalid username/password.") {
-					window.alert("Falsche E-Mail / Passwort Kombination");
-				} else {
-					window.alert("Das Einloggen ist leider fehlgeschlagen");
-				}
-			});
-	};
 
 	const getUserData = useCallback(async () => {
 		axiosclient()
@@ -100,7 +68,6 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 	const userContextObject = useMemo(
 		() => ({
 			user: getItem("user", "session", "object") || ({} as PatflowUser),
-			loginUser,
 			projectId: "B2vfHKzxqE",
 			project:
 				projectData?.objects.get_User.project || ({} as PatflowProject),

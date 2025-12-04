@@ -40,7 +40,7 @@ export const loginUser: LoginUser = async ({ email, password }) => {
 	const responseData = response?.data?.result;
 
 	if (!responseData) {
-		window.alert("Fehler beim Laden der Daten");
+		console.alert("Fehler beim Laden der Daten");
 	} else {
 		const installationId = generateUuid();
 		let sessionToken;
