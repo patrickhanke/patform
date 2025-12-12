@@ -27,8 +27,6 @@ const getDatesFromInterval: (dateObject: DateObjectWithNextDates) => {
 		? new Date(dateObject.end_date)
 		: new Date(year + 1, 11, 31);
 
-	console.log(end);
-
 	if (dateObject.interval.unit === "days" && dateObject.start_date) {
 		const startHours = start.getHours();
 		const startMinutes = start.getMinutes();

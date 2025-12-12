@@ -16,8 +16,6 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 		if (data) {
 			const project = data?.objects.getProject;
 
-			console.log(project.settings.email);
-
 			return [
 				{
 					id: "name",
@@ -61,15 +59,11 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 
 	const project = data?.objects.getProject;
 
-	console.log({ project });
-
 	return (
 		<Form
 			fields={settingsFields}
 			data={project}
 			formSubmitHandler={async (values) => {
-				console.log(values);
-
 				await updateData({
 					className: "Project",
 					objectId: project?.objectId,

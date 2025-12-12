@@ -18,7 +18,6 @@ const SiteHeaderContent = ({
 			{ value: "all", label: "Alle Monate" },
 			...months
 		];
-		console.log({ staff });
 
 		staffOptions = staff.map((staff: StaffMember) => ({
 			value: staff.objectId,

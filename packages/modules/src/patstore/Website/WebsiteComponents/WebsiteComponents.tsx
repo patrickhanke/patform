@@ -53,8 +53,6 @@ const WebsiteComponents = () => {
 		[user]
 	);
 
-	console.log(user);
-
 	const columns = useCreateColumns<ContentClass>({
 		data: [
 			{ id: "name", type: "edit_string", label: "Name" },

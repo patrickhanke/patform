@@ -25,7 +25,6 @@ const TableColumnEditContent: FC<TableColumnEditContentProps> = ({
 
 	const slideInConfirmHandler = useCallback(async () => {
 		setLoading(true);
-		console.log(content);
 
 		await onChange(content);
 		setLoading(false);

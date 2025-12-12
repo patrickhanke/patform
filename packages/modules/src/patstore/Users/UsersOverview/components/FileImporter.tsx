@@ -44,8 +44,6 @@ export default function FileImporter() {
 		});
 	};
 
-	console.log(data);
-
 	const uploadUsers = useCallback(async () => {
 		const uploadData = data.map((user) => {
 			return {

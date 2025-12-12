@@ -67,9 +67,6 @@ const selectElements = useMemo(() => {
   return []
 }, [data, selectProject]);
 
-console.log(selectElements)
-console.log(data)
-
   return (
     <SlideIn
       header="Projektauswahl"

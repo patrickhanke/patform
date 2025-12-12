@@ -2,7 +2,6 @@ import { IconButton, SlideIn } from "@repo/ui";
 import { useState } from "react";
 
 const ViewFormData = ({ data }) => {
-	console.log(data);
 
 	const [isOpen, setIsOpen] = useState(false);
 	return (

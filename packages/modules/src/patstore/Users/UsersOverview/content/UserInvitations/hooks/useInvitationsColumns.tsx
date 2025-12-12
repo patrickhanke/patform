@@ -14,7 +14,6 @@ const useInvitationColumns = ({
 	invitations: PatstoreProjectInvitation[];
 	projectId: string;
 }) => {
-	console.log(invitations);
 	const columns: ColumnDef<PatstoreProjectInvitation>[] = useMemo(
 		() => [
 			{

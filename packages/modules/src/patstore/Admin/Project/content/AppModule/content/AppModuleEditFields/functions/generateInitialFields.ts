@@ -21,12 +21,9 @@ const generateInitialFields = (
 				fieldArray.push(field);
 			}
 		});
-		console.log({ allFieldsArray });
 		const filteredFieldArray = fieldArray.filter(
 			(field) => !disabled_fields[modulePath]?.includes(field.id)
 		);
-
-		console.log({ filteredFieldArray });
 
 		return filteredFieldArray;
 	};

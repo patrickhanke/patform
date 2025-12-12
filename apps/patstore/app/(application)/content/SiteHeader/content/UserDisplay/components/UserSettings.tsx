@@ -76,8 +76,6 @@ const UserSettings: FC<UserSettingsProps> = ({
     setData(user);
   }, [user]);
 
-  console.log(getImageUrl({ fileName: data.portrait?.name }))
-
   return (
     <SlideIn
       header="Nutzereinstellungen"

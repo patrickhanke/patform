@@ -161,7 +161,6 @@ const useErrors: UseErrors = ({
 		}
 
 		if (dayType === "absence") {
-			console.log({ records });
 			const disabledArray: [boolean, boolean] = [false, false];
 			const errorArray: ErrorMessage[] = [];
 

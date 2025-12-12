@@ -33,7 +33,6 @@ export default async function RootLayout({
 
 	const projects: PatstoreProject[] = await getData();
 
-	console.log(projects)
 	return (
 		<html lang="de">
 			<body>

@@ -53,7 +53,6 @@ const PatflowLoginForm = () => {
 						email: values.email,
 						password: values.password
 					});
-					console.log("login: ", login);
 					if (login) {
 						if (login.error) {
 							setError(login.message);

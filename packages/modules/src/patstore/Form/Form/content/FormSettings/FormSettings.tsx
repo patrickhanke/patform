@@ -54,8 +54,6 @@ const FormSettings = ({ formId }: { formId: string }) => {
 		[settings, data, loading]
 	);
 
-	console.log(settings);
-
 	if (!settings) {
 		return null;
 	}

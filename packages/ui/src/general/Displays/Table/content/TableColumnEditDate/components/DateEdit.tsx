@@ -53,11 +53,9 @@ const DateEdit: FC<DateEditProps> = ({ date, setDate }) => {
 				| EventDate[keyof EventDate]
 				| EventDate["place"][keyof EventDate["place"]]
 		) => {
-			console.log(key, value);
 			if (date) {
 				const dateCopy: typeof date = cloneDeep(date);
 				set(dateCopy, key, value);
-				console.log(dateCopy);
 
 				setDate(dateCopy);
 			}

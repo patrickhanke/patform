@@ -11,8 +11,6 @@ const EditTable: FC<EditTableProps> = ({ initialData, onChange }) => {
 	const [table, setTable] = useState(initialData);
 	const [activeTab, setActiveTab] = useState<SwitchButton>(table_states[0]);
 
-	console.log(table);
-
 	useEffect(() => {
 		if (onChange) onChange(table);
 	}, [table]);
