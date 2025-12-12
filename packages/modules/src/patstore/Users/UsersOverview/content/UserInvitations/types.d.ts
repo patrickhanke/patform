@@ -1,3 +1,5 @@
+import { PatstoreProjectInvitation } from "@repo/types";
+
 export type DeleteInvitationProps = {
 	username: string;
 	email: string;

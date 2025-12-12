@@ -14,6 +14,7 @@ const useInvitationColumns = ({
 	invitations: PatstoreProjectInvitation[];
 	projectId: string;
 }) => {
+	console.log(invitations);
 	const columns: ColumnDef<PatstoreProjectInvitation>[] = useMemo(
 		() => [
 			{
@@ -41,7 +42,7 @@ const useInvitationColumns = ({
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => getDateString(new Date(row.date)).date,
+				accessorFn: (row) => getDateString(new Date(row.date.iso)).date,
 				header: () => <span>Datum</span>,
 				id: "date",
 				cell: (info) => info.getValue(),

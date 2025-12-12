@@ -1,4 +1,4 @@
-const select_states = (loading: boolean) =>
+const select_states = (loading: boolean, userHasAccess: boolean) =>
 	[
 		{
 			label: "Bilder auswählen",
@@ -8,7 +8,7 @@ const select_states = (loading: boolean) =>
 		{
 			label: "Bilder hochladen",
 			value: "upload",
-			disabled: loading
+			disabled: loading || !userHasAccess
 		}
 	] as const;
 

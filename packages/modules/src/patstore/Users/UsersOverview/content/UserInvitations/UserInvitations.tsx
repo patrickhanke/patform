@@ -22,6 +22,8 @@ const UserInvitations = () => {
 		pageSize: 10
 	});
 
+	console.log(data);
+
 	const columns = useInvitationColumns({
 		refetch,
 		invitations: data ? data?.objects?.getProject?.invitations : [],

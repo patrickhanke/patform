@@ -2,7 +2,10 @@ export type PatstoreProjectInvitation = {
 	email: string;
     name: string;
     key: string;
-    date: string;
+    date: {
+      iso: string;
+      __type: "Date";
+    };
 }
 
 export type PatstoreProject = {

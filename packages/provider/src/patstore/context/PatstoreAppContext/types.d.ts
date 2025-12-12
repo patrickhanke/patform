@@ -8,4 +8,5 @@ export type ContextValues = {
 	modules: Module[];
 	user: PatstoreUser;
 	userLoading: boolean;
+	userRole: PatstoreRoleClass;
 };

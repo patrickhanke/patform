@@ -2,15 +2,17 @@
 
 import React, { useCallback, useMemo, useState, useEffect } from "react";
 import PatstoreAppContext from "./PatstoreAppContext";
-import { Module, PatstoreProject, PatstoreUser } from "@repo/types";
+import { Module, PatstoreProject, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import { usePathname } from "next/navigation";
 import { axiosclient } from "../../../general";
 
 const PatstoreAppContextProvider = ({
 	project,
+	roles,
 	children
 }: {
 	project: PatstoreProject;
+	roles: PatstoreRoleClass[];
 	children: React.ReactNode;
 }) => {
 	const [pageTitle, setPageTitle] = useState();
@@ -40,17 +42,22 @@ const PatstoreAppContextProvider = ({
 		getUser();
 	}, []);
 
+	const userRole = useMemo(() => {
+		return roles.find((role) => user?.roles?.includes(role.objectId));
+	}, [roles, user]);
+
 	const appContextObject = useMemo(
 		() => ({
 			pageTitle,
 			setPageTitle,
 			project,
 			currentModule,
+			userRole,
 			user,
 			userLoading: !user.objectId ? true : false,
 			modules: project.modules.results
 		}),
-		[pageTitle, project, currentModule, user]
+		[pageTitle, project, currentModule, user, userRole]
 	);
 
 	return (

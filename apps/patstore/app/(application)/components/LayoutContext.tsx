@@ -22,12 +22,12 @@ const LayoutContext = ({
     >
       <AppContextProvider projects={user.projects}>
         <AppContext.Consumer>
-          {({ project }) => {
+          {({ project, roles }) => {
             if (!project || !project.objectId) {
               return null;
             }
             return (
-              <PatstoreAppContextProvider project={project}>
+              <PatstoreAppContextProvider project={project} roles={roles}>
                 <DataContextProvider>
                     {children}
                 </DataContextProvider>
