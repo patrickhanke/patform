@@ -5,6 +5,7 @@ import { PatstoreUser } from "./User";
 export type PatstoreRoleClass = ClassProperties & {
 	name: string;
 	label: string
+	title: string;
 	roles: {
 		results: PatstoreRoleClass[];
 	}

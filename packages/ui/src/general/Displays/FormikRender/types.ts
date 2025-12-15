@@ -74,17 +74,41 @@ export type FieldTypes =
 	| "image_select"
 	| "image_upload";
 
-export type ValidationTypes = {
+// Base validation properties common to all fields
+export type BaseValidation = {
+	validate?: boolean;
 	required?: string;
+};
+
+// String field validation (input, url, password, textarea, texteditor)
+export type StringValidation = BaseValidation & {
 	min_length?: number;
 	max_length?: number;
-	min_value?: number;
-	max_value?: number;
 	email?: boolean;
 	url?: boolean;
-	number?: boolean;
-	password?: boolean;
+	matches?: {
+		pattern: string;
+		message?: string;
+	};
 };
+
+// Number field validation
+export type NumberValidation = BaseValidation & {
+	min_value?: number;
+	max_value?: number;
+};
+
+// File/Image field validation
+export type FileValidation = BaseValidation & {
+	max_file_count?: number;
+};
+
+// Union of all validation types (for generic use)
+export type ValidationTypes =
+	| StringValidation
+	| NumberValidation
+	| FileValidation
+	| BaseValidation;
 
 export type BasicField = {
 	id: string;
@@ -96,10 +120,6 @@ export type BasicField = {
 	options?: object;
 	disabled?: (values: FormikValues) => boolean | boolean;
 	width?: string | number;
-	validation?: {
-		validate?: boolean;
-		required?: string;
-	};
 };
 
 export type FieldType = {
@@ -131,41 +151,25 @@ export type StringField = BasicField & {
 	dataType?: "string";
 	value?: string;
 	textAlign?: "left" | "center" | "right";
-	validation?: {
-		validate?: boolean;
-		required?: string;
-		min_length?: number;
-		max_length?: number;
-		email?: boolean;
-		url?: boolean;
-		number?: boolean;
-		password?: boolean;
-	};
+	validation?: StringValidation;
 };
 
 export type ToggleField = BasicField & {
 	type: "toggle" | "select_toggle";
 	value?: boolean;
-	validation?: {
-		required?: string;
-	};
+	validation?: BaseValidation;
 };
 
 export type NumberField = BasicField & {
 	value?: number;
-	type?: "number";
+	type: "number";
 	dataType?: "number";
 	textAlign?: "left" | "center" | "right";
 	options: {
 		number_start_value: number;
 		number_end_value: number;
 	};
-	validation?: {
-		required?: string;
-		min_value?: number;
-		max_value?: number;
-		number?: boolean;
-	};
+	validation?: NumberValidation;
 };
 
 export type ImageField = BasicField & {
@@ -175,11 +179,7 @@ export type ImageField = BasicField & {
 		return_type: "array" | "string";
 		max_file_count: number;
 	};
-	validation?: {
-		validate?: boolean;
-		required?: string;
-		max_file_count?: number;
-	};
+	validation?: FileValidation;
 };
 
 export type ImageSelectField = BasicField & {
@@ -189,30 +189,19 @@ export type ImageSelectField = BasicField & {
 		return_type: "array" | "string";
 		max_file_count: number;
 	};
-	validation?: {
-		validate?: boolean;
-		required?: string;
-		max_file_count?: number;
-	};
+	validation?: FileValidation;
 };
 
 export type ImageUploadField = BasicField & {
 	type: "image_upload";
 	value?: ParseFile;
-	validation?: {
-		validate?: boolean;
-		required?: string;
-	};
+	validation?: FileValidation;
 };
 
 export type FileField = BasicField & {
 	type: "file";
 	value?: string | string[];
-	validation?: {
-		validate?: boolean;
-		required?: string;
-		max_file_count?: number;
-	};
+	validation?: FileValidation;
 };
 
 export type SelectField = BasicField & {
@@ -220,6 +209,7 @@ export type SelectField = BasicField & {
 	value?: string | object;
 	dataType: "string" | "object";
 	select_options: { label: string; value: string }[];
+	validation?: BaseValidation;
 };
 
 export type PointerSelectField = BasicField & {
@@ -229,39 +219,37 @@ export type PointerSelectField = BasicField & {
 	options: {
 		pointer_class: string;
 	};
+	validation?: BaseValidation;
 };
 
 export type PersonsSelectField = BasicField & {
 	value?: object;
 	type: "persons_select";
+	validation?: BaseValidation;
 };
 
 export type DownloadField = BasicField & {
 	value?: string;
 	type: "download";
+	validation?: BaseValidation;
 };
 
 export type DownloadsField = BasicField & {
 	value?: string[];
 	type: "downloads";
+	validation?: BaseValidation;
 };
 
 export type ColorField = BasicField & {
 	type: "color";
 	value?: string;
-	validation?: {
-		validate?: boolean;
-		required?: string;
-	};
+	validation?: BaseValidation;
 };
 
 export type DateField = BasicField & {
 	type: DatePickerTypes;
 	value?: string;
-	validation?: {
-		validate?: boolean;
-		required?: string;
-	};
+	validation?: BaseValidation;
 };
 
 export type Field =

@@ -12,7 +12,8 @@ const useFindRoles: UseFindRolesHook = ({ appId, projectId }) => {
 				"users {results{objectId username}}",
 				"default",
 				"modules",
-				"color"
+				"color",
+				"title"
 			];
 		} else if (appId === "patflow") {
 			return ["name", "objectId"];

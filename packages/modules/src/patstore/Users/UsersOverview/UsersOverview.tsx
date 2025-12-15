@@ -15,7 +15,7 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { UsersOverviewProps } from "./types";
+import { CreateUser, UsersOverviewProps } from "./types";
 import { FC, useState } from "react";
 import { Filter, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import page_states from "./constants/page_states";
@@ -24,6 +24,7 @@ import create_user_fieds from "./constants/create_user_fields";
 import useFindRoles from "./hooks/useFindRoles";
 import { useDataHandler } from "@repo/provider";
 import useFindUserData from "./hooks/useFindUserData";
+import create_user from "./constants/create_user";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { deleteData } = useDataHandler(true);
@@ -32,7 +33,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { roles } = useFindRoles({ projectId: project.objectId });
 
 	const [inviteUser, setInviteUser] = useState(false);
-	const [_createUser, setCreateUser] = useState(false);
+	const [createUser, setCreateUser] = useState(false);
 
 	const { feedbackHandler } = useDataContext();
 	const [pageState, setPageState] = useState<(typeof page_states)[number]>(
@@ -85,8 +86,18 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		useMasterKey: true
 	});
 
+	const createUserFields: CreateUser[keyof CreateUser] | undefined =
+		create_user(
+			roles?.map((role: PatstoreRoleClass) => ({
+				value: role.objectId,
+				label: role.name
+			}))
+		)?.[project.objectId];
+
+	console.log(createUserFields);
+
 	const updateUserHandler = useCallback(
-		async (values) => {
+		async (values: Partial<PatstoreUser>) => {
 			axiosclient().post("/functions/send-user-invitation", {
 				username: values.username,
 				email: values.username,
@@ -108,13 +119,35 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		[project]
 	);
 
+	const createUserHandler = useCallback(
+		async (values: Partial<PatstoreUser>) => {
+			console.log(values);
+			axiosclient().post("/functions/create-user-from-data", {
+				...values,
+				email: values.username,
+				project_id: project.objectId,
+				roles: [values.role]
+			});
+
+			feedbackHandler({
+				success: true,
+				message: "Benutzer erfolgreich erstellt",
+				type: "success"
+			});
+
+			await refetch();
+			// setCreateUser(false);
+		},
+		[project]
+	);
+
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
 				text: "Neuen Benutzer erstellen",
 				onClick: () => setCreateUser(true),
 				is_add_button: true,
-				disabled: false
+				disabled: !createUserFields
 			},
 			{
 				text: "Neuen Benutzer einladen",
@@ -122,7 +155,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				is_add_button: true
 			}
 		],
-		[]
+		[createUserFields]
 	);
 
 	const renderFilters = useMemo(() => {
@@ -193,6 +226,14 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 						label: role.name
 					})) || []
 				)}
+			/>
+			<SlideInForm
+				title="Neuen Benutzer erstellen"
+				isOpen={createUser}
+				setIsOpen={setCreateUser}
+				dataHandler={createUserHandler}
+				fields={createUserFields?.fields || []}
+				data={createUserFields?.data || {}}
 			/>
 		</Page>
 	);

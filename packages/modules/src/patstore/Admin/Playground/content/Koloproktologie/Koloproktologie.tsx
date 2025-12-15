@@ -26,6 +26,7 @@ const Koloproktologen = () => {
 						username
 						data
 						settings
+						address
 					}
 				}
 			}
@@ -128,12 +129,27 @@ const Koloproktologen = () => {
 		await Promise.all(updateArray);
 	}, [userData]);
 
+	const updateSalutation = useCallback(async () => {
+		const users = userData?.objects.find_User.results;
+		const updatedUsers = users.map((user) =>
+			updateData({
+				className: "_User",
+				objectId: user.objectId,
+				updateObject: {
+					salutation: user.address
+				}
+			})
+		);
+
+		await Promise.all(updatedUsers);
+	}, [userData]);
+
 	return (
 		<div className="flex row gap-md">
 			<button
 				className="full_button secondary"
 				disabled={!data}
-				onClick={() => updateUsers()}
+				onClick={() => updateSalutation()}
 			>
 				Update Users
 			</button>

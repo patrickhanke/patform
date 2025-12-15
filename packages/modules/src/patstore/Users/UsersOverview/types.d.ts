@@ -47,3 +47,10 @@ export type UseFindUser = ({
 	refetch: ApolloRefetch;
 	count: number;
 };
+
+export type CreateUser = {
+	[key: string]: {
+		fields: Field[];
+		data: Partial<PatstoreUser>;
+	};
+};

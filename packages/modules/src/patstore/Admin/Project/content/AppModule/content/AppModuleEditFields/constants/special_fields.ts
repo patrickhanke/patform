@@ -112,10 +112,46 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				id: "label",
 				label: "Name",
 				required: true,
-				type: "edit_string",
+				type: "string",
 				active: true,
 				position: 1,
 				default: true
+			},
+			{
+				id: "title",
+				label: "Titel",
+				required: false,
+				type: "edit_string",
+				active: false,
+				position: 1,
+				default: false
+			},
+			{
+				id: "salutation",
+				label: "Anrede",
+				required: false,
+				type: "edit_string",
+				active: false,
+				position: 1,
+				default: false
+			},
+			{
+				id: "first_name",
+				label: "Vorname",
+				required: false,
+				type: "edit_string",
+				active: false,
+				position: 1,
+				default: false
+			},
+			{
+				id: "last_name",
+				label: "Nachname",
+				required: false,
+				type: "edit_string",
+				active: false,
+				position: 1,
+				default: false
 			},
 			{
 				id: "username",

@@ -1,10 +1,10 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { ProjectRolesProps } from "./types";
-import { SlideIn, SlideInForm, Table } from "@repo/ui";
-import CreateRole from "./components/CreateRole";
+import { SlideInForm, Table } from "@repo/ui";
 import useRoleColumns from "./hooks/useRoleColumns";
+import { v4 } from "uuid";
 
 const ProjectRoles: FC<ProjectRolesProps> = ({
 	projectId,
@@ -12,11 +12,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 	setCreateRole,
 	modules
 }) => {
-	const [loading, setLoading] = useState(false);
 	const { createData } = useDataHandler(true, false);
-	const [role, setRole] = useState({
-		name: ""
-	});
 
 	const { data, refetch } = useQuery(
 		generateGraphQLQuery({
@@ -29,6 +25,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				"default",
 				"modules",
 				"color",
+				"title",
 				"project {objectId name}",
 				"users {results{objectId name}}",
 				"roles {results{objectId name}}"
@@ -94,12 +91,12 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				isOpen={createRole}
 				setIsOpen={setCreateRole}
 				dataHandler={async (data) => {
-					setLoading(true);
-					if (data.name) {
+					if (data.name && data.title) {
 						await createData({
 							className: "_Role",
 							updateObject: {
-								name: data.name,
+								name: v4() as string,
+								title: data.name,
 								default: false,
 								project: {
 									__type: "Pointer",
@@ -118,7 +115,6 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 							}
 						});
 						await refetch();
-						setLoading(false);
 						setCreateRole(false);
 					}
 				}}
@@ -128,7 +124,9 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 						id: "name",
 						name: "name",
 						type: "input",
-						initialValue: role.name,
+						initialValue: {
+							name: ""
+						},
 						placeholder: "Admin"
 					}
 				]}

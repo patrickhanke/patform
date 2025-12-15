@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ColumnDef, TableColumnEditColor } from "@repo/ui";
+import { ColumnDef, TableColumnEditColor, TableColumnString } from "@repo/ui";
 import { PatstoreRoleClass } from "@repo/types";
 import SelectRoleModules from "../components/SelectRoleModules";
 import DefaultRole from "../components/DefaultRole";
@@ -12,9 +12,24 @@ const useRoleColumns = ({ modules, roles, refetch }: UseRoleColumnsProps) => {
 	const columns: ColumnDef<PatstoreRoleClass>[] = useMemo(
 		() => [
 			{
-				accessorFn: (row) => row?.name,
-				header: () => <span>Name</span>,
-				id: "label",
+				accessorFn: (row) => (
+					<TableColumnString
+						isEditable
+						value={row.title}
+						onChange={async (value) => {
+							await updateData({
+								className: "_Role",
+								objectId: row.objectId,
+								updateObject: {
+									title: value
+								}
+							});
+							await refetch();
+						}}
+					/>
+				),
+				header: () => <span>Titel</span>,
+				id: "title",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,
 				enableSorting: false

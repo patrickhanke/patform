@@ -21,7 +21,8 @@
     "FIREBASE_APP_ID",
     "GCMS_SENDER_ID",
     "PROJECT_ID",
-    "APP_NAME"
+    "APP_NAME",
+    "NODE_ENV"
   ],
   "globalDependencies": [".env"],
   "tasks": {

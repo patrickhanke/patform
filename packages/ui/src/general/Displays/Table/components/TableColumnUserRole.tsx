@@ -45,7 +45,7 @@ const TableColumnUserRole = ({
 				personOptionsArray.push({
 					value: role.objectId,
 					id: role.objectId,
-					label: `${role.name}`
+					label: `${role.title}`
 				});
 			});
 		}
@@ -91,7 +91,7 @@ const TableColumnUserRole = ({
 			{userRole ? (
 				<StateDisplay
 					color={userRole.color || "blue"}
-					label={userRole.name}
+					label={userRole.title}
 					onClick={() => setIsOpen(true)}
 				/>
 			) : (

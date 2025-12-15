@@ -13,6 +13,10 @@ export type PatstoreUserRole = {
 };
 
 export type PatstoreUser = {
+  salutation: string;
+  title: string;
+  first_name: string;
+  last_name: string;
   label: string;
   objectId: string;
   email: string;
@@ -28,4 +32,14 @@ export type PatstoreUser = {
   password: string;
   projects: string[];
   roles: string[];
+  data: {
+    [key: string]: {
+      [key: string]: boolean | string;
+    } & any;
+  }
+  settings: {
+    [key: string]: {
+      [key: string]: boolean | string;
+    } & any;
+  };
 };
