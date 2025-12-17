@@ -94,8 +94,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			}))
 		)?.[project.objectId];
 
-	console.log(createUserFields);
-
 	const updateUserHandler = useCallback(
 		async (values: Partial<PatstoreUser>) => {
 			axiosclient().post("/functions/send-user-invitation", {
@@ -121,7 +119,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 
 	const createUserHandler = useCallback(
 		async (values: Partial<PatstoreUser>) => {
-			console.log(values);
 			axiosclient().post("/functions/create-user-from-data", {
 				...values,
 				email: values.username,

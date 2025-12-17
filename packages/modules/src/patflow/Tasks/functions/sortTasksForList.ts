@@ -1,11 +1,67 @@
 import { TaskSection } from "../types";
-import { formatISO9075, getWeek, getYear, lastDayOfYear } from "date-fns";
+import {
+	addWeeks,
+	addYears,
+	endOfWeek,
+	endOfYear,
+	formatISO9075,
+	startOfWeek
+} from "date-fns";
 import { Task } from "@repo/types";
+
+const getInitialTaskSections = () => {
+	const today = new Date();
+
+	const startOfThisWeek = startOfWeek(today, { weekStartsOn: 1 });
+	const endOfThisWeek = endOfWeek(today, { weekStartsOn: 1 });
+	const startOfNextWeek = startOfWeek(addWeeks(today, 1), {
+		weekStartsOn: 1
+	});
+	const endOfLastWeek = endOfWeek(addWeeks(today, -1), { weekStartsOn: 1 });
+	const endOfNextYear = endOfYear(addYears(today, 1));
+
+	return [
+		{
+			label: "Diese Woche",
+			value: "this_week",
+			date: formatISO9075(startOfThisWeek, { representation: "date" }),
+			data: [],
+			start: startOfThisWeek.getTime(),
+			end: endOfThisWeek.getTime()
+		},
+		{
+			label: "Ab nächster Woche",
+			value: "next_week",
+			date: formatISO9075(startOfNextWeek, { representation: "date" }),
+			data: [],
+			start: startOfNextWeek.getTime(),
+			end: endOfNextYear.getTime()
+		},
+		{
+			label: "Überfällig",
+			value: "overdue",
+			date: formatISO9075(endOfLastWeek, { representation: "date" }),
+			data: [],
+			start: new Date(2010, 1, 1).getTime(),
+			end: endOfLastWeek.getTime()
+		},
+		{
+			label: "Keine Zeitangabe",
+			value: "no_date",
+			date: "",
+			data: [],
+			start: NaN,
+			end: NaN
+		}
+	] as TaskSection;
+};
 
 const sortTasksForList: (array: Array<Task>) => TaskSection = (
 	array: Array<Task>
 ) => {
-	const taskList: TaskSection = [];
+	const taskList: TaskSection = getInitialTaskSections();
+
+	console.log({ taskList });
 	const arrayCopy = [...array];
 
 	const sortedArray: Task[] = arrayCopy.sort((a, b) => {
@@ -38,103 +94,40 @@ const sortTasksForList: (array: Array<Task>) => TaskSection = (
 		if (task) {
 			if (task.dates.length > 0) {
 				task.dates.forEach((arrayDate: string) => {
-					let date = "";
-					let label: TaskSection[number]["label"] = "Diese Woche";
-					let titleValue: TaskSection[number]["value"] = "this_week";
+					const date = new Date(arrayDate).getTime();
 
-					const week = getWeek(new Date(arrayDate), {
-						weekStartsOn: 1
-					});
-					const currentWeek = getWeek(new Date(), {
-						weekStartsOn: 1
+					const taskSection = taskList.find((taskSection) => {
+						return (
+							date >= taskSection.start && date <= taskSection.end
+						);
 					});
 
-					const year = getYear(new Date(arrayDate));
-					const currentYear = getYear(new Date());
-
-					if (year === currentYear) {
-						if (week === currentWeek) {
-							date = formatISO9075(new Date(), {
-								representation: "date"
-							});
-							label = "Diese Woche";
-							titleValue = "this_week";
-						}
-
-						if (week >= currentWeek + 1) {
-							label = "Ab nächster Woche";
-							titleValue = "next_week";
-							date = arrayDate;
-						}
-						if (week < currentWeek) {
-							label = "Überfällig";
-							titleValue = "overdue";
-							date = arrayDate;
-						}
-					} else if (year < currentYear) {
-						label = "Überfällig";
-						titleValue = "overdue";
-						date = arrayDate;
-					} else if (
-						year > currentYear &&
-						currentWeek ===
-							getWeek(lastDayOfYear(new Date(currentYear)))
-					) {
-						label = "Ab nächster Woche";
-						titleValue = "next_week";
-						date = arrayDate;
-					} else if (year > currentYear) {
-						label = "Ab nächster Woche";
-						titleValue = "next_week";
-						date = arrayDate;
-					}
-
-					const taskListIndex = taskList.findIndex(
-						(taskListElement) => taskListElement.label === label
-					);
-
-					const taskWidthDate = {
-						...task,
-						date: arrayDate,
-						id: `${task.objectId}-${arrayDate}`
-					};
-
-					if (label && date && taskListIndex === -1) {
-						taskList.push({
-							label: label,
-							value: titleValue,
-							date: date,
-							data: [taskWidthDate]
-						});
-					} else if (
-						date &&
-						taskListIndex !== -1 &&
-						taskList[taskListIndex]
-					) {
-						taskList[taskListIndex].data.push(taskWidthDate);
+					if (taskSection) {
+						taskSection.data.push(task);
 					}
 				});
-			} else if (task.state === "created") {
-				const taskWidthId = {
-					...task,
-					id: `${task.objectId}`
-				};
-
-				const taskListIndex = taskList.findIndex(
-					(taskListElement) =>
-						taskListElement.label === "Keine Zeitangabe"
-				);
-				if (taskListIndex === -1) {
-					taskList.push({
-						label: "Keine Zeitangabe",
-						value: "no_date",
-						date: "",
-						data: [taskWidthId]
-					});
-				} else if (taskListIndex !== -1 && taskList[taskListIndex]) {
-					taskList[taskListIndex].data.push(taskWidthId);
-				}
 			}
+			// else if (task.state === "created") {
+			// 	const taskWidthId = {
+			// 		...task,
+			// 		id: `${task.objectId}`
+			// 	};
+
+			// 	const taskListIndex = taskList.findIndex(
+			// 		(taskListElement) =>
+			// 			taskListElement.label === "Keine Zeitangabe"
+			// 	);
+			// 	if (taskListIndex === -1) {
+			// 		taskList.push({
+			// 			label: "Keine Zeitangabe",
+			// 			value: "no_date",
+			// 			date: "",
+			// 			data: [taskWidthId]
+			// 		});
+			// 	} else if (taskListIndex !== -1 && taskList[taskListIndex]) {
+			// 		taskList[taskListIndex].data.push(taskWidthId);
+			// 	}
+			// }
 		}
 	}
 
