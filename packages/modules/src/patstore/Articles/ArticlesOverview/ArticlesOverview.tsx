@@ -10,8 +10,10 @@ import {
 	useCreateColumns
 } from "@repo/ui";
 import {
+	filterModuleCategories,
 	PatstoreAppContext,
 	useDataHandler,
+	useFindCategoryPageStates,
 	useFindModuleData
 } from "@repo/provider";
 
@@ -23,6 +25,17 @@ const ArticlesOverview = () => {
 	const { deleteData } = useDataHandler();
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
+	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
+		{
+			categories:
+				filterModuleCategories(currentModule.categories).categoryIds ||
+				[],
+			categoryModuleId: filterModuleCategories(currentModule.categories)
+				.categoryModuleId,
+			filters,
+			setFilters
+		}
+	);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
@@ -96,6 +109,9 @@ const ArticlesOverview = () => {
 				refetch: refetch
 			}}
 			refetch={refetch}
+			pageStates={pageStates}
+			setPageState={setActivePage}
+			pageState={activePage}
 		>
 			<Table
 				columns={columns}

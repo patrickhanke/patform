@@ -15,6 +15,8 @@ export type TaskSection = {
 	value: "this_week" | "next_week" | "overdue" | "no_date";
 	date: string;
 	data: DataTypes.Task[];
+	start: number;
+	end: number;
 }[];
 
 export type SiteType = "active" | "closed" | "archived" | "executed";
