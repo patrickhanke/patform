@@ -4,6 +4,7 @@ import useFindFormData from "./hooks/useFindFormData";
 import { FC, useState } from "react";
 import { Filter } from "@repo/types";
 import { FormDataProps } from "./types";
+import generateFormData from "./functions/generateFormData";
 
 const FormData: FC<FormDataProps> = ({
 	formId,
@@ -43,11 +44,15 @@ const FormData: FC<FormDataProps> = ({
 				<Table
 					columns={columns}
 					data={
-						data.map((dataElement) => ({
-							...dataElement.data,
-							createdAt: dataElement.createdAt,
-							objectId: dataElement.objectId
-						})) || []
+						generateFormData(
+							data.map((dataElement) => {
+								return {
+									...dataElement.data,
+									createdAt: dataElement.createdAt,
+									objectId: dataElement.objectId
+								};
+							})
+						) || []
 					}
 					setPagination={setPagination}
 					pagination={pagination}
