@@ -1,7 +1,42 @@
-import { defineConfig } from "@chakra-ui/react";
+import { defineConfig, defineRecipe } from "@chakra-ui/react";
+
+const buttonRecipe = defineRecipe({
+	variants: {
+		size: {
+			xs: {
+				h: "24px",
+				// minW: "12",
+				textStyle: "2xs",
+				textAlign: "left",
+				px: "2"
+			},
+			sm: {
+				h: "16",
+				minW: "12",
+				textStyle: "sm",
+				px: "2"
+			},
+			md: {
+				h: "16",
+				minW: "12",
+				textStyle: "sm",
+				px: "2"
+			},
+			lg: {
+				h: "16",
+				minW: "12",
+				textStyle: "sm",
+				px: "2"
+			}
+		}
+	}
+});
 
 export const chakraConfig = defineConfig({
 	theme: {
+		recipes: {
+			button: buttonRecipe
+		},
 		tokens: {
 			colors: {
 				blue: {

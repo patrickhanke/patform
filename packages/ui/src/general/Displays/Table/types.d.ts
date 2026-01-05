@@ -31,6 +31,9 @@ export type TableTypes = {
 	selectedRows?: string[];
 	setSelectedRows?: Dispatch<SetStateAction<string[]>>;
 	setOrder?: Dispatch<SetStateAction<string>>;
+	filters?: Filter[];
+	setFilters?: Dispatch<SetStateAction<Filter[]>>;
+	filterColumns?: ColumnData<TData>[];
 };
 
 export type ColumnDef<TData> = ColumnDef<TData>;
@@ -86,6 +89,12 @@ export type TableColumnPersonProps = {
 	onChange?: (person: string) => Promise<void>;
 };
 
+export type TableColumnLocationProps = {
+	value: string;
+	isEditable?: boolean;
+	onChange?: (location: string) => Promise<void>;
+};
+
 export type TableColumnDocumentsProps = {
 	value: string[];
 	isEditable?: boolean;
@@ -134,7 +143,8 @@ export type ColumnDataTypes =
 	| "files"
 	| "image_preview"
 	| "user"
-	| "edit_role";
+	| "edit_role"
+	| "location";
 
 export type ColumnData<Class> = {
 	id: keyof Class;

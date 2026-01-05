@@ -55,6 +55,8 @@ import {
 	TableColumnUser,
 	TableColumnUserRole
 } from "../components";
+import TableColumnHiddenField from "../components/TableColumnHiddenField";
+import TableColumnLocation from "../components/TableColumnLocation";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -96,6 +98,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 	);
 
 	const columns = useMemo(() => {
+		console.log(data);
 		const columnArray: ColumnDef<T>[] = [];
 		data.forEach((columnElement) => {
 			if (
@@ -103,24 +106,33 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_string"
 			) {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnString
-							value={row[columnElement.id] as string}
-							isLink={columnElement.id === "link"}
-							isEditable={
-								columnElement.type === "edit_string"
-									? true
-									: false
-							}
-							onChange={(value: string) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Text aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) =>
+						columnElement.id === "email" ? (
+							<TableColumnHiddenField
+								id={row.objectId}
+								className={className}
+								field={columnElement.id}
+							/>
+						) : (
+							<TableColumnString
+								value={row[columnElement.id] as string}
+								isLink={columnElement.id === "link"}
+								isEditable={
+									columnElement.type === "edit_string"
+										? true
+										: false
+								}
+								onChange={(value: string) =>
+									updateColumnData({
+										objectId: row.objectId,
+										updateObject: {
+											[columnElement.id]: value
+										},
+										feedback: "Text aktualisiert"
+									})
+								}
+							/>
+						),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -369,6 +381,30 @@ const useCreateColumns = <T extends ColumnClasses>({
 										}
 									},
 									feedback: "Person aktualisiert"
+								})
+							}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: false
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "location") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnLocation
+							isEditable={true}
+							value={row[columnElement.id] as string}
+							onChange={(value: string) =>
+								updateColumnData({
+									objectId: row.objectId,
+									updateObject: {
+										[columnElement.id]: value
+									},
+									feedback: "Ort aktualisiert"
 								})
 							}
 						/>

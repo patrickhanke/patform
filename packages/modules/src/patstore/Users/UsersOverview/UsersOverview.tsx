@@ -9,6 +9,7 @@ import {
 } from "@repo/provider";
 import {
 	generateColumnsFromFields,
+	generateFilterColumnsFromFields,
 	Page,
 	RenderFilters,
 	SlideInForm,
@@ -58,7 +59,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		[project]
 	);
 
-	const [filters, setFilters] = useState<Filter[]>(initialFilters);
+	const [filters, setFilters] = useState<Filter[]>([]);
 
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -71,11 +72,13 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		count
 	} = useFindUserData<PatstoreUser>({
 		module: currentModule,
-		filters,
+		filters: [...initialFilters, ...filters],
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order: "name_ASC"
 	});
+
+	console.log({ users });
 
 	const columns = useCreateColumns<PatstoreUser>({
 		data: generateColumnsFromFields(currentModule.fields),
@@ -208,7 +211,11 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 					setPagination={setPagination}
 					pagination={pagination}
 					rowCount={count}
-					filterContent={renderFilters}
+					filters={filters}
+					setFilters={setFilters}
+					filterColumns={generateFilterColumnsFromFields(
+						currentModule.fields
+					)}
 				/>
 			)}
 			{pageState.value === " invitations" && <UserInvitations />}

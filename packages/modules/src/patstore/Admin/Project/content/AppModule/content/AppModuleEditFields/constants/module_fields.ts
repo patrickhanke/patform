@@ -11,6 +11,24 @@ const module_fields: ModuleField[] = [
 		default: false
 	},
 	{
+		id: "createdAt",
+		label: "Erstellt am",
+		required: false,
+		type: "date",
+		active: false,
+		position: 2,
+		default: false
+	},
+	{
+		id: "updatedAt",
+		label: "Aktualisiert am",
+		required: false,
+		type: "date",
+		active: false,
+		position: 2,
+		default: false
+	},
+	{
 		id: "description",
 		label: "Beschreibung",
 		required: false,
@@ -143,6 +161,15 @@ const module_fields: ModuleField[] = [
 		type: "user",
 		active: false,
 		position: 18,
+		default: false
+	},
+	{
+		id: "location",
+		label: "Ort",
+		required: false,
+		type: "location",
+		active: false,
+		position: 19,
 		default: false
 	}
 

@@ -3,7 +3,7 @@ import { ClassProperties } from "./Classes";
 
 export type LocationClass = ClassProperties & {
   image: string;
-  name: string;
+  title: string;
   address: string;
   coordinates: MapPlace;
   description: string;

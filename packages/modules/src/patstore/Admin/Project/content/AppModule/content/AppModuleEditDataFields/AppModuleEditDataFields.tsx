@@ -58,13 +58,13 @@ const AppModuleEditDataFields = ({
 				className="full_button sm green"
 				onClick={() => setEditFields(true)}
 			>
-				Felder erstellen
+				Datenfelder bearbeiten
 			</button>
 			<SlideIn
 				cancel={() => setEditFields(false)}
 				confirm={() => slideInConfirmHandler()}
 				isOpen={editFields}
-				header="Felder erstellen"
+				header="Datenfelder bearbeiten"
 				showSecondaryContent={!!activeField}
 				secondaryContent={
 					<AppModuleEditField
@@ -78,7 +78,7 @@ const AppModuleEditDataFields = ({
 				<div>
 					<div>
 						<CreateButton
-							text="Feld hinzufügen"
+							text="Datenfeld hinzufügen"
 							size="medium"
 							onClick={() => {
 								setDataFields((draft) => {

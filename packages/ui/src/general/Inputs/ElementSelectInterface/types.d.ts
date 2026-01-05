@@ -1,5 +1,5 @@
 export type SelectElement = {
-	value: string;
+	value: string | null;
 	label: string;
 	element?: ReactNode;
 	selected?: boolean;

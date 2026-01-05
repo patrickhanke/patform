@@ -28,6 +28,7 @@ function useFindModuleData<T extends Classes>({
 	refetch: ApolloRefetch;
 	count: number;
 } {
+	console.log({ fields: module.fields });
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
@@ -46,9 +47,16 @@ function useFindModuleData<T extends Classes>({
 				skip,
 				order: order || "label_ASC"
 			},
-			notifyOnNetworkStatusChange: true
+			notifyOnNetworkStatusChange: true,
+			// context: {
+			// 	headers: {
+			// 		"X-Parse-Master-Key": process.env.SASHIDO_MASTER_KEY
+			// 	}
+			// }
 		}
 	);
+
+	console.log({ data });
 	const returnValue = useMemo(
 		() => ({
 			loading,

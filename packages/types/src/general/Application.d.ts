@@ -25,7 +25,7 @@ export type FilterOperator =
 
 export type Filter = {
   key: string;
-  value: string | Array<string | number> | number | boolean;
+  value: string | Array<string | number> | number | boolean | null;
   operator: FilterOperator;
   id: string;
 };

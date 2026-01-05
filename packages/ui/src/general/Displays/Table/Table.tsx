@@ -12,7 +12,7 @@ import {
 import { TableTypes } from "./types";
 import clsx from "clsx";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
-import { PaginationHandlers } from "./content";
+import { PaginationHandlers, TableFilter } from "./content";
 import { isArray } from "lodash";
 
 const Table: React.FC<TableTypes> = ({
@@ -28,7 +28,10 @@ const Table: React.FC<TableTypes> = ({
 	pagination,
 	setPagination,
 	filterContent,
-	setOrder
+	setOrder,
+	filters,
+	setFilters,
+	filterColumns
 }) => {
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
@@ -141,6 +144,13 @@ const Table: React.FC<TableTypes> = ({
 		<>
 			{pagination && setPagination && (
 				<div className="table_header">
+					{filters && setFilters && columns && (
+						<TableFilter
+							filterColumns={filterColumns || []}
+							filters={filters}
+							setFilters={setFilters}
+						/>
+					)}
 					{filterContent ? (
 						<div className="filter_content">{filterContent}</div>
 					) : (
