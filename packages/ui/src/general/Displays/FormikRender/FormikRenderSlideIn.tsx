@@ -136,7 +136,7 @@ const FormikRenderSlideIn: FC<FormikRenderSlideInProps> = ({
 							}}
 						/>
 						<h6>* Pflichtfeld</h6>
-						<button type="submit">Submit</button>
+						{/* <button type="submit">Submit</button> */}
 					</form>
 				)}
 			</Formik>

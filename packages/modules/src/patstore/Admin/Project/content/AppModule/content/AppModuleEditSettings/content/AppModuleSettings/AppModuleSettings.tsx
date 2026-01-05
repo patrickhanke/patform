@@ -15,6 +15,7 @@ const AppModuleField = ({
 				console.log("categories", settings[settingKey]);
 				return (
 					<AppModuleSettingsCategories
+						key={settingKey}
 						setting={settingKey}
 						setActiveSetting={setActiveSetting}
 					/>

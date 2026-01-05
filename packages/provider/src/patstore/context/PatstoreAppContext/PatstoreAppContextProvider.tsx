@@ -2,7 +2,12 @@
 
 import React, { useCallback, useMemo, useState, useEffect } from "react";
 import PatstoreAppContext from "./PatstoreAppContext";
-import { Module, PatstoreProject, PatstoreRoleClass, PatstoreUser } from "@repo/types";
+import {
+	Module,
+	PatstoreProject,
+	PatstoreRoleClass,
+	PatstoreUser
+} from "@repo/types";
 import { usePathname } from "next/navigation";
 import { axiosclient } from "../../../general";
 
@@ -18,8 +23,6 @@ const PatstoreAppContextProvider = ({
 	const [pageTitle, setPageTitle] = useState();
 	const [user, setUser] = useState<PatstoreUser>({} as PatstoreUser);
 	const pathname = usePathname();
-
-	console.log({ project });
 
 	const currentModule = useMemo(() => {
 		return project.modules.results.find((module) =>

@@ -48,6 +48,7 @@ export type Module = {
   icon: string;
   fields: ModuleField[];
   data_fields: Field[];
+  setting_fields: Field[];
   position: number;
   project: Project;
   connected_class: string;

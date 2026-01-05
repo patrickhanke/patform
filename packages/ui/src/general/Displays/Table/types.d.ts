@@ -160,6 +160,7 @@ export type CreateColumnHookProps<Class> = {
 	categories: ModuleCategory[];
 	className: string;
 	fields?: Module["data_fields"];
+	settings?: Module["setting_fields"];
 	refetch: ApolloRefetch;
 	constants?: { [key: string]: object };
 	editLink?: string; // if muttiple links, use "link1/link2"

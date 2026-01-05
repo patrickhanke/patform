@@ -6,6 +6,7 @@ import {
 	AppModuleEditCategories,
 	AppModuleEditDataFields,
 	AppModuleEditFields,
+	AppModuleEditSettingFields,
 	AppModuleEditSettings
 } from "./content";
 
@@ -26,7 +27,8 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 				"position",
 				"categories",
 				"connected_class",
-				"data_fields"
+				"data_fields",
+				"setting_fields"
 			]
 		}),
 		{
@@ -67,6 +69,10 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 			<AppModuleEditDataFields
 				moduleId={id}
 				initialFields={module.data_fields}
+			/>
+			<AppModuleEditSettingFields
+				moduleId={id}
+				initialFields={module.setting_fields}
 			/>
 		</div>
 	);

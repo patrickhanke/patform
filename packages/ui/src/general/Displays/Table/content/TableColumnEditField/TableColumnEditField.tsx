@@ -17,12 +17,14 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 >({
 	objectId,
 	className,
-	dataFields
+	dataFields,
+	type = "data"
 }: TableColumnEditFieldProps) => {
 	const { updateData } = useDataHandler();
 	const [data, setData] = useState(null as unknown as Class["data"]);
 	const [isOpen, setIsOpen] = useState(false);
 
+	console.log(type);
 	console.log(data);
 	console.log(dataFields);
 
@@ -30,14 +32,14 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		generateGraphQLQuery({
 			type: "get",
 			objectName: className,
-			fields: ["objectId", "data"]
+			fields: ["objectId", "data", "settings"]
 		}),
 		{
 			variables: { id: objectId },
 			onCompleted: (response) => {
 				const newData = get(
 					response,
-					`objects.get${className}.data`,
+					`objects.get${className}.${type === "data" ? "data" : "settings"}`,
 					null
 				);
 
@@ -53,11 +55,14 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 				objectId: objectId,
 				className,
 				updateObject: {
-					data: {
+					[type === "data" ? "data" : "settings"]: {
 						...values
 					}
 				},
-				feedback: "Daten aktualisiert"
+				feedback:
+					type === "data"
+						? "Daten aktualisiert"
+						: "Einstellung aktualisiert"
 			});
 			await refetch();
 			setIsOpen(false);
@@ -68,7 +73,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	return (
 		<>
 			<IconButton
-				icon="edit"
+				icon={type === "data" ? "edit" : "settings"}
 				onClick={() => setIsOpen(true)}
 				disabled={loading}
 			/>
@@ -77,8 +82,13 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 				data={data}
 				setIsOpen={() => setIsOpen(false)}
 				fields={dataFields || []}
-				title="Objekt bearbeiten"
+				title={
+					type === "data"
+						? "Daten bearbeiten"
+						: "Einstellung bearbeiten"
+				}
 				dataHandler={dataHandler}
+				isHorizontal
 			/>
 		</>
 	);

@@ -33,6 +33,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
 	const { roles } = useFindRoles({ projectId: project.objectId });
 
+
+	console.log({ currentModule });
 	const [inviteUser, setInviteUser] = useState(false);
 	const [createUser, setCreateUser] = useState(false);
 
@@ -83,6 +85,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const columns = useCreateColumns<PatstoreUser>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
+		settings: currentModule.setting_fields,
 		className: "_User",
 		refetch,
 		categories: currentModule?.categories,

@@ -4,6 +4,7 @@ export type TableColumnEditFieldProps = {
 	objectId: string;
 	className: string;
 	dataFields: Field[];
+	type?: "data" | "setting";
 };
 
 export type TableColumnEditFieldComponent = (
