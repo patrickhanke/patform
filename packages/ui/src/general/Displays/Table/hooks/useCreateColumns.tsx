@@ -70,7 +70,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	disableCategory,
 	useMasterKey = false
 }: CreateColumnHookProps<T>) => {
-	console.log({ settings });
 	const { updateData } = useDataHandler(useMasterKey);
 
 	const updateColumnData: UpdateColumnData = useCallback(
@@ -100,7 +99,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	);
 
 	const columns = useMemo(() => {
-		console.log({ settings });
 		const columnArray: ColumnDef<T>[] = [];
 		data.forEach((columnElement) => {
 			if (
@@ -804,7 +802,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 								dataFields={fields}
 							/>
 						)}
-						{settings.length > 0 && (
+						{settings?.length > 0 && (
 							<TableColumnEditField
 								objectId={row.objectId}
 								className={className}

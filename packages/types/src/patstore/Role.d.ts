@@ -15,5 +15,6 @@ export type PatstoreRoleClass = ClassProperties & {
 	project: PatstoreProject;
 	modules: string[];
 	default: boolean;
+	admin: boolean;
 	color?: ColorValues;
 }

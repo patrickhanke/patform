@@ -25,8 +25,16 @@ export type DefaultRoleProps = {
 	refetch: ApolloRefetch;
 };
 
+export type AdminRoleProps = {
+	roleId: string;
+	roles: PatstoreRoleClass[];
+	refetch: ApolloRefetch;
+	projectId: string;
+};
+
 export type UseRoleColumnsProps = {
 	modules: Module[];
 	roles: PatstoreRoleClass[];
 	refetch: ApolloRefetch;
+	projectId: string;
 };

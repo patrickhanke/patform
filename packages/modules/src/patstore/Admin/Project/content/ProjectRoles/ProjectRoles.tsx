@@ -1,10 +1,15 @@
 import { FC } from "react";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import {
+	axiosclient,
+	generateGraphQLQuery,
+	useDataHandler
+} from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { ProjectRolesProps } from "./types";
-import { SlideInForm, Table } from "@repo/ui";
+import { Button, SlideInForm, Table } from "@repo/ui";
 import useRoleColumns from "./hooks/useRoleColumns";
 import { v4 } from "uuid";
+import { PatstoreRoleClass } from "@repo/types";
 
 const ProjectRoles: FC<ProjectRolesProps> = ({
 	projectId,
@@ -23,6 +28,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				"name",
 				"createdAt",
 				"default",
+				"admin",
 				"modules",
 				"color",
 				"title",
@@ -39,53 +45,31 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 	const columns = useRoleColumns({
 		modules,
 		roles: data?.objects.find_Role.results || [],
-		refetch: refetch
+		refetch: refetch,
+		projectId
 	});
 
 	return (
 		<div>
+			<Button
+				text="Rollen aktualisieren"
+				onClick={() => {
+					const roles = data?.objects.find_Role.results || [];
+					const adminRole = roles.find(
+						(role: PatstoreRoleClass) => role.admin
+					);
+					if (adminRole) {
+						axiosclient().post("functions/update-user-acl", {
+							admin_role_id: adminRole.objectId,
+							project_id: projectId
+						});
+					}
+				}}
+			/>
 			<Table
 				data={data?.objects.find_Role.results || []}
 				columns={columns}
 			/>
-			{/* <SlideIn
-				header="Neue Rolle erstellen"
-				isOpen={createRole}
-				cancel={() => setCreateRole(false)}
-				confirm={async () => {
-					setLoading(true);
-					await createData({
-						className: "_Role",
-						updateObject: {
-							name: role.name,
-							default: false,
-							project: {
-								__type: "Pointer",
-								className: "Project",
-								objectId: projectId
-							},
-							ACL: {
-								"*": {
-									read: true
-								},
-								Lr6euLiF4e: {
-									read: true,
-									write: true
-								}
-							}
-						}
-					});
-					await refetch();
-					setLoading(false);
-					setCreateRole(false);
-				}}
-				disabled={[loading, loading]}
-				preventClickOutside
-			>
-				<div>
-					{createRole && <CreateRole role={role} setRole={setRole} />}
-				</div>
-			</SlideIn> */}
 			<SlideInForm
 				title="Neue Rolle erstellen"
 				isOpen={createRole}

@@ -5,8 +5,14 @@ import SelectRoleModules from "../components/SelectRoleModules";
 import DefaultRole from "../components/DefaultRole";
 import { UseRoleColumnsProps } from "../types";
 import { useDataHandler } from "@repo/provider";
+import AdminRole from "../components/AdminRole";
 
-const useRoleColumns = ({ modules, roles, refetch }: UseRoleColumnsProps) => {
+const useRoleColumns = ({
+	modules,
+	roles,
+	refetch,
+	projectId
+}: UseRoleColumnsProps) => {
 	const { updateData } = useDataHandler(true);
 
 	const columns: ColumnDef<PatstoreRoleClass>[] = useMemo(
@@ -80,6 +86,21 @@ const useRoleColumns = ({ modules, roles, refetch }: UseRoleColumnsProps) => {
 				),
 				header: () => <span>Standard</span>,
 				id: "default",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				accessorFn: (row) => (
+					<AdminRole
+						roleId={row.objectId}
+						roles={roles}
+						refetch={refetch}
+						projectId={projectId}
+					/>
+				),
+				header: () => <span>Admin</span>,
+				id: "admin",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,
 				enableSorting: false
