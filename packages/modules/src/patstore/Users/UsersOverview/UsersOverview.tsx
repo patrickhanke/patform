@@ -161,26 +161,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		[createUserFields]
 	);
 
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "label",
-						operator: "_regex",
-						value: "",
-						placeholder: "Vor- oder Nachname"
-					}
-				]}
-				categories={[]}
-				initialFilters={initialFilters}
-			/>
-		);
-	}, []);
-
 	return (
 		<Page
 			title="Nutzerübersicht"

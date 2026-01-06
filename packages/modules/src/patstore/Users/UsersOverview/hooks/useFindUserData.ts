@@ -48,7 +48,7 @@ function useFindModuleData<T extends Classes>({
 				skip,
 				order: order || "label_ASC"
 			},
-			notifyOnNetworkStatusChange: true,
+			notifyOnNetworkStatusChange: true
 			// context: {
 			// 	headers: {
 			// 		"X-Parse-Master-Key": process.env.SASHIDO_MASTER_KEY

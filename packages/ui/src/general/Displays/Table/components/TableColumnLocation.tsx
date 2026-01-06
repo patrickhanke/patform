@@ -41,8 +41,6 @@ const TableColumnLocation = ({
 		}
 	);
 
-	console.log({ locationData });
-
 	const elements = useMemo(() => {
 		const locationOptionsArray: SelectElement[] = [];
 		if (locationData) {
@@ -77,7 +75,6 @@ const TableColumnLocation = ({
 				elements={elements}
 				selectedElements={currentLocation ? [currentLocation] : []}
 				onSelect={(selectValue) => {
-					console.log({ selectValue });
 					if (!selectValue || selectValue.length === 0) {
 						setSelectedLocation("");
 					} else if (selectValue.length > 0) {
@@ -140,7 +137,7 @@ const TableColumnLocation = ({
 					}
 				}}
 				disabled={[loading, loading || !selectedLocation]}
-				header="Personen auswählen"
+				header="Ort auswählen"
 			>
 				{selectLocation}
 			</SlideIn>

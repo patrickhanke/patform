@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { UplaoderProps } from "../types";
 import { useDataHandler, PatstoreAppContext } from "@repo/provider";
 import { ErrorMessage } from "@repo/types";
@@ -31,35 +31,67 @@ const Uploader: React.FC<UplaoderProps> = ({
 
 	const uploadHandler = useCallback(async () => {
 		setIsUploading(true);
+		if (errors.length > 0) {
+			setErrors([]);
+		}
 		if (setLoading) {
 			setLoading(true);
 		}
-		if (moduleId && files) {
-			const uploads = Array.from(files).map((file) => {
-				const fileName: string =
-					customFileNames.get(file.name) || file.name;
-				return createUpdateFile({
-					file: file,
-					moduleId,
-					name: fileName,
-					classKey,
-					classId,
-					className
-				});
-			});
-			const images: any[] = await Promise.all(uploads);
 
-			if (afterUploadHandler) {
-				afterUploadHandler(images);
-			}
-		} else {
+		if (!moduleId) {
 			setErrors([
 				{
 					id: "1",
 					key: "moduleId",
-					message: "Modul ID nicht gefunden"
+					message:
+						"Modul ID nicht gefunden, falls dieser Fehler weiterhin auftritt, bitte kontaktieren Sie den Administrator."
 				}
 			]);
+		}
+
+		if (moduleId && files) {
+			const images: any[] = [];
+			for (const file of files) {
+				const fileName: string =
+					customFileNames.get(file.name) || file.name;
+				try {
+					const upload = await createUpdateFile({
+						file: file,
+						moduleId,
+						name: fileName,
+						classKey,
+						classId,
+						className
+					});
+					images.push(upload);
+				} catch (error: any) {
+					let errorMessage = "Unbekannter Fehler";
+
+					if (error.code === 122) {
+						errorMessage =
+							"Diese Datei hat ungültige Zeichen in ihrem Dateinamen (bspw. &, % ...). Bitte benennen Sie die Datei um und versuchen Sie es erneut.";
+					}
+					if (
+						!error.code &&
+						error.message.includes("request entity too large")
+					) {
+						errorMessage =
+							"Die Datei ist zu groß. Bitte versuchen Sie es mit einer kleineren Datei.";
+					}
+
+					setErrors((prev) => [
+						...prev,
+						{
+							id: `${prev.length + 1}`,
+							key: "uploadError",
+							message: `${fileName}: ${errorMessage}`
+						} as ErrorMessage
+					]);
+				}
+			}
+			if (afterUploadHandler) {
+				afterUploadHandler(images);
+			}
 		}
 		setIsUploading(false);
 		if (setLoading) {
@@ -74,8 +106,15 @@ const Uploader: React.FC<UplaoderProps> = ({
 		classId,
 		className,
 		afterUploadHandler,
-		setLoading
+		setLoading,
+		errors
 	]);
+
+	useEffect(() => {
+		if (files?.length === 0 && errors.length > 0) {
+			setErrors([]);
+		}
+	}, [files]);
 
 	return (
 		<div className={"uppy_upload_container"}>
@@ -158,6 +197,7 @@ const Uploader: React.FC<UplaoderProps> = ({
 				loading={isUploading}
 				size={16}
 				color="dark"
+				disabled={files?.length === 0}
 			/>
 			<ErrorDisplay errors={errors} />
 		</div>
