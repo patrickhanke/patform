@@ -55,7 +55,7 @@ const useRecordsTableColumns: UseRecordTableColumns = ({
 			{
 				accessorFn: (row) =>
 					row.time_settings
-						? `${row.time_settings.vacation.toString()} / ${row.absence_days.toString() || 0}`
+						? `${row?.time_settings?.vacation?.toString()} / ${row?.absence_days?.toString() || 0}`
 						: "-",
 				header: () => <span>Urlaub (verfügbar / genommen)</span>,
 				id: "absence_days",

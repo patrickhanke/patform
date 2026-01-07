@@ -6,7 +6,7 @@ import {
 } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import { ProjectRolesProps } from "./types";
-import { Button, SlideInForm, Table } from "@repo/ui";
+import { Button, Divider, SlideInForm, Table } from "@repo/ui";
 import useRoleColumns from "./hooks/useRoleColumns";
 import { v4 } from "uuid";
 import { PatstoreRoleClass } from "@repo/types";
@@ -66,6 +66,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 					}
 				}}
 			/>
+			<Divider />
 			<Table
 				data={data?.objects.find_Role.results || []}
 				columns={columns}
