@@ -1,5 +1,4 @@
 import { Day, Record } from "@repo/types";
-import { differenceInMonths } from "date-fns";
 
 const getRemainingVacation: (
 	startDate: string,
@@ -14,19 +13,9 @@ const getRemainingVacation: (
 } = (startDate, endDate, record, days) => {
 	const former_vacation = record?.time_settings.vacation || 0;
 	const initial_vacation = 0 + former_vacation;
-	const difference = differenceInMonths(
-		new Date(endDate),
-		new Date(startDate)
-	);
 
 	let takenVacation = 0;
-	let remainingVacation = 0;
-
-	if (difference === 12) {
-		remainingVacation = initial_vacation;
-	} else {
-		remainingVacation = Math.ceil((initial_vacation / 12) * difference);
-	}
+	let remainingVacation = initial_vacation;
 
 	days.forEach((day) => {
 		const date = new Date(day.date).getTime();

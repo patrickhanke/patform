@@ -18,7 +18,7 @@ const StaffVacation: FC<StaffVacationProps> = ({
 		}
 		const data = getRemainingVacation(start, end, record, days);
 		return data;
-	}, [record]);
+	}, [record, start, end]);
 
 	return (
 		<div>
@@ -26,17 +26,19 @@ const StaffVacation: FC<StaffVacationProps> = ({
 			<div className="content_element">
 				<div className="horizontal_container">
 					<label className="surcharge_name">
-						Urlaub Ende Vormonat
+						Urlaub Anfang des Jahres
 					</label>
 					<p>{vacationData?.initialVacation}</p>
 				</div>
 				<div className="horizontal_container">
-					<label className="surcharge_name">Genommener Urlaub</label>
+					<label className="surcharge_name">
+						Genommener Urlaub (bis Ende {month.label} {year}){" "}
+					</label>
 					<p>{vacationData?.takenVacation}</p>
 				</div>
 				<div className="horizontal_container">
 					<label className="surcharge_name">
-						Verbleibender Urlaub
+						Verbleibender Urlaub (bis Ende {year})
 					</label>
 					<p>
 						{vacationData

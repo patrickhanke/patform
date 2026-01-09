@@ -56,7 +56,7 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 			surcharges = getSurchargeData({
 				surcharges: data?.objects.findSurcharge.results || [],
 				days,
-				month,
+				month: month.id,
 				year
 			});
 		}

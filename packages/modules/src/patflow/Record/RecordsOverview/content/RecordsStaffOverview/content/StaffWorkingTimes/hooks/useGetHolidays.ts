@@ -31,7 +31,6 @@ const useGetHolidays = ({
 	const currentHolidays = useMemo(() => {
 		const holidays: Holiday[] =
 			holidayData?.objects.findHoliday.results || [];
-		console.log(holidays);
 
 		if (!year) {
 			return [];
@@ -57,7 +56,6 @@ const useGetHolidays = ({
 			);
 
 			if (recordForHoliday) {
-				console.log({ recordForHoliday });
 				if (
 					recordForHoliday.holiday_template.holidays.includes(
 						holiday.objectId
@@ -70,8 +68,6 @@ const useGetHolidays = ({
 
 		return recordHolidays;
 	}, [holidayData, year, records]);
-
-	console.log(currentHolidays);
 
 	return {
 		holidays: holidayData?.objects.findHoliday.results || [],

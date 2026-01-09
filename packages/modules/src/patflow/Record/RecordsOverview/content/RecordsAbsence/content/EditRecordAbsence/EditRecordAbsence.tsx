@@ -31,12 +31,14 @@ const EditRecordAbsence = ({
 	setEditAbsence
 }: EditRecordAbsenceComponent) => {
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
+	const { year } = useContext(PatflowAppContext);
 	const [absenceState, setAbsenceState] = useState(
-		type === "edit" ? absence : initialAbsence
+		type === "edit" ? absence : { ...initialAbsence, year }
 	);
+
+	console.log(absenceState);
 	const { data: staffData } = useQuery(FIND_ALL_STAFF);
 	const { user } = useContext(UserContext);
-	const { year } = useContext(PatflowAppContext);
 	const { record } = useGetActiveRecord({
 		year,
 		userId: absenceState?.user?.objectId as string

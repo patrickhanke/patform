@@ -51,6 +51,7 @@ const getMonthData = ({
 					element.default_time?.duration -
 					element.default_time?.pause;
 			}
+
 			target += default_time;
 		});
 		if (days && records) {
