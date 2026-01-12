@@ -10,7 +10,11 @@ const Dashboard = () => {
 	return (
 		<Page title="Dashboard">
 			<div>
-				<InfoBox text="Nach dem Speichern eines Eintrages, dauert es einige Minuten bis die Änderungen auf der Webseite erscheinen." />
+				{/* <InfoBox  text="Nach dem Speichern eines Eintrages, dauert es einige Minuten bis die Änderungen auf der Webseite erscheinen." /> */}
+				<InfoBox
+					status="error"
+					text="Wegen eines Updates ist das System gerade nicht verfügbar."
+				/>
 			</div>
 			<Divider />
 			{dashboardContent && <HtmlContent content={dashboardContent} />}
