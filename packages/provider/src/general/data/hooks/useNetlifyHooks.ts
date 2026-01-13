@@ -12,7 +12,7 @@ const useNetlifyHooks = () => {
 			}
 			if (project.path === "bcd") {
 				return axios.post(
-					"https://api.netlify.com/build_hooks/6917327aaad5ac286e994e72"
+					"https://api.netlify.com/build_hooks/696649490b1bbc713ef942c9"
 				);
 			}
 			if (project.path === "tvstg") {
