@@ -2,7 +2,7 @@ import { Module } from './Module.d';
 import { Field } from "@repo/ui";
 import { Project } from "./Classes";
 
-export type ModulePath = "/arcticles" | "/events" | "/groups" | "/locations" | "/persons" | "/downloads" | "/forms" | "/news" | "/categories" | "/images";
+export type ModulePath = "/arcticles" | "/events" | "/groups" | "/locations" | "/persons" | "/downloads" | "/forms" | "/entries" | "/categories" | "/images";
 
 export type ModuleFieldIds = "title" | "description" | "text" | "image" | "date" | "dates" | "gallery" | "color" | "data" | "content" | "file" | "documents" | "link" | "state" | "active" ;
 

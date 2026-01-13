@@ -11,7 +11,7 @@ const disabled_fields: {
 	"/downloads": [],
 	"/forms": [],
 	"/images": ["image"],
-	"/news": [],
+	"/entries": [],
 	"/categories": []
 };
 

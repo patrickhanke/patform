@@ -11,7 +11,7 @@ const default_fields: {
 	"/downloads": ["title", "description", "file"],
 	"/forms": ["title"],
 	"/images": ["title", "description"],
-	"/news": ["title", "date"],
+	"/entries": ["title", "date"],
 	"/categories": ["title"]
 };
 

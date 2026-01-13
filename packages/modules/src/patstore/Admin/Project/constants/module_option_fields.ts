@@ -68,8 +68,8 @@ export const module_option_fields: ModuleOptionsField = {
 		sub_menu: [],
 		default_fields: ["title", "dates"]
 	},
-	"/news": {
-		path: "/news",
+	"/entries": {
+		path: "/entries",
 		name: "News",
 		icon: "news",
 		settings: {
@@ -79,7 +79,7 @@ export const module_option_fields: ModuleOptionsField = {
 		data_fields: [],
 		position: 4,
 		categories: [],
-		connected_class: "News",
+		connected_class: "Entry",
 		sub_menu: [],
 		default_fields: ["title", "text"]
 	},

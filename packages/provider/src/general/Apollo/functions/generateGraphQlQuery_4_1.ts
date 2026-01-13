@@ -22,6 +22,8 @@ const getQueryStringFromFields = (fields: string[]) => {
 				field === "gallery" ||
 				field === "persons" ||
 				field === "times" ||
+				field === "dates" ||
+				field === "documents" ||
 				field === "connected_elements"
 			) {
 				return `

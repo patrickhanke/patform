@@ -22,7 +22,7 @@ export type ModuleOptionsKeys =
 	| "/website"
 	| "/articles"
 	| "/events"
-	| "/news"
+	| "/entries"
 	| "/categories"
 	| "/images"
 	| "/training-group"

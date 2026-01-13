@@ -20,7 +20,7 @@ const useNetlifyHooks = () => {
 					objectClass === "Article" ||
 					objectClass === "Webpage" ||
 					objectClass === "Content" ||
-					objectClass === "News" ||
+					objectClass === "Entry" ||
 					objectClass === "Event" ||
 					objectClass === "Form" ||
 					objectClass === "Image" ||

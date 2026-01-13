@@ -55,7 +55,7 @@ const NewsOverview = () => {
 	const columns = useCreateColumns<NewsClass>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
-		className: "News",
+		className: "Entry",
 		refetch,
 		categories: currentModule?.categories
 	});
@@ -100,7 +100,7 @@ const NewsOverview = () => {
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
 			createClass={{
-				className: "News",
+				className: "Entry",
 				text: `Neue ${currentModule.name} erstellen`,
 				fields: currentModule.fields,
 				refetch: refetch
@@ -131,7 +131,7 @@ const NewsOverview = () => {
 					await Promise.all(
 						selectedRows.map(async (objectId) => {
 							await deleteData({
-								className: "News",
+								className: "Entry",
 								objectId
 							});
 						})
