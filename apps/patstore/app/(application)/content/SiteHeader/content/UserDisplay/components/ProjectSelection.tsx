@@ -1,4 +1,4 @@
-import { generateGraphQLQuery, generateGraphQLQuery_4_1, useAppContext } from "@repo/provider";
+import { generateGraphQLQuery_4_1, useAppContext } from "@repo/provider";
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ProjectSelectionProps } from "../types";
@@ -22,7 +22,7 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
     generateGraphQLQuery_4_1({
       type: "find",
       objectName: "Project",
-      queryName: "project",
+      queryName: "projects",
       fields: ["name", "objectId", "id"],
     }),
     {

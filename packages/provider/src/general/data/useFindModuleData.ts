@@ -1,8 +1,4 @@
-import {
-	generateQueryFromFields,
-	paramsHandler,
-	useFindData
-} from "@repo/provider";
+import { generateQueryFromFields, useFindData } from "@repo/provider";
 import { useMemo } from "react";
 import { ApolloRefetch, Classes, Filter, Module } from "@repo/types";
 
@@ -26,12 +22,8 @@ function useFindModuleData<T extends Classes>({
 	refetch: ApolloRefetch;
 	count: number;
 } {
-	console.log(paramsHandler({ moduleId: module.objectId, filters }));
 	const { loading, data, refetch, count } = useFindData({
-		objectName:
-			module.connected_class === "Person"
-				? "People"
-				: module.connected_class,
+		objectName: module.connected_class,
 		fields: [
 			...generateQueryFromFields(module.fields),
 			...additionalFields,

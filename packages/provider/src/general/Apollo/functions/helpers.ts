@@ -41,6 +41,10 @@ export const pluralize = (word: string): string => {
 	const vowels = ["a", "e", "i", "o", "u"];
 	const secondToLast = lower[lower.length - 2] ?? "";
 
+	if (lower === "person") {
+		return "people";
+	}
+
 	// Words ending in consonant + "y" → replace "y" with "ies"
 	if (lower.endsWith("y") && !vowels.includes(secondToLast)) {
 		return lower.slice(0, -1) + "ies";

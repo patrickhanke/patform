@@ -21,7 +21,8 @@ const getQueryStringFromFields = (fields: string[]) => {
 				field === "roles" ||
 				field === "gallery" ||
 				field === "persons" ||
-				field === "times"
+				field === "times" ||
+				field === "connected_elements"
 			) {
 				return `
                 ${field} {
@@ -50,6 +51,7 @@ const generateGraphQLQuery_4_1: GenerateGraphQLQueryFunction = ({
 		return gql`
             query ${type}${objectName}($params: ${objectName}WhereInput, $first: Int, $skip: Int, $order: [${objectName}Order!]) {
                 ${queryName}(where: $params, first: $first, skip: $skip, order: $order) {
+					count
                     edges {
                         node {
                             ${processedFields}
