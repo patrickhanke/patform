@@ -13,15 +13,15 @@ export type PageState = {
 };
 
 export type FilterOperator =
-  | "_eq"
-  | "_ne"
-  | "_lt"
-  | "_lte"
-  | "_gt"
-  | "_gte"
-  | "_in"
-  | "_nin"
-  | "_regex";
+  | "equalTo"
+  | "notEqualTo"
+  | "lessThan"
+  | "lessThanOrEqualTo"
+  | "greaterThan"
+  | "greaterThanOrEqualTo"
+  | "in"
+  | "notIn"
+  | "regex";
 
 export type Filter = {
   key: string;

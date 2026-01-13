@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useDataHandler, useGetData } from "@repo/provider";
+
 import form_settings from "./constants/form_settings";
 import FormSettingToggle from "./components/FormSettingToggle";
 import { FormClass } from "@repo/types";
@@ -12,24 +12,17 @@ import { FormikValues } from "formik";
 const FormSettings = ({ formId }: { formId: string }) => {
 	const { updateData } = useDataHandler();
 	const [settings, setSettings] = useState<FormClass["settings"]>();
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "Form",
-			fields: ["settings", "objectId"]
-		}),
-		{
-			variables: {
-				id: formId
-			}
-		}
-	);
+	const { data, refetch } = useGetData({
+		objectName: "Form",
+		fields: ["settings", "objectId"],
+		id: formId
+	});
 
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		if (data) {
-			setSettings(data.objects.getForm.settings);
+			setSettings(data.settings);
 		}
 	}, [data]);
 

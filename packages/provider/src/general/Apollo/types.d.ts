@@ -10,6 +10,7 @@ type fields = Array<string>;
 type QueryProps = {
 	type: type;
 	objectName: string;
+	queryName: string;
 	fields: fields;
 	constraints?: Filter[];
 };
@@ -52,3 +53,30 @@ export type ClientHeaders = {
 };
 
 export type ApolloRefetch = () => Promise<ApolloQueryResult<Classes>>;
+
+export type UseFindDataHook<T extends Classes> = (P: {
+	objectName: string;
+	fields: string[];
+	filters?: Filter[];
+	limit?: number;
+	skip?: number;
+	order?: string;
+	moduleId?: string;
+	projectId?: string;
+}) => {
+	loading: boolean;
+	data: T[];
+	refetch: ApolloRefetch;
+	count: number;
+};
+
+export type UseGetDataHook<T extends Classes> = (P: {
+	objectName: string;
+	fields: string[];
+	id?: string;
+	skip?: boolean;
+}) => {
+	loading: boolean;
+	data: T | null;
+	refetch: ApolloRefetch;
+};

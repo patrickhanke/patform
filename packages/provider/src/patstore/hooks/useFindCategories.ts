@@ -1,7 +1,6 @@
 "use client";
 
-import { generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import { CategoryClass, Filter, ModuleCategory, SiteState } from "@repo/types";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
@@ -43,38 +42,32 @@ export const useFindCategoryPageStates = ({
 }) => {
 	const [activePage, setActivePage] = useState<SiteState | undefined>();
 
-	const fields = useMemo(() => {
-		const fields = [
+	const { data, loading } = useFindData({
+		objectName: "Category",
+		fields: [
 			"objectId",
 			"label",
 			"title",
 			"category_id",
 			"description",
 			"color"
-		];
-		return fields;
-	}, []);
-
-	const { data, loading } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Category",
-			fields
-		}),
-		{
-			variables: {
-				params: {
-					module: { _eq: categoryModuleId },
-					category_id: { _in: categories }
-				}
-			},
-			fetchPolicy: "cache-first",
-			skip: !categoryModuleId
-		}
-	);
+		],
+		filters: [
+			{
+				id: "category_id",
+				key: "category_id",
+				value: categories,
+				operator: "in"
+			}
+		],
+		moduleId: categoryModuleId,
+		limit: 100,
+		skip: 0,
+		order: "createdAt_DESC"
+	});
 
 	const pageStates = useMemo(() => {
-		const categories = data?.objects.findCategory.results || [];
+		const categories = data || [];
 		const pageStates: SiteState[] = [];
 
 		if (categories.length > 0) {
@@ -115,10 +108,10 @@ export const useFindCategoryPageStates = ({
 			setFilters([
 				...filterCopy,
 				{
+					id: "categories",
 					key: "categories",
 					value: [activePage.value],
-					operator: "_in",
-					id: "categories"
+					operator: "in"
 				}
 			]);
 		}

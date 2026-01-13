@@ -22,6 +22,7 @@ import state from "./constants/articleState";
 
 const ArticlesOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
+	console.log({ currentModule });
 	const { deleteData } = useDataHandler();
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
@@ -60,6 +61,9 @@ const ArticlesOverview = () => {
 		categories: currentModule?.categories,
 		constants: { state }
 	});
+
+	console.log({ data });
+	console.log({ columns });
 
 	const pageHeaderButtons = useMemo(
 		() => [

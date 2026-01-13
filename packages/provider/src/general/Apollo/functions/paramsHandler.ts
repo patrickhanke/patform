@@ -7,13 +7,13 @@ const paramsHandler: ParamsHandlerType = ({ projectId, moduleId, filters }) => {
 	const filterObject: FilterObject = {};
 
 	if (projectId) {
-		filterObject.project = { _eq: projectId } as {
+		filterObject.project = { have: { id: { equalTo: projectId } } } as {
 			[key in FilterOperator]: any;
 		};
 	}
 
 	if (moduleId) {
-		filterObject.module = { _eq: moduleId } as {
+		filterObject.module = { have: { id: { equalTo: moduleId } } } as {
 			[key in FilterOperator]: any;
 		};
 	}

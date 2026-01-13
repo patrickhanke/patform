@@ -11,7 +11,7 @@ import { cloneDeep, truncate } from 'lodash-es';
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const { project, roles } = useAppContext();
   
-  const userRole = roles.find((role) => user.roles.includes(role.objectId));
+  const userRole = roles?.find((role) => user.roles.includes(role.objectId)) || [];
 
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [{
@@ -22,7 +22,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
     }];
 
     if (project) {
-      const modules = cloneDeep(project.modules.results).sort( (a: Module, b: Module) => a.position - b.position);
+      const modules = cloneDeep(project.modules.edges.map((edge: { node: Module }) => edge.node)).sort( (a: Module, b: Module) => a.position - b.position);
       modules.forEach((module: Module) => {
         if (user.is_superuser) {
           menuItemsArray.push({

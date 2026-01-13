@@ -5,6 +5,7 @@ import { FC, useState } from "react";
 import { Filter } from "@repo/types";
 import { FormDataProps } from "./types";
 import generateFormData from "./functions/generateFormData";
+import { useFindData } from "@repo/provider";
 
 const FormData: FC<FormDataProps> = ({
 	formId,
@@ -14,7 +15,7 @@ const FormData: FC<FormDataProps> = ({
 	const initialFilters: Filter[] = [
 		{
 			key: "reference_id",
-			operator: "_eq",
+			operator: "equalTo",
 			id: "reference_id",
 			value: formId
 		}
@@ -25,7 +26,9 @@ const FormData: FC<FormDataProps> = ({
 		pageSize: 10
 	});
 
-	const { data, refetch, count } = useFindFormData({
+	const { data, refetch, count } = useFindData({
+		objectName: "Data",
+		fields: ["objectId", "createdAt", "data"],
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize

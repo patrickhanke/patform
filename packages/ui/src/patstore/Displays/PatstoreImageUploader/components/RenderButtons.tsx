@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { isArray } from "lodash";
-import { generateGraphQLQuery, getImageUrl } from "@repo/provider";
+import { generateGraphQLQuery, getImageUrl, useGetData } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import { RenderButtonsProps } from "../types";
@@ -11,18 +11,12 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 	onClick,
 	previewImageSize = "sm"
 }) => {
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "Image",
-			fields: ["objectId", "file {name url}", "title"]
-		}),
-		{
-			variables: { id: selectedImages[0] },
-			skip: selectedImages.length !== 1 || maxFileCount !== 1,
-			fetchPolicy: "cache-first"
-		}
-	);
+	const { data } = useGetData({
+		objectName: "Image",
+		fields: ["objectId", "file {name url}", "title"],
+		id: selectedImages[0],
+		skip: selectedImages.length !== 1 || maxFileCount !== 1
+	});
 
 	const imageSizes: { height: number; width: number } = useMemo(() => {
 		const height = 36;
@@ -72,12 +66,9 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 		return (
 			<div onClick={() => onClick()} style={{ cursor: "pointer" }}>
 				<Image
-					alt={
-						data?.objects.getImage.title ||
-						data?.objects.getImage.objectId
-					}
+					alt={data?.title || data?.objectId}
 					src={getImageUrl({
-						fileName: data?.objects.getImage?.file?.name,
+						fileName: data?.file?.name,
 						height: imageSizes.height * 2,
 						width: imageSizes.width * 2
 					})}

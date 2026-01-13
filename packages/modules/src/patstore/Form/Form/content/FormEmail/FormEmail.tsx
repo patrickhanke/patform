@@ -2,8 +2,7 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { FormEmailProps } from "./types";
 import { FormClass } from "@repo/types";
 import form_email_settings from "./constants/form_email_settings";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useDataHandler, useGetData } from "@repo/provider";
 import FormEmailSettingToggle from "./components/FormEmailSettingToggle";
 import FormEmailSettingsText from "./components/FormEmailSettingsText";
 import FormEmailSettingsNumber from "./components/FormEmailSettingsNumber";
@@ -17,24 +16,17 @@ const FormEmail: FC<FormEmailProps> = ({ formId }) => {
 	const [settings, setSettings] = useState<
 		FormClass["settings"] | undefined
 	>();
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "Form",
-			fields: ["settings", "objectId"]
-		}),
-		{
-			variables: {
-				id: formId
-			}
-		}
-	);
+	const { data, refetch } = useGetData({
+		objectName: "Form",
+		fields: ["settings", "objectId"],
+		id: formId
+	});
 
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		if (data) {
-			setSettings(data.objects.getForm.settings);
+			setSettings(data.settings);
 		}
 	}, [data]);
 

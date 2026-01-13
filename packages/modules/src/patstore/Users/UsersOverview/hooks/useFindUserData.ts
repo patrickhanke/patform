@@ -32,7 +32,7 @@ function useFindModuleData<T extends Classes>({
 	const { loading, data, refetch } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
-			objectName: module.connected_class,
+			objectName: `${module.connected_class.toLowerCase()}s`,
 			fields: [
 				...generateQueryFromFields(module.fields),
 				...additionalFields,

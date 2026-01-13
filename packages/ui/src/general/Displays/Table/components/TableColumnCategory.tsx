@@ -1,10 +1,9 @@
 "use client";
 
-import { generateGraphQLQuery } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { TableColumnCategoryProps } from "../types";
 import "../styles.scss";
 import { useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
 import {
 	ElementSelectInterface,
 	SelectElement,
@@ -12,7 +11,8 @@ import {
 	StateDisplay
 } from "@repo/ui";
 import { Classes } from "@repo/types";
-import { isArray } from "lodash";
+import { get, isArray } from "lodash-es";
+import { pluralize } from "@repo/provider";
 
 const TableColumnCategory = ({
 	category,
@@ -36,52 +36,39 @@ const TableColumnCategory = ({
 		return fields;
 	}, [category]);
 
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: category.connected_class,
-			fields
-		}),
-		{
-			variables: { params: { module: { _eq: category.moduleId } } },
-			fetchPolicy: "cache-first"
-		}
-	);
+	const { data } = useFindData({
+		objectName: category.connected_class,
+		fields,
+		limit: 100,
+		skip: 0,
+		order: "createdAt_DESC",
+		moduleId: category.moduleId
+	});
 
 	const elements = useMemo(() => {
 		const categoryOptionsArray: SelectElement[] = [];
 		if (data) {
-			data.objects[`find${category.connected_class}`].results.forEach(
-				(cat: Classes) => {
+			const elements = get(
+				data,
+				pluralize(category.connected_class),
+				[]
+			) as Classes[];
+
+			elements.forEach((cat: Classes) => {
+				if (
+					category &&
+					isArray(category.category_ids) &&
+					category.category_ids.length > 0
+				) {
 					if (
-						category &&
-						isArray(category.category_ids) &&
-						category.category_ids.length > 0
+						cat.category_id &&
+						category.category_ids.includes(cat.category_id)
 					) {
-						if (
-							cat.category_id &&
-							category.category_ids.includes(cat.category_id)
-						) {
-							categoryOptionsArray.push({
-								value: cat.objectId,
-								id: cat.objectId,
-								label: `${cat.label}`,
-								color: cat.color || "grey",
-								element: (
-									<div>
-										<h4>{cat.label}</h4>
-										{cat.description && (
-											<p>{cat.description}</p>
-										)}
-									</div>
-								)
-							});
-						}
-					} else {
 						categoryOptionsArray.push({
 							value: cat.objectId,
 							id: cat.objectId,
 							label: `${cat.label}`,
+							color: cat.color || "grey",
 							element: (
 								<div>
 									<h4>{cat.label}</h4>
@@ -92,8 +79,20 @@ const TableColumnCategory = ({
 							)
 						});
 					}
+				} else {
+					categoryOptionsArray.push({
+						value: cat.objectId,
+						id: cat.objectId,
+						label: `${cat.label}`,
+						element: (
+							<div>
+								<h4>{cat.label}</h4>
+								{cat.description && <p>{cat.description}</p>}
+							</div>
+						)
+					});
 				}
-			);
+			});
 		}
 		categoryOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 

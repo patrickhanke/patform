@@ -9,7 +9,7 @@ import {
 	PatstoreUser
 } from "@repo/types";
 import { usePathname } from "next/navigation";
-import { axiosclient } from "../../../general";
+import { axiosclient, sanitizeGraphQlNode } from "../../../general";
 
 const PatstoreAppContextProvider = ({
 	project,
@@ -25,7 +25,11 @@ const PatstoreAppContextProvider = ({
 	const pathname = usePathname();
 
 	const currentModule = useMemo(() => {
-		return project.modules.results.find((module) =>
+		const modules: Module[] = project.modules.edges.map((edge) =>
+			sanitizeGraphQlNode(edge.node)
+		);
+
+		return modules.find((module) =>
 			pathname.includes(module.path)
 		) as Module;
 	}, [pathname, project]);
@@ -46,7 +50,7 @@ const PatstoreAppContextProvider = ({
 	}, []);
 
 	const userRole = useMemo(() => {
-		return roles.find((role) => user?.roles?.includes(role.objectId));
+		return roles?.find((role) => user?.roles?.includes(role.objectId));
 	}, [roles, user]);
 
 	const appContextObject = useMemo(
@@ -58,7 +62,7 @@ const PatstoreAppContextProvider = ({
 			userRole,
 			user,
 			userLoading: !user.objectId ? true : false,
-			modules: project.modules.results
+			modules: project.modules.edges.map((edge) => edge.node)
 		}),
 		[pageTitle, project, currentModule, user, userRole]
 	);

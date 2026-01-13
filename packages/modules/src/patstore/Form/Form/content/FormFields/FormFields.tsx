@@ -1,6 +1,5 @@
-import { useQuery } from "@apollo/client";
 import { FC } from "react";
-import { generateGraphQLQuery } from "@repo/provider";
+import { useGetData } from "@repo/provider";
 import { DnDDisplay } from "@repo/ui";
 import { FormFieldsProps } from "./types";
 import CreateField from "./content/CreateField/CreateField";
@@ -11,22 +10,17 @@ const FormFields: FC<FormFieldsProps> = ({
 	createField,
 	setCreateField
 }) => {
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "Form",
-			fields: ["objectId", "createdAt", "fields", "settings"]
-		}),
-		{
-			variables: { id: formId }
-		}
-	);
+	const { data, refetch } = useGetData({
+		objectName: "Form",
+		fields: ["objectId", "createdAt", "fields", "settings"],
+		id: formId
+	});
 
 	if (!data) {
 		return null;
 	}
 
-	if (data.objects.getForm.settings?.static_form === true) {
+	if (data.settings?.static_form === true) {
 		return (
 			<p>
 				Bei einem statischen Formular können keine Felder angelegt oder
@@ -38,13 +32,13 @@ const FormFields: FC<FormFieldsProps> = ({
 	return (
 		<div>
 			<DnDDisplay
-				items={data?.objects.getForm.fields || []}
+				items={data?.fields || []}
 				ItemComponent={({ item }) => (
 					<FormField
 						formId={formId}
 						field={item}
 						refetch={refetch}
-						fields={data?.objects.getForm.fields || []}
+						fields={data?.fields || []}
 					/>
 				)}
 				objectClass="Form"
@@ -56,7 +50,7 @@ const FormFields: FC<FormFieldsProps> = ({
 			/>
 			<CreateField
 				createField={createField}
-				fields={data?.objects.getForm.fields || []}
+				fields={data?.fields || []}
 				setCreateField={setCreateField}
 				formId={formId}
 				refetch={refetch}

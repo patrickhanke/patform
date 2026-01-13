@@ -1,4 +1,4 @@
-import { generateGraphQLQuery, useAppContext } from "@repo/provider";
+import { generateGraphQLQuery, generateGraphQLQuery_4_1, useAppContext } from "@repo/provider";
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ProjectSelectionProps } from "../types";
@@ -19,16 +19,17 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
     { value: project.objectId, label: project.name },
   ]);
   const { data } = useQuery(
-    generateGraphQLQuery({
+    generateGraphQLQuery_4_1({
       type: "find",
       objectName: "Project",
-      fields: ["name", "objectId"],
+      queryName: "project",
+      fields: ["name", "objectId", "id"],
     }),
     {
       variables: {
         params: {
-          objectId: {
-            _in: projects,
+          id: {
+            in: projects,
           },
         },
       },
@@ -58,9 +59,9 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
 
 const selectElements = useMemo(() => {
   if (data) {
-    return data?.objects.findProject.results.map((project: PatstoreProject) => ({
-      value: project.objectId,
-      label: project.name,
+    return data?.projects.edges.map((edge: { node: PatstoreProject }) => ({
+      value: edge.node.objectId,
+      label: edge.node.name,
     }));
 
   }

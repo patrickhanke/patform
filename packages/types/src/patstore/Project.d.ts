@@ -19,7 +19,9 @@ export type PatstoreProject = {
   };
   path: string;
   modules: {
-    results: Module[];
+    edges: {
+      node: Module;
+    }[];
   };
   invitations: PatstoreProjectInvitation[];
   settings: {};

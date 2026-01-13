@@ -11,7 +11,6 @@ import {
 	generateColumnsFromFields,
 	generateFilterColumnsFromFields,
 	Page,
-	RenderFilters,
 	SlideInForm,
 	Table,
 	useCreateColumns
@@ -32,7 +31,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
 	const { currentModule } = useContext(PatstoreAppContext);
 	const { roles } = useFindRoles({ projectId: project.objectId });
-
 
 	console.log({ currentModule });
 	const [inviteUser, setInviteUser] = useState(false);

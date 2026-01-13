@@ -1,12 +1,10 @@
-import { useQuery } from "@apollo/client";
 import {
-	generateGraphQLQuery,
 	generateQueryFromFields,
-	paramsHandler
+	paramsHandler,
+	useFindData
 } from "@repo/provider";
 import { useMemo } from "react";
 import { ApolloRefetch, Classes, Filter, Module } from "@repo/types";
-import { get } from "lodash-es";
 
 function useFindModuleData<T extends Classes>({
 	module,
@@ -28,36 +26,30 @@ function useFindModuleData<T extends Classes>({
 	refetch: ApolloRefetch;
 	count: number;
 } {
-	const { loading, data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: module.connected_class,
-			fields: [
-				...generateQueryFromFields(module.fields),
-				...additionalFields,
-				"data"
-			]
-		}),
-		{
-			variables: {
-				params: paramsHandler({ moduleId: module.objectId, filters }),
-				limit,
-				skip,
-				order: order || "createdAt_DESC"
-			},
-			notifyOnNetworkStatusChange: true
-		}
-	);
+	console.log(paramsHandler({ moduleId: module.objectId, filters }));
+	const { loading, data, refetch, count } = useFindData({
+		objectName:
+			module.connected_class === "Person"
+				? "People"
+				: module.connected_class,
+		fields: [
+			...generateQueryFromFields(module.fields),
+			...additionalFields,
+			"data"
+		],
+		moduleId: module.objectId,
+		filters,
+		limit,
+		skip,
+		order
+	});
+
 	const returnValue = useMemo(
 		() => ({
 			loading,
-			data: get(
-				data,
-				`objects.find${module.connected_class}.results`,
-				[]
-			),
+			data,
 			refetch,
-			count: get(data, `objects.find${module.connected_class}.count`, 0)
+			count
 		}),
 		[data, loading]
 	);

@@ -3,13 +3,13 @@
 import { useContext, useMemo, useState } from "react";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
 import { CategoryClass } from "@repo/types";
-import { PatstoreAppContext } from "@repo/provider";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
-import useFindCategory from "./hooks/useFindCategory";
 import CreateCategory from "./components/CreateCategory";
 
 const Categories = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
+	console.log({ currentModule });
 	const pageStates = useMemo(
 		() => currentModule?.settings?.categories,
 		[currentModule]
@@ -17,19 +17,34 @@ const Categories = () => {
 	const [activeState, setActiveState] = useState(
 		pageStates ? pageStates[0] : undefined
 	);
-	const { categories, refetch } = useFindCategory({
-		moduleId: currentModule.objectId,
+
+	const { data: categories, refetch } = useFindData({
+		objectName: "Category",
+		fields: [
+			"objectId",
+			"title",
+			"image",
+			"createdAt",
+			"data",
+			"color",
+			"categories",
+			"description"
+		],
 		filters: activeState?.value
 			? [
 					{
 						key: "category_id",
 						value: activeState.id,
-						operator: "_eq",
+						operator: "equalTo",
 						id: activeState.id
 					}
 				]
-			: []
+			: [],
+		limit: 10,
+		skip: 0,
+		order: "createdAt_DESC"
 	});
+
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
 
 	const columns = useCreateColumns<CategoryClass>({
@@ -50,6 +65,8 @@ const Categories = () => {
 		categories: currentModule?.categories
 	});
 
+	console.log({ categories });
+
 	const pageHeaderContent = useMemo(
 		() =>
 			activeState ? (
@@ -62,6 +79,9 @@ const Categories = () => {
 			) : null,
 		[activeState]
 	);
+
+	console.log({ pageStates, activeState });
+	console.log({ categories });
 
 	return (
 		<Page

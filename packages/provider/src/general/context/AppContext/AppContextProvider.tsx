@@ -10,7 +10,7 @@ import {
 } from "react";
 import { AppContext } from "./AppContext";
 import { PatstoreProject } from "@repo/types";
-import { generateGraphQLQuery } from "@repo/provider";
+import { generateGraphQLQuery, generateGraphQLQuery_4_1 } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import ProjectLoader from "./components/ProjectLoader";
 import useFindRoles from "./hooks/useFindRoles";
@@ -54,7 +54,7 @@ const ProjectContextProvider = ({
 				"path",
 				"logo {url name}",
 				"data",
-				"modules {results {objectId name path icon settings fields categories connected_class sub_menu position data_fields setting_fields}}"
+				"modules {edges {node {objectId name path icon settings fields {...on Element {value}} categories {...on Element {value}} connected_class sub_menu {...on Element {value}} position data_fields {...on Element {value}} setting_fields {...on Element {value}}}}}"
 			];
 		} else if (appId === "patflow") {
 			return [
@@ -70,11 +70,19 @@ const ProjectContextProvider = ({
 	}, []);
 
 	const { data, loading, error } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "Project",
-			fields: projectFields
-		}),
+		appId === "patstore"
+			? generateGraphQLQuery_4_1({
+					type: "get",
+					objectName: "Project",
+					queryName: "project",
+					fields: projectFields
+				})
+			: generateGraphQLQuery({
+					type: "get",
+					objectName: "Project",
+					queryName: "project",
+					fields: projectFields
+				}),
 		{
 			variables: {
 				id: projectId
@@ -90,7 +98,9 @@ const ProjectContextProvider = ({
 
 	useEffect(() => {
 		if (data) {
-			setCurrentProject(data.objects.getProject);
+			const project =
+				appId === "patstore" ? data.project : data.objects.getProject;
+			setCurrentProject(project);
 		}
 	}, [data]);
 
