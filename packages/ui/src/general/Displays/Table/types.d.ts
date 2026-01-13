@@ -8,7 +8,7 @@ import {
 	ArticleClass,
 	GroupClass,
 	LocationClass,
-	DateClass,
+	AppointmentClass,
 	PageClass,
 	PatstoreUser
 } from "@repo/types";
@@ -177,7 +177,7 @@ export type ColumnClasses =
 	| ArticleClass
 	| GroupClass
 	| LocationClass
-	| DateClass
+	| AppointmentClass
 	| PageClass;
 
 export type UseCreateColumnsHook<Class> = (

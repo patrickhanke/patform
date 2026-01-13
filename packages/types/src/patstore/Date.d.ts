@@ -1,7 +1,7 @@
 import { ClassProperties } from "./Classes";
 import { EventDate } from "./Event";
 
-export type DateClass = ClassProperties & {
+export type AppointmentClass = ClassProperties & {
   title: string;
   description: string;
   image: string;

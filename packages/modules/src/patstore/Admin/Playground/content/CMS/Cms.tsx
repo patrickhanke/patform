@@ -7,8 +7,8 @@ const Cms = () => {
 	const changeClassOfData = useCallback(() => {
 		axiosclient()
 			.post("functions/change-object-class", {
-				oldClassName: "News",
-				newClassName: "Entry"
+				oldClassName: "Date",
+				newClassName: "Appointment"
 			})
 			.then((res) => {
 				console.log(res);

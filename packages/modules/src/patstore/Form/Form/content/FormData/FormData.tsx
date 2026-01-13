@@ -1,6 +1,5 @@
 import { Table } from "@repo/ui";
 import useFormDataColumns from "./hooks/useFormDataColumns";
-import useFindFormData from "./hooks/useFindFormData";
 import { FC, useState } from "react";
 import { Filter } from "@repo/types";
 import { FormDataProps } from "./types";
@@ -27,7 +26,7 @@ const FormData: FC<FormDataProps> = ({
 	});
 
 	const { data, refetch, count } = useFindData({
-		objectName: "Data",
+		objectName: "Item",
 		fields: ["objectId", "createdAt", "data"],
 		filters,
 		limit: pagination.pageSize,

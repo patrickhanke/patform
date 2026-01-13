@@ -22,7 +22,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
     }];
 
     if (project) {
-      const modules = cloneDeep(project.modules.edges.map((edge: { node: Module }) => edge.node)).sort( (a: Module, b: Module) => a.position - b.position);
+      const modules = cloneDeep(project.modules.sort( (a: Module, b: Module) => a.position - b.position));
       modules.forEach((module: Module) => {
         if (user.is_superuser) {
           menuItemsArray.push({

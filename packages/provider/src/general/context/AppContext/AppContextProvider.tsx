@@ -9,13 +9,18 @@ import {
 	useState
 } from "react";
 import { AppContext } from "./AppContext";
-import { PatstoreProject } from "@repo/types";
-import { generateGraphQLQuery, generateGraphQLQuery_4_1 } from "@repo/provider";
+import { Module, PatstoreProject } from "@repo/types";
+import {
+	generateGraphQLQuery,
+	generateGraphQLQuery_4_1,
+	sanitizeGraphQlNode
+} from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import ProjectLoader from "./components/ProjectLoader";
 import useFindRoles from "./hooks/useFindRoles";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { cloneDeep } from "lodash-es";
 
 const ProjectContextProvider = ({
 	projects,
@@ -98,8 +103,21 @@ const ProjectContextProvider = ({
 
 	useEffect(() => {
 		if (data) {
-			const project =
-				appId === "patstore" ? data.project : data.objects.getProject;
+			let project;
+
+			if (appId === "patstore") {
+				project = cloneDeep(data.project);
+
+				const modules =
+					project?.modules?.edges?.map((edge: { node: Module }) =>
+						sanitizeGraphQlNode(edge.node)
+					) || undefined;
+				if (modules) {
+					project["modules"] = modules;
+				}
+			} else {
+				project = data.objects.getProject;
+			}
 			setCurrentProject(project);
 		}
 	}, [data]);

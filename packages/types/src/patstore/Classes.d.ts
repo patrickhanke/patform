@@ -31,4 +31,4 @@ export type Classes =
   | ArticleClass
   | GroupClass
   | CategoryClass
-  | DateClass
+  | AppointmentClass

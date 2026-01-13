@@ -15,7 +15,7 @@ import {
 	useDataHandler,
 	useFindModuleData
 } from "@repo/provider";
-import { DateClass, Filter } from "@repo/types";
+import { AppointmentClass, Filter } from "@repo/types";
 
 const CalendarOverview = () => {
 	const { deleteData } = useDataHandler();
@@ -28,7 +28,7 @@ const CalendarOverview = () => {
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 
-	const { data, refetch, count } = useFindModuleData<DateClass>({
+	const { data, refetch, count } = useFindModuleData<AppointmentClass>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
@@ -40,7 +40,7 @@ const CalendarOverview = () => {
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-	const columns = useCreateColumns<DateClass>({
+	const columns = useCreateColumns<AppointmentClass>({
 		data: [
 			{
 				id: "date",

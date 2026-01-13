@@ -1,4 +1,4 @@
-import { ApolloRefetch, DateClass, Filter } from "@repo/types";
+import { ApolloRefetch, AppointmentClass, Filter } from "@repo/types";
 
 export type PersonsOverviewProps = {
 	projectId: string;
@@ -13,7 +13,7 @@ export type UseFindDateHook = ({
 	limit: number
 }) => {
 	loading: boolean;
-	dates: DateClass[];
+	dates: AppointmentClass[];
 	refetch: ApolloRefetch;
 	count: number;
 };

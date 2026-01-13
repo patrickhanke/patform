@@ -2,7 +2,7 @@
 
 import { useQuery } from "@apollo/client";
 import {
-	generateGraphQLQuery,
+	generateGraphQLQuery_4_1,
 	PatstoreAppContext,
 	useDataHandler
 } from "@repo/provider";
@@ -33,13 +33,14 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 	const { user, currentModule } = useContext(PatstoreAppContext);
 
 	const { data: pageData, refetch } = useQuery(
-		generateGraphQLQuery({
+		generateGraphQLQuery_4_1({
 			type: "get",
 			objectName: "Webpage",
+			queryName: "webpage",
 			fields: [
 				"objectId",
 				"path",
-				"content",
+				"data",
 				"title",
 				"subtitle",
 				"categories",
@@ -54,7 +55,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 
 	useEffect(() => {
 		if (pageData) {
-			setContent(pageData.objects.getWebpage.content);
+			setContent(pageData.objects.getWebpage.data);
 		}
 	}, [pageData]);
 
@@ -64,7 +65,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 				className: "Webpage",
 				objectId: websiteId,
 				updateObject: {
-					content: content.filter((item) => item.id !== contentId)
+					data: content.filter((item) => item.id !== contentId)
 				}
 			});
 			await refetch();
@@ -101,7 +102,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 								className: "Webpage",
 								objectId: websiteId,
 								updateObject: {
-									content: contentCopy
+									data: contentCopy
 								}
 							});
 							await refetch();
