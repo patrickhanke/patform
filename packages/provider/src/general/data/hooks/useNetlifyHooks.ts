@@ -31,7 +31,7 @@ const useNetlifyHooks = () => {
 					objectClass === "Date"
 				) {
 					return axios.post(
-						"https://api.netlify.com/build_hooks/690c760578610ba16cc20019"
+						"https://api.netlify.com/build_hooks/608c71bcb42fb00f6e535a9c"
 					);
 				}
 			}
@@ -53,9 +53,6 @@ const useNetlifyHooks = () => {
 				axios.post(
 					"https://api.netlify.com/build_hooks/68a58efad44d4e2b1c6cb0d7"
 				);
-				// return axios.post(
-				// 	"https://api.vercel.com/v1/integrations/deploy/prj_OhGFYMtNJUrzaAoTTHMsBUVybA5G/zgrsBETrlk"
-				// );
 			}
 		},
 
