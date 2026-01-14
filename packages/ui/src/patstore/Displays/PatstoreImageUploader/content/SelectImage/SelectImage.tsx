@@ -59,6 +59,7 @@ const SelectImage: FC<SelectImageProps> = ({
 						setSelectedImages={setSelectedImages}
 						moduleId={moduleId}
 						maxFileCount={maxFileCount}
+						selectState={selectState.value}
 					/>
 				</>
 			)}

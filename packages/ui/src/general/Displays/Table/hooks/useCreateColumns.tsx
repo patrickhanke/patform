@@ -137,7 +137,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
-					enableSorting: columnElement.enableSorting ?? false
+					enableSorting: columnElement.enableSorting ?? false,
+					sortingFn: (elem, elem2) => {
+						console.log({ elem, elem2 });
+					}
 				} as ColumnDef<T>);
 			}
 			if (

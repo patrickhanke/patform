@@ -57,4 +57,5 @@ export type SelectImagesInterfaceProps = {
 	setSelectedImages: Dispatch<SetStateAction<string[]>>;
 	maxFileCount: number;
 	moduleId: string;
+	selectState?: "select" | "upload";
 };

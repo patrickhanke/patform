@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import ImagePagination from "./ImagePagination";
 import { Filter } from "@repo/types";
 import {
@@ -15,7 +15,8 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 	selectedImages,
 	setSelectedImages,
 	moduleId,
-	maxFileCount
+	maxFileCount,
+	selectState = "select"
 }) => {
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
@@ -23,14 +24,25 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 		pageSize: 12
 	});
 
-	const { data: images, count } = useFindData({
+	const {
+		data: images,
+		count,
+		refetch
+	} = useFindData({
 		objectName: "Image",
 		fields: ["objectId", "title", "label", "file { name url }"],
+		order: "createdAt_DESC",
 		moduleId,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
 	});
+
+	useEffect(() => {
+		if (selectState === "select") {
+			refetch();
+		}
+	}, [selectState]);
 
 	const elements: SelectElement[] = useMemo(() => {
 		const imagesArray: SelectElement[] = [];
