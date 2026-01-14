@@ -2,6 +2,7 @@ import { ApolloQueryResult } from "@apollo/client";
 export type Params = {
   object_id: string;
   form_id: string;
+  email_id: string;
   code: string;
   user_id: string;
 };

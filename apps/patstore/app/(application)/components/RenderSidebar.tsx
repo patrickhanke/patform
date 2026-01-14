@@ -10,11 +10,8 @@ import { cloneDeep, truncate } from 'lodash-es';
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const { project, roles } = useAppContext();
-
-  console.log({ roles, user });
   
   const userRole = roles?.find((role) => user.roles.includes(role.objectId)) || {} as PatstoreRoleClass;
-  console.log({ userRole });
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [{
       label: "Dashboard",

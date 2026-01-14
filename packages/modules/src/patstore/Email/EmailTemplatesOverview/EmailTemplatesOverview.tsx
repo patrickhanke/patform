@@ -1,13 +1,8 @@
 "use client";
 
-import {
-	generateColumnsFromFields,
-	Page,
-	Table,
-	useCreateColumns
-} from "@repo/ui";
+import { Page, Table, useCreateColumns } from "@repo/ui";
 import { useContext, useState } from "react";
-import { Filter, FormClass } from "@repo/types";
+import { Filter, TemplateClass } from "@repo/types";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
 
 const EmailsOverview = () => {
@@ -26,7 +21,7 @@ const EmailsOverview = () => {
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		fields: ["title", "description", "createdAt"]
+		fields: ["objectId", "title", "description", "createdAt"]
 	});
 
 	const columns = useCreateColumns<TemplateClass>({
@@ -37,7 +32,7 @@ const EmailsOverview = () => {
 		],
 		fields: currentModule.data_fields,
 		className: "Template",
-		editLink: `email/templates`,
+		editLink: `emails/templates`,
 		refetch,
 		categories: currentModule?.categories
 	});

@@ -142,7 +142,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			});
 
 			await refetch();
-			// setCreateUser(false);
 		},
 		[project]
 	);

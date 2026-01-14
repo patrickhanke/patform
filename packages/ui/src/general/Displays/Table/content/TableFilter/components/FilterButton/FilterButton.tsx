@@ -9,7 +9,6 @@ const FilterButton: FC<FilterButtonProps> = ({
 	activeFilterCount,
 	onClick
 }) => {
-	console.log("button");
 	return (
 		<button
 			className="filter-button-trigger"

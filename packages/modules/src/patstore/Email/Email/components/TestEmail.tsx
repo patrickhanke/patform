@@ -9,10 +9,14 @@ import {
 export type TestEmailProps = {
 	testEmail: boolean;
 	setTestEmail: Dispatch<SetStateAction<boolean>>;
-	formId: string;
+	emailId: string;
 };
 
-const TestEmail: FC<TestEmailProps> = ({ testEmail, setTestEmail, formId }) => {
+const TestEmail: FC<TestEmailProps> = ({
+	testEmail,
+	setTestEmail,
+	emailId
+}) => {
 	const [email, setEmail] = useState<string>("");
 	const { project } = useContext(PatstoreAppContext);
 
@@ -29,7 +33,7 @@ const TestEmail: FC<TestEmailProps> = ({ testEmail, setTestEmail, formId }) => {
 				await axiosclient()
 					.post("functions/send_test_email", {
 						email,
-						form_id: formId,
+						form_id: emailId,
 						project_id: project.objectId
 					})
 					.then((response) => {

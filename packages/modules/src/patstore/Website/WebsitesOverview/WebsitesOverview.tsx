@@ -1,8 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { generateGraphQLQuery, PatstoreAppContext } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { Page, Table, useCreateColumns } from "@repo/ui";
 import { WebpageClass } from "@repo/types";
 import createClass from "./constants/createWebpageClass";
@@ -10,21 +9,18 @@ import createClass from "./constants/createWebpageClass";
 const WebsitesOverview = () => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
 
-	const { data: pageData, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Webpage",
-			fields: [
-				"objectId",
-				"path",
-				"title",
-				"updated_by { objectId label portrait { name url } }",
-				"created_by { objectId label portrait { name url } }",
-				"createdAt"
-			]
-		}),
-		{ variables: { params: { module: { _eq: currentModule.objectId } } } }
-	);
+	const { data, refetch } = useFindData({
+		objectName: "Webpage",
+		fields: [
+			"objectId",
+			"path",
+			"title",
+			"updated_by { objectId label portrait { name url } }",
+			"created_by { objectId label portrait { name url } }",
+			"createdAt"
+		],
+		moduleId: currentModule.objectId
+	});
 
 	const columns = useCreateColumns<WebpageClass>({
 		data: [
@@ -61,12 +57,7 @@ const WebsitesOverview = () => {
 			createClass={createClass}
 			refetch={refetch}
 		>
-			{user && (
-				<Table
-					data={pageData?.objects.findWebpage.results || []}
-					columns={columns}
-				/>
-			)}
+			{user && <Table data={data ?? []} columns={columns} />}
 		</Page>
 	);
 };

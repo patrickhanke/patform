@@ -1,22 +1,31 @@
 "use client";
 
-import { useGetForm } from "./hooks/useGetForm";
 import siteStates from "./constants/siteStates";
 import { Modal, Page, PageHeaderButton } from "@repo/ui";
 import { useMemo, useState } from "react";
-import FormData from "./content/FormData";
-import FormSettings from "./content/FormSettings";
-import FormFields from "./content/FormFields";
 import { Params } from "@repo/types";
-import { useDataHandler } from "@repo/provider";
+import { useDataHandler, useGetData } from "@repo/provider";
 import TestEmail from "./components/TestEmail";
+import { EmailContent, EmailData } from "./content";
 
-const Form = ({ params }: { params: Params }) => {
+const Email = ({ params }: { params: Params }) => {
 	const { deleteData } = useDataHandler();
 	const [testEmail, setTestEmail] = useState<boolean>(false);
 
-	const formId = params.form_id;
-	const { form, refetch } = useGetForm({ formId });
+	const emailId = params.email_id;
+
+	const { data: email, refetch } = useGetData({
+		objectName: "Email",
+		fields: [
+			"objectId",
+			"title",
+			"description",
+			"fields",
+			"categories",
+			"settings"
+		],
+		id: emailId
+	});
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as { value: string; label: string }
 	);
@@ -32,7 +41,7 @@ const Form = ({ params }: { params: Params }) => {
 					text: "Feld hinzufügen",
 					onClick: () => setCreateField(true),
 					is_add_button: true,
-					disabled: form?.settings?.static_form === true || false
+					disabled: email?.settings?.static_form === true || false
 				}
 			];
 		}
@@ -59,15 +68,15 @@ const Form = ({ params }: { params: Params }) => {
 			];
 		}
 		return [];
-	}, [siteState, selectedDataRows, form]);
+	}, [siteState, selectedDataRows, email]);
 
-	if (!form) {
+	if (!email) {
 		return <div>Lädt ...</div>;
 	}
 
 	return (
 		<Page
-			title={form ? form?.title : "Lädt ..."}
+			title={email ? email?.title : "Lädt ..."}
 			emptyContent={true}
 			refetch={refetch}
 			pageStates={siteStates}
@@ -75,26 +84,19 @@ const Form = ({ params }: { params: Params }) => {
 			setPageState={setSiteState}
 			pageHeaderButtons={pageHeaderButtons}
 		>
-			{!form ? (
-				<p>Formular nicht gefunden</p>
+			{!email ? (
+				<p>E-Mail nicht gefunden</p>
 			) : (
 				<>
 					{siteState.value === "data" && (
-						<FormData
-							formId={formId}
+						<EmailData
+							emailId={emailId}
 							selectedDataRows={selectedDataRows}
 							setSelectedDataRows={setSelectedDataRows}
 						/>
 					)}
-					{siteState.value === "settings" && (
-						<FormSettings formId={formId} />
-					)}
-					{siteState.value === "fields" && (
-						<FormFields
-							formId={formId}
-							createField={createField}
-							setCreateField={setCreateField}
-						/>
+					{siteState.value === "content" && (
+						<EmailContent emailId={emailId} />
 					)}
 				</>
 			)}
@@ -125,10 +127,10 @@ const Form = ({ params }: { params: Params }) => {
 			<TestEmail
 				testEmail={testEmail}
 				setTestEmail={setTestEmail}
-				formId={formId}
+				emailId={emailId}
 			/>
 		</Page>
 	);
 };
 
-export default Form;
+export default Email;

@@ -290,7 +290,7 @@ export const module_option_fields: ModuleOptionsField = {
 			},
 			{
 				label: "E-Mail-Vorlagen",
-				value: "/email-templates",
+				value: "/templates",
 				icon: "templates"
 			}
 		],

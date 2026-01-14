@@ -36,8 +36,6 @@ const Table: React.FC<TableTypes> = ({
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
 
-	console.log({ sorting });
-
 	useEffect(() => {
 		if (setOrder) {
 			if (isArray(sorting) && sorting.length > 0) {

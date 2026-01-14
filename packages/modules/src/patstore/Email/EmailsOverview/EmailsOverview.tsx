@@ -29,8 +29,8 @@ const EmailsOverview = () => {
 	const columns = useCreateColumns<FormClass>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
-		className: "Form",
-		editLink: "Emails",
+		className: "Email",
+		editLink: "emails",
 		refetch,
 		categories: currentModule?.categories
 	});
@@ -40,8 +40,8 @@ const EmailsOverview = () => {
 			title={currentModule.name}
 			emptyContent={true}
 			createClass={{
-				className: "Form",
-				text: "Neues Formular erstellen",
+				className: "Email",
+				text: "Neue E-Mail erstellen",
 				fields: currentModule.fields,
 				refetch: refetch
 			}}

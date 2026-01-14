@@ -51,8 +51,6 @@ const PatstoreAppContextProvider = ({
 		return roles?.find((role) => user?.roles?.includes(role.objectId));
 	}, [roles, user]);
 
-	console.log({ modules: project.modules });
-
 	const appContextObject = useMemo(
 		() => ({
 			pageTitle,

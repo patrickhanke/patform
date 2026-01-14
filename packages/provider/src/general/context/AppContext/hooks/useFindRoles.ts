@@ -5,7 +5,6 @@ import { UseFindRolesHook } from "../types";
 import { PatstoreRoleClass } from "@repo/types";
 
 const useFindRoles: UseFindRolesHook = ({ appId, projectId }) => {
-	console.log({ appId, projectId });
 	const roleFields =
 		appId === "patstore"
 			? [
@@ -44,7 +43,6 @@ const useFindRoles: UseFindRolesHook = ({ appId, projectId }) => {
 		}
 	);
 
-	console.log({ data });
 	return {
 		roles:
 			appId === "patstore"

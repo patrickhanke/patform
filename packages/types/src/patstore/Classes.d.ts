@@ -32,3 +32,4 @@ export type Classes =
   | GroupClass
   | CategoryClass
   | AppointmentClass
+  | TemplateClass
