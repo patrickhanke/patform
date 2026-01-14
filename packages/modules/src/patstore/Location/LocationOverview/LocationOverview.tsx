@@ -27,6 +27,8 @@ const LocationOverview = () => {
 		pageSize: 10
 	});
 
+	console.log({ currentModule });
+
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
@@ -39,6 +41,7 @@ const LocationOverview = () => {
 	});
 
 	console.log({ count });
+	console.log({ data });
 
 	const columns = useCreateColumns<LocationClass>({
 		data: generateColumnsFromFields(currentModule.fields),

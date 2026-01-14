@@ -1,36 +1,35 @@
 import { UseFindImagesHook } from "../types";
-import { gql, useQuery } from "@apollo/client";
-import { paramsHandler } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { useMemo } from "react";
 
-const query = gql`
-	query findPatstoreImages(
-		$params: ImageConstraints
-		$limit: Int
-		$skip: Int
-		$order: [ImageOrder!]
-	) {
-		objects {
-			findImage(
-				where: $params
-				limit: $limit
-				skip: $skip
-				order: $order
-			) {
-				results {
-					objectId
-					name
-					title
-					file {
-						name
-						url
-					}
-				}
-				count
-			}
-		}
-	}
-`;
+// const query = gql`
+// 	query findPatstoreImages(
+// 		$params: ImageConstraints
+// 		$limit: Int
+// 		$skip: Int
+// 		$order: [ImageOrder!]
+// 	) {
+// 		objects {
+// 			findImage(
+// 				where: $params
+// 				limit: $limit
+// 				skip: $skip
+// 				order: $order
+// 			) {
+// 				results {
+// 					objectId
+// 					name
+// 					title
+// 					file {
+// 						name
+// 						url
+// 					}
+// 				}
+// 				count
+// 			}
+// 		}
+// 	}
+// `;
 
 const useFindPatformImages: UseFindImagesHook = ({
 	moduleId,
@@ -38,22 +37,21 @@ const useFindPatformImages: UseFindImagesHook = ({
 	limit,
 	skip
 }) => {
-	const { loading, data, refetch } = useQuery(query, {
-		variables: {
-			order: "createdAt_DESC",
-			params: paramsHandler({ moduleId, filters }),
-			limit,
-			skip
-		},
-		fetchPolicy: "cache-and-network"
+	const { data, loading, refetch, count } = useFindData({
+		objectName: "Image",
+		fields: ["objectId", "name", "title", "file { name url }"],
+		moduleId,
+		filters,
+		limit,
+		skip
 	});
 
 	const returnObject = useMemo(
 		() => ({
 			loading,
-			images: data ? data.objects.findImage.results : [],
+			images: data ? data : [],
 			refetch,
-			count: data ? data.objects.findImage.count : 0
+			count
 		}),
 		[data, loading, refetch]
 	);

@@ -29,11 +29,15 @@ const EmailsOverview = () => {
 		fields: ["title", "description", "createdAt"]
 	});
 
-	const columns = useCreateColumns<FormClass>({
-		data: generateColumnsFromFields(currentModule.fields),
+	const columns = useCreateColumns<TemplateClass>({
+		data: [
+			{ id: "title", type: "string", label: "Titel" },
+			{ id: "description", type: "textfield", label: "Beschreibung" },
+			{ id: "createdAt", type: "date", label: "Erstellt am" }
+		],
 		fields: currentModule.data_fields,
-		className: "Form",
-		editLink: "Emails",
+		className: "Template",
+		editLink: `email/templates`,
 		refetch,
 		categories: currentModule?.categories
 	});

@@ -21,7 +21,7 @@ export type FilterOperator =
   | "greaterThanOrEqualTo"
   | "in"
   | "notIn"
-  | "regex";
+  | "matchRegex";
 
 export type Filter = {
   key: string;

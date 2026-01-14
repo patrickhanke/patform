@@ -1,0 +1,1 @@
+export { EmailTemplate as default } from "@repo/modules";

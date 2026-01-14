@@ -26,7 +26,7 @@ const PatstoreAppContextProvider = ({
 
 	const currentModule = useMemo(() => {
 		const modules: Module[] = project.modules;
-		
+
 		return modules.find((module) =>
 			pathname.includes(module?.path)
 		) as Module;
@@ -50,6 +50,8 @@ const PatstoreAppContextProvider = ({
 	const userRole = useMemo(() => {
 		return roles?.find((role) => user?.roles?.includes(role.objectId));
 	}, [roles, user]);
+
+	console.log({ modules: project.modules });
 
 	const appContextObject = useMemo(
 		() => ({

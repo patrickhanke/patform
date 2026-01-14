@@ -4,7 +4,7 @@ import { FC, useContext, useState } from "react";
 import select_states from "./constants/select_states";
 import { Divider, FileUploader, SwitchButton, SwitchButtons } from "@repo/ui";
 import { SelectImageProps } from "./types";
-import { PatstoreAppContext, useAppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import { Module } from "@repo/types";
 import SelectImagesInterface from "./components/SelectImagesInterface";
 
@@ -17,7 +17,7 @@ const SelectImage: FC<SelectImageProps> = ({
 }) => {
 	const { project, user, userRole } = useContext(PatstoreAppContext);
 
-	const moduleId = project.modules.results.find(
+	const moduleId = project.modules.find(
 		(module: Module) => module.path === "/images"
 	)?.objectId;
 
@@ -31,13 +31,6 @@ const SelectImage: FC<SelectImageProps> = ({
 	const onImageChange = () => {
 		setSelectState(select_states(loading, userHasAccess)[0]);
 	};
-
-	console.log(userRole);
-
-	console.log(project);
-	console.log(user);
-
-	console.log({ userHasAccess });
 
 	return (
 		<div className="flex col a-st gap-xs">

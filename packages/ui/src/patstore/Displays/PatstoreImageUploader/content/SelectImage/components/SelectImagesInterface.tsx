@@ -1,6 +1,5 @@
 import { FC, useMemo, useState } from "react";
 import ImagePagination from "./ImagePagination";
-import useFindPatformImages from "../hooks/useFindPatformImages";
 import { Filter } from "@repo/types";
 import {
 	Divider,
@@ -10,6 +9,7 @@ import {
 } from "@repo/ui";
 import DisplayImageElement from "./DisplayImageElement";
 import { SelectImagesInterfaceProps } from "../types";
+import { useFindData } from "@repo/provider";
 
 const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 	selectedImages,
@@ -23,7 +23,9 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 		pageSize: 12
 	});
 
-	const { images, count } = useFindPatformImages({
+	const { data: images, count } = useFindData({
+		objectName: "Image",
+		fields: ["objectId", "title", "label", "file { name url }"],
 		moduleId,
 		filters,
 		limit: pagination.pageSize,
@@ -102,7 +104,7 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 						const filter: Filter = {
 							id: "title",
 							key: "title",
-							operator: "_regex",
+							operator: "matchRegex",
 							value: e
 						};
 						setFilters([filter]);
@@ -115,12 +117,12 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 				<ElementSelectInterface
 					elements={elements}
 					selectedElements={elements.filter((element) =>
-						selectedImages.includes(element.value)
+						selectedImages.includes(element.value as string)
 					)}
 					onSelect={(selectedElements) => {
 						const imageArray: string[] = [];
 						selectedElements.forEach((element: SelectElement) => {
-							imageArray.push(element.value);
+							imageArray.push(element.value as string);
 						});
 						setSelectedImages(imageArray);
 					}}
