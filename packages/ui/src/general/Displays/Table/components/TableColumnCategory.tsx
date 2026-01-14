@@ -48,11 +48,7 @@ const TableColumnCategory = ({
 	const elements = useMemo(() => {
 		const categoryOptionsArray: SelectElement[] = [];
 		if (data) {
-			const elements = get(
-				data,
-				pluralize(category.connected_class),
-				[]
-			) as Classes[];
+			const elements = data;
 
 			elements.forEach((cat: Classes) => {
 				if (
