@@ -25,7 +25,8 @@ const TableColumnLocation = ({
 		objectName: "Location",
 		fields: ["objectId", "label", "title"],
 		moduleId: modules.find((module) => module.path === "/locations")
-			?.objectId
+			?.objectId,
+		limit: 500
 	});
 
 	const elements = useMemo(() => {
