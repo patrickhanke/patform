@@ -283,8 +283,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 									updateObject: {
 										[columnElement.id]: {
 											__type: "GeoPoint",
-											latitude: value.latitude,
-											longitude: value.longitude
+											latitude: value.lat,
+											longitude: value.lng
 										}
 									},
 									feedback: "GeoPoint aktualisiert"

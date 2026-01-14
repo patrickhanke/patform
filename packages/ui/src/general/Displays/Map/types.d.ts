@@ -10,6 +10,6 @@ export type LatLng = {
 };
 
 export type LatitudeLongitude = {
-	latitude: number;
-	longitude: number;
+	lat: number;
+	lng: number;
 };

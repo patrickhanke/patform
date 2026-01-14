@@ -50,7 +50,10 @@ const EmailsOverview = () => {
 						id: "title",
 						name: "title",
 						type: "input",
-						label: "Titel"
+						label: "Titel",
+						required: true,
+						active: true,
+						default: true
 					}
 				],
 				refetch: refetch,

@@ -6,11 +6,11 @@ import { Select } from "@repo/ui";
 import "../../styles.scss";
 
 const operatorOptions = [
-	{ value: "_eq", label: "ist gleich" },
-	{ value: "_gt", label: "nach" },
-	{ value: "_lt", label: "vor" },
-	{ value: "_gte", label: "ab" },
-	{ value: "_lte", label: "bis" }
+	{ value: "equalTo", label: "ist gleich" },
+	{ value: "greaterThan", label: "nach" },
+	{ value: "lessThan", label: "vor" },
+	{ value: "greaterThanOrEqualTo", label: "ab" },
+	{ value: "lessThanOrEqualTo", label: "bis" }
 ];
 
 const DateFilter: FC<DateFilterProps> = ({
