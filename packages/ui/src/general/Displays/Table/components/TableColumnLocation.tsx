@@ -6,8 +6,7 @@ import {
 	SlideIn
 } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
-import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { LocationClass } from "@repo/types";
 
 const TableColumnLocation = ({
@@ -22,40 +21,26 @@ const TableColumnLocation = ({
 		string | undefined
 	>(value);
 
-	const { data: locationData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Location",
-			fields: ["objectId", "label", "title "]
-		}),
-		{
-			variables: {
-				params: {
-					module: {
-						_eq: modules.find(
-							(module) => module.path === "/locations"
-						)?.objectId
-					}
-				}
-			}
-		}
-	);
+	const { data: locationData } = useFindData({
+		objectName: "Location",
+		fields: ["objectId", "label", "title"],
+		moduleId: modules.find((module) => module.path === "/locations")
+			?.objectId
+	});
 
 	const elements = useMemo(() => {
 		const locationOptionsArray: SelectElement[] = [];
 		if (locationData) {
-			locationData.objects.findLocation.results.forEach(
-				(location: LocationClass) => {
-					if (location) {
-						locationOptionsArray.push({
-							value: location.objectId,
-							id: location.objectId,
-							label: `${location.label}`
-							// element: <LocationDisplay location={location} />
-						});
-					}
+			locationData.forEach((location: LocationClass) => {
+				if (location) {
+					locationOptionsArray.push({
+						value: location.objectId,
+						id: location.objectId,
+						label: `${location.label}`
+						// element: <LocationDisplay location={location} />
+					});
 				}
-			);
+			});
 		}
 		locationOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
@@ -94,7 +79,7 @@ const TableColumnLocation = ({
 		return (
 			<div>
 				{value ? (
-					locationData?.objects.findLocation.results.find(
+					locationData?.find(
 						(location: LocationClass) => location.objectId === value
 					)?.label || "-"
 				) : (
@@ -116,7 +101,7 @@ const TableColumnLocation = ({
 				}}
 				text={
 					currentLocation
-						? locationData?.objects.findLocation.results.find(
+						? locationData?.find(
 								(location: LocationClass) =>
 									location.objectId === value
 							)?.label || "-"
