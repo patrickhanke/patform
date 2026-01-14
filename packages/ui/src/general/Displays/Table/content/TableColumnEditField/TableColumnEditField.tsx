@@ -1,15 +1,13 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useCallback, useEffect, useState } from "react";
 import { IconButton, SlideInForm } from "@repo/ui";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { useDataHandler, useGetData } from "@repo/provider";
 import {
 	TableColumnEditFieldComponent,
 	TableColumnEditFieldProps
 } from "./types";
 import { Classes } from "@repo/types";
-import { get } from "lodash-es";
 import { FormikValues } from "formik";
 
 const TableColumnEditField: TableColumnEditFieldComponent = <
@@ -24,30 +22,22 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	const [data, setData] = useState(null as unknown as Class["data"]);
 	const [isOpen, setIsOpen] = useState(false);
 
-	console.log(type);
-	console.log(data);
-	console.log(dataFields);
+	const {
+		data: dataFromGetData,
+		loading,
+		refetch
+	} = useGetData({
+		objectName: className,
+		fields: ["objectId", "data", "settings"],
+		id: objectId,
+		skip: !isOpen
+	});
 
-	const { loading, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: className,
-			fields: ["objectId", "data", "settings"]
-		}),
-		{
-			variables: { id: objectId },
-			onCompleted: (response) => {
-				const newData = get(
-					response,
-					`objects.get${className}.${type === "data" ? "data" : "settings"}`,
-					null
-				);
-
-				setData(newData);
-			},
-			skip: !isOpen
+	useEffect(() => {
+		if (dataFromGetData) {
+			setData(dataFromGetData.data);
 		}
-	);
+	}, [dataFromGetData]);
 
 	const dataHandler = useCallback(
 		async (values: FormikValues) => {
