@@ -26,7 +26,7 @@ const SendInvitation: FC<SendInvitationProps> = ({
 				isOpen={invitationModal}
 				confirmButtonHandler={async () => {
 					setLoading(true);
-					axiosclient().post("/functions/send-user-invitation", {
+					axiosclient().post("/functions/send_user_invitation", {
 						email: email,
 						name: username,
 						project_id: projectId,

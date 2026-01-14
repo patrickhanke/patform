@@ -30,7 +30,7 @@ const PasswordForm: FC<PasswordFormProps> = ({
 
     if (errorArray.length === 0) {
       const response = await axiosclient()
-        .post("functions/send-password-reset", { email })
+        .post("functions/send_password_reset", { email })
         .then((response) => {
           return response.data.result;
         })

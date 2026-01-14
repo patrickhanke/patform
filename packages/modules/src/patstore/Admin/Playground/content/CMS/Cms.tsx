@@ -6,7 +6,7 @@ import { Button } from "@repo/ui";
 const Cms = () => {
 	const changeClassOfData = useCallback(() => {
 		axiosclient()
-			.post("functions/change-object-class", {
+			.post("functions/change_object_class", {
 				oldClassName: "Date",
 				newClassName: "Appointment"
 			})

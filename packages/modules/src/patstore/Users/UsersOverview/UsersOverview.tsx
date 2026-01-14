@@ -100,7 +100,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 
 	const updateUserHandler = useCallback(
 		async (values: Partial<PatstoreUser>) => {
-			axiosclient().post("/functions/send-user-invitation", {
+			axiosclient().post("/functions/send_user_invitation", {
 				username: values.username,
 				email: values.username,
 				name: values.name,
@@ -123,7 +123,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 
 	const createUserHandler = useCallback(
 		async (values: Partial<PatstoreUser>) => {
-			axiosclient().post("/functions/create-user-from-data", {
+			axiosclient().post("/functions/create_user_from_data", {
 				...values,
 				email: values.username,
 				project_id: project.objectId,

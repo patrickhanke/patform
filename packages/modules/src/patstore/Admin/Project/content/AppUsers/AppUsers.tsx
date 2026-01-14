@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { useQuery } from "@apollo/client";
 import {
-	axiosclient,
 	generateGraphQLQuery,
 	paramsHandler,
 	useDataHandler

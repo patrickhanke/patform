@@ -56,7 +56,7 @@ const RegisterForm = ({
     onSubmit: async (values) => {
       setDisabled(true);
       const response = await axiosclient
-        .post("functions/check-for-invite", {
+        .post("functions/check_for_invite", {
           email,
           project_id: project.objectId,
         })
@@ -80,7 +80,7 @@ const RegisterForm = ({
           })
           .then(async () => {
             await axiosclient
-            .post("functions/remove-invitation-key", {
+            .post("functions/remove_invitation_key", {
               key: response.key,
               project_id: project.objectId,
             });

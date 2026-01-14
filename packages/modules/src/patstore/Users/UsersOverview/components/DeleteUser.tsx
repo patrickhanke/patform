@@ -27,7 +27,7 @@ const DeleteUser: FC<DeleteUserProps> = ({
 				isOpen={deleteUserModal}
 				confirmButtonHandler={async () => {
 					setLoading(true);
-					await axiosclient().post("functions/delete-user", {
+					await axiosclient().post("functions/delete_user", {
 						user_id: userId
 					});
 					await refetch();

@@ -17,7 +17,7 @@ const TableColumnHiddenField = ({
 
 	const getHiddenValue = useCallback(async () => {
 		const response = await axiosclient().post(
-			"functions/get-hidden-value",
+			"functions/get_hidden_value",
 			{
 				className,
 				id,

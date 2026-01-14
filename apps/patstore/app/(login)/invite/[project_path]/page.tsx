@@ -15,7 +15,7 @@ const fetchProject = async (path: string) => {
     });
 
     const res = await axiosclient
-      .post("functions/get-project-from-path", { path })
+      .post("functions/get_project_from_path", { path })
       .then((response) => response.data.result)
       .catch((err) => compileAxiosError(err.message));
     return res;

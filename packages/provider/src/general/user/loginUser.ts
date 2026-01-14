@@ -31,7 +31,7 @@ export const loginUser: LoginUser = async ({ email, password }) => {
 		message: "kein Nutzer gefunden"
 	};
 
-	const response = await axiosclient().post("/functions/get-user-data", {
+	const response = await axiosclient().post("/functions/get_user_data", {
 		email: email
 	});
 
@@ -40,7 +40,7 @@ export const loginUser: LoginUser = async ({ email, password }) => {
 	const responseData = response?.data?.result;
 
 	if (!responseData) {
-		console.alert("Fehler beim Laden der Daten");
+		console.error("Fehler beim Laden der Daten");
 	} else {
 		const installationId = generateUuid();
 		let sessionToken;

@@ -15,7 +15,7 @@ const fetchUserData = async (email: string, key: string) => {
   });
 
   const res = await axiosclient
-    .post("functions/get-user-from-password-key", {
+    .post("functions/get_user_from_password_key", {
       email,
       key,
     })

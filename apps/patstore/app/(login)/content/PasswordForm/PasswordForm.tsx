@@ -44,7 +44,7 @@ const PasswordForm = ({
       setDisabled(true);
 
       const response = await axiosclient()
-        .post("functions/change-user-password", {
+        .post("functions/change_user_password", {
           user_id: userId,
           key: passwordKey,
           password: values.password,

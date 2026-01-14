@@ -27,7 +27,7 @@ const TestEmail: FC<TestEmailProps> = ({ testEmail, setTestEmail, formId }) => {
 				}
 				// Here you would typically send the email using an API call
 				await axiosclient()
-					.post("functions/send-test-email", {
+					.post("functions/send_test_email", {
 						email,
 						form_id: formId,
 						project_id: project.objectId
