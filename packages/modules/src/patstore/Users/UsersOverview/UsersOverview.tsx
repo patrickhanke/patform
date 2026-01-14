@@ -32,8 +32,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
 	const { currentModule } = useContext(PatstoreAppContext);
 	const { roles } = useFindRoles({ projectId: project.objectId });
+	const [order, setOrder] = useState<string>("name_ASC");
 
-	console.log({ currentModule });
 	const [inviteUser, setInviteUser] = useState(false);
 	const [createUser, setCreateUser] = useState(false);
 
@@ -82,10 +82,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		filters: [...initialFilters, ...filters] as Filter[],
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order: "name_ASC"
+		order: order
 	});
-
-	console.log({ users });
 
 	const columns = useCreateColumns<PatstoreUser>({
 		data: generateColumnsFromFields(currentModule.fields),
@@ -204,6 +202,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 					filterColumns={generateFilterColumnsFromFields(
 						currentModule.fields
 					)}
+					setOrder={setOrder}
 				/>
 			)}
 			{pageState.value === " invitations" && <UserInvitations />}

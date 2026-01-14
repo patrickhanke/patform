@@ -91,7 +91,6 @@ const TableFilter: FC<TableFilterProps> = ({
 	setFilters
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	console.log(filterColumns);
 
 	// Extract column information from column definitions
 	const columnInfos = useMemo(() => {
@@ -174,8 +173,6 @@ const TableFilter: FC<TableFilterProps> = ({
 		},
 		[setFilters]
 	);
-
-	console.log({ filters });
 
 	const renderFilterInput = useCallback(
 		(columnInfo: ColumnInfo, filter: Filter) => {
