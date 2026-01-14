@@ -48,7 +48,7 @@ export type Module = {
   name: string;
   path: ModulePath;
   icon: string;
-  fields: Field[];
+  fields: ModuleField[];
   data_fields: Field[];
   setting_fields: Field[];
   position: number;

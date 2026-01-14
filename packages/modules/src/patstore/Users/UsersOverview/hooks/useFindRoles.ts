@@ -1,36 +1,18 @@
-import { generateGraphQLQuery_4_1, paramsHandler } from "@repo/provider";
-import { useQuery } from "@apollo/client";
-import { PatstoreRoleClass } from "@repo/types";
+import { useFindData } from "@repo/provider";
 
 const useFindRoles = ({ projectId }: { projectId: string }) => {
-	const { data, error, loading } = useQuery(
-		generateGraphQLQuery_4_1({
-			type: "find",
-			objectName: "_Role",
-			queryName: "role",
-			fields: ["objectId", "name"]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "project",
-							value: projectId,
-							operator: "_eq",
-							id: "project"
-						}
-					]
-				})
-			}
-		}
-	);
+	const {
+		data: roles,
+		loading,
+		error
+	} = useFindData({
+		objectName: "Role",
+		fields: ["objectId", "name"],
+		projectId
+	});
 
 	return {
-		roles:
-			data?.roles.edges.map(
-				(edge: { node: PatstoreRoleClass }) => edge.node
-			) || [],
+		roles: roles ?? [],
 		loading,
 		error
 	};

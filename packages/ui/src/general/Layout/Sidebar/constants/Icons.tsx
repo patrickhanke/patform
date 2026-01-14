@@ -5,6 +5,7 @@ import {
 	AiOutlineShoppingCart
 } from "react-icons/ai";
 import {
+	BsEnvelopeAt,
 	BsFillBarChartFill,
 	BsLayoutTextWindowReverse,
 	BsPeople,
@@ -181,6 +182,9 @@ const Icons = ({ icon, color }: { icon: string; color?: string }) => {
 	}
 	if (icon === "pages") {
 		return <IoBookmarksOutline color={color || "inherit"} />;
+	}
+	if (icon === "emails" || icon === "email") {
+		return <BsEnvelopeAt color={color || "inherit"} />;
 	}
 
 	return null;

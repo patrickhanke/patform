@@ -18,7 +18,7 @@ const useFindData: UseFindDataHook<Classes> = ({
 }) => {
 	const queryName = pluralize(objectName);
 
-	const { loading, data, refetch } = useQuery(
+	const { loading, data, refetch, error } = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "find",
 			objectName,
@@ -41,7 +41,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 			(edge: { node: Classes }) => sanitizeGraphQlNode<Classes>(edge.node)
 		),
 		refetch,
-		count: get(data, `${queryName}.count`, 0)
+		count: get(data, `${queryName}.count`, 0),
+		error
 	};
 };
 

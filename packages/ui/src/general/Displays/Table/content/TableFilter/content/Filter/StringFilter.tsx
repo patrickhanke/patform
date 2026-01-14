@@ -7,9 +7,9 @@ import "../../styles.scss";
 import { Input } from "@chakra-ui/react";
 
 const operatorOptions = [
-	{ value: "_eq", label: "ist gleich" },
-	{ value: "_regex", label: "enthält" },
-	{ value: "_ne", label: "ist nicht" }
+	{ value: "equalTo", label: "ist gleich" },
+	{ value: "matchesRegex", label: "enthält" },
+	{ value: "notEqualTo", label: "ist nicht" }
 ];
 
 const StringFilter: FC<StringFilterProps> = ({

@@ -23,23 +23,23 @@ const getDefaultOperator = (type: ColumnDataTypes) => {
 		case "edit_textfield":
 		case "texteditor":
 		case "edit_texteditor":
-			return "_eq";
+			return "equalTo";
 		case "boolean":
-			return "_eq";
+			return "equalTo";
 		case "image":
 		case "edit_image":
 		case "gallery":
 		case "image_preview":
 		case "files":
 		case "file":
-			return "_ne";
+			return "notEqualTo";
 		case "date":
 		case "edit_date":
 		case "date_picker":
 		case "edit_dates":
-			return "_eq";
+			return "equalTo";
 		default:
-			return "_eq";
+			return "equalTo";
 	}
 };
 
@@ -174,6 +174,8 @@ const TableFilter: FC<TableFilterProps> = ({
 		},
 		[setFilters]
 	);
+
+	console.log({ filters });
 
 	const renderFilterInput = useCallback(
 		(columnInfo: ColumnInfo, filter: Filter) => {

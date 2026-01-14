@@ -1,1 +1,1 @@
-export { default } from "./EmailsOverview";
+export { default as EmailsOverview } from "./EmailsOverview";

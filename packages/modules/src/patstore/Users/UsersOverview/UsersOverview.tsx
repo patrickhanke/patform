@@ -3,9 +3,11 @@
 import { useCallback, useContext, useMemo } from "react";
 import {
 	axiosclient,
+	generateQueryFromFields,
 	PatstoreAppContext,
 	useAppContext,
-	useDataContext
+	useDataContext,
+	useFindData
 } from "@repo/provider";
 import {
 	generateColumnsFromFields,
@@ -23,7 +25,6 @@ import UserInvitations from "./content/UserInvitations";
 import create_user_fieds from "./constants/create_user_fields";
 import useFindRoles from "./hooks/useFindRoles";
 import { useDataHandler } from "@repo/provider";
-import useFindUserData from "./hooks/useFindUserData";
 import create_user from "./constants/create_user";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
@@ -46,13 +47,13 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			{
 				key: "projects",
 				value: [project.objectId],
-				operator: "_in",
+				operator: "in",
 				id: "projects"
 			},
 			{
 				key: "is_superuser",
 				value: true,
-				operator: "_ne",
+				operator: "notEqualTo",
 				id: "is_superuser"
 			}
 		],
@@ -70,9 +71,15 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		data: users,
 		refetch,
 		count
-	} = useFindUserData<PatstoreUser>({
-		module: currentModule,
-		filters: [...initialFilters, ...filters],
+	} = useFindData({
+		objectName: "User",
+		fields: [
+			...generateQueryFromFields(currentModule.fields),
+			"data",
+			"roles",
+			"settings"
+		],
+		filters: [...initialFilters, ...filters] as Filter[],
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order: "name_ASC"

@@ -8,7 +8,7 @@ import {
 } from "@repo/ui";
 import { useContext, useState } from "react";
 import { Filter, FormClass } from "@repo/types";
-import { PatstoreAppContext, useFindModuleData } from "@repo/provider";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 
 const EmailsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
@@ -17,13 +17,16 @@ const EmailsOverview = () => {
 		pageIndex: 0,
 		pageSize: 10
 	});
+
+	console.log({ currentModule });
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<FormClass>({
-		module: currentModule,
+	const { data, refetch, count } = useFindData({
+		objectName: "Template",
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		fields: ["title", "description", "createdAt"]
 	});
 
 	const columns = useCreateColumns<FormClass>({
@@ -37,13 +40,24 @@ const EmailsOverview = () => {
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={"Email Vorlagen"}
 			emptyContent={true}
 			createClass={{
-				className: "Form",
-				text: "Neues Formular erstellen",
-				fields: currentModule.fields,
-				refetch: refetch
+				className: "Template",
+				text: "Neue Email Vorlage erstellen",
+				fields: [
+					{
+						id: "title",
+						name: "title",
+						type: "input",
+						label: "Titel"
+					}
+				],
+				refetch: refetch,
+				initialData: {
+					title: "",
+					type: "email"
+				}
 			}}
 			refetch={refetch}
 		>

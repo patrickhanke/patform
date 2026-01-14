@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import Logo from "./Logo";
 import { MenuItem, Sidebar } from "@repo/ui";
-import { Module, PatstoreUser } from "@repo/types";
+import { Module, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import packageJson from "../../../package.json";
 import { useAppContext } from "@repo/provider";
 import { cloneDeep, truncate } from 'lodash-es';
@@ -13,9 +13,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
 
   console.log({ roles, user });
   
-  const userRole = roles?.find((role) => user.roles.includes(role.objectId)) || [];
-
-
+  const userRole = roles?.find((role) => user.roles.includes(role.objectId)) || {} as PatstoreRoleClass;
   console.log({ userRole });
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [{

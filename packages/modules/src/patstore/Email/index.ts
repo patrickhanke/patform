@@ -1,3 +1,4 @@
 export * from "./Email";
 export * from "./EmailsOverview";
-export { default as EmailsOverview } from "./EmailsOverview";
+export * from "./EmailTemplatesOverview";
+export * from "./EmailTemplate";

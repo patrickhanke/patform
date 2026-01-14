@@ -68,6 +68,7 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	data: T[];
 	refetch: ApolloRefetch;
 	count: number;
+	error: ApolloError;
 };
 
 export type UseGetDataHook<T extends Classes> = (P: {

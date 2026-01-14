@@ -11,8 +11,7 @@ import {
 	StateDisplay
 } from "@repo/ui";
 import { Classes } from "@repo/types";
-import { get, isArray } from "lodash-es";
-import { pluralize } from "@repo/provider";
+import { isArray } from "lodash-es";
 
 const TableColumnCategory = ({
 	category,
@@ -44,6 +43,9 @@ const TableColumnCategory = ({
 		order: "createdAt_DESC",
 		moduleId: category.moduleId
 	});
+
+	console.log({ data });
+	console.log({ category });
 
 	const elements = useMemo(() => {
 		const categoryOptionsArray: SelectElement[] = [];

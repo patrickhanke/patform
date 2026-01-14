@@ -6,11 +6,11 @@ import { Select } from "@repo/ui";
 import "../../styles.scss";
 
 const operatorOptions = [
-	{ value: "_eq", label: "ist gleich" },
-	{ value: "_gt", label: "größer als" },
-	{ value: "_lt", label: "kleiner als" },
-	{ value: "_gte", label: "größer oder gleich" },
-	{ value: "_lte", label: "kleiner oder gleich" }
+	{ value: "equalTo", label: "ist gleich" },
+	{ value: "greaterThan", label: "größer als" },
+	{ value: "lessThan", label: "kleiner als" },
+	{ value: "greaterThanOrEqualTo", label: "größer oder gleich" },
+	{ value: "lessThanOrEqualTo", label: "kleiner oder gleich" }
 ];
 
 const NumberFilter: FC<NumberFilterProps> = ({

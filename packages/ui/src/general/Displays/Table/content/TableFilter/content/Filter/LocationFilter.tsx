@@ -3,12 +3,7 @@
 import { FC, useCallback, useContext, useMemo, useState } from "react";
 import { LocationFilterProps } from "./types";
 import { ElementSelectInterface, Modal, SelectElement } from "@repo/ui";
-import { useQuery } from "@apollo/client";
-import {
-	PatstoreAppContext,
-	generateGraphQLQuery,
-	paramsHandler
-} from "@repo/provider";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { LocationClass } from "@repo/types";
 import "../../styles.scss";
 
@@ -27,46 +22,27 @@ const LocationFilter: FC<LocationFilterProps> = ({
 		[modules]
 	);
 
-	const { data: locationData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Location",
-			fields: ["objectId", "label", "title"]
-		}),
-		{
-			variables: paramsHandler({
-				filters: locationModuleId
-					? [
-							{
-								key: "module",
-								value: locationModuleId,
-								operator: "_eq",
-								id: "moduleId"
-							}
-						]
-					: []
-			}),
-			skip: !locationModuleId
-		}
-	);
+	const { data: locationData } = useFindData({
+		objectName: "Location",
+		fields: ["objectId", "label", "title"],
+		moduleId: locationModuleId
+	});
 
 	const locationElements = useMemo(() => {
-		if (!locationData?.objects?.findLocation?.results) return [];
+		if (!locationData) return [];
 		const locationElementsArray: SelectElement[] = [
 			{
 				label: "Kein Ort",
 				value: null
 			}
 		];
-		locationData.objects.findLocation.results.forEach(
-			(location: LocationClass) => {
-				if (!location.label || !location.title) return;
-				locationElementsArray.push({
-					label: location.label,
-					value: location.objectId
-				});
-			}
-		);
+		locationData.forEach((location: LocationClass) => {
+			if (!location.label || !location.title) return;
+			locationElementsArray.push({
+				label: location.label,
+				value: location.objectId
+			});
+		});
 		return locationElementsArray;
 	}, [locationData]);
 
@@ -82,7 +58,7 @@ const LocationFilter: FC<LocationFilterProps> = ({
 
 	const handleConfirm = useCallback(() => {
 		if (selectedLocation.length > 0) {
-			onOperatorChange("_eq");
+			onOperatorChange("equalTo");
 			onValueChange(selectedLocation[0]?.value || null);
 		} else {
 			onValueChange(null);
