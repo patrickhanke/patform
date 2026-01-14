@@ -1,3 +1,4 @@
+import { sanitizeGraphQlNode } from "./../../../Apollo/functions/helpers";
 import { useQuery } from "@apollo/client";
 import { generateGraphQLQuery, generateGraphQLQuery_4_1 } from "@repo/provider";
 import { UseFindRolesHook } from "../types";
@@ -47,8 +48,8 @@ const useFindRoles: UseFindRolesHook = ({ appId, projectId }) => {
 	return {
 		roles:
 			appId === "patstore"
-				? data?.roles.edges.map(
-						(edge: { node: PatstoreRoleClass }) => edge.node
+				? data?.roles.edges.map((edge: { node: PatstoreRoleClass }) =>
+						sanitizeGraphQlNode(edge.node)
 					)
 				: data?.objects.find_Role.results || [],
 		rolesLoading: loading,

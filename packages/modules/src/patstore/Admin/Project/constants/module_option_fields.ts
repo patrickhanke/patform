@@ -14,6 +14,7 @@ export const module_option_fields: ModuleOptionsField = {
 		default_fields: [],
 		position: 1,
 		categories: [],
+		setting_fields: [],
 		connected_class: "Webpage",
 		sub_menu: [
 			{
@@ -51,6 +52,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Article",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title", "text", "image"]
 	},
 	"/events": {
@@ -66,6 +68,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Event",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title", "dates"]
 	},
 	"/entries": {
@@ -81,6 +84,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Entry",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title", "text"]
 	},
 	"/categories": {
@@ -96,6 +100,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Category",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title"]
 	},
 	"/persons": {
@@ -111,6 +116,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Person",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title", "image"]
 	},
 	"/images": {
@@ -126,6 +132,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Image",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title", "file"]
 	},
 	"/groups": {
@@ -141,10 +148,11 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Group",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title"]
 	},
 	"/training-group": {
-		path: "/training-group",
+		path: "/groups",
 		name: "Trainingsgruppe",
 		icon: "group",
 		settings: {
@@ -157,7 +165,6 @@ export const module_option_fields: ModuleOptionsField = {
 				label: "Startalter",
 				type: "number",
 				name: "data.start_age",
-				validation: {},
 				position: 1,
 				options: {
 					number_start_value: 1,
@@ -169,7 +176,6 @@ export const module_option_fields: ModuleOptionsField = {
 				label: "Endalter",
 				type: "number",
 				name: "data.end_age",
-				validation: {},
 				position: 1,
 				options: {
 					number_start_value: 1,
@@ -181,6 +187,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Group",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title"]
 	},
 	"/downloads": {
@@ -196,6 +203,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Download",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title", "file"]
 	},
 	"/forms": {
@@ -211,6 +219,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Form",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: ["title", "text"]
 	},
 	"/users": {
@@ -226,6 +235,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "_User",
 		sub_menu: [],
+		setting_fields: [],
 		default_fields: []
 	},
 	"/locations": {
@@ -240,6 +250,7 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 11,
 		categories: [],
 		connected_class: "Location",
+		setting_fields: [],
 		sub_menu: [],
 		default_fields: ["title"]
 	},
@@ -256,6 +267,34 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		connected_class: "Dates",
 		sub_menu: [],
+		setting_fields: [],
+		default_fields: []
+	},
+	"/emails": {
+		path: "/emails",
+		name: "E-Mails",
+		icon: "email",
+		settings: {
+			categories: []
+		},
+		fields: [],
+		data_fields: [],
+		position: 13,
+		categories: [],
+		connected_class: "Email",
+		sub_menu: [
+			{
+				label: "E-Mails",
+				value: "/emails",
+				icon: "email"
+			},
+			{
+				label: "E-Mail-Vorlagen",
+				value: "/email-templates",
+				icon: "templates"
+			}
+		],
+		setting_fields: [],
 		default_fields: []
 	}
 };

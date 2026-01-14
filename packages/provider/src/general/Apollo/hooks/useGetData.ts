@@ -11,7 +11,7 @@ const useGetData: UseGetDataHook<Classes> = ({
 	id,
 	skip
 }) => {
-	const { loading, data, refetch } = useQuery(
+	const { loading, data, refetch, error } = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "get",
 			objectName,
@@ -31,7 +31,8 @@ const useGetData: UseGetDataHook<Classes> = ({
 		data: sanitizeGraphQlNode<Classes>(
 			get(data, `${objectName.toLowerCase()}`, null)
 		),
-		refetch
+		refetch,
+		error
 	};
 };
 

@@ -79,4 +79,5 @@ export type UseGetDataHook<T extends Classes> = (P: {
 	loading: boolean;
 	data: T | null;
 	refetch: ApolloRefetch;
+	error: ApolloError;
 };

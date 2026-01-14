@@ -1,10 +1,5 @@
 import { useCallback } from "react";
-import { useQuery } from "@apollo/client";
-import {
-	generateGraphQLQuery,
-	paramsHandler,
-	useDataHandler
-} from "@repo/provider";
+import { useDataHandler, useFindData } from "@repo/provider";
 import { SlideIn, Table } from "@repo/ui";
 import useUserColumns from "./hooks/useUserColumns";
 import { AppUsersProps, UserObject } from "./types";
@@ -22,58 +17,29 @@ const AppUsers: FC<AppUsersProps> = ({
 	addUser,
 	setAddUser
 }) => {
-	const { updateData, createData } = useDataHandler(true, false);;
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "_User",
-			fields: ["objectId", "username", "email", "label", "name", "roles"]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "projects",
-							value: projectId,
-							operator: "_in",
-							id: "projects"
-						}
-					]
-				})
-			}
-		}
-	);
+	const { updateData, createData } = useDataHandler(true, false);
+	const { data, refetch } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "username", "email", "label", "name", "roles"],
+		projectId
+	});
 
-	const { data: roleData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "_Role",
-			fields: [
-				"objectId",
-				"name",
-				"users {results{objectId username}}",
-				"default"
-			]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "project",
-							value: projectId,
-							operator: "_eq",
-							id: "project"
-						}
-					]
-				})
-			}
-		}
-	);
+	console.log({ data });
+
+	const { data: roleData } = useFindData({
+		objectName: "Role",
+		fields: [
+			"objectId",
+			"name",
+			"users {edges{node{objectId username}}}",
+			"default"
+		],
+		projectId
+	});
+
 	const columns = useUserColumns({
 		refetch,
-		roles: roleData?.objects.find_Role.results || []
+		roles: roleData ?? []
 	});
 
 	const [user, setUser] = useState<UserObject>({
@@ -88,7 +54,7 @@ const AppUsers: FC<AppUsersProps> = ({
 
 	useEffect(() => {
 		if (!user && createUser && roleData) {
-			const defaultRole = roleData.objects.find_Role.results.find(
+			const defaultRole = roleData.find(
 				(role: PatstoreRoleClass) => role.default
 			);
 			setUser({
@@ -143,10 +109,7 @@ const AppUsers: FC<AppUsersProps> = ({
 
 	return (
 		<div>
-			<Table
-				columns={columns}
-				data={data?.objects.find_User.results || []}
-			/>
+			<Table columns={columns} data={data ?? []} />
 			<SlideIn
 				header="Neuen Benutzer erstellen"
 				isOpen={createUser || addUser}
@@ -166,7 +129,7 @@ const AppUsers: FC<AppUsersProps> = ({
 						<CreateUser
 							user={user}
 							setUser={setUser}
-							roles={roleData?.objects.find_Role.results || []}
+							roles={roleData ?? []}
 						/>
 					)}
 					{addUser && (
@@ -174,7 +137,7 @@ const AppUsers: FC<AppUsersProps> = ({
 							user={user}
 							setUser={setUser}
 							projectId={projectId}
-							roles={roleData?.objects.find_Role.results || []}
+							roles={roleData ?? []}
 						/>
 					)}
 				</div>

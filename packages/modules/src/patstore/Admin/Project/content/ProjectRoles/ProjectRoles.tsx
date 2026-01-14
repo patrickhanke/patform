@@ -1,10 +1,5 @@
 import { FC } from "react";
-import {
-	axiosclient,
-	generateGraphQLQuery,
-	useDataHandler
-} from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { axiosclient, useDataHandler, useFindData } from "@repo/provider";
 import { ProjectRolesProps } from "./types";
 import { Button, Divider, SlideInForm, Table } from "@repo/ui";
 import useRoleColumns from "./hooks/useRoleColumns";
@@ -19,32 +14,27 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 }) => {
 	const { createData } = useDataHandler(true, false);
 
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "_Role",
-			fields: [
-				"objectId",
-				"name",
-				"createdAt",
-				"default",
-				"admin",
-				"modules",
-				"color",
-				"title",
-				"project {objectId name}",
-				"users {results{objectId name}}",
-				"roles {results{objectId name}}"
-			]
-		}),
-		{
-			variables: { params: { project: { _eq: projectId } } }
-		}
-	);
+	const { data, refetch } = useFindData({
+		objectName: "Role",
+		fields: [
+			"objectId",
+			"name",
+			"createdAt",
+			"default",
+			"admin",
+			"modules {...on Element {value}}",
+			"color",
+			"title",
+			"project {objectId name}",
+			"users {edges{node{objectId name}}}",
+			"roles {edges{node{objectId name}}}"
+		],
+		projectId
+	});
 
 	const columns = useRoleColumns({
 		modules,
-		roles: data?.objects.find_Role.results || [],
+		roles: data ?? [],
 		refetch: refetch,
 		projectId
 	});
@@ -54,7 +44,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 			<Button
 				text="Rollen aktualisieren"
 				onClick={() => {
-					const roles = data?.objects.find_Role.results || [];
+					const roles = data ?? [];
 					const adminRole = roles.find(
 						(role: PatstoreRoleClass) => role.admin
 					);
@@ -67,10 +57,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				}}
 			/>
 			<Divider />
-			<Table
-				data={data?.objects.find_Role.results || []}
-				columns={columns}
-			/>
+			<Table data={data ?? []} columns={columns} />
 			<SlideInForm
 				title="Neue Rolle erstellen"
 				isOpen={createRole}

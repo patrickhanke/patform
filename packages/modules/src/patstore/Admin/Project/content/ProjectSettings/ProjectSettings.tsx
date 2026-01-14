@@ -1,20 +1,20 @@
 "use client";
 
-import { useQuery } from "@apollo/client";
-import get_project_settings from "./constants/get_project_settings";
 import { Field, Form } from "@repo/ui";
-import { useDataHandler } from "@repo/provider";
+import { useDataHandler, useGetData } from "@repo/provider";
 import { useMemo } from "react";
 
 const ProjectSettings = ({ projectId }: { projectId: string }) => {
-	const { data, loading, error, refetch } = useQuery(get_project_settings, {
-		variables: { id: projectId }
+	const { data, loading, error, refetch } = useGetData({
+		objectName: "Project",
+		fields: ["name", "logo {url name}", "settings"],
+		id: projectId
 	});
-	const { updateData } = useDataHandler(true, false);;
+	const { updateData } = useDataHandler(true, false);
 
 	const settingsFields: Field[] = useMemo(() => {
 		if (data) {
-			const project = data?.objects.getProject;
+			const project = data;
 
 			return [
 				{
@@ -57,7 +57,7 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 	if (loading) return <p>Loading...</p>;
 	if (error) return <p>Error...</p>;
 
-	const project = data?.objects.getProject;
+	const project = data;
 
 	return (
 		<Form

@@ -7,10 +7,10 @@ export type PatstoreRoleClass = ClassProperties & {
 	label: string
 	title: string;
 	roles: {
-		results: PatstoreRoleClass[];
+		edges: { node: PatstoreRoleClass }[];
 	}
 	users: {
-		results: PatstoreUser[];
+		edges: { node: PatstoreUser }[];
 	}
 	project: PatstoreProject;
 	modules: string[];

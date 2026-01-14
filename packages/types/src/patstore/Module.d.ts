@@ -1,8 +1,9 @@
+import { FormField } from './../../../modules/src/patstore/Form/Form/content/FormFields/content/CreateField/types.d';
 import { Module } from './Module.d';
 import { Field } from "@repo/ui";
 import { Project } from "./Classes";
 
-export type ModulePath = "/arcticles" | "/events" | "/groups" | "/locations" | "/persons" | "/downloads" | "/forms" | "/entries" | "/categories" | "/images";
+export type ModulePath = "/articles" | "/events" | "/groups" | "/locations" | "/persons" | "/downloads" | "/forms" | "/entries" | "/categories" | "/images" | "/emails" | "/calendar" | "/website" | "/users";
 
 export type ModuleFieldIds = "title" | "description" | "text" | "image" | "date" | "dates" | "gallery" | "color" | "data" | "content" | "file" | "documents" | "link" | "state" | "active" ;
 
@@ -34,6 +35,7 @@ export type ModuleSettings = {
 export type ModuleField = {
 	id: ModuleDataFields;
 	label: string;
+  name: string;
 	required: boolean;
 	type: string;
 	active: boolean;
@@ -46,7 +48,7 @@ export type Module = {
   name: string;
   path: ModulePath;
   icon: string;
-  fields: ModuleField[];
+  fields: Field[];
   data_fields: Field[];
   setting_fields: Field[];
   position: number;

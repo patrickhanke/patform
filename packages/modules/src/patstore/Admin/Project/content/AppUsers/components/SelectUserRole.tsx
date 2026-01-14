@@ -1,12 +1,15 @@
 import { FC, useMemo, useState } from "react";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
-import { PatstoreRoleClass } from "@repo/types";
+import { PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import { axiosclient } from "@repo/provider";
 import { SelectUserRoleProps } from "../types";
 
 const findRoleFromUserId = (userId: string, roles: PatstoreRoleClass[]) => {
+	console.log({ roles });
 	const role = roles.find((role) =>
-		role.users.results.some((user) => user.objectId === userId)
+		role.users.edges.some(
+			(edge: { node: PatstoreUser }) => edge.node.objectId === userId
+		)
 	);
 	return role ? role : undefined;
 };

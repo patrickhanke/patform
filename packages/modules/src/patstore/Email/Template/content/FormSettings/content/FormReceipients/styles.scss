@@ -1,0 +1,10 @@
+@use "@repo/styles/constants" as *;
+
+.form_recipients_container {
+  background-color: $lightest;
+}
+
+.form_recipients_container[data-disabled="true"] {
+  background-color: $grey_tinted;
+  color: $grey_shaded;
+}

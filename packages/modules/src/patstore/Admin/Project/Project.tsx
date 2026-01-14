@@ -1,9 +1,9 @@
 "use client";
 
 import {
-	generateGraphQLQuery,
-	paramsHandler,
-	useDataHandler
+	generateGraphQLQuery_4_1,
+	useDataHandler,
+	useFindData
 } from "@repo/provider";
 import { DnDDisplay, sortItemsByPosition } from "@repo/ui";
 import { Module } from "@repo/types";
@@ -20,8 +20,9 @@ import ProjectRoles from "./content/ProjectRoles";
 
 const Project = ({ params }: { params: { project_id: string } }) => {
 	const { data: projectData } = useQuery(
-		generateGraphQLQuery({
+		generateGraphQLQuery_4_1({
 			type: "get",
+			queryName: "project",
 			objectName: "Project",
 			fields: ["objectId", "name", "createdAt", "logo { url name }"]
 		}),
@@ -37,28 +38,12 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 	const [siteState, setSiteState] = useState(
 		site_states[0] as (typeof site_states)[number]
 	);
-	const { createData, updateData } = useDataHandler(true, false);;
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Module",
-			fields: ["objectId", "name", "createdAt", "icon", "path"]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "project",
-							value: params.project_id,
-							operator: "_eq",
-							id: "projectId"
-						}
-					]
-				})
-			}
-		}
-	);
+	const { createData, updateData } = useDataHandler(true, false);
+	const { data, refetch } = useFindData({
+		objectName: "Module",
+		fields: ["objectId", "name", "createdAt", "icon", "path"],
+		projectId: params.project_id
+	});
 
 	const pageHeaderButtons = useMemo(() => {
 		if (siteState.value === "modules")
@@ -96,7 +81,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 				className: "Module",
 				updateObject: {
 					...module,
-					position: data?.objects.findModule.results.length + 1,
+					position: data?.length + 1,
 					project: {
 						__type: "Pointer",
 						className: "Project",
@@ -130,11 +115,15 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 
 	if (!data && !projectData) return <div> loading ...</div>;
 
-	const modules = data?.objects.findModule.results;
+	console.log(data);
+
+	const modules = data || [];
+
+	console.log(modules);
 
 	return (
 		<AdminPage
-			title={`${projectData?.objects.getProject?.name} - ${siteState.label}`}
+			title={`${projectData?.project?.name} - ${siteState.label}`}
 			pageHeaderButtons={pageHeaderButtons}
 			pageStates={site_states}
 			activeState={siteState}
