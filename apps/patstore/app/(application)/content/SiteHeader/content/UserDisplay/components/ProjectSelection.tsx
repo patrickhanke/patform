@@ -1,4 +1,4 @@
-import { generateGraphQLQuery_4_1, useAppContext } from "@repo/provider";
+import { generateGraphQLQuery_4_1, useAppContext, useFindData } from "@repo/provider";
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { ProjectSelectionProps } from "../types";
@@ -18,23 +18,19 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
   const [selectedProject, setSelectedProject] = useState<SelectElement[]>([
     { value: project.objectId, label: project.name },
   ]);
-  const { data } = useQuery(
-    generateGraphQLQuery_4_1({
-      type: "find",
-      objectName: "Project",
-      queryName: "projects",
-      fields: ["name", "objectId", "id"],
-    }),
-    {
-      variables: {
-        params: {
-          id: {
-            in: projects,
-          },
-        },
+
+  const {data} = useFindData({
+    objectName: "Project",
+    fields: ["name", "objectId", "id"],
+    filters: [
+      {
+        key: "objectId",
+        id: "objectId",
+        operator: "in",
+        value: projects,
       },
-    },
-  );
+    ],
+  })
 
   const projectSelectHandler = useCallback(() => {
     if (
@@ -58,10 +54,11 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
   }, [selectedProject, project]);
 
 const selectElements = useMemo(() => {
+  console.log({data});
   if (data) {
-    return data?.projects.edges.map((edge: { node: PatstoreProject }) => ({
-      value: edge.node.objectId,
-      label: edge.node.name,
+    return data.map( (project: PatstoreProject) => ({
+      value: project.objectId,
+      label: project.name,
     }));
 
   }
