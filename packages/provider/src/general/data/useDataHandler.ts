@@ -19,7 +19,6 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 	const { feedbackHandler } = useDataContext();
 	const { user, userLoading, project } = useContext(PatstoreAppContext);
 	const netlifyHookHandler = useNetlifyHooks();
-
 	const updateData = useCallback(
 		async ({
 			className,

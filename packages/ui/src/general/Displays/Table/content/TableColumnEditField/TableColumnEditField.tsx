@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { IconButton, SlideInForm } from "@repo/ui";
-import { useDataHandler, useGetData } from "@repo/provider";
+import { IconButton, Loader, SlideInForm } from "@repo/ui";
+import { useDataHandlerSecure, useGetData } from "@repo/provider";
 import {
 	TableColumnEditFieldComponent,
 	TableColumnEditFieldProps
@@ -18,7 +18,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 	dataFields,
 	type = "data"
 }: TableColumnEditFieldProps) => {
-	const { updateData } = useDataHandler();
+	const { updateData } = useDataHandlerSecure(true);
 	const [data, setData] = useState(null as unknown as Class["data"]);
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -33,11 +33,17 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		skip: !isOpen
 	});
 
+	console.log({ data, dataFromGetData });
+
 	useEffect(() => {
-		if (dataFromGetData) {
-			setData(dataFromGetData.data);
+		if (dataFromGetData && !data) {
+			if (type === "data") {
+				setData(dataFromGetData.data);
+			} else {
+				setData(dataFromGetData.settings);
+			}
 		}
-	}, [dataFromGetData]);
+	}, [dataFromGetData, type]);
 
 	const dataHandler = useCallback(
 		async (values: FormikValues) => {
@@ -57,7 +63,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 			await refetch();
 			setIsOpen(false);
 		},
-		[data]
+		[updateData, objectId, className, type, refetch]
 	);
 
 	return (
@@ -65,21 +71,26 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 			<IconButton
 				icon={type === "data" ? "edit" : "settings"}
 				onClick={() => setIsOpen(true)}
-				disabled={loading}
 			/>
-			<SlideInForm
-				isOpen={isOpen}
-				data={data}
-				setIsOpen={() => setIsOpen(false)}
-				fields={dataFields || []}
-				title={
-					type === "data"
-						? "Daten bearbeiten"
-						: "Einstellung bearbeiten"
-				}
-				dataHandler={dataHandler}
-				isHorizontal
-			/>
+			{loading ? (
+				<Loader width="100%" height="30px" />
+			) : (
+				dataFromGetData && (
+					<SlideInForm
+						isOpen={isOpen}
+						data={data}
+						setIsOpen={() => setIsOpen(false)}
+						fields={dataFromGetData ? dataFields : []}
+						title={
+							type === "data"
+								? "Daten bearbeiten"
+								: "Einstellung bearbeiten"
+						}
+						dataHandler={dataHandler}
+						isHorizontal
+					/>
+				)
+			)}
 		</>
 	);
 };

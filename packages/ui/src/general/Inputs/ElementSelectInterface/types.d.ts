@@ -18,6 +18,7 @@ export type ElementSelectInterfaceProps = {
 	selectProperty?: boolean;
 	useTiles?: boolean;
 	selectAll?: boolean;
+	isClearable?: boolean;
 	setSelectedToTop?: boolean;
 };
 

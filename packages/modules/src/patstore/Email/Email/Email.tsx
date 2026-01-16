@@ -14,6 +14,8 @@ const Email = ({ params }: { params: Params }) => {
 
 	const emailId = params.email_id;
 
+	console.log(emailId);
+
 	const { data: email, refetch } = useGetData({
 		objectName: "Email",
 		fields: [
@@ -69,6 +71,8 @@ const Email = ({ params }: { params: Params }) => {
 		}
 		return [];
 	}, [siteState, selectedDataRows, email]);
+
+	console.log(email);
 
 	if (!email) {
 		return <div>Lädt ...</div>;

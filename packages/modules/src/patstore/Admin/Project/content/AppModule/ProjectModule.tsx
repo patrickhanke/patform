@@ -1,5 +1,4 @@
-import { generateGraphQLQuery_4_1 } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useGetData } from "@repo/provider";
 import { Loader } from "@repo/ui";
 import "./styles.scss";
 import {
@@ -11,35 +10,29 @@ import {
 } from "./content";
 
 const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
-	const { data, loading, refetch } = useQuery(
-		generateGraphQLQuery_4_1({
-			type: "get",
-			objectName: "Module",
-			queryName: "module",
-			fields: [
-				"objectId",
-				"name",
-				"createdAt",
-				"icon",
-				"path",
-				"settings",
-				"fields",
-				"name",
-				"position",
-				"categories",
-				"connected_class",
-				"data_fields",
-				"setting_fields"
-			]
-		}),
-		{
-			variables: { id }
-		}
-	);
+	const { data, loading, refetch } = useGetData({
+		objectName: "Module",
+		fields: [
+			"objectId",
+			"name",
+			"createdAt",
+			"icon",
+			"path",
+			"settings",
+			"fields",
+			"name",
+			"position",
+			"categories",
+			"connected_class",
+			"data_fields",
+			"setting_fields"
+		],
+		id
+	});
 
 	if (loading) return <Loader width="100%" height="30px" />;
 
-	const module = data?.module;
+	const module = data;
 
 	return (
 		<div className="app_module_container">

@@ -10,3 +10,4 @@ export * from "./ElementSelectInterface";
 export * from "./DataTransfer";
 export * from "./ColorSelect";
 export * from "./Checkbox";
+export * from "./Lexical";

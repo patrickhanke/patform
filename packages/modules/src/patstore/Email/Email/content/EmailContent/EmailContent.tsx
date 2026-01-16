@@ -1,111 +1,35 @@
 "use client";
 
-import {
-	Page,
-	PageHeaderButton,
-	RenderFilters,
-	Table,
-	useCreateColumns
-} from "@repo/ui";
-import { useContext, useMemo, useState } from "react";
+import { Lexical, Page } from "@repo/ui";
+import { FC, useContext, useState } from "react";
 
-import { ContentClass, Filter } from "@repo/types";
 import { PatstoreAppContext } from "@repo/provider";
-import useFindContent from "./hooks/useFindContent";
-import CreateContent from "./components/CreateContent";
+import { EmailContentProps } from "./types";
 
-const EmailContent = ({ emailId }: { emailId: string }) => {
+const EmailContent: FC<EmailContentProps> = ({ data, refetch }) => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
-	const [addContent, setAddContent] = useState(false);
-	const [filters, setFilters] = useState<Filter[]>([]);
-	const [pagination, setPagination] = useState({
-		pageIndex: 0,
-		pageSize: 10
-	});
-	const { content, refetch, count } = useFindContent({
-		moduleId: currentModule.objectId,
-		filters,
-		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
-	});
+	const [content, setContent] = useState<string>("");
 
-	const pageHeaderButtons: PageHeaderButton[] = useMemo(
-		() => [
-			{
-				text: "SeitenElement hinzufügen",
-				onClick: () => {
-					setAddContent(true);
-				},
-				icon: "add",
-				is_add_button: true,
-				disabled: !user?.is_superuser
-			}
-		],
-		[user]
-	);
-
-	console.log(user);
-
-	const columns = useCreateColumns<ContentClass>({
-		data: [
-			{ id: "name", type: "edit_string", label: "Name" },
-			{
-				id: "content_id",
-				type: user.is_superuser ? "edit_string" : "string",
-				label: "ID (kann nicht geändert werden)"
-			},
-			{ id: "type", type: "string", label: "Typ" },
-			{ id: "createdAt", type: "date", label: "Erstellt am" },
-			{ id: "active", type: "boolean", label: "Aktiv" },
-			{ id: "content", type: "content", label: "Inhalt" }
-		],
-		fields: [],
-		className: "Content",
-		refetch,
-
-		categories: []
-	});
-
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, []);
+	console.log({ content });
 
 	return (
 		<Page
 			title={`${currentModule.name} - Inhalte`}
 			description="Übersicht über alle Inhalte"
 			emptyContent={true}
-			pageHeaderButtons={user?.is_superuser ? pageHeaderButtons : []}
+			// pageHeaderButtons={user?.is_superuser ? pageHeaderButtons : []}
 		>
-			<Table
-				columns={columns}
-				data={content || []}
-				setPagination={setPagination}
-				pagination={pagination}
-				rowCount={count}
-				filterContent={renderFilters}
-			/>
-			<CreateContent
-				createContent={addContent}
-				setCreateContent={setAddContent}
-				allContent={content || []}
-				refetch={refetch}
+			<Lexical
+				value={data?.content || ""}
+				onChange={(value) => setContent(value)}
+				withInsertMenu={true}
+				withToolbar={true}
+				withFloatingToolbar={true}
+				withCodeHighlight={true}
+				withCharacterCount={true}
+				withTreeView={true}
+				autoFocus={true}
+				maxLength={1000}
 			/>
 		</Page>
 	);

@@ -71,6 +71,7 @@ const TableColumnLocation = ({
 				}}
 				max={1}
 				isSearchable
+				isClearable
 			/>
 		),
 		[elements, value, currentLocation]
@@ -120,9 +121,15 @@ const TableColumnLocation = ({
 						}
 						setIsOpen(false);
 						setLoading(false);
+					} else if (selectedLocation === "") {
+						if (onChange) {
+							await onChange(null);
+						}
+						setIsOpen(false);
+						setLoading(false);
 					}
 				}}
-				disabled={[loading, loading || !selectedLocation]}
+				disabled={[loading, loading]}
 				header="Ort auswählen"
 			>
 				{selectLocation}

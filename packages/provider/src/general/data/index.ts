@@ -1,6 +1,7 @@
 export { default as axiosclient } from "./axios";
 export { default as uploadFile } from "./uploadFile";
 export { default as useDataHandler } from "./useDataHandler";
+export { default as useDataHandlerSecure } from "./useDataHandlerSecure";
 export { default as useFindModuleData } from "./useFindModuleData";
 export { default as vercelHook } from "./vercelHook";
 export { default as compileAxiosError } from "./compileAxiosError";

@@ -4,8 +4,8 @@ const siteStates: { value: string; label: string }[] = [
 		label: "Daten"
 	},
 	{
-		value: "fields",
-		label: "Felder"
+		value: "content",
+		label: "Inhalte"
 	},
 	{
 		value: "settings",

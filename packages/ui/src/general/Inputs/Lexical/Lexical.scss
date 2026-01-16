@@ -1,0 +1,395 @@
+.lexical-editor-container {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #f7fafc;
+  }
+
+  .lexical-toolbar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f7fafc;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+}
+
+.lexical-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
+    padding: 4px 8px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+
+    &:active,
+    &.active {
+      background: #3182ce;
+      color: white;
+      border-color: #2c5282;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .toolbar-divider {
+    width: 1px;
+    height: 24px;
+    background: #e2e8f0;
+    margin: 0 4px;
+  }
+}
+
+.lexical-editor-wrapper {
+  position: relative;
+  min-height: 150px;
+}
+
+.lexical-content-editable {
+  padding: 16px;
+  outline: none;
+  min-height: 150px;
+  font-size: 14px;
+  line-height: 1.6;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.lexical-placeholder {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: #a0aec0;
+  pointer-events: none;
+  font-size: 14px;
+  user-select: none;
+}
+
+// Text formatting styles
+.lexical-text-bold {
+  font-weight: bold;
+}
+
+.lexical-text-italic {
+  font-style: italic;
+}
+
+.lexical-text-underline {
+  text-decoration: underline;
+}
+
+.lexical-text-strikethrough {
+  text-decoration: line-through;
+}
+
+.lexical-text-code {
+  background-color: #f7fafc;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9em;
+}
+
+// Heading styles
+.lexical-heading-h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+.lexical-heading-h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.75em 0;
+}
+
+.lexical-heading-h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+.lexical-heading-h4 {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+.lexical-heading-h5 {
+  font-size: 0.83em;
+  font-weight: bold;
+  margin: 1.5em 0;
+}
+
+.lexical-heading-h6 {
+  font-size: 0.67em;
+  font-weight: bold;
+  margin: 2em 0;
+}
+
+// List styles
+.lexical-list-ul,
+.lexical-list-ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+.lexical-list-ul {
+  list-style-type: disc;
+}
+
+.lexical-list-ol {
+  list-style-type: decimal;
+}
+
+.lexical-list-item {
+  margin: 0.25em 0;
+}
+
+.lexical-nested-list-item {
+  list-style-type: circle;
+}
+
+// Link styles
+.lexical-link {
+  color: #3182ce;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: #2c5282;
+  }
+}
+
+// Code block styles
+.lexical-code {
+  background-color: #1a202c;
+  color: #f7fafc;
+  padding: 16px;
+  border-radius: 4px;
+  font-family: "Courier New", Courier, monospace;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+// Quote styles
+.lexical-quote {
+  border-left: 4px solid #cbd5e0;
+  padding-left: 16px;
+  margin: 1em 0;
+  color: #4a5568;
+  font-style: italic;
+}
+
+// Paragraph styles
+.lexical-paragraph {
+  margin: 0;
+  padding: 0;
+  min-height: 1.6em;
+}
+
+// Checklist styles
+.lexical-checklist {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.lexical-list-item-checked,
+.lexical-list-item-unchecked {
+  position: relative;
+  padding-left: 28px;
+  list-style-type: none;
+  outline: none;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #cbd5e0;
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+  }
+}
+
+.lexical-list-item-checked {
+  &:before {
+    background: #3182ce;
+    border-color: #3182ce;
+  }
+
+  &:after {
+    content: "✓";
+    position: absolute;
+    left: 3px;
+    top: 2px;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  // Strike through completed items
+  > .lexical-text {
+    text-decoration: line-through;
+    color: #a0aec0;
+  }
+}
+
+// Horizontal rule styles
+.lexical-hr {
+  border: none;
+  border-top: 2px solid #e2e8f0;
+  margin: 16px 0;
+  cursor: pointer;
+
+  &:hover {
+    border-top-color: #cbd5e0;
+  }
+}
+
+// Hashtag styles
+.lexical-hashtag {
+  color: #3182ce;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Mark/highlight styles
+.lexical-mark {
+  background-color: #fef08a;
+  padding: 2px 0;
+  border-radius: 2px;
+}
+
+// Strikethrough styles
+.lexical-text-strikethrough {
+  text-decoration: line-through;
+}
+
+// Image styles
+.editor-image {
+  display: block;
+  margin: 16px 0;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+}
+
+// Page break styles
+.page-break {
+  page-break-after: always;
+  margin: 32px 0;
+  border-bottom: 2px dashed #cbd5e0;
+  padding: 16px 0;
+  text-align: center;
+  color: #a0aec0;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #a0aec0;
+  }
+}
+
+// Table styles
+// .table-cell-header {
+//   background-color: #f7fafc;
+//   font-weight: 600;
+// }
+
+// table {
+//   border-collapse: collapse;
+//   border-spacing: 0;
+//   max-width: 100%;
+//   overflow-y: scroll;
+//   table-layout: fixed;
+//   width: 100%;
+//   margin: 16px 0;
+
+//   td,
+//   th {
+//     border: 1px solid #e2e8f0;
+//     padding: 8px 12px;
+//     vertical-align: top;
+//     text-align: start;
+//     min-width: 75px;
+//   }
+
+//   th {
+//     background-color: #f7fafc;
+//     font-weight: 600;
+//   }
+// }
+
+// Layout/Columns styles
+.lexical-layout-container {
+  display: grid;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.lexical-layout-item {
+  min-height: 60px;
+  padding: 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  
+  &:focus-within {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.1);
+  }
+
+  // Empty column placeholder
+  &:empty::before {
+    content: "Empty column...";
+    color: #cbd5e0;
+    font-style: italic;
+  }
+}

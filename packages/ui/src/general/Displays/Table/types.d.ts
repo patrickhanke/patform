@@ -92,7 +92,7 @@ export type TableColumnPersonProps = {
 export type TableColumnLocationProps = {
 	value: string;
 	isEditable?: boolean;
-	onChange?: (location: string) => Promise<void>;
+	onChange?: (location: string | null) => Promise<void>;
 };
 
 export type TableColumnDocumentsProps = {
@@ -197,7 +197,7 @@ export type TableColumnEditColorProps = {
 export type UpdateColumnData = (t: {
 	objectId: string;
 	updateObject: {
-		[key: string]: object | string | number | string[] | boolean;
+		[key: string]: object | string | number | string[] | boolean | null;
 	};
 	feedback: string;
 }) => Promise<void>;

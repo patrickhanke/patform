@@ -7,7 +7,7 @@ import {
 	UpdateColumnData
 } from "../types";
 import { ColumnDef } from "@tanstack/react-table";
-import { useDataHandler } from "@repo/provider";
+import { useDataHandlerSecure } from "@repo/provider";
 import {
 	ClassState,
 	EventDate,
@@ -70,7 +70,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 	disableCategory,
 	useMasterKey = false
 }: CreateColumnHookProps<T>) => {
-	const { updateData } = useDataHandler(useMasterKey);
+	const { updateData } = useDataHandlerSecure(useMasterKey);
+
+	console.log({ settings });
 
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
@@ -137,10 +139,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
-					enableSorting: columnElement.enableSorting ?? false,
-					sortingFn: (elem, elem2) => {
-						console.log({ elem, elem2 });
-					}
+					enableSorting: columnElement.enableSorting ?? false
 				} as ColumnDef<T>);
 			}
 			if (
@@ -401,7 +400,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 						<TableColumnLocation
 							isEditable={true}
 							value={row[columnElement.id] as string}
-							onChange={(value: string) =>
+							onChange={(value: string | null) =>
 								updateColumnData({
 									objectId: row.objectId,
 									updateObject: {

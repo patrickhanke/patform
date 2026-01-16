@@ -49,7 +49,7 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 						(role: PatstoreRoleClass) => role.admin
 					);
 					if (adminRole) {
-						axiosclient().post("functions/update-user-acl", {
+						axiosclient().post("functions/update_user_acl", {
 							admin_role_id: adminRole.objectId,
 							project_id: projectId
 						});

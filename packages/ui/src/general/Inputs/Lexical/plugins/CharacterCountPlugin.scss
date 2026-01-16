@@ -1,0 +1,18 @@
+.character-count {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 12px;
+  color: #a0aec0;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  pointer-events: none;
+
+  &.over-limit {
+    color: #e53e3e;
+    border-color: #fc8181;
+    background: #fff5f5;
+  }
+}

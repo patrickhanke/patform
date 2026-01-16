@@ -17,6 +17,7 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 	selectProperty = false,
 	useTiles = false,
 	selectAll = false,
+	isClearable = false,
 	setSelectedToTop = false
 }) => {
 	const [searchInput, setSearchTerm] = useState("");
@@ -184,6 +185,25 @@ const ElementSelectInterface: FC<ElementSelectInterfaceProps> = ({
 									);
 									onSelect(newElements);
 								}
+							}}
+							// useTiles={useTiles}
+						/>
+					</div>
+					<Divider showLine size="small" />
+				</>
+			)}
+			{isClearable && selectedElements.length > 0 && (
+				<>
+					<div className={"filter_container"}>
+						<ListElement
+							key={"clear_all"}
+							element={{
+								value: "clear_all",
+								label: "Alle abwählen"
+							}}
+							isSelected={false}
+							onSelect={() => {
+								onSelect([]);
 							}}
 							// useTiles={useTiles}
 						/>

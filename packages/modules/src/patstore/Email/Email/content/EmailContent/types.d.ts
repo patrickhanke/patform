@@ -19,3 +19,8 @@ export type CreateContentProps = {
 	allContent: ContentClass[];
 	refetch: ApolloRefetch;
 };
+
+export type EmailContentProps = {
+	data: object;
+	refetch: ApolloRefetch;
+};

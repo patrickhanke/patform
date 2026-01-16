@@ -11,11 +11,13 @@ const useGetData: UseGetDataHook<Classes> = ({
 	id,
 	skip
 }) => {
+	const cleanObjectName = objectName.replace(/_/g, "");
+	console.log({ cleanObjectName });
 	const { loading, data, refetch, error } = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "get",
-			objectName,
-			queryName: objectName.toLowerCase(),
+			objectName: cleanObjectName,
+			queryName: cleanObjectName.toLowerCase(),
 			fields
 		}),
 		{
@@ -29,7 +31,7 @@ const useGetData: UseGetDataHook<Classes> = ({
 	return {
 		loading,
 		data: sanitizeGraphQlNode<Classes>(
-			get(data, `${objectName.toLowerCase()}`, null)
+			get(data, `${cleanObjectName.toLowerCase()}`, null)
 		),
 		refetch,
 		error

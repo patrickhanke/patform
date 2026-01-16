@@ -1,0 +1,34 @@
+.tree-view-plugin {
+  margin-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 16px;
+
+  .tree-view-toggle {
+    padding: 8px 16px;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+      background: #edf2f7;
+    }
+  }
+
+  .tree-view-content {
+    margin-top: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 16px;
+    background: #f7fafc;
+    max-height: 400px;
+    overflow: auto;
+
+    .tree-view {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+  }
+}
