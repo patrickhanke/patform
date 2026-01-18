@@ -4,15 +4,15 @@ A feature-rich Lexical editor component with Playground-inspired functionality.
 
 ## Features
 
-### Insert Menu (NEW!)
-When `withInsertMenu={true}`:
-- **Horizontal Rule** - Visual separators
-- **Page Break** - Page breaks for printing
-- **Images** - Insert images from URLs
-- **Tables** - Insert tables with customizable rows/columns
-- **Columns Layout** - Multi-column layouts (2, 3, or 4 columns) 🆕
-- **YouTube Videos** - Embed YouTube videos
-- **Equations** - LaTeX mathematical equations
+### Insert Toolbar Buttons (NEW!)
+When `withInsertMenu={true}`, these buttons appear in the toolbar:
+- **Horizontal Rule (—)** - Visual separators
+- **Page Break (📄)** - Page breaks for printing
+- **Image (🖼️)** - Insert images from URLs
+- **Table (📊)** - Insert tables with customizable rows/columns
+- **Columns (⚏ ▼)** - Multi-column layouts (2, 3, or 4 columns) 🆕
+- **YouTube (▶️)** - Embed YouTube videos
+- **Equation (∑)** - LaTeX mathematical equations
 
 ### Rich Text Formatting
 - **Bold** (Ctrl/Cmd + B)

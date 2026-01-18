@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { INSERT_HORIZONTAL_RULE_COMMAND } from "@lexical/react/LexicalHorizontalRuleNode";
 import { INSERT_TABLE_COMMAND } from "@lexical/table";
-import { INSERT_IMAGE_COMMAND } from "./ImagesPlugin";
+import { INSERT_IMAGE_COMMAND, OPEN_IMAGE_SELECTOR_COMMAND } from "./ImagesPlugin";
 import { INSERT_PAGE_BREAK } from "./PageBreakPlugin";
 import { INSERT_LAYOUT_COMMAND } from "./LayoutPlugin";
 import "./InsertMenuPlugin.scss";
@@ -26,12 +26,10 @@ const COLUMN_LAYOUTS = [
 
 export default function InsertMenuPlugin() {
 	const [editor] = useLexicalComposerContext();
-	const [showMenu, setShowMenu] = useState(false);
-	const [showColumnsSubmenu, setShowColumnsSubmenu] = useState(false);
+	const [showColumnsMenu, setShowColumnsMenu] = useState(false);
 
 	const insertHorizontalRule = () => {
 		editor.dispatchCommand(INSERT_HORIZONTAL_RULE_COMMAND, undefined);
-		setShowMenu(false);
 	};
 
 	const insertTable = () => {
@@ -40,148 +38,119 @@ export default function InsertMenuPlugin() {
 			rows: "3",
 			includeHeaders: true
 		});
-		setShowMenu(false);
 	};
 
 	const insertImage = () => {
-		const url = prompt("Enter image URL:");
-		if (url) {
-			editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
-				src: url,
-				altText: "Image"
-			});
-		}
-		setShowMenu(false);
+		editor.dispatchCommand(OPEN_IMAGE_SELECTOR_COMMAND, undefined);
 	};
 
 	const insertPageBreak = () => {
 		editor.dispatchCommand(INSERT_PAGE_BREAK, undefined);
-		setShowMenu(false);
 	};
 
 	const insertYouTube = () => {
 		const url = prompt("Enter YouTube URL:");
 		if (url) {
-			editor.dispatchCommand(INSERT_YOUTUBE_COMMAND as any, url);
+			// YouTube command not yet implemented
+			console.log("YouTube insert:", url);
 		}
-		setShowMenu(false);
 	};
 
 	const insertEquation = () => {
 		const equation = prompt("Enter LaTeX equation:");
 		if (equation) {
-			editor.dispatchCommand(INSERT_EQUATION_COMMAND as any, {
-				equation,
-				inline: false
-			});
+			// Equation command not yet implemented
+			console.log("Equation insert:", equation);
 		}
-		setShowMenu(false);
 	};
 
 	const insertColumns = (template: string) => {
 		editor.dispatchCommand(INSERT_LAYOUT_COMMAND, template);
-		setShowMenu(false);
-		setShowColumnsSubmenu(false);
+		setShowColumnsMenu(false);
 	};
 
 	return (
-		<div className="insert-menu-container">
+		<div className="insert-menu-toolbar">
+			<div className="divider" />
+
 			<button
 				type="button"
-				className="insert-menu-button"
-				onClick={() => setShowMenu(!showMenu)}
+				className="toolbar-button"
+				onClick={insertHorizontalRule}
+				title="Insert Horizontal Rule"
 			>
-				+ Insert
+				—
 			</button>
-			{showMenu && (
-				<div className="insert-menu-dropdown">
-					<button
-						type="button"
-						className="insert-menu-item"
-						onClick={insertHorizontalRule}
-					>
-						<span className="icon">—</span>
-						<span>Horizontal Rule</span>
-					</button>
-					<button
-						type="button"
-						className="insert-menu-item"
-						onClick={insertPageBreak}
-					>
-						<span className="icon">📄</span>
-						<span>Page Break</span>
-					</button>
-					<button
-						type="button"
-						className="insert-menu-item"
-						onClick={insertImage}
-					>
-						<span className="icon">🖼️</span>
-						<span>Image</span>
-					</button>
-					<button
-						type="button"
-						className="insert-menu-item"
-						onClick={insertTable}
-					>
-						<span className="icon">📊</span>
-						<span>Table</span>
-					</button>
-					<button
-						type="button"
-						className="insert-menu-item"
-						onClick={insertYouTube}
-					>
-						<span className="icon">▶️</span>
-						<span>YouTube Video</span>
-					</button>
-					<button
-						type="button"
-						className="insert-menu-item"
-						onClick={insertEquation}
-					>
-						<span className="icon">∑</span>
-						<span>Equation</span>
-					</button>
-					<div className="insert-menu-divider" />
-					<button
-						type="button"
-						className="insert-menu-item insert-menu-item-with-submenu"
-						onMouseEnter={() => setShowColumnsSubmenu(true)}
-						onMouseLeave={() => setShowColumnsSubmenu(false)}
-					>
-						<span className="icon">⚏</span>
-						<span>Columns Layout</span>
-						<span className="arrow">›</span>
-						{showColumnsSubmenu && (
-							<div 
-								className="insert-menu-submenu"
-								onMouseEnter={() => setShowColumnsSubmenu(true)}
-								onMouseLeave={() => setShowColumnsSubmenu(false)}
+
+			<button
+				type="button"
+				className="toolbar-button"
+				onClick={insertPageBreak}
+				title="Insert Page Break"
+			>
+				📄
+			</button>
+
+			<button
+				type="button"
+				className="toolbar-button"
+				onClick={insertImage}
+				title="Insert Image"
+			>
+				🖼️
+			</button>
+
+			<button
+				type="button"
+				className="toolbar-button"
+				onClick={insertTable}
+				title="Insert Table"
+			>
+				📊
+			</button>
+
+			<div className="columns-dropdown">
+				<button
+					type="button"
+					className="toolbar-button"
+					onClick={() => setShowColumnsMenu(!showColumnsMenu)}
+					title="Insert Columns Layout"
+				>
+					⚏ ▼
+				</button>
+				{showColumnsMenu && (
+					<div className="columns-menu">
+						{COLUMN_LAYOUTS.map((layout) => (
+							<button
+								key={layout.value}
+								type="button"
+								className="columns-menu-item"
+								onClick={() => insertColumns(layout.value)}
 							>
-								{COLUMN_LAYOUTS.map((layout) => (
-									<button
-										key={layout.value}
-										type="button"
-										className="insert-menu-item"
-										onClick={() => insertColumns(layout.value)}
-									>
-										<span>{layout.label}</span>
-									</button>
-								))}
-							</div>
-						)}
-					</button>
-					<div className="insert-menu-divider" />
-					<button
-						type="button"
-						className="insert-menu-item"
-						onClick={() => setShowMenu(false)}
-					>
-						<span>Close</span>
-					</button>
-				</div>
-			)}
+								{layout.label}
+							</button>
+						))}
+					</div>
+				)}
+			</div>
+
+			<button
+				type="button"
+				className="toolbar-button"
+				onClick={insertYouTube}
+				title="Insert YouTube Video"
+			>
+				▶️
+			</button>
+
+			<button
+				type="button"
+				className="toolbar-button"
+				onClick={insertEquation}
+				title="Insert Equation"
+			>
+				∑
+			</button>
 		</div>
 	);
 }

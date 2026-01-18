@@ -64,12 +64,14 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		[updateData, objectId, className, type, refetch]
 	);
 
+	console.log({ loading, dataFromGetData });
+
 	return (
 		<>
 			<IconButton
 				icon={type === "data" ? "edit" : "settings"}
 				onClick={() => setIsOpen(true)}
-				disabled={loading || !dataFromGetData}
+				disabled={loading}
 			/>
 			{!loading && dataFromGetData && (
 				<SlideInForm

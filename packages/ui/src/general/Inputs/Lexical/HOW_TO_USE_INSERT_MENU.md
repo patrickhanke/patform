@@ -45,12 +45,12 @@ function MyComponent() {
 
 When `withInsertMenu={true}` is set, you should see:
 
-1. **Blue "+ Insert" button** in the toolbar (next to format buttons)
-2. **Clicking it shows a dropdown** with these options:
+1. **Insert buttons** directly in the toolbar (after a divider):
    - Horizontal Rule (—)
    - Page Break (📄)
    - Image (🖼️)
    - Table (📊)
+   - Columns (⚏ ▼) - This one has a dropdown
    - YouTube Video (▶️)
    - Equation (∑)
 
@@ -64,7 +64,7 @@ Copy and paste this into your component to verify it works:
 <Lexical
   value=""
   onChange={(html) => console.log(html)}
-  placeholder="Click + Insert to test!"
+  placeholder="Click insert buttons to test!"
   withToolbar={true}
   withInsertMenu={true}
 />
@@ -74,7 +74,7 @@ Copy and paste this into your component to verify it works:
 
 ## 🐛 Troubleshooting
 
-### Issue: "I don't see the Insert button"
+### Issue: "I don't see the Insert buttons"
 
 **Solution:** Make sure you're passing `withInsertMenu={true}`
 
@@ -255,35 +255,32 @@ export default function RichEditor() {
 ## 📱 What You Should See
 
 ```
-┌─────────────────────────────────────────────┐
-│ [B][I][U] ··· Heading ▼ [Link] [+Insert] │  ← Toolbar
-├─────────────────────────────────────────────┤
-│                                             │
-│ Type here...                                │
-│                                             │
-└─────────────────────────────────────────────┘
-              ↑
-         Insert button
-         (appears here)
+┌────────────────────────────────────────────────────────────────┐
+│ [B][I][U] ··· Heading ▼ [Link] │ [—][📄][🖼️][📊][⚏▼][▶️][∑] │
+├────────────────────────────────────────────────────────────────┤
+│                                                                │
+│ Type here...                                                   │
+│                                                                │
+└────────────────────────────────────────────────────────────────┘
+                                      ↑
+                              Insert buttons
+                         (appear after divider)
 ```
 
-**When clicked:**
+**Columns button dropdown:**
 ```
 ┌──────────────────────┐
-│ + Insert             │ ← Button
+│ [⚏ ▼]                │ ← Columns button
 └──────────────────────┘
-  ┌────────────────────┐
-  │ — Horizontal Rule  │
-  │ 📄 Page Break      │
-  │ 🖼️ Image           │
-  │ 📊 Table           │
-  │ ▶️ YouTube Video   │
-  │ ∑ Equation         │
-  ├────────────────────┤
-  │ Close              │
-  └────────────────────┘
+  ┌──────────────────────────┐
+  │ 2 columns (equal)        │
+  │ 2 columns (25% / 75%)    │
+  │ 3 columns (equal)        │
+  │ 3 columns (25%/50%/25%)  │
+  │ 4 columns (equal)        │
+  └──────────────────────────┘
        ↑
-    Dropdown
+  Layout options
 ```
 
 ---
