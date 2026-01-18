@@ -11,7 +11,6 @@ import {
 	generateFilterColumnsFromFields,
 	Modal,
 	Page,
-	RenderFilters,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
@@ -46,26 +45,6 @@ const LocationOverview = () => {
 		refetch,
 		categories: currentModule?.categories
 	});
-
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, []);
 
 	const pageHeaderButtons = useMemo(
 		() => [

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { IconButton, Loader, SlideInForm } from "@repo/ui";
+import { IconButton, SlideInForm } from "@repo/ui";
 import { useDataHandlerSecure, useGetData } from "@repo/provider";
 import {
 	TableColumnEditFieldComponent,
@@ -32,8 +32,6 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		id: objectId,
 		skip: !isOpen
 	});
-
-	console.log({ data, dataFromGetData });
 
 	useEffect(() => {
 		if (dataFromGetData && !data) {
@@ -72,24 +70,20 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 				icon={type === "data" ? "edit" : "settings"}
 				onClick={() => setIsOpen(true)}
 			/>
-			{loading ? (
-				<Loader width="100%" height="30px" />
-			) : (
-				dataFromGetData && (
-					<SlideInForm
-						isOpen={isOpen}
-						data={data}
-						setIsOpen={() => setIsOpen(false)}
-						fields={dataFromGetData ? dataFields : []}
-						title={
-							type === "data"
-								? "Daten bearbeiten"
-								: "Einstellung bearbeiten"
-						}
-						dataHandler={dataHandler}
-						isHorizontal
-					/>
-				)
+			{!loading && !dataFromGetData && dataFromGetData && (
+				<SlideInForm
+					isOpen={isOpen}
+					data={data}
+					setIsOpen={() => setIsOpen(false)}
+					fields={dataFromGetData ? dataFields : []}
+					title={
+						type === "data"
+							? "Daten bearbeiten"
+							: "Einstellung bearbeiten"
+					}
+					dataHandler={dataHandler}
+					isHorizontal
+				/>
 			)}
 		</>
 	);

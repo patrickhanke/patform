@@ -197,7 +197,14 @@ export type TableColumnEditColorProps = {
 export type UpdateColumnData = (t: {
 	objectId: string;
 	updateObject: {
-		[key: string]: object | string | number | string[] | boolean | null;
+		[key: string]:
+			| object
+			| string
+			| number
+			| string[]
+			| boolean
+			| null
+			| undefined;
 	};
 	feedback: string;
 }) => Promise<void>;

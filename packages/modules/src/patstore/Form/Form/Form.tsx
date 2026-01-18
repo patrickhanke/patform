@@ -81,6 +81,7 @@ const Form = ({ params }: { params: Params }) => {
 				<>
 					{siteState.value === "data" && (
 						<FormData
+							formTitle={form?.title}
 							formId={formId}
 							selectedDataRows={selectedDataRows}
 							setSelectedDataRows={setSelectedDataRows}
