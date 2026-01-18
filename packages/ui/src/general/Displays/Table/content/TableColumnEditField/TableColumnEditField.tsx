@@ -69,8 +69,9 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 			<IconButton
 				icon={type === "data" ? "edit" : "settings"}
 				onClick={() => setIsOpen(true)}
+				disabled={loading || !dataFromGetData}
 			/>
-			{!loading && !dataFromGetData && dataFromGetData && (
+			{!loading && dataFromGetData && (
 				<SlideInForm
 					isOpen={isOpen}
 					data={data}
