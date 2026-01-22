@@ -8,6 +8,7 @@ export interface EmailAttachmentsProps {
 export interface AttachmentsListProps {
 	attachments: FileAttachment[];
 	emailId: string;
+	email: any;
 	refetch: () => void;
 }
 
@@ -26,6 +27,6 @@ export interface UploadAttachmentModalProps {
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
 	emailId: string;
-	email: Email;
+	email: any;
 	refetch: ApolloRefetch;
 }

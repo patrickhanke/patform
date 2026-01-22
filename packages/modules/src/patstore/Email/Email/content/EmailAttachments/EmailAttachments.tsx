@@ -40,6 +40,7 @@ const EmailAttachments: FC<EmailAttachmentsProps> = ({ emailId, email }) => {
 			<AttachmentsList
 				attachments={attachments || []}
 				emailId={emailId}
+				email={email}
 				refetch={refetch}
 			/>
 

@@ -11,25 +11,45 @@ import { Modal } from "@repo/ui";
 interface AttachmentItemProps {
 	attachment: FileAttachment;
 	emailId: string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	email: any;
 	refetch: () => void;
 }
 
 const AttachmentItem: FC<AttachmentItemProps> = ({
 	attachment,
 	emailId,
+	email,
 	refetch
 }) => {
-	const { deleteData } = useDataHandler();
+	const { deleteData, updateData } = useDataHandler();
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	const handleDelete = async () => {
 		setLoading(true);
+
+		// Delete the Document record
 		await deleteData({
-			className: "File",
+			className: "Document",
 			objectId: attachment.objectId,
 			feedback: "Datei erfolgreich gelöscht"
 		});
+
+		// Remove the attachment from the email's attachments array
+		const currentAttachments = email?.attachments || [];
+		const updatedAttachments = currentAttachments.filter(
+			(id: string) => id !== attachment.objectId
+		);
+
+		await updateData({
+			className: "Email",
+			objectId: emailId,
+			updateObject: {
+				attachments: updatedAttachments
+			}
+		});
+
 		await refetch();
 		setLoading(false);
 		setDeleteModalOpen(false);
@@ -74,24 +94,54 @@ const AttachmentItem: FC<AttachmentItemProps> = ({
 					backgroundColor: "#fff"
 				}}
 			>
-				<div style={{ display: "flex", alignItems: "center", gap: "12px", flex: 1 }}>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						gap: "12px",
+						flex: 1
+					}}
+				>
 					<div style={{ fontSize: "32px" }}>
 						{getFileIcon(attachment.file?.name || "")}
 					</div>
 					<div style={{ flex: 1, minWidth: 0 }}>
-						<h4 style={{ margin: "0 0 4px 0", fontSize: "16px", fontWeight: 600 }}>
+						<h4
+							style={{
+								margin: "0 0 4px 0",
+								fontSize: "16px",
+								fontWeight: 600
+							}}
+						>
 							{attachment.title}
 						</h4>
-						<p style={{ margin: "0", fontSize: "14px", color: "#666" }}>
+						<p
+							style={{
+								margin: "0",
+								fontSize: "14px",
+								color: "#666"
+							}}
+						>
 							{attachment.file?.name}
-							{attachment.file?.size && ` • ${formatFileSize(attachment.file.size)}`}
+							{attachment.file?.size &&
+								` • ${formatFileSize(attachment.file.size)}`}
 						</p>
 						{attachment.createdAt && (
-							<p style={{ margin: "4px 0 0 0", fontSize: "12px", color: "#999" }}>
+							<p
+								style={{
+									margin: "4px 0 0 0",
+									fontSize: "12px",
+									color: "#999"
+								}}
+							>
 								Hochgeladen am{" "}
-								{format(new Date(attachment.createdAt), "dd.MM.yyyy HH:mm", {
-									locale: de
-								})}
+								{format(
+									new Date(attachment.createdAt),
+									"dd.MM.yyyy HH:mm",
+									{
+										locale: de
+									}
+								)}
 							</p>
 						)}
 					</div>
@@ -121,10 +171,11 @@ const AttachmentItem: FC<AttachmentItemProps> = ({
 				buttonDisabled={[loading, loading]}
 				header="Datei löschen"
 			>
-				<p>Sind Sie sicher, dass Sie die Datei "{attachment.title}" löschen möchten?</p>
-				<p style={{ fontSize: "14px", color: "#666", marginTop: "8px" }}>
-					Diese Aktion kann nicht rückgängig gemacht werden.
+				<p>
+					Sind Sie sicher, dass Sie die Datei &quot;{attachment.title}
+					&quot; löschen möchten?
 				</p>
+				<p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
 			</Modal>
 		</>
 	);
