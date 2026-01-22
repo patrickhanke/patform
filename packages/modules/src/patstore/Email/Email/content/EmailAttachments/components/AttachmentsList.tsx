@@ -12,10 +12,20 @@ const AttachmentsList: FC<AttachmentsListProps> = ({
 }) => {
 	if (!attachments || attachments.length === 0) {
 		return (
-			<div className="empty-state" style={{ padding: "40px", textAlign: "center" }}>
+			<div
+				className="empty-state"
+				style={{ padding: "40px", textAlign: "center" }}
+			>
 				<p>Keine Anhänge vorhanden</p>
-				<p style={{ fontSize: "14px", color: "#666", marginTop: "8px" }}>
-					Klicken Sie auf "Neue Datei hinzufügen", um einen Anhang hochzuladen.
+				<p
+					style={{
+						fontSize: "14px",
+						color: "#666",
+						marginTop: "8px"
+					}}
+				>
+					Klicken Sie auf &quot;Neue Datei hinzufügen&quot;, um einen
+					Anhang hochzuladen.
 				</p>
 			</div>
 		);
@@ -23,7 +33,10 @@ const AttachmentsList: FC<AttachmentsListProps> = ({
 
 	return (
 		<div className="attachments-list">
-			<div className="attachments-grid" style={{ display: "grid", gap: "16px" }}>
+			<div
+				className="attachments-grid"
+				style={{ display: "grid", gap: "16px" }}
+			>
 				{attachments.map((attachment) => (
 					<AttachmentItem
 						key={attachment.objectId}

@@ -64,8 +64,8 @@ const renderEmailTextBlock = (block: ContentBlock): string => {
 
 	if (textType === "heading") {
 		const headingSizes: Record<string, string> = {
-			h1: "32px",
-			h2: "28px",
+			h1: "28px",
+			h2: "24px",
 			h3: "24px",
 			h4: "20px",
 			h5: "18px",

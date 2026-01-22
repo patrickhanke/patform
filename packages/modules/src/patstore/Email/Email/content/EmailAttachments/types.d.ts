@@ -1,15 +1,15 @@
-import { ApolloRefetch } from "@repo/types";
+import { ApolloRefetch, EmailClass } from "@repo/types";
 
 export interface EmailAttachmentsProps {
 	emailId: string;
-	email: any;
+	email: EmailClass;
 }
 
 export interface AttachmentsListProps {
 	attachments: FileAttachment[];
 	emailId: string;
-	email: any;
-	refetch: () => void;
+	email: EmailClass;
+	refetch: ApolloRefetch;
 }
 
 export interface FileAttachment {
@@ -27,6 +27,6 @@ export interface UploadAttachmentModalProps {
 	isOpen: boolean;
 	setIsOpen: (isOpen: boolean) => void;
 	emailId: string;
-	email: any;
+	email: EmailClass;
 	refetch: ApolloRefetch;
 }

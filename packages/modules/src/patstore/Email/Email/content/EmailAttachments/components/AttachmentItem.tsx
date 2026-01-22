@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import { FileAttachment } from "../types";
-import { useDataHandler } from "@repo/provider";
+import { ApolloRefetch, useDataHandler } from "@repo/provider";
 import { formatFileSize } from "../functions/formatFileSize";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
@@ -13,7 +13,7 @@ interface AttachmentItemProps {
 	emailId: string;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	email: any;
-	refetch: () => void;
+	refetch: ApolloRefetch;
 }
 
 const AttachmentItem: FC<AttachmentItemProps> = ({
