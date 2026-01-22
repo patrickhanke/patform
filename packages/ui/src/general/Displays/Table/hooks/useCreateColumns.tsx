@@ -779,9 +779,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 			} as ColumnDef<T>);
 		});
 
+		console.log("editDisabled", editDisabled);
+
 		if (editDisabled === false) {
 			if (typeof editLink === "string") {
-				console.log("editLink");
 				columnArray.push({
 					accessorFn: (row) => (
 						<div className="button_container">

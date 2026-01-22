@@ -16,8 +16,8 @@ const siteStates: { value: string; label: string }[] = [
 		label: "Einstellungen"
 	},
 	{
-		value: "templates",
-		label: "Vorlagen"
+		value: "recipients",
+		label: "Empfänger"
 	}
 ];
 

@@ -144,7 +144,8 @@ export type ColumnDataTypes =
 	| "image_preview"
 	| "user"
 	| "edit_role"
-	| "location";
+	| "location"
+	| "custom";
 
 export type ColumnData<Class> = {
 	id: keyof Class;
@@ -153,6 +154,7 @@ export type ColumnData<Class> = {
 	disabled?: (a: Class) => boolean;
 	enableSorting?: boolean;
 	sortingFn?: (a: Row<Class>, b: Row<Class>) => number;
+	render?: (row: Class) => ReactNode;
 };
 
 export type CreateColumnHookProps<Class> = {
@@ -167,7 +169,6 @@ export type CreateColumnHookProps<Class> = {
 	disableCategory?: (row: Class, label: ModuleCategory["label"]) => boolean;
 	useMasterKey?: boolean;
 	editDisabled?: boolean;
-	customColumns?: ColumnData<Class>[];
 };
 
 export type ColumnClasses =

@@ -51,44 +51,47 @@ const Koloproktologen = () => {
 				userSettings.newsletter_email
 			) {
 				if (user.type === "dgk") {
-					updateObject.lists = ["JRxDkaxCoI"];
+					updateObject.lists = ["QY2tNfkk0L"];
 					const userEmails = user.emails || {};
 					userEmails["email"] = userSettings.newsletter_email;
 					userEmails["name"] = user.name;
-					userEmails["JRxDkaxCoI"] = {
+					userEmails["QY2tNfkk0L"] = {
 						email: userSettings.newsletter_email,
 						name: `${user.first_name} ${user.last_name}`,
 						optinDate: userSettings.newsletter_optin_date,
 						optoutDate: userSettings.newsletter_optout_date
 					};
+					updateObject.emails = userEmails;
 				} else if (user.type === "bcd") {
-					updateObject.lists = ["EgRR0prozh"];
+					updateObject.lists = ["JaTGOQX4pZ"];
 					const userEmails = user.emails || {};
 					userEmails["email"] = userSettings.newsletter_email;
 					userEmails["name"] = user.name;
-					userEmails["EgRR0prozh"] = {
+					userEmails["JaTGOQX4pZ"] = {
 						email: userSettings.newsletter_email,
 						name: `${user.first_name} ${user.last_name}`,
 						optinDate: userSettings.newsletter_optin_date,
 						optoutDate: userSettings.newsletter_optout_date
 					};
+					updateObject.emails = userEmails;
 				} else {
-					updateObject.lists = ["JRxDkaxCoI", "EgRR0prozh"];
+					updateObject.lists = ["QY2tNfkk0L", "JaTGOQX4pZ"];
 					const userEmails = user.emails || {};
 					userEmails["email"] = userSettings.newsletter_email;
 					userEmails["name"] = user.name;
-					userEmails["JRxDkaxCoI"] = {
+					userEmails["QY2tNfkk0L"] = {
 						email: userSettings.newsletter_email,
 						name: `${user.first_name} ${user.last_name}`,
 						optinDate: userSettings.newsletter_optin_date,
 						optoutDate: userSettings.newsletter_optout_date
 					};
-					userEmails["EgRR0prozh"] = {
+					userEmails["JaTGOQX4pZ"] = {
 						email: userSettings.newsletter_email,
 						name: `${user.first_name} ${user.last_name}`,
 						optinDate: userSettings.newsletter_optin_date,
 						optoutDate: userSettings.newsletter_optout_date
 					};
+					updateObject.emails = userEmails;
 				}
 			}
 			console.log(updateObject);

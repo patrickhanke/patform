@@ -75,6 +75,15 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 		order: order
 	});
 
+	console.log(
+		"users",
+		users.filter((user: PatstoreUser) => user.lists)
+	);
+	console.log(
+		"listUsers",
+		users.filter((user: PatstoreUser) => user?.lists?.includes(listId))
+	);
+
 	// Filter users to only those with email or newsletter_email
 	const usersWithEmail = useMemo(() => {
 		if (!users) return [];
@@ -208,7 +217,8 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 		categories: [],
 		className: "User",
 		refetch,
-		useMasterKey: true
+		useMasterKey: true,
+		editDisabled: true
 	});
 
 	return (
@@ -228,11 +238,9 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 			</div>
 			<Table
 				columns={columns}
-				data={usersWithEmail || []}
+				data={users || []}
 				rowCount={count}
 				setOrder={setOrder}
-				enableRowSelection
-				selectedRows={selectedUserIds}
 				setSelectedRows={handleRowSelection}
 			/>
 		</div>

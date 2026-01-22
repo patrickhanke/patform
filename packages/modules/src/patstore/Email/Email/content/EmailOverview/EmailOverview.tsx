@@ -50,10 +50,7 @@ const EmailOverview: FC<EmailOverviewProps> = ({ email, projectId }) => {
 							Anzahl Empfänger:
 						</div>
 						<div>
-							<RecipientCount
-								email={email}
-								projectId={projectId}
-							/>
+							<RecipientCount email={email} />
 						</div>
 					</div>
 
@@ -64,7 +61,7 @@ const EmailOverview: FC<EmailOverviewProps> = ({ email, projectId }) => {
 						<div>{attachmentCount}</div>
 					</div>
 
-					<div className="flex row gap-md ai-ce">
+					<div className="flex row gap-md	 ai-ce">
 						<div style={{ minWidth: "180px", fontWeight: "600" }}>
 							Status:
 						</div>

@@ -4,18 +4,18 @@ import { FC, useMemo, useState } from "react";
 import { IconButton, SlideIn, Table, useCreateColumns } from "@repo/ui";
 import { useFindData, useGetData } from "@repo/provider";
 import { PatstoreUser, Filter, EmailClass } from "@repo/types";
-import { RecipientData } from "../../EmaiRecipients";
 
 export interface RecipientCountProps {
 	email: EmailClass;
-	projectId: string;
 }
 
-const RecipientCount: FC<RecipientCountProps> = ({ email, projectId }) => {
+const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [order, setOrder] = useState<string>("name_ASC");
 
 	const recipientListId = email?.settings?.recipient_list;
+
+	console.log("recipientListId", recipientListId);
 
 	console.log("email", email);
 
@@ -28,57 +28,20 @@ const RecipientCount: FC<RecipientCountProps> = ({ email, projectId }) => {
 
 	// Build filters based on list settings
 	const filters = useMemo(() => {
-		console.log("list", list);
-		if (!list?.settings) return [];
-
 		const listFilters: Filter[] = [];
-
-		if (list.settings.static_list) {
-			const recipients = list.data?.recipients || [];
-			if (recipients.length > 0) {
-				const emails = recipients.map((r: RecipientData) => r.email);
-				listFilters.push({
-					key: "email",
-					value: emails,
-					operator: "in",
-					id: "email_filter"
-				});
-			}
-		} else {
-			// Handle dynamic list - use dynamic filters
-			const dynamicFilters = list.settings.filters || [];
-
-			dynamicFilters.forEach(
-				(filter: { key: string; value: string }, index: number) => {
-					if (filter.key && filter.value !== undefined) {
-						listFilters.push({
-							key: filter.key,
-							value: filter.value,
-							operator: "equalTo",
-							id: `dynamic_filter_${index}`
-						});
-					}
-				}
-			);
+		if (recipientListId) {
+			listFilters.push({
+				key: "lists",
+				value: [recipientListId],
+				operator: "in",
+				id: "lists"
+			});
 		}
-
-		// Always add newsletter_optin filter
-		// listFilters.push({
-		// 	key: "newsletter_optin",
-		// 	value: true,
-		// 	operator: "equalTo",
-		// 	id: "newsletter_optin"
-		// });
 
 		return listFilters;
 	}, [list]);
 
 	console.log("filters", filters);
-
-	// Determine if we should fetch users
-	const shouldFetchUsers = recipientListId && filters.length > 0;
-
-	console.log("shouldFetchUsers", shouldFetchUsers);
 
 	// Fetch users based on list filters
 	const {
@@ -99,27 +62,16 @@ const RecipientCount: FC<RecipientCountProps> = ({ email, projectId }) => {
 			"last_name",
 			"data",
 			"settings",
-			"newsletter_email"
+			"newsletter_email",
+			"lists",
+			"emails"
 		],
 		filters: filters,
-		limit: shouldFetchUsers ? 1000 : 0,
-		projectId: projectId,
-		skip: 0,
+		limit: 1000,
 		order: order
 	});
 
 	// Filter users to only those with email or newsletter_email
-	const usersWithEmail = useMemo(() => {
-		if (!users) return [];
-		return users.filter((user: PatstoreUser) => {
-			const hasEmail = user.email && user.email.trim() !== "";
-			const hasNewsletterEmail =
-				user.settings?.newsletter_email &&
-				typeof user.settings.newsletter_email === "string" &&
-				user.settings.newsletter_email.trim() !== "";
-			return hasEmail || hasNewsletterEmail;
-		});
-	}, [users]);
 
 	// Generate columns for the table
 	const columns = useCreateColumns<PatstoreUser>({
@@ -193,10 +145,10 @@ const RecipientCount: FC<RecipientCountProps> = ({ email, projectId }) => {
 								</p>
 							</div>
 
-							{usersWithEmail.length > 0 ? (
+							{users.length > 0 ? (
 								<Table
 									columns={columns}
-									data={usersWithEmail}
+									data={users}
 									rowCount={count}
 									setOrder={setOrder}
 								/>

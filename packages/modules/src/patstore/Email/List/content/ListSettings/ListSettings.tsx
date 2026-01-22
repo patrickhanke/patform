@@ -3,7 +3,6 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import { useDataHandler, useGetData } from "@repo/provider";
 import { TextInput as Input, StatelessToggle } from "@repo/ui";
-import { ListDynamicFilter } from "./components";
 
 export interface ListSettingsProps {
 	listId: string;
@@ -18,6 +17,8 @@ interface FilterItem {
 interface ListSettings {
 	static_list?: boolean;
 	filters?: FilterItem[];
+	unsubscribe?: boolean;
+	unsubscribe_link?: string;
 }
 
 const ListSettings: FC<ListSettingsProps> = ({
@@ -112,28 +113,36 @@ const ListSettings: FC<ListSettingsProps> = ({
 
 			<div className="flex row a-ce j-sb gap-sm">
 				<div className="flex col a-st">
-					<label>Statische Liste</label>
+					<label>Abmeldelink</label>
 					<p>
-						Statische Listen enthalten manuell ausgewählte
-						Mitglieder. Dynamische Listen werden automatisch
-						basierend auf Filterkriterien gefüllt.
+						Abmeldelink aktivieren, um Mitgliedern die Möglichkeit
+						zu geben, sich von der Liste abzumelden.
 					</p>
 				</div>
 				<StatelessToggle
-					value={settings.static_list ?? true}
+					value={settings.unsubscribe ?? false}
 					onChange={(value) =>
-						updateSettingsHandler({ static_list: value })
+						updateSettingsHandler({ unsubscribe: value })
 					}
 					disabled={loading}
 				/>
 			</div>
 
-			{!settings.static_list && (
-				<ListDynamicFilter
-					settings={settings}
-					updateSettings={updateSettingsHandler}
-					loading={loading}
-				/>
+			{settings.unsubscribe && (
+				<div className="flex col gap-sm">
+					<label>Abmeldelink URL</label>
+					<Input
+						id="unsubscribe_link"
+						defaultValue={settings.unsubscribe_link || ""}
+						onChange={(value) =>
+							updateSettingsHandler({
+								unsubscribe_link: value as string
+							})
+						}
+						disabled={loading}
+						placeholder="https://example.com/unsubscribe"
+					/>
+				</div>
 			)}
 		</div>
 	);

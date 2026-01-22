@@ -68,9 +68,7 @@ const EmailSettings = ({ emailId }: { emailId: string }) => {
 				const setting = email_settings[key];
 				console.log("setting", setting);
 				const isBoolean = typeof setting.value === "boolean";
-				const isUnsubscribeUrl = key === "unsubscribe_url";
-				const isDisabled =
-					isUnsubscribeUrl && !settings.unsubscribe_link;
+				const isDisabled = false;
 
 				return (
 					<div key={key} className="flex row a-ce j-sb gap-sm">
