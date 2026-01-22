@@ -63,6 +63,7 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	order?: string;
 	moduleId?: string;
 	projectId?: string;
+	skipQuery?: boolean;
 }) => {
 	loading: boolean;
 	data: T[];

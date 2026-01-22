@@ -68,7 +68,8 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 		],
 		filters: filters,
 		limit: 1000,
-		order: order
+		order: order,
+		skipQuery: !recipientListId || filters.length === 0
 	});
 
 	// Filter users to only those with email or newsletter_email

@@ -14,7 +14,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 	skip,
 	order,
 	moduleId,
-	projectId
+	projectId,
+	skipQuery = false
 }) => {
 	const queryName = pluralize(objectName);
 
@@ -31,7 +32,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 				first: limit,
 				skip,
 				order: order || "createdAt_DESC"
-			}
+			},
+			skip: skipQuery
 		}
 	);
 
