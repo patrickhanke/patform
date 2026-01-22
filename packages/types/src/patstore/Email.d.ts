@@ -3,6 +3,7 @@ import { ClassProperties } from "./Classes";
 export type EmailRecipient = {
   name: string;
   email: string;
+  message_id?: string;
 };
 
 export type EmailClass = ClassProperties & {

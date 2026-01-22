@@ -37,6 +37,7 @@ module.exports = {
     FIREBASE_APP_ID: "1:445175682675:web:6ed3c4338b541979e5fc06",
     // FIREBASE_MEASUREMENT_ID: 'G-32QEKHD6FM',
     GCMS_SENDER_ID: "445175682675",
+    NEXT_PUBLIC_LETTERMINT_API_KEY: process.env.NEXT_PUBLIC_LETTERMINT_API_KEY,
   },
   images: {
     remotePatterns: [

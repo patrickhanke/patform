@@ -10,6 +10,8 @@ const Koloproktologen = () => {
 		objectName: "User",
 		fields: [
 			"label",
+			"first_name",
+			"last_name",
 			"objectId",
 			"username",
 			"data",
@@ -54,7 +56,7 @@ const Koloproktologen = () => {
 					updateObject.lists = ["QY2tNfkk0L"];
 					const userEmails = user.emails || {};
 					userEmails["email"] = userSettings.newsletter_email;
-					userEmails["name"] = user.name;
+					userEmails["name"] = `${user.first_name} ${user.last_name}`;
 					userEmails["QY2tNfkk0L"] = {
 						email: userSettings.newsletter_email,
 						name: `${user.first_name} ${user.last_name}`,
@@ -66,7 +68,7 @@ const Koloproktologen = () => {
 					updateObject.lists = ["JaTGOQX4pZ"];
 					const userEmails = user.emails || {};
 					userEmails["email"] = userSettings.newsletter_email;
-					userEmails["name"] = user.name;
+					userEmails["name"] = `${user.first_name} ${user.last_name}`;
 					userEmails["JaTGOQX4pZ"] = {
 						email: userSettings.newsletter_email,
 						name: `${user.first_name} ${user.last_name}`,
@@ -78,7 +80,7 @@ const Koloproktologen = () => {
 					updateObject.lists = ["QY2tNfkk0L", "JaTGOQX4pZ"];
 					const userEmails = user.emails || {};
 					userEmails["email"] = userSettings.newsletter_email;
-					userEmails["name"] = user.name;
+					userEmails["name"] = `${user.first_name} ${user.last_name}`;
 					userEmails["QY2tNfkk0L"] = {
 						email: userSettings.newsletter_email,
 						name: `${user.first_name} ${user.last_name}`,
@@ -95,11 +97,11 @@ const Koloproktologen = () => {
 				}
 			}
 			console.log(updateObject);
-			updateData({
-				className: "_User",
-				objectId: user.objectId,
-				updateObject: updateObject
-			});
+			// updateData({
+			// 	className: "_User",
+			// 	objectId: user.objectId,
+			// 	updateObject: updateObject
+			// });
 		});
 	}, [userData]);
 

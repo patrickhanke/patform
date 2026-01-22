@@ -1,8 +1,17 @@
+import { EmailClass } from "@repo/types";
+
 export interface EmailRecipientsProps {
-	emailId: string;
+	email: EmailClass;
 }
 
-export interface RecipientData {
-	name: string;
-	email: string;
-}
+export type EmailStatus = 
+	| "sent"
+	| "delivered"
+	| "opened"
+	| "clicked"
+	| "bounced"
+	| "complained"
+	| "unsubscribed"
+	| "failed"
+	| "pending"
+	| "unknown";

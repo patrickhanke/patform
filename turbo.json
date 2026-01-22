@@ -22,7 +22,8 @@
     "GCMS_SENDER_ID",
     "PROJECT_ID",
     "APP_NAME",
-    "NODE_ENV"
+    "NODE_ENV",
+    "NEXT_PUBLIC_LETTERMINT_API_KEY"
   ],
   "globalDependencies": [".env"],
   "tasks": {

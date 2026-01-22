@@ -1,235 +1,210 @@
 "use client";
 
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import {
-	useAppContext,
-	useDataHandler,
-	useFindData,
-	useGetData
-} from "@repo/provider";
-import { IconButton, Table, useCreateColumns } from "@repo/ui";
-import { ApolloRefetch, Filter, PatstoreUser } from "@repo/types";
+import { FC, useEffect, useState } from "react";
+import { EmailRecipient } from "@repo/types";
+import { EmailRecipientsProps, EmailStatus } from "./types";
 
-export interface EmailRecipientsProps {
-	emailId: string;
-	refetch: ApolloRefetch;
+interface RecipientWithStatus extends EmailRecipient {
+	status: EmailStatus;
+	loading: boolean;
+	error?: string;
 }
 
-export interface RecipientData {
-	name: string;
-	email: string;
-}
+const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
+	const [recipients, setRecipients] = useState<RecipientWithStatus[]>([]);
 
-const EmailRecipients: FC<EmailRecipientsProps> = ({ emailId, refetch }) => {
-	const { project } = useAppContext();
-	const { updateData } = useDataHandler();
-	const [order, setOrder] = useState<string>("name_ASC");
+	useEffect(() => {
+		if (email?.recipients) {
+			// Initialize recipients with loading state
+			const initialRecipients: RecipientWithStatus[] =
+				email.recipients.map((recipient) => ({
+					...recipient,
+					status: "unknown" as EmailStatus,
+					loading: !!recipient.message_id
+				}));
+			setRecipients(initialRecipients);
 
-	const { data: email, refetch: refetchEmail } = useGetData({
-		objectName: "Email",
-		fields: ["objectId", "recipients"],
-		id: emailId
-	});
-
-	const initialFilters: Filter[] = useMemo(
-		() => [
-			{
-				key: "projects",
-				value: ["JRxDkaxCoI", "EgRR0prozh"],
-				operator: "in",
-				id: "projects"
-			},
-			{
-				key: "newsletter_optin",
-				value: true,
-				operator: "equalTo",
-				id: "newsletter_optin"
-			}
-		],
-		[project]
-	);
-
-	const [filters] = useState<Filter[]>([]);
-
-	// Fetch users with email addresses
-	const {
-		data: users,
-		refetch: refetchUsers,
-		count
-	} = useFindData({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"name",
-			"username",
-			"title",
-			"pre_title",
-			"post_title",
-			"email",
-			"first_name",
-			"last_name",
-			"data",
-			"settings",
-			"newsletter_email"
-		],
-		filters: [...initialFilters, ...filters] as Filter[],
-		limit: 1000,
-		skip: 0,
-		order: order
-	});
-
-	// Filter users to only those with email or newsletter_email
-	const usersWithEmail = useMemo(() => {
-		if (!users) return [];
-		return users.filter((user: PatstoreUser) => {
-			const hasEmail = user.email && user.email.trim() !== "";
-			const hasNewsletterEmail =
-				user.settings?.newsletter_email &&
-				typeof user.settings.newsletter_email === "string" &&
-				user.settings.newsletter_email.trim() !== "";
-			return hasEmail || hasNewsletterEmail;
-		});
-	}, [users]);
-
-	// Get currently selected recipients from email
-	const selectedRecipients = useMemo(() => {
-		return (email?.recipients || []) as RecipientData[];
+			// Fetch status for each recipient with message_id
+			email.recipients.forEach((recipient, index) => {
+				if (recipient.message_id) {
+					fetchEmailStatus(recipient.message_id, index);
+				}
+			});
+		}
 	}, [email]);
 
-	// Track selected user IDs
-	const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+	const fetchEmailStatus = async (messageId: string, index: number) => {
+		try {
+			const apiKey = process.env.NEXT_PUBLIC_LETTERMINT_API_KEY;
 
-	// Update selected user IDs when email recipients change (on initial load)
-	useEffect(() => {
-		if (selectedRecipients.length > 0 && usersWithEmail.length > 0) {
-			const recipientEmails = selectedRecipients.map((r) => r.email);
-			const ids = usersWithEmail
-				.filter((user: PatstoreUser) => {
-					const email =
-						user.email ||
-						(user.settings?.newsletter_email as string);
-					return recipientEmails.includes(email);
-				})
-				.map((user: PatstoreUser) => user.objectId);
+			console.log("apiKey", apiKey);
 
-			// Only update if the ids have actually changed
-			if (
-				JSON.stringify(ids.sort()) !==
-				JSON.stringify(selectedUserIds.sort())
-			) {
-				setSelectedUserIds(ids);
+			if (!apiKey) {
+				console.error(
+					"Lettermint API key not found in environment variables"
+				);
+				updateRecipientStatus(
+					index,
+					"unknown",
+					false,
+					"API key not configured"
+				);
+				return;
 			}
-		} else if (
-			selectedRecipients.length === 0 &&
-			selectedUserIds.length > 0
-		) {
-			setSelectedUserIds([]);
+
+			const response = await fetch(
+				`https://api.lettermint.com/v1/messages/${messageId}`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${apiKey}`,
+						"Content-Type": "application/json"
+					}
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error(
+					`Failed to fetch status: ${response.statusText}`
+				);
+			}
+
+			const data = await response.json();
+			const status = data.status || "unknown";
+
+			updateRecipientStatus(index, status, false);
+		} catch (error) {
+			console.error(
+				`Error fetching email status for message ${messageId}:`,
+				error
+			);
+			updateRecipientStatus(
+				index,
+				"unknown",
+				false,
+				error instanceof Error
+					? error.message
+					: "Failed to fetch status"
+			);
 		}
-	}, [selectedRecipients, usersWithEmail]);
+	};
 
-	// Save selected users to email.recipients
-	const saveRecipients = useCallback(
-		async (userIds: string[]) => {
-			if (!usersWithEmail) return;
-
-			const recipients: RecipientData[] = usersWithEmail
-				.filter((user: PatstoreUser) => userIds.includes(user.objectId))
-				.map((user: PatstoreUser) => ({
-					name:
-						user.name ||
-						`${user.first_name || ""} ${user.last_name || ""}`.trim() ||
-						user.username,
-					email:
-						user.email ||
-						(user.settings?.newsletter_email as string) ||
-						""
-				}));
-
-			await updateData({
-				className: "Email",
-				objectId: emailId,
-				updateObject: {
-					recipients
-				},
-				feedback: "Empfänger erfolgreich aktualisiert"
-			});
-
-			await refetchEmail();
-		},
-		[usersWithEmail, emailId, updateData, refetchEmail]
-	);
-
-	// Handle row selection
-	const handleRowSelection = useCallback(
-		(value: React.SetStateAction<string[]>) => {
-			const selectedRows =
-				typeof value === "function" ? value(selectedUserIds) : value;
-			setSelectedUserIds(selectedRows);
-			saveRecipients(selectedRows);
-			refetch();
-		},
-		[selectedUserIds, saveRecipients, refetch]
-	);
-
-	// Generate columns for the table
-	const columns = useCreateColumns<PatstoreUser>({
-		data: [
-			{
-				id: "title",
-				label: "Anrede",
-				type: "string"
-			},
-			{
-				id: "pre_title",
-				label: "Titel",
-				type: "string"
-			},
-			{
-				id: "first_name",
-				label: "Vorname",
-				type: "string"
-			},
-			{
-				id: "last_name",
-				label: "Nachname",
-				type: "string"
-			},
-			{
-				id: "newsletter_email",
-				label: "Newsletter E-Mail",
-				type: "string"
+	const updateRecipientStatus = (
+		index: number,
+		status: EmailStatus,
+		loading: boolean,
+		error?: string
+	) => {
+		setRecipients((prev) => {
+			const updated = [...prev];
+			if (updated[index]) {
+				updated[index] = {
+					...updated[index],
+					status,
+					loading,
+					error
+				};
 			}
-		],
-		categories: [],
-		className: "_User",
-		refetch,
-		useMasterKey: true
-	});
+			return updated;
+		});
+	};
+
+	const getStatusBadgeClass = (status: EmailStatus): string => {
+		switch (status) {
+			case "delivered":
+			case "sent":
+				return "success";
+			case "opened":
+			case "clicked":
+				return "info";
+			case "bounced":
+			case "failed":
+				return "danger";
+			case "complained":
+				return "warning";
+			case "unsubscribed":
+				return "secondary";
+			case "pending":
+				return "warning";
+			case "unknown":
+			default:
+				return "default";
+		}
+	};
+
+	const getStatusLabel = (status: EmailStatus): string => {
+		const labels: Record<EmailStatus, string> = {
+			sent: "Gesendet",
+			delivered: "Zugestellt",
+			opened: "Geöffnet",
+			clicked: "Geklickt",
+			bounced: "Zurückgewiesen",
+			complained: "Als Spam markiert",
+			unsubscribed: "Abgemeldet",
+			failed: "Fehlgeschlagen",
+			pending: "Ausstehend",
+			unknown: "Unbekannt"
+		};
+		return labels[status] || "Unbekannt";
+	};
+
+	if (!email || !recipients.length) {
+		return (
+			<div className="flex col gap-md">
+				<h3>Empfänger</h3>
+				<p>Keine Empfänger vorhanden</p>
+			</div>
+		);
+	}
 
 	return (
-		<div>
-			<div style={{ marginBottom: "1rem" }}>
-				<IconButton
-					icon="check"
-					onClick={() => {
-						console.log("Alle auswählen");
-					}}
-					text="Alle auswählen"
-				/>
-				<p>
-					Ausgewählte Empfänger: {selectedRecipients.length} /{" "}
-					{count || 0}
-				</p>
+		<div className="flex col gap-md">
+			<h3>Empfänger ({recipients.length})</h3>
+
+			<div className="table-container">
+				<table className="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>E-Mail</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{recipients.map((recipient, index) => (
+							<tr key={`${recipient.email}-${index}`}>
+								<td>{recipient.name || "-"}</td>
+								<td>{recipient.email}</td>
+								<td>
+									{recipient.loading ? (
+										<span className="badge default">
+											Lädt...
+										</span>
+									) : (
+										<span
+											className={`badge ${getStatusBadgeClass(recipient.status)}`}
+											title={recipient.error || undefined}
+										>
+											{getStatusLabel(recipient.status)}
+										</span>
+									)}
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 			</div>
-			<Table
-				columns={columns}
-				data={usersWithEmail || []}
-				rowCount={count}
-				setOrder={setOrder}
-				enableRowSelection
-				selectedRows={selectedUserIds}
-				setSelectedRows={handleRowSelection}
-			/>
+
+			{recipients.some((r) => r.error) && (
+				<div className="alert warning">
+					<p>
+						<strong>Hinweis:</strong> Einige Status konnten nicht
+						abgerufen werden. Dies kann bedeuten, dass die E-Mail
+						noch nicht versendet wurde oder die Nachricht-ID
+						ungültig ist.
+					</p>
+				</div>
+			)}
 		</div>
 	);
 };
