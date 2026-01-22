@@ -54,7 +54,7 @@ const Koloproktologen = () => {
 			) {
 				if (user.type === "dgk") {
 					updateObject.lists = ["QY2tNfkk0L"];
-					const userEmails = user.emails || {};
+					const userEmails = {};
 					userEmails["email"] = userSettings.newsletter_email;
 					userEmails["name"] = `${user.first_name} ${user.last_name}`;
 					userEmails["QY2tNfkk0L"] = {
@@ -66,7 +66,7 @@ const Koloproktologen = () => {
 					updateObject.emails = userEmails;
 				} else if (user.type === "bcd") {
 					updateObject.lists = ["JaTGOQX4pZ"];
-					const userEmails = user.emails || {};
+					const userEmails = {};
 					userEmails["email"] = userSettings.newsletter_email;
 					userEmails["name"] = `${user.first_name} ${user.last_name}`;
 					userEmails["JaTGOQX4pZ"] = {
@@ -78,7 +78,7 @@ const Koloproktologen = () => {
 					updateObject.emails = userEmails;
 				} else {
 					updateObject.lists = ["QY2tNfkk0L", "JaTGOQX4pZ"];
-					const userEmails = user.emails || {};
+					const userEmails = {};
 					userEmails["email"] = userSettings.newsletter_email;
 					userEmails["name"] = `${user.first_name} ${user.last_name}`;
 					userEmails["QY2tNfkk0L"] = {
@@ -97,11 +97,11 @@ const Koloproktologen = () => {
 				}
 			}
 			console.log(updateObject);
-			// updateData({
-			// 	className: "_User",
-			// 	objectId: user.objectId,
-			// 	updateObject: updateObject
-			// });
+			updateData({
+				className: "_User",
+				objectId: user.objectId,
+				updateObject: updateObject
+			});
 		});
 	}, [userData]);
 
