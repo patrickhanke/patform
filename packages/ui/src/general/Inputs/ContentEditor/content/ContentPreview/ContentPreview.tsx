@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { ContentBlock, Modal, SlideIn } from "@repo/ui";
 import WebPreview from "./components/WebPreview";

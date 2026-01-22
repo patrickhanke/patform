@@ -17,7 +17,8 @@ const Koloproktologen = () => {
 			"address",
 			"title",
 			"salutation",
-			"salut"
+			"salut",
+			"emails"
 		],
 		filters: [
 			{
@@ -39,7 +40,7 @@ const Koloproktologen = () => {
 
 		users.forEach((user) => {
 			const userSettings = user.settings;
-			let updateObject: Partial<PatstoreUser> = {
+			const updateObject: Partial<PatstoreUser> = {
 				title: user.address,
 				pre_title: user.title,
 				post_title: undefined
@@ -49,49 +50,46 @@ const Koloproktologen = () => {
 				userSettings.newsletter_optin === true &&
 				userSettings.newsletter_email
 			) {
-				updateObject = {
-					...updateObject,
-					newsletter_optin: true,
-					newsletter_email: userSettings.newsletter_email,
-					newsletter_optin_date: {
-						__type: "Date",
-						iso: userSettings.newsletter_optin_date
-							? new Date(
-									userSettings.newsletter_optin_date
-								).toISOString()
-							: new Date().toISOString()
-					},
-					newsletter_optout_date: userSettings.newsletter_optout_date
-						? {
-								__type: "Date",
-								iso: new Date(
-									userSettings.newsletter_optout_date
-								).toISOString()
-							}
-						: null
-				};
-				console.log(updateObject);
-			} else if (userSettings.newsletter_optin === false) {
-				updateObject = {
-					...updateObject,
-					newsletter_optin: false,
-					newsletter_optin_date: {
-						__type: "Date",
-						iso: userSettings.newsletter_optin_date
-							? new Date(
-									userSettings.newsletter_optin_date
-								).toISOString()
-							: null
-					},
-					newsletter_optout_date: {
-						__type: "Date",
-						iso: userSettings.newsletter_optout_date
-							? new Date(
-									userSettings.newsletter_optout_date
-								).toISOString()
-							: null
-					}
-				};
+				if (user.type === "dgk") {
+					updateObject.lists = ["JRxDkaxCoI"];
+					const userEmails = user.emails || {};
+					userEmails["email"] = userSettings.newsletter_email;
+					userEmails["name"] = user.name;
+					userEmails["JRxDkaxCoI"] = {
+						email: userSettings.newsletter_email,
+						name: `${user.first_name} ${user.last_name}`,
+						optinDate: userSettings.newsletter_optin_date,
+						optoutDate: userSettings.newsletter_optout_date
+					};
+				} else if (user.type === "bcd") {
+					updateObject.lists = ["EgRR0prozh"];
+					const userEmails = user.emails || {};
+					userEmails["email"] = userSettings.newsletter_email;
+					userEmails["name"] = user.name;
+					userEmails["EgRR0prozh"] = {
+						email: userSettings.newsletter_email,
+						name: `${user.first_name} ${user.last_name}`,
+						optinDate: userSettings.newsletter_optin_date,
+						optoutDate: userSettings.newsletter_optout_date
+					};
+				} else {
+					updateObject.lists = ["JRxDkaxCoI", "EgRR0prozh"];
+					const userEmails = user.emails || {};
+					userEmails["email"] = userSettings.newsletter_email;
+					userEmails["name"] = user.name;
+					userEmails["JRxDkaxCoI"] = {
+						email: userSettings.newsletter_email,
+						name: `${user.first_name} ${user.last_name}`,
+						optinDate: userSettings.newsletter_optin_date,
+						optoutDate: userSettings.newsletter_optout_date
+					};
+					userEmails["EgRR0prozh"] = {
+						email: userSettings.newsletter_email,
+						name: `${user.first_name} ${user.last_name}`,
+						optinDate: userSettings.newsletter_optin_date,
+						optoutDate: userSettings.newsletter_optout_date
+					};
+				}
 			}
 			console.log(updateObject);
 			updateData({
