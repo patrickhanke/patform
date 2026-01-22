@@ -68,7 +68,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	constants,
 	editLink,
 	disableCategory,
-	customColumns = [],
 	useMasterKey = false,
 	editDisabled = false
 }: CreateColumnHookProps<T>) => {
@@ -779,8 +778,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 				sortingFn: undefined // Default sortingFn
 			} as ColumnDef<T>);
 		});
-		if (editDisabled === true) {
+
+		if (editDisabled === false) {
 			if (typeof editLink === "string") {
+				console.log("editLink");
 				columnArray.push({
 					accessorFn: (row) => (
 						<div className="button_container">

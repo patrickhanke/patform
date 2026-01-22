@@ -132,10 +132,7 @@ const ListsOverview = () => {
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
-				selectedRows={selectedRows}
-				setSelectedRows={setSelectedRows}
 				setOrder={setOrder}
-				enableRowSelection
 			/>
 			<Modal
 				isOpen={deleteModal}
