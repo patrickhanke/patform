@@ -1,21 +1,22 @@
 import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
-import { Modal } from "@repo/ui";
+import { ContentBlock, Modal } from "@repo/ui";
 import {
 	axiosclient,
 	compileAxiosError,
 	PatstoreAppContext
 } from "@repo/provider";
+import { transformToEmail } from "@repo/ui";
 
 export type TestEmailProps = {
 	testEmail: boolean;
 	setTestEmail: Dispatch<SetStateAction<boolean>>;
-	emailId: string;
+	emailContent: ContentBlock[];
 };
 
 const TestEmail: FC<TestEmailProps> = ({
 	testEmail,
 	setTestEmail,
-	emailId
+	emailContent
 }) => {
 	const [email, setEmail] = useState<string>("");
 	const { project } = useContext(PatstoreAppContext);
@@ -29,11 +30,12 @@ const TestEmail: FC<TestEmailProps> = ({
 				if (!email) {
 					return;
 				}
-				// Here you would typically send the email using an API call
+
+				console.log("emailContent", transformToEmail(emailContent));
 				await axiosclient()
 					.post("functions/send_test_email", {
 						email,
-						form_id: emailId,
+						content: transformToEmail(emailContent),
 						project_id: project.objectId
 					})
 					.then((response) => {

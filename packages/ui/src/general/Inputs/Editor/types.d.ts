@@ -14,8 +14,9 @@ export type EditorComponent = {
 	withEmojiSuggestion?: boolean;
 	withEmojisReplacer?: boolean;
 	onChange: (value: string) => void;
-	onClickOutside?: (value: string) => void;
+	onClickOutside?: () => void;
 	withHexColorsDecorator?: boolean;
+	withTextAlign?: boolean;
 	id?: string;
 	label?: string;
 };

@@ -10,7 +10,7 @@ const Playground = () => {
 		<AdminPage title={"Playground"} emptyContent={true}>
 			{/* <Coloproktologen /> */}
 			{/* <Koloproktologie /> */}
-			<Cms />
+			<Koloproktologie />
 		</AdminPage>
 	);
 };

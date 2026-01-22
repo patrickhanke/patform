@@ -68,11 +68,11 @@ const useCreateColumns = <T extends ColumnClasses>({
 	constants,
 	editLink,
 	disableCategory,
-	useMasterKey = false
+	customColumns = [],
+	useMasterKey = false,
+	editDisabled = false
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandlerSecure(useMasterKey);
-
-	console.log({ settings });
 
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
@@ -739,6 +739,16 @@ const useCreateColumns = <T extends ColumnClasses>({
 					enableSorting: false
 				} as ColumnDef<T>);
 			}
+			if (columnElement.type === "custom") {
+				columnArray.push({
+					accessorFn: (row) => columnElement.render(row),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: false
+				} as ColumnDef<T>);
+			}
 		});
 
 		categories.map((category) => {
@@ -769,66 +779,67 @@ const useCreateColumns = <T extends ColumnClasses>({
 				sortingFn: undefined // Default sortingFn
 			} as ColumnDef<T>);
 		});
-
-		if (typeof editLink === "string") {
-			columnArray.push({
-				accessorFn: (row) => (
-					<div className="button_container">
-						<IconButton
-							isLink
-							link={`/${editLink}/${row.objectId}`}
-							icon="link"
-						/>
-						<TableColumnDeleteField
-							objectId={row.objectId}
-							className={className}
-							refetch={refetch}
-						/>
-					</div>
-				),
-				header: () => <span>Bearbeiten</span>,
-				id: "edit",
-				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				enableSorting: false,
-				sortingFn: undefined // Default sortingFn
-			});
-		} else
-			columnArray.push({
-				accessorFn: (row) => (
-					<div className="button_container">
-						{fields.length > 0 && (
-							<TableColumnEditField
+		if (editDisabled === true) {
+			if (typeof editLink === "string") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<div className="button_container">
+							<IconButton
+								isLink
+								link={`/${editLink}/${row.objectId}`}
+								icon="link"
+							/>
+							<TableColumnDeleteField
 								objectId={row.objectId}
 								className={className}
-								dataFields={fields}
+								refetch={refetch}
 							/>
-						)}
-						{settings?.length > 0 && (
-							<TableColumnEditField
+						</div>
+					),
+					header: () => <span>Bearbeiten</span>,
+					id: "edit",
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: false,
+					sortingFn: undefined // Default sortingFn
+				});
+			} else
+				columnArray.push({
+					accessorFn: (row) => (
+						<div className="button_container">
+							{fields.length > 0 && (
+								<TableColumnEditField
+									objectId={row.objectId}
+									className={className}
+									dataFields={fields}
+								/>
+							)}
+							{settings?.length > 0 && (
+								<TableColumnEditField
+									objectId={row.objectId}
+									className={className}
+									dataFields={settings}
+									type="setting"
+								/>
+							)}
+							<TableColumnDeleteField
 								objectId={row.objectId}
 								className={className}
-								dataFields={settings}
-								type="setting"
+								refetch={refetch}
+								useMasterKey={useMasterKey}
 							/>
-						)}
-						<TableColumnDeleteField
-							objectId={row.objectId}
-							className={className}
-							refetch={refetch}
-							useMasterKey={useMasterKey}
-						/>
-					</div>
-				),
-				header: () => (
-					<span>{fields.length > 0 ? "Bearb." : "Löschen"}</span>
-				),
-				id: "edit",
-				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				enableSorting: false,
-				sortingFn: undefined
-			});
+						</div>
+					),
+					header: () => (
+						<span>{fields.length > 0 ? "Bearb." : "Löschen"}</span>
+					),
+					id: "edit",
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: false,
+					sortingFn: undefined
+				});
+		}
 
 		return columnArray;
 	}, [

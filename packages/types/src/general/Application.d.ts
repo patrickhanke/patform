@@ -5,6 +5,7 @@ export type Params = {
   email_id: string;
   code: string;
   user_id: string;
+  list_id: string;
 };
 
 export type PageState = {

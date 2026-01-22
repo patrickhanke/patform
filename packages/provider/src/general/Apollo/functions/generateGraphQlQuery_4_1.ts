@@ -24,7 +24,11 @@ const getQueryStringFromFields = (fields: string[]) => {
 				field === "times" ||
 				field === "dates" ||
 				field === "documents" ||
-				field === "connected_elements"
+				field === "connected_elements" ||
+				field === "content" ||
+				field === "attachments" ||
+				field === "recipients" ||
+				field === "lists"
 			) {
 				return `
                 ${field} {

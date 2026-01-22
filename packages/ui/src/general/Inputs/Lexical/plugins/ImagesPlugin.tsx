@@ -32,7 +32,7 @@ type ImageData = {
 	};
 };
 
-export default function ImagesPlugin() {
+export default function ImagesPlugin({ projectId }: { projectId: string }) {
 	const [editor] = useLexicalComposerContext();
 	const [showImageSelector, setShowImageSelector] = useState(false);
 	const [selectedImages, setSelectedImages] = useState<string[]>([]);
@@ -41,7 +41,8 @@ export default function ImagesPlugin() {
 	const { data: images } = useFindData({
 		objectName: "Image",
 		fields: ["objectId", "title", "label", "file { name url }"],
-		order: "createdAt_DESC"
+		order: "createdAt_DESC",
+		projectId
 	});
 
 	useEffect(() => {
@@ -56,15 +57,17 @@ export default function ImagesPlugin() {
 			COMMAND_PRIORITY_EDITOR
 		);
 
-		// Register OPEN_IMAGE_SELECTOR_COMMAND
-		const unregisterSelector = editor.registerCommand<void>(
-			OPEN_IMAGE_SELECTOR_COMMAND,
-			() => {
-				setShowImageSelector(true);
-				return true;
-			},
-			COMMAND_PRIORITY_EDITOR
-		);
+	// Register OPEN_IMAGE_SELECTOR_COMMAND
+	const unregisterSelector = editor.registerCommand<void>(
+		OPEN_IMAGE_SELECTOR_COMMAND,
+		() => {
+			console.log("OPEN_IMAGE_SELECTOR_COMMAND received");
+			setShowImageSelector(true);
+			console.log("showImageSelector set to true");
+			return true;
+		},
+		COMMAND_PRIORITY_EDITOR
+	);
 
 		return () => {
 			unregisterInsert();
@@ -81,8 +84,12 @@ export default function ImagesPlugin() {
 						(img: ImageData) => img.objectId === imageId
 					);
 					if (imageData?.file?.url) {
+						console.log({ imageData: imageData.file.url });
+						console.log({
+							imageData: imageData.file.url.replace(/\/$/, "")
+						});
 						const imageNode = $createImageNode({
-							src: imageData.file.url,
+							src: imageData.file.url.replace(/\/$/, ""),
 							altText:
 								imageData.title ||
 								imageData.file.name ||
@@ -109,8 +116,11 @@ export default function ImagesPlugin() {
 		);
 	}, [showImageSelector, selectedImages, images]);
 
+	console.log({ showImageSelector });
+
 	return (
 		<SlideIn
+			key={showImageSelector ? "open" : "closed"}
 			header="Bilder auswählen"
 			isOpen={showImageSelector}
 			cancel={() => {

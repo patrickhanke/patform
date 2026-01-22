@@ -5,7 +5,10 @@ import { useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { INSERT_HORIZONTAL_RULE_COMMAND } from "@lexical/react/LexicalHorizontalRuleNode";
 import { INSERT_TABLE_COMMAND } from "@lexical/table";
-import { INSERT_IMAGE_COMMAND, OPEN_IMAGE_SELECTOR_COMMAND } from "./ImagesPlugin";
+import {
+	INSERT_IMAGE_COMMAND,
+	OPEN_IMAGE_SELECTOR_COMMAND
+} from "./ImagesPlugin";
 import { INSERT_PAGE_BREAK } from "./PageBreakPlugin";
 import { INSERT_LAYOUT_COMMAND } from "./LayoutPlugin";
 import "./InsertMenuPlugin.scss";
@@ -41,7 +44,9 @@ export default function InsertMenuPlugin() {
 	};
 
 	const insertImage = () => {
+		console.log("insertImage button clicked, dispatching command");
 		editor.dispatchCommand(OPEN_IMAGE_SELECTOR_COMMAND, undefined);
+		console.log("Command dispatched");
 	};
 
 	const insertPageBreak = () => {
@@ -97,7 +102,7 @@ export default function InsertMenuPlugin() {
 				onClick={insertImage}
 				title="Insert Image"
 			>
-				🖼️
+				Bild hinzufügen
 			</button>
 
 			<button

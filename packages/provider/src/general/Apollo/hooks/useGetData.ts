@@ -12,7 +12,6 @@ const useGetData: UseGetDataHook<Classes> = ({
 	skip
 }) => {
 	const cleanObjectName = objectName.replace(/_/g, "");
-	console.log({ cleanObjectName });
 	const { loading, data, refetch, error } = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "get",

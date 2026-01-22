@@ -2,8 +2,7 @@ import { cloneDeep } from "lodash-es";
 import { FC, useCallback } from "react";
 import { ImageClass } from "@repo/types";
 import { SelectedImagesProps } from "./types";
-import { generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import DisplaySelectedImages from "./components/DisplaySelectedImages";
 
 const SelectedImages: FC<SelectedImagesProps> = ({
@@ -11,20 +10,18 @@ const SelectedImages: FC<SelectedImagesProps> = ({
 	setSelectedImages,
 	maxFileCount
 }) => {
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Image",
-			fields: ["objectId", "file {name url}", "title"]
-		}),
-		{
-			variables: {
-				params: {
-					objectId: { _in: selectedImages }
-				}
+	const { data } = useFindData({
+		objectName: "Image",
+		fields: ["objectId", "file {name url}", "title"],
+		filters: [
+			{
+				key: "objectId",
+				id: "objectId",
+				operator: "in",
+				value: selectedImages
 			}
-		}
-	);
+		]
+	});
 
 	const removeImageHandler = useCallback((imageId: string) => {
 		const selectedImagesCopy = cloneDeep(selectedImages);
@@ -43,7 +40,7 @@ const SelectedImages: FC<SelectedImagesProps> = ({
 		return null;
 	}
 
-	const images = data.objects.findImage.results;
+	const images = data;
 
 	return (
 		<div>

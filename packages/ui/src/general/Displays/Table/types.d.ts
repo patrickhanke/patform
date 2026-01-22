@@ -166,6 +166,8 @@ export type CreateColumnHookProps<Class> = {
 	editLink?: string; // if muttiple links, use "link1/link2"
 	disableCategory?: (row: Class, label: ModuleCategory["label"]) => boolean;
 	useMasterKey?: boolean;
+	editDisabled?: boolean;
+	customColumns?: ColumnData<Class>[];
 };
 
 export type ColumnClasses =

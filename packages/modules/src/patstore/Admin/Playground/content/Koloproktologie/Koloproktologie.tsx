@@ -1,136 +1,109 @@
 "use client";
 
-import { AdminPage } from "@repo/modules";
-import { gql, useQuery } from "@apollo/client";
-import { convertDateToString, useDataHandler } from "@repo/provider";
+import { useDataHandler, useFindData } from "@repo/provider";
 import { useCallback } from "react";
 import data from "./constants/data.json";
-import aerzte_bcd from "./constants/aerzte_bcd.json";
-import aerzte_dgk from "./constants/aerzte_dgk.json";
-import aerzte from "./constants/aerzte.json";
+import { PatstoreUser } from "@repo/types";
 
 const Koloproktologen = () => {
-	const aerzteDgK = aerzte_dgk.filter(
-		(aerzt) => aerzt.newsletter_optin === 1
-	);
-
-	const { data: userData } = useQuery(gql`
-		query {
-			objects {
-				find_User(
-					where: { projects: { _in: ["EgRR0prozh", "JRxDkaxCoI"] } }
-				) {
-					results {
-						label
-						objectId
-						username
-						data
-						settings
-						address
-					}
-				}
+	const { data: userData } = useFindData({
+		objectName: "User",
+		fields: [
+			"label",
+			"objectId",
+			"username",
+			"data",
+			"settings",
+			"address",
+			"title",
+			"salutation",
+			"salut"
+		],
+		filters: [
+			{
+				key: "projects",
+				id: "projects",
+				value: ["EgRR0prozh", "JRxDkaxCoI"],
+				operator: "in"
 			}
-		}
-	`);
+		],
+		limit: 1400
+	});
 
 	console.log(userData);
 
 	const { updateData, createData } = useDataHandler(true, false);
 
 	const updateUsers = useCallback(async () => {
-		console.log(aerzte);
+		const users = userData;
 
-		const users = userData?.objects.find_User.results;
-
-		const isEmail = (email: string) => {
-			if (!email) return false;
-			return email.includes("@") && email.includes(".");
-		};
-		const newsletterUsers = aerzte_bcd.filter(
-			(user) =>
-				user.newsletter_optin?.toString() === "1" && isEmail(user.email)
-		);
-
-		console.log({ newsletterUsers });
-
-		const updatedUsers = users.map((user) => {
-			const optin =
-				user.settings.newsletter === true ||
-				user.settings.newsletter_optin === true;
-
-			const getEmail = () => {
-				if (user.settings.newsletter_email === "existing") {
-					if (user.email) {
-						return user.email;
-					} else if (
-						user.settings.newsletter_email_address &&
-						isEmail(user.settings.newsletter_email_address)
-					) {
-						return user.settings.newsletter_email_address;
-					} else {
-						return "";
-					}
-				} else if (user.settings.newsletter_email === "other") {
-					if (isEmail(user.settings.newsletter_email_address)) {
-						return user.settings.newsletter_email_address;
-					} else if (isEmail(user.email)) {
-						return user.email;
-					} else {
-						return "";
-					}
-				} else if (isEmail(user.settings.newsletter_email)) {
-					return user.settings.newsletter_email;
-				} else {
-					return "";
-				}
+		users.forEach((user) => {
+			const userSettings = user.settings;
+			let updateObject: Partial<PatstoreUser> = {
+				title: user.address,
+				pre_title: user.title,
+				post_title: undefined
 			};
 
-			return {
-				...user,
-				settings: {
-					dgk: {
-						...user.settings.dgk
+			if (
+				userSettings.newsletter_optin === true &&
+				userSettings.newsletter_email
+			) {
+				updateObject = {
+					...updateObject,
+					newsletter_optin: true,
+					newsletter_email: userSettings.newsletter_email,
+					newsletter_optin_date: {
+						__type: "Date",
+						iso: userSettings.newsletter_optin_date
+							? new Date(
+									userSettings.newsletter_optin_date
+								).toISOString()
+							: new Date().toISOString()
 					},
-					bcd: {
-						...user.settings.bcd
+					newsletter_optout_date: userSettings.newsletter_optout_date
+						? {
+								__type: "Date",
+								iso: new Date(
+									userSettings.newsletter_optout_date
+								).toISOString()
+							}
+						: null
+				};
+				console.log(updateObject);
+			} else if (userSettings.newsletter_optin === false) {
+				updateObject = {
+					...updateObject,
+					newsletter_optin: false,
+					newsletter_optin_date: {
+						__type: "Date",
+						iso: userSettings.newsletter_optin_date
+							? new Date(
+									userSettings.newsletter_optin_date
+								).toISOString()
+							: null
 					},
-					newsletter_optin: optin,
-					newsletter_email: optin ? getEmail() : "",
-					newsletter_optin_date:
-						user.settings.newsletter_optin_date || "",
-					newsletter_optout_date:
-						user.settings.newsletter_optout_date || ""
-				}
-			};
-		});
-
-		console.log(
-			updatedUsers.filter(
-				(user) =>
-					user.settings.newsletter_optin === true &&
-					user.settings.newsletter_email !== ""
-			)
-		);
-		console.log(
-			updatedUsers.filter(
-				(user) => user.settings.newsletter_optin === false
-			)
-		);
-		const updateArray = updatedUsers.map(async (user) => {
-			return await updateData({
+					newsletter_optout_date: {
+						__type: "Date",
+						iso: userSettings.newsletter_optout_date
+							? new Date(
+									userSettings.newsletter_optout_date
+								).toISOString()
+							: null
+					}
+				};
+			}
+			console.log(updateObject);
+			updateData({
 				className: "_User",
 				objectId: user.objectId,
-				updateObject: {
-					settings: user.settings
-				}
+				updateObject: updateObject
 			});
 		});
-
-		await Promise.all(updateArray);
 	}, [userData]);
 
 	const updateSalutation = useCallback(async () => {
-		const users = userData?.objects.find_User.results;
+		const users = userData;
 		const updatedUsers = users.map((user) =>
 			updateData({
 				className: "_User",
@@ -149,7 +122,7 @@ const Koloproktologen = () => {
 			<button
 				className="full_button secondary"
 				disabled={!data}
-				onClick={() => updateSalutation()}
+				onClick={() => updateUsers()}
 			>
 				Update Users
 			</button>

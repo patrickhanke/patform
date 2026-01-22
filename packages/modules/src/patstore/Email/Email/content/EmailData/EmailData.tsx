@@ -7,7 +7,7 @@ import generateFormData from "./functions/generateFormData";
 import { useFindData } from "@repo/provider";
 
 const FormData: FC<FormDataProps> = ({
-	formId,
+	emailId,
 	selectedDataRows,
 	setSelectedDataRows
 }) => {
@@ -16,7 +16,7 @@ const FormData: FC<FormDataProps> = ({
 			key: "reference_id",
 			operator: "equalTo",
 			id: "reference_id",
-			value: formId
+			value: emailId
 		}
 	];
 	const [filters] = useState<Filter[]>(initialFilters);

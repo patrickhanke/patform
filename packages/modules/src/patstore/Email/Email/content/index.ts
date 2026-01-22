@@ -1,2 +1,10 @@
 export { EmailData } from "./EmailData";
 export { EmailContent } from "./EmailContent";
+export type { EmailContentRef } from "./EmailContent";
+export { EmailAttachments } from "./EmailAttachments";
+export type { EmailAttachmentsProps } from "./EmailAttachments";
+export { EmailRecipients } from "./EmaiRecipients";
+export type { EmailRecipientsProps, RecipientData } from "./EmaiRecipients";
+export { EmailSettings } from "./EmailSettings";
+export { EmailOverview } from "./EmailOverview";
+export type { EmailOverviewProps } from "./EmailOverview";

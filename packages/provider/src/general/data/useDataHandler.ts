@@ -37,7 +37,8 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 					| boolean
 					| object
 					| Array<any>
-					| undefined;
+					| undefined
+					| null;
 			};
 			afterSaveHandler?: (objectId: string) => void;
 			feedback?: string;

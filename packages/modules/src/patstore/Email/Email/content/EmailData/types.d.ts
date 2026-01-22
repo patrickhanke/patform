@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 export type FormDataProps = {
-	formId: string;
+	emailId: string;
 	selectedDataRows: string[];
 	setSelectedDataRows: Dispatch<SetStateAction<string[]>>;
 };

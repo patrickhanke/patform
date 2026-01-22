@@ -47,9 +47,7 @@ import {
 } from "lexical";
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from "@lexical/html";
 import { $setBlocksType } from "@lexical/selection";
-import {
-	INSERT_HORIZONTAL_RULE_COMMAND
-} from "@lexical/react/LexicalHorizontalRuleNode";
+import { INSERT_HORIZONTAL_RULE_COMMAND } from "@lexical/react/LexicalHorizontalRuleNode";
 
 import FloatingLinkEditorPlugin from "./plugins/FloatingLinkEditorPlugin";
 import FloatingTextFormatToolbarPlugin from "./plugins/FloatingTextFormatToolbarPlugin";
@@ -72,6 +70,7 @@ import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import LayoutPlugin from "./plugins/LayoutPlugin";
 
 import "./Lexical.scss";
+import { useAppContext } from "@repo/provider";
 
 // URL matchers for AutoLinkPlugin
 const URL_MATCHER =
@@ -91,7 +90,9 @@ const MATCHERS = [
 			index: match.index,
 			length: fullMatch.length,
 			text: fullMatch,
-			url: fullMatch.startsWith("http") ? fullMatch : `https://${fullMatch}`
+			url: fullMatch.startsWith("http")
+				? fullMatch
+				: `https://${fullMatch}`
 		};
 	},
 	(text: string) => {
@@ -194,14 +195,11 @@ function Toolbar() {
 				setIsUnderline(selection.hasFormat("underline"));
 				setIsStrikethrough(selection.hasFormat("strikethrough"));
 				setIsCode(selection.hasFormat("code"));
-				
+
 				// Check if selection is within a link
 				const node = selection.anchor.getNode();
 				const parent = node.getParent();
-				setIsLink(
-					parent !== null && 
-					parent.getType() === "link"
-				);
+				setIsLink(parent !== null && parent.getType() === "link");
 			}
 		});
 	}, [editor]);
@@ -402,18 +400,10 @@ function Toolbar() {
 				☑ Checklist
 			</button>
 			<div className="toolbar-divider" />
-			<button
-				type="button"
-				onClick={outdentContent}
-				aria-label="Outdent"
-			>
+			<button type="button" onClick={outdentContent} aria-label="Outdent">
 				← Outdent
 			</button>
-			<button
-				type="button"
-				onClick={indentContent}
-				aria-label="Indent"
-			>
+			<button type="button" onClick={indentContent} aria-label="Indent">
 				→ Indent
 			</button>
 			<div className="toolbar-divider" />
@@ -510,6 +500,7 @@ export default function LexicalEditor({
 	maxLength,
 	className = ""
 }: LexicalEditorProps) {
+	const { project } = useAppContext();
 	const initialConfig = {
 		namespace: "LexicalEditor",
 		theme: {
@@ -613,12 +604,14 @@ export default function LexicalEditor({
 					<MarkdownShortcutPlugin />
 					<HashtagPlugin />
 					<ClearEditorPlugin />
-					<ImagesPlugin />
+					<ImagesPlugin projectId={project?.objectId} />
 					<PageBreakPlugin />
 					<TablePlugin />
 					<LayoutPlugin />
 					{maxLength && <MaxLengthPlugin maxLength={maxLength} />}
-					{withCharacterCount && <CharacterCountPlugin maxLength={maxLength} />}
+					{withCharacterCount && (
+						<CharacterCountPlugin maxLength={maxLength} />
+					)}
 					{autoFocus && <AutoFocusPlugin />}
 					<OnChangeHandlerPlugin onChange={onChange} />
 					<UpdatePlugin value={value} />

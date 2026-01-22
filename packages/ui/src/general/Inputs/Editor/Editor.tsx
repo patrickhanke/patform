@@ -9,6 +9,7 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import Placeholder from "@tiptap/extension-placeholder";
+import TextAlign from "@tiptap/extension-text-align";
 
 import type { Extensions } from "@tiptap/react";
 
@@ -27,7 +28,6 @@ import { EditorComponent } from "./types";
 
 function Editor({
 	content = "",
-	editable = true,
 	label = "",
 	id = "",
 	placeholder = "Type '/' for actions…",
@@ -35,14 +35,14 @@ function Editor({
 	withToolbar = true,
 	withPopover = false,
 	withTypographyExtension = false,
-	withLinkExtension = false,
 	withCodeBlockLowlightExtension = false,
 	withTaskListExtension = false,
 	withPlaceholderExtension = false,
 	withMentionSuggestion = false,
 	onChange,
 	onClickOutside = () => null,
-	withHexColorsDecorator = false
+	withHexColorsDecorator = false,
+	withTextAlign = true
 }: EditorComponent) {
 	const [debouncedValue, setEditorHtmlContent] = useDebounceValue(
 		content,
@@ -96,6 +96,14 @@ function Editor({
 
 	if (withHexColorsDecorator) {
 		extensions.push(HexColorDecorator);
+	}
+
+	if (withTextAlign) {
+		extensions.push(
+			TextAlign.configure({
+				types: ["heading", "paragraph"]
+			})
+		);
 	}
 
 	const editor = useEditor(

@@ -1,0 +1,54 @@
+.text-block {
+	width: 100%;
+	min-height: 40px;
+
+	&-content {
+		outline: none;
+		padding: 8px;
+		min-height: 40px;
+		line-height: 1.6;
+
+		&:focus {
+			background-color: rgba(0, 123, 255, 0.05);
+			border-radius: 4px;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin: 0.5em 0;
+			font-weight: 600;
+		}
+
+		h1 {
+			font-size: 2em;
+		}
+		h2 {
+			font-size: 1.5em;
+		}
+		h3 {
+			font-size: 1.25em;
+		}
+		h4 {
+			font-size: 1.1em;
+		}
+		h5 {
+			font-size: 1em;
+		}
+		h6 {
+			font-size: 0.9em;
+		}
+
+		p {
+			margin: 0.5em 0;
+		}
+
+		&:empty::before {
+			content: "Enter text here...";
+			color: #999;
+		}
+	}
+}

@@ -1,17 +1,36 @@
 "use client";
 
 import siteStates from "./constants/siteStates";
-import { Modal, Page, PageHeaderButton } from "@repo/ui";
-import { useMemo, useState } from "react";
+import {
+	ContentBlock,
+	ContentPreview,
+	Modal,
+	Page,
+	PageHeaderButton,
+	transformToEmail
+} from "@repo/ui";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Params } from "@repo/types";
-import { useDataHandler, useGetData } from "@repo/provider";
+import {
+	axiosclient,
+	useAppContext,
+	useDataHandler,
+	useGetData
+} from "@repo/provider";
 import TestEmail from "./components/TestEmail";
-import { EmailContent, EmailData } from "./content";
+import {
+	EmailContent,
+	EmailData,
+	EmailAttachments,
+	EmailRecipients,
+	EmailSettings,
+	EmailOverview
+} from "./content";
+import { isEqual } from "lodash-es";
 
 const Email = ({ params }: { params: Params }) => {
 	const { deleteData } = useDataHandler();
-	const [testEmail, setTestEmail] = useState<boolean>(false);
-
+	const { project } = useAppContext();
 	const emailId = params.email_id;
 
 	console.log(emailId);
@@ -20,10 +39,18 @@ const Email = ({ params }: { params: Params }) => {
 		objectName: "Email",
 		fields: [
 			"objectId",
+			"date",
+			"createdAt",
+			"updatedAt",
 			"title",
 			"description",
 			"fields",
 			"categories",
+			"settings",
+			"state",
+			"content",
+			"attachments",
+			"recipients",
 			"settings"
 		],
 		id: emailId
@@ -31,48 +58,91 @@ const Email = ({ params }: { params: Params }) => {
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as { value: string; label: string }
 	);
-	const [createField, setCreateField] = useState(false);
 	const [selectedDataRows, setSelectedDataRows] = useState<string[]>([]);
 	const [dataDeleteModal, setDataDeleteModal] = useState<boolean>(false);
 	const [loading, setLoading] = useState(false);
+	const { updateData } = useDataHandler();
+	const [emailContent, setEmailContent] = useState<ContentBlock[]>(
+		email?.content || []
+	);
+	const [previewOpen, setPreviewOpen] = useState<boolean>(false);
+	const [testEmailOpen, setTestEmailOpen] = useState<boolean>(false);
+
+	const sendEmailHandler = useCallback(async () => {
+		setLoading(true);
+		await axiosclient().post(`functions/send_broadcast_email`, {
+			email_id: emailId,
+			project_id: project.objectId,
+			content: transformToEmail(emailContent)
+		});
+		await refetch();
+		setLoading(false);
+	}, [refetch, project, emailContent]);
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
-		if (siteState.value === "fields") {
+		if (siteState.value === "overview") {
 			return [
 				{
-					text: "Feld hinzufügen",
-					onClick: () => setCreateField(true),
-					is_add_button: true,
-					disabled: email?.settings?.static_form === true || false
-				}
-			];
-		}
-		if (siteState.value === "data") {
-			return [
-				{
-					text: "Daten löschen",
+					text: "E-Mail versenden",
 					onClick: () => {
-						setDataDeleteModal(true);
+						sendEmailHandler();
 					},
-					icon: "delete",
-					disabled: selectedDataRows.length === 0
+					disabled:
+						loading ||
+						email?.state !== "draft" ||
+						email?.recipients?.length === 0 ||
+						email?.content?.length === 0
 				}
 			];
 		}
-		if (siteState.value === "settings") {
+		if (siteState.value === "content") {
 			return [
 				{
 					text: "Test E-Mail senden",
 					onClick: () => {
-						setTestEmail(true);
-					}
+						setTestEmailOpen(true);
+					},
+					icon: "save",
+					disabled: loading
+				},
+				{
+					text: "Vorschau anzeigen",
+					onClick: () => {
+						setPreviewOpen(true);
+					},
+					icon: "save",
+					disabled: loading
+				},
+				{
+					text: "Inhalte speichern",
+					onClick: async () => {
+						await updateData({
+							className: "Email",
+							objectId: emailId,
+							updateObject: {
+								content: emailContent
+							},
+							feedback: "Inhalte erfolgreich aktualisiert"
+						});
+						await refetch();
+					},
+					icon: "save",
+					disabled:
+						isEqual(emailContent, email?.content || []) || loading
 				}
 			];
 		}
-		return [];
-	}, [siteState, selectedDataRows, email]);
 
-	console.log(email);
+		return [];
+	}, [siteState, selectedDataRows, email, emailContent, loading, project]);
+
+	useEffect(() => {
+		if (email && emailContent.length === 0) {
+			setEmailContent(email.content);
+		}
+	}, [email]);
+
+	console.log("email", email);
 
 	if (!email) {
 		return <div>Lädt ...</div>;
@@ -92,6 +162,12 @@ const Email = ({ params }: { params: Params }) => {
 				<p>E-Mail nicht gefunden</p>
 			) : (
 				<>
+					{siteState.value === "overview" && (
+						<EmailOverview
+							email={email}
+							projectId={project.objectId}
+						/>
+					)}
 					{siteState.value === "data" && (
 						<EmailData
 							emailId={emailId}
@@ -99,8 +175,20 @@ const Email = ({ params }: { params: Params }) => {
 							setSelectedDataRows={setSelectedDataRows}
 						/>
 					)}
+					{siteState.value === "recipients" && (
+						<EmailRecipients emailId={emailId} refetch={refetch} />
+					)}
 					{siteState.value === "content" && (
-						<EmailContent emailId={emailId} />
+						<EmailContent
+							emailContent={emailContent}
+							setEmailContent={setEmailContent}
+						/>
+					)}
+					{siteState.value === "attachments" && (
+						<EmailAttachments emailId={emailId} email={email} />
+					)}
+					{siteState.value === "settings" && (
+						<EmailSettings emailId={emailId} />
 					)}
 				</>
 			)}
@@ -128,10 +216,15 @@ const Email = ({ params }: { params: Params }) => {
 					Sind sich Sicher, dass sie die Datensätze löschen möchten?
 				</p>
 			</Modal>
+			<ContentPreview
+				content={emailContent}
+				isOpen={previewOpen}
+				setIsOpen={setPreviewOpen}
+			/>
 			<TestEmail
-				testEmail={testEmail}
-				setTestEmail={setTestEmail}
-				emailId={emailId}
+				testEmail={testEmailOpen}
+				setTestEmail={setTestEmailOpen}
+				emailContent={emailContent}
 			/>
 		</Page>
 	);
