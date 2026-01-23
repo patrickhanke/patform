@@ -98,6 +98,14 @@ const ListsOverview = () => {
 			title="E-Mail Listen"
 			emptyContent={true}
 			createClass={{
+				initialData: {
+					reference_id: currentModule.objectId,
+					type: "list",
+					settings: {
+						unsubscribe: false,
+						unsubscribe_link: ""
+					}
+				},
 				className: "Item",
 				text: "Neue Liste erstellen",
 				fields: [
@@ -105,16 +113,6 @@ const ListsOverview = () => {
 						id: "title",
 						label: "Titel",
 						type: "string",
-						required: true,
-						active: true,
-						default: true
-					},
-					{
-						id: "reference_id",
-						value: currentModule.objectId,
-						label: "Refenez",
-						type: "string",
-						disabled: true,
 						required: true,
 						active: true,
 						default: true

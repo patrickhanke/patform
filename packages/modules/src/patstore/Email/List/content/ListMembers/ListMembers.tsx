@@ -1,15 +1,10 @@
 "use client";
 
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import {
-	useAppContext,
-	useDataHandler,
-	useFindData,
-	useGetData
-} from "@repo/provider";
-import { IconButton, Table, useCreateColumns } from "@repo/ui";
+import { FC, useMemo, useState } from "react";
+import { useAppContext, useDataHandler, useFindData } from "@repo/provider";
+import { IconButton, Table, TextInput, useCreateColumns } from "@repo/ui";
 import { ApolloRefetch, Filter, PatstoreUser } from "@repo/types";
-import { generateUUID } from "../../functions/generateUUID";
+import MemberSwitch from "./components/MemberSwitch";
 
 export interface ListMembersProps {
 	listId: string;
@@ -27,11 +22,7 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 	const { updateData } = useDataHandler();
 	const [order, setOrder] = useState<string>("name_ASC");
 
-	const { data: list, refetch: refetchList } = useGetData({
-		objectName: "Item",
-		fields: ["objectId", "data"],
-		id: listId
-	});
+	const [loading, setLoading] = useState(false);
 
 	const initialFilters: Filter[] = useMemo(
 		() => [
@@ -45,7 +36,7 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 		[project]
 	);
 
-	const [filters] = useState<Filter[]>([]);
+	const [filters, setFilters] = useState<Filter[]>([]);
 
 	// Fetch users with email addresses
 	const {
@@ -56,7 +47,6 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 		objectName: "User",
 		fields: [
 			"objectId",
-			"name",
 			"username",
 			"title",
 			"pre_title",
@@ -66,7 +56,6 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 			"last_name",
 			"data",
 			"settings",
-			"newsletter_email",
 			"lists"
 		],
 		filters: [...initialFilters, ...filters] as Filter[],
@@ -84,102 +73,12 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 		users.filter((user: PatstoreUser) => user?.lists?.includes(listId))
 	);
 
-	// Filter users to only those with email or newsletter_email
-	const usersWithEmail = useMemo(() => {
-		if (!users) return [];
-		return users.filter((user: PatstoreUser) => {
-			const hasEmail = user.email && user.email.trim() !== "";
-			const hasNewsletterEmail =
-				user.settings?.newsletter_email &&
-				typeof user.settings.newsletter_email === "string" &&
-				user.settings.newsletter_email.trim() !== "";
-			return hasEmail || hasNewsletterEmail;
-		});
-	}, [users]);
-
 	// Get currently selected recipients from list
 	const selectedRecipients = useMemo(() => {
-		return (list?.data?.recipients || []) as RecipientData[];
-	}, [list]);
-
-	// Track selected user IDs
-	const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
-
-	// Update selected user IDs when list recipients change (on initial load)
-	useEffect(() => {
-		if (selectedRecipients.length > 0 && usersWithEmail.length > 0) {
-			const recipientEmails = selectedRecipients.map((r) => r.email);
-			const ids = usersWithEmail
-				.filter((user: PatstoreUser) => {
-					const email =
-						user.email ||
-						(user.settings?.newsletter_email as string);
-					return recipientEmails.includes(email);
-				})
-				.map((user: PatstoreUser) => user.objectId);
-
-			// Only update if the ids have actually changed
-			if (
-				JSON.stringify(ids.sort()) !==
-				JSON.stringify(selectedUserIds.sort())
-			) {
-				setSelectedUserIds(ids);
-			}
-		} else if (
-			selectedRecipients.length === 0 &&
-			selectedUserIds.length > 0
-		) {
-			setSelectedUserIds([]);
-		}
-	}, [selectedRecipients, usersWithEmail]);
-
-	// Save selected users to list.data.recipients
-	const saveRecipients = useCallback(
-		async (userIds: string[]) => {
-			if (!usersWithEmail) return;
-
-			const recipients: RecipientData[] = usersWithEmail
-				.filter((user: PatstoreUser) => userIds.includes(user.objectId))
-				.map((user: PatstoreUser) => ({
-					name:
-						user.name ||
-						`${user.first_name || ""} ${user.last_name || ""}`.trim() ||
-						user.username,
-					email:
-						user.email ||
-						(user.settings?.newsletter_email as string) ||
-						"",
-					key: generateUUID()
-				}));
-
-			await updateData({
-				className: "Item",
-				objectId: listId,
-				updateObject: {
-					data: {
-						...list?.data,
-						recipients
-					}
-				},
-				feedback: "Mitglieder erfolgreich aktualisiert"
-			});
-
-			await refetchList();
-		},
-		[usersWithEmail, listId, updateData, refetchList, list?.data]
-	);
-
-	// Handle row selection
-	const handleRowSelection = useCallback(
-		(value: React.SetStateAction<string[]>) => {
-			const selectedRows =
-				typeof value === "function" ? value(selectedUserIds) : value;
-			setSelectedUserIds(selectedRows);
-			saveRecipients(selectedRows);
-			refetch();
-		},
-		[selectedUserIds, saveRecipients, refetch]
-	);
+		return users.filter((user: PatstoreUser) =>
+			user?.lists?.includes(listId)
+		);
+	}, [users, listId]);
 
 	// Generate columns for the table
 	const columns = useCreateColumns<PatstoreUser>({
@@ -209,8 +108,14 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 				label: "In dieser Liste",
 				type: "custom",
 				render: (row: PatstoreUser) => {
-					const hasList = row?.lists?.includes(listId);
-					return <div>{hasList ? "Ja" : "Nein"}</div>;
+					return (
+						<MemberSwitch
+							listId={listId}
+							lists={row.lists}
+							userId={row.objectId}
+							refetch={refetchUsers}
+						/>
+					);
 				}
 			}
 		],
@@ -223,25 +128,60 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 
 	return (
 		<div>
-			<div style={{ marginBottom: "1rem" }}>
-				<IconButton
-					icon="check"
-					onClick={() => {
-						console.log("Alle auswählen");
-					}}
-					text="Alle auswählen"
-				/>
-				<p>
-					Ausgewählte Mitglieder: {selectedRecipients.length} /{" "}
-					{count || 0}
-				</p>
+			<div className="flex row a-ce j-sb gap-sm w-100">
+				<div className="flex col a-st w-100">
+					<IconButton
+						icon="check"
+						onClick={async () => {
+							setLoading(true);
+							users.forEach(async (user: PatstoreUser) => {
+								if (user.lists?.includes(listId)) {
+									return;
+								}
+								await updateData({
+									className: "_User",
+									objectId: user.objectId,
+									updateObject: {
+										lists: [...(user.lists || []), listId]
+									}
+								});
+							});
+							await refetchUsers();
+							setLoading(false);
+						}}
+						text="Alle auswählen"
+						loading={loading}
+					/>
+					<p>
+						Ausgewählte Mitglieder: {selectedRecipients.length} /{" "}
+						{count || 0}
+					</p>
+				</div>
+				<div className="flex col a-st gap-sm">
+					<TextInput
+						label="Nach Vor- oder Nachname filtern"
+						id="search-filter"
+						defaultValue={""}
+						onChange={(e) =>
+							setFilters([
+								{
+									key: "label",
+									value: e,
+									operator: "matchesRegex",
+									id: "label"
+								}
+							])
+						}
+						placeholder="Name eingeben..."
+						disabled={loading}
+					/>
+				</div>
 			</div>
 			<Table
 				columns={columns}
 				data={users || []}
-				rowCount={count}
+				rowCount={users.length}
 				setOrder={setOrder}
-				setSelectedRows={handleRowSelection}
 			/>
 		</div>
 	);

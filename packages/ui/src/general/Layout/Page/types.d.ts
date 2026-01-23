@@ -1,4 +1,4 @@
-import { ApolloRefetch, Module, ModuleField, PageState } from "@repo/types";
+import { ApolloRefetch, ModuleField, PageState } from "@repo/types";
 import { ReactNode } from "react";
 
 export type CreateClassProps = {

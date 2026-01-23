@@ -6,18 +6,13 @@ import {
 	ContentPreview,
 	Modal,
 	Page,
-	PageHeaderButton,
-	transformToEmail
+	PageHeaderButton
 } from "@repo/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Params } from "@repo/types";
-import {
-	axiosclient,
-	useAppContext,
-	useDataHandler,
-	useGetData
-} from "@repo/provider";
+import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
 import TestEmail from "./components/TestEmail";
+import BulkEmailSender from "./components/BulkEmailSender";
 import {
 	EmailContent,
 	EmailData,
@@ -67,17 +62,11 @@ const Email = ({ params }: { params: Params }) => {
 	);
 	const [previewOpen, setPreviewOpen] = useState<boolean>(false);
 	const [testEmailOpen, setTestEmailOpen] = useState<boolean>(false);
+	const [bulkEmailOpen, setBulkEmailOpen] = useState<boolean>(false);
 
 	const sendEmailHandler = useCallback(async () => {
-		setLoading(true);
-		await axiosclient().post(`functions/send_broadcast_email`, {
-			email_id: emailId,
-			project_id: project.objectId,
-			content: transformToEmail(emailContent)
-		});
-		await refetch();
-		setLoading(false);
-	}, [refetch, project, emailContent]);
+		setBulkEmailOpen(true);
+	}, []);
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
@@ -176,7 +165,7 @@ const Email = ({ params }: { params: Params }) => {
 						/>
 					)}
 					{siteState.value === "recipients" && (
-						<EmailRecipients emailId={emailId} refetch={refetch} />
+						<EmailRecipients email={email} />
 					)}
 					{siteState.value === "content" && (
 						<EmailContent
@@ -225,6 +214,13 @@ const Email = ({ params }: { params: Params }) => {
 				testEmail={testEmailOpen}
 				setTestEmail={setTestEmailOpen}
 				emailContent={emailContent}
+			/>
+			<BulkEmailSender
+				isOpen={bulkEmailOpen}
+				setIsOpen={setBulkEmailOpen}
+				emailContent={emailContent}
+				emailId={emailId}
+				listId={email?.settings?.recipient_list}
 			/>
 		</Page>
 	);

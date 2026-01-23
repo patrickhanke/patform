@@ -4,6 +4,7 @@ import { useDataHandler, useFindData } from "@repo/provider";
 import { useCallback } from "react";
 import data from "./constants/data.json";
 import { PatstoreUser } from "@repo/types";
+import usersJson from "./constants/users.json";
 
 const Koloproktologen = () => {
 	const { data: userData } = useFindData({
@@ -20,7 +21,8 @@ const Koloproktologen = () => {
 			"title",
 			"salutation",
 			"salut",
-			"emails"
+			"emails",
+			"type"
 		],
 		filters: [
 			{
@@ -39,68 +41,17 @@ const Koloproktologen = () => {
 
 	const updateUsers = useCallback(async () => {
 		const users = userData;
-
 		users.forEach((user) => {
-			const userSettings = user.settings;
-			const updateObject: Partial<PatstoreUser> = {
-				title: user.address,
-				pre_title: user.title,
-				post_title: undefined
-			};
-
-			if (
-				userSettings.newsletter_optin === true &&
-				userSettings.newsletter_email
-			) {
-				if (user.type === "dgk") {
-					updateObject.lists = ["QY2tNfkk0L"];
-					const userEmails = {};
-					userEmails["email"] = userSettings.newsletter_email;
-					userEmails["name"] = `${user.first_name} ${user.last_name}`;
-					userEmails["QY2tNfkk0L"] = {
-						email: userSettings.newsletter_email,
-						name: `${user.first_name} ${user.last_name}`,
-						optinDate: userSettings.newsletter_optin_date,
-						optoutDate: userSettings.newsletter_optout_date
-					};
-					updateObject.emails = userEmails;
-				} else if (user.type === "bcd") {
-					updateObject.lists = ["JaTGOQX4pZ"];
-					const userEmails = {};
-					userEmails["email"] = userSettings.newsletter_email;
-					userEmails["name"] = `${user.first_name} ${user.last_name}`;
-					userEmails["JaTGOQX4pZ"] = {
-						email: userSettings.newsletter_email,
-						name: `${user.first_name} ${user.last_name}`,
-						optinDate: userSettings.newsletter_optin_date,
-						optoutDate: userSettings.newsletter_optout_date
-					};
-					updateObject.emails = userEmails;
-				} else {
-					updateObject.lists = ["QY2tNfkk0L", "JaTGOQX4pZ"];
-					const userEmails = {};
-					userEmails["email"] = userSettings.newsletter_email;
-					userEmails["name"] = `${user.first_name} ${user.last_name}`;
-					userEmails["QY2tNfkk0L"] = {
-						email: userSettings.newsletter_email,
-						name: `${user.first_name} ${user.last_name}`,
-						optinDate: userSettings.newsletter_optin_date,
-						optoutDate: userSettings.newsletter_optout_date
-					};
-					userEmails["JaTGOQX4pZ"] = {
-						email: userSettings.newsletter_email,
-						name: `${user.first_name} ${user.last_name}`,
-						optinDate: userSettings.newsletter_optin_date,
-						optoutDate: userSettings.newsletter_optout_date
-					};
-					updateObject.emails = userEmails;
-				}
-			}
-			console.log(updateObject);
+			const jsonUser = usersJson.find(
+				(u) => u.username === user.username
+			);
+			console.log(jsonUser);
 			updateData({
 				className: "_User",
 				objectId: user.objectId,
-				updateObject: updateObject
+				updateObject: {
+					pre_title: jsonUser?.title || null
+				}
 			});
 		});
 	}, [userData]);

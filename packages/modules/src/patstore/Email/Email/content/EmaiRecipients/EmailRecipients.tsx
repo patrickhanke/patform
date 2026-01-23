@@ -13,6 +13,7 @@ interface RecipientWithStatus extends EmailRecipient {
 const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
 	const [recipients, setRecipients] = useState<RecipientWithStatus[]>([]);
 
+	console.log("email", email.recipients);
 	useEffect(() => {
 		if (email?.recipients) {
 			// Initialize recipients with loading state
@@ -51,13 +52,13 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
 				);
 				return;
 			}
-
+			console.log({ apiKey });
 			const response = await fetch(
 				`https://api.lettermint.com/v1/messages/${messageId}`,
 				{
 					method: "GET",
 					headers: {
-						Authorization: `Bearer ${apiKey}`,
+						"x-lettermint-token": `${apiKey}`,
 						"Content-Type": "application/json"
 					}
 				}
