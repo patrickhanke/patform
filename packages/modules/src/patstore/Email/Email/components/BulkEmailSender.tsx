@@ -19,6 +19,7 @@ import {
 } from "@repo/provider";
 import { transformToEmail } from "@repo/ui";
 import { Filter, PatstoreUser } from "@repo/types";
+import { get } from "lodash-es";
 
 export type BulkEmailSenderProps = {
 	isOpen: boolean;
@@ -85,7 +86,8 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 			"email",
 			"first_name",
 			"last_name",
-			"lists"
+			"lists",
+			"emails"
 		],
 		filters: initialFilters as Filter[],
 		limit: 10000,
@@ -95,21 +97,32 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 
 	const recipients = useMemo(() => {
 		if (users && listId && isOpen) {
-			return users.map((user: PatstoreUser) => ({
-				name: `${user.title || ""} ${user.pre_title || ""} ${user.first_name || ""} ${user.last_name || ""} ${user.post_title || ""}`.trim(),
-				email: user.email!,
-				data: {
-					first_name: user.first_name,
-					last_name: user.last_name || "",
-					title: user.title || "",
-					pre_title: user.pre_title || "",
-					post_title: user.post_title || "",
-					unsubscribe_link: list?.settings?.unsubscribe_link
-						? `${list?.settings?.unsubscribe_link}?user_id=${user.objectId}&list_id=${listId}`
-						: undefined,
-					list_name: list?.title || ""
+			const recipientArray: EmailRecipient[] = [];
+			users.forEach((user: PatstoreUser) => {
+				const userEmail =
+					get(user, `emails[${listId}].email`, undefined) ||
+					get(user, "emails.email", undefined) ||
+					user.email;
+
+				if (userEmail) {
+					recipientArray.push({
+						name: `${user.title || ""} ${user.pre_title || ""} ${user.first_name || ""} ${user.last_name || ""} ${user.post_title || ""}`.trim(),
+						email: userEmail,
+						data: {
+							first_name: user.first_name,
+							last_name: user.last_name || "",
+							title: user.title || "",
+							pre_title: user.pre_title || "",
+							post_title: user.post_title || "",
+							unsubscribe_link: list?.settings?.unsubscribe_link
+								? `${list?.settings?.unsubscribe_link}?user_id=${user.objectId}&list_id=${listId}`
+								: undefined,
+							list_name: list?.title || ""
+						}
+					});
 				}
-			}));
+			});
+			return recipientArray;
 		}
 		return [];
 	}, [users, listId, isOpen]);
