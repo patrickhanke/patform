@@ -57,9 +57,8 @@ export type KoloproktologieUser = {
 		dgk: {
 			accept_search: boolean;
 		};
-		newsletter: boolean;
-		newsletter_email?: "existing" | "other";
-		newsletter_email_address?: string;
+		newsletter_optin?: boolean;
+		newsletter_email?: string;
 		newsletter_optin_date: string;
 		newsletter_optout_date: string | null;
 	};

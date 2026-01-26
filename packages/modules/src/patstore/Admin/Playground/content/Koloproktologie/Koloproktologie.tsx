@@ -19,8 +19,6 @@ const Koloproktologen = () => {
 			"settings",
 			"address",
 			"title",
-			"salutation",
-			"salut",
 			"emails",
 			"type"
 		],

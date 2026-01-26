@@ -62,7 +62,6 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 			"last_name",
 			"data",
 			"settings",
-			"newsletter_email",
 			"lists",
 			"emails"
 		],
@@ -71,8 +70,6 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 		order: order,
 		skipQuery: !recipientListId || filters.length === 0
 	});
-
-	// Filter users to only those with email or newsletter_email
 
 	// Generate columns for the table
 	const columns = useCreateColumns<PatstoreUser>({
@@ -95,11 +92,6 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 			{
 				id: "last_name",
 				label: "Nachname",
-				type: "string"
-			},
-			{
-				id: "newsletter_email",
-				label: "Newsletter E-Mail",
 				type: "string"
 			}
 		],

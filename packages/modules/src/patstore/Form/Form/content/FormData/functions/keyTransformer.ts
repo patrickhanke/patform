@@ -41,13 +41,6 @@ const keyTransformer = (formData?: { [key: string]: string | undefined }) => {
 		if (key === "newsletter") {
 			newFormData["Newsletter"] = formData.newsletter ? "Ja" : "Nein";
 		}
-		if (key === "newsletter_email") {
-			newFormData["Newsletter_Email"] = formData.newsletter_email;
-		}
-		if (key === "newsletter_optin_date") {
-			newFormData["Newsletter_Optin_Datum"] =
-				formData.newsletter_optin_date;
-		}
 		if (key === "state_examination") {
 			newFormData["Staatsexamen"] = formData.state_examination;
 		}
