@@ -8,11 +8,12 @@ import {
 	Page,
 	PageHeaderButton
 } from "@repo/ui";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Params } from "@repo/types";
 import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
 import TestEmail from "./components/TestEmail";
 import BulkEmailSender from "./components/BulkEmailSender";
+import RecipientEmailSender from "./components/RecipientEmailSender";
 import {
 	EmailContent,
 	EmailData,
@@ -63,18 +64,27 @@ const Email = ({ params }: { params: Params }) => {
 	const [previewOpen, setPreviewOpen] = useState<boolean>(false);
 	const [testEmailOpen, setTestEmailOpen] = useState<boolean>(false);
 	const [bulkEmailOpen, setBulkEmailOpen] = useState<boolean>(false);
-
-	const sendEmailHandler = useCallback(async () => {
-		setBulkEmailOpen(true);
-	}, []);
+	const [recipientEmailOpen, setRecipientEmailOpen] =
+		useState<boolean>(false);
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
 			return [
 				{
-					text: "E-Mail versenden",
+					text: "E-Mail an Empfänger versenden",
 					onClick: () => {
-						sendEmailHandler();
+						setRecipientEmailOpen(true);
+					},
+					disabled:
+						loading ||
+						email?.state !== "draft" ||
+						email?.recipients?.length === 0 ||
+						email?.content?.length === 0
+				},
+				{
+					text: "E-Mail an Liste versenden",
+					onClick: () => {
+						setBulkEmailOpen(true);
 					},
 					disabled:
 						loading ||
@@ -221,6 +231,12 @@ const Email = ({ params }: { params: Params }) => {
 				emailContent={emailContent}
 				emailId={emailId}
 				listId={email?.settings?.recipient_list}
+			/>
+			<RecipientEmailSender
+				recipientEmailOpen={recipientEmailOpen}
+				setRecipientOpen={setRecipientEmailOpen}
+				emailContent={emailContent}
+				emailId={emailId}
 			/>
 		</Page>
 	);

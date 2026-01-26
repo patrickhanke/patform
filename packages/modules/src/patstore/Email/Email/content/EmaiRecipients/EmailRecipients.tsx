@@ -1,8 +1,9 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { EmailRecipient } from "@repo/types";
 import { EmailRecipientsProps, EmailStatus } from "./types";
+import { axiosclient } from "@repo/provider";
 
 interface RecipientWithStatus extends EmailRecipient {
 	status: EmailStatus;
@@ -12,8 +13,17 @@ interface RecipientWithStatus extends EmailRecipient {
 
 const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
 	const [recipients, setRecipients] = useState<RecipientWithStatus[]>([]);
-
+	console.log({ apiKey: process.env.NEXT_PUBLIC_LETTERMINT_API_KEY });
 	console.log("email", email.recipients);
+
+	const getEmailStatus = useCallback(async () => {
+		const response = await axiosclient().post("functions/get_email_meta", {
+			recipients: email.recipients,
+			url: "@koloproktologie.org"
+		});
+		console.log({ response });
+	}, [email]);
+
 	useEffect(() => {
 		if (email?.recipients) {
 			// Initialize recipients with loading state
@@ -26,11 +36,7 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
 			setRecipients(initialRecipients);
 
 			// Fetch status for each recipient with message_id
-			email.recipients.forEach((recipient, index) => {
-				if (recipient.message_id) {
-					fetchEmailStatus(recipient.message_id, index);
-				}
-			});
+			getEmailStatus();
 		}
 	}, [email]);
 
@@ -58,7 +64,7 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
 				{
 					method: "GET",
 					headers: {
-						"x-lettermint-token": `${apiKey}`,
+						Authorization: `Bearer ${apiKey}`,
 						"Content-Type": "application/json"
 					}
 				}
