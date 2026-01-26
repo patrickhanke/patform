@@ -50,8 +50,17 @@ const Koloproktologen = () => {
 			)
 		);
 
-		console.log(dublicates);
-		console.log(dublicates.length);
+		const bcdNotInUsers = aerzteBcd.filter(
+			(bcd) => !userData?.some((user) => user.username === bcd.Username)
+		);
+		const dgkNotInUsers = aerzteDgk.filter(
+			(dgk) => !userData?.some((user) => user.username === dgk.Username)
+		);
+
+		console.log(bcdNotInUsers);
+		console.log(bcdNotInUsers.length);
+		console.log(dgkNotInUsers);
+		console.log(dgkNotInUsers.length);
 	}, [userData]);
 
 	return (
