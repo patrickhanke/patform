@@ -51,10 +51,12 @@ const Koloproktologen = () => {
 		);
 
 		const bcdNotInUsers = aerzteBcd.filter(
-			(bcd) => !userData?.some((user) => user.username === bcd.Username)
+			(bcd) =>
+				!userData?.some((user) => user.last_name === bcd.Nachname)
 		);
 		const dgkNotInUsers = aerzteDgk.filter(
-			(dgk) => !userData?.some((user) => user.username === dgk.Username)
+			(dgk) =>
+				!userData?.some((user) => user.last_name === dgk.Nachname)
 		);
 
 		console.log(bcdNotInUsers);
