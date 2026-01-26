@@ -1,8 +1,7 @@
 import { TableColumnDocumentsProps } from "../types";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
-import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { DownloadClass } from "@repo/types";
 
 const TableColumnDocuments = ({
@@ -15,44 +14,30 @@ const TableColumnDocuments = ({
 	const [loading, setLoading] = useState(false);
 	const [newDownloads, setNewDownloads] = useState<string[]>(value || []);
 
-	const { data: personData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Download",
-			fields: ["objectId", "label"]
-		}),
-		{
-			variables: {
-				params: {
-					module: {
-						_eq: modules.find(
-							(module) => module.path === "/downloads"
-						)?.objectId
-					}
-				}
-			}
-		}
-	);
+	const { data: downloadData } = useFindData({
+		objectName: "Download",
+		fields: ["objectId", "label"],
+		moduleId: modules.find((module) => module.path === "/downloads")
+			?.objectId
+	});
 
 	const elements = useMemo(() => {
-		const personOptionsArray: SelectElement[] = [];
-		if (personData) {
-			personData.objects.findDownload.results.forEach(
-				(person: DownloadClass) => {
-					if (person) {
-						personOptionsArray.push({
-							value: person.objectId,
-							id: person.objectId,
-							label: `${person.label}`
-						});
-					}
+		const downloadOptionsArray: SelectElement[] = [];
+		if (downloadData) {
+			downloadData.forEach((download: DownloadClass) => {
+				if (download) {
+					downloadOptionsArray.push({
+						value: download.objectId,
+						id: download.objectId,
+						label: `${download.label}`
+					});
 				}
-			);
+			});
 		}
-		personOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
+		downloadOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
-		return personOptionsArray;
-	}, [personData]);
+		return downloadOptionsArray;
+	}, [downloadData]);
 
 	const currentDownloads: SelectElement[] = useMemo(() => {
 		const elementData: SelectElement[] = [];
@@ -63,9 +48,9 @@ const TableColumnDocuments = ({
 		}
 
 		newDownloads.forEach((vl) => {
-			const person = elements.find((element) => element.id === vl);
-			if (person) {
-				elementData.push(person);
+			const download = elements.find((element) => element.id === vl);
+			if (download) {
+				elementData.push(download);
 			} else {
 				invalidIds.push(vl);
 			}

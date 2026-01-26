@@ -5,6 +5,8 @@ import { useCallback } from "react";
 import data from "./constants/data.json";
 import { PatstoreUser } from "@repo/types";
 import usersJson from "./constants/users.json";
+import aerzteBcd from "./constants/aerzte_bcd.json";
+import aerzteDgk from "./constants/aerzte_dgk.json";
 
 const Koloproktologen = () => {
 	const { data: userData } = useFindData({
@@ -20,7 +22,9 @@ const Koloproktologen = () => {
 			"address",
 			"title",
 			"emails",
-			"type"
+			"type",
+			"lists",
+			"emails"
 		],
 		filters: [
 			{
@@ -69,14 +73,70 @@ const Koloproktologen = () => {
 		await Promise.all(updatedUsers);
 	}, [userData]);
 
+	const filterUsers = useCallback(async () => {
+		// const users = userData;
+		console.log(aerzteBcd.length);
+		const bcdWithNewsletter = aerzteBcd.filter((aerzte) => {
+			return aerzte.newsletter_optin === "1";
+		});
+		const bcdWithNewsletterLogin = aerzteBcd.filter((aerzte) => {
+			return aerzte.newsletter === "0";
+		});
+
+		console.log(bcdWithNewsletter);
+		console.log(bcdWithNewsletterLogin);
+
+		const allBcd = [];
+
+		aerzteBcd.forEach((aerzte) => {
+			if (bcdWithNewsletter.find((bcd) => bcd.login === aerzte.login)) {
+				allBcd.push(aerzte);
+			} else if (
+				bcdWithNewsletterLogin.find((bcd) => bcd.login === aerzte.login)
+			) {
+				allBcd.push(aerzte);
+			}
+		});
+
+		console.log(allBcd);
+
+		const bcdNewsletter = userData.filter((user) => {
+			return user.lists?.includes("JaTGOQX4pZ");
+		});
+		console.log(bcdNewsletter);
+		const bcdNewsletterMissing = bcdWithNewsletter.filter((user) => {
+			return !bcdNewsletter.find(
+				(aerzte) => aerzte.username === user.login
+			);
+		});
+
+		console.log(bcdNewsletterMissing);
+
+		const holchinIserData = bcdNewsletterMissing.find(
+			(user) => user.login === "philipp.holch"
+		);
+		console.log(holchinIserData);
+		const missingUserData = aerzteBcd.filter((arzt) => {
+			return !userData.find((user) => user.last_name === arzt.nachname);
+		});
+		console.log(missingUserData);
+	}, [userData]);
+
 	return (
 		<div className="flex row gap-md">
-			<button
+			{/* <button
 				className="full_button secondary"
 				disabled={!data}
 				onClick={() => updateUsers()}
 			>
 				Update Users
+			</button> */}
+			<button
+				className="full_button secondary"
+				disabled={!data}
+				onClick={() => filterUsers()}
+			>
+				Filter Users
 			</button>
 		</div>
 	);
