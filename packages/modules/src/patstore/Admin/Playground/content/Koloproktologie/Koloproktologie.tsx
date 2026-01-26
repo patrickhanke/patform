@@ -42,6 +42,16 @@ const Koloproktologen = () => {
 		// const users = userData;
 		console.log(aerzteBcd.length);
 		console.log(aerzteDgk.length);
+
+		const dublicates = aerzteBcd.filter((bcd) =>
+			aerzteDgk.some(
+				(dgk) =>
+					dgk.Vorname === bcd.Vorname && dgk.Nachname === bcd.Nachname
+			)
+		);
+
+		console.log(dublicates);
+		console.log(dublicates.length);
 	}, [userData]);
 
 	return (
