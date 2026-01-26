@@ -63,6 +63,11 @@ const ListsOverview = () => {
 				type: "string"
 			},
 			{
+				id: "objectId",
+				label: "ID",
+				type: "string"
+			},
+			{
 				id: "createdAt",
 				label: "Erstellt am",
 				type: "date"
