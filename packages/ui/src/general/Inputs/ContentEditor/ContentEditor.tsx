@@ -471,6 +471,9 @@ export default function ContentEditor({
 	// Get all block IDs including nested ones for SortableContext
 	const getAllBlockIds = (blockList: ContentBlock[]): string[] => {
 		const ids: string[] = [];
+
+		if (!blockList) return ids;
+
 		for (const block of blockList) {
 			ids.push(block.id);
 			if (block.children) {
@@ -487,6 +490,9 @@ export default function ContentEditor({
 		blockList: ContentBlock[],
 		id: string
 	): ContentBlock | null => {
+
+		if (!blockList) return null;
+		
 		for (const block of blockList) {
 			if (block.id === id) return block;
 			if (block.children) {

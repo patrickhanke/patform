@@ -1,9 +1,9 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { IconButton, SlideIn, Table, useCreateColumns } from "@repo/ui";
-import { useFindData, useGetData } from "@repo/provider";
-import { PatstoreUser, Filter, EmailClass } from "@repo/types";
+import { axiosclient, useGetData } from "@repo/provider";
+import { PatstoreUser, Filter, EmailClass, EmailRecipient } from "@repo/types";
 
 export interface RecipientCountProps {
 	email: EmailClass;
@@ -11,8 +11,7 @@ export interface RecipientCountProps {
 
 const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [order, setOrder] = useState<string>("name_ASC");
-
+	const [recipients, setRecipients] = useState<EmailRecipient[]>([]);
 	const recipientListId = email?.settings?.recipient_list;
 
 	console.log("recipientListId", recipientListId);
@@ -26,50 +25,25 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 		id: recipientListId
 	});
 
-	// Build filters based on list settings
-	const filters = useMemo(() => {
-		const listFilters: Filter[] = [];
+	const findRecipients = useCallback(async () => {
+		const response = await axiosclient().post(
+			"functions/get_list_recipients",
+			{
+				list_id: recipientListId
+			}
+		);
+		console.log("response", response.data);
+
+		setRecipients(response.data.result);
+	}, [recipientListId]);
+
+	console.log("recipients", recipients);
+
+	useEffect(() => {
 		if (recipientListId) {
-			listFilters.push({
-				key: "lists",
-				value: [recipientListId],
-				operator: "in",
-				id: "lists"
-			});
+			findRecipients();
 		}
-
-		return listFilters;
-	}, [list]);
-
-	console.log("filters", filters);
-
-	// Fetch users based on list filters
-	const {
-		data: users,
-		refetch,
-		count
-	} = useFindData({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"name",
-			"username",
-			"title",
-			"pre_title",
-			"post_title",
-			"email",
-			"first_name",
-			"last_name",
-			"data",
-			"settings",
-			"lists",
-			"emails"
-		],
-		filters: filters,
-		limit: 1000,
-		order: order,
-		skipQuery: !recipientListId || filters.length === 0
-	});
+	}, [recipientListId]);
 
 	// Generate columns for the table
 	const columns = useCreateColumns<PatstoreUser>({
@@ -97,7 +71,7 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 		],
 		categories: [],
 		className: "User",
-		refetch,
+		refetch: findRecipients,
 		useMasterKey: true,
 		editDisabled: true
 	});
@@ -108,14 +82,14 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 				icon="users"
 				onClick={() => setIsOpen(true)}
 				type="button"
-				text={count?.toString() || "0"}
+				text={recipients.length?.toString() || "0"}
 			/>
 
 			<SlideIn
 				isOpen={isOpen}
 				cancel={() => setIsOpen(false)}
 				confirm={() => setIsOpen(false)}
-				header={`Empfänger (${count || 0})`}
+				header={`Empfänger (${recipients.length || 0})`}
 				confirmText="Schließen"
 				showCancelButton={false}
 			>
@@ -138,12 +112,11 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 								</p>
 							</div>
 
-							{users.length > 0 ? (
+							{recipients.length > 0 ? (
 								<Table
 									columns={columns}
-									data={users}
-									rowCount={count}
-									setOrder={setOrder}
+									data={recipients}
+									rowCount={recipients.length}
 								/>
 							) : (
 								<p>

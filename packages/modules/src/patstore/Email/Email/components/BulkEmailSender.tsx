@@ -5,7 +5,6 @@ import {
 	FC,
 	SetStateAction,
 	useCallback,
-	useMemo,
 	useEffect,
 	useState
 } from "react";
@@ -18,8 +17,7 @@ import {
 	useGetData
 } from "@repo/provider";
 import { transformToEmail } from "@repo/ui";
-import { Filter, PatstoreUser } from "@repo/types";
-import { get } from "lodash-es";
+import { Filter } from "@repo/types";
 
 export type BulkEmailSenderProps = {
 	isOpen: boolean;
@@ -56,78 +54,24 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 	const [totalEmails, setTotalEmails] = useState(0);
 	const [sentEmails, setSentEmails] = useState(0);
 	const [error, setError] = useState<string | null>(null);
+	const [recipients, setRecipients] = useState<EmailRecipient[]>([]);
 
-	const { data: list } = useGetData({
-		objectName: "Item",
-		fields: ["objectId", "title", "data", "settings"],
-		id: listId
-	});
+	const findRecipients = useCallback(async () => {
+		const response = await axiosclient().post(
+			"functions/get_list_recipients",
+			{
+				list_id: listId
+			}
+		);
+		console.log("response", response.data);
+		setRecipients(response.data.result);
+	}, [listId]);
 
-	console.log("list", list);
-
-	// Fetch users from the list
-	const initialFilters: Filter[] = [
-		{
-			key: "lists",
-			value: [listId],
-			operator: "in",
-			id: "lists"
+	useEffect(() => {
+		if (listId) {
+			findRecipients();
 		}
-	];
-
-	const { data: users } = useFindData({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"username",
-			"title",
-			"pre_title",
-			"post_title",
-			"email",
-			"first_name",
-			"last_name",
-			"lists",
-			"emails"
-		],
-		filters: initialFilters as Filter[],
-		limit: 10000,
-		skip: 0,
-		order: "createdAt_ASC"
-	});
-
-	const recipients = useMemo(() => {
-		if (users && listId && isOpen) {
-			const recipientArray: EmailRecipient[] = [];
-			users.forEach((user: PatstoreUser) => {
-				const userEmail =
-					get(user, `emails[${listId}].email`, undefined) ||
-					get(user, "emails.email", undefined) ||
-					user.email;
-
-				if (userEmail) {
-					recipientArray.push({
-						name: `${user.title || ""} ${user.pre_title || ""} ${user.first_name || ""} ${user.last_name || ""} ${user.post_title || ""}`.trim(),
-						email: userEmail,
-						data: {
-							first_name: user.first_name,
-							last_name: user.last_name || "",
-							title: user.title || "",
-							pre_title: user.pre_title || "",
-							post_title: user.post_title || "",
-							unsubscribe_link: list?.settings?.unsubscribe_link
-								? `${list?.settings?.unsubscribe_link}?user_id=${user.objectId}&list_id=${listId}`
-								: undefined,
-							list_name: list?.title || ""
-						}
-					});
-				}
-			});
-			return recipientArray;
-		}
-		return [];
-	}, [users, listId, isOpen]);
-
-	console.log("users", users);
+	}, [listId]);
 
 	useEffect(() => {
 		if (

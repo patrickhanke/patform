@@ -3,7 +3,12 @@
 import { FC, useMemo, useState } from "react";
 import { useAppContext, useDataHandler, useFindData } from "@repo/provider";
 import { IconButton, Table, TextInput, useCreateColumns } from "@repo/ui";
-import { ApolloRefetch, Filter, PatstoreUser } from "@repo/types";
+import {
+	ApolloRefetch,
+	EmailRecipient,
+	Filter,
+	PatstoreUser
+} from "@repo/types";
 import MemberSwitch from "./components/MemberSwitch";
 
 export interface ListMembersProps {
@@ -56,7 +61,7 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 			"last_name",
 			"data",
 			"settings",
-			"lists"
+			"emails"
 		],
 		filters: [...initialFilters, ...filters] as Filter[],
 		limit: 1000,
@@ -76,9 +81,11 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 	// Get currently selected recipients from list
 	const selectedRecipients = useMemo(() => {
 		return users.filter((user: PatstoreUser) =>
-			user?.lists?.includes(listId)
+			user?.emails?.some((email) => email.lists.includes(listId))
 		);
 	}, [users, listId]);
+
+	console.log("selectedRecipients", selectedRecipients);
 
 	// Generate columns for the table
 	const columns = useCreateColumns<PatstoreUser>({

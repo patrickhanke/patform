@@ -14,7 +14,7 @@ interface CanvasProps {
 }
 
 export default function Canvas({
-	blocks,
+	blocks = [],
 	selectedBlock,
 	onBlockSelect,
 	onBlockUpdate,
@@ -24,6 +24,10 @@ export default function Canvas({
 	const { setNodeRef } = useDroppable({
 		id: "canvas"
 	});
+
+	console.log("blocks", blocks);
+
+	if (!blocks) return null;
 
 	return (
 		<div ref={setNodeRef} className="content-editor-canvas">

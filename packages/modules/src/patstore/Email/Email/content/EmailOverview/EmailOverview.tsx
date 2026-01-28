@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, useMemo } from "react";
-import { useGetData } from "@repo/provider";
 import { RecipientCount } from "./components";
 import { EmailClass } from "@repo/types";
 

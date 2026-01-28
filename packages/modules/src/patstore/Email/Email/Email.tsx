@@ -136,7 +136,7 @@ const Email = ({ params }: { params: Params }) => {
 	}, [siteState, selectedDataRows, email, emailContent, loading, project]);
 
 	useEffect(() => {
-		if (email && emailContent.length === 0) {
+		if (email && emailContent?.length === 0) {
 			setEmailContent(email.content);
 		}
 	}, [email]);
