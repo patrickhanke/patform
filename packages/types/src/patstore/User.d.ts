@@ -45,11 +45,9 @@ export type PatstoreUser = {
       lists: string[];
       settings:  {
         [key: string]: {
-          email: string;
-          name: string;
-          optinDate: string;
-          optoutDate: string | null;
-        }[]
+          optIn: string | null;
+          optOut: string | null;
+        }
       };
     }[];
   data: {

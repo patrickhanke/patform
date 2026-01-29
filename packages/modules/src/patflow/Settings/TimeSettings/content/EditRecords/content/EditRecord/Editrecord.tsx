@@ -177,6 +177,8 @@ const Editrecord: React.FC<EditRecordProps> = ({
 		[timeSettings]
 	);
 
+	console.log({ timeSettings });
+
 	return (
 		<div>
 			<IconButton

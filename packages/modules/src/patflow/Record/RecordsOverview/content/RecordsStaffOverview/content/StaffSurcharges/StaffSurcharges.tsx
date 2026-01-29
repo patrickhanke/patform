@@ -64,6 +64,8 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 		return surcharges;
 	}, [data, days, month, year]);
 
+	console.log(surchargeData);
+
 	return (
 		<div>
 			<h3>Zuschläge</h3>

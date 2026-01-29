@@ -118,7 +118,7 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 					return (
 						<MemberSwitch
 							listId={listId}
-							lists={row.lists}
+							emails={row.emails}
 							userId={row.objectId}
 							refetch={refetchUsers}
 						/>

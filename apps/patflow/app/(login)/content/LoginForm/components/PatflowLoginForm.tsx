@@ -30,7 +30,7 @@ const PatflowLoginForm = () => {
 		onSubmit: async (values) => {
 			setDisabled(true);
 			const userData = await axiosclient().post(
-				"/functions/get-user-data",
+				"/functions/get_user_data",
 				{
 					email: values.email
 				}
