@@ -61,7 +61,7 @@ export default function ContentEditor({
 	onChange,
 	className = ""
 }: ContentEditorProps) {
-	const [blocks, setBlocks] = useState<ContentBlock[]>(content);
+	const [blocks, setBlocks] = useState<ContentBlock[]>(content || []);
 	const [activeId, setActiveId] = useState<string | null>(null);
 	const [selectedBlock, setSelectedBlock] = useState<ContentBlock | null>(
 		null
@@ -319,77 +319,80 @@ export default function ContentEditor({
 		[blocks, updateBlocks]
 	);
 
-	const createBlock = (type: ContentBlock["type"]): ContentBlock => {
-		const id = uuidv4();
-		const baseBlock = {
-			id,
-			position: blocks.length + 1,
-			active: true
-		};
+	const createBlock = useCallback(
+		(type: ContentBlock["type"]): ContentBlock => {
+			const id = uuidv4();
+			const baseBlock = {
+				id,
+				position: blocks?.length + 1 || 1,
+				active: true
+			};
 
-		switch (type) {
-			case "text":
-				return {
-					...baseBlock,
-					name: "Text Block",
-					type: "text",
-					value: "<p>Enter your text here...</p>",
-					config: {
-						textType: "paragraph"
-					}
-				};
-			case "button":
-				return {
-					...baseBlock,
-					name: "Button",
-					type: "button",
-					value: "",
-					config: {
-						buttonText: "Click me",
-						buttonUrl: "#",
-						alignment: "center"
-					}
-				};
-			case "divider":
-				return {
-					...baseBlock,
-					name: "Divider",
-					type: "divider",
-					value: ""
-				};
-			case "image":
-				return {
-					...baseBlock,
-					name: "Image",
-					type: "image",
-					value: "",
-					config: {
-						imageUrl: "",
-						imageAlt: "Image",
-						alignment: "center"
-					}
-				};
-			case "layout":
-				const columnCount = 2; // Default to 2 columns
-				return {
-					...baseBlock,
-					name: "Layout",
-					type: "layout",
-					value: "",
-					children: Array.from({ length: columnCount }, () => []),
-					config: {
-						columns: "50/50"
-					}
-				};
-			default:
-				return {
-					...baseBlock,
-					name: "Block",
-					type: "text",
-					value: ""
-				};
-		}
-	};
+			switch (type) {
+				case "text":
+					return {
+						...baseBlock,
+						name: "Text Block",
+						type: "text",
+						value: "<p>Enter your text here...</p>",
+						config: {
+							textType: "paragraph"
+						}
+					};
+				case "button":
+					return {
+						...baseBlock,
+						name: "Button",
+						type: "button",
+						value: "",
+						config: {
+							buttonText: "Click me",
+							buttonUrl: "#",
+							alignment: "center"
+						}
+					};
+				case "divider":
+					return {
+						...baseBlock,
+						name: "Divider",
+						type: "divider",
+						value: ""
+					};
+				case "image":
+					return {
+						...baseBlock,
+						name: "Image",
+						type: "image",
+						value: "",
+						config: {
+							imageUrl: "",
+							imageAlt: "Image",
+							alignment: "center"
+						}
+					};
+				case "layout":
+					const columnCount = 2; // Default to 2 columns
+					return {
+						...baseBlock,
+						name: "Layout",
+						type: "layout",
+						value: "",
+						children: Array.from({ length: columnCount }, () => []),
+						config: {
+							columns: "50/50"
+						}
+					};
+				default:
+					return {
+						...baseBlock,
+						name: "Block",
+						type: "text",
+						value: ""
+					};
+			}
+		},
+		[blocks]
+	);
 
 	const handleBlockUpdate = (id: string, updates: Partial<ContentBlock>) => {
 		const updateBlockRecursive = (
@@ -490,9 +493,8 @@ export default function ContentEditor({
 		blockList: ContentBlock[],
 		id: string
 	): ContentBlock | null => {
-
 		if (!blockList) return null;
-		
+
 		for (const block of blockList) {
 			if (block.id === id) return block;
 			if (block.children) {

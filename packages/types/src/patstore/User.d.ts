@@ -39,16 +39,19 @@ export type PatstoreUser = {
   newsletter_optin_date?: string;
   newsletter_optout_date?: string | null;
   lists: string[];
-  emails: {
-    email: string;
-    name: string;
-    [key: string]: {
+  emails: 
+    {
       email: string;
-      name: string;
-      optinDate: string;
-      optoutDate: string | null;
-    };
-  };
+      lists: string[];
+      settings:  {
+        [key: string]: {
+          email: string;
+          name: string;
+          optinDate: string;
+          optoutDate: string | null;
+        }[]
+      };
+    }[];
   data: {
     [key: string]: {
       [key: string]: boolean | string;

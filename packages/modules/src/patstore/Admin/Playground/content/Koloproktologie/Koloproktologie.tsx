@@ -481,9 +481,18 @@ const Koloproktologen = () => {
 		const usersDgkGesamt = userData?.filter((user) =>
 			user.emails?.some((email) => email.lists.includes("g3D7DCOgIf"))
 		);
-		const usersDgkWithType = usersDgkGesamt?.filter(
-			(user) => user.type === "dgk" || user.type === "dgk/bcd"
-		);
+		const usersDgkWithType = userData
+			?.filter((user) => user.type === "dgk" || user.type === "dgk/bcd")
+			.filter((user) => {
+				let returnValue = false;
+				user.emails?.forEach((email) => {
+					if (email.lists.includes("g3D7DCOgIf")) {
+						returnValue = true;
+					}
+				});
+				return !returnValue;
+			});
+
 		const usersDgkWithoutType = usersDgkGesamt?.filter(
 			(user) => user.type === "bcd"
 		);

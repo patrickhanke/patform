@@ -27,11 +27,9 @@ export default function Canvas({
 
 	console.log("blocks", blocks);
 
-	if (!blocks) return null;
-
 	return (
 		<div ref={setNodeRef} className="content-editor-canvas">
-			{blocks.length === 0 ? (
+			{!blocks || blocks.length === 0 ? (
 				<div className="canvas-empty">
 					<p>Drag components here to start building</p>
 				</div>
