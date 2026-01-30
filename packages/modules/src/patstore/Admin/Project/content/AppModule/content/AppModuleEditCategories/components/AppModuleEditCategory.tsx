@@ -1,9 +1,8 @@
 import { useCallback, useMemo } from "react";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { Select, StatelessToggle } from "@repo/ui";
 import { Module, ModuleCategory, ModuleSettingsCategory } from "@repo/types";
 import { AppModuleEditCategoryProps } from "../types";
-import { useQuery } from "@apollo/client";
 import { isArray } from "lodash-es";
 
 const AppModuleEditCategory = ({
@@ -11,23 +10,18 @@ const AppModuleEditCategory = ({
 	setCategory,
 	projectId
 }: AppModuleEditCategoryProps) => {
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Module",
-			fields: [
-				"objectId",
-				"name",
-				"position",
-				"categories",
-				"connected_class",
-				"settings"
-			]
-		}),
-		{
-			variables: { params: paramsHandler({ projectId }) }
-		}
-	);
+	const { data } = useFindData({
+		objectName: "Module",
+		fields: [
+			"objectId",
+			"name",
+			"position",
+			"categories",
+			"connected_class",
+			"settings"
+		],
+		projectId
+	});
 
 	const changeHandler = useCallback(
 		(value: { [key: string]: any }) => {
@@ -53,7 +47,7 @@ const AppModuleEditCategory = ({
 			connected_class: string;
 		}[] = [];
 		if (data) {
-			data.objects.findModule.results.forEach((module: Module) => {
+			data.forEach((module: Module) => {
 				if (module.connected_class) {
 					selectOptions.push({
 						label: module.name,
@@ -69,7 +63,7 @@ const AppModuleEditCategory = ({
 
 	const subGroupSelectOptions = useMemo(() => {
 		if (category?.connected_class === "Category") {
-			const module = data?.objects.findModule.results.find(
+			const module = data?.find(
 				(module: Module) => module.objectId === category.moduleId
 			);
 
