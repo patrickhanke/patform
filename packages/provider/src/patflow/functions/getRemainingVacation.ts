@@ -19,6 +19,7 @@ const getRemainingVacation: (
 
 	days.forEach((day) => {
 		const date = new Date(day.date).getTime();
+		console.log({ day });
 
 		if (
 			date >= new Date(startDate).getTime() &&

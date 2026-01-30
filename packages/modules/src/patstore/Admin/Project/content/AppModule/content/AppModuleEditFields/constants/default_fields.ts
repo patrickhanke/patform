@@ -3,7 +3,7 @@ import { ModuleFieldIds, Module } from "@repo/types";
 const default_fields: {
 	[key in Module["path"]]: ModuleFieldIds[];
 } = {
-	"/arcticles": ["title", "text", "image", "date"],
+	"/articles": ["title", "text", "image", "date"],
 	"/events": ["title", "description", "dates"],
 	"/groups": ["title", "description", "text", "image"],
 	"/locations": ["title"],
@@ -11,7 +11,7 @@ const default_fields: {
 	"/downloads": ["title", "description", "file"],
 	"/forms": ["title"],
 	"/images": ["title", "description"],
-	"/entries": ["title", "date"],
+	"/entries": ["title"],
 	"/categories": ["title"]
 };
 

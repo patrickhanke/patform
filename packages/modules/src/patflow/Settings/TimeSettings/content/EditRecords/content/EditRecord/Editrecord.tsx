@@ -22,11 +22,14 @@ const Editrecord: React.FC<EditRecordProps> = ({
 		record.time_settings
 	);
 
+	console.log({ timeSettings });
+
 	const [startDate, setStartDate] = useState<string>(record.start_date);
 	const { updateData } = useDataHandler();
 	const { data: holidayData } = useQuery(
 		generateGraphQLQuery({
 			type: "find",
+			queryName: "findHoliday",
 			objectName: "Holiday",
 			fields: ["objectId", "name", "type", "dates"]
 		}),
@@ -224,10 +227,15 @@ const Editrecord: React.FC<EditRecordProps> = ({
 						enableReinitialize={true}
 						highlightChanges
 						formSubmitHandler={(values) => {
+							console.log({ values });
 							if (values) {
-								setTimeSettings(values as RecordTimeSettings);
+								setTimeSettings({
+									...timeSettings,
+									...values
+								} as RecordTimeSettings);
 							}
 						}}
+						useWithDebounce
 					/>
 				</div>
 			</SlideIn>

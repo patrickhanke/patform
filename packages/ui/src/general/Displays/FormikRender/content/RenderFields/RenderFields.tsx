@@ -76,11 +76,19 @@ const RenderFields: FC<RenderFieldsType> = ({
 											: field.type
 									}
 									onChange={(e) => {
-										setFieldValue(
-											field.name,
-											e.target.value,
-											true
-										);
+										if (field.type === "number") {
+											setFieldValue(
+												field.name,
+												parseInt(e.target.value),
+												true
+											);
+										} else {
+											setFieldValue(
+												field.name,
+												e.target.value,
+												true
+											);
+										}
 									}}
 									value={get(values, field.name, "")}
 									onBlur={(e) => handleBlur(e)}
