@@ -54,6 +54,11 @@ const useNetlifyHooks = () => {
 					"https://api.netlify.com/build_hooks/68a58efad44d4e2b1c6cb0d7"
 				);
 			}
+			if (project.path === "bei_lisa") {
+				axios.post(
+					"https://api.netlify.com/build_hooks/698058ffd5736a2e12b62c64"
+				);
+			}
 		},
 
 		[project]
