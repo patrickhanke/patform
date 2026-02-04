@@ -67,8 +67,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 		() => ({
 			user: getItem("user", "session", "object") || ({} as PatflowUser),
 			projectId: "B2vfHKzxqE",
-			project:
-				projectData?.objects.get_User.project || ({} as PatflowProject),
+			project: projectData?.project || ({} as PatflowProject),
 			getUserData,
 			userMessages,
 			refetchMessages: refetch
