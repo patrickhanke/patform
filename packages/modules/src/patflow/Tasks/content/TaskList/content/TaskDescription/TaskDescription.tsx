@@ -32,11 +32,7 @@ const TaskDescription = ({
 	};
 
 	useEffect(() => {
-		if (
-			data &&
-			description &&
-			description !== data?.objects.getTask.description
-		) {
+		if (data && description && description !== data?.description) {
 			descriptionDataHandler(description);
 		}
 	}, [description]);
@@ -47,7 +43,7 @@ const TaskDescription = ({
 				{isEditable ? (
 					<TextInput
 						id="description"
-						defaultValue={data.objects.getTask.description}
+						defaultValue={data?.description}
 						onChange={(inputValue: string) =>
 							setDescription(inputValue)
 						}
@@ -55,8 +51,7 @@ const TaskDescription = ({
 					/>
 				) : (
 					<p>
-						{data.objects.getTask.description ||
-							"Keine Beschreibung vorhanden."}
+						{data?.description || "Keine Beschreibung vorhanden."}
 					</p>
 				)}
 			</div>

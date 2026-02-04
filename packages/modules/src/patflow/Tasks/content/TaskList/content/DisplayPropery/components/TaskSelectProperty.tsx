@@ -1,4 +1,4 @@
-import { useFindData } from "@repo/provider";
+import { useGetData } from "@repo/provider";
 import { ElementSelectInterface } from "@repo/ui";
 import { Property } from "@repo/types";
 import { FC, useMemo } from "react";
@@ -14,9 +14,10 @@ const TaskSelectPropery: FC<TaskSelectPropertyProps> = ({
 	selectedProperty,
 	setSelectedProperty
 }) => {
-	const { data: objectData } = useFindData({
+	const { data: objectData } = useGetData({
 		objectName: "Property",
-		fields: ["objectId", "name"]
+		fields: ["objectId", "name"],
+		id: selectedProperty
 	});
 
 	const elements = useMemo(() => {
@@ -43,7 +44,7 @@ const TaskSelectPropery: FC<TaskSelectPropertyProps> = ({
 			title="Objekt auswählen"
 			elements={elements}
 			isSearchable
-			min={1}
+			// min={1}
 			max={1}
 			selectedElements={elements.filter(
 				(el) => el.value === selectedProperty

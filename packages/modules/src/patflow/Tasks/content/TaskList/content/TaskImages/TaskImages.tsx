@@ -22,6 +22,7 @@ const TaskImages = ({
 	const { project } = useContext(UserContext);
 	const addImageHandler = useCallback(
 		async (content: string[]) => {
+			console.log({ content });	
 			const newImages = [...images, ...content];
 
 			await updateData({

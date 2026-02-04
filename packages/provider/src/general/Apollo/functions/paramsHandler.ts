@@ -18,6 +18,12 @@ const paramsHandler: ParamsHandlerType = ({ projectId, moduleId, filters }) => {
 		};
 	}
 
+	if (userId) {
+		filterObject.user = { have: { objectId: { equalTo: userId } } } as {
+			[key in FilterOperator]: any;
+		};
+	}
+
 	let additionalFilters: FilterObject = {};
 
 	if (filters && filters?.length > 0) {

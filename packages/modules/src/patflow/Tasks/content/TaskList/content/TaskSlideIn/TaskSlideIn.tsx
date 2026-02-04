@@ -36,10 +36,25 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 			"images",
 			"state",
 			"executed_at",
-			"ticket { objectId createdAt title state description images created_by { objectId username } }"
+			"ticket { objectId  }"
 		],
 		id: taskId
 	});
+
+	const { data: ticketData } = useGetData({
+		objectName: "Ticket",
+		fields: [
+			"objectId",
+			"title",
+			"description",
+			"images",
+			"created_by { objectId username }"
+		],
+		id: taskId,
+		skip: !dataSlidein || !dataSlidein.ticket
+	});
+
+	console.log({ dataSlidein });
 
 	const { data: dataDocuments, refetch: refetchDocuments } = useGetData({
 		objectName: "Document",
@@ -73,11 +88,11 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 			{
 				value: "ticket",
 				label: "Ticket",
-				disabled: !dataSlidein?.objects.getTask.ticket
+				disabled: !ticketData
 			}
 		] as const;
 		return buttonStates;
-	}, [dataSlidein]);
+	}, [dataSlidein, ticketData]);
 
 	const [buttonState, setButtonState] = useState<
 		(typeof buttonStates)[number]
@@ -105,7 +120,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 					<TaskImages
 						taskId={taskId}
 						taskName={title}
-						images={dataSlidein.objects.getTask.images}
+						images={dataSlidein?.images}
 						refetch={refetchSlideIn}
 						isEditable={isEditable}
 					/>
@@ -113,20 +128,18 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 				{buttonState.value === "comments" && dataSlidein && (
 					<TaskComments
 						taskId={taskId}
-						comments={dataSlidein.objects.getTask.comments}
+						comments={dataSlidein?.comments}
 						refetch={refetchSlideIn}
 						isEditable={isEditable}
 					/>
 				)}
 				{buttonState.value === "ticket" && dataSlidein && (
-					<TaskSlideInTicketDetails
-						ticket={dataSlidein?.objects.getTask.ticket}
-					/>
+					<TaskSlideInTicketDetails ticket={ticketData} />
 				)}
 			</div>
 		);
 	}, [buttonStates, buttonState, dataSlidein, dataDocuments]);
-	const task = dataSlidein?.objects.getTask;
+	const task = dataSlidein;
 
 	if (!task) {
 		return null;
@@ -140,7 +153,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 					icon="comments"
 					text={
 						dataSlidein
-							? dataSlidein.objects.getTask.comments.length.toString()
+							? dataSlidein.comments.length.toString()
 							: "0"
 					}
 					onClick={() => {
@@ -151,9 +164,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 				<IconButton
 					icon="images"
 					text={
-						dataSlidein
-							? dataSlidein.objects.getTask.images.length.toString()
-							: "0"
+						dataSlidein ? dataSlidein.images.length.toString() : "0"
 					}
 					onClick={() => {
 						setShowDetails(true);
@@ -174,7 +185,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 				/>
 				<IconButton
 					icon="tickets"
-					disabled={!dataSlidein?.objects.getTask.ticket}
+					disabled={!dataSlidein?.ticket}
 					text=" "
 					onClick={() => {
 						setShowDetails(true);
@@ -206,9 +217,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 							</label>
 							<div>
 								<DisplayTaskState
-									taskState={
-										dataSlidein?.objects?.getTask?.state
-									}
+									taskState={dataSlidein?.state}
 								/>
 							</div>
 						</div>
@@ -265,9 +274,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 								<TeamAssignment
 									taskId={taskId}
 									refetchTask={refetchSlideIn}
-									taskState={
-										dataSlidein?.objects.getTask.state
-									}
+									taskState={dataSlidein?.state}
 								/>
 							</div>
 						</div>
@@ -299,14 +306,10 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 								Ticket
 							</label>
 							<div>
-								{dataSlidein &&
-								dataSlidein.objects.getTask.ticket ? (
+								{dataSlidein && dataSlidein.ticket ? (
 									<StateDisplay
 										color="light"
-										label={
-											dataSlidein.objects.getTask.ticket
-												.title
-										}
+										label={dataSlidein.ticket.title}
 										icon="ticket"
 									/>
 								) : (

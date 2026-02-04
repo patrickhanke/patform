@@ -33,7 +33,8 @@ const getQueryStringFromFields = (fields: string[]) => {
 				field === "projects" ||
 				field === "assigned_staff" ||
 				field === "comments" ||
-				field === "images"
+				field === "images" ||
+				field === "surcharges"
 			) {
 				return `
                 ${field} {
@@ -73,7 +74,7 @@ const generateGraphQLQuery_4_1: GenerateGraphQLQueryFunction = ({
         `;
 	} else if (type === "get") {
 		return gql`
-            query ${objectName}($id: ID!) {
+            query get${objectName}($id: ID!) {
                 ${queryName}(id: $id) {
                     ${fieldsString}
                 }

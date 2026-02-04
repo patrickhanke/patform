@@ -42,7 +42,7 @@ const DisplayProperty = ({
 					<StateDisplay
 						// type="label"
 						color="light"
-						label={data?.name || "Kein Objekt zugewiesen"}
+						label={data?.property?.name || "Kein Objekt zugewiesen"}
 						icon="house"
 						// noBackground
 					/>

@@ -2,11 +2,10 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import UserContext from "./UserContext";
-import { axiosclient, generateGraphQLQuery, useFindData } from "@repo/provider";
+import { axiosclient, useFindData, useGetData } from "@repo/provider";
 import Cookies from "js-cookie";
 import useStorage from "./hooks/useStorage";
 import { PatflowProject, PatflowUser } from "@repo/types";
-import { useQuery } from "@apollo/client";
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 	const token = Cookies.get(process.env.SESSION_TOKEN as string);
@@ -29,14 +28,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 			"ticket { objectId }",
 			"content"
 		],
-		filters: [
-			{
-				key: "user",
-				value: getItem("user", "session", "object")?.objectId,
-				operator: "equalTo",
-				id: "user"
-			}
-		],
+		userId: getItem("user", "session", "object")?.objectId,
 		skipQuery: !getItem("user", "session", "object"),
 		pollInterval: 10000
 	});
@@ -61,22 +53,15 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 			.catch((error) => console.error(error.message));
 	}, [getItem("user", "session", "object")]);
 
-	const { data: projectData } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "_User",
-			fields: [
-				"objectId",
-				"project {name objectId path time_settings record_settings}"
-			]
-		}),
-		{
-			skip: !user,
-			variables: {
-				id: user?.objectId
-			}
-		}
-	);
+	const { data: projectData } = useGetData({
+		objectName: "User",
+		fields: [
+			"objectId",
+			"project {name objectId path time_settings record_settings}"
+		],
+		id: user?.objectId,
+		skip: !user
+	});
 
 	const userContextObject = useMemo(
 		() => ({

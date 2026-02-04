@@ -40,12 +40,12 @@ const TaskDocuments = ({
 						objectId: content.user
 					},
 					object:
-						data && data.objects.getTask.property?.objectId
+						data && data.property?.objectId
 							? {
 									__type: "Pointer",
 									className: "Property",
 									objectId:
-										data.objects.getTask.object.objectId
+										data.property?.objectId
 								}
 							: null,
 					task: {
@@ -72,7 +72,7 @@ const TaskDocuments = ({
 				<div className={styles.task_slidein_footer}>
 					<CreateDocument
 						addDocumentHandler={addDocumentHandler}
-						disabled={!data?.objects?.getTask?.object?.objectId}
+						disabled={!data?.property?.objectId}
 					/>
 				</div>
 			)}

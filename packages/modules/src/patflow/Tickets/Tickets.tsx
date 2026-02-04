@@ -60,21 +60,21 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 			filterArray.push({
 				key: "state",
 				value: "open",
-				operator: "_in",
+				operator: "in",
 				id: "state"
 			});
 		} else if (pageState === "in_progress") {
 			filterArray.push({
 				key: "state",
 				value: "in_progress",
-				operator: "_eq",
+				operator: "equalTo",
 				id: "state"
 			});
 		} else if (pageState === "closed") {
 			filterArray.push({
 				key: "state",
 				value: "closed",
-				operator: "_eq",
+				operator: "equalTo",
 				id: "state"
 			});
 		}
@@ -82,7 +82,7 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 			filterArray.push({
 				key: "objectId",
 				value: searchParams.get("ticket") as string,
-				operator: "_eq",
+				operator: "equalTo",
 				id: "objectId"
 			});
 		}
