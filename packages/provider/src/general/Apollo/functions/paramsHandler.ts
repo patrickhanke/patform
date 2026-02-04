@@ -3,7 +3,7 @@ import { ParamsHandlerType } from "../types";
 
 type FilterObject = { [key: string]: { [key in FilterOperator]: any } };
 
-const paramsHandler: ParamsHandlerType = ({ projectId, moduleId, filters }) => {
+const paramsHandler: ParamsHandlerType = ({ projectId, moduleId, filters, userId }) => {
 	const filterObject: FilterObject = {};
 
 	if (projectId) {
