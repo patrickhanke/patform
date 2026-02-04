@@ -1,13 +1,10 @@
 import { useContext, useMemo, useState } from "react";
 import { WeeklyRecordProps, WeekObject } from "./types";
-import { PatflowAppContext, getWeekDayKeys } from "@repo/provider";
+import { PatflowAppContext, getWeekDayKeys, useFindData } from "@repo/provider";
 import useTableColumns from "./hooks/useTableColumns";
 import { getWeek, hoursToMilliseconds } from "date-fns";
 import initialFilters from "./constants/initialFilters";
 import { Day, StaffMember } from "@repo/types";
-import { useQuery } from "@apollo/client";
-import { find_day } from "@repo/provider";
-import { FIND_ALL_STAFF } from "@repo/provider";
 import { cloneDeep } from "lodash-es";
 import { Divider, Table } from "@repo/ui";
 import { RefreshCcw } from "lucide-react";
@@ -17,18 +14,25 @@ const WeeklyRecords = ({ records, filters, setFilters }: WeeklyRecordProps) => {
 	const [selectedWeek, setSelectedWeek] = useState(
 		getWeek(new Date(), { weekStartsOn: 1 })
 	);
-	const { data: dayData } = useQuery(find_day, {
-		variables: { params: { date: { _in: getWeekDayKeys(selectedWeek) } } }
+	const { data: dayData } = useFindData({
+		objectName: "Day",
+		fields: ["objectId", "date", "times", "user {objectId}", "year", "type", "is_working_day", "absence", "default_time", "time"],
+		filters: [{ key: "date", value: getWeekDayKeys(selectedWeek), operator: "_in" }]
 	});
-	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+	const { data: staffData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
+		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		order: "last_name_DESC"
+	});
 	const columns = useTableColumns({ selectedWeek });
 	const { year } = useContext(PatflowAppContext);
 
 	const weekData = useMemo(() => {
 		const weekArray: WeekObject[] = [];
 		if (staffData && dayData) {
-			const staff = staffData.objects.find_User.results;
-			const days = cloneDeep(dayData?.objects.findDay.results) || [];
+			const staff = staffData;
+			const days = cloneDeep(dayData) || [];
 			staff.forEach((staffMember: StaffMember) => {
 				const record = records.find((record) => record.year === year);
 				const weekObject: WeekObject = {

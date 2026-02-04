@@ -1,8 +1,6 @@
 import React, { Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import styles from "./TaskNextDate.module.scss";
 import { DateSelectInterfaceTask } from "@repo/ui";
-import { useQuery } from "@apollo/client";
-import { GET_TASK_TIME } from "@repo/provider";
 import { getDateString } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
@@ -26,14 +24,16 @@ const TaskNextDate = ({
 	const [showModal, setShowModal] = React.useState(false);
 	const [showInterface, setShowInterface] = React.useState(false);
 	const { updateData } = useDataHandler();
-	const { data, loading, refetch } = useQuery(GET_TASK_TIME, {
-		variables: { id: taskId }
+	const { data, loading, refetch } = useGetData({
+		objectName: "Task",
+		fields: ["objectId", "dates", "state", "time"],
+		id: taskId
 	});
 
 	const nextDate = useMemo(() => {
 		let value = "Kein Termin";
 		let is_overdue = false;
-		let allDates = [];
+		let allDates: string[] = [];
 		let color = "light";
 
 		if (data) {

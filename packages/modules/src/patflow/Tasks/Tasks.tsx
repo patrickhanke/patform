@@ -7,16 +7,15 @@ import React, {
 	useMemo,
 	useState
 } from "react";
-import useGetTasks from "./hooks/useGetTasks";
 import { Filter } from "@repo/types";
-import { SiteType, TasksComponent } from "./types";
+import { TasksComponent } from "./types";
 import { useSearchParams } from "next/navigation";
 import SiteHeaderContent from "./components/SiteHeaderContent";
 import sortTasksForList from "./functions/sortTasksForList";
 import TaskList from "./content/TaskList";
 import { Divider, generatePagination, Page } from "@repo/ui";
 import site_states from "./constants/site_states";
-import { PatflowAppContext } from "@repo/provider";
+import { PatflowAppContext, useFindData } from "@repo/provider";
 import { NotificationContext } from "@repo/provider";
 import TaskModal from "./components/TaskModal";
 
@@ -36,16 +35,27 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		pageSize: 20
 	});
 
-	const { tasks, refetch, count } = useGetTasks({
-		id,
-		className,
-		filters,
-		siteType: siteState.value as SiteType,
-		limit: pageState !== "active" ? pagination.pageSize : 300,
+	const {
+		count,
+		data: tasks,
+		refetch
+	} = useFindData({
+		objectName: "Task",
+		filters: filters,
+		fields: [
+			"objectId",
+			"title",
+			"state",
+			"time",
+			"assigned_staff",
+			"dates",
+			"executed_at"
+		],
 		skip:
 			pageState !== "active"
 				? pagination.pageIndex * pagination.pageSize
-				: 0
+				: 0,
+		limit: pageState !== "active" ? pagination.pageSize : 300
 	});
 	const { refetchTask } = useContext(PatflowAppContext);
 	const { newNotification } = useContext(NotificationContext);
@@ -56,28 +66,28 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 			filterArray.push({
 				key: "state",
 				value: ["assigned", "created"],
-				operator: "_in",
+				operator: "in",
 				id: "state"
 			});
 		} else if (pageState === "executed") {
 			filterArray.push({
 				key: "state",
 				value: "executed",
-				operator: "_eq",
+				operator: "equalTo",
 				id: "state"
 			});
 		} else if (pageState === "completed") {
 			filterArray.push({
 				key: "state",
 				value: "completed",
-				operator: "_eq",
+				operator: "equalTo",
 				id: "state"
 			});
 		} else if (pageState === "archived") {
 			filterArray.push({
 				key: "state",
 				value: "archived",
-				operator: "_eq",
+				operator: "equalTo",
 				id: "state"
 			});
 		}
@@ -85,7 +95,7 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 			filterArray.push({
 				key: "objectId",
 				value: searchParams.get("task") as string,
-				operator: "_eq",
+				operator: "equalTo",
 				id: "objectId"
 			});
 		}

@@ -82,7 +82,7 @@ const ProjectContextProvider = ({
 					queryName: "project",
 					fields: projectFields
 				})
-			: generateGraphQLQuery({
+			: generateGraphQLQuery_4_1({
 					type: "get",
 					objectName: "Project",
 					queryName: "project",
@@ -116,7 +116,7 @@ const ProjectContextProvider = ({
 					project["modules"] = modules;
 				}
 			} else {
-				project = data.objects.getProject;
+				project = data.project;
 			}
 			setCurrentProject(project);
 		}

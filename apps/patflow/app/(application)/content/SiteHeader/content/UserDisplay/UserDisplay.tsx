@@ -71,9 +71,9 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
 
         {user && userPassword && (
             <UserPassword
-            user={user}
-            userPassword={userPassword}
-            setUserPassword={setUserPassword}
+                user={user}
+                userPassword={userPassword}
+                setUserPassword={setUserPassword}
             />
         )}
         </>

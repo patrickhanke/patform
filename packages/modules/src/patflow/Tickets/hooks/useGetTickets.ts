@@ -1,6 +1,5 @@
-import { generateGraphQLQuery } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { ApolloRefetch, Filter, FilterOperator, Ticket } from "@repo/types";
-import { useQuery } from "@apollo/client";
 import { UseGetTicketsHook } from "../types";
 
 type GetTaskObject = {
@@ -38,7 +37,7 @@ const paramsHandler = (
 			{}
 		);
 	}
-	return { ...filterObject, ...archivedObject, ...objectObject };
+	return [{ ...filterObject, ...archivedObject, ...objectObject }];
 };
 
 const useGetTickets = ({
@@ -49,38 +48,30 @@ const useGetTickets = ({
 	limit,
 	skip
 }: UseGetTicketsHook) => {
-	const { loading, data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Ticket",
-			fields: [
-				"objectId",
-				"id: objectId",
-				"createdAt",
-				"state",
-				"title",
-				"description",
-				"images",
-				"property { objectId id: objectId name }",
-				"created_by { objectId id: objectId }",
-				"task { objectId id: objectId title }"
-			]
-		}),
-		{
-			variables: {
-				params: paramsHandler(id, className, filters, archived),
-				limit,
-				skip
-			},
-			notifyOnNetworkStatusChange: true
-		}
-	);
+	const { loading, data, refetch, count } = useFindData({
+		objectName: "Ticket",
+		fields: [
+			"objectId",
+			"id: objectId",
+			"createdAt",
+			"state",
+			"title",
+			"description",
+			"images",
+			"property { objectId id: objectId name }",
+			"created_by { objectId id: objectId }",
+			"task { objectId id: objectId title }"
+		],
+		filters: paramsHandler(id, className, filters, archived),
+		limit,
+		skip
+	});
 
 	return {
 		loading,
-		tickets: data ? data.objects.findTicket.results : undefined,
+		tickets: data,
 		refetch,
-		count: data ? data.objects.findTicket.count : 0
+		count
 	} as GetTaskObject;
 };
 

@@ -2,13 +2,7 @@ import { FC, useState, useMemo } from "react";
 import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
 import styles from "./TaskSlideIn.module.scss";
-import { useQuery } from "@apollo/client";
-import {
-	FIND_DOCUMENTS_FOR_TASK,
-	GET_TASK_SLIDEIN_CONTENT,
-	getDateString,
-	useDataHandler
-} from "@repo/provider";
+import { getDateString, useDataHandler, useGetData } from "@repo/provider";
 import TaskDocuments from "../TaskDocuments";
 import TaskImages from "../TaskImages";
 import DisplayTaskState from "../DisplayTaskState";
@@ -34,21 +28,30 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 	const { deleteData } = useDataHandler();
 	const [deleteTask, setDeleteTask] = useState(false);
 	const [showDetails, setShowDetails] = useState(false);
-	const { data: dataSlidein, refetch: refetchSlideIn } = useQuery(
-		GET_TASK_SLIDEIN_CONTENT,
-		{
-			variables: { id: taskId },
-			notifyOnNetworkStatusChange: true
-		}
-	);
+	const { data: dataSlidein, refetch: refetchSlideIn } = useGetData({
+		objectName: "Task",
+		fields: [
+			"objectId",
+			"comments",
+			"images",
+			"state",
+			"executed_at",
+			"ticket { objectId createdAt title state description images created_by { objectId username } }"
+		],
+		id: taskId
+	});
 
-	const { data: dataDocuments, refetch: refetchDocuments } = useQuery(
-		FIND_DOCUMENTS_FOR_TASK,
-		{
-			variables: { id: taskId },
-			notifyOnNetworkStatusChange: true
-		}
-	);
+	const { data: dataDocuments, refetch: refetchDocuments } = useGetData({
+		objectName: "Document",
+		fields: [
+			"objectId",
+			"title",
+			"description",
+			"images",
+			"created_by { objectId username }"
+		],
+		id: taskId
+	});
 
 	const buttonStates = useMemo(() => {
 		const buttonStates = [

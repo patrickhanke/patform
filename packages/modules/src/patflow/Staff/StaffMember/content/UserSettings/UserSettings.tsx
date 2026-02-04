@@ -1,19 +1,20 @@
 import { getIsoFromDate } from "@repo/provider";
-import { GET_USER_SETTINGS } from "@repo/provider";
+import { useGetData } from "@repo/provider";
 import { fieldsType } from "@repo/types";
-import { useQuery } from "@apollo/client";
 import { Form, Loader } from "@repo/ui";
 import React, { useMemo } from "react";
 
 const UserSettings = ({ userId }: { userId: string }) => {
-	const { data, refetch } = useQuery(GET_USER_SETTINGS, {
-		variables: { id: userId }
+	const { data, refetch } = useGetData({
+		objectName: "User",
+		fields: ["objectId", "settings"],
+		id: userId
 	});
 
 	const renderFields = useMemo(() => {
 		let selectFields = [] as fieldsType;
 		if (data) {
-			const settings = data.objects.get_User.settings;
+			const settings = data.settings;
 			selectFields = [
 				{
 					label: "Mitarbeiter seit",

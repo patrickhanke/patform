@@ -4,25 +4,24 @@ import {
 	convertMillisecondsToString,
 	createDateIntervalForMonth,
 	findDefaultTimeForDate,
-	months
+	months,
+	useFindData
 } from "@repo/provider";
 import { Day } from "@repo/types";
-import { find_record } from "@repo/provider";
-import { useQuery } from "@apollo/client";
 import useTableColumns from "./hooks/useTableColumns";
 import { SelectElement, SlideIn, Table } from "@repo/ui";
 import SelectStaff from "./components/SelectStaff";
 
 const StaffRecord = ({ days, year, staff }: StaffRecordProps) => {
 	const [selectedWorker, setSelectedWorker] = useState<SelectElement[]>([]);
-	const { data: recordData } = useQuery(find_record, {
-		variables: {
-			params: {
-				year: { _eq: year },
-				user: { _eq: selectedWorker[0]?.objectId }
-			}
-		},
-		skip: !year || selectedWorker.length === 0
+	const { data: recordData } = useFindData({
+		objectName: "Record",
+		fields: ["objectId", "year", "user {objectId}", "default_times", "createdAt"],
+		filters: [
+			{ key: "year", value: year, operator: "_eq" },
+			{ key: "user", value: selectedWorker[0]?.objectId, operator: "_eq" }
+		],
+		skipQuery: !year || selectedWorker.length === 0
 	});
 	const [displayStaffRecord, setDisplayStaffRecord] = useState(false);
 	const columns = useTableColumns();
@@ -43,7 +42,7 @@ const StaffRecord = ({ days, year, staff }: StaffRecordProps) => {
 			const record_default_times = dateInterval.map((dateElement) =>
 				findDefaultTimeForDate(
 					dateElement,
-					recordData?.objects.findRecord.results || []
+					recordData || []
 				)
 			);
 			record_default_times.forEach((element) => {

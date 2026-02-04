@@ -1,22 +1,23 @@
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_TALLIES } from "@repo/provider";
+import { useFindData } from "@repo/provider";
+import { Filter } from "@repo/types";
 import { useFindTalliesHook } from "../types";
 
-const paramsHandler = (id: string, className: string) => {
-  if (className === "Property") return { property: { _eq: id } };
-  return undefined;
+const paramsHandler = (id: string, className: string): Filter[] => {
+  if (className === "Property") return [{ key: "property", value: id, operator: "_eq" }];
+  return [];
 };
 
 const useFindTallies = ({ id, className }: useFindTalliesHook) => {
-  const { loading, refetch, data } = useQuery(FIND_ALL_TALLIES, {
-    variables: { params: paramsHandler(id, className) },
-    notifyOnNetworkStatusChange: true,
+  const { loading, refetch, data } = useFindData({
+    objectName: "Tally",
+    fields: ["objectId", "name", "description", "entries"],
+    filters: paramsHandler(id, className)
   });
 
   return {
     loading,
     refetch,
-    tallies: data ? data.objects.findTally.results : undefined,
+    tallies: data,
   };
 };
 

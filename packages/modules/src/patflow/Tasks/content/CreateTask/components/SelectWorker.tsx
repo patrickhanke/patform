@@ -1,34 +1,38 @@
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@repo/provider";
+import { useFindData, useGetData } from "@repo/provider";
 import { ElementSelectInterface, SelectElement, StateDisplay } from "@repo/ui";
 import { Task, Worker } from "@repo/types";
 import { FC, useMemo } from "react";
 import { PropertyOptions, SelectWorkerProps } from "../types";
 import { DisplayWorker } from "@repo/ui";
-import { generateGraphQLQuery } from "@repo/provider";
 
 const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
-	const { data: workerData } = useQuery(FIND_ALL_STAFF);
-	const { data: propertyData } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Property",
-			fields: ["assigned_staff", "objectId", "name"],
-			type: "get"
-		}),
-		{
-			variables: { id: task.property },
-			notifyOnNetworkStatusChange: true,
-			skip: !task.property
-		}
-	);
+	const { data: workerData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name"],
+		filters: [
+			{
+				key: "is_worker",
+				value: true,
+				operator: "equalTo",
+				id: "is_worker"
+			}
+		]
+	});
+
+	console.log(workerData);
+	const { data: propertyData } = useGetData({
+		objectName: "Property",
+		fields: ["assigned_staff", "objectId", "name"],
+		id: task.property,
+		skip: !task.property
+	});
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: PropertyOptions[] = [];
-		const propertyStaff =
-			propertyData?.objects.getProperty?.assigned_staff || [];
+		const propertyStaff = propertyData?.assigned_staff || [];
 
 		if (workerData) {
-			workerData.objects.find_User.results.forEach((worker: Worker) => {
+			workerData.forEach((worker: Worker) => {
 				if (worker) {
 					workerOptionsArray.push({
 						value: worker.objectId,
@@ -40,10 +44,7 @@ const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
 								{propertyData &&
 									propertyStaff.includes(worker.objectId) && (
 										<StateDisplay
-											label={
-												propertyData?.objects
-													.getProperty.name
-											}
+											label={propertyData?.name}
 											color="green"
 										/>
 									)}

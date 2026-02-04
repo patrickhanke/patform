@@ -1,26 +1,20 @@
 import React, { FC, useMemo } from "react";
 import useTourTableColumns from "./hooks/useTourTableColumns";
-import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { ServiceData, TourProps } from "./types";
 import { Property } from "@repo/types";
 import { Table } from "@repo/ui";
 
 const Tour: FC<TourProps> = ({ projectId, workerId, year }) => {
-  const { data, refetch } = useQuery(
-    generateGraphQLQuery({
-      type: "find",
-      objectName: "Property",
-      fields: ["objectId", "name", "services", "assigned_staff"],
-    }),
-    {
-      variables: { params: paramsHandler({ projectId }) },
-    },
-  );
+  const { data, refetch } = useFindData({
+    objectName: "Property",
+    fields: ["objectId", "name", "services", "assigned_staff"],
+    projectId
+  });
 
   const tableData = useMemo(() => {
     if (data && workerId) {
-      const properties = data.objects.findProperty.results;
+      const properties = data;
       console.log(properties);
       const services: ServiceData[] = [];
 

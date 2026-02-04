@@ -1,21 +1,17 @@
-import { generateGraphQLQuery } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { Service } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { useQuery } from "@apollo/client";
 import ServiceCell from "../content/ServiceCell";
 import { ServiceData, UseServiceTableColumns } from "../types";
 
 const useServiceTableColumns: (
   T: UseServiceTableColumns,
 ) => ColumnDef<ServiceData>[] = ({ setAddEditService }) => {
-  const { data } = useQuery(
-    generateGraphQLQuery({
-      type: "find",
-      objectName: "Service",
-      fields: ["objectId", "name", "is_active", "description"],
-    }),
-  );
+  const { data } = useFindData({
+    objectName: "Service",
+    fields: ["objectId", "name", "is_active", "description"]
+  });
 
   const columns: ColumnDef<ServiceData>[] = useMemo(() => {
     const columnsArray: ColumnDef<ServiceData>[] = [
@@ -30,7 +26,7 @@ const useServiceTableColumns: (
     ];
 
     if (data) {
-      const services = data.objects.findService.results;
+      const services = data;
       services.map((service: Service) => {
         if (!service.is_active) return;
 

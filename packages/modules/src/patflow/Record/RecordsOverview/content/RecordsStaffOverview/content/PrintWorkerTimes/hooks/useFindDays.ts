@@ -1,19 +1,22 @@
-import { find_day } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import { UseFindDays } from "../types";
 
 const useFindDays: UseFindDays = ({ year, users = [] }) => {
-	const { loading, data, refetch } = useQuery(find_day, {
-		variables: { params: { year: { _eq: year }, user: { _in: users } } },
-		notifyOnNetworkStatusChange: true,
-		skip: !year || users.length === 0
+	const { loading, data, refetch } = useFindData({
+		objectName: "Day",
+		fields: ["objectId", "date", "times", "user {objectId}", "year"],
+		filters: [
+			{ key: "year", value: year, operator: "_eq" },
+			{ key: "user", value: users, operator: "_in" }
+		],
+		skipQuery: !year || users.length === 0
 	});
 
 	console.log({ data });
 
 	return {
 		loading,
-		days: data ? data.objects.findDay.results : [],
+		days: data || [],
 		refetch
 	};
 };

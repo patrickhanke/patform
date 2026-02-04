@@ -2,14 +2,17 @@ import React, { useMemo } from "react";
 import { RecordsCalendarProps } from "./types";
 import { eachDayOfInterval, formatISO9075 } from "date-fns";
 import { get, set } from "lodash-es";
-import { absence_type_options } from "@repo/provider";
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@repo/provider";
+import { absence_type_options, useFindData } from "@repo/provider";
 import { Absence, PatflowUser } from "@repo/types";
 import { Calendar, CalendarData } from "@repo/ui";
 
 const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
-	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+	const { data: staffData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
+		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		order: "last_name_DESC"
+	});
 
 	const absences = useMemo(() => {
 		const absence = records.map((record) => record.absence).flat();
@@ -18,7 +21,7 @@ const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 
 	const calendarData = useMemo(() => {
 		const data: CalendarData = {};
-		const staff = staffData?.objects.find_User.results || [];
+		const staff = staffData || [];
 		if (staff.length === 0) {
 			return data;
 		}

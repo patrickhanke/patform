@@ -1,22 +1,23 @@
-import { GET_USER_DISPLAY_DATA } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useGetData } from "@repo/provider";
 import React, { useMemo } from "react";
 import DisplayUserData from "./components/DisplayUserData";
 import styles from "./StaffMemberOverview.module.scss";
 import clsx from "clsx";
 
 const StaffMemberOverview = ({ userId }: { userId: string }) => {
-	const { data } = useQuery(GET_USER_DISPLAY_DATA, {
-		variables: { id: userId }
+	const { data } = useGetData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "email", "role {name}"],
+		id: userId
 	});
 
 	const createUserDisplayData = useMemo(() => {
 		if (data) {
 			return {
-				Vorname: data.objects.get_User.first_name || ("" as string),
-				Nachname: data.objects.get_User.last_name || ("" as string),
-				Rolle: data.objects.get_User.role.name || ("" as string),
-				"E-Mail": data.objects.get_User.email || ("" as string)
+				Vorname: data.first_name || ("" as string),
+				Nachname: data.last_name || ("" as string),
+				Rolle: data.role?.name || ("" as string),
+				"E-Mail": data.email || ("" as string)
 			} as const;
 		}
 		return null;

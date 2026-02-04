@@ -1,9 +1,7 @@
 import React, { FC, useCallback, useMemo } from "react";
-import { useQuery } from "@apollo/client";
 import { fieldsType } from "@repo/types";
-import { GET_PROPERTY_SETTINGS } from "@repo/provider";
 import { Form, Loader } from "@repo/ui";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { useDataHandler, useGetData } from "@repo/provider";
 import { PropertySettingsProps } from "./types";
 import ArchiveProperty from "./components/ArchiveProperty";
 
@@ -12,19 +10,16 @@ const PropertySettings: FC<PropertySettingsProps> = ({
 	refetch
 }) => {
 	const { updateData } = useDataHandler();
-	const { data, refetch: settingsRefetch } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Property",
-			type: "get",
-			fields: ["objectId", " name", "settings", "archived"]
-		}),
-		{ variables: { id: propertyId } }
-	);
+	const { data: property, refetch: settingsRefetch } = useGetData({
+		objectName: "Property",
+		fields: ["objectId", "name", "settings", "archived"],
+		id: propertyId
+	});
 
 	const renderFields = useMemo(() => {
 		let selectFields = [] as fieldsType;
-		if (data) {
-			const settings = data.objects.getProperty.settings;
+		if (property) {
+			const settings = property.settings;
 			selectFields = [
 				{
 					label: "Schlüsselnummer",
@@ -43,12 +38,10 @@ const PropertySettings: FC<PropertySettingsProps> = ({
 			] as fieldsType;
 		}
 		return selectFields;
-	}, [data]);
+	}, [property]);
 
 	if (renderFields.length === 0)
 		return <Loader width={"100%"} height="30px" />;
-
-	const property = data?.objects.getProperty;
 
 	return (
 		<div className="flex col a-st gap-md">

@@ -1,33 +1,26 @@
-import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import React, { useMemo, useState } from "react";
 import { AddEditServiceState, ServiceData } from "./types";
 import { Property } from "@repo/types";
 import AddEditService from "./content/AddEditService";
 import useServiceTableColumns from "./hooks/useServiceTableColumns";
 import { Table } from "@repo/ui";
-import { paramsHandler } from "@repo/provider";
 
 const Services = ({ projectId }: { projectId: string }) => {
   const [addEditService, setAddEditService] =
     useState<AddEditServiceState | null>(null);
 
-  const { data, refetch } = useQuery(
-    generateGraphQLQuery({
-      type: "find",
-      objectName: "Property",
-      fields: ["objectId", "name", "services"],
-    }),
-    {
-      variables: { params: paramsHandler({ projectId }) },
-    },
-  );
+  const { data, refetch } = useFindData({
+    objectName: "Property",
+    fields: ["objectId", "name", "services"],
+    projectId
+  });
 
   const columns = useServiceTableColumns({ setAddEditService });
 
   const tableData = useMemo(() => {
     if (data) {
-      const properties = data.objects.findProperty.results;
+      const properties = data;
       console.log(properties);
       const services: ServiceData[] = [];
 

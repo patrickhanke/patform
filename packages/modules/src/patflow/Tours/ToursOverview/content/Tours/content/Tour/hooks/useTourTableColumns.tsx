@@ -1,21 +1,17 @@
-import { generateGraphQLQuery } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { Service } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { useQuery } from "@apollo/client";
 import { ServiceData, UseTourTableColumns } from "../types";
 import TourCell from "../components/TourCell";
 
 const useTourTableColumns: (
   T: UseTourTableColumns,
 ) => ColumnDef<ServiceData>[] = ({ workerId, refetch, year }) => {
-  const { data } = useQuery(
-    generateGraphQLQuery({
-      type: "find",
-      objectName: "Service",
-      fields: ["objectId", "name", "is_active", "description"],
-    }),
-  );
+  const { data } = useFindData({
+    objectName: "Service",
+    fields: ["objectId", "name", "is_active", "description"]
+  });
 
   const columns: ColumnDef<ServiceData>[] = useMemo(() => {
     const columnsArray: ColumnDef<ServiceData>[] = [
@@ -30,7 +26,7 @@ const useTourTableColumns: (
     ];
 
     if (data) {
-      const services = data.objects.findService.results;
+      const services = data;
       services.map((service: Service) => {
         if (service.is_active) {
           columnsArray.push({

@@ -1,10 +1,9 @@
 import { FC, useMemo, useState } from "react";
-import { GET_TASK_TIME, getDateString } from "@repo/provider";
+import { getDateString, useGetData } from "@repo/provider";
 import { DateSelectInterfaceTask, Loader, StateDisplay } from "@repo/ui";
 import { formatISO9075 } from "date-fns";
 import { getISOWeek, startOfISOWeek, endOfISOWeek } from "date-fns";
 import { Task } from "@repo/types";
-import { useQuery } from "@apollo/client";
 
 const TaskDate: FC<TaskDateProps> = ({
 	taskId,
@@ -12,24 +11,26 @@ const TaskDate: FC<TaskDateProps> = ({
 	isEditable = true
 }) => {
 	const [showInterface, setShowInterface] = useState(false);
-	const { data } = useQuery(GET_TASK_TIME, {
-		variables: { id: taskId }
+	const { data } = useGetData({
+		objectName: "Task",
+		fields: ["objectId", "dates", "state", "time"],
+		id: taskId
 	});
 	const nextDate = useMemo(() => {
 		let value = "Kein Termin";
 		let is_overdue = false;
-		let allDates = [];
+		let allDates: string[] = [];
 		let color = "light";
 
 		if (data) {
-			const task = data.objects.getTask;
+			const task = data;
 			if (
 				task.dates.length > 0 &&
 				(task.state === "assigned" || task.state === "created")
 			) {
-				const datesCopy = [...data.objects.getTask.dates];
+				const datesCopy = [...data.dates];
 				allDates = datesCopy;
-				const timeCopy: Task["time"] = { ...data.objects.getTask.time };
+				const timeCopy: Task["time"] = { ...data.time };
 				const date = timeCopy.dates?.find(
 					(dateToFind: string) =>
 						formatISO9075(dateToFind, {
@@ -74,7 +75,7 @@ const TaskDate: FC<TaskDateProps> = ({
 				task.state === "completed" ||
 				task.state === "archived"
 			) {
-				const timeCopy: Task["time"] = { ...data.objects.getTask.time };
+				const timeCopy: Task["time"] = { ...data.time };
 				if (timeCopy.dates.length > 0) {
 					const date = timeCopy.dates[timeCopy.dates.length - 1];
 
@@ -126,7 +127,7 @@ const TaskDate: FC<TaskDateProps> = ({
 	}, [data]);
 
 	if (data) {
-		const task = data.objects.getTask;
+		const task = data;
 		const taskIsEditable =
 			task.state === "assigned" || task.state === "created";
 

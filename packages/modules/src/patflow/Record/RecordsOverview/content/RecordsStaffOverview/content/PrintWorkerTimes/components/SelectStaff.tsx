@@ -2,20 +2,24 @@ import { FC, useMemo } from "react";
 import { DisplayWorker, ElementSelectInterface, SelectElement } from "@repo/ui";
 import { SelectStaffProps } from "../types";
 import { Worker } from "@repo/types";
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 
 const SelectStaff: FC<SelectStaffProps> = ({
 	selectedWorker,
 	setSelectedWorker
 }) => {
-	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+	const { data: staffData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
+		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		order: "last_name_DESC"
+	});
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: SelectElement[] = [];
 
 		if (staffData) {
-			const staff = staffData.objects.find_User.results;
+			const staff = staffData;
 			staff.forEach((worker: Worker) => {
 				if (worker) {
 					workerOptionsArray.push({

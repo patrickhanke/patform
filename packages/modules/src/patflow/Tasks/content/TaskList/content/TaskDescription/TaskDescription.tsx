@@ -1,6 +1,4 @@
-import { useDataHandler } from "@repo/provider";
-import { GET_TASK_DESCRIPTION } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useDataHandler, useGetData } from "@repo/provider";
 import { useEffect } from "react";
 import styles from "./TaskDescription.module.scss";
 import { useDebounceValue } from "usehooks-ts";
@@ -16,9 +14,10 @@ const TaskDescription = ({
 	const { updateData } = useDataHandler();
 	const [description, setDescription] = useDebounceValue("", 2000);
 
-	const { data, refetch } = useQuery(GET_TASK_DESCRIPTION, {
-		variables: { id: taskId },
-		notifyOnNetworkStatusChange: true
+	const { data, refetch } = useGetData({
+		objectName: "Task",
+		fields: ["objectId", "description"],
+		id: taskId
 	});
 
 	const descriptionDataHandler = async (value: string) => {

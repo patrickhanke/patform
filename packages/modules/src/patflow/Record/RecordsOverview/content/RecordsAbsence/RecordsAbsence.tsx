@@ -1,11 +1,8 @@
 import { useContext, useEffect, useMemo } from "react";
 import { Absence, StaffMember } from "@repo/types";
-import { PatflowAppContext } from "@repo/provider";
-import { generateGraphQLQuery } from "@repo/provider";
+import { PatflowAppContext, useFindData } from "@repo/provider";
 import { LoadingIndicator, Select } from "@repo/ui";
 import { RecordAbsenceProps } from "./types";
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@repo/provider";
 import useRecordAbsenceColumns from "./hooks/useRecordAbsenceColumns";
 import EditRecordAbsence from "./content/EditRecordAbsence";
 import { Divider, Table } from "@repo/ui";
@@ -18,12 +15,17 @@ const RecordAbsence = ({
 	setSelectedUser
 }: RecordAbsenceProps) => {
 	const { year } = useContext(PatflowAppContext);
-	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+	const { data: staffData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
+		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		order: "last_name_DESC"
+	});
 
 	const siteHeaderContent = useMemo(() => {
 		let staffOptions = [] as { value: string; label: string }[];
 		if (staffData) {
-			staffOptions = staffData.objects.find_User.results.map(
+			staffOptions = staffData.map(
 				(staff: StaffMember) => ({
 					value: staff.objectId,
 					label: `${staff.first_name} ${staff.last_name}`
@@ -46,38 +48,31 @@ const RecordAbsence = ({
 		);
 	}, [year, staffData, selectedUser]);
 
-	const { data, refetch, loading } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Absence",
-			fields: [
-				"objectId",
-				"start_date",
-				"end_date",
-				"state",
-				"user{objectId first_name last_name portrait}",
-				"comment",
-				"type",
-				"year"
-			]
-		}),
-		{
-			variables: {
-				params: selectedUser
-					? {
-							year: { _eq: year },
-							user: { _eq: selectedUser.value }
-						}
-					: { year: { _eq: year } }
-			},
-			skip: !year
-		}
-	);
+	const { data, refetch, loading } = useFindData({
+		objectName: "Absence",
+		fields: [
+			"objectId",
+			"start_date",
+			"end_date",
+			"state",
+			"user{objectId first_name last_name portrait}",
+			"comment",
+			"type",
+			"year"
+		],
+		filters: selectedUser
+			? [
+					{ key: "year", value: year, operator: "_eq" },
+					{ key: "user", value: selectedUser.value, operator: "_eq" }
+				]
+			: [{ key: "year", value: year, operator: "_eq" }],
+		skipQuery: !year
+	});
 
 	const absenceData = useMemo(() => {
 		const absenceArray: Absence[] = [];
 		if (data) {
-			data.objects.findAbsence.results.forEach((absence: Absence) => {
+			data.forEach((absence: Absence) => {
 				absenceArray.push({
 					...absence
 				});

@@ -1,28 +1,22 @@
-import { generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import { UseFindRecord } from "../types";
 
 const useFindRecord: UseFindRecord = ({ year, users = [] }) => {
-	const { loading, data, refetch } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Record",
-			type: "find",
-			fields: ["objectId", "year", "user {objectId}", "default_times"]
-		}),
-		{
-			variables: {
-				params: { year: { _eq: year }, user: { _in: users } }
-			},
-			notifyOnNetworkStatusChange: true,
-			skip: !year || users.length === 0
-		}
-	);
+	const { loading, data, refetch } = useFindData({
+		objectName: "Record",
+		fields: ["objectId", "year", "user {objectId}", "default_times"],
+		filters: [
+			{ key: "year", value: year, operator: "_eq" },
+			{ key: "user", value: users, operator: "_in" }
+		],
+		skipQuery: !year || users.length === 0
+	});
 
 	console.log({ data });
 
 	return {
 		loading,
-		records: data ? data.objects.findRecord.results : [],
+		records: data || [],
 		refetch
 	};
 };

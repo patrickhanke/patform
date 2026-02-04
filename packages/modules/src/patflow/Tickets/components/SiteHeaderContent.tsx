@@ -1,7 +1,6 @@
 import { FC, useMemo } from "react";
 import { Select } from "@repo/ui";
-import { FIND_ALL_PROPERTY } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import { SiteHeaderContentComponent } from "../types";
 import styles from "../Tickets.module.scss";
 import { filterChangeHandler, getDateString } from "@repo/provider";
@@ -17,8 +16,10 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 	initialFilters,
 	tickets
 }) => {
-	const { data: objectData } = useQuery(FIND_ALL_PROPERTY, {
-		skip: !!id
+	const { data: objectData } = useFindData({
+		objectName: "Property",
+		fields: ["objectId", "name"],
+		skipQuery: !!id
 	});
 
 	const searchParams = useSearchParams();
@@ -30,7 +31,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 		let objectOptions = [] as { value: string; label: string }[];
 
 		if (objectData) {
-			objectOptions = objectData.objects.findProperty.results.map(
+			objectOptions = objectData.map(
 				(property: Property) => ({
 					value: property.objectId,
 					label: property.name

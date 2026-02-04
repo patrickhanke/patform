@@ -2,8 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import PatflowAppContext from "./PatflowAppContext";
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_ROLES, generateGraphQLQuery } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { RoleUsers } from "./types";
 import { PatflowUserRole } from "@repo/types";
 import { CreateTask, CreateTicket } from "@repo/modules";
@@ -23,55 +22,40 @@ const PatflowAppContextProvider = ({
 	const [refetchTicket, setRefetchTicket] = useState<Date | undefined>();
 	const [refetchTask, setRefetchTask] = useState<Date | undefined>();
 	const [year, setYear] = useState(new Date().getFullYear());
-	const { data: roleData } = useQuery(FIND_ALL_ROLES, {
-		fetchPolicy: "cache-first"
+	const { data: roleData } = useFindData({
+		objectName: "Role",
+		fields: [
+			"objectId",
+			"name",
+			"type",
+			"color",
+			"users { objectId username }"
+		],
+		projectId: project?.objectId
 	});
 
-	const { data: workerData, refetch: refetchWorkers } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "_User",
-			fields: [
-				"objectId",
-				"first_name",
-				"last_name",
-				"email",
-				"portrait",
-				"color"
-			]
-		}),
-		{
-			variables: {
-				params: {
-					project: {
-						_eq: project?.objectId
-					}
-				}
-			},
-			skip: !project?.objectId
-		}
-	);
+	const { data: workerData, refetch: refetchWorkers } = useFindData({
+		objectName: "User",
+		fields: [
+			"objectId",
+			"first_name",
+			"last_name",
+			"email",
+			"portrait",
+			"color"
+		],
+		projectId: project?.objectId
+	});
 
-	const { data: propertyData, refetch: refetchProperties } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Property",
-			fields: [
-				"objectId",
-				"name",
-				"created_by { objectId first_name last_name portrait }"
-			]
-		}),
-		{
-			variables: {
-				params: {
-					project: {
-						_eq: project?.objectId
-					}
-				}
-			}
-		}
-	);
+	const { data: propertyData, refetch: refetchProperties } = useFindData({
+		objectName: "Property",
+		fields: [
+			"objectId",
+			"name",
+			"created_by { objectId first_name last_name portrait }"
+		],
+		projectId: project?.objectId
+	});
 
 	const roleUsers = useMemo(() => {
 		const roleObject: RoleUsers = {
@@ -81,13 +65,11 @@ const PatflowAppContextProvider = ({
 		};
 
 		if (roleData) {
-			roleData.objects.find_Role.results.forEach(
-				(role: PatflowUserRole) => {
-					roleObject[role.type] = role.users.results.map(
-						(user) => user.objectId
-					);
-				}
-			);
+			roleData.forEach((role: PatflowUserRole) => {
+				roleObject[role.type] = role.users.results.map(
+					(user) => user.objectId
+				);
+			});
 		}
 
 		return roleObject;
@@ -103,20 +85,18 @@ const PatflowAppContextProvider = ({
 			createTask: <CreateTask setRefetchTask={setRefetchTask} />,
 			selectYear: <SelectYear year={year} setYear={setYear} />,
 			year,
-			workers: workerData?.objects.find_User.results || [],
-			properties: propertyData?.objects.findProperty.results || [],
+			workers: workerData || [],
+			properties: propertyData || [],
 			refetchWorkers,
 			refetchProperties,
 			roles: roleData
-				? roleData.objects.find_Role.results.map(
-						(role: PatflowUserRole) => ({
-							value: role.objectId,
-							type: role.type,
-							label: role.name,
-							color: role.color,
-							users: role.users.results
-						})
-					)
+				? roleData.map((role: PatflowUserRole) => ({
+						value: role.objectId,
+						type: role.type,
+						label: role.name,
+						color: role.color,
+						users: role.users.results
+					}))
 				: [],
 			roleUsers
 		}),

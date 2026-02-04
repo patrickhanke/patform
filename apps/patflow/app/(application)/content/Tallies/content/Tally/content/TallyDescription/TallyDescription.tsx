@@ -1,7 +1,5 @@
 import { Loader, Editor } from "@repo/ui";
-import { useDataHandler } from "@repo/provider";
-import { GET_TALLY_DESCRIPTION } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useDataHandler, useGetData } from "@repo/provider";
 import React, { useState } from "react";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import styles from "./TallyDescription.module.scss";
@@ -10,9 +8,10 @@ const TallyDescription = ({ tallyId }: { tallyId: string }) => {
   const { updateData } = useDataHandler();
 
   const [editDescription, setEditDescription] = useState(false);
-  const { data, refetch } = useQuery(GET_TALLY_DESCRIPTION, {
-    variables: { id: tallyId },
-    notifyOnNetworkStatusChange: true,
+  const { data, refetch } = useGetData({
+    objectName: "Tally",
+    fields: ["objectId", "description"],
+    id: tallyId
   });
 
   const descriptionDataHandler = async (value: string) => {
@@ -37,7 +36,7 @@ const TallyDescription = ({ tallyId }: { tallyId: string }) => {
           <div className={styles.description_content_text}>
             <Editor
               onChange={descriptionDataHandler}
-              content={data.objects.getTally.description}
+              content={data.description}
               withToolbar={false}
               onClickOutside={() => {
                 if (editDescription) {

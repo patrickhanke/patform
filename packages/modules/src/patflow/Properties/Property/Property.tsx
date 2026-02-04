@@ -1,9 +1,8 @@
 "use client";
 
 import React, { use, useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
 import useSiteStates from "./constants/siteStates";
-import { GET_PROPERTY } from "@repo/provider";
+import { useGetData } from "@repo/provider";
 import PropertyTasks from "./content/PropertyTasks";
 import PropertySettings from "./content/PropertySettings";
 import PropertyServices from "./content/PropertyServices";
@@ -12,7 +11,6 @@ import PropertyDocuments from "./content/PropertyDocuments";
 import PropertyTickets from "./content/PropertyTickets";
 import { Params, Property as PropertyType } from "@repo/types";
 import { Page, PageHeaderButton } from "@repo/ui";
-import { generateGraphQLQuery } from "@repo/provider";
 
 const Property = ({ params }: { params: Params }) => {
 	const siteStates = useSiteStates();
@@ -21,22 +19,17 @@ const Property = ({ params }: { params: Params }) => {
 	);
 	const [addService, setAddService] = useState(false);
 
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Property",
-			type: "get",
-			fields: [
-				"objectId",
-				"name",
-				"createdAt",
-				"created_by {objectId username}, archived"
-			]
-		}),
-		{
-			variables: { id: params.object_id },
-			fetchPolicy: "no-cache"
-		}
-	);
+	const { data: property, refetch } = useGetData({
+		objectName: "Property",
+		fields: [
+			"objectId",
+			"name",
+			"createdAt",
+			"created_by {objectId username}",
+			"archived"
+		],
+		id: params.object_id
+	});
 
 	const siteContent = useMemo(() => {
 		const content = {
@@ -70,9 +63,7 @@ const Property = ({ params }: { params: Params }) => {
 		return [];
 	}, [siteState]);
 
-	if (!data) return null;
-
-	const property: PropertyType = data.objects.getProperty;
+	if (!property) return null;
 
 	return (
 		<Page

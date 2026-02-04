@@ -2,14 +2,12 @@ import React, { useContext, useMemo } from "react";
 import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
 import {
-	FIND_ALL_STAFF,
-	find_record,
+	useFindData,
 	months,
 	UserContext
 } from "@repo/provider";
 import useGetDay from "./hooks/useGetDay";
 import { Divider } from "@repo/ui";
-import { useQuery } from "@apollo/client";
 import StaffRecord from "./content/StaffRecord";
 import { TimesSaldo } from "./content/TimesSaldo";
 import { Record } from "@repo/types";
@@ -40,21 +38,24 @@ const RecordsStaffOverview = ({
 		user: selectedUser?.value
 	});
 
-	const { data: recordData } = useQuery(find_record, {
-		variables: {
-			params: {
-				year: { _eq: year }
-			}
-		},
-		skip: !year
+	const { data: recordData } = useFindData({
+		objectName: "Record",
+		fields: ["objectId", "year", "user {objectId}", "default_times", "createdAt"],
+		filters: [{ key: "year", value: year, operator: "_eq" }],
+		skipQuery: !year
 	});
-	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+	const { data: staffData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
+		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		order: "last_name_DESC"
+	});
 
 	const currentRecords = useMemo(() => {
 		const rec: Record[] = [];
 
 		if (!recordData || !selectedUser) return rec;
-		recordData.objects.findRecord.results.forEach((record: Record) => {
+		recordData.forEach((record: Record) => {
 			if (record.user.objectId === selectedUser.value) {
 				rec.push(record);
 			}
@@ -70,7 +71,7 @@ const RecordsStaffOverview = ({
 				selectedMonth={selectedMonth}
 				setSelectedUser={setSelectedUser}
 				selectedUser={selectedUser}
-				staff={staffData?.objects.find_User.results || []}
+				staff={staffData || []}
 			/>
 		),
 		[selectedMonth, selectedUser, staffData]
@@ -81,7 +82,7 @@ const RecordsStaffOverview = ({
 			<StaffRecord
 				days={days}
 				year={year}
-				staff={staffData?.objects.find_User.results || []}
+				staff={staffData || []}
 			/>
 			<div className="button_container">{siteHeaderContent}</div>
 			<Divider size="small" showLine={false} />

@@ -1,9 +1,7 @@
 import React, { FC, useCallback, useMemo, useState } from "react";
 import { TourCellProps } from "../types";
 import styles from "../Tour.module.scss";
-import { useDataHandler } from "@repo/provider";
-import { generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useDataHandler, useGetData } from "@repo/provider";
 import { cloneDeep, set } from "lodash-es";
 import { IconButton } from "@repo/ui";
 import { DisplayWorker, TeamAssignment, WorkersInterface } from "@repo/ui";
@@ -24,18 +22,11 @@ const TourCell: FC<TourCellProps> = ({
   const [loading, setLoading] = useState(false);
   const week = useTourStore((state) => state.week);
   const worker = useTourStore((state) => state.worker);
-  const { data } = useQuery(
-    generateGraphQLQuery({
-      objectName: "Property",
-      type: "get",
-      fields: ["services", "objectId"],
-    }),
-    {
-      variables: {
-        id: propertyId,
-      },
-    },
-  );
+  const { data: property } = useGetData({
+    objectName: "Property",
+    fields: ["services", "objectId"],
+    id: propertyId
+  });
 
   const service: PropertyService | undefined = services[id];
   const [workers, setWorkers] = useState<string[]>([]);
@@ -49,8 +40,7 @@ const TourCell: FC<TourCellProps> = ({
 
   const addServiceToUserHandler = useCallback(async () => {
     setLoading(true);
-    if (data) {
-      const property = data.objects.getProperty;
+    if (property) {
       const propertyServices = cloneDeep(property.services);
       const services = propertyServices || {};
       set(services, `${id}.assigned_staff`, [worker]);
@@ -74,8 +64,7 @@ const TourCell: FC<TourCellProps> = ({
 
   const removeServiceFromUserHandler = useCallback(async () => {
     setLoading(true);
-    if (data) {
-      const property = data.objects.getProperty;
+    if (property) {
       const propertyServices = cloneDeep(property.services);
       const services = propertyServices || {};
       set(services, `${id}.assigned_staff`, []);

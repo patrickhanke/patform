@@ -1,8 +1,6 @@
 import { DisplayWorker } from "@repo/ui";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
-import { FIND_ALL_STAFF } from "@repo/provider";
+import { useDataHandler, useGetData, useFindData } from "@repo/provider";
 import { DisplayWorkersProps, Worker } from "@repo/types";
-import { useQuery } from "@apollo/client";
 import React, { useMemo, useState } from "react";
 
 import styles from "../TeamAssignment.module.scss";
@@ -15,23 +13,22 @@ const DisplayWorkers = ({
 }: DisplayWorkersProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { updateData } = useDataHandler();
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Property",
-			fields: ["assigned_staff"],
-			type: "get"
-		}),
-		{
-			variables: { id: propertyId },
-			notifyOnNetworkStatusChange: true
-		}
-	);
-	const { data: workerData } = useQuery(FIND_ALL_STAFF);
+	const { data: property, refetch } = useGetData({
+		objectName: "Property",
+		fields: ["assigned_staff"],
+		id: propertyId
+	});
+	const { data: workerData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
+		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		order: "last_name_DESC"
+	});
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
 		if (workerData) {
-			workerData.objects.find_User.results.forEach((worker: Worker) => {
+			workerData.forEach((worker: Worker) => {
 				if (worker) {
 					workerOptionsArray.push({
 						value: worker.objectId,
@@ -52,8 +49,8 @@ const DisplayWorkers = ({
 			<ElementSelectInterface
 				elements={elements}
 				selectedElements={
-					data
-						? data.objects.getProperty.assigned_staff.map(
+					property
+						? property.assigned_staff.map(
 								(element: string) =>
 									elements.find((el) => el.value === element)
 							)
@@ -74,15 +71,15 @@ const DisplayWorkers = ({
 				isSearchable
 			/>
 		),
-		[data, data?.objects?.getProperty?.assigned_staff?.length]
+		[property, property?.assigned_staff?.length]
 	);
 
-	const staffNumber = data?.objects.getProperty.assigned_staff.length || 0;
+	const staffNumber = property?.assigned_staff?.length || 0;
 
-	if (data)
+	if (property)
 		return !showAsButton ? (
 			<>
-				{data.objects.getProperty.assigned_staff.map(
+				{property.assigned_staff.map(
 					(workerId: Worker["objectId"]) => (
 						<DisplayWorker
 							key={workerId}
@@ -108,7 +105,7 @@ const DisplayWorkers = ({
 					{/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
 					<div className={styles.button_workers_container}>
 						{staffNumber > 0 ? (
-							data.objects.getProperty.assigned_staff.map(
+							property.assigned_staff.map(
 								(
 									workerId: Worker["objectId"],
 									index: number

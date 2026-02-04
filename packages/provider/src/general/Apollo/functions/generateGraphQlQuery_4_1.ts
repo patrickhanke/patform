@@ -30,7 +30,10 @@ const getQueryStringFromFields = (fields: string[]) => {
 				field === "recipients" ||
 				field === "lists" ||
 				field === "emails" ||
-				field === "projects"
+				field === "projects" ||
+				field === "assigned_staff" ||
+				field === "comments" ||
+				field === "images"
 			) {
 				return `
                 ${field} {
@@ -59,7 +62,7 @@ const generateGraphQLQuery_4_1: GenerateGraphQLQueryFunction = ({
 		return gql`
             query ${type}${objectName}($params: ${objectName}WhereInput, $first: Int, $skip: Int, $order: [${objectName}Order!]) {
                 ${queryName}(where: $params, first: $first, skip: $skip, order: $order) {
-					count
+					${objectName === "User" ? "" : "count"}
                     edges {
                         node {
                             ${processedFields}

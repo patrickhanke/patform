@@ -1,13 +1,12 @@
-import { useDataHandler } from "@repo/provider";
-import { GET_TALLY_NAME } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useDataHandler, useGetData } from "@repo/provider";
 import { Loader, TextInput } from "@repo/ui";
 import React, { useState } from "react";
 
 const TallyName = ({ tallyId }: { tallyId: string }) => {
-  const { data, refetch } = useQuery(GET_TALLY_NAME, {
-    variables: { id: tallyId },
-    notifyOnNetworkStatusChange: true,
+  const { data, refetch } = useGetData({
+    objectName: "Tally",
+    fields: ["objectId", "name"],
+    id: tallyId
   });
 
   const { updateData } = useDataHandler();
@@ -29,14 +28,14 @@ const TallyName = ({ tallyId }: { tallyId: string }) => {
         <TextInput
           id="tally_name"
           label=""
-          defaultValue={data.objects.getTally.name}
+          defaultValue={data.name}
           onChange={(value) => titlenDataHandler(value)}
           onBlur={() => setTitleEdit(false)}
         />
       </div>
     ) : (
       <div onDoubleClick={() => setTitleEdit(true)}>
-        <h2>{data.objects.getTally.name}</h2>
+        <h2>{data.name}</h2>
       </div>
     );
 

@@ -1,11 +1,9 @@
 import { PatflowAppContext } from "@repo/provider";
-import { useDataHandler } from "@repo/provider";
-import { useCallback, useContext, useState } from "react";
+import { useDataHandler, useGetData } from "@repo/provider";
+import { useCallback, useContext, useState, useEffect } from "react";
 import { useImmer } from "use-immer";
 import styles from "../UserOverview.module.scss";
 import clsx from "clsx";
-import { useQuery } from "@apollo/client";
-import { GET_USER_DISPLAY_DATA } from "@repo/provider";
 import { ErrorMessage, Image } from "@repo/types";
 import {
 	IconButton,
@@ -30,20 +28,23 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 		portrait: undefined as unknown as Image
 	});
 
-	const { refetch } = useQuery(GET_USER_DISPLAY_DATA, {
-		variables: {
-			id: userId
-		},
-		onCompleted(data) {
+	const { data: userData, refetch } = useGetData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "email", "portrait", "role {objectId}"],
+		id: userId
+	});
+
+	useEffect(() => {
+		if (userData) {
 			setStaffMember((draft) => {
-				draft.first_name = data.objects.get_User.first_name;
-				draft.last_name = data.objects.get_User.last_name;
-				draft.email = data.objects.get_User.email;
-				draft.role = data.objects.get_User.role.objectId;
-				draft.portrait = data.objects.get_User.portrait;
+				draft.first_name = userData.first_name;
+				draft.last_name = userData.last_name;
+				draft.email = userData.email;
+				draft.role = userData.role?.objectId;
+				draft.portrait = userData.portrait;
 			});
 		}
-	});
+	}, [userData]);
 
 	// useEffect(() => {
 	// 	const errorArray: ErrorMessage[] = [];

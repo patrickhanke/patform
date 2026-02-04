@@ -2,11 +2,10 @@
 
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import site_states from "./constants/site_states";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { useDataHandler, useFindData } from "@repo/provider";
 import SurchargeSettings from "./content/SurchargeSettings";
 import HolidayTemplates from "./content/HolidayTemplates";
 import Holidays from "./content/Holidays";
-import { useQuery } from "@apollo/client";
 import { Holiday } from "@repo/types";
 import { cloneDeep, set } from "lodash-es";
 import axios from "axios";
@@ -22,27 +21,20 @@ const TimeSettings = () => {
 	const { projectId } = useContext(UserContext);
 	const [createTemplate, setCreateTemplate] = useState(false);
 	const [createRecord, setCreateRecord] = useState(false);
-	const { data: holidayData, refetch: refetchHolidays } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Holiday",
-			fields: ["objectId", "name", "label", "type", "dates"]
-		}),
-		{
-			variables: {
-				params: {
-					type: { _eq: "holiday" },
-					project: { _eq: projectId }
-				}
-			},
-			skip: !projectId
-		}
-	);
+	const { data: holidayData, refetch: refetchHolidays } = useFindData({
+		objectName: "Holiday",
+		fields: ["objectId", "name", "label", "type", "dates"],
+		projectId,
+		filters: [
+			{ key: "type", value: "holiday", operator: "_eq" }
+		],
+		skipQuery: !projectId
+	});
 
 	const { updateData } = useDataHandler();
 
 	const refreshHolidayDates = useCallback(async () => {
-		const holidays = holidayData?.objects.findHoliday.results || [];
+		const holidays = holidayData || [];
 		const yearArray = [];
 
 		for (let i = 0; i < 7; i += 1) {
@@ -164,18 +156,18 @@ const TimeSettings = () => {
 					projectId={projectId}
 					createHolidayTemplate={createTemplate}
 					setCreateHolidayTemplate={setCreateTemplate}
-					holidays={holidayData?.objects.findHoliday.results || []}
+					holidays={holidayData || []}
 				/>
 			)}
 			{siteState.value === "holidays" && (
 				<Holidays
-					holidays={holidayData?.objects.findHoliday.results || []}
+					holidays={holidayData || []}
 				/>
 			)}
 			{siteState.value === "surcharges" && projectId && (
 				<SurchargeSettings
 					projectId={projectId}
-					holidays={holidayData?.objects.findHoliday.results || []}
+					holidays={holidayData || []}
 				/>
 			)}
 			{siteState.value === "records" && (

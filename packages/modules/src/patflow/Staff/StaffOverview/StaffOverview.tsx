@@ -1,14 +1,14 @@
 "use client";
 
-import { useQuery } from "@apollo/client";
 import useTableColumns from "./hooks/useTableColumns";
-import { FIND_ALL_STAFF } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { Page } from "@repo/ui";
 import { Table } from "@repo/ui";
 
 const StaffOverview = () => {
-	const { data, refetch } = useQuery(FIND_ALL_STAFF, {
-		notifyOnNetworkStatusChange: true
+	const { data, refetch } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "email", "username", "role {name}"]
 	});
 	const columns = useTableColumns({ refetch });
 
@@ -20,7 +20,7 @@ const StaffOverview = () => {
 			<div className="content_element no_padding">
 				<Table
 					columns={columns}
-					data={data?.objects?.find_User?.results || []}
+					data={data || []}
 				/>
 			</div>
 		</Page>

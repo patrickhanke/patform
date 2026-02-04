@@ -1,9 +1,8 @@
-import { useQuery } from "@apollo/client";
 import { ElementSelectInterface } from "@repo/ui";
 import { Task, Ticket } from "@repo/types";
 import { FC, useMemo } from "react";
 import { SelectTicketProps, TicketOption } from "../types";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 
 export const DisplayTicket = ({
 	title,
@@ -24,8 +23,7 @@ const SelectTicket: FC<SelectTicketProps> = ({
 	task,
 	showTicketOnly = false
 }) => {
-	const query = generateGraphQLQuery({
-		type: "find",
+	const { data: ticketData } = useFindData({
 		objectName: "Ticket",
 		fields: [
 			"objectId",
@@ -33,27 +31,23 @@ const SelectTicket: FC<SelectTicketProps> = ({
 			"description",
 			"state",
 			"images",
-			"property {objectId name}",
-			"task {objectId title}"
-		]
-	});
-
-	const variables = paramsHandler({
-		projectId,
+			"property {objectId name}"
+		],
+		projectId: projectId,
 		filters: [
-			{ key: "state", value: "closed", operator: "_ne", id: "state" }
+			{
+				key: "state",
+				value: "closed",
+				operator: "notEqualTo",
+				id: "state"
+			}
 		]
-	});
-
-	const { data: ticketData } = useQuery(query, {
-		variables: { params: variables },
-		notifyOnNetworkStatusChange: true
 	});
 
 	const elements = useMemo(() => {
 		const ticketOptionsArray: TicketOption[] = [];
 		if (ticketData) {
-			ticketData.objects.findTicket.results.forEach((ticket: Ticket) => {
+			ticketData.forEach((ticket: Ticket) => {
 				if (ticket && !ticket?.task?.objectId) {
 					ticketOptionsArray.push({
 						value: ticket.objectId,

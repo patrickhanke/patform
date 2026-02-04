@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "react";
 import { useQuery } from "@apollo/client";
-import { find_day } from "@repo/provider";
+import { find_day, useGetData } from "@repo/provider";
 import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
@@ -20,14 +20,30 @@ const DisplayWorker = ({
 	const { year } = useContext(PatflowAppContext);
 
 	const { workers } = useContext(PatflowAppContext);
-	const { data, loading: dayLoading } = useQuery(find_day, {
-		variables: {
-			params: {
-				year: { _eq: year },
-				type: { _eq: "absence" },
-				user: { _eq: workerId }
-			}
-		},
+	const { data, loading: dayLoading } = useGetData({
+		objectName: "Day",
+		fields: [
+			"objectId",
+			"year",
+			"month",
+			"date",
+			"is_working_day",
+			"time",
+			"default_time",
+			"surcharges",
+			"iso_date",
+			"absence { objectId start_date end_date state type }",
+			"saldo",
+			"type",
+			"iso_date",
+			"user { objectId }"
+		],
+		filters: [
+			{ key: "year", value: year, operator: "equalTo" },
+			{ key: "type", value: "absence", operator: "equalTo" },
+			{ key: "user", value: workerId, operator: "equalTo" }
+		],
+		id: workerId,
 		skip: !showAvailability
 	});
 

@@ -2,12 +2,11 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import UserContext from "./UserContext";
-import { axiosclient, generateGraphQLQuery } from "@repo/provider";
+import { axiosclient, generateGraphQLQuery, useFindData } from "@repo/provider";
 import Cookies from "js-cookie";
 import useStorage from "./hooks/useStorage";
 import { PatflowProject, PatflowUser } from "@repo/types";
 import { useQuery } from "@apollo/client";
-import find_user_messages from "./constants/find_user_messages";
 
 const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 	const token = Cookies.get(process.env.SESSION_TOKEN as string);
@@ -18,19 +17,33 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 		getItem("user", "session", "object") || null
 	);
 
-	const { data: messageData, refetch } = useQuery(find_user_messages, {
-		variables: {
-			params: {
-				user: { _eq: getItem("user", "session", "object")?.objectId }
+	const { data: messageData, refetch } = useFindData({
+		objectName: "Message",
+		fields: [
+			"objectId",
+			"createdAt",
+			"type",
+			"is_read",
+			"created_by { objectId first_name last_name email }",
+			"task { objectId title }",
+			"ticket { objectId }",
+			"content"
+		],
+		filters: [
+			{
+				key: "user",
+				value: getItem("user", "session", "object")?.objectId,
+				operator: "equalTo",
+				id: "user"
 			}
-		},
-		pollInterval: 10000,
-		skip: !getItem("user", "session", "object")
+		],
+		skipQuery: !getItem("user", "session", "object"),
+		pollInterval: 10000
 	});
 
 	const userMessages = useMemo(() => {
 		if (messageData) {
-			return messageData.objects.findMessage.results;
+			return messageData;
 		}
 		return [];
 	}, [messageData]);

@@ -1,5 +1,4 @@
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_PROPERTY } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { ElementSelectInterface } from "@repo/ui";
 import { Property, Task } from "@repo/types";
 import { FC, useMemo } from "react";
@@ -16,23 +15,24 @@ const SelectProperty: FC<SelectPropertyProps> = ({
 	task,
 	showPropertyOnly = false
 }) => {
-	const { data: objectData } = useQuery(FIND_ALL_PROPERTY);
+	const { data: objectData } = useFindData({
+		objectName: "Property",
+		fields: ["objectId", "name"]
+	});
 
 	const elements = useMemo(() => {
 		const objectOptionsArray: PropertyOptions[] = [];
 		if (objectData) {
-			objectData.objects.findProperty.results.forEach(
-				(object: Property) => {
-					if (object) {
-						objectOptionsArray.push({
-							value: object.objectId,
-							id: object.objectId,
-							label: object.name,
-							element: <DisplayProperty title={object.name} />
-						});
-					}
+			objectData.forEach((object: Property) => {
+				if (object) {
+					objectOptionsArray.push({
+						value: object.objectId,
+						id: object.objectId,
+						label: object.name,
+						element: <DisplayProperty title={object.name} />
+					});
 				}
-			);
+			});
 		}
 		objectOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 

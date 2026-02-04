@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { Property, StaffMember } from "@repo/types";
-import { FIND_ALL_PROPERTY, FIND_ALL_STAFF } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import { SiteHeaderContentComponent } from "../types";
 import { filterChangeHandler } from "@repo/provider";
 import { Select, TextInput } from "@repo/ui";
@@ -14,34 +13,36 @@ const SiteHeaderContent = ({
 	setFilters,
 	initialFilters
 }: SiteHeaderContentComponent) => {
-	const { data: objectData } = useQuery(FIND_ALL_PROPERTY, {
-		skip: !!id
+	const { data: objectData } = useFindData({
+		objectName: "Property",
+		fields: ["objectId", "name"],
+		skipQuery: !!id
 	});
 
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();
 
-	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+	const { data: staffData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name"],
+		skipQuery: !!id
+	});
 	const selectOptions = useMemo(() => {
 		let objectOptions = [] as { value: string; label: string }[];
 		let staffOptions = [] as { value: string; label: string }[];
 
 		if (objectData) {
-			objectOptions = objectData.objects.findProperty.results.map(
-				(property: Property) => ({
-					value: property.objectId,
-					label: property.name
-				})
-			);
+			objectOptions = objectData.map((property: Property) => ({
+				value: property.objectId,
+				label: property.name
+			}));
 		}
 		if (staffData) {
-			staffOptions = staffData.objects.find_User.results.map(
-				(staff: StaffMember) => ({
-					value: staff.objectId,
-					label: `${staff.first_name} ${staff.last_name}`
-				})
-			);
+			staffOptions = staffData.map((staff: StaffMember) => ({
+				value: staff.objectId,
+				label: `${staff.first_name} ${staff.last_name}`
+			}));
 		}
 
 		return { objectOptions, staffOptions };
@@ -63,7 +64,7 @@ const SiteHeaderContent = ({
 							filterChangeHandler(
 								"objectId",
 								value,
-								"_eq",
+								"equalTo",
 								filters
 							)
 						)
@@ -87,7 +88,7 @@ const SiteHeaderContent = ({
 								filterChangeHandler(
 									"property",
 									value.value,
-									"_eq",
+									"equalTo",
 									filters
 								)
 							)
@@ -112,7 +113,7 @@ const SiteHeaderContent = ({
 								filterChangeHandler(
 									"assigned_staff",
 									value.value,
-									"_in",
+									"in",
 									filters
 								)
 							)

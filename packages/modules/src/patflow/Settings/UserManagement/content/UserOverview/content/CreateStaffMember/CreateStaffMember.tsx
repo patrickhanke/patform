@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC, useContext } from "react";
 import { useImmer } from "use-immer";
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_ROLES } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { generateColor, useDataHandler } from "@repo/provider";
 import { ErrorMessage, Worker } from "@repo/types";
 import { SlideIn } from "@repo/ui";
@@ -21,7 +20,10 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 	const { projectId } = useContext(UserContext);
 	const { createData, updateData, loading: dataLoading } = useDataHandler();
 	const [loading, setLoading] = useState(dataLoading);
-	const { data: roleData } = useQuery(FIND_ALL_ROLES);
+	const { data: roleData } = useFindData({
+		objectName: "Role",
+		fields: ["objectId", "name", "type", "color"]
+	});
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
 	const [worker, setWorker] = useImmer<CreateUser>({
 		last_name: "",
@@ -176,7 +178,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 				staffMember={worker}
 				setStaffMember={setWorker}
 				errors={errors}
-				roles={roleData && roleData.objects.find_Role.results}
+				roles={roleData || []}
 			/>
 		</SlideIn>
 	);

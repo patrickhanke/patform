@@ -1,5 +1,4 @@
-import { find_record } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import React, { FC, useContext, useState } from "react";
 import { EditRecordsProps } from "./types";
 import CreateRecord from "./content/CreateRecord";
@@ -15,8 +14,10 @@ const EditRecords: FC<EditRecordsProps> = ({
 	projectId
 }) => {
 	const { year } = useContext(PatflowAppContext);
-	const { data, loading, refetch } = useQuery(find_record, {
-		variables: { params: { year: { _eq: year } } }
+	const { data, loading, refetch } = useFindData({
+		objectName: "Record",
+		fields: ["objectId", "year", "user {objectId first_name last_name}", "default_times", "createdAt"],
+		filters: [{ key: "year", value: year, operator: "_eq" }]
 	});
 	const [selectedUser, setSelectedUser] = useState<Worker | undefined>(
 		undefined
@@ -34,7 +35,7 @@ const EditRecords: FC<EditRecordsProps> = ({
 			<div className="site_content">
 				<div className="content_element no_padding">
 					<Table
-						data={data.objects.findRecord.results}
+						data={data || []}
 						columns={columns}
 					/>
 				</div>

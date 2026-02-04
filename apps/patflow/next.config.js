@@ -30,6 +30,7 @@ const nextConfig = {
     FIREBASE_APP_ID: "1:641842391250:web:af88774f5d9e0aac01250b",
     FIREBASE_MEASUREMENT_ID: "G-32QEKHD6FM",
     GCMS_SENDER_ID: "641842391250",
+    PATSTORE_PROJECT_ID: "patstore_project_id",
   },
   eslint: {
     ignoreDuringBuilds: true,

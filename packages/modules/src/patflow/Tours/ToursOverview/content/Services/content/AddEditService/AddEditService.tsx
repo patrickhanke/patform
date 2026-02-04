@@ -3,11 +3,10 @@ import { AddEditServiceProps, ButtonStates } from "./types";
 import { Divider, Modal, SwitchButtons } from "@repo/ui";
 import ServiceDaySelect from "./components/ServiceDaySelect";
 import { ErrorMessage, PropertyService } from "@repo/types";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { useDataHandler, useGetData } from "@repo/provider";
 import ServiceIntervalSelect from "./components/ServiceTimeSelect.tsx ";
 import styles from "./AddEditService.module.scss";
 import ServiceSettings from "./components/ServiceSettings";
-import { useQuery } from "@apollo/client";
 import getButtonStates from "./constants/button_states";
 import { cloneDeep } from "lodash-es";
 import { AddEditServiceState } from "../../types";
@@ -23,18 +22,11 @@ const AddEditService: FC<AddEditServiceProps> = ({
 	const { updateData } = useDataHandler();
 	const [loading, setLoading] = useState(false);
 	const [deleteService, setDeleteService] = useState(false);
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Property",
-			type: "get",
-			fields: ["services", "objectId"]
-		}),
-		{
-			variables: {
-				id: propertyId
-			}
-		}
-	);
+	const { data: property } = useGetData({
+		objectName: "Property",
+		fields: ["services", "objectId"],
+		id: propertyId
+	});
 
 	const [service, setService] = useState<AddEditServiceState>(addEditService);
 	const button_states: ButtonStates = useMemo(
@@ -95,8 +87,7 @@ const AddEditService: FC<AddEditServiceProps> = ({
 
 	const saveServiceHandler = useCallback(async () => {
 		setLoading(true);
-		if (data) {
-			const property = data.objects.getProperty;
+		if (property) {
 			const propertyServices = cloneDeep(property.services);
 			const services = propertyServices || {};
 			const serviceCopy: PropertyService = {
@@ -127,12 +118,11 @@ const AddEditService: FC<AddEditServiceProps> = ({
 		await refetch();
 		setLoading(false);
 		setAddEditService(null);
-	}, [service, data, serviceId, propertyId]);
+	}, [service, property, serviceId, propertyId]);
 
 	const deleteServiceHandler = async (serviceId: string) => {
 		setLoading(true);
-		if (data) {
-			const property = data.objects.getProperty;
+		if (property) {
 			const propertyServices = cloneDeep(property.services);
 			const services = propertyServices || {};
 			delete services[serviceId];
@@ -218,7 +208,7 @@ const AddEditService: FC<AddEditServiceProps> = ({
 							setService(service);
 						}}
 						showDeleteButton={
-							!!data?.objects.getProperty.services[serviceId]
+							!!property?.services[serviceId]
 						}
 						setDelete={setDeleteService}
 					/>

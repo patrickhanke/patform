@@ -1,9 +1,8 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import { DisplayWorker } from "@repo/ui";
-import { FIND_ALL_STAFF } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { DisplayWorker, SelectElement } from "@repo/ui";
+import { useFindData } from "@repo/provider";
 
 import styles from "../TeamAssignment.module.scss";
 import { ElementSelectInterface, SlideInRight } from "@repo/ui";
@@ -17,12 +16,23 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const { data: workerData } = useQuery(FIND_ALL_STAFF);
+	const { data: workerData } = useFindData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name"],
+		filters: [
+			{
+				key: "is_worker",
+				value: true,
+				operator: "equalTo",
+				id: "is_worker"
+			}
+		]
+	});
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
 		if (workerData) {
-			workerData.objects.find_User.results.forEach((worker: Worker) => {
+			workerData.forEach((worker: Worker) => {
 				if (worker) {
 					workerOptionsArray.push({
 						value: worker.objectId,
@@ -57,7 +67,7 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 			<ElementSelectInterface
 				elements={elements}
 				selectedElements={selectedElements}
-				onSelect={async (values: WorkerOption[]) => onChange(values)}
+				onSelect={(values: SelectElement[]) => onChange(values)}
 				max={100}
 				isSearchable
 			/>

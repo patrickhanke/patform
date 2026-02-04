@@ -1,7 +1,6 @@
-import { useQuery } from "@apollo/client";
 import React, { FC } from "react";
 import useTableColumns from "./hooks/useTableColumns";
-import { FIND_PROPERTY_SERVICES } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { Table } from "@repo/ui";
 import { PropertyServicesProps } from "./types";
 import AddService from "./content/AddService";
@@ -11,8 +10,16 @@ const PropertyServices: FC<PropertyServicesProps> = ({
 	addService,
 	setAddService
 }) => {
-	const { data } = useQuery(FIND_PROPERTY_SERVICES, {
-		variables: { id: objectId }
+	const { data } = useFindData({
+		objectName: "Service",
+		fields: [
+			"objectId",
+			"name",
+			"property { objectId name }",
+			"worker { results { objectId username } }",
+			"time"
+		],
+		filters: [{ key: "property", value: objectId, operator: "_eq" }]
 	});
 	const columns = useTableColumns();
 
@@ -20,7 +27,7 @@ const PropertyServices: FC<PropertyServicesProps> = ({
 		<div className="site_content">
 			<Table
 				columns={columns}
-				data={data ? data.objects.findService.results : []}
+				data={data || []}
 			/>
 			<AddService
 				propertyId={objectId}

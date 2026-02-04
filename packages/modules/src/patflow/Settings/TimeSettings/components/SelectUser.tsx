@@ -1,17 +1,21 @@
 import { ElementSelectInterface, PersonDisplay } from "@repo/ui";
 import { Worker } from "@repo/types";
 import React, { useState } from "react";
-import { useQuery } from "@apollo/client";
-import { FIND_ALL_STAFF } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 
 const SelectUser = () => {
-  const { loading, error, data } = useQuery(FIND_ALL_STAFF);
+  const { loading, error, data } = useFindData({
+    objectName: "User",
+    fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
+    filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+    order: "last_name_DESC"
+  });
   const [selectedUsers, setSelectedUsers] = useState<Worker[]>([]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const users: Worker[] = data.objects.find_User.results;
+  const users: Worker[] = data || [];
 
   console.log(selectedUsers);
 

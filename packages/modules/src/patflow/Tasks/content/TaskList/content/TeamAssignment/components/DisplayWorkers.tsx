@@ -1,8 +1,6 @@
 import { DisplayWorker } from "@repo/ui";
-import { axiosclient, PatflowAppContext } from "@repo/provider";
-import { GET_TASK_WORKERS } from "@repo/provider";
-import { Task, Worker } from "@repo/types";
-import { useQuery } from "@apollo/client";
+import { axiosclient, PatflowAppContext, useGetData } from "@repo/provider";
+import { StaffMember, Task, Worker } from "@repo/types";
 import { FC, useContext, useEffect, useMemo, useState } from "react";
 import { cloneDeep } from "lodash-es";
 
@@ -20,20 +18,19 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	selectWorkers = false
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { data, refetch } = useQuery(GET_TASK_WORKERS, {
-		variables: { id: taskId },
-		notifyOnNetworkStatusChange: true
+	const { data: taskData, refetch } = useGetData({
+		objectName: "Task",
+		fields: ["objectId", "assigned_staff", "dates", "time", "title"],
+		id: taskId
 	});
 	const { workers } = useContext(PatflowAppContext);
 
 	const nextDate = useMemo(() => {
 		let date;
-		if (data) {
-			const datesCopy = cloneDeep(data.objects.getTask.dates) || [];
+		if (taskData) {
+			const datesCopy = cloneDeep(taskData.dates) || [];
 			if (datesCopy.length > 0) {
-				const timeCopy: Task["time"] = cloneDeep(
-					data.objects.getTask.time
-				);
+				const timeCopy: Task["time"] = cloneDeep(taskData.time);
 				date = timeCopy.dates?.find(
 					(dateToFind: string) =>
 						formatISO9075(dateToFind, {
@@ -44,12 +41,12 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		}
 
 		return date;
-	}, [data, workers]);
+	}, [taskData, workers]);
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
 		if (workers.length > 0) {
-			workers.forEach((worker: Worker) => {
+			workers.forEach((worker: StaffMember) => {
 				if (worker) {
 					workerOptionsArray.push({
 						value: worker.objectId,
@@ -77,10 +74,9 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 			<ElementSelectInterface
 				elements={elements}
 				selectedElements={
-					data
-						? data.objects.getTask.assigned_staff.map(
-								(element: string) =>
-									elements.find((el) => el.value === element)
+					taskData
+						? taskData.assigned_staff.map((element: string) =>
+								elements.find((el) => el.value === element)
 							)
 						: []
 				}
@@ -96,7 +92,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 				isSearchable
 			/>
 		),
-		[data, data?.objects?.getTask?.assigned_staff?.length, nextDate]
+		[taskData, taskData?.assigned_staff?.length, nextDate]
 	);
 
 	useEffect(() => {
@@ -105,13 +101,13 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		}
 	}, [isOpen, refetchTask]);
 
-	const staffNumber = data?.objects.getTask.assigned_staff.length || 0;
+	const staffNumber = taskData?.assigned_staff.length || 0;
 
-	if (data)
+	if (taskData)
 		return !showAsButton ? (
 			<>
 				<AvatarGroup>
-					{data.objects.getTask.assigned_staff.map(
+					{taskData.assigned_staff.map(
 						(workerId: Worker["objectId"]) => (
 							<DisplayWorker
 								key={workerId}
@@ -150,7 +146,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 							{/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
 							<div className="button_workers_container">
 								{staffNumber > 0 ? (
-									data.objects.getTask.assigned_staff.map(
+									taskData.assigned_staff.map(
 										(
 											workerId: Worker["objectId"],
 											index: number
@@ -188,7 +184,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 					</>
 				) : (
 					<div className="button_workers_container">
-						{data.objects.getTask.assigned_staff.map(
+						{taskData.assigned_staff.map(
 							(workerId: Worker["objectId"], index: number) => (
 								<div
 									key={workerId}

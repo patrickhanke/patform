@@ -1,5 +1,4 @@
-import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { useDataHandler, useGetData } from "@repo/provider";
 import { Loader, Modal, StateDisplay } from "@repo/ui";
 import "./styles.scss";
 import TaskSelectPropery from "./components/TaskSelectProperty";
@@ -18,20 +17,15 @@ const DisplayProperty = ({
 
 	const [selectedProperty, setSelectedProperty] = useState<string>("");
 
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "Task",
-			fields: ["objectId", "property { name objectId }"]
-		}),
-		{
-			variables: { id: taskId }
-		}
-	);
+	const { data, refetch } = useGetData({
+		objectName: "Task",
+		fields: ["objectId", "property { name objectId }"],
+		id: taskId
+	});
 
 	useEffect(() => {
 		if (data) {
-			setSelectedProperty(data?.objects?.getTask?.property?.objectId);
+			setSelectedProperty(data?.property?.objectId);
 		}
 	}, [data]);
 
@@ -48,10 +42,7 @@ const DisplayProperty = ({
 					<StateDisplay
 						// type="label"
 						color="light"
-						label={
-							data.objects.getTask.property?.name ||
-							"Kein Objekt zugewiesen"
-						}
+						label={data?.name || "Kein Objekt zugewiesen"}
 						icon="house"
 						// noBackground
 					/>

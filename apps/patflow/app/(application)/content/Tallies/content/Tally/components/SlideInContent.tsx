@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import TallyDescription from "../content/TallyDescription";
 import styles from "../Tally.module.scss";
-import { useQuery } from "@apollo/client";
-import { GET_TALLY_DESCRIPTION, GET_TALLY_ENTRIES } from "@repo/provider";
+import { useGetData } from "@repo/provider";
 import getLastEntry from "../functions/getLastEntry";
 import { getDateString } from "@repo/provider";
 import TallyEntries from "../content/TallyEntries";
@@ -30,21 +29,17 @@ const SlideInContent = ({
 }) => {
   const [buttonState, setButtonState] = useState(buttonStates[0]);
   const [showDetails, setShowDetails] = useState(false);
-  const { data: descriptionData, refetch: refetchDescription } = useQuery(
-    GET_TALLY_DESCRIPTION,
-    {
-      variables: { id: tallyId },
-      notifyOnNetworkStatusChange: true,
-    },
-  );
+  const { data: descriptionData, refetch: refetchDescription } = useGetData({
+    objectName: "Tally",
+    fields: ["objectId", "description"],
+    id: tallyId
+  });
 
-  const { data: entriesData, refetch: refetchEntries } = useQuery(
-    GET_TALLY_ENTRIES,
-    {
-      variables: { id: tallyId },
-      notifyOnNetworkStatusChange: true,
-    },
-  );
+  const { data: entriesData, refetch: refetchEntries } = useGetData({
+    objectName: "Tally",
+    fields: ["objectId", "entries"],
+    id: tallyId
+  });
 
   return (
     <>
@@ -63,7 +58,7 @@ const SlideInContent = ({
           {(descriptionData && (
             <div
               dangerouslySetInnerHTML={{
-                __html: descriptionData.objects.getTally.description,
+                __html: descriptionData.description,
               }}
             />
           )) ||
@@ -82,9 +77,9 @@ const SlideInContent = ({
           <p>Letzter Eintrag:</p>
         </div>
         <div className={styles.description_preview_content}>
-          {entriesData && entriesData.objects.getTally.entries ? (
+          {entriesData && entriesData.entries ? (
             <p>
-              {`${getLastEntry(entriesData.objects.getTally.entries)?.value?.toString()}  (${getDateString(getLastEntry(entriesData.objects.getTally.entries)?.date).date})`}
+              {`${getLastEntry(entriesData.entries)?.value?.toString()}  (${getDateString(getLastEntry(entriesData.entries)?.date).date})`}
             </p>
           ) : (
             <p>-</p>
@@ -112,7 +107,7 @@ const SlideInContent = ({
             {buttonState.value === "entries" && (
               <TallyEntries
                 tallyId={tallyId}
-                entries={entriesData?.objects?.getTally?.entries}
+                entries={entriesData?.entries}
                 refetch={refetchEntries}
               />
             )}

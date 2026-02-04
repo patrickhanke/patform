@@ -1,10 +1,8 @@
-import { useDataHandler } from "@repo/provider";
+import { useDataHandler, useGetData } from "@repo/provider";
 import { useCallback } from "react";
 import CreateDocument from "./components/CreateDocument";
 import styles from "./TaskDocuments.module.scss";
-import { useQuery } from "@apollo/client";
 import TaskDocument from "./components/TaskDocument";
-import { GET_TASK_PROPERTY } from "@repo/provider";
 import { Document } from "@repo/types";
 
 const TaskDocuments = ({
@@ -19,8 +17,10 @@ const TaskDocuments = ({
 	isEditable?: boolean;
 }) => {
 	const { createData } = useDataHandler();
-	const { data } = useQuery(GET_TASK_PROPERTY, {
-		variables: { id: taskId }
+	const { data } = useGetData({
+		objectName: "Task",
+		fields: ["objectId", "property { objectId name }"],
+		id: taskId
 	});
 
 	const addDocumentHandler = useCallback(

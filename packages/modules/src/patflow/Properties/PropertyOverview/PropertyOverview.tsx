@@ -1,9 +1,8 @@
 "use client";
 
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { useDataHandler, useFindData } from "@repo/provider";
 import React, { useCallback, useContext } from "react";
 import useTableColumns from "./hooks/useTableColumns";
-import { useQuery } from "@apollo/client";
 import CreatePropterty from "./components/CreateProperty";
 import initialData from "./constants/initialData";
 import { Property } from "@repo/types";
@@ -14,38 +13,20 @@ const PropertyOverview = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const { user, projectId } = useContext(UserContext);
 
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Property",
-			type: "find",
-			fields: [
-				"objectId",
-				"name",
-				"createdAt",
-				"created_by {objectId username}",
-				"archived"
-			]
-		}),
-		{
-			variables: {
-				params: {
-					project: { _eq: projectId },
-					archived: { _ne: true }
-				}
-			},
-
-			onCompleted(data) {
-				const breadcrumbArray: Array<{ value: string; label: string }> =
-					[];
-				data.objects.findProperty.results.forEach((object: Property) =>
-					breadcrumbArray.push({
-						value: `/${object.objectId}`,
-						label: object.name
-					})
-				);
-			}
-		}
-	);
+	const { data, refetch } = useFindData({
+		objectName: "Property",
+		fields: [
+			"objectId",
+			"name",
+			"createdAt",
+			"created_by {objectId username}",
+			"archived"
+		],
+		projectId,
+		filters: [
+			{ key: "archived", value: true, operator: "_ne" }
+		]
+	});
 
 	const { createData } = useDataHandler();
 
@@ -93,11 +74,11 @@ const PropertyOverview = () => {
 			<div className="content_element no_padding">
 				<Table
 					columns={columns}
-					data={data?.objects?.findProperty?.results || []}
+					data={data || []}
 				/>
 			</div>
 			<CreatePropterty
-				objects={data?.objects?.findProperty?.results || []}
+				objects={data || []}
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 				createObject={createObjectHandler}

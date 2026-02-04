@@ -1,7 +1,6 @@
 "use client";
 
-import { GET_USER } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useGetData } from "@repo/provider";
 import { Suspense, useContext, useState } from "react";
 import useWorkerSiteStates from "./hooks/useWorkerSiteStates";
 import UserSettings from "./content/UserSettings";
@@ -12,9 +11,10 @@ import { Page } from "@repo/ui";
 import { UserContext } from "@repo/provider";
 
 const StaffMember = ({ params }: { params: Params }) => {
-	const { data, loading } = useQuery(GET_USER, {
-		variables: { id: params.user_id },
-		fetchPolicy: "no-cache"
+	const { data, loading } = useGetData({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "email", "username"],
+		id: params.user_id
 	});
 	const siteStates = useWorkerSiteStates();
 	const [siteState, setSiteState] = useState<SiteState>(
@@ -31,7 +31,7 @@ const StaffMember = ({ params }: { params: Params }) => {
 			<Page
 				title={
 					data &&
-					`${data.objects.get_User.first_name} ${data.objects.get_User.last_name}`
+					`${data.first_name} ${data.last_name}`
 				}
 				pageStates={siteStates}
 				pageState={siteState}

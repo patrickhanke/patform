@@ -1,5 +1,4 @@
-import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import React, { FC, useCallback } from "react";
 import { ServiceSettingsProps, UpdateHandler } from "./types";
 import { Table } from "@repo/ui";
@@ -13,16 +12,11 @@ const ServiceSettings: FC<ServiceSettingsProps> = ({
   setCreateService,
 }) => {
   const { updateData } = useDataHandler();
-  const { data, refetch } = useQuery(
-    generateGraphQLQuery({
-      type: "find",
-      objectName: "Service",
-      fields: ["objectId", "name", "is_active", "description"],
-    }),
-    {
-      variables: { project: { _eq: projectId } },
-    },
-  );
+  const { data, refetch } = useFindData({
+    objectName: "Service",
+    fields: ["objectId", "name", "is_active", "description"],
+    projectId
+  });
 
   console.log(data);
 
@@ -38,7 +32,7 @@ const ServiceSettings: FC<ServiceSettingsProps> = ({
 
   return (
     <div className="content_element no_padding">
-      <Table columns={columns} data={data?.objects.findService.results || []} />
+      <Table columns={columns} data={data || []} />
       <CreateService
         createService={createService}
         setCreateService={setCreateService}

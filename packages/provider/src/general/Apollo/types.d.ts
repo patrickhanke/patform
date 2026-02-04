@@ -64,6 +64,7 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	moduleId?: string;
 	projectId?: string;
 	skipQuery?: boolean;
+	pollInterval?: number;
 }) => {
 	loading: boolean;
 	data: T[];

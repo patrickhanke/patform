@@ -5,12 +5,11 @@ import {
 	SwitchButton,
 	SwitchButtons
 } from "@repo/ui";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NotificationSettings from "./components/NotificationSettings";
 import site_states from "./constants/site_states";
 import ContactInformation from "./components/ContactInformations";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useDataHandler, useGetData } from "@repo/provider";
 import { PatflowUser } from "@repo/types";
 
 const StaffMemberSettings = ({ userId }: { userId: string }) => {
@@ -20,31 +19,28 @@ const StaffMemberSettings = ({ userId }: { userId: string }) => {
 	const [data, setData] = useState<Partial<PatflowUser> | undefined>(
 		undefined
 	);
-	const { refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "_User",
-			fields: [
-				"objectId",
-				"data",
-				"first_name",
-				"last_name",
-				"notification_settings"
-			]
-		}),
-		{
-			variables: { id: userId },
-			onCompleted: (data) => {
-				const user = data.objects.get_User;
-				setData({
-					first_name: user.first_name,
-					last_name: user.last_name,
-					data: user.data,
-					notification_settings: user.notification_settings
-				});
-			}
+	const { data: userData, refetch } = useGetData({
+		objectName: "_User",
+		fields: [
+			"objectId",
+			"data",
+			"first_name",
+			"last_name",
+			"notification_settings"
+		],
+		id: userId
+	});
+
+	useEffect(() => {
+		if (userData) {
+			setData({
+				first_name: userData.first_name,
+				last_name: userData.last_name,
+				data: userData.data,
+				notification_settings: userData.notification_settings
+			});
 		}
-	);
+	}, [userData]);
 
 	if (!data) {
 		return null;
