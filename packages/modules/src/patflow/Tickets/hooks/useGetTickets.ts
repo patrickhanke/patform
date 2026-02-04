@@ -40,14 +40,7 @@ const paramsHandler = (
 	return [{ ...filterObject, ...archivedObject, ...objectObject }];
 };
 
-const useGetTickets = ({
-	id = "",
-	className = "",
-	filters,
-	archived = false,
-	limit,
-	skip
-}: UseGetTicketsHook) => {
+const useGetTickets = ({ filters, limit, skip }: UseGetTicketsHook) => {
 	const { loading, data, refetch, count } = useFindData({
 		objectName: "Ticket",
 		fields: [
@@ -62,7 +55,7 @@ const useGetTickets = ({
 			"created_by { objectId id: objectId }",
 			"task { objectId id: objectId title }"
 		],
-		filters: paramsHandler(id, className, filters, archived),
+		filters: filters,
 		limit,
 		skip
 	});
