@@ -1,8 +1,9 @@
-import { useGetData } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { ElementSelectInterface } from "@repo/ui";
 import { Property } from "@repo/types";
 import { FC, useMemo } from "react";
 import { PropertyOptions, TaskSelectPropertyProps } from "../types";
+import { isArray } from "lodash-es";
 
 export const DisplayProperty = ({ title }: { title: string }) => (
 	<div className={"property_container"}>
@@ -14,15 +15,22 @@ const TaskSelectPropery: FC<TaskSelectPropertyProps> = ({
 	selectedProperty,
 	setSelectedProperty
 }) => {
-	const { data: objectData } = useGetData({
+	const { data: objectData } = useFindData({
 		objectName: "Property",
 		fields: ["objectId", "name"],
-		id: selectedProperty
+		filters: [
+			{
+				key: "archived",
+				value: false,
+				operator: "notEqualTo",
+				id: "archived"
+			}
+		]
 	});
 
 	const elements = useMemo(() => {
 		const objectOptionsArray: PropertyOptions[] = [];
-		if (objectData) {
+		if (objectData && isArray(objectData)) {
 			objectData.forEach((object: Property) => {
 				if (object) {
 					objectOptionsArray.push({

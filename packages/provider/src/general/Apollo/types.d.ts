@@ -18,6 +18,7 @@ type QueryProps = {
 type ParamsHandlerProps = {
 	projectId?: string;
 	moduleId?: string;
+	userId?: string;
 	filters?: Filter[];
 };
 
@@ -63,6 +64,7 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	order?: string;
 	moduleId?: string;
 	projectId?: string;
+	userId?: string;
 	skipQuery?: boolean;
 	pollInterval?: number;
 }) => {

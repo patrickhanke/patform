@@ -10,7 +10,7 @@ const useFindData: UseFindDataHook<Classes> = ({
 	objectName,
 	fields,
 	filters = [],
-	limit,
+	limit = 500,
 	skip,
 	order,
 	moduleId,

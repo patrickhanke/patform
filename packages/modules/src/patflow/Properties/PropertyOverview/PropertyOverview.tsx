@@ -5,7 +5,6 @@ import React, { useCallback, useContext } from "react";
 import useTableColumns from "./hooks/useTableColumns";
 import CreatePropterty from "./components/CreateProperty";
 import initialData from "./constants/initialData";
-import { Property } from "@repo/types";
 import { Page, Table } from "@repo/ui";
 import { UserContext } from "@repo/provider";
 
@@ -24,8 +23,17 @@ const PropertyOverview = () => {
 		],
 		projectId,
 		filters: [
-			{ key: "archived", value: true, operator: "_ne" }
+			{
+				key: "archived",
+				value: true,
+				operator: "notEqualTo",
+				id: "archived"
+			}
 		]
+	});
+
+	console.log({
+		data
 	});
 
 	const { createData } = useDataHandler();
@@ -72,10 +80,7 @@ const PropertyOverview = () => {
 	return (
 		<Page title="Objektübersicht" pageHeaderButtons={siteHeaderButtons}>
 			<div className="content_element no_padding">
-				<Table
-					columns={columns}
-					data={data || []}
-				/>
+				<Table columns={columns} data={data || []} />
 			</div>
 			<CreatePropterty
 				objects={data || []}
