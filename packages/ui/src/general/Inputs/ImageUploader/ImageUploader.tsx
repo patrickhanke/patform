@@ -71,17 +71,18 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 			for (const file of files) {
 				const title = customFileNames.get(file.name) || file.name;
 				const fileName = replaceUmlaute(file.name);
-
+				console.log({ fileName });
 				try {
 					// Upload file to Parse
 					const parseFile = new Parse.File(fileName, file);
 					await parseFile.save();
+					console.log({ parseFile });
 
 					// Create Image object with file and title
 					const imageObject = new Parse.Object("Image");
 					imageObject.set("file", parseFile);
 					imageObject.set("title", title);
-
+					console.log({ imageObject });
 					if (userId) {
 						imageObject.set("created_by", {
 							__type: "Pointer",
@@ -97,9 +98,17 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 							objectId: project.objectId
 						});
 					}
+					const sessionToken = Cookies.get(
+						process.env.SESSION_TOKEN as string
+					);
 
+					console.log({ sessionToken });
+
+					if (!sessionToken) {
+						throw new Error("Session token not found");
+					}
 					const savedImage = await imageObject.save(null, {
-						sessionToken: Cookies.get("patstore_token")
+						sessionToken: Cookies.get(sessionToken)
 					});
 
 					uploadedImages.push({

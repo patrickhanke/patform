@@ -6,14 +6,18 @@ import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
 import { ImageGalleryProps } from "./types";
-import { getImageUrlFromBytescale } from "@repo/provider";
+import { getImageUrl } from "@repo/provider";
 
 const ImagesDisplay: FC<ImageGalleryProps> = ({ images, height = "240px" }) => {
+	console.log({ images });
 	const renderImages: { original: string; thumbnail: string }[] = useMemo(
 		() =>
 			images.map((image: string) => ({
-				original: getImageUrlFromBytescale({ filePath: image }),
-				thumbnail: getImageUrlFromBytescale({ filePath: image, width: 80 })
+				original: getImageUrl({ fileName: image }),
+				thumbnail: getImageUrl({
+					fileName: image,
+					width: 80
+				})
 			})),
 		[images]
 	);

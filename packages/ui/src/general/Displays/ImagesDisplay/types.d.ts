@@ -1,4 +1,4 @@
 export type ImageGalleryProps = {
-  images: string[];
-  height?: string;
+	images: string[];
+	height?: string;
 };

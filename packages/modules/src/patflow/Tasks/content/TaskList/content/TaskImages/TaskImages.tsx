@@ -1,29 +1,43 @@
-import { generateImagePath, useDataHandler } from "@repo/provider";
-import { useCallback, useContext } from "react";
+import { useDataHandler, useFindData } from "@repo/provider";
+import { useCallback } from "react";
 import styles from "./TaskImages.module.scss";
 import { Image } from "@repo/types";
-import { ImageUploader, ImagesDisplay } from "@repo/ui";
-import { UserContext } from "@repo/provider";
+import { ImageUploader, ImagesDisplay, ParseImage } from "@repo/ui";
 
 const TaskImages = ({
 	taskId,
-	taskName,
 	refetch,
 	images,
 	isEditable = true
 }: {
 	taskId: string;
-	taskName: string;
-	images: Image[];
+	images: string[];
 	refetch: () => void;
 	isEditable?: boolean;
 }) => {
+	const { data: imageData } = useFindData({
+		objectName: "Image",
+		fields: ["objectId", "file { url name }", "title"],
+		filters: [
+			{
+				key: "objectId",
+				value: images,
+				operator: "in",
+				id: "objectId"
+			}
+		]
+	});
+
+	console.log({ imageData });
+
 	const { updateData } = useDataHandler();
-	const { project } = useContext(UserContext);
 	const addImageHandler = useCallback(
-		async (content: string[]) => {
-			console.log({ content });	
-			const newImages = [...images, ...content];
+		async (content: ParseImage[]) => {
+			console.log({ content });
+			const newImages = [
+				...images,
+				...content.map((image) => image.objectId)
+			];
 
 			await updateData({
 				className: "Task",
@@ -40,18 +54,17 @@ const TaskImages = ({
 	return (
 		<>
 			<div className={styles.task_slidein_image_container}>
-				<ImagesDisplay images={images} />
+				<ImagesDisplay
+					images={
+						imageData?.map((image) => image.file?.name || "") || []
+					}
+				/>
 			</div>
 			{isEditable && (
 				<div className={styles.task_slidein_footer}>
 					<ImageUploader
 						onChange={addImageHandler}
 						label="Bild hinzufügen"
-						path={generateImagePath(
-							process.env.APP_NAME as string,
-							project.path
-						)}
-						filename={`${taskName}_${new Date()}.jpg`}
 					/>
 				</div>
 			)}
