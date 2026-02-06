@@ -6,21 +6,43 @@ import ImageGallery from "react-image-gallery";
 // import stylesheet if you're not already using CSS @import
 import "react-image-gallery/styles/css/image-gallery.css";
 import { ImageGalleryProps } from "./types";
-import { getImageUrl } from "@repo/provider";
+import { getImageUrl, useFindData } from "@repo/provider";
+import { ImageClass } from "../../../../../types/src/patstore";
+import { Loader } from "@repo/ui";
 
 const ImagesDisplay: FC<ImageGalleryProps> = ({ images, height = "240px" }) => {
-	console.log({ images });
+	const { data: imageData, loading } = useFindData({
+		objectName: "Image",
+		fields: ["objectId", "file { name url }"],
+		filters: [
+			{
+				key: "objectId",
+				value: images,
+				operator: "in",
+				id: "objectId"
+			}
+		]
+	});
+	console.log({ imageData });
 	const renderImages: { original: string; thumbnail: string }[] = useMemo(
 		() =>
-			images.map((image: string) => ({
-				original: getImageUrl({ fileName: image }),
+			imageData?.map((image: ImageClass) => ({
+				original: getImageUrl({ fileName: image.file?.name }),
 				thumbnail: getImageUrl({
-					fileName: image,
+					fileName: image.title,
 					width: 80
 				})
 			})),
-		[images]
+		[imageData]
 	);
+
+	if (loading) {
+		return <Loader width={`${height}px`} height={`${height}px`} />;
+	}
+
+	if (!imageData) {
+		return <p>Keine Bilder vorhanden</p>;
+	}
 
 	return (
 		<div style={{ position: "relative", height }}>

@@ -2,7 +2,7 @@ import { useDataHandler, useGetData } from "@repo/provider";
 import { Loader, Modal, StateDisplay } from "@repo/ui";
 import "./styles.scss";
 import TaskSelectPropery from "./components/TaskSelectProperty";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const DisplayProperty = ({
 	taskId,
@@ -25,8 +25,6 @@ const DisplayProperty = ({
 			setSelectedProperty(data?.property?.objectId);
 		}
 	});
-
-	console.log(selectedProperty);
 
 	if (data)
 		return (
