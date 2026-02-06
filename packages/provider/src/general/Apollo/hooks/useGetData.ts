@@ -4,12 +4,14 @@ import { Classes } from "../../../../../types/src/patstore";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
 import { sanitizeGraphQlNode } from "../functions/helpers";
+import { useEffect } from "react";
 
 const useGetData: UseGetDataHook<Classes> = ({
 	objectName,
 	fields,
 	id,
-	skip
+	skip,
+	afterSaveHandler
 }) => {
 	const cleanObjectName = objectName.replace(/_/g, "");
 	const { loading, data, refetch, error } = useQuery(
@@ -27,13 +29,19 @@ const useGetData: UseGetDataHook<Classes> = ({
 		}
 	);
 
+	useEffect(() => {
+		if (afterSaveHandler && data) {
+			afterSaveHandler(data);
+		}
+	}, [data]);
+
 	return {
 		loading,
 		data: sanitizeGraphQlNode<Classes>(
 			get(data, `${cleanObjectName.toLowerCase()}`, null)
 		),
 		refetch,
-		error
+		error,
 	};
 };
 

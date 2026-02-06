@@ -80,6 +80,7 @@ export type UseGetDataHook<T extends Classes> = (P: {
 	fields: string[];
 	id?: string;
 	skip?: boolean;
+	afterSaveHandler?: (data: T) => void;
 }) => {
 	loading: boolean;
 	data: T | null;

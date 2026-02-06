@@ -61,7 +61,6 @@ const sortTasksForList: (array: Array<Task>) => TaskSection = (
 ) => {
 	const taskList: TaskSection = getInitialTaskSections();
 
-	console.log({ taskList });
 	const arrayCopy = [...array];
 
 	const sortedArray: Task[] = arrayCopy.sort((a, b) => {

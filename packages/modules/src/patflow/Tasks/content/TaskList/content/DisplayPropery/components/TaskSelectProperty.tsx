@@ -58,6 +58,7 @@ const TaskSelectPropery: FC<TaskSelectPropertyProps> = ({
 				(el) => el.value === selectedProperty
 			)}
 			onSelect={(values) => {
+				console.log(values);
 				if (values.length > 0) {
 					setSelectedProperty(values[0]?.value as string);
 				}

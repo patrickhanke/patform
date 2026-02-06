@@ -20,14 +20,13 @@ const DisplayProperty = ({
 	const { data, refetch } = useGetData({
 		objectName: "Task",
 		fields: ["objectId", "property { name objectId }"],
-		id: taskId
-	});
-
-	useEffect(() => {
-		if (data) {
+		id: taskId,
+		afterSaveHandler: (data) => {
 			setSelectedProperty(data?.property?.objectId);
 		}
-	}, [data]);
+	});
+
+	console.log(selectedProperty);
 
 	if (data)
 		return (
