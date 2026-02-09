@@ -8,7 +8,7 @@ const initialDateValues: EventDate = {
 	place: {
 		type: "map",
 		address: "",
-		map: { latitude: 0, longitude: 0 },
+		map: { lat: 0, lng: 0 },
 		online: ""
 	},
 	full_day: false

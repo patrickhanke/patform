@@ -8,15 +8,14 @@ import {
 	absence_type_options,
 	PatflowAppContext,
 	useGetActiveRecord,
-	UserContext
+	UserContext,
+	useFindData
 } from "@repo/provider";
-import { useDataHandler, generateGraphQLQuery } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { DatePicker, DisplayWorker, Select } from "@repo/ui";
 import { EditRecordAbsenceComponent } from "./types";
 import { Day, ErrorMessage, StaffMember } from "@repo/types";
-import { FIND_ALL_STAFF, find_day } from "@repo/provider";
-import { useQuery } from "@apollo/client";
 import checkForConflicts from "./functions/checkForConflicts";
 import { cloneDeep } from "lodash-es";
 import initialAbsence from "./constants/initialAbsence";
@@ -37,7 +36,30 @@ const EditRecordAbsence = ({
 	);
 
 	console.log(absenceState);
-	const { data: staffData } = useQuery(FIND_ALL_STAFF);
+	const { data: staffData } = useFindData({
+		objectName: "User",
+		fields: [
+			"objectId",
+			"first_name",
+			"last_name",
+			"is_worker",
+			"portrait",
+			"color",
+			"time_settings",
+			"number",
+			"data",
+			"role { objectId name type color }"
+		],
+		filters: [
+			{
+				key: "is_worker",
+				value: true,
+				operator: "equalTo",
+				id: "is_worker"
+			}
+		],
+		order: "last_name_DESC"
+	});
 	const { user } = useContext(UserContext);
 	const { record } = useGetActiveRecord({
 		year,
@@ -45,39 +67,88 @@ const EditRecordAbsence = ({
 	});
 
 	const { updateData, createData, deleteData, loading } = useDataHandler();
-	const { data: dayData } = useQuery(find_day, {
-		variables: { params: { user: { _eq: absenceState?.user?.objectId } } },
-		skip: !absenceState?.user
+	const { data: dayData } = useFindData({
+		objectName: "Day",
+		fields: [
+			"objectId",
+			"year",
+			"month",
+			"date",
+			"is_working_day",
+			"time",
+			"default_time",
+			"surcharges",
+			"iso_date",
+			"absence { objectId start_date end_date state type }",
+			"saldo",
+			"type",
+			"iso_date",
+			"user { objectId }",
+			"record { objectId }"
+		],
+		filters: [
+			{
+				key: "user",
+				value: absenceState?.user?.objectId,
+				operator: "equalTo",
+				id: "user"
+			}
+		],
+		skipQuery: !absenceState?.user
 	});
 
-	const { data: absenceDayData } = useQuery(find_day, {
-		variables: { params: { absence: { _eq: absence?.objectId } } },
-		skip: !absence
+	const { data: absenceDayData } = useFindData({
+		objectName: "Day",
+		fields: [
+			"objectId",
+			"year",
+			"month",
+			"date",
+			"is_working_day",
+			"time",
+			"default_time",
+			"surcharges",
+			"iso_date",
+			"absence { objectId start_date end_date state type }",
+			"saldo",
+			"type",
+			"iso_date",
+			"user { objectId }",
+			"record { objectId }"
+		],
+		filters: [
+			{
+				key: "absence",
+				value: absence?.objectId as string,
+				operator: "equalTo",
+				id: "absence"
+			}
+		],
+		skipQuery: !absence
 	});
 
-	const { data: userAbsenceData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Absence",
-			fields: [
-				"objectId",
-				"start_date",
-				"end_date",
-				"state",
-				"user{objectId first_name last_name portrait}",
-				"comment",
-				"type",
-				"year"
-			]
-		}),
-		{
-			fetchPolicy: "network-only",
-			variables: {
-				params: { user: { _eq: absenceState.user?.objectId } }
-			},
-			skip: !absenceState.user
-		}
-	);
+	const { data: userAbsenceData } = useFindData({
+		objectName: "Absence",
+		fields: [
+			"objectId",
+			"start_date",
+			"end_date",
+			"state",
+			"user{objectId first_name last_name portrait}",
+			"comment",
+			"type",
+			"year"
+		],
+		filters: [
+			{
+				key: "user",
+				value: absenceState?.user?.objectId,
+				operator: "equalTo",
+				id: "user"
+			}
+		],
+		skipQuery: !absenceState?.user
+	});
 
 	useEffect(() => {
 		if (!editAbsence) {
@@ -94,7 +165,7 @@ const EditRecordAbsence = ({
 				let newAbsenceId: string;
 				if (type === "edit" && absenceDayData) {
 					const absenceDayDataCopy: Day[] = cloneDeep(
-						absenceDayData.objects.findDay.results
+						absenceDayData || []
 					);
 					if (
 						absenceState.start_date !== absence?.start_date ||
@@ -323,7 +394,7 @@ const EditRecordAbsence = ({
 				});
 			}
 			if (dayData && absenceState.start_date && absenceState.end_date) {
-				const days = dayData.objects.findDay.results;
+				const days = dayData || [];
 				const conflicts = checkForConflicts(
 					absenceState.start_date,
 					absenceState.end_date,
@@ -347,7 +418,7 @@ const EditRecordAbsence = ({
 				absenceState.end_date &&
 				userAbsenceData
 			) {
-				const absences = userAbsenceData.objects.findAbsence.results;
+				const absences = userAbsenceData || [];
 				const conflicts = checkForAbsenceConflicts(
 					absenceState.start_date,
 					absenceState.end_date,
@@ -374,13 +445,11 @@ const EditRecordAbsence = ({
 		let staffOptions = [] as { value: string; label: string }[];
 
 		if (staffData) {
-			staffOptions = staffData.objects.find_User.results.map(
-				(staff: StaffMember) => ({
-					value: staff.objectId,
-					label: `${staff.first_name} ${staff.last_name}`,
-					...staff
-				})
-			);
+			staffOptions = staffData.map((staff: StaffMember) => ({
+				value: staff.objectId,
+				label: `${staff.first_name} ${staff.last_name}`,
+				...staff
+			}));
 		}
 		return { staffOptions };
 	}, [staffData]);
@@ -456,7 +525,11 @@ const EditRecordAbsence = ({
 									end_date: value
 								})
 							}
-							disabled={!record || type === "edit" || !absenceState.start_date}
+							disabled={
+								!record ||
+								type === "edit" ||
+								!absenceState.start_date
+							}
 							type="date"
 							label="Enddatum"
 							width={300}

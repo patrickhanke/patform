@@ -54,7 +54,6 @@ export const useFindCategoryPageStates = ({
 		],
 		filters: [
 			{
-				id: "category_id",
 				key: "category_id",
 				value: categories,
 				operator: "in"
@@ -108,7 +107,6 @@ export const useFindCategoryPageStates = ({
 			setFilters([
 				...filterCopy,
 				{
-					id: "categories",
 					key: "categories",
 					value: [activePage.value],
 					operator: "in"

@@ -1,6 +1,5 @@
-import React, { useCallback } from "react";
-import { axiosclient, generateGraphQLQuery_4_1 } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useCallback } from "react";
+import { axiosclient } from "@repo/provider";
 import { Button } from "@repo/ui";
 
 const Cms = () => {

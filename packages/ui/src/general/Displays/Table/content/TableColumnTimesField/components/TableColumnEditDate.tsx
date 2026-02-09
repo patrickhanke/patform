@@ -3,12 +3,10 @@ import { Map, Select, SwitchButtons, SwitchButton } from "@repo/ui";
 import { EventTime, LocationClass } from "@repo/types";
 import locationButtonStates from "../constants/locationButtonStates";
 import { set, cloneDeep } from "lodash-es";
-import { useQuery } from "@apollo/client";
 import {
 	PatstoreAppContext,
-	generateGraphQLQuery,
 	getWeekdayLabel,
-	paramsHandler,
+	useFindData,
 	weekdays
 } from "@repo/provider";
 import { TableColumnEditTimeProps } from "../types";
@@ -16,37 +14,20 @@ import { useDebounceCallback } from "usehooks-ts";
 
 const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
 	const { modules } = useContext(PatstoreAppContext);
-	const { data: locationData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Location",
-			fields: ["objectId", "label"]
-		}),
-		{
-			variables: paramsHandler({
-				filters: [
-					{
-						key: "module",
-						value: modules.find(
-							(module) => module.path === "/location"
-						)?.objectId as string,
-						operator: "_eq",
-						id: "moduleId"
-					}
-				]
-			})
-		}
-	);
+	const { data: locationData } = useFindData({
+		objectName: "Location",
+		fields: ["objectId", "label"],
+		moduleId: modules.find((module) => module.path === "/locations")
+			?.objectId
+	});
 
 	const locationOptions = useMemo(() => {
 		if (!locationData) return [];
 
-		return locationData?.objects.findLocation.results.map(
-			(location: LocationClass) => ({
-				label: location.label,
-				value: location.objectId
-			})
-		);
+		return locationData?.map((location: LocationClass) => ({
+			label: location.label,
+			value: location.objectId
+		}));
 	}, [locationData]);
 
 	const changeHandler = useCallback(
@@ -190,8 +171,8 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
 							<label>Ort auswählen</label>
 							<Map
 								initialPlace={{
-									lat: time.place.map?.latitude || 0,
-									lng: time.place.map?.longitude || 0
+									lat: time.place.map?.lat || 0,
+									lng: time.place.map?.lng || 0
 								}}
 								onChange={(place) =>
 									changeHandler("place.map", place)

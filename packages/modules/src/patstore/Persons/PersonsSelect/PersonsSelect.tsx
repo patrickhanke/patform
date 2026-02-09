@@ -1,8 +1,7 @@
 "use client";
 
 import { useContext, useMemo } from "react";
-import { PatstoreAppContext } from "@repo/provider";
-import useFindPerson from "./hooks/useFindPerson";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { PersonClass } from "@repo/types";
 import { PersonOption, PersonSelectProps } from "./types";
 import ReactSelect from "react-select";
@@ -15,10 +14,15 @@ const PersonsSelect = ({
 	onChange
 }: PersonSelectProps) => {
 	const { modules } = useContext(PatstoreAppContext);
-	const { persons: personData } = useFindPerson({
-		moduleId: modules.find((module) => module.path === "/persons")
-			?.objectId,
-		filters: []
+
+	const moduleId = modules.find(
+		(module) => module.path === "/persons"
+	)?.objectId;
+	const { data: personData } = useFindData({
+		objectName: "Person",
+		fields: ["objectId", "label", "portrait"],
+		moduleId: moduleId,
+		skipQuery: !moduleId
 	});
 
 	const options: PersonOption[] = useMemo(() => {

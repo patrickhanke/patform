@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import DateSelect from "./content/DateSelect";
-import { useDataHandler } from "@repo/provider";
+import { useDataHandler, useFindData } from "@repo/provider";
 import TimeDisplay from "./content/TimeDisplay";
-import { useQuery } from "@apollo/client";
-import { GET_SERVICE_TIME } from "@repo/provider";
 import { date_select_options } from "./constants/date_select_options";
 import { DateObject } from "@repo/types";
 import { SlideInRight } from "@repo/ui";
@@ -23,11 +21,10 @@ const DateSelectInterface = ({ objectId }: { objectId: string }) => {
 		time: undefined
 	} as any);
 
-	const { refetch } = useQuery(GET_SERVICE_TIME, {
-		variables: { id: objectId },
-		onCompleted(data) {
-			setDate(data.objects.getService.time);
-		}
+	const { refetch } = useFindData({
+		objectName: "Service",
+		fields: ["time", "objectId"],
+		filters: [{ key: "objectId", value: objectId, operator: "equalTo" }]
 	});
 
 	const dataHandler = (timeValue: DateObject) => {

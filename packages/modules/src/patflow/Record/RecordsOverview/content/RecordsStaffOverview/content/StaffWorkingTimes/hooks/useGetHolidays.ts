@@ -1,5 +1,4 @@
-import { generateGraphQLQuery, UserContext } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData, UserContext } from "@repo/provider";
 import { useContext, useMemo } from "react";
 import { Holiday, Record } from "@repo/types";
 
@@ -11,26 +10,23 @@ const useGetHolidays = ({
 	records: Record[];
 }) => {
 	const { projectId } = useContext(UserContext);
-	const { data: holidayData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Holiday",
-			fields: ["objectId", "name", "label", "type", "dates"]
-		}),
-		{
-			variables: {
-				params: {
-					type: { _eq: "holiday" },
-					project: { _eq: projectId }
-				}
-			},
-			skip: !projectId
-		}
-	);
+	const { data: holidayData } = useFindData({
+		objectName: "Holiday",
+		fields: ["objectId", "name", "label", "type", "dates"],
+		filters: [
+			{ key: "type", value: "holiday", operator: "equalTo", id: "type" },
+			{
+				key: "project",
+				value: projectId,
+				operator: "equalTo",
+				id: "projectId"
+			}
+		],
+		skipQuery: !projectId
+	});
 
 	const currentHolidays = useMemo(() => {
-		const holidays: Holiday[] =
-			holidayData?.objects.findHoliday.results || [];
+		const holidays: Holiday[] = holidayData || [];
 
 		if (!year) {
 			return [];
@@ -70,7 +66,7 @@ const useGetHolidays = ({
 	}, [holidayData, year, records]);
 
 	return {
-		holidays: holidayData?.objects.findHoliday.results || [],
+		holidays: holidayData || [],
 		currentHolidays
 	} as {
 		holidays: Holiday[];

@@ -1,8 +1,6 @@
-import { useQuery } from "@apollo/client";
 import { useCallback } from "react";
 import { DeleteAbsenceProps } from "../types";
-import { useDataHandler } from "@repo/provider";
-import { find_day } from "@repo/provider";
+import { useDataHandler, useFindData } from "@repo/provider";
 import { Day } from "@repo/types";
 import { Modal } from "@repo/ui";
 
@@ -14,13 +12,38 @@ const DeleteAbsence = ({
 }: DeleteAbsenceProps) => {
 	const { deleteData } = useDataHandler();
 
-	const { data } = useQuery(find_day, {
-		variables: { params: { absence: { _eq: absence.objectId } } },
-		skip: !deleteAbsence
+	const { data } = useFindData({
+		objectName: "Day",
+		fields: [
+			"objectId",
+			"year",
+			"month",
+			"date",
+			"is_working_day",
+			"time",
+			"default_time",
+			"surcharges",
+			"iso_date",
+			"absence { objectId start_date end_date state type }",
+			"saldo",
+			"type",
+			"iso_date",
+			"user { objectId }",
+			"record { objectId }"
+		],
+		filters: [
+			{
+				key: "absence",
+				value: absence.objectId,
+				operator: "equalTo",
+				id: "absence"
+			}
+		],
+		skipQuery: !deleteAbsence
 	});
 
 	const deleteAbsenceHandler = useCallback(async () => {
-		const days: Day[] = data.objects.findDay.results;
+		const days: Day[] = data || [];
 		const updateArray = days.map((day) =>
 			deleteData({
 				objectId: day.objectId,

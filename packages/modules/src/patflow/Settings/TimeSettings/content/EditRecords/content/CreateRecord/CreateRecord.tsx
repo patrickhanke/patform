@@ -1,7 +1,6 @@
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { CreateRecordProps } from "./types";
-import { useQuery } from "@apollo/client";
-import { find_records_for_user } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import {
 	ErrorMessage,
 	Holiday,
@@ -11,7 +10,7 @@ import {
 } from "@repo/types";
 import styles from "./CreateRecord.module.scss";
 import { createInitialTimes, getHolidayDates } from "@repo/provider";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import RecordSettings from "./components/RecordSettings";
 import defaultRecord from "./constants/defaultRecord";
 import { cloneDeep } from "lodash-es";
@@ -44,15 +43,22 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		defaultRecord(year)
 	);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
-	const { data, loading } = useQuery(find_records_for_user, {
-		variables: { user: userId }
+	const { data, loading } = useFindData({
+		objectName: "Record",
+		fields: [
+			"objectId",
+			"year",
+			"user {objectId first_name last_name}",
+			"default_times",
+			"createdAt"
+		],
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
+		userId: userId
 	});
 
 	useEffect(() => {
 		if (data) {
-			const records: Record[] = cloneDeep(
-				data.objects.findRecord.results
-			);
+			const records: Record[] = cloneDeep(data);
 			if (records !== undefined) {
 				if (records.length === 0) {
 					setYear(new Date().getFullYear());
@@ -73,9 +79,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 	useEffect(() => {
 		if (year && data) {
 			setActiveRecord(
-				data?.objects.findRecord.results.find(
-					(record: Record) => record.year === year - 1
-				) || null
+				data?.find((record: Record) => record.year === year - 1) || null
 			);
 		}
 	}, [data]);
@@ -91,37 +95,19 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		}
 	}, [year, nextRecord]);
 
-	const { data: holidayTemplateData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Template",
-			fields: ["objectId", "name", "type", "holidays"]
-		}),
-		{
-			variables: {
-				params: {
-					type: { _eq: "holiday" },
-					project: { _eq: projectId }
-				}
-			}
-		}
-	);
+	const { data: holidayTemplateData } = useFindData({
+		objectName: "Template",
+		fields: ["objectId", "name", "type", "holidays"],
+		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
+		projectId: projectId
+	});
 
-	const { data: holidayData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Holiday",
-			fields: ["objectId", "name", "type", "dates"]
-		}),
-		{
-			variables: {
-				params: {
-					type: { _eq: "holiday" },
-					project: { _eq: projectId }
-				}
-			}
-		}
-	);
+	const { data: holidayData } = useFindData({
+		objectName: "Holiday",
+		fields: ["objectId", "name", "type", "dates"],
+		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
+		projectId: projectId
+	});
 
 	const { createData } = useDataHandler();
 
@@ -136,9 +122,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 			stateArray.push({
 				value: year,
 				label: year.toString(),
-				disabled: data?.objects.findRecord.results.some(
-					(record: Record) => record.year === year
-				)
+				disabled: data?.some((record: Record) => record.year === year)
 			});
 		}
 
@@ -160,30 +144,27 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		[activeRecord]
 	);
 
-	const { data: dayData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Day",
-			fields: [
-				"objectId",
-				"saldo",
-				"time",
-				"date",
-				"default_time",
-				"type",
-				"absence{objectId state type year}"
-			]
-		}),
-		{
-			variables: {
-				params: {
-					user: { _eq: userId },
-					year: { _eq: activeRecord?.year }
-				}
-			},
-			skip: !activeRecord
-		}
-	);
+	const { data: dayData } = useFindData({
+		objectName: "Day",
+		fields: [
+			"objectId",
+			"saldo",
+			"time",
+			"date",
+			"default_time",
+			"type",
+			"absence{objectId state type year}"
+		],
+		filters: [
+			{
+				key: "year",
+				value: activeRecord?.year as number,
+				operator: "equalTo"
+			}
+		],
+		skipQuery: !activeRecord,
+		userId: userId
+	});
 
 	const renderHolidayField = useMemo(
 		() =>
@@ -195,14 +176,13 @@ const CreateRecord: FC<CreateRecordProps> = ({
 					value: adobt
 						? activeRecord?.holiday_template?.objectId
 						: undefined,
-					select_options:
-						holidayTemplateData?.objects.findTemplate.results.map(
-							(template: HolidayTemplate) => ({
-								value: template.objectId,
-								label: template.name,
-								...template
-							})
-						),
+					select_options: holidayTemplateData?.map(
+						(template: HolidayTemplate) => ({
+							value: template.objectId,
+							label: template.name,
+							...template
+						})
+					),
 					dataType: "object",
 					disabled: adobt
 				}
@@ -321,7 +301,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 			return;
 		}
 
-		const holidays = holidayData?.objects.findHoliday.results;
+		const holidays = holidayData;
 
 		const holidayArray: string[] = [];
 
@@ -429,12 +409,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		if (!activeRecord) {
 			return null;
 		}
-		return (
-			<RecordSettings
-				record={activeRecord}
-				days={dayData?.objects.findDay.results}
-			/>
-		);
+		return <RecordSettings record={activeRecord} days={dayData} />;
 	}, [activeRecord, dayData]);
 
 	if (loading) {

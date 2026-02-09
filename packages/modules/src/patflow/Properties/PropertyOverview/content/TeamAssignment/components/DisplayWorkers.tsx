@@ -1,16 +1,16 @@
 import { DisplayWorker } from "@repo/ui";
 import { useDataHandler, useGetData, useFindData } from "@repo/provider";
 import { DisplayWorkersProps, Worker } from "@repo/types";
-import React, { useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 
 import styles from "../TeamAssignment.module.scss";
 import { ElementSelectInterface, SlideInRight } from "@repo/ui";
 import { WorkerOption } from "../types";
 
-const DisplayWorkers = ({
+const DisplayWorkers: FC<DisplayWorkersProps> = ({
 	propertyId,
 	showAsButton = false
-}: DisplayWorkersProps) => {
+}) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { updateData } = useDataHandler();
 	const { data: property, refetch } = useGetData({
@@ -20,8 +20,19 @@ const DisplayWorkers = ({
 	});
 	const { data: workerData } = useFindData({
 		objectName: "User",
-		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
-		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		fields: [
+			"objectId",
+			"first_name",
+			"last_name",
+			"is_worker",
+			"portrait",
+			"color",
+			"time_settings",
+			"number",
+			"data",
+			"role { objectId name type color }"
+		],
+		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
 		order: "last_name_DESC"
 	});
 
@@ -50,9 +61,8 @@ const DisplayWorkers = ({
 				elements={elements}
 				selectedElements={
 					property
-						? property.assigned_staff.map(
-								(element: string) =>
-									elements.find((el) => el.value === element)
+						? property.assigned_staff.map((element: string) =>
+								elements.find((el) => el.value === element)
 							)
 						: []
 				}
@@ -79,15 +89,13 @@ const DisplayWorkers = ({
 	if (property)
 		return !showAsButton ? (
 			<>
-				{property.assigned_staff.map(
-					(workerId: Worker["objectId"]) => (
-						<DisplayWorker
-							key={workerId}
-							workerId={workerId}
-							onlyImage={false}
-						/>
-					)
-				)}
+				{property.assigned_staff.map((workerId: Worker["objectId"]) => (
+					<DisplayWorker
+						key={workerId}
+						workerId={workerId}
+						onlyImage={false}
+					/>
+				))}
 				<SlideInRight
 					isOpen={isOpen}
 					setIsOpen={setIsOpen}

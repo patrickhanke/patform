@@ -1,10 +1,5 @@
-import {
-	generateGraphQLQuery,
-	paramsHandler,
-	useDataHandler
-} from "@repo/provider";
+import { useDataHandler, useFindData } from "@repo/provider";
 import { Surcharge as SurchargeType } from "@repo/types";
-import { useQuery } from "@apollo/client";
 import React, { useCallback, useState } from "react";
 import Surcharge from "./content/Surcharge";
 import CreateSurcharge from "./content/CreateSurcharge";
@@ -28,43 +23,27 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({
 	const [deleteSurcharge, setDeleteSurcharge] =
 		useState<SurchargeType | null>(null);
 
-	const { data, loading, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Surcharge",
-			fields: [
-				"objectId",
-				"name",
-				"createdAt",
-				"active",
-				"type",
-				"time_value",
-				"day_value",
-				"work_value",
-				"value",
-				"start_date",
-				"end_date",
-				"connected_records",
-				"color",
-				"short",
-				"description"
-			]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "project",
-							value: projectId,
-							operator: "_eq",
-							id: "projectId"
-						}
-					]
-				})
-			}
-		}
-	);
+	const { data, loading, refetch } = useFindData({
+		objectName: "Surcharge",
+		fields: [
+			"objectId",
+			"name",
+			"createdAt",
+			"active",
+			"type",
+			"time_value",
+			"day_value",
+			"work_value",
+			"value",
+			"start_date",
+			"end_date",
+			"connected_records",
+			"color",
+			"short",
+			"description"
+		],
+		projectId: projectId
+	});
 
 	const updateSurchargeHandler = useCallback(
 		async (surcharge: SurchargeType) => {
@@ -113,7 +92,7 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({
 	const activeSurcharges: SurchargeType[] = [];
 	const inActiveSurcharges: SurchargeType[] = [];
 
-	data?.objects.findSurcharge.results.forEach((surcharge: SurchargeType) => {
+	data?.forEach((surcharge: SurchargeType) => {
 		if (surcharge.active === true) {
 			activeSurcharges.push(surcharge);
 		} else {
@@ -122,7 +101,7 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({
 	});
 
 	const surchargeArray: SurchargeType[] = [];
-	data?.objects.findSurcharge.results.forEach((surcharge: SurchargeType) => {
+	data?.forEach((surcharge: SurchargeType) => {
 		const startDate = new Date(surcharge.start_date).getTime();
 		const endDate = surcharge.end_date
 			? new Date(surcharge.end_date).getTime()

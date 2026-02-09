@@ -1,6 +1,5 @@
-import { generateGraphQLQuery_4_1, useAppContext, useFindData } from "@repo/provider";
+import { useAppContext, useFindData } from "@repo/provider";
 import React, { FC, useCallback, useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
 import { ProjectSelectionProps } from "../types";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
 import { PatstoreProject } from "@repo/types";
@@ -38,7 +37,7 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
       selectedProject[0] &&
       selectedProject[0].value !== project.objectId
     ) {
-      loadProject(selectedProject[0].value);
+      loadProject(selectedProject[0].value as string);
     }
     setSelectProject(false);
   }, [selectedProject, project]);

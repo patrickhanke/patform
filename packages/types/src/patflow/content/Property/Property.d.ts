@@ -48,6 +48,7 @@ export type Service = {
   description: string;
   is_active: boolean;
   project: string;
+  assigned_staff: string[];
 };
 
 export type CreateService = Pick<

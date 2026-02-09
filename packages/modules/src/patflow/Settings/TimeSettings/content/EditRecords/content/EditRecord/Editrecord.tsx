@@ -3,12 +3,11 @@ import { EditRecordProps } from "./types";
 import { Holiday, RecordTimeSettings } from "@repo/types";
 import {
 	createInitialTimes,
-	generateGraphQLQuery,
 	getHolidayDates,
-	months
+	months,
+	useFindData
 } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
-import { useQuery } from "@apollo/client";
 import { formatISO9075 } from "date-fns";
 import { Divider, Form, IconButton, InfoBox, Select, SlideIn } from "@repo/ui";
 
@@ -26,27 +25,17 @@ const Editrecord: React.FC<EditRecordProps> = ({
 
 	const [startDate, setStartDate] = useState<string>(record.start_date);
 	const { updateData } = useDataHandler();
-	const { data: holidayData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			queryName: "findHoliday",
-			objectName: "Holiday",
-			fields: ["objectId", "name", "type", "dates"]
-		}),
-		{
-			variables: {
-				params: {
-					type: { _eq: "holiday" },
-					project: { _eq: projectId }
-				}
-			}
-		}
-	);
+	const { data: holidayData } = useFindData({
+		objectName: "Holiday",
+		fields: ["objectId", "name", "type", "dates"],
+		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
+		projectId: projectId
+	});
 	const [loading, setLoading] = useState(false);
 
 	const editRecordHandler = useCallback(async () => {
 		setLoading(true);
-		const holidays = holidayData?.objects.findHoliday.results;
+		const holidays = holidayData;
 
 		const holidayArray: string[] = [];
 
@@ -96,7 +85,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 			});
 			optionsArray.push({
 				value: date,
-				label: `1. ${months[i].label}`
+				label: `1. ${months[i]?.label || ""}`
 			});
 		}
 

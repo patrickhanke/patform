@@ -10,8 +10,7 @@ import {
 import { useContext, useMemo, useState } from "react";
 
 import { ContentClass, Filter } from "@repo/types";
-import { PatstoreAppContext } from "@repo/provider";
-import useFindContent from "./hooks/useFindContent";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import CreateContent from "./components/CreateContent";
 
 const WebsiteContent = () => {
@@ -22,7 +21,24 @@ const WebsiteContent = () => {
 		pageIndex: 0,
 		pageSize: 10
 	});
-	const { content, refetch, count } = useFindContent({
+	const {
+		data: content,
+		refetch,
+		count
+	} = useFindData({
+		objectName: "Content",
+		fields: [
+			"objectId",
+			"title",
+			"content_id",
+			"type",
+			"createdAt",
+			"active",
+			"content",
+			"created_by {objectId username}",
+			"updated_by {objectId username}",
+			"categories"
+		],
 		moduleId: currentModule.objectId,
 		filters,
 		limit: pagination.pageSize,

@@ -1,7 +1,6 @@
 import { FC, useMemo } from "react";
 import { isArray } from "lodash";
-import { generateGraphQLQuery, getImageUrl, useGetData } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { getImageUrl, useGetData } from "@repo/provider";
 import Image from "next/image";
 import { RenderButtonsProps } from "../types";
 

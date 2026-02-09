@@ -10,11 +10,7 @@ import {
 } from "react";
 import { AppContext } from "./AppContext";
 import { Module, PatstoreProject } from "@repo/types";
-import {
-	generateGraphQLQuery,
-	generateGraphQLQuery_4_1,
-	sanitizeGraphQlNode
-} from "@repo/provider";
+import { generateGraphQLQuery_4_1, sanitizeGraphQlNode } from "@repo/provider";
 import { useQuery } from "@apollo/client";
 import ProjectLoader from "./components/ProjectLoader";
 import useFindRoles from "./hooks/useFindRoles";

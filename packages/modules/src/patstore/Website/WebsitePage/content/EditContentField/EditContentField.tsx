@@ -11,8 +11,11 @@ import { useState, FC, ReactNode, useEffect, useContext, useMemo } from "react";
 import EditContent from "./components/EditContent";
 import { Filter, WebpageContent } from "@repo/types";
 import { cloneDeep, set } from "lodash-es";
-import { PatstoreAppContext, useDataHandler } from "@repo/provider";
-import useFindContent from "./hooks/useFindContent";
+import {
+	PatstoreAppContext,
+	useDataHandler,
+	useFindData
+} from "@repo/provider";
 import content_type_options from "./constants/content_type_options";
 
 const EditContentField: FC<EditContentFieldProps> = ({
@@ -40,14 +43,26 @@ const EditContentField: FC<EditContentFieldProps> = ({
 
 	const [filters] = useState<Filter[]>([
 		{
-			id: "type",
 			key: "type",
-			operator: "_in",
+			operator: "in",
 			value: ["table"]
 		}
 	]);
 
-	const { content: webpageContent } = useFindContent({
+	const { data: webpageContent } = useFindData({
+		objectName: "Content",
+		fields: [
+			"objectId",
+			"title",
+			"content_id",
+			"type",
+			"createdAt",
+			"active",
+			"content",
+			"created_by {objectId username}",
+			"updated_by {objectId username}",
+			"categories"
+		],
 		moduleId: currentModule.objectId,
 		filters,
 		limit: pagination.pageSize,
@@ -79,7 +94,10 @@ const EditContentField: FC<EditContentFieldProps> = ({
 						if (value.length > 1) {
 							return;
 						} else if (value.length === 1 && value[0]) {
-							setField({ ...field, value: value[0].value });
+							setField({
+								...field,
+								value: value[0].id as string
+							});
 						} else {
 							setField({ ...field, value: "" });
 						}

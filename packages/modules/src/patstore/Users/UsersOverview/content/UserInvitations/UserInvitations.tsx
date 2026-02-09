@@ -1,28 +1,20 @@
-import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, useAppContext } from "@repo/provider";
+import { useAppContext, useGetData } from "@repo/provider";
 import useInvitationColumns from "./hooks/useInvitationsColumns";
 import { Table } from "@repo/ui";
 import { useState } from "react";
 
 const UserInvitations = () => {
 	const { project } = useAppContext();
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "get",
-			objectName: "Project",
-			fields: ["objectId", "name", "invitations"]
-		}),
-		{
-			variables: { id: project.objectId }
-		}
-	);
+	const { data, refetch } = useGetData({
+		objectName: "Project",
+		fields: ["objectId", "name", "invitations"],
+		id: project.objectId
+	});
 
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
 	});
-
-	console.log(data);
 
 	const columns = useInvitationColumns({
 		refetch,

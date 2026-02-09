@@ -1,10 +1,9 @@
 "use client";
 
 import { FC } from "react";
-import { generateGraphQLQuery } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import "../styles.scss";
 import { useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
 import {
 	ElementSelectInterface,
 	SelectElement,
@@ -34,48 +33,27 @@ const WebsitePageCategories: FC<WebsitePageCategoriesProps> = ({
 		return fields;
 	}, [category]);
 
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: category.connected_class,
-			fields
-		}),
-		{
-			variables: { params: { module: { _eq: category.moduleId } } },
-			fetchPolicy: "cache-first"
-		}
-	);
+	const { data } = useFindData({
+		objectName: category.connected_class,
+		fields,
+		moduleId: category.moduleId,
+		skipQuery: !category.moduleId
+	});
 
 	const elements = useMemo(() => {
 		const categoryOptionsArray: SelectElement[] = [];
 		if (data) {
-			data.objects[`find${category.connected_class}`].results.forEach(
-				(cat: Classes) => {
-					if (category.category_ids.length > 0) {
-						if (
-							cat.category_id &&
-							category.category_ids.includes(cat.category_id)
-						) {
-							categoryOptionsArray.push({
-								value: cat.objectId,
-								id: cat.objectId,
-								label: `${cat.label}`,
-								color: cat.color || "grey",
-								element: (
-									<div>
-										<h4>{cat.label}</h4>
-										{cat.description && (
-											<p>{cat.description}</p>
-										)}
-									</div>
-								)
-							});
-						}
-					} else {
+			data.forEach((cat: Classes) => {
+				if (category.category_ids.length > 0) {
+					if (
+						cat.category_id &&
+						category.category_ids.includes(cat.category_id)
+					) {
 						categoryOptionsArray.push({
 							value: cat.objectId,
 							id: cat.objectId,
 							label: `${cat.label}`,
+							color: cat.color || "grey",
 							element: (
 								<div>
 									<h4>{cat.label}</h4>
@@ -86,8 +64,20 @@ const WebsitePageCategories: FC<WebsitePageCategoriesProps> = ({
 							)
 						});
 					}
+				} else {
+					categoryOptionsArray.push({
+						value: cat.objectId,
+						id: cat.objectId,
+						label: `${cat.label}`,
+						element: (
+							<div>
+								<h4>{cat.label}</h4>
+								{cat.description && <p>{cat.description}</p>}
+							</div>
+						)
+					});
 				}
-			);
+			});
 		}
 		categoryOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 

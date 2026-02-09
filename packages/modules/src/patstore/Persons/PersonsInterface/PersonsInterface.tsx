@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { PersonsInterfaceComponent } from "./types";
 import { Filter, PersonClass } from "@repo/types";
 import "./styles.scss";
-import { PatstoreAppContext } from "@repo/provider";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import useFindPerson from "./hooks/useFindPerson";
 import DisplayPersonsInterface from "./components/DisplayPersonInterface";
 import { PersonDisplay, SlideIn } from "@repo/ui";
@@ -18,7 +18,7 @@ const PersonsInterface = ({
 }: PersonsInterfaceComponent) => {
 	const { modules } = useContext(PatstoreAppContext);
 	const [filter, setFilter] = useState<Filter[]>([]);
-	const { persons: personData, filteredData } = useFindPerson({
+	const { data: personData, filteredData } = useFindData({
 		moduleId: modules.find((module) => module.path === "/persons")
 			?.objectId,
 		filters: filter

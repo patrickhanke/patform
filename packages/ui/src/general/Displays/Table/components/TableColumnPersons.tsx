@@ -7,7 +7,7 @@ import {
 } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
 import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import { PersonClass } from "@repo/types";
 
 const TableColumnPersons = ({
@@ -20,40 +20,25 @@ const TableColumnPersons = ({
 	const [loading, setLoading] = useState(false);
 	const [newPersons, setNewPersons] = useState<string[]>(value || []);
 
-	const { data: personData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Person",
-			fields: ["objectId", "label", "portrait"]
-		}),
-		{
-			variables: {
-				params: {
-					module: {
-						_eq: modules.find(
-							(module) => module.path === "/persons"
-						)?.objectId
-					}
-				}
-			}
-		}
-	);
+	const { data: personData } = useFindData({
+		objectName: "Person",
+		fields: ["objectId", "label", "portrait"],
+		moduleId: modules.find((module) => module.path === "/persons")?.objectId
+	});
 
 	const elements = useMemo(() => {
 		const personOptionsArray: SelectElement[] = [];
 		if (personData) {
-			personData.objects.findPerson.results.forEach(
-				(person: PersonClass) => {
-					if (person) {
-						personOptionsArray.push({
-							value: person.objectId,
-							id: person.objectId,
-							label: `${person.label}`,
-							element: <PersonDisplay person={person} />
-						});
-					}
+			personData.forEach((person: PersonClass) => {
+				if (person) {
+					personOptionsArray.push({
+						value: person.objectId,
+						id: person.objectId,
+						label: `${person.label}`,
+						element: <PersonDisplay person={person} />
+					});
 				}
-			);
+			});
 		}
 		personOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
@@ -129,7 +114,7 @@ const TableColumnPersons = ({
 							value.map((person) => (
 								<PersonDisplay
 									key={person}
-									person={personData.objects.findPerson.results.find(
+									person={personData.find(
 										(ps: PersonClass) =>
 											ps.objectId === person
 									)}

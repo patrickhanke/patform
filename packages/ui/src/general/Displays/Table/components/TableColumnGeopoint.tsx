@@ -14,17 +14,17 @@ const TableColumnGeopoint = ({
 }: TableColumnGeopointProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [geopoint, setGeopoint] = useState<LatLng | null>({
-		lat: value?.latitude,
-		lng: value?.longitude
+		lat: value?.lat,
+		lng: value?.lng
 	});
 
 	return (
 		<>
 			<div className="table_column_textfield_container">
 				<span>
-					{value ? value.latitude : "-"}
+					{value ? value.lat : "-"}
 					<br />
-					{value ? value.longitude : "-"}
+					{value ? value.lng : "-"}
 				</span>
 
 				{isEditable && (

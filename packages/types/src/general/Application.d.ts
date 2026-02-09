@@ -29,7 +29,6 @@ export type Filter = {
   key: string;
   value: string | Array<string | number> | number | boolean | null;
   operator: FilterOperator;
-  id: string;
 };
 
 export type ErrorMessage = {

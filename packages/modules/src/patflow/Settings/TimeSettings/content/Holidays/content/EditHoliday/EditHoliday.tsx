@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IconButton, Modal } from "@repo/ui";
 import { ErrorMessage } from "@repo/types";
-import { generateGraphQLQuery, useDataHandler } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { useDataHandler, useFindData } from "@repo/provider";
 import { EditHolidayTemplateProps } from "./types";
 import { default as EditHolidaySettings } from "./content/EditHoliday";
 
@@ -16,22 +15,22 @@ const EditHoliday: React.FC<EditHolidayTemplateProps> = ({
 	const [editTemplate, setEditTemplate] = useState(false);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 
-	const { data, loading: recordsLoading } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Record",
-			fields: ["objectId"]
-		}),
-		{
-			variables: {
-				params: { holiday_template: { _eq: template.objectId } }
+	const { data, loading: recordsLoading } = useFindData({
+		objectName: "Record",
+		fields: ["objectId"],
+		filters: [
+			{
+				key: "holiday_template",
+				value: template.objectId,
+				operator: "equalTo"
 			}
-		}
-	);
+		],
+		skipQuery: !template.objectId
+	});
 
 	useEffect(() => {
 		const errorArray: ErrorMessage[] = [];
-		if (data && data?.objects.findRecord.results.length > 0) {
+		if (data && data.length > 0) {
 			errorArray.push({
 				id: "in_use",
 				key: "in_use",

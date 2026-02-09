@@ -1,11 +1,9 @@
 import { FC, useMemo } from "react";
 import {
 	convertMillisecondsToString,
-	generateGraphQLQuery,
 	getSurchargeData,
-	paramsHandler
+	useFindData
 } from "@repo/provider";
-import { useQuery } from "@apollo/client";
 import { StaffSurchargesProps } from "./types";
 import { Surcharge } from "@repo/types";
 import getOvertimeSaldo from "./functions/getOvertimeSaldo";
@@ -16,45 +14,37 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 	month,
 	year
 }) => {
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Surcharge",
-			fields: [
-				"objectId",
-				"name",
-				"createdAt",
-				"active",
-				"type",
-				"time_value",
-				"day_value",
-				"work_value",
-				"value",
-				"start_date",
-				"end_date"
-			]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "project",
-							value: projectId,
-							operator: "_eq",
-							id: "projectId"
-						}
-					]
-				})
+	const { data } = useFindData({
+		objectName: "Surcharge",
+		fields: [
+			"objectId",
+			"name",
+			"createdAt",
+			"active",
+			"type",
+			"time_value",
+			"day_value",
+			"work_value",
+			"value",
+			"start_date",
+			"end_date"
+		],
+		filters: [
+			{
+				key: "project",
+				value: projectId,
+				operator: "equalTo",
+				id: "projectId"
 			}
-		}
-	);
+		],
+		skipQuery: !projectId
+	});
 
 	const surchargeData = useMemo(() => {
 		let surcharges: (Surcharge & { saldo: number })[] = [];
 		if (data) {
 			surcharges = getSurchargeData({
-				surcharges: data?.objects.findSurcharge.results || [],
+				surcharges: data || [],
 				days,
 				month: month.id,
 				year

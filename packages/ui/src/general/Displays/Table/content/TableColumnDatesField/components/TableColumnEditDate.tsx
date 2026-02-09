@@ -3,53 +3,32 @@ import { Map, Select, StatelessToggle, SwitchButtons } from "@repo/ui";
 import { EventDate, LocationClass } from "@repo/types";
 import { TableColumnEditDateProps } from "../types";
 import { set, cloneDeep } from "lodash-es";
-import { useQuery } from "@apollo/client";
-import {
-	PatstoreAppContext,
-	generateGraphQLQuery,
-	paramsHandler
-} from "@repo/provider";
+import { useFindData } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import locationButtonStates from "../constants/locationButtonStates";
 
 const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 	const { modules } = useContext(PatstoreAppContext);
 
 	const locationModule = modules.find(
-		(module) => module.path === "/location"
+		(module) => module.path === "/locations"
 	);
 
-	const { data: locationData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Location",
-			fields: ["objectId", "label"]
-		}),
-		{
-			variables: paramsHandler({
-				filters: [
-					{
-						key: "module",
-						value: locationModule?.objectId as string,
-						operator: "_eq",
-						id: "moduleId"
-					}
-				]
-			}),
-			skip: !locationModule
-		}
-	);
+	const { data: locationData } = useFindData({
+		objectName: "Location",
+		fields: ["objectId", "label"],
+		moduleId: locationModule?.objectId
+	});
 
 	console.log({ locationData });
 
 	const locationOptions = useMemo(() => {
 		if (!locationData) return [];
 
-		return locationData?.objects.findLocation.results.map(
-			(location: LocationClass) => ({
-				label: location.label,
-				value: location.objectId
-			})
-		);
+		return locationData?.map((location: LocationClass) => ({
+			label: location.label,
+			value: location.objectId
+		}));
 	}, [locationData]);
 
 	const changeHandler = useCallback(
@@ -190,13 +169,13 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 							<label>Ort auswählen</label>
 							<Map
 								initialPlace={{
-									lat: date?.place?.map?.latitude || 0,
-									lng: date?.place.map?.longitude || 0
+									lat: date?.place?.map?.lat || 0,
+									lng: date?.place.map?.lng || 0
 								}}
 								onChange={(place) =>
 									changeHandler("place.map", {
-										latitude: place.lat,
-										longitude: place.lng
+										lat: place.lat,
+										lng: place.lng
 									})
 								}
 							/>

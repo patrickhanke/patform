@@ -2,9 +2,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ReactNode, useContext, useMemo } from "react";
 import {
 	findDefaultTimeForDate,
-	generateGraphQLQuery,
 	getDateString,
-	paramsHandler,
+	useFindData,
 	UserContext
 } from "@repo/provider";
 import ColumnWorkingTime from "../components/ColumnWorkingTime";
@@ -15,7 +14,6 @@ import { DayData } from "../types";
 import ColumnWorkingTarget from "../components/ColumnWorkingTarget";
 import ColumnWorkingSaldo from "../components/ColumnWorkingSaldo";
 import ColumnWorkingSurcharges from "../components/ColumnWorkingSurcharges";
-import { useQuery } from "@apollo/client";
 import { Tooltip } from "@repo/ui";
 import { Button } from "@chakra-ui/react";
 import { LuInfo } from "react-icons/lu";
@@ -32,27 +30,19 @@ const useTableColumns = ({
 	holidays: Holiday[];
 }) => {
 	const { projectId } = useContext(UserContext);
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Surcharge",
-			fields: ["objectId", "name", "color", "short", "description"]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "project",
-							value: projectId,
-							operator: "_eq",
-							id: "projectId"
-						}
-					]
-				})
+	const { data } = useFindData({
+		objectName: "Surcharge",
+		fields: ["objectId", "name", "color", "short", "description"],
+		filters: [
+			{
+				key: "project",
+				value: projectId,
+				operator: "equalTo",
+				id: "projectId"
 			}
-		}
-	);
+		],
+		skipQuery: !projectId
+	});
 
 	const columns: ColumnDef<DayData>[] = useMemo(
 		() => [
@@ -148,9 +138,7 @@ const useTableColumns = ({
 			{
 				accessorFn: (row) => (
 					<ColumnWorkingSurcharges
-						surcharges={
-							data ? data.objects.findSurcharge.results : []
-						}
+						surcharges={data ? data : []}
 						daySurcharges={row.surcharges}
 					/>
 				),

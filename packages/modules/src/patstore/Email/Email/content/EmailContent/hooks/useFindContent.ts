@@ -1,5 +1,4 @@
-import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { UseFindContentHook } from "../types";
 
 const useFindContent: UseFindContentHook = ({
@@ -8,38 +7,31 @@ const useFindContent: UseFindContentHook = ({
 	limit,
 	skip
 }) => {
-	const { loading, data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Content",
-			fields: [
-				"objectId",
-				"title",
-				"content_id",
-				"type",
-				"createdAt",
-				"active",
-				"content",
-				"created_by {objectId username}",
-				"updated_by {objectId username}",
-				"categories"
-			]
-		}),
-		{
-			variables: {
-				params: paramsHandler({ moduleId, filters }),
-				skip,
-				limit
-			},
-			notifyOnNetworkStatusChange: true
-		}
-	);
+	const { loading, data, refetch, count } = useFindData({
+		objectName: "Content",
+		fields: [
+			"objectId",
+			"title",
+			"content_id",
+			"type",
+			"createdAt",
+			"active",
+			"content",
+			"created_by {objectId username}",
+			"updated_by {objectId username}",
+			"categories"
+		],
+		filters: filters,
+		moduleId: moduleId,
+		skip: skip,
+		limit: limit
+	});
 
 	return {
 		loading,
-		content: data ? data.objects.findContent.results : undefined,
+		content: data || [],
 		refetch,
-		count: data ? data.objects.findContent.count : 0
+		count: count || 0
 	};
 };
 

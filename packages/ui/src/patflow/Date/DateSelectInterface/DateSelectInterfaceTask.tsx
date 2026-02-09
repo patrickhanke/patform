@@ -2,9 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import DateSelect from "./content/DateSelect";
-import { useDataHandler } from "@repo/provider";
-import { useQuery } from "@apollo/client";
-import { GET_TASK_TIME } from "@repo/provider";
+import { useDataHandler, useGetData } from "@repo/provider";
 import modi_options from "./content/DateSelect/constants/modi_options";
 import date_category_options from "./content/DateSelect/constants/date_category_options";
 import { DateSelectInterfaceTaskProps } from "./types";
@@ -37,13 +35,14 @@ const DateSelectInterfaceTask = ({
 		time: ""
 	});
 
-	const { loading: queryLoading, refetch } = useQuery(GET_TASK_TIME, {
-		variables: { id: taskId },
-		onCompleted(data) {
-			setTime(data.objects.getTask.time);
-			setState(data.objects.getTask.state);
-		},
-		notifyOnNetworkStatusChange: true
+	const { loading: queryLoading, refetch } = useGetData({
+		objectName: "Task",
+		fields: ["objectId", "time", "state", "dates", "type", "category"],
+		id: taskId,
+		afterSaveHandler: (data) => {
+			setTime(data.time);
+			setState(data.state);
+		}
 	});
 
 	useEffect(() => {

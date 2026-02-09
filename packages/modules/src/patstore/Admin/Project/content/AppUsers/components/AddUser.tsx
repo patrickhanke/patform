@@ -1,46 +1,37 @@
-import React, { useState, FC, useMemo } from "react";
+import { useState, FC, useMemo } from "react";
 import { Divider, ElementSelectInterface, TextInput } from "@repo/ui";
-import { useQuery } from "@apollo/client";
-import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { AddUserProps, UserObject } from "../types";
 import { PatstoreUser } from "@repo/types";
 
-const AddUser: FC<AddUserProps> = ({ user, setUser, projectId, roles }) => {
+const AddUser: FC<AddUserProps> = ({ user, setUser, projectId }) => {
 	const [searchValue, setSearchValue] = useState("");
-	const { loading, data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "_User",
-			fields: ["objectId", "username", "email", "label", "projects"]
-		}),
-		{
-			variables: {
-				params: paramsHandler({
-					filters: [
-						{
-							key: "username",
-							value: searchValue,
-							operator: "_regex",
-							id: "username"
-						},
-						{
-							key: "projects",
-							value: projectId,
-							operator: "_nin",
-							id: "projects"
-						}
-					]
-				})
+	const { data } = useFindData({
+		objectName: "_User",
+		fields: ["objectId", "username", "email", "label", "projects"],
+		filters: [
+			{
+				key: "username",
+				value: searchValue,
+				operator: "matchesRegex"
 			},
-			notifyOnNetworkStatusChange: true,
-			skip: !searchValue
-		}
-	);
+			{
+				key: "projects",
+				value: projectId,
+				operator: "notIn"
+			}
+		]
+	});
 
 	const elements: UserObject[] = useMemo(() => {
 		if (data) {
-			return data.objects.find_User.results.map((user: PatstoreUser) => {
+			return data.map((user: PatstoreUser) => {
 				return {
+					name: user.name,
+					role: {
+						value: user.role.objectId,
+						label: user.role.name
+					},
 					label: user.label,
 					value: user.objectId,
 					email: user.username,

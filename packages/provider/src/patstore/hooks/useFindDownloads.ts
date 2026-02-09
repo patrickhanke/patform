@@ -1,9 +1,4 @@
-import { useQuery } from "@apollo/client";
-import {
-	generateGraphQLQuery,
-	generateQueryFromFields,
-	paramsHandler
-} from "@repo/provider";
+import { generateQueryFromFields, useFindData } from "@repo/provider";
 import { useMemo } from "react";
 import { Module, Filter, DownloadClass, ApolloRefetch } from "@repo/types";
 
@@ -25,29 +20,21 @@ const useFindDownload: UseFindDownloadHook = ({
 	limit,
 	skip
 }) => {
-	const { loading, data, refetch } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Download",
-			fields: generateQueryFromFields(module.fields)
-		}),
-		{
-			variables: {
-				params: paramsHandler({ moduleId: module.objectId, filters }),
-				limit,
-				skip,
-				order: "createdAt_DESC"
-			},
-			notifyOnNetworkStatusChange: true
-		}
-	);
+	const { loading, data, refetch } = useFindData({
+		objectName: "Download",
+		fields: generateQueryFromFields(module.fields),
+		moduleId: module.objectId,
+		filters,
+		limit,
+		skip
+	});
 
 	const returnValue = useMemo(
 		() => ({
 			loading,
-			downloads: data ? data.objects.findDownload.results : undefined,
+			downloads: data ? data : undefined,
 			refetch,
-			count: data ? data.objects.findDownload.count : 0
+			count: data ? data.length : 0
 		}),
 		[data, loading]
 	);

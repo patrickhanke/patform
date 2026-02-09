@@ -1,6 +1,5 @@
 import { useContext, useMemo } from "react";
-import { useQuery } from "@apollo/client";
-import { find_day, useGetData } from "@repo/provider";
+import { useGetData } from "@repo/provider";
 import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";

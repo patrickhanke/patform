@@ -1,10 +1,10 @@
 "use client";
 
 import { FC, useContext } from "react";
-import { generateGraphQLQuery, PatstoreAppContext } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import "../styles.scss";
 import { useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useFindData } from "@repo/provider";
 import {
 	ElementSelectInterface,
 	SelectElement,
@@ -28,25 +28,17 @@ const WebsitePageDocuments: FC<WebsitePageDocumentsProps> = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Download",
-			fields: ["objectId", "title", "info", "image", "file", "categories"]
-		}),
-		{
-			variables: {
-				params: { module: { _eq: downloadModule?.objectId } }
-			},
-			skip: !downloadModule,
-			fetchPolicy: "cache-first"
-		}
-	);
+	const { data } = useFindData({
+		objectName: "Download",
+		fields: ["objectId", "title", "info", "image", "file", "categories"],
+		moduleId: downloadModule?.objectId,
+		skipQuery: !downloadModule?.objectId
+	});
 
 	const elements = useMemo(() => {
 		const documentOptionsArray: SelectElement[] = [];
 		if (data) {
-			data.objects.findDownload.results.forEach((doc: DownloadClass) => {
+			data.forEach((doc: DownloadClass) => {
 				if (doc) {
 					documentOptionsArray.push({
 						value: doc.objectId,

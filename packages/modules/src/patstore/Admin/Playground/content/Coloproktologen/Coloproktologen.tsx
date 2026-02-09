@@ -9,16 +9,7 @@ import arzt from "./constants/arzt.json";
 import { Specialist } from "./constants/types";
 import { LocationClass } from "@repo/types";
 
-const getDescrition = (header_1?: string, header_2?: string) => {
-	let newString = "";
-	if (header_1) {
-		newString += header_1 + " ";
-	}
-	if (header_2) {
-		newString += header_2 + " ";
-	}
-	return newString;
-};
+
 
 const Playground = () => {
 	const { data: locationData } = useQuery(gql`

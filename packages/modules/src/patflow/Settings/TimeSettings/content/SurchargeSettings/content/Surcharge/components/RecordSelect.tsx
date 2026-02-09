@@ -1,11 +1,10 @@
 import { FC, useContext, useMemo, useState } from "react";
 import { ElementSelectInterface, IconButton, SlideIn } from "@repo/ui";
-import { useQuery } from "@apollo/client";
 import {
-	generateGraphQLQuery,
 	getDateString,
 	PatflowAppContext,
-	useDataHandler
+	useDataHandler,
+	useFindData
 } from "@repo/provider";
 import { Record } from "@repo/types";
 import { RecordSelectProps, SelectRecordElement } from "../types";
@@ -22,26 +21,22 @@ const RecordSelect: FC<RecordSelectProps> = ({
 		initialSelectedRecords || []
 	);
 	const { year } = useContext(PatflowAppContext);
-	const { data } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Record",
-			fields: [
-				"objectId",
-				"start_date",
-				"end_date",
-				"user { first_name last_name objectId }",
-				"year"
-			],
-			type: "find"
-		}),
-		{
-			variables: { params: { year: { _eq: year } } }
-		}
-	);
+	const { data } = useFindData({
+		objectName: "Record",
+		fields: [
+			"objectId",
+			"start_date",
+			"end_date",
+			"user { first_name last_name objectId }",
+			"year"
+		],
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
+		skipQuery: !year
+	});
 
 	const elements = useMemo(() => {
 		const elementArray: SelectRecordElement[] = [];
-		data?.objects.findRecord.results.forEach((record: Record) => {
+		data?.forEach((record: Record) => {
 			elementArray.push({
 				value: record.objectId,
 				label: `${record.user.first_name} ${record.user.last_name} / ${getDateString(record.start_date).date}-${getDateString(record.end_date).date}`,
@@ -51,7 +46,7 @@ const RecordSelect: FC<RecordSelectProps> = ({
 		return elementArray;
 	}, [data]);
 
-	const records = data?.objects.findRecord.results || [];
+	const records = data || [];
 
 	return (
 		<>
@@ -132,7 +127,9 @@ const RecordSelect: FC<RecordSelectProps> = ({
 					onSelect={(selectedElement) => {
 						console.log("Selected Record ID:", selectedElement);
 						setConnectedRecords(
-							selectedElement.map((element) => element.value)
+							selectedElement.map(
+								(element) => element.value
+							) as string[]
 						);
 					}}
 					title="Zeiterfassung auswählen"

@@ -6,8 +6,7 @@ import {
 	SlideIn
 } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
-import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
-import { useQuery } from "@apollo/client";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { PersonClass } from "@repo/types";
 
 const TableColumnPerson = ({
@@ -22,40 +21,25 @@ const TableColumnPerson = ({
 		value?.objectId
 	);
 
-	const { data: personData } = useQuery(
-		generateGraphQLQuery({
-			type: "find",
-			objectName: "Person",
-			fields: ["objectId", "label", "portrait "]
-		}),
-		{
-			variables: {
-				params: {
-					module: {
-						_eq: modules.find(
-							(module) => module.path === "/persons"
-						)?.objectId
-					}
-				}
-			}
-		}
-	);
+	const { data: personData } = useFindData({
+		objectName: "Person",
+		fields: ["objectId", "label", "portrait"],
+		moduleId: modules.find((module) => module.path === "/persons")?.objectId
+	});
 
 	const elements = useMemo(() => {
 		const personOptionsArray: SelectElement[] = [];
 		if (personData) {
-			personData.objects.findPerson.results.forEach(
-				(person: PersonClass) => {
-					if (person) {
-						personOptionsArray.push({
-							value: person.objectId,
-							id: person.objectId,
-							label: `${person.label}`,
-							element: <PersonDisplay person={person} />
-						});
-					}
+			personData.forEach((person: PersonClass) => {
+				if (person) {
+					personOptionsArray.push({
+						value: person.objectId,
+						id: person.objectId,
+						label: `${person.label}`,
+						element: <PersonDisplay person={person} />
+					});
 				}
-			);
+			});
 		}
 		personOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 

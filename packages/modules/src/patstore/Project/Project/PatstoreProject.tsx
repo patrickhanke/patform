@@ -2,12 +2,7 @@
 
 import { Form, Page } from "@repo/ui";
 import fields from "./constants/fields";
-import { useQuery } from "@apollo/client";
-import {
-	generateGraphQLQuery,
-	useAppContext,
-	useDataHandler
-} from "@repo/provider";
+import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
 import page_states from "./constants/page_states";
 import { useState } from "react";
 import { Dashboard } from "./content";
@@ -19,25 +14,16 @@ const Project = () => {
 	const [activePage, setActivePage] = useState<(typeof page_states)[number]>(
 		page_states[0]
 	);
-	const { data, refetch } = useQuery(
-		generateGraphQLQuery({
-			objectName: "Project",
-			type: "get",
-			fields: ["name", "data", "logo {url name}"]
-		}),
-		{
-			variables: {
-				id: project?.objectId
-			},
-			skip: !project?.objectId
-		}
-	);
+	const { data: projectData, refetch } = useGetData({
+		objectName: "Project",
+		fields: ["name", "data", "logo {url name}"],
+		id: project?.objectId,
+		skip: !project?.objectId
+	});
 
-	if (!data?.objects.getProject) {
+	if (!projectData) {
 		return <div>Loading...</div>;
 	}
-
-	const projectData = data?.objects.getProject;
 
 	return (
 		<Page
