@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useMemo, useState } from "react";
 import "./styles.scss";
 import { ErrorDisplay, IconButton } from "@repo/ui";
