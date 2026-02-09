@@ -1,11 +1,7 @@
 import React, { useContext, useMemo } from "react";
 import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
-import {
-	useFindData,
-	months,
-	UserContext
-} from "@repo/provider";
+import { useFindData, months, UserContext } from "@repo/provider";
 import useGetDay from "./hooks/useGetDay";
 import { Divider } from "@repo/ui";
 import StaffRecord from "./content/StaffRecord";
@@ -40,14 +36,31 @@ const RecordsStaffOverview = ({
 
 	const { data: recordData } = useFindData({
 		objectName: "Record",
-		fields: ["objectId", "year", "user {objectId}", "default_times", "createdAt"],
-		filters: [{ key: "year", value: year, operator: "_eq" }],
+		fields: [
+			"objectId",
+			"year",
+			"user {objectId}",
+			"default_times",
+			"createdAt"
+		],
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
 		skipQuery: !year
 	});
 	const { data: staffData } = useFindData({
 		objectName: "User",
-		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
-		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		fields: [
+			"objectId",
+			"first_name",
+			"last_name",
+			"is_worker",
+			"portrait",
+			"color",
+			"time_settings",
+			"number",
+			"data",
+			"role { objectId name type color }"
+		],
+		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
 		order: "last_name_DESC"
 	});
 
@@ -79,11 +92,7 @@ const RecordsStaffOverview = ({
 
 	return (
 		<div>
-			<StaffRecord
-				days={days}
-				year={year}
-				staff={staffData || []}
-			/>
+			<StaffRecord days={days} year={year} staff={staffData || []} />
 			<div className="button_container">{siteHeaderContent}</div>
 			<Divider size="small" showLine={false} />
 			{selectedUser ? (

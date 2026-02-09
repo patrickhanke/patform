@@ -37,8 +37,7 @@ const useTableColumns = ({
 			{
 				key: "project",
 				value: projectId,
-				operator: "equalTo",
-				id: "projectId"
+				operator: "equalTo"
 			}
 		],
 		skipQuery: !projectId

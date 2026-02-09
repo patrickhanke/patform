@@ -16,8 +16,14 @@ const EditRecords: FC<EditRecordsProps> = ({
 	const { year } = useContext(PatflowAppContext);
 	const { data, loading, refetch } = useFindData({
 		objectName: "Record",
-		fields: ["objectId", "year", "user {objectId first_name last_name}", "default_times", "createdAt"],
-		filters: [{ key: "year", value: year, operator: "_eq" }]
+		fields: [
+			"objectId",
+			"year",
+			"user {objectId first_name last_name}",
+			"default_times",
+			"createdAt"
+		],
+		filters: [{ key: "year", value: year, operator: "equalTo" }]
 	});
 	const [selectedUser, setSelectedUser] = useState<Worker | undefined>(
 		undefined
@@ -34,10 +40,7 @@ const EditRecords: FC<EditRecordsProps> = ({
 		<>
 			<div className="site_content">
 				<div className="content_element no_padding">
-					<Table
-						data={data || []}
-						columns={columns}
-					/>
+					<Table data={data || []} columns={columns} />
 				</div>
 			</div>
 			{!!selectedUser && (

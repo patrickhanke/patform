@@ -73,7 +73,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 							filterChangeHandler(
 								"objectId",
 								value,
-								"_eq",
+								"equalTo",
 								filters
 							)
 						)
@@ -97,7 +97,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 								filterChangeHandler(
 									"property",
 									value?.value,
-									"_eq",
+									"equalTo",
 									filters
 								)
 							);

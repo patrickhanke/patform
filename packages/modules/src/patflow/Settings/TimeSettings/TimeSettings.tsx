@@ -25,9 +25,7 @@ const TimeSettings = () => {
 		objectName: "Holiday",
 		fields: ["objectId", "name", "label", "type", "dates"],
 		projectId,
-		filters: [
-			{ key: "type", value: "holiday", operator: "_eq" }
-		],
+		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
 		skipQuery: !projectId
 	});
 
@@ -160,9 +158,7 @@ const TimeSettings = () => {
 				/>
 			)}
 			{siteState.value === "holidays" && (
-				<Holidays
-					holidays={holidayData || []}
-				/>
+				<Holidays holidays={holidayData || []} />
 			)}
 			{siteState.value === "surcharges" && projectId && (
 				<SurchargeSettings

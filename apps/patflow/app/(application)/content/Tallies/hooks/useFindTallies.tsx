@@ -3,7 +3,7 @@ import { Filter } from "@repo/types";
 import { useFindTalliesHook } from "../types";
 
 const paramsHandler = (id: string, className: string): Filter[] => {
-  if (className === "Property") return [{ key: "property", value: id, operator: "_eq" }];
+  if (className === "Property") return [{ key: "property", value: id, operator: "equalTo" }];
   return [];
 };
 

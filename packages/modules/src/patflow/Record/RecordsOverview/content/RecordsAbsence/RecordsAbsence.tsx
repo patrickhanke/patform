@@ -17,20 +17,29 @@ const RecordAbsence = ({
 	const { year } = useContext(PatflowAppContext);
 	const { data: staffData } = useFindData({
 		objectName: "User",
-		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
-		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		fields: [
+			"objectId",
+			"first_name",
+			"last_name",
+			"is_worker",
+			"portrait",
+			"color",
+			"time_settings",
+			"number",
+			"data",
+			"role { objectId name type color }"
+		],
+		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
 		order: "last_name_DESC"
 	});
 
 	const siteHeaderContent = useMemo(() => {
 		let staffOptions = [] as { value: string; label: string }[];
 		if (staffData) {
-			staffOptions = staffData.map(
-				(staff: StaffMember) => ({
-					value: staff.objectId,
-					label: `${staff.first_name} ${staff.last_name}`
-				})
-			);
+			staffOptions = staffData.map((staff: StaffMember) => ({
+				value: staff.objectId,
+				label: `${staff.first_name} ${staff.last_name}`
+			}));
 		}
 
 		return (
@@ -62,10 +71,14 @@ const RecordAbsence = ({
 		],
 		filters: selectedUser
 			? [
-					{ key: "year", value: year, operator: "_eq" },
-					{ key: "user", value: selectedUser.value, operator: "_eq" }
+					{ key: "year", value: year, operator: "equalTo" },
+					{
+						key: "user",
+						value: selectedUser.value,
+						operator: "equalTo"
+					}
 				]
-			: [{ key: "year", value: year, operator: "_eq" }],
+			: [{ key: "year", value: year, operator: "equalTo" }],
 		skipQuery: !year
 	});
 

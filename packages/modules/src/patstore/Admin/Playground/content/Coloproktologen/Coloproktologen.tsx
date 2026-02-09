@@ -15,7 +15,7 @@ const Playground = () => {
 	const { data: locationData } = useQuery(gql`
 		query {
 			objects {
-				findLocation(where: { project: { _eq: "EgRR0prozh" } }) {
+				findLocation(where: { project: { equalTo: "EgRR0prozh" } }) {
 					results {
 						objectId
 						data
@@ -27,7 +27,7 @@ const Playground = () => {
 	const { data: userData } = useQuery(gql`
 		query {
 			objects {
-				find_User(where: { project: { _eq: "EgRR0prozh" } }) {
+				find_User(where: { project: { equalTo: "EgRR0prozh" } }) {
 					results {
 						email
 						username

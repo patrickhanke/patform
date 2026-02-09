@@ -6,11 +6,10 @@ import { ModalButtons, PrintWorkerTimesProps } from "./types";
 import SelectTimes from "./components/SelectTimes";
 import {
 	axiosclient,
-	generateGraphQLQuery,
 	months,
-	useDataContext
+	useDataContext,
+	useFindData
 } from "@repo/provider";
-import { useLazyQuery } from "@apollo/client";
 import { Day } from "@repo/types";
 import SelectFields from "./components/SelectFields";
 import { RenderRecordData } from "./content";
@@ -39,37 +38,29 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 	>(table_fields.map((field) => field.value));
 	const { days } = useFindDays({
 		year: selectedTimes.year,
-		users: selectedWorker.map((worker) => worker.value)
+		users: selectedWorker.map((worker) => worker.value as string)
 	});
 
 	const { records } = useFindRecord({
 		year: selectedTimes.year,
-		users: selectedWorker.map((worker) => worker.value)
+		users: selectedWorker.map((worker) => worker.value as string)
 	});
 
 	const { surcharges } = useFindSurcharges({
 		year: selectedTimes.year,
-		users: selectedWorker.map((worker) => worker.value)
+		users: selectedWorker.map((worker) => worker.value as string)
 	});
 
 	console.log({ selectedFields, selectedWorker });
 	const [loading, setLoading] = useState(false);
-	const [loadDays, { data }] = useLazyQuery(
-		generateGraphQLQuery({
-			objectName: "Day",
-			type: "find",
-			fields: ["objectId", "date", "time", "user {objectId}"]
-		}),
-		{
-			variables: {
-				params: {
-					year: { _eq: selectedTimes.year },
-					month: { _eq: selectedTimes.month },
-					user: { _eq: selectedWorker[0]?.value }
-				}
-			}
-		}
-	);
+	const { data, refetch } = useFindData({
+		objectName: "Day",
+		fields: ["objectId", "date", "time", "user {objectId}"],
+		filters: [
+			{ key: "year", value: selectedTimes.year, operator: "equalTo" }
+		],
+		userId: selectedWorker[0]?.value as string
+	});
 
 	const closeModal = () => {
 		setPageState(modal_steps[0]);
@@ -80,13 +71,13 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 
 	const updateUserHandler = useCallback(async () => {
 		setLoading(true);
-		await loadDays();
+		await refetch();
 
 		if (data) {
 			console.log({ dayData: data });
 			const updateArray: Array<Promise<object>> = [];
 
-			data.objects.findDay.results.forEach((day: Day) => {
+			data.forEach((day: Day) => {
 				if (day.time) {
 					updateArray.push(
 						axiosclient().post("/functions/create-time", {
@@ -128,7 +119,7 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 				text: "Weiter",
 				onClick: async () => {
 					setLoading(true);
-					await loadDays();
+					await refetch();
 					setLoading(false);
 					setPageState(modal_steps[2]);
 				},
@@ -139,7 +130,7 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 				text: "Weiter",
 				onClick: async () => {
 					setLoading(true);
-					await loadDays();
+					await refetch();
 					setLoading(false);
 					setPageState(modal_steps[3]);
 				},

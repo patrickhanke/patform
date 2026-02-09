@@ -14,12 +14,11 @@ const useGetHolidays = ({
 		objectName: "Holiday",
 		fields: ["objectId", "name", "label", "type", "dates"],
 		filters: [
-			{ key: "type", value: "holiday", operator: "equalTo", id: "type" },
+			{ key: "type", value: "holiday", operator: "equalTo" },
 			{
 				key: "project",
 				value: projectId,
-				operator: "equalTo",
-				id: "projectId"
+				operator: "equalTo"
 			}
 		],
 		skipQuery: !projectId

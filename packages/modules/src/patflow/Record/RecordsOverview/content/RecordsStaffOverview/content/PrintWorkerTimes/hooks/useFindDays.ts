@@ -6,8 +6,8 @@ const useFindDays: UseFindDays = ({ year, users = [] }) => {
 		objectName: "Day",
 		fields: ["objectId", "date", "times", "user {objectId}", "year"],
 		filters: [
-			{ key: "year", value: year, operator: "_eq" },
-			{ key: "user", value: users, operator: "_in" }
+			{ key: "year", value: year, operator: "equalTo" },
+			{ key: "user", value: users, operator: "in" }
 		],
 		skipQuery: !year || users.length === 0
 	});

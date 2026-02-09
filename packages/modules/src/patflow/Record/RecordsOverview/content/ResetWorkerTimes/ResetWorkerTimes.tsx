@@ -6,11 +6,10 @@ import { ModalButtons, ResetWorkerTimesProps } from "./types";
 import SelectTimes from "./components/SelectTimes";
 import {
 	axiosclient,
-	generateGraphQLQuery,
 	months,
-	useDataContext
+	useDataContext,
+	useFindData
 } from "@repo/provider";
-import { useLazyQuery } from "@apollo/client";
 import { Day } from "@repo/types";
 
 const ResetWorkerTimes: FC<ResetWorkerTimesProps> = ({
@@ -29,22 +28,15 @@ const ResetWorkerTimes: FC<ResetWorkerTimesProps> = ({
 	}>({ year: new Date().getFullYear(), month: new Date().getMonth() });
 
 	const [loading, setLoading] = useState(false);
-	const [loadDays, { data }] = useLazyQuery(
-		generateGraphQLQuery({
-			objectName: "Day",
-			type: "find",
-			fields: ["objectId", "date", "time", "user {objectId}"]
-		}),
-		{
-			variables: {
-				params: {
-					year: { _eq: selectedTimes.year },
-					month: { _eq: selectedTimes.month },
-					user: { _eq: selectedWorker[0]?.value }
-				}
-			}
-		}
-	);
+	const { data, refetch } = useFindData({
+		objectName: "Day",
+		fields: ["objectId", "date", "time", "user {objectId}"],
+		filters: [
+			{ key: "year", value: selectedTimes.year, operator: "equalTo" },
+			{ key: "month", value: selectedTimes.month, operator: "equalTo" }
+		],
+		userId: selectedWorker[0]?.value as string
+	});
 
 	const closeModal = () => {
 		setPageState(modal_states[0]);
@@ -55,12 +47,12 @@ const ResetWorkerTimes: FC<ResetWorkerTimesProps> = ({
 
 	const updateUserHandler = useCallback(async () => {
 		setLoading(true);
-		await loadDays();
+		await refetch();
 		if (data) {
 			console.log({ dayData: data });
 			const updateArray: Array<Promise<object>> = [];
 
-			data.objects.findDay.results.forEach((day: Day) => {
+			data.forEach((day: Day) => {
 				if (day.time) {
 					updateArray.push(
 						axiosclient().post("/functions/create-time", {
@@ -99,7 +91,7 @@ const ResetWorkerTimes: FC<ResetWorkerTimesProps> = ({
 				text: "Weiter",
 				onClick: async () => {
 					setLoading(true);
-					await loadDays();
+					await refetch();
 					setLoading(false);
 					setPageState(modal_states[2]);
 				},

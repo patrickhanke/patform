@@ -19,16 +19,13 @@ const PropertyServices: FC<PropertyServicesProps> = ({
 			"worker { results { objectId username } }",
 			"time"
 		],
-		filters: [{ key: "property", value: objectId, operator: "_eq" }]
+		filters: [{ key: "property", value: objectId, operator: "equalTo" }]
 	});
 	const columns = useTableColumns();
 
 	return (
 		<div className="site_content">
-			<Table
-				columns={columns}
-				data={data || []}
-			/>
+			<Table columns={columns} data={data || []} />
 			<AddService
 				propertyId={objectId}
 				addService={addService}

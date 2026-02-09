@@ -16,11 +16,15 @@ const StaffRecord = ({ days, year, staff }: StaffRecordProps) => {
 	const [selectedWorker, setSelectedWorker] = useState<SelectElement[]>([]);
 	const { data: recordData } = useFindData({
 		objectName: "Record",
-		fields: ["objectId", "year", "user {objectId}", "default_times", "createdAt"],
-		filters: [
-			{ key: "year", value: year, operator: "_eq" },
-			{ key: "user", value: selectedWorker[0]?.objectId, operator: "_eq" }
+		fields: [
+			"objectId",
+			"year",
+			"user {objectId}",
+			"default_times",
+			"createdAt"
 		],
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
+		userId: selectedWorker[0]?.objectId,
 		skipQuery: !year || selectedWorker.length === 0
 	});
 	const [displayStaffRecord, setDisplayStaffRecord] = useState(false);
@@ -40,10 +44,7 @@ const StaffRecord = ({ days, year, staff }: StaffRecordProps) => {
 			let target = 0;
 			let monthTimes = 0;
 			const record_default_times = dateInterval.map((dateElement) =>
-				findDefaultTimeForDate(
-					dateElement,
-					recordData || []
-				)
+				findDefaultTimeForDate(dateElement, recordData || [])
 			);
 			record_default_times.forEach((element) => {
 				let default_time = 0;

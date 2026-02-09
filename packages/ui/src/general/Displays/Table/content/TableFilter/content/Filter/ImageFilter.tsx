@@ -6,8 +6,8 @@ import { Select } from "@repo/ui";
 import "../../styles.scss";
 
 const operatorOptions = [
-	{ value: "_ne", label: "existiert" },
-	{ value: "_eq", label: "existiert nicht" }
+	{ value: "notEqualTo", label: "existiert" },
+	{ value: "equalTo", label: "existiert nicht" }
 ];
 
 const ImageFilter: FC<FilterInputProps> = ({
@@ -21,7 +21,7 @@ const ImageFilter: FC<FilterInputProps> = ({
 		<div className="filter-row-content">
 			<div className="select-wrapper">
 				<Select
-					id={`operator-${filter.id}`}
+					id={`operator-${filter.key}`}
 					value={filter.operator}
 					onChange={(option) => {
 						onOperatorChange(option.value);

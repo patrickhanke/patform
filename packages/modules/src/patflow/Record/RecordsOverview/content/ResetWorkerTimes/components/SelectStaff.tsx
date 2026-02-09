@@ -10,8 +10,19 @@ const SelectStaff: FC<SelectStaffProps> = ({
 }) => {
 	const { data: staffData } = useFindData({
 		objectName: "User",
-		fields: ["objectId", "first_name", "last_name", "is_worker", "portrait", "color", "time_settings", "number", "data", "role { objectId name type color }"],
-		filters: [{ key: "is_worker", value: true, operator: "_eq" }],
+		fields: [
+			"objectId",
+			"first_name",
+			"last_name",
+			"is_worker",
+			"portrait",
+			"color",
+			"time_settings",
+			"number",
+			"data",
+			"role { objectId name type color }"
+		],
+		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
 		order: "last_name_DESC"
 	});
 
