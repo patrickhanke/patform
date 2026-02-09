@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "@apollo/client";
 import { UseGetDataHook } from "../types";
 import { Classes } from "../../../../../types/src/patstore";
@@ -41,7 +43,7 @@ const useGetData: UseGetDataHook<Classes> = ({
 			get(data, `${cleanObjectName.toLowerCase()}`, null)
 		),
 		refetch,
-		error,
+		error
 	};
 };
 

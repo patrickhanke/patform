@@ -1,3 +1,5 @@
+"use client";
+
 import { useQuery } from "@apollo/client";
 import { UseFindDataHook } from "../types";
 import { Classes } from "../../../../../types/src/patstore";
