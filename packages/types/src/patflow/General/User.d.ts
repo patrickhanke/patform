@@ -9,7 +9,7 @@ export type PatflowUserRole = {
   type: PatflowUserRoleTypes;
   color: "primary" | "secondary" | "info" | "warning";
   users: {
-    results: Pick<PatflowUser, "objectId", "username">[];
+    edges: { node: Pick<PatflowUser, "objectId", "username"> }[];
   };
   roles: {
     results: PatflowUserRole[];

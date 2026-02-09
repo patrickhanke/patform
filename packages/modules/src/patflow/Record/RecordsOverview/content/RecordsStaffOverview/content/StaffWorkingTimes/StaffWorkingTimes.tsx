@@ -18,6 +18,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	records
 }) => {
 	const { currentHolidays } = useGetHolidays({ year, records });
+	console.log({ currentHolidays });
 	const columns = useTableColumns({
 		refetch,
 		userId: selectedUser?.value,
@@ -30,7 +31,9 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 			if (
 				currentHolidays.find(
 					(holiday) =>
-						holiday.dates[year.toString()] === row.original.date
+						holiday.dates?.find(
+							(dt) => new Date(dt).getFullYear() === year
+						) === row.original.date
 				)
 			) {
 				return { backgroundColor: "rgba(86, 138, 212, 0.4)" };
@@ -136,6 +139,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 
 		return interval;
 	}, [days, month, year]);
+
+	console.log({ tableData });
 
 	return (
 		<div>

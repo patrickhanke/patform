@@ -1,5 +1,5 @@
 import { useFindData } from "@repo/provider";
-import React, { FC, useContext, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { EditRecordsProps } from "./types";
 import CreateRecord from "./content/CreateRecord";
 import useRecordsTableColumns from "./hooks/useRecordsTableColumns";

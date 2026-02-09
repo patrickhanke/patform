@@ -15,11 +15,10 @@ type ReturnObject = {
 const useGetActiveRecord: { (T: Props): ReturnObject } = ({ year, userId }) => {
 	const { data: recordData, loading } = useFindData({
 		objectName: "Record",
-		fields: ["objectId", "year", "user"],
-		filters: [
-			{ key: "year", operator: "equalTo", value: year },
-			{ key: "user", operator: "equalTo", value: userId }
-		]
+		fields: ["objectId", "year", "user { objectId }"],
+		filters: [{ key: "year", operator: "equalTo", value: year }],
+		userId: userId,
+		skipQuery: !year || !userId
 	});
 
 	const data: ReturnObject = useMemo(

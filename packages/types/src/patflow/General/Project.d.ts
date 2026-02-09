@@ -44,5 +44,5 @@ export type Holiday = {
   comment: string;
   objectId: string;
   project: Project;
-  dates: { [key: string]: string };
+  dates: string[];
 };

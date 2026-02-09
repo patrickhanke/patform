@@ -1,8 +1,7 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
 import { useFindData, months, UserContext } from "@repo/provider";
-import useGetDay from "./hooks/useGetDay";
 import { Divider } from "@repo/ui";
 import StaffRecord from "./content/StaffRecord";
 import { TimesSaldo } from "./content/TimesSaldo";
@@ -11,6 +10,7 @@ import { StaffSurcharges } from "./content/StaffSurcharges";
 import { StaffVacation } from "./content/StaffVacation";
 import { StaffWorkingTimes } from "./content/StaffWorkingTimes";
 import { PrintWorkerTimes } from "./content";
+import { cloneDeep } from "lodash-es";
 
 const RecordsStaffOverview = ({
 	year,
@@ -29,10 +29,28 @@ const RecordsStaffOverview = ({
 		) as (typeof months)[number]
 	);
 
-	const { days, refetch } = useGetDay({
-		year,
-		user: selectedUser?.value
+	const { data: days, refetch } = useFindData({
+		objectName: "Day",
+		fields: [
+			"objectId",
+			"date",
+			"time",
+			"user {objectId}",
+			"year",
+			"surcharges",
+			"type",
+			"absence { objectId  type }"
+		],
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
+		userId: selectedUser?.value,
+		skipQuery: !year || !selectedUser?.value
 	});
+
+	useEffect(() => {
+		if (selectedUser?.value && year) {
+			refetch();
+		}
+	}, [selectedUser, year]);
 
 	const { data: recordData } = useFindData({
 		objectName: "Record",
@@ -41,11 +59,16 @@ const RecordsStaffOverview = ({
 			"year",
 			"user {objectId}",
 			"default_times",
-			"createdAt"
+			"createdAt",
+			"start_date",
+			"end_date",
+			"time_settings",
+			"holiday_template { objectId name holidays { ... on Element { value } } }"
 		],
 		filters: [{ key: "year", value: year, operator: "equalTo" }],
 		skipQuery: !year
 	});
+
 	const { data: staffData } = useFindData({
 		objectName: "User",
 		fields: [
@@ -70,10 +93,23 @@ const RecordsStaffOverview = ({
 		if (!recordData || !selectedUser) return rec;
 		recordData.forEach((record: Record) => {
 			if (record.user.objectId === selectedUser.value) {
-				rec.push(record);
+				const holidayTemplate = cloneDeep(record.holiday_template) as {
+					value: string[];
+				};
+
+				const holidayArray: string[] = holidayTemplate.holidays.map(
+					(holiday: { value: string }) => holiday.value as string
+				);
+
+				rec.push({
+					...record,
+					holiday_template: {
+						...holidayTemplate,
+						holidays: holidayArray
+					}
+				});
 			}
 		});
-		console.log({ rec });
 		return rec;
 	}, [recordData, selectedUser, setSelectedMonth]);
 

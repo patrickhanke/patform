@@ -1,7 +1,6 @@
-import { useDataHandler, useFindData } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import { useCallback } from "react";
 import styles from "./TaskImages.module.scss";
-import { Image } from "@repo/types";
 import { ImageUploader, ImagesDisplay, ParseImage } from "@repo/ui";
 
 const TaskImages = ({
@@ -15,21 +14,6 @@ const TaskImages = ({
 	refetch: () => void;
 	isEditable?: boolean;
 }) => {
-	const { data: imageData } = useFindData({
-		objectName: "Image",
-		fields: ["objectId", "file { url name }", "title"],
-		filters: [
-			{
-				key: "objectId",
-				value: images,
-				operator: "in",
-				id: "objectId"
-			}
-		]
-	});
-
-	console.log({ imageData });
-
 	const { updateData } = useDataHandler();
 	const addImageHandler = useCallback(
 		async (content: ParseImage[]) => {
@@ -54,11 +38,7 @@ const TaskImages = ({
 	return (
 		<>
 			<div className={styles.task_slidein_image_container}>
-				<ImagesDisplay
-					images={
-						imageData?.map((image) => image.file?.name || "") || []
-					}
-				/>
+				<ImagesDisplay images={images} height="180px" />
 			</div>
 			{isEditable && (
 				<div className={styles.task_slidein_footer}>

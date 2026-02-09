@@ -30,7 +30,7 @@ const ResetWorkerTimes: FC<ResetWorkerTimesProps> = ({
 	const [loading, setLoading] = useState(false);
 	const { data, refetch } = useFindData({
 		objectName: "Day",
-		fields: ["objectId", "date", "time", "user {objectId}"],
+		fields: ["objectId", "date", "time", "user {objectId}", "year"],
 		filters: [
 			{ key: "year", value: selectedTimes.year, operator: "equalTo" },
 			{ key: "month", value: selectedTimes.month, operator: "equalTo" }

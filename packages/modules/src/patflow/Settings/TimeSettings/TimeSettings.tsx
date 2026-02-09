@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import site_states from "./constants/site_states";
 import { useDataHandler, useFindData } from "@repo/provider";
 import SurchargeSettings from "./content/SurchargeSettings";
 import HolidayTemplates from "./content/HolidayTemplates";
 import Holidays from "./content/Holidays";
 import { Holiday } from "@repo/types";
-import { cloneDeep, set } from "lodash-es";
+import { cloneDeep } from "lodash-es";
 import axios from "axios";
 import { Page, PageHeaderButtons } from "@repo/ui";
 import { SiteState } from "@repo/types";
@@ -39,7 +39,7 @@ const TimeSettings = () => {
 			const year = new Date().getFullYear() + i;
 			yearArray.push(year);
 		}
-		const returnObject: { [key: string]: { [key: string]: string } } = {};
+		const returnObject: { [key: string]: string[] } = {};
 
 		const getYears = yearArray.map(async (year) => {
 			const response = await axios.get(
@@ -68,10 +68,12 @@ const TimeSettings = () => {
 			Object.keys(hdObject).forEach((holiday: keyof typeof hdObject) => {
 				const holidayCopy = cloneDeep(returnObject[holiday]);
 				const datum = hdObject[holiday]?.datum;
-				set(returnObject, [holiday], {
-					...holidayCopy,
-					[year.toString()]: datum
-				});
+				console.log({ datum });
+				if (datum && returnObject[holiday]) {
+					returnObject[holiday].push(datum as string);
+				} else {
+					returnObject[holiday] = [datum as string];
+				}
 			});
 		});
 
@@ -96,7 +98,7 @@ const TimeSettings = () => {
 		await Promise.all(updateHolidays);
 		await refetchHolidays();
 		return returnObject;
-	}, [refetchHolidays]);
+	}, [refetchHolidays, holidayData]);
 
 	const siteHeaderButtons: PageHeaderButtons = useMemo(() => {
 		if (siteState.value === "holiday-templates") {

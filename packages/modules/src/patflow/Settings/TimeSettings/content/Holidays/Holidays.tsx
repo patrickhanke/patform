@@ -4,15 +4,15 @@ import useHolidayColumns from "./hooks/useHolidayColumns";
 import { Table } from "@repo/ui";
 
 const Holidays: React.FC<HolidaysProps> = ({ holidays }) => {
-  const columns = useHolidayColumns();
+	const columns = useHolidayColumns();
 
-  return (
-    <div>
-      <div className="content_element no_padding">
-        <Table data={holidays || []} columns={columns} />
-      </div>
-    </div>
-  );
+	return (
+		<div>
+			<div className="content_element no_padding">
+				<Table data={holidays || []} columns={columns} />
+			</div>
+		</div>
+	);
 };
 
 export default Holidays;

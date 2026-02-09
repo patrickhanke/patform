@@ -1,8 +1,7 @@
-import { Absence, UserDisplayData } from "@repo/types";
+import { Absence } from "@repo/types";
+import { InitialAbsence } from "../types";
 
-const initialAbsence: Omit<Absence, "user"> & {
-	user?: UserDisplayData | undefined;
-} = {
+const initialAbsence: InitialAbsence = {
 	objectId: "",
 	user: undefined,
 	start_date: "",

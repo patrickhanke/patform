@@ -33,13 +33,7 @@ const useTableColumns = ({
 	const { data } = useFindData({
 		objectName: "Surcharge",
 		fields: ["objectId", "name", "color", "short", "description"],
-		filters: [
-			{
-				key: "project",
-				value: projectId,
-				operator: "equalTo"
-			}
-		],
+		projectId: projectId,
 		skipQuery: !projectId
 	});
 
@@ -47,10 +41,8 @@ const useTableColumns = ({
 		() => [
 			{
 				accessorFn: (row) => {
-					const year = new Date(row?.date).getFullYear();
-					const holiday = holidays.find(
-						(holiday) =>
-							holiday.dates[year.toString()] === row?.date
+					const holiday = holidays.find((holiday) =>
+						holiday.dates.includes(row?.date)
 					);
 					return (
 						<div>

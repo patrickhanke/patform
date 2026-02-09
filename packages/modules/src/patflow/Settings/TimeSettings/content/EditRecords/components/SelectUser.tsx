@@ -23,8 +23,7 @@ const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {
 			{
 				key: "is_worker",
 				value: true,
-				operator: "equalTo",
-				id: "is_worker"
+				operator: "equalTo"
 			}
 		],
 		order: "last_name_DESC"

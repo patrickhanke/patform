@@ -31,6 +31,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
 		projectId: projectId
 	});
+
 	const [loading, setLoading] = useState(false);
 
 	const editRecordHandler = useCallback(async () => {

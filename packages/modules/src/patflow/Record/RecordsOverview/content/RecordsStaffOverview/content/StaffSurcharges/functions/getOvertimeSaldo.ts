@@ -14,14 +14,11 @@ const getOvertimeSaldo = ({
 	year: number;
 	month: number;
 }) => {
-	console.log(days, surchargeId, year, month);
 	const dateInterval = createDateIntervalForMonth(year, month);
 
 	const dayArray = days.filter((dayToFind: Day) =>
 		dateInterval.includes(dayToFind.date)
 	);
-
-	console.log(dayArray);
 
 	// Sort the dayArray by date to ensure they are in order
 	const sortedDayArray = dayArray.sort(
@@ -47,7 +44,6 @@ const getOvertimeSaldo = ({
 	let monthlySaldo = 0;
 	Object.keys(weeks).forEach((week) => {
 		const currentWeek = weeks[week];
-		console.log(currentWeek);
 		if (currentWeek && currentWeek.length > 0) {
 			let weekSaldo = 0;
 			currentWeek.forEach((day) => {

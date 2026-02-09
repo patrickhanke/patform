@@ -51,11 +51,10 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 		users: selectedWorker.map((worker) => worker.value as string)
 	});
 
-	console.log({ selectedFields, selectedWorker });
 	const [loading, setLoading] = useState(false);
 	const { data, refetch } = useFindData({
 		objectName: "Day",
-		fields: ["objectId", "date", "time", "user {objectId}"],
+		fields: ["objectId", "date", "time", "user {objectId}", "year"],
 		filters: [
 			{ key: "year", value: selectedTimes.year, operator: "equalTo" }
 		],
@@ -74,7 +73,6 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 		await refetch();
 
 		if (data) {
-			console.log({ dayData: data });
 			const updateArray: Array<Promise<object>> = [];
 
 			data.forEach((day: Day) => {
@@ -101,9 +99,6 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 
 		setLoading(false);
 	}, [data]);
-
-	console.log({ records });
-	console.log({ selectedWorker });
 
 	const modalButtons: ModalButtons = useMemo(() => {
 		if (pageState.value === "workers") {

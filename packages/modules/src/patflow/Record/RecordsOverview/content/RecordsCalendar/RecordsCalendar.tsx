@@ -1,12 +1,17 @@
-import React, { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { RecordsCalendarProps } from "./types";
 import { eachDayOfInterval, formatISO9075 } from "date-fns";
 import { get, set } from "lodash-es";
-import { absence_type_options, useFindData } from "@repo/provider";
+import {
+	absence_type_options,
+	PatflowAppContext,
+	useFindData
+} from "@repo/provider";
 import { Absence, PatflowUser } from "@repo/types";
 import { Calendar, CalendarData } from "@repo/ui";
 
 const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
+	const { year } = useContext(PatflowAppContext);
 	const { data: staffData } = useFindData({
 		objectName: "User",
 		fields: [
@@ -25,10 +30,19 @@ const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 		order: "last_name_DESC"
 	});
 
-	const absences = useMemo(() => {
-		const absence = records.map((record) => record.absence).flat();
-		return absence;
-	}, [records]);
+	const { data: absences } = useFindData({
+		objectName: "Absence",
+		fields: [
+			"objectId",
+			"start_date",
+			"end_date",
+			"state",
+			"user { objectId }",
+			"type"
+		],
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
+		skipQuery: !year
+	});
 
 	const calendarData = useMemo(() => {
 		const data: CalendarData = {};

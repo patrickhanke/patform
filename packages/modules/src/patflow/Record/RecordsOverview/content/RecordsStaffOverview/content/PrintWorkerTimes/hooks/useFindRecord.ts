@@ -9,6 +9,7 @@ const useFindRecord: UseFindRecord = ({ year, users = [] }) => {
 			{ key: "year", value: year, operator: "equalTo" },
 			{ key: "user", value: users, operator: "in" }
 		],
+
 		skipQuery: !year || users.length === 0
 	});
 

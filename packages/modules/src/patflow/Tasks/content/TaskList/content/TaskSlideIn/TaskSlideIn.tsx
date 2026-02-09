@@ -36,7 +36,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 			"images",
 			"state",
 			"executed_at",
-			"ticket { objectId  }"
+			"ticket { objectId title description created_by { objectId username } property { objectId name } }"
 		],
 		id: taskId
 	});
@@ -54,17 +54,9 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 		skip: !dataSlidein || !dataSlidein.ticket
 	});
 
-	console.log({ dataSlidein });
-
 	const { data: dataDocuments, refetch: refetchDocuments } = useGetData({
 		objectName: "Document",
-		fields: [
-			"objectId",
-			"title",
-			"description",
-			"images",
-			"created_by { objectId username }"
-		],
+		fields: ["objectId", "name", "created_by { objectId username }"],
 		id: taskId
 	});
 

@@ -14,6 +14,9 @@ import SelectStaff from "./components/SelectStaff";
 
 const StaffRecord = ({ days, year, staff }: StaffRecordProps) => {
 	const [selectedWorker, setSelectedWorker] = useState<SelectElement[]>([]);
+
+	console.log({ staff });
+	console.log({ selectedWorker });
 	const { data: recordData } = useFindData({
 		objectName: "Record",
 		fields: [

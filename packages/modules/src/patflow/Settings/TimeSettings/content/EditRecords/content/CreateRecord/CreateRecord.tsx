@@ -153,7 +153,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 			"date",
 			"default_time",
 			"type",
-			"absence{objectId state type year}"
+			"absence {objectId state type year}"
 		],
 		filters: [
 			{

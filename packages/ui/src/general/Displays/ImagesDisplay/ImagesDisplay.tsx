@@ -18,8 +18,7 @@ const ImagesDisplay: FC<ImageGalleryProps> = ({ images, height = "240px" }) => {
 			{
 				key: "objectId",
 				value: images,
-				operator: "in",
-				id: "objectId"
+				operator: "in"
 			}
 		]
 	});

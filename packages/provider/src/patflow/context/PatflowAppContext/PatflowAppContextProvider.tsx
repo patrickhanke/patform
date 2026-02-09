@@ -29,7 +29,7 @@ const PatflowAppContextProvider = ({
 			"name",
 			"type",
 			"color",
-			"users { objectId username }"
+			"users {edges{node{objectId username}}}"
 		],
 		projectId: project?.objectId
 	});
@@ -66,8 +66,8 @@ const PatflowAppContextProvider = ({
 
 		if (roleData) {
 			roleData.forEach((role: PatflowUserRole) => {
-				roleObject[role.type] = role.users.results.map(
-					(user) => user.objectId
+				roleObject[role.type] = role.users.edges.map(
+					(user: { node: { objectId: string } }) => user.node.objectId
 				);
 			});
 		}
@@ -89,13 +89,21 @@ const PatflowAppContextProvider = ({
 			properties: propertyData || [],
 			refetchWorkers,
 			refetchProperties,
+			project: project ?? { objectId: "" },
 			roles: roleData
 				? roleData.map((role: PatflowUserRole) => ({
 						value: role.objectId,
 						type: role.type,
 						label: role.name,
 						color: role.color,
-						users: role.users.results
+						users: role.users.edges.map(
+							(user: {
+								node: { objectId: string; username: string };
+							}) => ({
+								objectId: user.node.objectId,
+								username: user.node.username
+							})
+						)
 					}))
 				: [],
 			roleUsers

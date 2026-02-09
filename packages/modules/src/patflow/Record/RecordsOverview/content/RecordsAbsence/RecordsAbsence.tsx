@@ -64,22 +64,14 @@ const RecordAbsence = ({
 			"start_date",
 			"end_date",
 			"state",
-			"user{objectId first_name last_name portrait}",
+			"user {objectId first_name last_name portrait}",
 			"comment",
 			"type",
 			"year"
 		],
-		filters: selectedUser
-			? [
-					{ key: "year", value: year, operator: "equalTo" },
-					{
-						key: "user",
-						value: selectedUser.value,
-						operator: "equalTo"
-					}
-				]
-			: [{ key: "year", value: year, operator: "equalTo" }],
-		skipQuery: !year
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
+		userId: selectedUser?.value,
+		skipQuery: !year || !selectedUser?.value
 	});
 
 	const absenceData = useMemo(() => {

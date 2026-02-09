@@ -19,7 +19,7 @@ import { Plus } from "lucide-react";
 import initial_ticket from "./constants/initial_ticket";
 import { ImageUploader, Modal } from "@repo/ui";
 import { ObjectSelectWithState } from "@repo/ui";
-import { generateImagePath, useDataHandler } from "@repo/provider";
+import { useDataHandler } from "@repo/provider";
 import { UserContext } from "@repo/provider";
 import "./styles.scss";
 
@@ -29,7 +29,7 @@ const CreateTicket = ({
 	setRefetchTicket: Dispatch<SetStateAction<Date | undefined>>;
 }) => {
 	const { createData } = useDataHandler();
-	const { user, project } = useContext(UserContext);
+	const { user } = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
@@ -161,19 +161,19 @@ const CreateTicket = ({
 							key="ticket_property_select"
 						/>
 						<ImageUploader
-							path={generateImagePath("patflow", project.path)}
 							label="Bild"
 							onChange={(images) =>
 								setTicket((draft) => {
-									draft.images.push(...images);
+									draft.images.push(
+										...images.map((image) => image.objectId)
+									);
 								})
 							}
 							maxFileCount={10}
-							previewImage={ticket.images}
 							deleteHandler={(image) =>
 								setTicket((draft) => {
 									const index = draft.images.findIndex(
-										(i: string) => i === image
+										(i: string) => i === image.objectId
 									);
 									draft.images.splice(index, 1);
 								})

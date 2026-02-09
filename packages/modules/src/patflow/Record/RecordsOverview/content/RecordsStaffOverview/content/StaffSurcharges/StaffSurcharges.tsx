@@ -29,14 +29,7 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 			"start_date",
 			"end_date"
 		],
-		filters: [
-			{
-				key: "project",
-				value: projectId,
-				operator: "equalTo",
-				id: "projectId"
-			}
-		],
+		projectId: projectId,
 		skipQuery: !projectId
 	});
 

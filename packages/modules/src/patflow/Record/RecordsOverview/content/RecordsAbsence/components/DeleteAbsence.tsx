@@ -35,8 +35,7 @@ const DeleteAbsence = ({
 			{
 				key: "absence",
 				value: absence.objectId,
-				operator: "equalTo",
-				id: "absence"
+				operator: "equalTo"
 			}
 		],
 		skipQuery: !deleteAbsence

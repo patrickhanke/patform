@@ -13,14 +13,8 @@ const useGetHolidays = ({
 	const { data: holidayData } = useFindData({
 		objectName: "Holiday",
 		fields: ["objectId", "name", "label", "type", "dates"],
-		filters: [
-			{ key: "type", value: "holiday", operator: "equalTo" },
-			{
-				key: "project",
-				value: projectId,
-				operator: "equalTo"
-			}
-		],
+		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
+		projectId,
 		skipQuery: !projectId
 	});
 
@@ -34,7 +28,9 @@ const useGetHolidays = ({
 		const recordHolidays: Holiday[] = [];
 
 		holidays.forEach((holiday) => {
-			const date = holiday.dates[year.toString()];
+			const date = holiday.dates.find(
+				(dt) => new Date(dt).getFullYear() === year
+			);
 			if (!date) {
 				return [];
 			}

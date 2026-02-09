@@ -19,12 +19,12 @@ const WeeklyRecords = ({ records, filters, setFilters }: WeeklyRecordProps) => {
 		fields: [
 			"objectId",
 			"date",
-			"times",
+			"time",
 			"user {objectId}",
 			"year",
 			"type",
 			"is_working_day",
-			"absence",
+			"absence { objectId start_date end_date state type }",
 			"default_time",
 			"time"
 		],
@@ -68,9 +68,10 @@ const WeeklyRecords = ({ records, filters, setFilters }: WeeklyRecordProps) => {
 					vacation: 0,
 					time: 0,
 					breaks: 0,
-					saldo: record
-						? -hoursToMilliseconds(record.time_settings.hours)
-						: -hoursToMilliseconds(40),
+					saldo:
+						record && record?.time_settings?.hours
+							? -hoursToMilliseconds(record?.time_settings?.hours)
+							: -hoursToMilliseconds(40),
 					days: []
 				};
 				const dayArray: Day[] = [];
