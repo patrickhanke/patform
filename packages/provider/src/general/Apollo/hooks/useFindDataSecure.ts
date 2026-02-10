@@ -55,7 +55,6 @@ const useFindDataSecure: UseFindDataHook<Classes> = ({
 			});
 
 			const queryString = print(query);
-			console.log({ queryString });
 			const response = await fetch("/api/graphql", {
 				method: "POST",
 				headers: {
@@ -79,8 +78,6 @@ const useFindDataSecure: UseFindDataHook<Classes> = ({
 			});
 
 			const result = await response.json();
-
-			console.log({ result });
 
 			if (!isMountedRef.current) return;
 

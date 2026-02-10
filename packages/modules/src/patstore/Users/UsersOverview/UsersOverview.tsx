@@ -86,8 +86,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		useMasterKey: true
 	});
 
-	console.log({ count });
-
 	const columns = useCreateColumns<PatstoreUser>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
@@ -100,12 +98,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			currentModule.fields?.find((field) => field.id === "emails")
 				?.active || false
 	});
-
-	console.log(
-		currentModule.fields?.find((field) => field.id === "emails")?.active ||
-			false
-	);
-	console.log({ data: users });
 
 	const createUserFields: CreateUser[keyof CreateUser] | undefined =
 		create_user(
