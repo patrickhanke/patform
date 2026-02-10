@@ -5,14 +5,15 @@ import { get, set } from "lodash-es";
 import {
 	absence_type_options,
 	PatflowAppContext,
-	useFindData
+	useFindData,
+	useFindDataSecure
 } from "@repo/provider";
 import { Absence, PatflowUser } from "@repo/types";
 import { Calendar, CalendarData } from "@repo/ui";
 
 const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 	const { year } = useContext(PatflowAppContext);
-	const { data: staffData } = useFindData({
+	const { data: staffData } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -27,7 +28,8 @@ const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 			"role { objectId name type color }"
 		],
 		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 
 	const { data: absences } = useFindData({

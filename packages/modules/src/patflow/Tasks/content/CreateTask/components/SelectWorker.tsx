@@ -1,25 +1,13 @@
-import { useFindData, useGetData } from "@repo/provider";
+import { PatflowAppContext, useGetData } from "@repo/provider";
 import { ElementSelectInterface, SelectElement, StateDisplay } from "@repo/ui";
-import { Task, Worker } from "@repo/types";
-import { FC, useMemo } from "react";
+import { StaffMember, Task } from "@repo/types";
+import { FC, useContext, useMemo } from "react";
 import { PropertyOptions, SelectWorkerProps } from "../types";
 import { DisplayWorker } from "@repo/ui";
 
 const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
-	const { data: workerData } = useFindData({
-		objectName: "User",
-		fields: ["objectId", "first_name", "last_name"],
-		filters: [
-			{
-				key: "is_worker",
-				value: true,
-				operator: "equalTo",
-				id: "is_worker"
-			}
-		]
-	});
+	const { workers } = useContext(PatflowAppContext);
 
-	console.log(workerData);
 	const { data: propertyData } = useGetData({
 		objectName: "Property",
 		fields: ["assigned_staff", "objectId", "name"],
@@ -31,8 +19,8 @@ const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
 		const workerOptionsArray: PropertyOptions[] = [];
 		const propertyStaff = propertyData?.assigned_staff || [];
 
-		if (workerData) {
-			workerData.forEach((worker: Worker) => {
+		if (workers) {
+			workers.forEach((worker: StaffMember) => {
 				if (worker) {
 					workerOptionsArray.push({
 						value: worker.objectId,
@@ -57,7 +45,7 @@ const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
 		workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
 		return workerOptionsArray;
-	}, [workerData, propertyData]);
+	}, [workers, propertyData]);
 
 	return (
 		<ElementSelectInterface

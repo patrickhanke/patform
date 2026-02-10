@@ -1,5 +1,5 @@
 import { DisplayWorker } from "@repo/ui";
-import { useDataHandler, useGetData, useFindData } from "@repo/provider";
+import { useDataHandler, useGetData, useFindDataSecure } from "@repo/provider";
 import { DisplayWorkersProps, Worker } from "@repo/types";
 import { FC, useMemo, useState } from "react";
 
@@ -18,7 +18,7 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 		fields: ["assigned_staff"],
 		id: propertyId
 	});
-	const { data: workerData } = useFindData({
+	const { data: workerData } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -33,7 +33,8 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 			"role { objectId name type color }"
 		],
 		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 
 	const elements = useMemo(() => {

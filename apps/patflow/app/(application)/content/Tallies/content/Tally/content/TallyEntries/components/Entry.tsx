@@ -3,14 +3,14 @@ import React from "react";
 import styles from "../TallyEntries.module.scss";
 import { DateDisplay, DisplayWorker } from "@repo/ui";
 import { PiClockCountdown } from "react-icons/pi";
-import { useGetData } from "@repo/provider";
+import { useGetData, useGetDataSecure } from "@repo/provider";
 import { LiaCommentDots } from "react-icons/lia";
 
 const Entry = ({ entry }: { entry: TallyTypes.Entry }) => {
-  const { data: userData } = useGetData({
+  const { data: userData } = useGetDataSecure({
     objectName: "User",
     fields: ["objectId", "first_name", "last_name", "email", "portrait", "role {name}"],
-    id: entry.user
+    id: entry.user,
   });
 
   return (

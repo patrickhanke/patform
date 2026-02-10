@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import PatflowAppContext from "./PatflowAppContext";
-import { useFindData } from "@repo/provider";
+import { useFindData, useFindDataSecure } from "@repo/provider";
 import { RoleUsers } from "./types";
 import { PatflowUserRole } from "@repo/types";
 import { CreateTask, CreateTicket } from "@repo/modules";
@@ -34,7 +34,7 @@ const PatflowAppContextProvider = ({
 		projectId: project?.objectId
 	});
 
-	const { data: workerData, refetch: refetchWorkers } = useFindData({
+	const { data: workerData, refetch: refetchWorkers } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -44,7 +44,8 @@ const PatflowAppContextProvider = ({
 			"portrait",
 			"color"
 		],
-		projectId: project?.objectId
+		projectId: project?.objectId,
+		useMasterKey: true
 	});
 
 	const { data: propertyData, refetch: refetchProperties } = useFindData({

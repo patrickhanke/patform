@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Property, StaffMember } from "@repo/types";
-import { useFindData } from "@repo/provider";
+import { useFindData, useFindDataSecure } from "@repo/provider";
 import { SiteHeaderContentComponent } from "../types";
 import { filterChangeHandler } from "@repo/provider";
 import { Select, TextInput } from "@repo/ui";
@@ -23,10 +23,11 @@ const SiteHeaderContent = ({
 	const router = useRouter();
 	const pathname = usePathname();
 
-	const { data: staffData } = useFindData({
+	const { data: staffData } = useFindDataSecure({
 		objectName: "User",
 		fields: ["objectId", "first_name", "last_name"],
-		skipQuery: !!id
+		skipQuery: !!id,
+		useMasterKey: true
 	});
 	const selectOptions = useMemo(() => {
 		let objectOptions = [] as { value: string; label: string }[];

@@ -9,12 +9,6 @@ interface GraphQLRequest {
 	useMasterKey?: boolean;
 }
 
-console.log({ SASHIDO_GQL_URL: process.env.SASHIDO_GQL_URL });
-console.log({ SASHIDO_APP_ID: process.env.SASHIDO_APP_ID });
-console.log({ SASHIDO_REST_KEY: process.env.SASHIDO_REST_KEY });
-console.log({ SASHIDO_MASTER_KEY: process.env.SASHIDO_MASTER_KEY });
-console.log({ SESSION_TOKEN: process.env.SESSION_TOKEN });
-
 // Helper to create headers for GraphQL request
 const createHeaders = (useMasterKey: boolean, sessionToken?: string) => {
 	const headers: Record<string, string> = {

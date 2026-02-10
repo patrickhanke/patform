@@ -19,6 +19,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 }) => {
 	const { currentHolidays } = useGetHolidays({ year, records });
 	console.log({ currentHolidays });
+	console.log({ days });
+
 	const columns = useTableColumns({
 		refetch,
 		userId: selectedUser?.value,

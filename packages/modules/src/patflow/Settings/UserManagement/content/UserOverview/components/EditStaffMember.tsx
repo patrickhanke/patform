@@ -30,7 +30,14 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 
 	const { data: userData, refetch } = useGetData({
 		objectName: "User",
-		fields: ["objectId", "first_name", "last_name", "email", "portrait", "role {objectId}"],
+		fields: [
+			"objectId",
+			"first_name",
+			"last_name",
+			"email",
+			"portrait",
+			"role {objectId}"
+		],
 		id: userId
 	});
 

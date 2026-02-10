@@ -1,10 +1,10 @@
 import { ElementSelectInterface, PersonDisplay } from "@repo/ui";
 import { Worker } from "@repo/types";
 import React, { useState } from "react";
-import { useFindData } from "@repo/provider";
+import { useFindDataSecure } from "@repo/provider";
 
 const SelectUser = () => {
-	const { loading, error, data } = useFindData({
+	const { loading, error, data } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -19,7 +19,8 @@ const SelectUser = () => {
 			"role { objectId name type color }"
 		],
 		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 	const [selectedUsers, setSelectedUsers] = useState<Worker[]>([]);
 

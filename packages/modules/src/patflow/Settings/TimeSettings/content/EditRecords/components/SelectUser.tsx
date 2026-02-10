@@ -1,11 +1,11 @@
 import { ElementSelectInterface, PersonDisplay, SelectElement } from "@repo/ui";
 import { Worker } from "@repo/types";
 import { FC, useMemo } from "react";
-import { useFindData } from "@repo/provider";
+import { useFindDataSecure } from "@repo/provider";
 import { SelectUserProps } from "../types";
 
 const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {
-	const { loading, error, data } = useFindData({
+	const { loading, error, data } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -26,7 +26,8 @@ const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {
 				operator: "equalTo"
 			}
 		],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 
 	const elements = useMemo(() => {

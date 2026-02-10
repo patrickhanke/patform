@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { useGetData } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
@@ -17,9 +17,9 @@ const DisplayWorker = ({
 	onlyImage = false
 }: DisplayWorkersProps) => {
 	const { year } = useContext(PatflowAppContext);
-
 	const { workers } = useContext(PatflowAppContext);
-	const { data, loading: dayLoading } = useGetData({
+
+	const { data, loading: dayLoading } = useFindData({
 		objectName: "Day",
 		fields: [
 			"objectId",
@@ -39,18 +39,17 @@ const DisplayWorker = ({
 		],
 		filters: [
 			{ key: "year", value: year, operator: "equalTo" },
-			{ key: "type", value: "absence", operator: "equalTo" },
-			{ key: "user", value: workerId, operator: "equalTo" }
+			{ key: "type", value: "absence", operator: "equalTo" }
 		],
-		id: workerId,
-		skip: !showAvailability
+		userId: workerId,
+		skipQuery: !showAvailability
 	});
 
 	const workerAbsence = useMemo(() => {
 		let isAbsent = false;
 		let type: Absence["type"] = "other";
 		if (data && nextDate) {
-			const dates: Day[] = data.objects.findDay.results;
+			const dates: Day[] = data;
 			const formattedNextDay = formatISO9075(new Date(nextDate), {
 				representation: "date"
 			});

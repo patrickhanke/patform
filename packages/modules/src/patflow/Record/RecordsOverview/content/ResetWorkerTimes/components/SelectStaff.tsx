@@ -2,13 +2,13 @@ import { FC, useMemo } from "react";
 import { DisplayWorker, ElementSelectInterface, SelectElement } from "@repo/ui";
 import { SelectStaffProps } from "../types";
 import { Worker } from "@repo/types";
-import { useFindData } from "@repo/provider";
+import { useFindDataSecure } from "@repo/provider";
 
 const SelectStaff: FC<SelectStaffProps> = ({
 	selectedWorker,
 	setSelectedWorker
 }) => {
-	const { data: staffData } = useFindData({
+	const { data: staffData } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -23,7 +23,8 @@ const SelectStaff: FC<SelectStaffProps> = ({
 			"role { objectId name type color }"
 		],
 		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 
 	const elements = useMemo(() => {

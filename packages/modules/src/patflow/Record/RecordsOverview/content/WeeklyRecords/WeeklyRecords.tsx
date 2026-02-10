@@ -1,6 +1,11 @@
 import { useContext, useMemo, useState } from "react";
 import { WeeklyRecordProps, WeekObject } from "./types";
-import { PatflowAppContext, getWeekDayKeys, useFindData } from "@repo/provider";
+import {
+	PatflowAppContext,
+	getWeekDayKeys,
+	useFindData,
+	useFindDataSecure
+} from "@repo/provider";
 import useTableColumns from "./hooks/useTableColumns";
 import { getWeek, hoursToMilliseconds } from "date-fns";
 import initialFilters from "./constants/initialFilters";
@@ -32,7 +37,7 @@ const WeeklyRecords = ({ records, filters, setFilters }: WeeklyRecordProps) => {
 			{ key: "date", value: getWeekDayKeys(selectedWeek), operator: "in" }
 		]
 	});
-	const { data: staffData } = useFindData({
+	const { data: staffData } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -47,7 +52,8 @@ const WeeklyRecords = ({ records, filters, setFilters }: WeeklyRecordProps) => {
 			"role { objectId name type color }"
 		],
 		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 	const columns = useTableColumns({ selectedWeek });
 	const { year } = useContext(PatflowAppContext);

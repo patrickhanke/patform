@@ -1,4 +1,4 @@
-import { useFindData, useGetData } from "@repo/provider";
+import { useFindDataSecure, useGetData } from "@repo/provider";
 import { ElementSelectInterface, SelectElement, StateDisplay } from "@repo/ui";
 import { CreateService, Worker } from "@repo/types";
 import { FC, useMemo } from "react";
@@ -10,7 +10,7 @@ const SelectWorker: FC<SelectWorkerProps> = ({
 	service,
 	propertyId
 }) => {
-	const { data: workerData } = useFindData({
+	const { data: workerData } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -32,7 +32,8 @@ const SelectWorker: FC<SelectWorkerProps> = ({
 				id: "is_worker"
 			}
 		],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 	const { data: propertyData } = useGetData({
 		objectName: "Property",

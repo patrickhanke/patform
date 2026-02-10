@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
-import { useFindData, months, UserContext } from "@repo/provider";
+import {
+	useFindData,
+	useFindDataSecure,
+	months,
+	UserContext
+} from "@repo/provider";
 import { Divider } from "@repo/ui";
 import StaffRecord from "./content/StaffRecord";
 import { TimesSaldo } from "./content/TimesSaldo";
@@ -69,7 +74,7 @@ const RecordsStaffOverview = ({
 		skipQuery: !year
 	});
 
-	const { data: staffData } = useFindData({
+	const { data: staffData } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -84,7 +89,8 @@ const RecordsStaffOverview = ({
 			"role { objectId name type color }"
 		],
 		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 
 	const currentRecords = useMemo(() => {

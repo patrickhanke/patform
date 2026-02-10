@@ -6,7 +6,8 @@ import {
 	PatflowAppContext,
 	useGetActiveRecord,
 	UserContext,
-	useFindData
+	useFindData,
+	useFindDataSecure
 } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -30,7 +31,7 @@ const EditRecordAbsence = ({
 		type === "edit" ? absence : { ...initialAbsence, year }
 	);
 
-	const { data: staffData } = useFindData({
+	const { data: staffData } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -51,7 +52,8 @@ const EditRecordAbsence = ({
 				operator: "equalTo"
 			}
 		],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 	const { user } = useContext(UserContext);
 	const { record } = useGetActiveRecord({

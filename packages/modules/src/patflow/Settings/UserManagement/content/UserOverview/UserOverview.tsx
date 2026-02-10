@@ -2,15 +2,23 @@
 
 import { FC } from "react";
 import useTableColumns from "./hooks/useTableColumns";
-import { useFindData } from "@repo/provider";
+import { useFindDataSecure } from "@repo/provider";
 import CreateStaffMember from "./content/CreateStaffMember";
 import { Table } from "@repo/ui";
 import { UserOverviewProps } from "./types";
 
 const UserOverview: FC<UserOverviewProps> = ({ isOpen, setIsOpen }) => {
-	const { data, refetch } = useFindData({
+	const { data, refetch } = useFindDataSecure({
 		objectName: "User",
-		fields: ["objectId", "first_name", "last_name", "email", "username", "role {name}"]
+		fields: [
+			"objectId",
+			"first_name",
+			"last_name",
+			"email",
+			"username",
+			"role {name}"
+		],
+		useMasterKey: true
 	});
 
 	const columns = useTableColumns({ refetch });
@@ -18,10 +26,7 @@ const UserOverview: FC<UserOverviewProps> = ({ isOpen, setIsOpen }) => {
 	return (
 		<>
 			<div className="content_element no_padding">
-				<Table
-					columns={columns}
-					data={data || []}
-				/>
+				<Table columns={columns} data={data || []} />
 			</div>
 			<CreateStaffMember
 				workers={data || []}

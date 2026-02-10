@@ -1,6 +1,10 @@
 import { useContext, useEffect, useMemo } from "react";
 import { Absence, StaffMember } from "@repo/types";
-import { PatflowAppContext, useFindData } from "@repo/provider";
+import {
+	PatflowAppContext,
+	useFindData,
+	useFindDataSecure
+} from "@repo/provider";
 import { LoadingIndicator, Select } from "@repo/ui";
 import { RecordAbsenceProps } from "./types";
 import useRecordAbsenceColumns from "./hooks/useRecordAbsenceColumns";
@@ -15,7 +19,7 @@ const RecordAbsence = ({
 	setSelectedUser
 }: RecordAbsenceProps) => {
 	const { year } = useContext(PatflowAppContext);
-	const { data: staffData } = useFindData({
+	const { data: staffData } = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			"objectId",
@@ -30,7 +34,8 @@ const RecordAbsence = ({
 			"role { objectId name type color }"
 		],
 		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC"
+		order: "last_name_DESC",
+		useMasterKey: true
 	});
 
 	const siteHeaderContent = useMemo(() => {
