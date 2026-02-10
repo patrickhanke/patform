@@ -179,6 +179,15 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				active: true,
 				position: 4,
 				default: true
+			},
+			{
+				id: "emails",
+				label: "E-Mail-Adressen",
+				required: false,
+				type: "emails",
+				active: false,
+				position: 22,
+				default: false
 			}
 		];
 	}

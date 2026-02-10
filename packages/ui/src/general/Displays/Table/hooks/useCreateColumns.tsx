@@ -47,7 +47,8 @@ import {
 	TableColumnEditDate,
 	TableColumnEditField,
 	TableColumnTimesField,
-	TableColumnEditWebpageComponents
+	TableColumnEditWebpageComponents,
+	TableColumnEmailSettings
 } from "../content";
 import {
 	TableColumnFile,
@@ -69,8 +70,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 	editLink,
 	disableCategory,
 	useMasterKey = false,
-	editDisabled = false
+	editDisabled = false,
+	hasEmailSettings = false
 }: CreateColumnHookProps<T>) => {
+	console.log({ hasEmailSettings });
 	const { updateData } = useDataHandlerSecure(useMasterKey);
 
 	const updateColumnData: UpdateColumnData = useCallback(
@@ -809,6 +812,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<div className="button_container">
+							{hasEmailSettings && (
+								<TableColumnEmailSettings
+									userId={row.objectId}
+									emails={row.emails}
+									refetch={refetch}
+								/>
+							)}
 							{fields.length > 0 && (
 								<TableColumnEditField
 									objectId={row.objectId}

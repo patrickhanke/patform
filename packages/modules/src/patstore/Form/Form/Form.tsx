@@ -2,17 +2,15 @@
 
 import { useGetForm } from "./hooks/useGetForm";
 import siteStates from "./constants/siteStates";
-import { Modal, Page, PageHeaderButton } from "@repo/ui";
+import { Page, PageHeaderButton } from "@repo/ui";
 import { useMemo, useState } from "react";
 import FormData from "./content/FormData";
 import FormSettings from "./content/FormSettings";
 import FormFields from "./content/FormFields";
 import { Params } from "@repo/types";
-import { useDataHandler } from "@repo/provider";
 import TestEmail from "./components/TestEmail";
 
 const Form = ({ params }: { params: Params }) => {
-	const { deleteData } = useDataHandler();
 	const [testEmail, setTestEmail] = useState<boolean>(false);
 
 	const formId = params.form_id;
@@ -85,6 +83,10 @@ const Form = ({ params }: { params: Params }) => {
 							formId={formId}
 							selectedDataRows={selectedDataRows}
 							setSelectedDataRows={setSelectedDataRows}
+							dataDeleteModal={dataDeleteModal}
+							setDataDeleteModal={setDataDeleteModal}
+							loading={loading}
+							setLoading={setLoading}
 						/>
 					)}
 					{siteState.value === "settings" && (
@@ -99,30 +101,7 @@ const Form = ({ params }: { params: Params }) => {
 					)}
 				</>
 			)}
-			<Modal
-				isOpen={dataDeleteModal}
-				cancelButtonHandler={() => setDataDeleteModal(false)}
-				buttonDisabled={[loading, loading]}
-				confirmButtonHandler={async () => {
-					setLoading(true);
-					await Promise.all(
-						selectedDataRows.map(async (objectId) => {
-							await deleteData({
-								className: "Data",
-								objectId
-							});
-						})
-					);
-					await refetch();
-					setLoading(false);
-					setDataDeleteModal(false);
-				}}
-				header={"Datensätze löschen"}
-			>
-				<p>
-					Sind sich Sicher, dass sie die Datensätze löschen möchten?
-				</p>
-			</Modal>
+
 			<TestEmail
 				testEmail={testEmail}
 				setTestEmail={setTestEmail}

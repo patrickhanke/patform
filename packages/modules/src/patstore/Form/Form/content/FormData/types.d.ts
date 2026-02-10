@@ -5,6 +5,10 @@ export type FormDataProps = {
 	formId: string;
 	selectedDataRows: string[];
 	setSelectedDataRows: Dispatch<SetStateAction<string[]>>;
+	dataDeleteModal: boolean;
+	setDataDeleteModal: Dispatch<SetStateAction<boolean>>;
+	loading: boolean;
+	setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 export type UseFindFormDataHook = (T: {

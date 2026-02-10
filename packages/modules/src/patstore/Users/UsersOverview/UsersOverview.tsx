@@ -7,7 +7,7 @@ import {
 	PatstoreAppContext,
 	useAppContext,
 	useDataContext,
-	useFindData
+	useFindDataSecure
 } from "@repo/provider";
 import {
 	generateColumnsFromFields,
@@ -71,7 +71,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		data: users,
 		refetch,
 		count
-	} = useFindData({
+	} = useFindDataSecure({
 		objectName: "User",
 		fields: [
 			...generateQueryFromFields(currentModule.fields),
@@ -82,8 +82,11 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		filters: [...initialFilters, ...filters] as Filter[],
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order: order
+		order: order,
+		useMasterKey: true
 	});
+
+	console.log({ count });
 
 	const columns = useCreateColumns<PatstoreUser>({
 		data: generateColumnsFromFields(currentModule.fields),
@@ -92,8 +95,17 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		className: "_User",
 		refetch,
 		categories: currentModule?.categories,
-		useMasterKey: true
+		useMasterKey: true,
+		hasEmailSettings:
+			currentModule.fields?.find((field) => field.id === "emails")
+				?.active || false
 	});
+
+	console.log(
+		currentModule.fields?.find((field) => field.id === "emails")?.active ||
+			false
+	);
+	console.log({ data: users });
 
 	const createUserFields: CreateUser[keyof CreateUser] | undefined =
 		create_user(

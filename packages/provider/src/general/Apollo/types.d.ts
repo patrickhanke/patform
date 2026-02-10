@@ -67,6 +67,7 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	userId?: string;
 	skipQuery?: boolean;
 	pollInterval?: number;
+	useMasterKey?: boolean;
 }) => {
 	loading: boolean;
 	data: T[];
@@ -81,6 +82,7 @@ export type UseGetDataHook<T extends Classes> = (P: {
 	id?: string;
 	skip?: boolean;
 	afterSaveHandler?: (data: T) => void;
+	useMasterKey?: boolean;
 }) => {
 	loading: boolean;
 	data: T | null;

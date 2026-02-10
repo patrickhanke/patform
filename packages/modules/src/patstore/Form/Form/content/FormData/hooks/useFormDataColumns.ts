@@ -19,7 +19,7 @@ const useFormDataColumns = ({
 			)
 		],
 		fields: [],
-		className: "Data",
+		className: "Item",
 		refetch,
 		categories: []
 	});

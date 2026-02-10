@@ -169,6 +169,7 @@ export type CreateColumnHookProps<Class> = {
 	disableCategory?: (row: Class, label: ModuleCategory["label"]) => boolean;
 	useMasterKey?: boolean;
 	editDisabled?: boolean;
+	hasEmailSettings?: boolean;
 };
 
 export type ColumnClasses =

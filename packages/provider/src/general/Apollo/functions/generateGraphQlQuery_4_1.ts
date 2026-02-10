@@ -66,7 +66,7 @@ const generateGraphQLQuery_4_1: GenerateGraphQLQueryFunction = ({
 		return gql`
             query ${type}${objectName}($params: ${objectName}WhereInput, $first: Int, $skip: Int, $order: [${objectName}Order!]) {
                 ${queryName}(where: $params, first: $first, skip: $skip, order: $order) {
-					${objectName === "User" ? "" : "count"}
+					count
                     edges {
                         node {
                             ${processedFields}

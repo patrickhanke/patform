@@ -43,6 +43,10 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		}
 	}, [dataFromGetData, type]);
 
+	console.log({ dataFromGetData });
+	console.log({ data });
+	console.log({ type });
+
 	const dataHandler = useCallback(
 		async (values: FormikValues) => {
 			await updateData({
@@ -63,8 +67,6 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		},
 		[updateData, objectId, className, type, refetch]
 	);
-
-	console.log({ loading, dataFromGetData });
 
 	return (
 		<>

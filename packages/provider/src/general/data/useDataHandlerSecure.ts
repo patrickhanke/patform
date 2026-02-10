@@ -23,8 +23,6 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 	// Get the API base URL (should be set in your environment)
 	const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "/api";
 
-	console.log({ API_BASE });
-
 	const updateData = useCallback(
 		async ({
 			className,

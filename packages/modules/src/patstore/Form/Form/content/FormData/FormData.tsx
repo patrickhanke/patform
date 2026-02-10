@@ -1,25 +1,30 @@
-import { Table } from "@repo/ui";
-import useFormDataColumns from "./hooks/useFormDataColumns";
+import { Modal, Table, useCreateColumns } from "@repo/ui";
 import { FC, useState, useMemo } from "react";
-import { Filter } from "@repo/types";
+import { Filter, FormDataClass } from "@repo/types";
 import { FormDataProps } from "./types";
 import generateFormData from "./functions/generateFormData";
-import { useAppContext, useFindData } from "@repo/provider";
+import { useAppContext, useDataHandler, useFindData } from "@repo/provider";
 import { ExportButton } from "./content";
 import keyTransformer from "./functions/keyTransformer";
+import { isArray } from "lodash-es";
+import geneateFormColumns from "./functions/generateFormColumns";
 
 const FormData: FC<FormDataProps> = ({
 	formTitle,
 	formId,
 	selectedDataRows,
-	setSelectedDataRows
+	setSelectedDataRows,
+	dataDeleteModal,
+	setDataDeleteModal,
+	loading,
+	setLoading
 }) => {
+	const { deleteData } = useDataHandler();
 	const { project } = useAppContext();
 	const initialFilters: Filter[] = [
 		{
 			key: "reference_id",
 			operator: "equalTo",
-			id: "reference_id",
 			value: formId
 		}
 	];
@@ -37,9 +42,17 @@ const FormData: FC<FormDataProps> = ({
 		skip: pagination.pageIndex * pagination.pageSize
 	});
 
-	const columns = useFormDataColumns({
-		data,
-		refetch
+	const columns = useCreateColumns<FormDataClass["data"]>({
+		data: [
+			{ id: "createdAt", type: "date", label: "Datum" },
+			...geneateFormColumns(
+				isArray(data) ? data.map((data) => data.data) : []
+			)
+		],
+		fields: [],
+		className: "Item",
+		refetch,
+		categories: []
 	});
 
 	const formattedData = useMemo(
@@ -109,6 +122,31 @@ const FormData: FC<FormDataProps> = ({
 					/>
 				</div>
 			)}
+			<Modal
+				isOpen={dataDeleteModal}
+				cancelButtonHandler={() => setDataDeleteModal(false)}
+				buttonDisabled={[loading, loading]}
+				confirmButtonHandler={async () => {
+					setLoading(true);
+					await Promise.all(
+						selectedDataRows.map(async (objectId) => {
+							await deleteData({
+								className: "Item",
+								objectId
+							});
+						})
+					);
+					await refetch();
+					setSelectedDataRows([]);
+					setLoading(false);
+					setDataDeleteModal(false);
+				}}
+				header={"Datensätze löschen"}
+			>
+				<p>
+					Sind sich Sicher, dass sie die Datensätze löschen möchten?
+				</p>
+			</Modal>
 		</div>
 	);
 };

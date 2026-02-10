@@ -11,3 +11,5 @@ export {
 export type * from "./types";
 export { default as useFindData } from "./hooks/useFindData";
 export { default as useGetData } from "./hooks/useGetData";
+export { default as useFindDataSecure } from "./hooks/useFindDataSecure";
+export { default as useGetDataSecure } from "./hooks/useGetDataSecure";
