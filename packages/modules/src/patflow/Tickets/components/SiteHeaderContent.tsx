@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import { Select } from "@repo/ui";
-import { useFindData } from "@repo/provider";
+import { useDataStore } from "@repo/provider";
 import { SiteHeaderContentComponent } from "../types";
 import styles from "../Tickets.module.scss";
 import { filterChangeHandler, getDateString } from "@repo/provider";
@@ -16,11 +16,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 	initialFilters,
 	tickets
 }) => {
-	const { data: objectData } = useFindData({
-		objectName: "Property",
-		fields: ["objectId", "name"],
-		skipQuery: !!id
-	});
+	const { properties } = useDataStore();
 
 	const searchParams = useSearchParams();
 	const router = useRouter();
@@ -30,13 +26,11 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 		const dateOptions = [] as { value: string; label: string }[];
 		let objectOptions = [] as { value: string; label: string }[];
 
-		if (objectData) {
-			objectOptions = objectData.map(
-				(property: Property) => ({
-					value: property.objectId,
-					label: property.name
-				})
-			);
+		if (properties) {
+			objectOptions = properties.map((property: Property) => ({
+				value: property.objectId,
+				label: property.name
+			}));
 		}
 
 		if (tickets && dateOptions.length === 0) {
@@ -81,7 +75,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 					placeholder="Ticket ID..."
 					width="90px"
 				/>
-				{!id && objectData && (
+				{!id && (
 					<Select
 						label=""
 						width="150px"
@@ -119,7 +113,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 							filterChangeHandler(
 								"createdAt",
 								value?.value,
-								"_gte",
+								"greaterThanOrEqualTo",
 								filters
 							)
 						)
@@ -140,7 +134,7 @@ const SiteHeaderContent: FC<SiteHeaderContentComponent> = ({
 							filterChangeHandler(
 								"createdAt",
 								value?.value,
-								"_lte",
+								"lessThanOrEqualTo",
 								filters
 							)
 						)

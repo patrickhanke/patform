@@ -1,4 +1,4 @@
-import { useFindData } from "@repo/provider";
+import { useDataStore } from "@repo/provider";
 import { ElementSelectInterface } from "@repo/ui";
 import { Property, Task } from "@repo/types";
 import { FC, useMemo } from "react";
@@ -15,15 +15,12 @@ const SelectProperty: FC<SelectPropertyProps> = ({
 	task,
 	showPropertyOnly = false
 }) => {
-	const { data: objectData } = useFindData({
-		objectName: "Property",
-		fields: ["objectId", "name"]
-	});
+	const { properties } = useDataStore();
 
 	const elements = useMemo(() => {
 		const objectOptionsArray: PropertyOptions[] = [];
-		if (objectData) {
-			objectData.forEach((object: Property) => {
+		if (properties) {
+			properties.forEach((object: Property) => {
 				if (object) {
 					objectOptionsArray.push({
 						value: object.objectId,
@@ -37,7 +34,7 @@ const SelectProperty: FC<SelectPropertyProps> = ({
 		objectOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
 		return objectOptionsArray;
-	}, [objectData]);
+	}, [properties]);
 
 	if (showPropertyOnly) {
 		const property = elements.find((el) => el.value === task.property);

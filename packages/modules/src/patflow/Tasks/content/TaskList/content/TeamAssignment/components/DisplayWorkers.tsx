@@ -1,7 +1,7 @@
 import { DisplayWorker } from "@repo/ui";
-import { axiosclient, PatflowAppContext, useGetData } from "@repo/provider";
+import { axiosclient, useDataStore, useGetData } from "@repo/provider";
 import { StaffMember, Task, Worker } from "@repo/types";
-import { FC, useContext, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { cloneDeep } from "lodash-es";
 
 import { formatISO9075 } from "date-fns";
@@ -23,7 +23,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		fields: ["objectId", "assigned_staff", "dates", "time", "title"],
 		id: taskId
 	});
-	const { workers } = useContext(PatflowAppContext);
+	const { workers } = useDataStore();
 
 	const nextDate = useMemo(() => {
 		let date;

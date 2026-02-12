@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { useFindData } from "@repo/provider";
+import { useDataStore, useFindData } from "@repo/provider";
 import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
@@ -17,7 +17,7 @@ const DisplayWorker = ({
 	onlyImage = false
 }: DisplayWorkersProps) => {
 	const { year } = useContext(PatflowAppContext);
-	const { workers } = useContext(PatflowAppContext);
+	const { workers } = useDataStore();
 
 	const { data, loading: dayLoading } = useFindData({
 		objectName: "Day",

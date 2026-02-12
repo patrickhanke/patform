@@ -1,6 +1,6 @@
-import { useFindDataSecure, useGetData } from "@repo/provider";
+import { useDataStore } from "@repo/provider";
 import { ElementSelectInterface, SelectElement, StateDisplay } from "@repo/ui";
-import { CreateService, Worker } from "@repo/types";
+import { CreateService, Property, Worker } from "@repo/types";
 import { FC, useMemo } from "react";
 import { SelectWorkerProps } from "../types";
 import { DisplayWorker } from "@repo/ui";
@@ -10,43 +10,20 @@ const SelectWorker: FC<SelectWorkerProps> = ({
 	service,
 	propertyId
 }) => {
-	const { data: workerData } = useFindDataSecure({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"first_name",
-			"last_name",
-			"is_worker",
-			"portrait",
-			"color",
-			"time_settings",
-			"number",
-			"data",
-			"role { objectId name type color }"
-		],
-		filters: [
-			{
-				key: "is_worker",
-				value: true,
-				operator: "equalTo",
-				id: "is_worker"
-			}
-		],
-		order: "last_name_DESC",
-		useMasterKey: true
-	});
-	const { data: propertyData } = useGetData({
-		objectName: "Property",
-		fields: ["assigned_staff", "objectId", "name"],
-		id: propertyId
-	});
+	const { properties, workers } = useDataStore();
+
+	const propertyData = useMemo(() => {
+		return properties.find(
+			(property: Property) => property.objectId === propertyId
+		);
+	}, [properties, propertyId]);
 
 	const elements: SelectElement[] = useMemo(() => {
 		const workerOptionsArray: SelectElement[] = [];
 		const propertyStaff = propertyData?.assigned_staff || [];
 
-		if (workerData) {
-			workerData.forEach((worker: Worker) => {
+		if (workers) {
+			workers.forEach((worker: Worker) => {
 				if (worker) {
 					workerOptionsArray.push({
 						value: worker.objectId,
@@ -71,7 +48,7 @@ const SelectWorker: FC<SelectWorkerProps> = ({
 		workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
 		return workerOptionsArray || [];
-	}, [workerData, propertyData]);
+	}, [workers, propertyData]);
 
 	return (
 		<ElementSelectInterface

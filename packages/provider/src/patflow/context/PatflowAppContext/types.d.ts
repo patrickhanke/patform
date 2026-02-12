@@ -25,10 +25,12 @@ export type ContextValues = {
 	createTask: JSX.Element;
 	selectYear: JSX.Element;
 	year: number;
-	workers: StaffMember[];
-	properties: Property[];
 	refetchWorkers: () => void;
 	refetchProperties: () => void;
+	reloadHolidays: () => Promise<void>;
+	reloadWorkers: () => Promise<void>;
+	reloadRecords: () => Promise<void>;
+	reloadProperties: () => Promise<void>;
 	roles: {
 		value: string;
 		type: string;

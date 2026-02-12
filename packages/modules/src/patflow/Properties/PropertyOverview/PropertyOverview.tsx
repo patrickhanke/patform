@@ -26,8 +26,7 @@ const PropertyOverview = () => {
 			{
 				key: "archived",
 				value: true,
-				operator: "notEqualTo",
-				id: "archived"
+				operator: "notEqualTo"
 			}
 		]
 	});

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Property, StaffMember } from "@repo/types";
-import { useFindData, useFindDataSecure } from "@repo/provider";
+import { useDataStore } from "@repo/provider";
 import { SiteHeaderContentComponent } from "../types";
 import { filterChangeHandler } from "@repo/provider";
 import { Select, TextInput } from "@repo/ui";
@@ -13,41 +13,31 @@ const SiteHeaderContent = ({
 	setFilters,
 	initialFilters
 }: SiteHeaderContentComponent) => {
-	const { data: objectData } = useFindData({
-		objectName: "Property",
-		fields: ["objectId", "name"],
-		skipQuery: !!id
-	});
+	const { properties, workers } = useDataStore();
 
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();
 
-	const { data: staffData } = useFindDataSecure({
-		objectName: "User",
-		fields: ["objectId", "first_name", "last_name"],
-		skipQuery: !!id,
-		useMasterKey: true
-	});
 	const selectOptions = useMemo(() => {
 		let objectOptions = [] as { value: string; label: string }[];
 		let staffOptions = [] as { value: string; label: string }[];
 
-		if (objectData) {
-			objectOptions = objectData.map((property: Property) => ({
+		if (properties) {
+			objectOptions = properties.map((property: Property) => ({
 				value: property.objectId,
 				label: property.name
 			}));
 		}
-		if (staffData) {
-			staffOptions = staffData.map((staff: StaffMember) => ({
+		if (workers) {
+			staffOptions = workers.map((staff: StaffMember) => ({
 				value: staff.objectId,
 				label: `${staff.first_name} ${staff.last_name}`
 			}));
 		}
 
 		return { objectOptions, staffOptions };
-	}, [objectData, staffData]);
+	}, [properties, workers]);
 
 	return (
 		<div className="flex row j-sb a-ce">
@@ -73,7 +63,7 @@ const SiteHeaderContent = ({
 					placeholder="Task ID..."
 					width="120px"
 				/>
-				{!id && objectData && (
+				{!id && (
 					<Select
 						label=""
 						width="150px"
@@ -98,7 +88,7 @@ const SiteHeaderContent = ({
 						isClearable
 					/>
 				)}
-				{staffData && (
+				{workers && (
 					<Select
 						label=""
 						width="150px"

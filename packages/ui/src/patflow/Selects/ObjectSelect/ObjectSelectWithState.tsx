@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Select } from "@repo/ui";
-import { useFindData } from "@repo/provider";
+import { useDataStore } from "@repo/provider";
 import { Property, PropertySelect } from "@repo/types";
 
 const ObjectSelectWithState = ({
@@ -14,20 +14,12 @@ const ObjectSelectWithState = ({
 	label?: string;
 	disabled?: boolean;
 }) => {
-	const { data: objectData } = useFindData({
-		objectName: "Property",
-		fields: [
-			"objectId",
-			"name",
-			"created_by { objectId username }",
-			"createdAt"
-		]
-	});
+	const { properties } = useDataStore();
 
 	const objectOptions = useMemo(() => {
 		const objectOptionsArray: PropertySelect[] = [];
-		if (objectData) {
-			objectData.forEach((object: Property) => {
+		if (properties) {
+			properties.forEach((object: Property) => {
 				if (object) {
 					objectOptionsArray.push({
 						value: object.objectId,
@@ -38,7 +30,7 @@ const ObjectSelectWithState = ({
 			});
 		}
 		return objectOptionsArray;
-	}, [objectData]);
+	}, [properties]);
 
 	return (
 		<div>

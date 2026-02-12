@@ -44,8 +44,7 @@ const TaskDocuments = ({
 							? {
 									__type: "Pointer",
 									className: "Property",
-									objectId:
-										data.property?.objectId
+									objectId: data.property?.objectId
 								}
 							: null,
 					task: {

@@ -1,19 +1,18 @@
-import { PatflowAppContext, useGetData } from "@repo/provider";
+import { useDataStore } from "@repo/provider";
 import { ElementSelectInterface, SelectElement, StateDisplay } from "@repo/ui";
-import { StaffMember, Task } from "@repo/types";
-import { FC, useContext, useMemo } from "react";
+import { Property, StaffMember, Task } from "@repo/types";
+import { FC, useMemo } from "react";
 import { PropertyOptions, SelectWorkerProps } from "../types";
 import { DisplayWorker } from "@repo/ui";
 
 const SelectWorker: FC<SelectWorkerProps> = ({ setTask, task }) => {
-	const { workers } = useContext(PatflowAppContext);
+	const { workers, properties } = useDataStore();
 
-	const { data: propertyData } = useGetData({
-		objectName: "Property",
-		fields: ["assigned_staff", "objectId", "name"],
-		id: task.property,
-		skip: !task.property
-	});
+	const propertyData = useMemo(() => {
+		return properties.find(
+			(property: Property) => property.objectId === task.property
+		);
+	}, [properties, task.property]);
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: PropertyOptions[] = [];
