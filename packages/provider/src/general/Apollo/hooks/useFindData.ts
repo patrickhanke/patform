@@ -19,7 +19,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 	projectId,
 	userId,
 	skipQuery = false,
-	pollInterval = 0
+	pollInterval = 0,
+	propertyId
 }) => {
 	const queryName = pluralize(objectName);
 
@@ -32,7 +33,13 @@ const useFindData: UseFindDataHook<Classes> = ({
 		}),
 		{
 			variables: {
-				params: paramsHandler({ moduleId, projectId, filters, userId }),
+				params: paramsHandler({
+					moduleId,
+					projectId,
+					filters,
+					userId,
+					propertyId
+				}),
 				first: limit,
 				skip,
 				order: order || "createdAt_DESC"

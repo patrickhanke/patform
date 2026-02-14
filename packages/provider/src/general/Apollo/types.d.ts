@@ -20,6 +20,7 @@ type ParamsHandlerProps = {
 	moduleId?: string;
 	userId?: string;
 	filters?: Filter[];
+	propertyId?: string;
 };
 
 export type GenerateGraphQLQueryFunction = (
@@ -68,6 +69,7 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	skipQuery?: boolean;
 	pollInterval?: number;
 	useMasterKey?: boolean;
+	propertyId?: string;
 }) => {
 	loading: boolean;
 	data: T[];

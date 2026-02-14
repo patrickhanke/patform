@@ -55,48 +55,46 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 			pageState !== "active"
 				? pagination.pageIndex * pagination.pageSize
 				: 0,
-		limit: pageState !== "active" ? pagination.pageSize : 300
+		limit: pageState !== "active" ? pagination.pageSize : 300,
+		propertyId: id
 	});
 	const { refetchTask } = useContext(PatflowAppContext);
 	const { newNotification } = useContext(NotificationContext);
 
 	const initialFilters: () => Filter[] = useCallback(() => {
 		const filterArray: Filter[] = [];
-		if (pageState === "active") {
-			filterArray.push({
-				key: "state",
-				value: ["assigned", "created"],
-				operator: "in",
-				id: "state"
-			});
-		} else if (pageState === "executed") {
-			filterArray.push({
-				key: "state",
-				value: "executed",
-				operator: "equalTo",
-				id: "state"
-			});
-		} else if (pageState === "completed") {
-			filterArray.push({
-				key: "state",
-				value: "completed",
-				operator: "equalTo",
-				id: "state"
-			});
-		} else if (pageState === "archived") {
-			filterArray.push({
-				key: "state",
-				value: "archived",
-				operator: "equalTo",
-				id: "state"
-			});
+		if (!id) {
+			if (pageState === "active") {
+				filterArray.push({
+					key: "state",
+					value: ["assigned", "created"],
+					operator: "in"
+				});
+			} else if (pageState === "executed") {
+				filterArray.push({
+					key: "state",
+					value: "executed",
+					operator: "equalTo"
+				});
+			} else if (pageState === "completed") {
+				filterArray.push({
+					key: "state",
+					value: "completed",
+					operator: "equalTo"
+				});
+			} else if (pageState === "archived") {
+				filterArray.push({
+					key: "state",
+					value: "archived",
+					operator: "equalTo"
+				});
+			}
 		}
 		if (searchParams.get("task")) {
 			filterArray.push({
 				key: "objectId",
 				value: searchParams.get("task") as string,
-				operator: "equalTo",
-				id: "objectId"
+				operator: "equalTo"
 			});
 		}
 
@@ -175,7 +173,7 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 				}
 			];
 		}
-	}, [pageState, id, selectedRows]);
+	}, [pageState, selectedRows]);
 
 	if (id && className) {
 		return (
