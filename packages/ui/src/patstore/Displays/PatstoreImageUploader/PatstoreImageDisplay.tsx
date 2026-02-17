@@ -33,7 +33,7 @@ const PatstoreImageDisplay: FC<PatstoreImageDisplayProps> = ({
 	}
 
 	if (data) {
-		const { file, name } = data.objects.getImage;
+		const { file, name } = data?.objects?.getImage || {};
 		return (
 			<Image
 				src={getImageUrl({
