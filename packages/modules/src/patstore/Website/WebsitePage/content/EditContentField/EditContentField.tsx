@@ -58,7 +58,7 @@ const EditContentField: FC<EditContentFieldProps> = ({
 			"type",
 			"createdAt",
 			"active",
-			"content",
+			"data",
 			"created_by {objectId username}",
 			"updated_by {objectId username}",
 			"categories"

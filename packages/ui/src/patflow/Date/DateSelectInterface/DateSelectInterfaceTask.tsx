@@ -7,7 +7,7 @@ import modi_options from "./content/DateSelect/constants/modi_options";
 import date_category_options from "./content/DateSelect/constants/date_category_options";
 import { DateSelectInterfaceTaskProps } from "./types";
 import { formatISO9075 } from "date-fns";
-import { DateInterval, DateObjectWithNextDates, Task } from "@repo/types";
+import { DateInterval, DateObjectWithNextDates } from "@repo/types";
 import { SlideInRight } from "@repo/ui";
 import { TaskDateDisplay } from "./content/TaskDateDisplay";
 
@@ -19,9 +19,8 @@ const DateSelectInterfaceTask = ({
 }: DateSelectInterfaceTaskProps) => {
 	const { updateData } = useDataHandler();
 	const [loading, setLoading] = useState(false);
-	const [state, setState] = useState<Task["state"] | undefined>();
 
-	const [time, setTime] = useState<Task["time"]>({
+	const initialTime = {
 		type: modi_options[0] as DateInterval,
 		category: date_category_options[0],
 		interval: {
@@ -33,16 +32,16 @@ const DateSelectInterfaceTask = ({
 		dates: [""],
 		weekday: "",
 		time: ""
-	});
+	};
 
-	const { loading: queryLoading, refetch } = useGetData({
+	const {
+		data: taskData,
+		loading: queryLoading,
+		refetch
+	} = useGetData({
 		objectName: "Task",
 		fields: ["objectId", "time", "state", "dates", "type", "category"],
-		id: taskId,
-		afterSaveHandler: (data) => {
-			setTime(data.time);
-			setState(data.state);
-		}
+		id: taskId
 	});
 
 	useEffect(() => {
@@ -84,8 +83,12 @@ const DateSelectInterfaceTask = ({
 			setLoading(false);
 			setShowDateInterface(false);
 		},
-		[taskId, time]
+		[taskId]
 	);
+
+	console.log("taskData", taskData);
+
+	const state = taskData?.state || undefined;
 
 	return (
 		<SlideInRight
@@ -97,13 +100,13 @@ const DateSelectInterfaceTask = ({
 		>
 			{state && state === "assigned" ? (
 				<DateSelect
-					initialValue={time}
+					initialValue={taskData?.time || initialTime}
 					dataHandler={dataHandler}
 					setShowSlideIn={setShowDateInterface}
 					loading={loading || queryLoading}
 				/>
 			) : (
-				<TaskDateDisplay time={time} />
+				<TaskDateDisplay time={taskData?.time || initialTime} />
 			)}
 		</SlideInRight>
 	);

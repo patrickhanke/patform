@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { SingleDateSelectInterfaceProps } from "../types";
-import { formatISO9075 } from "date-fns";
+import { formatISO9075, isValid } from "date-fns";
 import { DateObjectWithNextDates } from "@repo/types";
 import { DatePicker } from "@repo/ui";
 
@@ -27,11 +27,14 @@ const SingleDateSelectInterface = ({
 			}
 			if (category === "fixed") {
 				dateObject.dates = [dateString];
-				dateObject.next_dates = [
-					formatISO9075(new Date(dateString), {
-						representation: "date"
-					})
-				];
+				const dateObj = new Date(dateString);
+				if (isValid(dateObj)) {
+					dateObject.next_dates = [
+						formatISO9075(dateObj, {
+							representation: "date"
+						})
+					];
+				}
 			}
 
 			onChange(dateObject);

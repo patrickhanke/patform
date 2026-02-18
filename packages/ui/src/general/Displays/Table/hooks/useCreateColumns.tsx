@@ -706,11 +706,11 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnEditWebpageComponents
-							type={row.type}
+							type={row.type as "table" | "faq"}
 							initialData={
 								row[columnElement.id] as WebpageComponents
 							}
-							onChange={(value: WebpageContent[]) =>
+							onChange={(value: WebpageComponents) =>
 								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },

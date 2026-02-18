@@ -275,6 +275,7 @@ const Koloproktologen = () => {
 			"email",
 			"data",
 			"settings",
+			"location",
 			"address",
 			"title",
 			"emails",
@@ -285,7 +286,19 @@ const Koloproktologen = () => {
 		filters: [
 			{
 				key: "projects",
-				id: "projects",
+				value: ["EgRR0prozh", "JRxDkaxCoI"],
+				operator: "in"
+			}
+		],
+		limit: 1400
+	});
+
+	const { data: locationData } = useFindData({
+		objectName: "Location",
+		fields: ["objectId", "data"],
+		filters: [
+			{
+				key: "projects",
 				value: ["EgRR0prozh", "JRxDkaxCoI"],
 				operator: "in"
 			}
@@ -294,218 +307,33 @@ const Koloproktologen = () => {
 	});
 
 	console.log(userData);
+	console.log(locationData);
 
 	const { updateData, createData } = useDataHandler(true, false);
 
 	const filterUsers = useCallback(async () => {
-		const usersDgk = userData?.filter((user) =>
-			user.projects.includes("JRxDkaxCoI")
-		);
+		const userWithLocation: PatstoreUser[] = [];
+		const userWithSpecialistSetting: PatstoreUser[] = [];
+		const userWithLocationAndSpecialistSetting: PatstoreUser[] = [];
 
-		const usersBcd = userData?.filter((user) =>
-			user.projects.includes("EgRR0prozh")
-		);
-
-		const noFitsDgK = [];
-		const restDgk = [];
-		const noFitsBcd = [];
-		const restBcd = [];
-
-		aerzteDgk.forEach((aerzte) => {
-			const user = usersDgk?.find(
-				(user) => user.last_name === aerzte.Nachname
-			);
-			if (!user) {
-				noFitsDgK.push(aerzte);
+		userData.forEach((aerzte) => {
+			if (aerzte.location) {
+				userWithLocation.push(aerzte);
+			}
+			if (aerzte.settings?.bcd?.publish_specialist) {
+				userWithSpecialistSetting.push(aerzte);
+			}
+			if (aerzte.location && aerzte.settings?.bcd?.publish_specialist) {
+				userWithLocationAndSpecialistSetting.push(aerzte);
 			}
 		});
 
-		usersDgk.forEach((user) => {
-			const aerzte = aerzteDgk.find(
-				(aerzte) => aerzte.Nachname === user.last_name
-			);
-			if (!aerzte) {
-				restDgk.push(user);
-			}
-		});
-
-		aerzteBcd.forEach((aerzte) => {
-			const user = usersBcd?.find(
-				(user) => user.last_name === aerzte.Nachname
-			);
-			if (!user) {
-				noFitsBcd.push(aerzte);
-			}
-		});
-		usersBcd.forEach((user) => {
-			const aerzte = aerzteBcd.find(
-				(aerzte) => aerzte.Nachname === user.last_name
-			);
-			if (!aerzte) {
-				restBcd.push(user);
-			}
-		});
-
-		const dgkDublicates = [];
-		const bcdDublicates = [];
-
-		aerzteDgk.forEach((aerzte) => {
-			const user = aerzteDgk?.filter(
-				(arzt) => arzt.Nachname === aerzte.Nachname
-			);
-			if (user.length > 1) {
-				dgkDublicates.push(aerzte);
-			}
-		});
-
-		aerzteBcd.forEach((aerzte) => {
-			const user = aerzteBcd?.filter(
-				(arzt) => arzt.Nachname === aerzte.Nachname
-			);
-			if (user.length > 1) {
-				bcdDublicates.push(aerzte);
-			}
-		});
-
-		console.log(noFitsDgK);
-		console.log(noFitsBcd);
-
-		console.log(restDgk);
-		console.log(restBcd);
-	}, [userData]);
-
-	const findDublicates = useCallback(async () => {
-		console.log(userData);
-		const uniques = uniqBy(
-			userData,
-			(user: PatstoreUser) => user.last_name
-		);
-
-		const dublicates = remove(
-			userData,
-			(user: PatstoreUser) => !uniques.includes(user)
-		);
+		console.log("userWithLocation", userWithLocation);
+		console.log("userWithSpecialistSetting", userWithSpecialistSetting);
 		console.log(
-			dublicates.sort((a, b) => a.last_name.localeCompare(b.last_name))
+			"userWithLocationAndSpecialistSetting",
+			userWithLocationAndSpecialistSetting
 		);
-	}, [userData]);
-
-	const filterBcd = useCallback(async () => {
-		const usersBcd = userData?.filter((user) =>
-			user.projects.includes("EgRR0prozh")
-		);
-		const noFitsBcd = [];
-		const fitsBcd = [];
-		const restBcd = [];
-		const bcdAerzte = aerzteBcd.filter(
-			(aerzte) => typeof aerzte.ID === "number"
-		);
-		bcdAerzte.forEach((aerzte) => {
-			const user = usersBcd?.find(
-				(user) => user.last_name === aerzte.Nachname
-			);
-			if (!user) {
-				noFitsBcd.push(aerzte);
-			} else {
-				fitsBcd.push(user);
-			}
-		});
-		usersBcd.forEach((user) => {
-			const aerzte = bcdAerzte.find(
-				(aerzte) => aerzte.Nachname === user.last_name
-			);
-			if (!aerzte) {
-				restBcd.push(user);
-			}
-		});
-		console.log("usersBcd", usersBcd);
-		console.log("bcdAerzte", bcdAerzte);
-		console.log("notInDb", noFitsBcd);
-		console.log("fitsBcd", fitsBcd);
-		console.log("restBcd", restBcd);
-	}, [userData]);
-
-	const filterDgk = useCallback(async () => {
-		const usersDgk = userData?.filter((user) =>
-			user.projects.includes("JRxDkaxCoI")
-		);
-		const noFitsDgk = [];
-		const fitsDgk = [];
-		const restDgk = [];
-
-		const dgkAerzte = aerzteDgk.filter((aerzte) => !!aerzte.Nachname);
-
-		dgkAerzte.forEach((aerzte) => {
-			const user = usersDgk?.find(
-				(user) => user.last_name === aerzte.Nachname
-			);
-			if (!user) {
-				noFitsDgk.push(aerzte);
-			} else {
-				fitsDgk.push(user);
-			}
-		});
-		usersDgk.forEach((user) => {
-			const aerzte = dgkAerzte.find(
-				(aerzte) => aerzte.Nachname === user.last_name
-			);
-			if (!aerzte) {
-				restDgk.push(user);
-			}
-		});
-		console.log("usersDgk", usersDgk);
-		console.log("dgkAerzte", dgkAerzte);
-		console.log("notInDb", noFitsDgk);
-		console.log("fitsDgk", fitsDgk);
-		console.log("restDgk", restDgk);
-	}, [userData]);
-
-	const filterBcEmailList = useCallback(async () => {
-		console.log("allListId: ZQRXdR278J");
-		const usersBcdGesamt = userData?.filter((user) =>
-			user.emails?.some((email) => email.lists.includes("ZQRXdR278J"))
-		);
-		const usersBcdWithType = usersBcdGesamt?.filter(
-			(user) => user.type === "bcd" || user.type === "dgk/bcd"
-		);
-		const usersBcdWithoutType = usersBcdGesamt?.filter(
-			(user) => user.type === "dgk"
-		);
-		console.log("usersBcdGesamt", usersBcdGesamt);
-		console.log("usersBcdWithType", usersBcdWithType);
-		console.log("usersBcdWithoutType", usersBcdWithoutType);
-	}, [userData]);
-
-	const filterDgEmailList = useCallback(async () => {
-		console.log("allListId: g3D7DCOgIf");
-		const usersDgkGesamt = userData?.filter((user) =>
-			user.emails?.some((email) => email.lists.includes("g3D7DCOgIf"))
-		);
-		const usersDgkWithType = userData
-			?.filter((user) => user.type === "dgk" || user.type === "dgk/bcd")
-			.filter((user) => {
-				let returnValue = false;
-				user.emails?.forEach((email) => {
-					if (email.lists.includes("g3D7DCOgIf")) {
-						returnValue = true;
-					}
-				});
-				return !returnValue;
-			});
-
-		const usersDgkWithoutType = usersDgkGesamt?.filter(
-			(user) => user.type === "bcd"
-		);
-		console.log("usersDgkGesamt", usersDgkGesamt);
-		console.log("usersDgkWithType", usersDgkWithType);
-		console.log("usersDgkWithoutType", usersDgkWithoutType);
-	}, [userData]);
-
-	const getUsersWithoutEmail = useCallback(async () => {
-		const usersWithoutEmail = userData?.filter(
-			(user) => !user.emails?.length
-		);
-		console.log("usersWithoutEmail", usersWithoutEmail);
 	}, [userData]);
 
 	return (
@@ -513,37 +341,9 @@ const Koloproktologen = () => {
 			<button
 				className="full_button secondary"
 				disabled={!data}
-				onClick={() => filterBcd()}
+				onClick={() => filterUsers()}
 			>
-				Filter BCD
-			</button>
-			<button
-				className="full_button secondary"
-				disabled={!data}
-				onClick={() => filterDgk()}
-			>
-				Filter DGK
-			</button>
-			<button
-				className="full_button secondary"
-				disabled={!data}
-				onClick={() => filterBcEmailList()}
-			>
-				Filter BC Email List
-			</button>
-			<button
-				className="full_button secondary"
-				disabled={!data}
-				onClick={() => filterDgEmailList()}
-			>
-				Filter DGK Email List
-			</button>
-			<button
-				className="full_button secondary"
-				disabled={!data}
-				onClick={() => getUsersWithoutEmail()}
-			>
-				Get Users Without Email
+				Filter Users
 			</button>
 		</div>
 	);

@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useState } from "react";
 import { EditTable } from "./content";
 import { Modal } from "@repo/ui";
 import { TableColumnEditWebpageComponentsProps } from "./typed";
@@ -9,7 +9,9 @@ const TableColumnEditWebpageComponents: FC<
 	TableColumnEditWebpageComponentsProps
 > = ({ type, initialData, onChange }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [data, setData] = useState<WebpageComponentTable>();
+	const [data, setData] = useState<WebpageComponentTable>(
+		createInitialTableData(initialData) as WebpageComponentTable
+	);
 
 	return (
 		<div>

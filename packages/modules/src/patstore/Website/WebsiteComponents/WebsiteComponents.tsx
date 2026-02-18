@@ -19,9 +19,8 @@ const WebsiteComponents = () => {
 	const [addContent, setAddContent] = useState(false);
 	const [filters, setFilters] = useState<Filter[]>([
 		{
-			id: "type",
 			key: "type",
-			operator: "_in",
+			operator: "in",
 			value: ["table", "faq"]
 		}
 	]);
@@ -55,7 +54,7 @@ const WebsiteComponents = () => {
 
 	const columns = useCreateColumns<ContentClass>({
 		data: [
-			{ id: "name", type: "edit_string", label: "Name" },
+			{ id: "title", type: "edit_string", label: "Name" },
 			{
 				id: "content_id",
 				type: user.is_superuser ? "edit_string" : "string",
@@ -65,7 +64,7 @@ const WebsiteComponents = () => {
 			{ id: "createdAt", type: "date", label: "Erstellt am" },
 			{ id: "active", type: "boolean", label: "Aktiv" },
 			{
-				id: "content",
+				id: "data",
 				type: "edit_webpage_components",
 				label: "Inhalt bearbeiten"
 			}

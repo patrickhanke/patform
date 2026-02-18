@@ -88,7 +88,7 @@ const CreateContent: FC<CreateContentProps> = ({
 							className: "Module",
 							objectId: currentModule.objectId
 						},
-						content: {},
+						data: {},
 						categories: [],
 						created_by: {
 							__type: "Pointer",

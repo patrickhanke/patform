@@ -34,7 +34,7 @@ const WebsiteContent = () => {
 			"type",
 			"createdAt",
 			"active",
-			"content",
+			"data",
 			"created_by {objectId username}",
 			"updated_by {objectId username}",
 			"categories"
@@ -73,7 +73,7 @@ const WebsiteContent = () => {
 			{ id: "type", type: "string", label: "Typ" },
 			{ id: "createdAt", type: "date", label: "Erstellt am" },
 			{ id: "active", type: "boolean", label: "Aktiv" },
-			{ id: "content", type: "content", label: "Inhalt" }
+			{ id: "data", type: "content", label: "Inhalt" }
 		],
 		fields: [],
 		className: "Content",

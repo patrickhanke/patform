@@ -1,5 +1,7 @@
+import { WebpageComponents } from "@repo/types";
+
 export type TableColumnEditWebpageComponentsProps = {
 	type: "table" | "faq";
-	initialData: WebpageComponents;
-	onChange: (value: WebpageContent[]) => void;
+	initialData: WebpageComponentTable;
+	onChange: (value: WebpageComponents) => void;
 };

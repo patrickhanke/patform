@@ -1,18 +1,48 @@
 "use client";
 
 import { useDataHandler, useFindData } from "@repo/provider";
-import React, { useCallback, useContext } from "react";
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState
+} from "react";
 import useTableColumns from "./hooks/useTableColumns";
 import CreatePropterty from "./components/CreateProperty";
 import initialData from "./constants/initialData";
 import { Page, Table } from "@repo/ui";
 import { UserContext } from "@repo/provider";
+import { Filter } from "@repo/types";
+import { ColumnData } from "@repo/ui";
+import { Property } from "@repo/types";
+
+const baseFilters: Filter[] = [
+	{
+		key: "archived",
+		value: true,
+		operator: "notEqualTo"
+	}
+];
+
+const filterColumns: ColumnData<Property>[] = [
+	{ id: "name", label: "Name", type: "edit_string" },
+	{ id: "createdAt", label: "Erstellt am", type: "date" }
+];
 
 const PropertyOverview = () => {
-	const [isOpen, setIsOpen] = React.useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+	const [filters, setFilters] = useState<Filter[]>([]);
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 20
+	});
+	const [order, setOrder] = useState<string>("createdAt_DESC");
 	const { user, projectId } = useContext(UserContext);
 
-	const { data, refetch } = useFindData({
+	const allFilters = useMemo(() => [...baseFilters, ...filters], [filters]);
+
+	const { data, refetch, count } = useFindData({
 		objectName: "Property",
 		fields: [
 			"objectId",
@@ -22,18 +52,15 @@ const PropertyOverview = () => {
 			"archived"
 		],
 		projectId,
-		filters: [
-			{
-				key: "archived",
-				value: true,
-				operator: "notEqualTo"
-			}
-		]
+		filters: allFilters,
+		skip: pagination.pageIndex * pagination.pageSize,
+		limit: pagination.pageSize,
+		order
 	});
 
-	console.log({
-		data
-	});
+	useEffect(() => {
+		setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+	}, [filters, order]);
 
 	const { createData } = useDataHandler();
 
@@ -65,7 +92,7 @@ const PropertyOverview = () => {
 			setIsOpen(false);
 			refetch();
 		},
-		[user, projectId]
+		[user, projectId, refetch]
 	);
 
 	const siteHeaderButtons = [
@@ -78,9 +105,17 @@ const PropertyOverview = () => {
 
 	return (
 		<Page title="Objektübersicht" pageHeaderButtons={siteHeaderButtons}>
-			<div className="content_element no_padding">
-				<Table columns={columns} data={data || []} />
-			</div>
+			<Table
+				columns={columns}
+				data={data || []}
+				pagination={pagination}
+				setPagination={setPagination}
+				rowCount={count}
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={filterColumns}
+				setOrder={setOrder}
+			/>
 			<CreatePropterty
 				objects={data || []}
 				isOpen={isOpen}

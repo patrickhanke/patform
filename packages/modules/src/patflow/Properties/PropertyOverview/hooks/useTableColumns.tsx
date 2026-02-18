@@ -34,7 +34,10 @@ const useTableColumns = () => {
 				id: "name",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,
-				sortingFn: "alphanumeric"
+				enableSorting: true,
+				sortingFn: (rowA, rowB) => {
+					return rowA.original.name.localeCompare(rowB.original.name);
+				}
 			},
 			{
 				accessorFn: (row) => getDateLabel(row.createdAt),
@@ -42,7 +45,7 @@ const useTableColumns = () => {
 				id: "createdAt",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id,
-				sortingFn: "alphanumeric"
+				enableSorting: true
 			},
 			{
 				accessorFn: (row) => (
@@ -61,8 +64,7 @@ const useTableColumns = () => {
 				header: () => <span>Zugewiesene Arbeiter</span>,
 				id: "assigned_staff",
 				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				disableSorting: true
+				footer: (info) => info.column.id
 			},
 			{
 				accessorFn: (row) => (
@@ -75,8 +77,7 @@ const useTableColumns = () => {
 				header: () => <span>Zur Objektseite</span>,
 				id: "link",
 				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				disableSorting: true
+				footer: (info) => info.column.id
 			}
 		],
 		[]

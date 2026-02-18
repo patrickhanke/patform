@@ -28,7 +28,7 @@ const RenderFilters = ({
 				filterChangeHandler(
 					textInput.key,
 					textInput.value,
-					"_regex",
+					"matchesRegex",
 					filters
 				)
 			);
@@ -64,7 +64,7 @@ const RenderFilters = ({
 								filterChangeHandler(
 									field.key,
 									value.value,
-									"_in",
+									"in",
 									filters
 								)
 							)
