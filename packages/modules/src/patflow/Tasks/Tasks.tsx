@@ -141,6 +141,10 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		}
 	}, [newNotification]);
 
+	useEffect(() => {
+		refetch();
+	}, [pageState]);
+
 	const siteStates = useMemo(() => {
 		return site_states.map((state) => ({
 			...state,
