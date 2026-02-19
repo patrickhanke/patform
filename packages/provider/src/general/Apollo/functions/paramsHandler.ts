@@ -38,18 +38,20 @@ const paramsHandler: ParamsHandlerType = ({
 
 	let additionalFilters: FilterObject = {};
 
+	console.log("filters", filters);
+
 	if (filters && filters?.length > 0) {
 		additionalFilters = filters?.reduce(
 			(
 				acc: Record<string, { [key in FilterOperator]: any }>,
 				filter: Filter
 			) => {
-				if (filter.operator === "_regex") {
+				if (filter.operator === "matchesRegex") {
 					acc[filter.key] = {
 						[filter.operator]: filter.value,
 						_options: "i"
 					} as {
-						_regex: string;
+						matchesRegex: string;
 						_options: string;
 					};
 				} else {
@@ -62,6 +64,7 @@ const paramsHandler: ParamsHandlerType = ({
 			{}
 		);
 	}
+	console.log("additionalFilters", additionalFilters);
 	return { ...filterObject, ...additionalFilters };
 };
 

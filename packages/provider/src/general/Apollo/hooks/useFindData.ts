@@ -23,6 +23,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 	propertyId
 }) => {
 	const queryName = pluralize(objectName);
+	console.log("objectName", objectName);
+	console.log("filters", filters);
 
 	const { loading, data, refetch, error } = useQuery(
 		generateGraphQLQuery_4_1({

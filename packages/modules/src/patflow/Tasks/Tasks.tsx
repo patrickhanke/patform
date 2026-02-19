@@ -62,6 +62,7 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 	const { newNotification } = useContext(NotificationContext);
 
 	console.log("pageState", pageState);
+	console.log("filters", filters);
 	const initialFilters: () => Filter[] = useCallback(() => {
 		const filterArray: Filter[] = [];
 		if (!id) {
@@ -127,7 +128,7 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 
 	useEffect(() => {
 		setFilters(initialFilters());
-	}, [siteState]);
+	}, [siteState, initialFilters]);
 
 	useEffect(() => {
 		if (refetchTask) {
@@ -216,6 +217,7 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		>
 			{pageState !== "active" ? (
 				<TaskList
+					key={pageState}
 					taskList={tasks || []}
 					refetch={refetch}
 					pageState={pageState}
@@ -236,6 +238,7 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 				/>
 			) : (
 				<TaskList
+					key={pageState}
 					taskList={generatePagination({
 						data:
 							sortTasksForList(tasks || []).find(

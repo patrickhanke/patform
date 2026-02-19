@@ -86,8 +86,6 @@ const DateSelectInterfaceTask = ({
 		[taskId]
 	);
 
-	console.log("taskData", taskData);
-
 	const state = taskData?.state || undefined;
 
 	return (
