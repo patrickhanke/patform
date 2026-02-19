@@ -4,7 +4,12 @@ import { Suspense } from "react";
 const PropertyTasks = ({ objectId }: { objectId: string }) => {
 	return (
 		<Suspense>
-			<Tasks pageState="active" id={objectId} className={"Property"} />
+			<Tasks
+				key="active"
+				pageState="active"
+				id={objectId}
+				className={"Property"}
+			/>
 		</Suspense>
 	);
 };

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 const TasksPage = () => (
   <Suspense>
-    <Tasks pageState="archived" />
+    <Tasks key="archived" pageState="archived" />
   </Suspense>
 );
 

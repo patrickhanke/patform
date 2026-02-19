@@ -14,6 +14,9 @@ const TaskModal: FC<TaskModalProps> = ({
 
 	const [loading, setLoading] = useState(false);
 
+	console.log("type", type);
+	console.log("tasks", tasks);
+
 	const archiveTasks = useCallback(() => {
 		if (type === "archive") {
 			return async (objectId: string) => {
