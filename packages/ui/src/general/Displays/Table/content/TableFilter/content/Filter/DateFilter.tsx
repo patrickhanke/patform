@@ -16,7 +16,8 @@ const operatorOptions = [
 const DateFilter: FC<DateFilterProps> = ({
 	filter,
 	onValueChange,
-	onOperatorChange
+	onOperatorChange,
+	hideOperator
 }) => {
 	const formatDateValue = (value: unknown): string => {
 		if (!value) return "";
@@ -31,16 +32,18 @@ const DateFilter: FC<DateFilterProps> = ({
 
 	return (
 		<div className="filter-row-content">
-			<div className="select-wrapper">
-				<Select
-					id={`operator-${filter.id}`}
-					value={filter.operator}
-					onChange={(option) => onOperatorChange(option.value)}
-					options={operatorOptions}
-					placeholder="Operator"
-					width={140}
-				/>
-			</div>
+			{!hideOperator && (
+				<div className="select-wrapper">
+					<Select
+						id={`operator-${filter.id}`}
+						value={filter.operator}
+						onChange={(option) => onOperatorChange(option.value)}
+						options={operatorOptions}
+						placeholder="Operator"
+						width={140}
+					/>
+				</div>
+			)}
 			<div className="input-wrapper">
 				<input
 					type="date"

@@ -61,5 +61,16 @@ export type Module = {
     label: string;
     value: string;
     icon: string;
-  }[]
+  }[];
+  filters?: ModuleFilter[];
+};
+
+export type ModuleFilter = {
+  id: string;
+  field: string;
+  type: string;
+  operator: string;
+  operatorTemplate?: string;
+  label?: string;
+  position?: number;
 };

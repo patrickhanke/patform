@@ -37,7 +37,8 @@ const getQueryStringFromFields = (fields: string[]) => {
 				field === "surcharges" ||
 				field === "day_value" ||
 				field === "default_times" ||
-				field === "holidays"
+				field === "holidays" ||
+				field === "filters"
 			) {
 				return `
                 ${field} {

@@ -16,20 +16,23 @@ const operatorOptions = [
 const NumberFilter: FC<NumberFilterProps> = ({
 	filter,
 	onValueChange,
-	onOperatorChange
+	onOperatorChange,
+	hideOperator
 }) => {
 	return (
 		<div className="filter-row-content">
-			<div className="select-wrapper">
-				<Select
-					id={`operator-${filter.id}`}
-					value={filter.operator}
-					onChange={(option) => onOperatorChange(option.value)}
-					options={operatorOptions}
-					placeholder="Operator"
-					width={160}
-				/>
-			</div>
+			{!hideOperator && (
+				<div className="select-wrapper">
+					<Select
+						id={`operator-${filter.id}`}
+						value={filter.operator}
+						onChange={(option) => onOperatorChange(option.value)}
+						options={operatorOptions}
+						placeholder="Operator"
+						width={160}
+					/>
+				</div>
+			)}
 			<div className="input-wrapper">
 				<input
 					type="number"

@@ -10,6 +10,8 @@ export type FilterInputProps = {
 	filter: ExtendedFilter;
 	onValueChange: (value: Filter["value"]) => void;
 	onOperatorChange: (operator: FilterOperator) => void;
+	/** When true, hide operator selection - operator is fixed from Module */
+	hideOperator?: boolean;
 };
 
 export type StringFilterProps = FilterInputProps;

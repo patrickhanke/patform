@@ -15,20 +15,23 @@ const operatorOptions = [
 const StringFilter: FC<StringFilterProps> = ({
 	filter,
 	onValueChange,
-	onOperatorChange
+	onOperatorChange,
+	hideOperator
 }) => {
 	return (
 		<div className="flex col gap-xs" style={{ paddingTop: "12px" }}>
-			<div className="select-wrapper">
-				<Select
-					id={`operator-${filter.id}`}
-					value={filter.operator}
-					onChange={(option) => onOperatorChange(option.value)}
-					options={operatorOptions}
-					placeholder="Operator"
-					width={140}
-				/>
-			</div>
+			{!hideOperator && (
+				<div className="select-wrapper">
+					<Select
+						id={`operator-${filter.id}`}
+						value={filter.operator}
+						onChange={(option) => onOperatorChange(option.value)}
+						options={operatorOptions}
+						placeholder="Operator"
+						width={140}
+					/>
+				</div>
+			)}
 			<div className="input-wrapper">
 				<Input
 					type="text"

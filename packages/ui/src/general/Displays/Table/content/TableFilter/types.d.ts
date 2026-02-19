@@ -14,7 +14,10 @@ export type TableFilter = Filter & {
 };
 
 export type TableFilterProps = {
-	filterColumns: ColumnData<TData>[];
+	filterColumns: (ColumnData<TData> & {
+		operator?: string;
+		operatorTemplate?: string;
+	})[];
 	filters: Filter[];
 	setFilters: Dispatch<SetStateAction<Filter[]>>;
 };
@@ -39,6 +42,11 @@ export type FilterTypeConfig = {
 
 export type ColumnInfo = {
 	id: string;
+	/** GraphQL field name for Filter.key - when from Module filter */
+	fieldKey?: string;
 	label: string;
 	type: ColumnDataTypes;
+	/** Fixed operator from Module filter - when set, operator selection is hidden */
+	operator?: string;
+	operatorTemplate?: string;
 };

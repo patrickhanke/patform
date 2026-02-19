@@ -144,13 +144,17 @@ const Table: React.FC<TableTypes> = ({
 		<>
 			{pagination && setPagination && (
 				<div className="table_header">
-					{filters && setFilters && columns && (
-						<TableFilter
-							filterColumns={filterColumns || []}
-							filters={filters}
-							setFilters={setFilters}
-						/>
-					)}
+					{filters &&
+						setFilters &&
+						columns &&
+						filterColumns &&
+						filterColumns.length > 0 && (
+							<TableFilter
+								filterColumns={filterColumns}
+								filters={filters}
+								setFilters={setFilters}
+							/>
+						)}
 					{filterContent ? (
 						<div className="filter_content">{filterContent}</div>
 					) : (

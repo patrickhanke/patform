@@ -26,9 +26,12 @@ export type FilterOperator =
   | "matchesRegex";
 
 export type Filter = {
+  id?: string;
   key: string;
   value: string | Array<string | number> | number | boolean | null;
   operator: FilterOperator;
+  /** JSON template with {{value}} placeholder for complex nested structures (e.g. Pointer) */
+  operatorTemplate?: string;
 };
 
 export type ErrorMessage = {

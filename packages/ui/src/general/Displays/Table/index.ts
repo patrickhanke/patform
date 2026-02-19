@@ -9,3 +9,4 @@ export { default as useCreateColumns } from "./hooks/useCreateColumns";
 export { default as generatePagination } from "./functions/generatePagination";
 export { default as generateColumnsFromFields } from "./functions/generateColumnsFromFields";
 export { default as generateFilterColumnsFromFields } from "./functions/generateFilterColumnsFromFields";
+export { default as generateFilterColumnsFromModuleFilters } from "./functions/generateFilterColumnsFromModuleFilters";

@@ -5,6 +5,7 @@ import {
 	AppModuleEditCategories,
 	AppModuleEditDataFields,
 	AppModuleEditFields,
+	AppModuleEditFilters,
 	AppModuleEditSettingFields,
 	AppModuleEditSettings
 } from "./content";
@@ -25,7 +26,8 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 			"categories",
 			"connected_class",
 			"data_fields",
-			"setting_fields"
+			"setting_fields",
+			"filters"
 		],
 		id
 	});
@@ -34,10 +36,13 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 
 	const module = data;
 
+	console.log("module", module);
+	if (!module) return null;
+
 	return (
 		<div className="app_module_container">
 			<div style={{ width: "300px" }}>
-				<h3>{module.name}</h3>
+				<h3>{module?.name}</h3>
 			</div>
 			{module.settings && (
 				<AppModuleEditSettings
@@ -67,6 +72,10 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 			<AppModuleEditSettingFields
 				moduleId={id}
 				initialFields={module.setting_fields}
+			/>
+			<AppModuleEditFilters
+				moduleId={id}
+				initialFilters={module.filters}
 			/>
 		</div>
 	);

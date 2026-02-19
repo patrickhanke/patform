@@ -11,7 +11,7 @@ import {
 } from "@repo/provider";
 import {
 	generateColumnsFromFields,
-	generateFilterColumnsFromFields,
+	generateFilterColumnsFromModuleFilters,
 	Page,
 	SlideInForm,
 	Table,
@@ -42,19 +42,19 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		page_states[0]
 	);
 
+	console.log("currentModule", currentModule);
+
 	const initialFilters: Filter[] = useMemo(
 		() => [
 			{
 				key: "projects",
 				value: [project.objectId],
-				operator: "in",
-				id: "projects"
+				operator: "in"
 			},
 			{
 				key: "is_superuser",
 				value: true,
-				operator: "notEqualTo",
-				id: "is_superuser"
+				operator: "notEqualTo"
 			}
 		],
 		[project]
@@ -202,8 +202,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 					rowCount={count}
 					filters={filters}
 					setFilters={setFilters}
-					filterColumns={generateFilterColumnsFromFields(
-						currentModule.fields
+					filterColumns={generateFilterColumnsFromModuleFilters(
+						currentModule.filters
 					)}
 					setOrder={setOrder}
 				/>

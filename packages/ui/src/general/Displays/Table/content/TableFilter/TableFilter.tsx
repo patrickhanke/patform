@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SlideIn } from "@repo/ui";
 import { Filter as FilterIcon, Check } from "lucide-react";
 import { ColumnInfo, TableFilterProps } from "./types";
@@ -85,29 +85,48 @@ const getTypeLabel = (type: ColumnDataTypes): string => {
 	return typeLabels[type] || type;
 };
 
+const DEBOUNCE_MS = 400;
+
 const TableFilter: FC<TableFilterProps> = ({
 	filterColumns,
 	filters,
 	setFilters
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const [pendingValues, setPendingValues] = useState<
+		Record<string, Filter["value"]>
+	>({});
+	const debounceTimers = useRef<
+		Record<string, ReturnType<typeof setTimeout>>
+	>({});
+	const setFiltersRef = useRef(setFilters);
+	setFiltersRef.current = setFilters;
 
 	// Extract column information from column definitions
 	const columnInfos = useMemo(() => {
 		const infos: ColumnInfo[] = [];
 
 		filterColumns.forEach((column) => {
-			const col = column as { id?: string; accessorKey?: string };
+			const col = column as {
+				id?: string;
+				accessorKey?: string;
+				operator?: string;
+				operatorTemplate?: string;
+			};
 			const columnId = col.id || col.accessorKey || "";
 			const columnLabel = column.label;
+			const fieldKey = col.accessorKey || columnId;
 
 			const columnType: ColumnDataTypes = column.type;
 
 			if (columnId) {
 				infos.push({
 					id: columnId,
+					fieldKey,
 					label: columnLabel,
-					type: columnType
+					type: columnType,
+					operator: col.operator,
+					operatorTemplate: col.operatorTemplate
 				});
 			}
 		});
@@ -119,34 +138,58 @@ const TableFilter: FC<TableFilterProps> = ({
 
 	const isFilterActive = useCallback(
 		(columnId: string) => {
-			return filters.some((f) => f.id === columnId);
+			return filters.some((f) => (f.id || f.key) === columnId);
 		},
 		[filters]
 	);
 
 	const getActiveFilter = useCallback(
 		(columnId: string) => {
-			return filters.find((f) => f.id === columnId);
+			return filters.find((f) => (f.id || f.key) === columnId);
 		},
 		[filters]
 	);
 
+	useEffect(() => {
+		return () => {
+			Object.values(debounceTimers.current).forEach(clearTimeout);
+		};
+	}, []);
+
 	const toggleFilter = useCallback(
 		(columnInfo: ColumnInfo) => {
-			const existingFilter = filters.find((f) => f.id === columnInfo.id);
+			const existingFilter = filters.find(
+				(f) => (f.id || f.key) === columnInfo.id
+			);
 
 			if (existingFilter) {
-				// Remove filter
+				// Remove filter and clear pending debounce
+				if (debounceTimers.current[columnInfo.id]) {
+					clearTimeout(debounceTimers.current[columnInfo.id]);
+					delete debounceTimers.current[columnInfo.id];
+				}
+				setPendingValues((prev) => {
+					const next = { ...prev };
+					delete next[columnInfo.id];
+					return next;
+				});
 				setFilters((prev) =>
-					prev.filter((f) => f.id !== columnInfo.id)
+					prev.filter((f) => (f.id || f.key) !== columnInfo.id)
 				);
 			} else {
-				// Add filter
+				// Add filter - use column operator when from Module, else default
+				// key = fieldKey for GraphQL (e.g. "title", "location"), id for UI matching
 				const newFilter: Filter = {
 					id: columnInfo.id,
-					key: columnInfo.id,
-					operator: getDefaultOperator(columnInfo.type),
-					value: ""
+					key: columnInfo.fieldKey || columnInfo.id,
+					operator: (columnInfo.operator ||
+						getDefaultOperator(
+							columnInfo.type
+						)) as Filter["operator"],
+					value: "",
+					...(columnInfo.operatorTemplate && {
+						operatorTemplate: columnInfo.operatorTemplate
+					})
 				};
 				setFilters((prev) => [...prev, newFilter]);
 			}
@@ -156,18 +199,36 @@ const TableFilter: FC<TableFilterProps> = ({
 
 	const updateFilterValue = useCallback(
 		(columnId: string, value: Filter["value"]) => {
-			setFilters((prev) =>
-				prev.map((f) => (f.id === columnId ? { ...f, value } : f))
-			);
+			setPendingValues((prev) => ({ ...prev, [columnId]: value }));
+
+			if (debounceTimers.current[columnId]) {
+				clearTimeout(debounceTimers.current[columnId]);
+			}
+
+			debounceTimers.current[columnId] = setTimeout(() => {
+				setFiltersRef.current((prev) =>
+					prev.map((f) =>
+						(f.id || f.key) === columnId ? { ...f, value } : f
+					)
+				);
+				delete debounceTimers.current[columnId];
+			}, DEBOUNCE_MS);
 		},
-		[setFilters]
+		[]
 	);
 
 	const updateFilterOperator = useCallback(
 		(columnId: string, operator: Filter["operator"]) => {
+			setPendingValues((prev) => {
+				const next = { ...prev };
+				delete next[columnId];
+				return next;
+			});
 			setFilters((prev) =>
 				prev.map((f) =>
-					f.id === columnId ? { ...f, operator, value: "" } : f
+					(f.id || f.key) === columnId
+						? { ...f, operator, value: "" }
+						: f
 				)
 			);
 		},
@@ -176,16 +237,24 @@ const TableFilter: FC<TableFilterProps> = ({
 
 	const renderFilterInput = useCallback(
 		(columnInfo: ColumnInfo, filter: Filter) => {
+			const hideOperator = !!columnInfo.operator;
+			const displayValue: Filter["value"] =
+				(columnInfo.id in pendingValues
+					? pendingValues[columnInfo.id]
+					: filter.value) ?? null;
 			const filterProps = {
 				filter: {
 					...filter,
+					id: filter.id || columnInfo.id,
 					columnType: columnInfo.type,
-					columnLabel: columnInfo.label
+					columnLabel: columnInfo.label,
+					value: displayValue
 				},
 				onValueChange: (value: Filter["value"]) =>
 					updateFilterValue(columnInfo.id, value),
 				onOperatorChange: (operator: Filter["operator"]) =>
-					updateFilterOperator(columnInfo.id, operator)
+					updateFilterOperator(columnInfo.id, operator),
+				hideOperator
 			};
 
 			switch (columnInfo.type) {
@@ -237,7 +306,7 @@ const TableFilter: FC<TableFilterProps> = ({
 					return <StringFilter {...filterProps} />;
 			}
 		},
-		[updateFilterValue, updateFilterOperator]
+		[updateFilterValue, updateFilterOperator, pendingValues]
 	);
 
 	const handleConfirm = useCallback(() => {

@@ -33,7 +33,10 @@ export type TableTypes = {
 	setOrder?: Dispatch<SetStateAction<string>>;
 	filters?: Filter[];
 	setFilters?: Dispatch<SetStateAction<Filter[]>>;
-	filterColumns?: ColumnData<TData>[];
+	filterColumns?: (ColumnData<TData> & {
+		operator?: string;
+		operatorTemplate?: string;
+	})[];
 };
 
 export type ColumnDef<TData> = ColumnDef<TData>;
