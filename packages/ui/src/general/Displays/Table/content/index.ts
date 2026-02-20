@@ -9,4 +9,4 @@ export * from "./TableColumnTimesField";
 export * from "./TableColumnEditContent";
 export * from "./TableColumnEditWebpageComponents";
 export * from "./TableFilter";
-export * from "./TableColumnEmailSettings#";
+export * from "./TableColumnEmailSettings";

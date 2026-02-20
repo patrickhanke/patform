@@ -1,9 +1,7 @@
 import { ModuleFilter } from "@repo/types";
 import { ColumnData, ColumnDataTypes } from "../types";
 
-const moduleFilterTypeToColumnType = (
-	moduleType: string
-): ColumnDataTypes => {
+const moduleFilterTypeToColumnType = (moduleType: string): ColumnDataTypes => {
 	switch (moduleType) {
 		case "String":
 			return "string";

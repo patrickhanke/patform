@@ -75,7 +75,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 				onClick={() => setIsOpen(true)}
 				disabled={loading}
 			/>
-			{!loading && dataFromGetData && (
+			{!loading && (
 				<SlideInForm
 					isOpen={isOpen}
 					data={data}
