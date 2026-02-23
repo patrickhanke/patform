@@ -14,6 +14,7 @@ export default function PropertiesPanel({
 	selectedBlock,
 	onBlockUpdate
 }: PropertiesPanelProps) {
+	console.log("selectedBlock", selectedBlock);
 	if (!selectedBlock) {
 		return (
 			<div className="content-editor-properties">
@@ -72,6 +73,7 @@ export default function PropertiesPanel({
 				{selectedBlock.type === "text" && (
 					<>
 						<TextPanel
+							key={selectedBlock.id}
 							value={selectedBlock.value as string}
 							onChange={(value) => handleUpdate("value", value)}
 						/>

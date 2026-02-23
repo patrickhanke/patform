@@ -23,6 +23,7 @@ import {
 	EmailOverview
 } from "./content";
 import { isEqual } from "lodash-es";
+import EmailImport from "./components/EmailImport";
 
 const Email = ({ params }: { params: Params }) => {
 	const { deleteData } = useDataHandler();
@@ -66,7 +67,7 @@ const Email = ({ params }: { params: Params }) => {
 	const [bulkEmailOpen, setBulkEmailOpen] = useState<boolean>(false);
 	const [recipientEmailOpen, setRecipientEmailOpen] =
 		useState<boolean>(false);
-
+	const [importModalOpen, setImportModalOpen] = useState<boolean>(false);
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
 			return [
@@ -96,6 +97,14 @@ const Email = ({ params }: { params: Params }) => {
 		}
 		if (siteState.value === "content") {
 			return [
+				{
+					text: "Importieren",
+					onClick: () => {
+						setImportModalOpen(true);
+					},
+					icon: "save",
+					disabled: loading
+				},
 				{
 					text: "Test E-Mail senden",
 					onClick: () => {
@@ -237,6 +246,14 @@ const Email = ({ params }: { params: Params }) => {
 				setRecipientOpen={setRecipientEmailOpen}
 				emailContent={emailContent}
 				emailId={emailId}
+			/>
+
+			<EmailImport
+				emailId={emailId}
+				projectId={project.objectId}
+				importModalOpen={importModalOpen}
+				setImportModalOpen={setImportModalOpen}
+				refetch={refetch}
 			/>
 		</Page>
 	);
