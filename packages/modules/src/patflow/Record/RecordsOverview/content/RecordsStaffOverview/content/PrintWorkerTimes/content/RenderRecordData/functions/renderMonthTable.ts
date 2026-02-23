@@ -15,14 +15,14 @@ const renderMonthTabel = ({
 	month,
 	year,
 	records = [],
-  position
+	position
 }: {
 	doc: jsPDF;
 	days: Day[];
 	month: (typeof months)[number];
 	year: number;
 	records: Record[];
-  position: number;
+	position: number;
 }) => {
 	if (records.length === 0) {
 		console.error("records are empty");
@@ -39,7 +39,6 @@ const renderMonthTabel = ({
 				records
 			});
 			const currentMonth = monthData.find((m) => m.id === month.id);
-
 			if (!currentMonth) {
 				return [];
 			}

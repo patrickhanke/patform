@@ -36,7 +36,6 @@ const renderDayTable = ({
 			if (day) {
 				// has absence
 				if (day.absence && day.absence.type && day.default_time) {
-					console.log(day.absence);
 					const absenceLabel =
 						absence_type_options.find(
 							(option) => option.value === day?.absence?.type
@@ -81,7 +80,6 @@ const renderDayTable = ({
 				) {
 					day?.time?.forEach((timeValue: DayDataTime) => {
 						if (timeValue) {
-							console.log({ timeValue });
 							timeValue.breaks.forEach(
 								(
 									breakValue: DayDataTime["breaks"][number],

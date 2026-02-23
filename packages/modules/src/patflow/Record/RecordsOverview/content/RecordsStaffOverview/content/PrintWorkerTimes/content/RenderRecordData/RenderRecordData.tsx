@@ -22,12 +22,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 }) => {
 	const { project } = useAppContext();
 
-	console.log({ worker });
-	console.log({ records });
-
-	console.log({ project });
 	const generatePDF = (worker: Worker) => {
-		console.log({ worker });
 		const workerDays = days.filter(
 			(day) => day.user.objectId === worker.objectId
 		);
@@ -38,8 +33,6 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 			days: workerDays,
 			records: []
 		});
-
-		console.log({ dayData });
 
 		const doc = new jsPDF();
 
@@ -78,30 +71,26 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 		doc.setFontSize(10);
 
 		const currentMonth = months.find((m) => m.id === month);
-		const finalYDayTable = doc.lastAutoTable.finalY || 30;
+		// const finalYDayTable = doc.lastAutoTable.finalY || 30;
 		if (currentMonth) {
 			if (fields.includes("month_table")) {
-				doc.text(
-					`Zeitübersicht ${month} ${year}`,
-					20,
-					finalYDayTable + 10
-				);
+				doc.addPage();
+				doc.text(`Zeitübersicht ${currentMonth.label} ${year}`, 20, 20);
 				renderMonthTabel({
 					doc,
 					days,
 					month: currentMonth,
 					year,
 					records,
-					position: finalYDayTable + 15
+					position: 25
 				});
 			}
-			console.log(doc.lastAutoTable);
 			if (fields.includes("surcharge_table")) {
 				const finalYMonthTable = doc.lastAutoTable.finalY || 30;
 				doc.text(
-					`Zuschläge ${month} ${year}`,
+					`Zuschläge ${currentMonth.label} ${year}`,
 					20,
-					finalYMonthTable + 10
+					finalYMonthTable + 20
 				);
 				renderSurchargeTable({
 					doc,
@@ -109,7 +98,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 					month: currentMonth,
 					year,
 					surcharges: surcharges,
-					position: finalYMonthTable + 15
+					position: finalYMonthTable + 25
 				});
 			}
 		}

@@ -20,7 +20,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 	userId,
 	skipQuery = false,
 	pollInterval = 0,
-	propertyId
+	propertyId,
+	userIds
 }) => {
 	const queryName = pluralize(objectName);
 	console.log("objectName", objectName);
@@ -40,7 +41,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 					projectId,
 					filters,
 					userId,
-					propertyId
+					propertyId,
+					userIds
 				}),
 				first: limit,
 				skip,

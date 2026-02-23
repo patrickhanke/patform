@@ -14,10 +14,15 @@ const StaffOverview = () => {
 			"last_name",
 			"email",
 			"username",
-			"role {name}"
+			"role {name}",
+			"color",
+			"data",
+			"notification_settings"
 		],
 		useMasterKey: true
 	});
+
+	console.log({ data });
 	const columns = useTableColumns({ refetch });
 
 	return (

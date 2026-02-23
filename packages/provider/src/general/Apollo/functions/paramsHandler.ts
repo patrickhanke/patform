@@ -8,12 +8,15 @@ const paramsHandler: ParamsHandlerType = ({
 	moduleId,
 	filters,
 	userId,
-	propertyId
+	propertyId,
+	userIds
 }) => {
 	const filterObject: FilterObject = {};
 
 	if (propertyId) {
-		filterObject.property = { have: { objectId: { equalTo: propertyId } } } as {
+		filterObject.property = {
+			have: { objectId: { equalTo: propertyId } }
+		} as {
 			[key in FilterOperator]: any;
 		};
 	}
@@ -36,9 +39,13 @@ const paramsHandler: ParamsHandlerType = ({
 		};
 	}
 
-	let additionalFilters: FilterObject = {};
+	if (userIds) {
+		filterObject.user = { have: { objectId: { in: userIds } } } as {
+			[key in FilterOperator]: any;
+		};
+	}
 
-	console.log("filters", filters);
+	let additionalFilters: FilterObject = {};
 
 	if (filters && filters?.length > 0) {
 		additionalFilters = filters?.reduce(
@@ -47,7 +54,11 @@ const paramsHandler: ParamsHandlerType = ({
 				filter: Filter
 			) => {
 				// Support operatorTemplate for complex nested structures (e.g. Pointer: location.have.objectId.equalTo)
-				if (filter.operatorTemplate && filter.value != null && filter.value !== "") {
+				if (
+					filter.operatorTemplate &&
+					filter.value != null &&
+					filter.value !== ""
+				) {
 					try {
 						// Replace {{value}} - for strings use escaped content, for others use JSON
 						const valueReplacement =
@@ -84,7 +95,6 @@ const paramsHandler: ParamsHandlerType = ({
 			{}
 		);
 	}
-	console.log("additionalFilters", additionalFilters);
 	return { ...filterObject, ...additionalFilters };
 };
 

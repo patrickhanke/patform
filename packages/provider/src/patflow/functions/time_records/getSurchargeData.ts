@@ -33,6 +33,7 @@ const getSurchargeData = ({
 				if (day && day.surcharges && day.surcharges.length > 0) {
 					day.surcharges.forEach(
 						(surcharge: Day["surcharges"][number]) => {
+							console.log({ surcharge });
 							const surchargeIndex = surchargeArray.findIndex(
 								(s) => s.objectId === surcharge.surcharge_id
 							);

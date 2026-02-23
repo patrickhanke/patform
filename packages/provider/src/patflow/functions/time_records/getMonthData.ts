@@ -54,6 +54,7 @@ const getMonthData = ({
 
 			target += default_time;
 		});
+
 		if (days && records) {
 			dateInterval.forEach((dayString) => {
 				const dayArray = days.filter(

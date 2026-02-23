@@ -44,7 +44,7 @@ export type UseFindRecord = (P: { year: number; users: string[] }) => {
 	refetch: ApolloRefetch;
 };
 
-export type UseFindSurcharges = (P: { year: number; users: string[] }) => {
+export type UseFindSurcharges = () => {
 	loading: boolean;
 	surcharges: Surcharge[];
 	refetch: ApolloRefetch;

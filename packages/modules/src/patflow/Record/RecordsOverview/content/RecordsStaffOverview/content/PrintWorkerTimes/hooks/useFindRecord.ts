@@ -5,15 +5,10 @@ const useFindRecord: UseFindRecord = ({ year, users = [] }) => {
 	const { loading, data, refetch } = useFindData({
 		objectName: "Record",
 		fields: ["objectId", "year", "user {objectId}", "default_times"],
-		filters: [
-			{ key: "year", value: year, operator: "equalTo" },
-			{ key: "user", value: users, operator: "in" }
-		],
-
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
+		userIds: users,
 		skipQuery: !year || users.length === 0
 	});
-
-	console.log({ data });
 
 	return {
 		loading,

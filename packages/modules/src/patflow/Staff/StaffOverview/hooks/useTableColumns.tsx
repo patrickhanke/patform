@@ -62,7 +62,12 @@ const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 			},
 			{
 				accessorFn: (row) => (
-					<StaffMemberSettings userId={row.objectId} />
+					<StaffMemberSettings
+						initialData={row.data}
+						key={row.objectId}
+						userId={row.objectId}
+						refetch={refetch}
+					/>
 				),
 				header: () => <span>Bearbeiten</span>,
 				id: "edit",

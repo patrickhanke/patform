@@ -5,46 +5,40 @@ import {
 	SwitchButton,
 	SwitchButtons
 } from "@repo/ui";
-import { useState, useEffect } from "react";
-import NotificationSettings from "./components/NotificationSettings";
+import { useState, useCallback } from "react";
 import site_states from "./constants/site_states";
 import ContactInformation from "./components/ContactInformations";
-import { useDataHandler, useGetData } from "@repo/provider";
-import { PatflowUser } from "@repo/types";
+import { useDataHandler } from "@repo/provider";
+import { ApolloRefetch, PatflowUser } from "@repo/types";
 
-const StaffMemberSettings = ({ userId }: { userId: string }) => {
+const StaffMemberSettings = ({
+	userId,
+	initialData,
+	refetch
+}: {
+	userId: string;
+	initialData: PatflowUser["data"];
+	refetch: ApolloRefetch;
+}) => {
 	const [open, setOpen] = useState(false);
 	const { updateData } = useDataHandler();
 	const [siteState, setSiteState] = useState<SwitchButton>(site_states[0]);
-	const [data, setData] = useState<Partial<PatflowUser> | undefined>(
-		undefined
-	);
-	const { data: userData, refetch } = useGetData({
-		objectName: "_User",
-		fields: [
-			"objectId",
-			"data",
-			"first_name",
-			"last_name",
-			"notification_settings"
-		],
-		id: userId
-	});
+	const [data, setData] = useState<PatflowUser["data"]>(initialData);
+	console.log({ initialData });
+	console.log({ data });
 
-	useEffect(() => {
-		if (userData) {
-			setData({
-				first_name: userData.first_name,
-				last_name: userData.last_name,
-				data: userData.data,
-				notification_settings: userData.notification_settings
-			});
-		}
-	}, [userData]);
+	const updateUser = useCallback(async () => {
+		if (!data) return;
 
-	if (!data) {
-		return null;
-	}
+		await updateData({
+			className: "_User",
+			objectId: userId,
+			updateObject: data,
+			feedback: "Einstellungen aktualisiert"
+		});
+		await refetch();
+		setOpen(false);
+	}, [data, userId, updateData]);
 
 	return (
 		<>
@@ -53,31 +47,24 @@ const StaffMemberSettings = ({ userId }: { userId: string }) => {
 				header="Mitarbeiter Einstellungen"
 				isOpen={open}
 				cancel={() => setOpen(false)}
-				confirm={async () => {
-					await updateData({
-						className: "_User",
-						objectId: userId,
-						updateObject: data,
-						feedback: "Einstellungen aktualisiert"
-					});
-					await refetch();
-
-					setOpen(false);
-				}}
+				confirm={updateUser}
 			>
 				<div>
-					<SwitchButtons
+					{/* <SwitchButtons
 						changeHandler={(value) => setSiteState(value)}
 						currentStates={siteState}
 						buttonStates={[...site_states]}
-					/>
+					/> */}
 					<Divider size="medium" showLine={false} />
 					{siteState.value === "contact" && (
-						<ContactInformation data={data} setData={setData} />
+						<ContactInformation
+							data={data || initialData}
+							setData={setData}
+						/>
 					)}
-					{siteState.value === "notification" && (
+					{/* {siteState.value === "notification" && (
 						<NotificationSettings data={data} setData={setData} />
-					)}
+					)} */}
 				</div>
 			</SlideIn>
 		</>

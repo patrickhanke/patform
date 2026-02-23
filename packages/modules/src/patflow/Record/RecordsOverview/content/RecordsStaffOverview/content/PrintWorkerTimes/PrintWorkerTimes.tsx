@@ -46,15 +46,12 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 		users: selectedWorker.map((worker) => worker.value as string)
 	});
 
-	const { surcharges } = useFindSurcharges({
-		year: selectedTimes.year,
-		users: selectedWorker.map((worker) => worker.value as string)
-	});
+	const { surcharges } = useFindSurcharges();
 
 	const [loading, setLoading] = useState(false);
 	const { data, refetch } = useFindData({
 		objectName: "Day",
-		fields: ["objectId", "date", "time", "user {objectId}", "year"],
+		fields: ["objectId", "date", "time", "user {objectId}", "year", "type"],
 		filters: [
 			{ key: "year", value: selectedTimes.year, operator: "equalTo" }
 		],

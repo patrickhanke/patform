@@ -6,7 +6,7 @@ import {
 	getOvertimeSaldo
 } from "@repo/provider";
 import autoTable from "jspdf-autotable";
-import { jsPDF } from "jspdf";
+import { jsPDF, type jsPDF as jsPDFType } from "jspdf";
 import { Day, Surcharge } from "@repo/types";
 
 const renderSurchargeTable = ({
@@ -17,7 +17,7 @@ const renderSurchargeTable = ({
 	surcharges = [],
 	position
 }: {
-	doc: jsPDF;
+	doc: jsPDFType;
 	days: Day[];
 	month: (typeof months)[number];
 	year: number;
@@ -25,8 +25,9 @@ const renderSurchargeTable = ({
 	position: number;
 }) => {
 	if (surcharges.length === 0) {
-		console.error("records are empty");
+		console.error("surcharges are empty");
 	}
+
 	return autoTable(doc, {
 		startY: position,
 		head: [["Zuschlag", "Stunden"]],
