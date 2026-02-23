@@ -14,7 +14,6 @@ export default function PropertiesPanel({
 	selectedBlock,
 	onBlockUpdate
 }: PropertiesPanelProps) {
-	console.log("selectedBlock", selectedBlock);
 	if (!selectedBlock) {
 		return (
 			<div className="content-editor-properties">

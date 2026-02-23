@@ -11,15 +11,19 @@ export type TestEmailProps = {
 	testEmail: boolean;
 	setTestEmail: Dispatch<SetStateAction<boolean>>;
 	emailContent: ContentBlock[];
+	listId?: string;
 };
 
 const TestEmail: FC<TestEmailProps> = ({
 	testEmail,
 	setTestEmail,
-	emailContent
+	emailContent,
+	listId
 }) => {
 	const [email, setEmail] = useState<string>("");
-	const { project } = useContext(PatstoreAppContext);
+	const { project, user } = useContext(PatstoreAppContext);
+
+	console.log("user", user.objectId);
 
 	return (
 		<Modal
@@ -35,9 +39,11 @@ const TestEmail: FC<TestEmailProps> = ({
 				await axiosclient()
 					.post("functions/send_test_email", {
 						email,
+						user_id: user.objectId,
 						content: transformToEmail(emailContent),
 						project_id: project.objectId,
-						route: "broadcast"
+						route: "broadcast",
+						list_id: listId
 					})
 					.then((response) => {
 						return response.data.result;

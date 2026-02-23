@@ -6,10 +6,9 @@ import { EmailClass } from "@repo/types";
 
 export interface EmailOverviewProps {
 	email: EmailClass;
-	projectId: string;
 }
 
-const EmailOverview: FC<EmailOverviewProps> = ({ email, projectId }) => {
+const EmailOverview: FC<EmailOverviewProps> = ({ email }) => {
 	const attachmentCount = useMemo(() => {
 		return email?.attachments?.length || 0;
 	}, [email]);

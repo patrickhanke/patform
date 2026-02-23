@@ -30,8 +30,6 @@ const Email = ({ params }: { params: Params }) => {
 	const { project } = useAppContext();
 	const emailId = params.email_id;
 
-	console.log(emailId);
-
 	const { data: email, refetch } = useGetData({
 		objectName: "Email",
 		fields: [
@@ -171,10 +169,7 @@ const Email = ({ params }: { params: Params }) => {
 			) : (
 				<>
 					{siteState.value === "overview" && (
-						<EmailOverview
-							email={email}
-							projectId={project.objectId}
-						/>
+						<EmailOverview email={email} />
 					)}
 					{siteState.value === "data" && (
 						<EmailData
@@ -233,6 +228,7 @@ const Email = ({ params }: { params: Params }) => {
 				testEmail={testEmailOpen}
 				setTestEmail={setTestEmailOpen}
 				emailContent={emailContent}
+				listId={email?.settings?.recipient_list}
 			/>
 			<BulkEmailSender
 				isOpen={bulkEmailOpen}
