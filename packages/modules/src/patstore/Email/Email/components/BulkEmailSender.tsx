@@ -9,15 +9,8 @@ import {
 	useState
 } from "react";
 import { ContentBlock, Modal, ProgressBar } from "@repo/ui";
-import {
-	axiosclient,
-	compileAxiosError,
-	useAppContext,
-	useFindData,
-	useGetData
-} from "@repo/provider";
+import { axiosclient, compileAxiosError, useAppContext } from "@repo/provider";
 import { transformToEmail } from "@repo/ui";
-import { Filter } from "@repo/types";
 
 export type BulkEmailSenderProps = {
 	isOpen: boolean;
@@ -110,7 +103,8 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 						email_id: emailId,
 						project_id: project.objectId,
 						content: transformToEmail(emailContent),
-						recipients: batch
+						recipients: batch,
+						route: "broadcast"
 					})
 					.catch((error) => {
 						throw new Error(compileAxiosError(error).message);

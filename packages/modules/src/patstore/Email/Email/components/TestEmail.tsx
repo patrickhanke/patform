@@ -36,7 +36,8 @@ const TestEmail: FC<TestEmailProps> = ({
 					.post("functions/send_test_email", {
 						email,
 						content: transformToEmail(emailContent),
-						project_id: project.objectId
+						project_id: project.objectId,
+						route: "broadcast"
 					})
 					.then((response) => {
 						return response.data.result;
