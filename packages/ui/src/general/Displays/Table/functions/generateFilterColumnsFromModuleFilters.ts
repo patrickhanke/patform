@@ -28,8 +28,12 @@ const moduleFilterTypeToColumnType = (moduleType: string): ColumnDataTypes => {
 const generateFilterColumnsFromModuleFilters = <T extends object>(
 	moduleFilters: ModuleFilter[] = []
 ): (ColumnData<T> & { operator?: string; operatorTemplate?: string })[] => {
+	if (!moduleFilters) return [];
+
 	return moduleFilters.map((filter, index) => ({
-		id: filter.id || `filter-${filter.field}-${index}`,
+		id:
+			(filter.id as keyof T) ||
+			(`filter-${filter.field}-${index}` as keyof T),
 		/** GraphQL field name - used as Filter.key for query */
 		accessorKey: filter.field,
 		label: filter.label || filter.field,

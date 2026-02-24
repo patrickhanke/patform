@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
-import { Form } from "@repo/ui";
+import { Field, Form } from "@repo/ui";
 import { ChangeUserSettingsProps } from "../types";
 
 const ContactInformation: React.FC<ChangeUserSettingsProps> = ({
 	data,
 	setData
 }) => {
-	const fields = useMemo(
+	const fields = useMemo<Field[]>(
 		() => [
 			{
 				id: "first_name",
