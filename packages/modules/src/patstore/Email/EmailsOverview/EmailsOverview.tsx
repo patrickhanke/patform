@@ -43,7 +43,14 @@ const EmailsOverview = () => {
 				className: "Email",
 				text: "Neue E-Mail erstellen",
 				fields: currentModule.fields,
-				refetch: refetch
+				refetch: refetch,
+				initialData: {
+					state: "draft",
+					settings: {
+						recipient_list: "",
+						subject: ""
+					}
+				}
 			}}
 			refetch={refetch}
 		>

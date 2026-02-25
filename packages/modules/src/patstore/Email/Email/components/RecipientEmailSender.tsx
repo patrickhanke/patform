@@ -8,7 +8,7 @@ import {
 	useMemo,
 	useState
 } from "react";
-import { SlideIn, ProgressBar } from "@repo/ui";
+import { SlideIn, ProgressBar, InfoBox } from "@repo/ui";
 import { axiosclient, compileAxiosError, useAppContext } from "@repo/provider";
 import { transformToEmail } from "@repo/ui";
 import { ContentBlock } from "@repo/ui";
@@ -334,6 +334,10 @@ const RecipientEmailSender: FC<RecipientEmailSenderProps> = ({
 			confirmText={isSending ? "Wird gesendet..." : "Senden"}
 		>
 			{recipientList}
+			<InfoBox
+				text="Diese E-Mail wird an die ausgewählten Empfänger versendet. Die Empfänger erhalten keine Möglichkeit, sich abzumelden. Hierfür sollten Sie eine Empfängerliste erstellen."
+				status="info"
+			/>
 		</SlideIn>
 	);
 };

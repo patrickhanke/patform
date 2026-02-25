@@ -99,12 +99,11 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 
 				// Send batch
 				await axiosclient()
-					.post("functions/send_email_to_users", {
+					.post("functions/send_broadcast_email", {
 						email_id: emailId,
 						project_id: project.objectId,
 						content: transformToEmail(emailContent),
-						recipients: batch,
-						route: "broadcast"
+						recipients: batch
 					})
 					.catch((error) => {
 						throw new Error(compileAxiosError(error).message);
@@ -136,6 +135,8 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 			setLoading(false);
 		}
 	}, [recipients, emailContent, emailId, project, setIsOpen]);
+
+	console.log("recipients", recipients);
 
 	const handleClose = () => {
 		if (!loading) {

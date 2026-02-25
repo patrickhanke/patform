@@ -66,6 +66,8 @@ const Email = ({ params }: { params: Params }) => {
 	const [recipientEmailOpen, setRecipientEmailOpen] =
 		useState<boolean>(false);
 	const [importModalOpen, setImportModalOpen] = useState<boolean>(false);
+
+	console.log("email", email);
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
 			return [
@@ -77,7 +79,7 @@ const Email = ({ params }: { params: Params }) => {
 					disabled:
 						loading ||
 						email?.state !== "draft" ||
-						email?.recipients?.length === 0 ||
+						!email.settings.recipient_list ||
 						email?.content?.length === 0
 				},
 				{
@@ -88,7 +90,7 @@ const Email = ({ params }: { params: Params }) => {
 					disabled:
 						loading ||
 						email?.state !== "draft" ||
-						email?.recipients?.length === 0 ||
+						!email.settings.recipient_list ||
 						email?.content?.length === 0
 				}
 			];
