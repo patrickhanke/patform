@@ -1,0 +1,93 @@
+.editor-text-color-picker {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	z-index: 8;
+}
+
+.editor-text-color-trigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.08);
+	}
+
+	&.active {
+		background-color: #333333;
+		color: #ffffff;
+	}
+}
+
+.Toolbar .editor-text-color-trigger:hover {
+	background-color: #333333;
+
+	svg {
+		color: #ffffff !important;
+	}
+}
+
+.Popover .editor-text-color-trigger {
+	&:hover {
+		background-color: #555555;
+	}
+
+	&.active {
+		background-color: #555555;
+	}
+}
+
+.editor-text-color-popover {
+	position: absolute;
+	top: 100%;
+	transform: translateX(-50%);
+	left: 55%;
+	margin-top: 4px;
+	padding: 12px;
+	background: #ffffff;
+	border: 1px solid #d1d5da;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	z-index: 11;
+}
+
+.editor-text-color-input-row {
+	margin-top: 8px;
+}
+
+.editor-text-color-input {
+	width: 100%;
+	padding: 6px 8px;
+	font-size: 12px;
+	border: 1px solid #d1d5da;
+	border-radius: 4px;
+	text-transform: uppercase;
+
+	&:focus {
+		outline: none;
+		border-color: #0366d6;
+	}
+}
+
+.editor-text-color-reset {
+	margin-top: 8px;
+	width: 100%;
+	padding: 6px 8px;
+	font-size: 12px;
+	background: transparent;
+	border: 1px solid #d1d5da;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #666;
+
+	&:hover {
+		background: #f6f8fa;
+		color: #333;
+	}
+}

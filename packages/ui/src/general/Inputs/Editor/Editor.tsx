@@ -10,6 +10,8 @@ import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
 
 import type { Extensions } from "@tiptap/react";
 
@@ -65,6 +67,9 @@ function Editor({
 			openOnClick: false
 		})
 	);
+
+	// TextStyle + Color for text color support
+	extensions.push(TextStyle, Color);
 
 	if (withTypographyExtension) {
 		extensions.push(Typography);

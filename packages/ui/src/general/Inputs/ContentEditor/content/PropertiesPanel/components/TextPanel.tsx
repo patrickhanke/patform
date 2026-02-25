@@ -10,7 +10,12 @@ const TextPanel = ({
 }) => {
 	return (
 		<div className="property-group">
-			<Editor content={value} onChange={onChange} withPopover />
+			<Editor
+				content={value}
+				onChange={onChange}
+				withPopover
+				withHexColorsDecorator
+			/>
 		</div>
 	);
 };

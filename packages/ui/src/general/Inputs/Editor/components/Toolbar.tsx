@@ -34,6 +34,7 @@ import {
 import { useInView } from "react-cool-inview";
 
 import setLink from "../functions/setLink";
+import TextColorPicker from "./TextColorPicker";
 
 // sample(['teste']);
 
@@ -98,6 +99,8 @@ function Toolbar({ editor }: ToolbarProps) {
 				>
 					<RiCodeSSlashLine />
 				</div>
+				<div className="divider"></div>
+				<TextColorPicker editor={editor} />
 				<div className="divider"></div>
 				<div
 					className="icon"
