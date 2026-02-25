@@ -19,7 +19,7 @@ export const transformToEmail = (blocks: ContentBlock[]): string => {
 	<title>Email Preview</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
-	<table role="presentation" max-width="660px" width="100%" cellspacing="0" cellpadding="0" border="0">
+	<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width: 660px;">
 		<tr>
 			<td align="center" style="padding: 20px 10px;">
 				<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff;">
@@ -124,7 +124,7 @@ const renderEmailImageBlock = (block: ContentBlock): string => {
 	const imageUrl = block.config?.imageUrl || "";
 	const alignment = block.config?.alignment || "center";
 	const imageAlt = block.config?.imageAlt || "Image";
-	const width = block.config?.width || "100%";
+	const width = block.config?.width || "600px";
 	const height = block.config?.height || "auto";
 
 	if (!imageUrl) return "";
