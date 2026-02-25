@@ -1,31 +1,19 @@
-import {
-	Divider,
-	IconButton,
-	SlideIn,
-	SwitchButton,
-	SwitchButtons
-} from "@repo/ui";
-import { useState, useCallback } from "react";
+import { Divider, IconButton, SlideIn, SwitchButton } from "@repo/ui";
+import { useState, useCallback, FC } from "react";
 import site_states from "./constants/site_states";
 import ContactInformation from "./components/ContactInformations";
 import { useDataHandler } from "@repo/provider";
-import { ApolloRefetch, PatflowUser } from "@repo/types";
+import { StaffMemberData, StaffMemberSettingsProps } from "./types";
 
-const StaffMemberSettings = ({
-	userId,
+const StaffMemberSettings: FC<StaffMemberSettingsProps> = ({
 	initialData,
+	userId,
 	refetch
-}: {
-	userId: string;
-	initialData: PatflowUser["data"];
-	refetch: ApolloRefetch;
 }) => {
 	const [open, setOpen] = useState(false);
 	const { updateData } = useDataHandler();
-	const [siteState, setSiteState] = useState<SwitchButton>(site_states[0]);
-	const [data, setData] = useState<PatflowUser["data"]>(initialData);
-	console.log({ initialData });
-	console.log({ data });
+	const [siteState] = useState<SwitchButton>(site_states[0]);
+	const [data, setData] = useState<StaffMemberData>(initialData);
 
 	const updateUser = useCallback(async () => {
 		if (!data) return;
@@ -44,27 +32,19 @@ const StaffMemberSettings = ({
 		<>
 			<IconButton icon="edit" onClick={() => setOpen(!open)} />
 			<SlideIn
-				header="Mitarbeiter Einstellungen"
+				header="Mitarbeiter Kontaktinformationen"
 				isOpen={open}
 				cancel={() => setOpen(false)}
 				confirm={updateUser}
 			>
 				<div>
-					{/* <SwitchButtons
-						changeHandler={(value) => setSiteState(value)}
-						currentStates={siteState}
-						buttonStates={[...site_states]}
-					/> */}
 					<Divider size="medium" showLine={false} />
 					{siteState.value === "contact" && (
 						<ContactInformation
-							data={data || initialData}
+							data={initialData}
 							setData={setData}
 						/>
 					)}
-					{/* {siteState.value === "notification" && (
-						<NotificationSettings data={data} setData={setData} />
-					)} */}
 				</div>
 			</SlideIn>
 		</>

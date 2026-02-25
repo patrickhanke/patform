@@ -55,7 +55,7 @@ const ContactInformation: React.FC<ChangeUserSettingsProps> = ({
 				}
 			},
 			{
-				id: "street",
+				id: "data.street",
 				position: 3,
 				name: "data.street",
 				type: "input",
