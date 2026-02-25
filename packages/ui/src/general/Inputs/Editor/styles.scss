@@ -323,6 +323,11 @@
     &.disabled {
       pointer-events: none;
     }
+
+    &.active {
+      background: #555555;
+      color: #ffffff;
+    }
   }
 
   .icon:hover {
@@ -374,6 +379,11 @@
     &.disabled {
       color: rgba(#333333, 0.5);
       pointer-events: none;
+    }
+
+    &.active {
+      background: #333333;
+      color: #ffffff;
     }
   }
 

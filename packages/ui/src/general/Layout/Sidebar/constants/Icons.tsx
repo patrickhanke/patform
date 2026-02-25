@@ -11,7 +11,7 @@ import {
 	BsPeople,
 	BsPlusLg
 } from "react-icons/bs";
-import { FaUsers, FaUser } from "react-icons/fa";
+import { FaUsers, FaUser, FaList } from "react-icons/fa";
 import { GrProjects } from "react-icons/gr";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
@@ -185,6 +185,9 @@ const Icons = ({ icon, color }: { icon: string; color?: string }) => {
 	}
 	if (icon === "emails" || icon === "email") {
 		return <BsEnvelopeAt color={color || "inherit"} />;
+	}
+	if (icon === "lists" || icon === "list") {
+		return <FaList color={color || "inherit"} />;
 	}
 
 	return null;

@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { useEffect, useState } from "react";
 import { Editor } from "@tiptap/react";
 import {
 	RiBold,
@@ -41,7 +42,18 @@ type ToolbarProps = {
 };
 
 function Toolbar({ editor }: ToolbarProps) {
+	const [, setSelectionUpdate] = useState(0);
 	const isCursorOverLink = editor.getAttributes("link").href;
+
+	useEffect(() => {
+		const handler = () => setSelectionUpdate((n) => n + 1);
+		editor.on("selectionUpdate", handler);
+		editor.on("transaction", handler);
+		return () => {
+			editor.off("selectionUpdate", handler);
+			editor.off("transaction", handler);
+		};
+	}, [editor]);
 
 	const { observe, inView } = useInView({
 		rootMargin: "-1px 0px 0px 0px",
@@ -55,25 +67,33 @@ function Toolbar({ editor }: ToolbarProps) {
 		>
 			<div className="Toolbar">
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("bold")
+					})}
 					onClick={() => editor.chain().focus().toggleBold().run()}
 				>
 					<RiBold />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("italic")
+					})}
 					onClick={() => editor.chain().focus().toggleItalic().run()}
 				>
 					<RiItalic />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("strike")
+					})}
 					onClick={() => editor.chain().focus().toggleStrike().run()}
 				>
 					<RiStrikethrough />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("code")
+					})}
 					onClick={() => editor.chain().focus().toggleCode().run()}
 				>
 					<RiCodeSSlashLine />
@@ -93,7 +113,9 @@ function Toolbar({ editor }: ToolbarProps) {
 				</div>
 				<div className="divider"></div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("heading", { level: 1 })
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleHeading({ level: 1 }).run()
 					}
@@ -101,7 +123,9 @@ function Toolbar({ editor }: ToolbarProps) {
 					<RiH1 />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("heading", { level: 2 })
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleHeading({ level: 2 }).run()
 					}
@@ -109,7 +133,9 @@ function Toolbar({ editor }: ToolbarProps) {
 					<RiH2 />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("heading", { level: 3 })
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleHeading({ level: 3 }).run()
 					}
@@ -117,7 +143,9 @@ function Toolbar({ editor }: ToolbarProps) {
 					<RiH3 />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("heading", { level: 4 })
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleHeading({ level: 4 }).run()
 					}
@@ -125,7 +153,9 @@ function Toolbar({ editor }: ToolbarProps) {
 					<RiH4 />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("heading", { level: 5 })
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleHeading({ level: 5 }).run()
 					}
@@ -133,7 +163,9 @@ function Toolbar({ editor }: ToolbarProps) {
 					<RiH5 />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("heading", { level: 6 })
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleHeading({ level: 6 }).run()
 					}
@@ -141,13 +173,17 @@ function Toolbar({ editor }: ToolbarProps) {
 					<RiH6 />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("paragraph")
+					})}
 					onClick={() => editor.chain().focus().setParagraph().run()}
 				>
 					<RiParagraph />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("bulletList")
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleBulletList().run()
 					}
@@ -155,7 +191,9 @@ function Toolbar({ editor }: ToolbarProps) {
 					<RiListOrdered />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("orderedList")
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleOrderedList().run()
 					}
@@ -163,7 +201,9 @@ function Toolbar({ editor }: ToolbarProps) {
 					<RiListUnordered />
 				</div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("codeBlock")
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleCodeBlock().run()
 					}
@@ -184,7 +224,9 @@ function Toolbar({ editor }: ToolbarProps) {
 				</div>
 				<div className="divider"></div>
 				<div
-					className="icon"
+					className={classNames("icon", {
+						active: editor.isActive("blockquote")
+					})}
 					onClick={() =>
 						editor.chain().focus().toggleBlockquote().run()
 					}

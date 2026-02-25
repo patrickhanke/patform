@@ -1,4 +1,3 @@
-import { useGetData } from "@repo/provider";
 import { ContentBlock } from "../../../ContentEditor";
 
 /**
@@ -20,7 +19,7 @@ export const transformToEmail = (blocks: ContentBlock[]): string => {
 	<title>Email Preview</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
-	<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+	<table role="presentation" max-width="660px" width="100%" cellspacing="0" cellpadding="0" border="0">
 		<tr>
 			<td align="center" style="padding: 20px 10px;">
 				<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff;">
@@ -47,7 +46,7 @@ const renderEmailBlock = (block: ContentBlock): string => {
 		case "button":
 			return renderEmailButtonBlock(block);
 		case "divider":
-			return renderEmailDividerBlock(block);
+			return renderEmailDividerBlock();
 		case "image":
 			return renderEmailImageBlock(block);
 		case "layout":
@@ -111,7 +110,7 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 	`;
 };
 
-const renderEmailDividerBlock = (block: ContentBlock): string => {
+const renderEmailDividerBlock = (): string => {
 	return `
 		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 32px 0;">
 			<tr>

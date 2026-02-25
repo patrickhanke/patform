@@ -6,10 +6,9 @@ import "./styles.scss";
 
 interface TextBlockProps {
 	block: ContentBlock;
-	onUpdate: (updates: Partial<ContentBlock>) => void;
 }
 
-export default function TextBlock({ block, onUpdate }: TextBlockProps) {
+export default function TextBlock({ block }: TextBlockProps) {
 	const contentRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
@@ -18,23 +17,12 @@ export default function TextBlock({ block, onUpdate }: TextBlockProps) {
 		}
 	}, []);
 
-	const handleInput = () => {
-		if (contentRef.current) {
-			const newValue = contentRef.current.innerHTML;
-			onUpdate({ value: newValue });
-		}
-	};
-
-	const handleBlur = () => {
-		if (contentRef.current) {
-			const newValue = contentRef.current.innerHTML;
-			onUpdate({ value: newValue });
-		}
-	};
-
 	return (
 		<div className="text-block">
-			<div dangerouslySetInnerHTML={{ __html: block.value as string }} />
+			<div
+				className="text-block-content"
+				dangerouslySetInnerHTML={{ __html: block.value as string }}
+			/>
 		</div>
 	);
 }
