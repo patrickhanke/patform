@@ -96,7 +96,7 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 				const start = i * BATCH_SIZE;
 				const end = Math.min(start + BATCH_SIZE, recipients.length);
 				const batch = recipients.slice(start, end);
-
+				
 				// Send batch
 				await axiosclient()
 					.post("functions/send_broadcast_email", {

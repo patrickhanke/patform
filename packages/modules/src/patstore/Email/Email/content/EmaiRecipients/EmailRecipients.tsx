@@ -4,80 +4,15 @@ import { FC, useCallback, useEffect, useState } from "react";
 import { EmailRecipient } from "@repo/types";
 import { EmailRecipientsProps, EmailStatus } from "./types";
 import { axiosclient } from "@repo/provider";
-
-interface RecipientWithStatus extends EmailRecipient {
-	status: EmailStatus;
-	loading: boolean;
-	error?: string;
-}
+import EmailRecipientState from "./components/EmailRecipientState";
 
 const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
-	const [recipients, setRecipients] = useState<RecipientWithStatus[]>([]);
-	console.log({ apiKey: process.env.NEXT_PUBLIC_LETTERMINT_API_KEY });
+	const [recipients, setRecipients] = useState<EmailRecipient[]>(
+		email.recipients || []
+	);
 	console.log("email", email.recipients);
 
-	const getEmailStatus = useCallback(async () => {
-		const response = await axiosclient().post("functions/get_email_meta", {
-			recipients: email.recipients,
-			url: "@koloproktologie.org"
-		});
-		console.log({ response });
-	}, [email]);
-
-	useEffect(() => {
-		if (email?.recipients) {
-			// Initialize recipients with loading state
-			const initialRecipients: RecipientWithStatus[] =
-				email.recipients.map((recipient) => ({
-					...recipient,
-					status: "unknown" as EmailStatus,
-					loading: !!recipient.message_id
-				}));
-			setRecipients(initialRecipients);
-
-			// Fetch status for each recipient with message_id
-			getEmailStatus();
-		}
-	}, [email]);
-
-	const getStatusBadgeClass = (status: EmailStatus): string => {
-		switch (status) {
-			case "delivered":
-			case "sent":
-				return "success";
-			case "opened":
-			case "clicked":
-				return "info";
-			case "bounced":
-			case "failed":
-				return "danger";
-			case "complained":
-				return "warning";
-			case "unsubscribed":
-				return "secondary";
-			case "pending":
-				return "warning";
-			case "unknown":
-			default:
-				return "default";
-		}
-	};
-
-	const getStatusLabel = (status: EmailStatus): string => {
-		const labels: Record<EmailStatus, string> = {
-			sent: "Gesendet",
-			delivered: "Zugestellt",
-			opened: "Geöffnet",
-			clicked: "Geklickt",
-			bounced: "Zurückgewiesen",
-			complained: "Als Spam markiert",
-			unsubscribed: "Abgemeldet",
-			failed: "Fehlgeschlagen",
-			pending: "Ausstehend",
-			unknown: "Unbekannt"
-		};
-		return labels[status] || "Unbekannt";
-	};
+	console.log("recipients", recipients);
 
 	if (!email || !recipients.length) {
 		return (
@@ -107,17 +42,10 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
 								<td>{recipient.name || "-"}</td>
 								<td>{recipient.email}</td>
 								<td>
-									{recipient.loading ? (
-										<span className="badge default">
-											Lädt...
-										</span>
-									) : (
-										<span
-											className={`badge ${getStatusBadgeClass(recipient.status)}`}
-											title={recipient.error || undefined}
-										>
-											{getStatusLabel(recipient.status)}
-										</span>
+									{recipient.message_id && (
+										<EmailRecipientState
+											messageId={recipient.message_id}
+										/>
 									)}
 								</td>
 							</tr>
@@ -126,7 +54,7 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ email }) => {
 				</table>
 			</div>
 
-			{recipients.some((r) => r.error) && (
+			{recipients.some((r) => !r.message_id) && (
 				<div className="alert warning">
 					<p>
 						<strong>Hinweis:</strong> Einige Status konnten nicht
