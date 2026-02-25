@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useContext, useState } from "react";
-import { ContentBlock, Modal } from "@repo/ui";
+import { ContentBlock, Divider, Modal } from "@repo/ui";
 import {
 	axiosclient,
 	compileAxiosError,
@@ -58,6 +58,7 @@ const TestEmail: FC<TestEmailProps> = ({
 				Geben Sie eine E-Mail Adresse an, an an die Eine Test-Email
 				gesendet werden soll
 			</p>
+			<Divider size="small" />
 			<input
 				type="email"
 				value={email}
