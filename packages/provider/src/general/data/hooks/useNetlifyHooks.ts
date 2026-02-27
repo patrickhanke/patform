@@ -28,7 +28,7 @@ const useNetlifyHooks = () => {
 					objectClass === "Download" ||
 					objectClass === "Person" ||
 					objectClass === "Category" ||
-					objectClass === "Date"
+					objectClass === "Appointment"
 				) {
 					return axios.post(
 						"https://api.netlify.com/build_hooks/608c71bcb42fb00f6e535a9c"

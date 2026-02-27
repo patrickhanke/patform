@@ -72,19 +72,21 @@ const AppModuleEditFilter = ({
 					onChange={(e) => changeHandler("operator", e.value)}
 				/>
 			</div>
-			<div>
-				<label>Operator-Template (optional)</label>
-				<textarea
-					key={filter.operatorTemplate}
-					defaultValue={filter.operatorTemplate}
-					placeholder='{"equalTo": "{{value}}"}'
-					rows={4}
-					onChange={(e) =>
-						changeHandler("operatorTemplate", e.target.value)
-					}
-				/>
-				<InfoBox text="JSON-Struktur mit {{value}} als Platzhalter. Für Pointer: {\have\:{\objectId\:{\equalTo\:\{{value}}\}}}" />
-			</div>
+			{filter.operator === "template" && (
+				<div>
+					<label>Operator-Template (optional)</label>
+					<textarea
+						key={filter.operatorTemplate}
+						defaultValue={filter.operatorTemplate}
+						placeholder='{"equalTo": "{{value}}"}'
+						rows={4}
+						onChange={(e) =>
+							changeHandler("operatorTemplate", e.target.value)
+						}
+					/>
+					<InfoBox text="JSON-Struktur mit {{value}} als Platzhalter. Für Pointer: {\have\:{\objectId\:{\equalTo\:\{{value}}\}}}" />
+				</div>
+			)}
 		</div>
 	);
 };

@@ -1,10 +1,5 @@
-/**
- * Common operators from GraphQL WhereInput types.
- * String: equalTo, notEqualTo, matchesRegex, in, notIn, etc.
- * Id/Pointer: equalTo, notEqualTo, in, notIn, have, haveNot
- * Array: equalTo, contains, containedIn, containedBy, etc.
- */
 const filterOperators = [
+	{ value: "template", label: "Template" },
 	{ value: "equalTo", label: "equalTo" },
 	{ value: "notEqualTo", label: "notEqualTo" },
 	{ value: "in", label: "in" },

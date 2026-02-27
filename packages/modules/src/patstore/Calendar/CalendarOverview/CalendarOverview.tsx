@@ -50,7 +50,7 @@ const CalendarOverview = () => {
 			...generateColumnsFromFields(currentModule.fields)
 		],
 		fields: currentModule.data_fields,
-		className: "Date",
+		className: "Appointment",
 		refetch,
 		categories: currentModule?.categories,
 		constants: {}
@@ -96,7 +96,7 @@ const CalendarOverview = () => {
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
 			createClass={{
-				className: "Date",
+				className: "Appointment",
 				text: "Neuen Kalendereintrag erstellen",
 				fields: currentModule.fields,
 				refetch: refetch
@@ -125,7 +125,7 @@ const CalendarOverview = () => {
 					await Promise.all(
 						selectedRows.map(async (objectId) => {
 							await deleteData({
-								className: "Date",
+								className: "Appointment",
 								objectId
 							});
 						})

@@ -69,7 +69,7 @@ export type ModuleFilter = {
   id: string;
   field: string;
   type: string;
-  operator: string;
+  operator: template | equalTo | notEqualTo | in | notIn | contains | containedIn | containedBy | matchesRegex | exists | have | haveNot | lessThan | lessThanOrEqualTo | greaterThan | greaterThanOrEqualTo;
   operatorTemplate?: string;
   label?: string;
   position?: number;

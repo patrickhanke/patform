@@ -1,7 +1,9 @@
-import { Filter, FilterOperator } from "@repo/types";
+import { Filter } from "@repo/types";
 import { ParamsHandlerType } from "../types";
 
-type FilterObject = { [key: string]: { [key in FilterOperator]: any } };
+type FilterObject = {
+	[key: string]: { [key: string]: string | number | boolean | object | null };
+};
 
 const paramsHandler: ParamsHandlerType = ({
 	projectId,
@@ -16,33 +18,23 @@ const paramsHandler: ParamsHandlerType = ({
 	if (propertyId) {
 		filterObject.property = {
 			have: { objectId: { equalTo: propertyId } }
-		} as {
-			[key in FilterOperator]: any;
 		};
 	}
 
 	if (projectId) {
-		filterObject.project = { have: { id: { equalTo: projectId } } } as {
-			[key in FilterOperator]: any;
-		};
+		filterObject.project = { have: { id: { equalTo: projectId } } };
 	}
 
 	if (moduleId) {
-		filterObject.module = { have: { id: { equalTo: moduleId } } } as {
-			[key in FilterOperator]: any;
-		};
+		filterObject.module = { have: { id: { equalTo: moduleId } } };
 	}
 
 	if (userId) {
-		filterObject.user = { have: { objectId: { equalTo: userId } } } as {
-			[key in FilterOperator]: any;
-		};
+		filterObject.user = { have: { objectId: { equalTo: userId } } };
 	}
 
 	if (userIds) {
-		filterObject.user = { have: { objectId: { in: userIds } } } as {
-			[key in FilterOperator]: any;
-		};
+		filterObject.user = { have: { objectId: { in: userIds } } };
 	}
 
 	let additionalFilters: FilterObject = {};
@@ -50,7 +42,10 @@ const paramsHandler: ParamsHandlerType = ({
 	if (filters && filters?.length > 0) {
 		additionalFilters = filters?.reduce(
 			(
-				acc: Record<string, { [key in FilterOperator]: any }>,
+				acc: Record<
+					string,
+					{ [key: string]: string | number | boolean | object | null }
+				>,
 				filter: Filter
 			) => {
 				// Support operatorTemplate for complex nested structures (e.g. Pointer: location.have.objectId.equalTo)
@@ -75,7 +70,14 @@ const paramsHandler: ParamsHandlerType = ({
 						// Fallback to simple structure
 						acc[filter.key] = {
 							[filter.operator]: filter.value
-						} as { [key in FilterOperator]: any };
+						} as {
+							[key: string]:
+								| string
+								| number
+								| boolean
+								| object
+								| null;
+						};
 					}
 				} else if (filter.operator === "matchesRegex") {
 					acc[filter.key] = {
@@ -87,7 +89,12 @@ const paramsHandler: ParamsHandlerType = ({
 					};
 				} else {
 					acc[filter.key] = { [filter.operator]: filter.value } as {
-						[key in FilterOperator]: any;
+						[key: string]:
+							| string
+							| number
+							| boolean
+							| object
+							| null;
 					};
 				}
 				return acc;

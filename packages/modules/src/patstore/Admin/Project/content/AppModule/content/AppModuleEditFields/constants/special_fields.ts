@@ -118,8 +118,17 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				default: true
 			},
 			{
-				id: "title",
+				id: "pre_title",
 				label: "Titel",
+				required: false,
+				type: "edit_string",
+				active: false,
+				position: 1,
+				default: false
+			},
+			{
+				id: "post_title",
+				label: "Post-Titel",
 				required: false,
 				type: "edit_string",
 				active: false,

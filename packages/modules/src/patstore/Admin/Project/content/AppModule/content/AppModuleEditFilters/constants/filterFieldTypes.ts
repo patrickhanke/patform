@@ -8,7 +8,8 @@ const filterFieldTypes = [
 	{ value: "Date", label: "Date" },
 	{ value: "Number", label: "Number" },
 	{ value: "Id", label: "ID" },
-	{ value: "Boolean", label: "Boolean" }
+	{ value: "Boolean", label: "Boolean" },
+	{ value: "Object", label: "Object" }
 ] as const;
 
 export default filterFieldTypes;
