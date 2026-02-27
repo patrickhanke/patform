@@ -561,15 +561,18 @@ const useCreateColumns = <T extends ColumnClasses>({
 						<>
 							<TableColumnEditDate
 								value={row[columnElement.id] as EventDate}
-								onChange={(value: EventDate) =>
-									updateColumnData({
+								onChange={async (value: EventDate) => {
+									console.log("value", value);
+									await updateData({
+										className: "Appointment",
 										objectId: row.objectId,
 										updateObject: {
 											[columnElement.id]: value
 										},
 										feedback: "Datum aktualisiert"
-									})
-								}
+									});
+									refetch();
+								}}
 							/>
 						</>
 					),
