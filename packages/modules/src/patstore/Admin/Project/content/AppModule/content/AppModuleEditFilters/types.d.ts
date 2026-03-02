@@ -6,6 +6,7 @@ export type { ModuleFilter };
 export type AppModuleEditFiltersProps = {
 	initialFilters: ModuleFilter[];
 	moduleId: string;
+	modulePath: Module["path"];
 };
 
 export type AppModuleFilterProps = {
@@ -17,4 +18,5 @@ export type AppModuleFilterProps = {
 export type AppModuleEditFilterProps = {
 	filter?: ModuleFilter;
 	setFilters: Updater<ModuleFilter[]>;
+	modulePath: Module["path"];
 };

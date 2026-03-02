@@ -73,7 +73,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	editDisabled = false,
 	hasEmailSettings = false
 }: CreateColumnHookProps<T>) => {
-	console.log({ hasEmailSettings });
 	const { updateData } = useDataHandlerSecure(useMasterKey);
 
 	const updateColumnData: UpdateColumnData = useCallback(
@@ -562,7 +561,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 							<TableColumnEditDate
 								value={row[columnElement.id] as EventDate}
 								onChange={async (value: EventDate) => {
-									console.log("value", value);
 									await updateData({
 										className: "Appointment",
 										objectId: row.objectId,

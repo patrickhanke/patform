@@ -10,7 +10,8 @@ import {
 	LocationClass,
 	AppointmentClass,
 	PageClass,
-	PatstoreUser
+	PatstoreUser,
+	ModuleFieldType
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -110,45 +111,7 @@ export type TableColumnPersonsProps = {
 	onChange: (person: string[]) => Promise<void>;
 };
 
-export type ColumnDataTypes =
-	| "string"
-	| "edit_string"
-	| "image"
-	| "category"
-	| "textfield"
-	| "edit_image"
-	| "edit_textfield"
-	| "edit_dates"
-	| "edit_texteditor"
-	| "texteditor"
-	| "geopoint"
-	| "edit_geopoint"
-	| "date"
-	| "edit_date"
-	| "state"
-	| "edit_state"
-	| "gallery"
-	| "person"
-	| "edit_person"
-	| "edit_persons"
-	| "edit_times"
-	| "file"
-	| "edit_team"
-	| "edit_color"
-	| "edit_content"
-	| "date_picker"
-	| "boolean"
-	| "content"
-	| "connected_elements"
-	| "updated_by"
-	| "created_by"
-	| "edit_webpage_components"
-	| "files"
-	| "image_preview"
-	| "user"
-	| "edit_role"
-	| "location"
-	| "custom";
+export type ColumnDataTypes = ModuleFieldType;
 
 export type ColumnData<Class> = {
 	id: keyof Class;

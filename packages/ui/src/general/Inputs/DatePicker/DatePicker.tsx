@@ -1,11 +1,18 @@
 "use client";
 
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { DatePickerProps } from "./types";
 import { useDebounceValue } from "usehooks-ts";
-import { formatISO9075 } from "date-fns";
+import { formatISO9075, startOfWeek } from "date-fns";
 import transformWeekValue from "./functions/transformWeekValue";
 import getDateFromWeek from "./functions/getDateFromWeek";
+
+const supportsWeekInput = (): boolean => {
+	if (typeof document === "undefined") return false;
+	const input = document.createElement("input");
+	input.setAttribute("type", "week");
+	return input.type === "week";
+};
 
 const DatePicker: FC<DatePickerProps> = ({
 	defaultValue,
@@ -22,6 +29,7 @@ const DatePicker: FC<DatePickerProps> = ({
 		defaultValue || "",
 		500
 	);
+	const [weekInputSupported] = useState(supportsWeekInput);
 
 	useEffect(() => {
 		if (debouncedValue !== defaultValue) {
@@ -65,31 +73,67 @@ const DatePicker: FC<DatePickerProps> = ({
 					disabled={disabled}
 				/>
 			)}
-			{type === "week" && (
-				<input
-					aria-label="Date"
-					id={id}
-					name={id}
-					type={type}
-					style={{ width }}
-					onChange={(e) => {
-						if (e.target.value) {
-							const year = Number(e.target.value.split("-W")[0]);
-							const week = Number(e.target.value.split("-W")[1]);
-							setDateValue(
-								formatISO9075(getDateFromWeek(week, 0, year), {
-									representation: "date"
-								})
-							);
-						} else {
-							setDateValue("");
-						}
-					}}
-					defaultValue={transformWeekValue(defaultValue)}
-					step={undefined}
-					disabled={disabled}
-				/>
-			)}
+			{type === "week" &&
+				(weekInputSupported ? (
+					<input
+						aria-label="Date"
+						id={id}
+						name={id}
+						type={type}
+						style={{ width }}
+						onChange={(e) => {
+							if (e.target.value) {
+								const year = Number(
+									e.target.value.split("-W")[0]
+								);
+								const week = Number(
+									e.target.value.split("-W")[1]
+								);
+								setDateValue(
+									formatISO9075(
+										getDateFromWeek(week, 0, year),
+										{
+											representation: "date"
+										}
+									)
+								);
+							} else {
+								setDateValue("");
+							}
+						}}
+						defaultValue={transformWeekValue(defaultValue)}
+						step={undefined}
+						disabled={disabled}
+					/>
+				) : (
+					<input
+						aria-label="Date"
+						id={id}
+						name={id}
+						type="date"
+						style={{ width }}
+						onChange={(e) => {
+							if (e.target.value) {
+								const monday = startOfWeek(
+									new Date(e.target.value),
+									{
+										weekStartsOn: 1
+									}
+								);
+								setDateValue(
+									formatISO9075(monday, {
+										representation: "date"
+									})
+								);
+							} else {
+								setDateValue("");
+							}
+						}}
+						defaultValue={defaultValue}
+						step={undefined}
+						disabled={disabled}
+					/>
+				))}
 			{type === "date" && (
 				<input
 					aria-label="Date"

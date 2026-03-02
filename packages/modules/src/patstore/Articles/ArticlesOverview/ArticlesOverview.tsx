@@ -62,9 +62,6 @@ const ArticlesOverview = () => {
 		constants: { state }
 	});
 
-	console.log({ data });
-	console.log({ columns });
-
 	const pageHeaderButtons = useMemo(
 		() => [
 			{

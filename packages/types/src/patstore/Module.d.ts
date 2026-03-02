@@ -32,10 +32,49 @@ export type ModuleSettings = {
   categories?: ModuleSettingsCategory[];
 };
 
+export type ModuleFieldType = 
+| "string"
+| "edit_string"
+| "image"
+| "category"
+| "textfield"
+| "edit_image"
+| "edit_textfield"
+| "edit_dates"
+| "edit_texteditor"
+| "texteditor"
+| "geopoint"
+| "edit_geopoint"
+| "date"
+| "edit_date"
+| "state"
+| "edit_state"
+| "gallery"
+| "person"
+| "edit_person"
+| "edit_persons"
+| "edit_times"
+| "file"
+| "edit_team"
+| "edit_color"
+| "edit_content"
+| "date_picker"
+| "boolean"
+| "content"
+| "connected_elements"
+| "updated_by"
+| "created_by"
+| "edit_webpage_components"
+| "files"
+| "image_preview"
+| "user"
+| "edit_role"
+| "location"
+| "custom";
+
 export type ModuleField = {
 	id: ModuleDataFields;
 	label: string;
-  name: string;
 	required: boolean;
 	type: string;
 	active: boolean;
@@ -65,10 +104,12 @@ export type Module = {
   filters?: ModuleFilter[];
 };
 
+export type ModuleFilterType = "string" | "boolean" | "id" | "ids" | "search" | "exists" | "select" | "pointer";
+
 export type ModuleFilter = {
   id: string;
   field: string;
-  type: string;
+  type: ModuleFilterType;
   operator: template | equalTo | notEqualTo | in | notIn | contains | containedIn | containedBy | matchesRegex | exists | have | haveNot | lessThan | lessThanOrEqualTo | greaterThan | greaterThanOrEqualTo;
   operatorTemplate?: string;
   label?: string;

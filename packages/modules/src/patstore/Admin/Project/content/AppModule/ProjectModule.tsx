@@ -76,6 +76,7 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 			<AppModuleEditFilters
 				moduleId={id}
 				initialFilters={module.filters}
+				modulePath={module.path}
 			/>
 		</div>
 	);

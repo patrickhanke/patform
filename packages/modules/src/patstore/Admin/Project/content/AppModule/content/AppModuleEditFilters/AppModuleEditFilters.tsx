@@ -22,7 +22,8 @@ const DEFAULT_FILTER: Omit<ModuleFilter, "id"> = {
 
 const AppModuleEditFilters = ({
 	moduleId,
-	initialFilters
+	initialFilters,
+	modulePath
 }: AppModuleEditFiltersProps) => {
 	const { updateData } = useDataHandler(false, false);
 	const [editFilters, setEditFilters] = React.useState(false);
@@ -78,6 +79,7 @@ const AppModuleEditFilters = ({
 					<AppModuleEditFilter
 						filter={findActiveFilter(activeFilter)}
 						setFilters={setFilters}
+						modulePath={modulePath}
 					/>
 				}
 				loading={loading}

@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { AppModuleEditFilterProps } from "../types";
 import { InfoBox, Select } from "@repo/ui";
 import { useDebounceCallback } from "usehooks-ts";
@@ -6,11 +6,13 @@ import { cloneDeep, set } from "lodash-es";
 import filterFieldTypes from "../constants/filterFieldTypes";
 import filterOperators from "../constants/filterOperators";
 import type { ModuleFilter } from "../types";
+import { generateInitialFields } from "../../AppModuleEditFields";
 
-const AppModuleEditFilter = ({
+const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 	filter,
-	setFilters
-}: AppModuleEditFilterProps) => {
+	setFilters,
+	modulePath
+}) => {
 	if (!filter) {
 		return null;
 	}
@@ -29,8 +31,21 @@ const AppModuleEditFilter = ({
 		[filter, setFilters]
 	);
 
+	const filterSelectOptions = useMemo(() => {
+		const fields = generateInitialFields([], modulePath);
+		// return type from field, when Field has no filter type, ignore it
+
+		console.log({ fields });
+		return fields.map((field) => ({
+			value: field.id,
+			label: field.label,
+			type: field.type
+		}));
+	}, [modulePath]);
+
 	const changeHandler = useDebounceCallback(filterChangeHandler, 500);
 
+	console.log({ filterSelectOptions });
 	return (
 		<div>
 			<h3>{filter.label || filter.field || "Neuer Filter"}</h3>
@@ -45,29 +60,20 @@ const AppModuleEditFilter = ({
 				/>
 			</div>
 			<div>
-				<label>Feld</label>
-				<input
-					key={filter.field}
-					type="text"
-					defaultValue={filter.field}
-					placeholder="title, location, categories, ..."
-					onChange={(e) => changeHandler("field", e.target.value)}
-				/>
-				<InfoBox text="GraphQL-Feldname (z.B. title, location, module)" />
-			</div>
-			<div>
 				<Select
-					label="Feldtyp"
-					options={filterFieldTypes}
-					value={filter.type}
-					onChange={(e) => changeHandler("type", e.value)}
+					label="Feld"
+					options={filterSelectOptions}
+					value={filter.field}
+					onChange={(e) => {
+						changeHandler("field", e.value);
+						changeHandler("type", e.type);
+					}}
 				/>
-				<InfoBox text="Schema-Typ des Felds (String, Pointer, Array, etc.)" />
 			</div>
 			<div>
 				<Select
 					label="Operator"
-					options={filterOperators}
+					options={filterOperators(filter.type)}
 					value={filter.operator}
 					onChange={(e) => changeHandler("operator", e.value)}
 				/>
