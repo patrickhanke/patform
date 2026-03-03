@@ -107,7 +107,7 @@ const TableColumnUserRole = ({
 				cancel={() => setIsOpen(false)}
 				confirm={async () => {
 					setLoading(true);
-					await axiosclient().post("functions/update-user-role", {
+					await axiosclient().post("functions/update_user_role", {
 						user_id: user.objectId,
 						former_role_id: initialRole,
 						new_role_id: selectedRole
