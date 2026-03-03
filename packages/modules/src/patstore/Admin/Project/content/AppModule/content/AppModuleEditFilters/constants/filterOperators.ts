@@ -15,6 +15,7 @@ const filterOperators = (fieldType: string) => {
 				{ value: "greaterThan", label: "greaterThan" },
 				{ value: "greaterThanOrEqualTo", label: "greaterThanOrEqualTo" }
 			];
+		case "pointer":
 		case "id": {
 			return [
 				{ value: "equalTo", label: "equalTo" },
@@ -24,14 +25,12 @@ const filterOperators = (fieldType: string) => {
 		case "ids": {
 			return [{ value: "in", label: "in" }];
 		}
+
 		case "boolean": {
 			return [{ value: "equalTo", label: "equalTo" }];
 		}
-		case "object": {
-			return [{ value: "search", label: "search" }];
-		}
-		case "array": {
-			return [{ value: "search", label: "search" }];
+		case "search": {
+			return [{ value: "equalTo", label: "equalTo" }];
 		}
 		default: {
 			return [];

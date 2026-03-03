@@ -5,7 +5,6 @@ import {
 	generateColumnsFromFields,
 	Modal,
 	Page,
-	RenderFilters,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
@@ -45,26 +44,6 @@ const PersonsOverview = () => {
 		categories: currentModule?.categories
 	});
 
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, []);
-
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
@@ -102,8 +81,10 @@ const PersonsOverview = () => {
 				enableRowSelection
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
-				filterContent={renderFilters}
 				setOrder={setOrder}
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={currentModule.filters || []}
 			/>
 			<Modal
 				isOpen={deleteModal}

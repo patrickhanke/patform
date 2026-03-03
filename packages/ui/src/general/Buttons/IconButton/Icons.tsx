@@ -2,6 +2,7 @@ import React from "react";
 import {
 	AiFillCopy,
 	AiOutlineMinus,
+	AiOutlineSearch,
 	AiOutlineShoppingCart,
 	AiOutlineUpload
 } from "react-icons/ai";
@@ -11,7 +12,7 @@ import {
 	BsPeople,
 	BsPlusLg
 } from "react-icons/bs";
-import { FaInfo, FaRegEye, FaSave, FaTrash, FaUsers } from "react-icons/fa";
+import { FaInfo, FaRegEye, FaRegEyeSlash, FaSave, FaTrash, FaUsers } from "react-icons/fa";
 import { GrClose, GrProjects } from "react-icons/gr";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
@@ -213,7 +214,15 @@ const Icons: React.FC<IconProps> = ({ icon, color }) => {
 	if (icon === "refresh") {
 		return <LuRefreshCcw color={color || "inherit"} />;
 	}
-
+	if (icon === "search") {
+		return <AiOutlineSearch color={color || "inherit"} />;
+	}
+	if (icon === "eye-off") {
+		return <FaRegEyeSlash color={color || "inherit"} />;
+	}
+	if (icon === "eye") {
+		return <FaRegEye color={color || "inherit"} />;
+	}
 	return null;
 };
 

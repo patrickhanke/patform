@@ -36,7 +36,8 @@ import {
 	TableColumnTexteditor,
 	TableColumnTextfield,
 	TableColumnDate,
-	TableColumnImages
+	TableColumnImages,
+	LatLng
 } from "@repo/ui";
 import { get } from "lodash-es";
 import { IconButton } from "../../../Buttons";
@@ -110,7 +111,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 			) {
 				columnArray.push({
 					accessorFn: (row) =>
-						columnElement.id === "email" ? (
+						columnElement.id === "email" &&
+						className === "_User" ? (
 							<TableColumnHiddenField
 								id={row.objectId}
 								className={className}
@@ -280,7 +282,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 									? true
 									: false
 							}
-							onChange={(value: LatitudeLongitude) =>
+							onChange={(value: LatLng) =>
 								updateColumnData({
 									objectId: row.objectId,
 									updateObject: {

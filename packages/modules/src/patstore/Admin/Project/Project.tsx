@@ -144,6 +144,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 							<AppModule
 								id={item.id}
 								projectId={params.project_id}
+								modules={modules}
 							/>
 						)}
 						objectClass="Module"

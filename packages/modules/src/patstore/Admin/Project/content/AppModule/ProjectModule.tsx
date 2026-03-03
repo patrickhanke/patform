@@ -9,8 +9,18 @@ import {
 	AppModuleEditSettingFields,
 	AppModuleEditSettings
 } from "./content";
+import { Module } from "@repo/types";
+import { useMemo } from "react";
 
-const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
+const AppModule = ({
+	id,
+	projectId,
+	modules
+}: {
+	id: string;
+	projectId: string;
+	modules: Module[];
+}) => {
 	const { data, loading, refetch } = useGetData({
 		objectName: "Module",
 		fields: [
@@ -31,6 +41,33 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 		],
 		id
 	});
+
+	const additionnalFields = useMemo(() => {
+		const additionalFieldsArray: {
+			value: string;
+			label: string;
+			search_path: string;
+		}[] = [];
+		const hasEmailModule = modules.find(
+			(module) => module.path === "/emails"
+		);
+		if (!data) return additionalFieldsArray;
+
+		if (hasEmailModule && data.path === "/users") {
+			additionalFieldsArray.push({
+				value: "email",
+				label: "E-Mail",
+				search_path: "email"
+			});
+			additionalFieldsArray.push({
+				value: "lists",
+				label: "Listen",
+				search_path: "lists"
+			});
+		}
+
+		return additionalFieldsArray;
+	}, [data]);
 
 	if (loading) return <Loader width="100%" height="30px" />;
 
@@ -75,8 +112,17 @@ const AppModule = ({ id, projectId }: { id: string; projectId: string }) => {
 			/>
 			<AppModuleEditFilters
 				moduleId={id}
+				moduleName={module.name}
 				initialFilters={module.filters}
 				modulePath={module.path}
+				modules={modules.map((module) => ({
+					value: module.objectId,
+					connected_class: module.connected_class,
+					label: module.name
+				}))}
+				settingsFields={module.setting_fields}
+				dataFields={module.data_fields}
+				additionnalFields={additionnalFields}
 			/>
 		</div>
 	);

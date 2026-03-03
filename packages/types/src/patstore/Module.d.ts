@@ -76,7 +76,7 @@ export type ModuleField = {
 	id: ModuleDataFields;
 	label: string;
 	required: boolean;
-	type: string;
+	type: ModuleFieldType;
 	active: boolean;
 	position: number;
 	default: boolean;
@@ -110,8 +110,11 @@ export type ModuleFilter = {
   id: string;
   field: string;
   type: ModuleFilterType;
-  operator: template | equalTo | notEqualTo | in | notIn | contains | containedIn | containedBy | matchesRegex | exists | have | haveNot | lessThan | lessThanOrEqualTo | greaterThan | greaterThanOrEqualTo;
-  operatorTemplate?: string;
+  operator: equalTo | notEqualTo | in | notIn | contains | containedIn | containedBy | matchesRegex | exists | have | haveNot | lessThan | lessThanOrEqualTo | greaterThan | greaterThanOrEqualTo | search;
   label?: string;
   position?: number;
+  options?: {
+    class_name?: string;
+    search_path?: string;
+  }
 };

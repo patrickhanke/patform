@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { ColumnData, ColumnDataTypes } from "../../types";
-import { Filter, FilterOperator } from "@repo/types";
+import { Filter, FilterOperator, ModuleFilter } from "@repo/types";
 
 export type FilterOperator = FilterOperator;
 
@@ -14,10 +14,7 @@ export type TableFilter = Filter & {
 };
 
 export type TableFilterProps = {
-	filterColumns: (ColumnData<TData> & {
-		operator?: string;
-		operatorTemplate?: string;
-	})[];
+	filterColumns: ModuleFilter[];
 	filters: Filter[];
 	setFilters: Dispatch<SetStateAction<Filter[]>>;
 };

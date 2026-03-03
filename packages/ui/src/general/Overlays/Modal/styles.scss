@@ -59,6 +59,8 @@
 
 .modal_content {
   padding: map-get($map: constants.$padding, $key: "md");
+  padding-top: constants.$lg;
+  padding-bottom: constants.$lg;
   // overflow-y: auto;
   overflow: auto;
   position: relative;

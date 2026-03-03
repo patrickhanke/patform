@@ -11,7 +11,6 @@ import {
 } from "@repo/provider";
 import {
 	generateColumnsFromFields,
-	generateFilterColumnsFromModuleFilters,
 	Page,
 	SlideInForm,
 	Table,
@@ -24,11 +23,9 @@ import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
 import create_user_fieds from "./constants/create_user_fields";
 import useFindRoles from "./hooks/useFindRoles";
-import { useDataHandler } from "@repo/provider";
 import create_user from "./constants/create_user";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
-	const { deleteData } = useDataHandler(true);
 	const { project } = useAppContext();
 	const { currentModule } = useContext(PatstoreAppContext);
 	const { roles } = useFindRoles({ projectId: project.objectId });
@@ -175,24 +172,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			pageState={pageState}
 			setPageState={setPageState}
 		>
-			{process.env.NODE_ENV === "development" && (
-				<button
-					onClick={async () => {
-						if (!users) return;
-						const deleteUsers = users.map(async (user) => {
-							return await deleteData({
-								className: "_User",
-								objectId: user.objectId
-							});
-						});
-
-						await Promise.all(deleteUsers);
-						await refetch();
-					}}
-				>
-					alle Löschen
-				</button>
-			)}
 			{pageState.value === "user" && (
 				<Table
 					columns={columns}
@@ -202,9 +181,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 					rowCount={count}
 					filters={filters}
 					setFilters={setFilters}
-					filterColumns={generateFilterColumnsFromModuleFilters(
-						currentModule.filters
-					)}
+					filterColumns={currentModule.filters}
 					setOrder={setOrder}
 				/>
 			)}

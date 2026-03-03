@@ -14,7 +14,7 @@ import { AppModuleEditFiltersProps, ModuleFilter } from "./types";
 
 const DEFAULT_FILTER: Omit<ModuleFilter, "id"> = {
 	field: "",
-	type: "String",
+	type: "string",
 	operator: "equalTo",
 	label: "Neuer Filter",
 	position: 0
@@ -22,8 +22,13 @@ const DEFAULT_FILTER: Omit<ModuleFilter, "id"> = {
 
 const AppModuleEditFilters = ({
 	moduleId,
+	moduleName,
 	initialFilters,
-	modulePath
+	modulePath,
+	modules,
+	settingsFields,
+	dataFields,
+	additionnalFields
 }: AppModuleEditFiltersProps) => {
 	const { updateData } = useDataHandler(false, false);
 	const [editFilters, setEditFilters] = React.useState(false);
@@ -61,6 +66,8 @@ const AppModuleEditFilters = ({
 		[setFilters]
 	);
 
+	console.log({ filters });
+
 	return (
 		<div>
 			<button
@@ -73,13 +80,18 @@ const AppModuleEditFilters = ({
 				cancel={() => setEditFilters(false)}
 				confirm={() => slideInConfirmHandler()}
 				isOpen={editFilters}
-				header="Filter bearbeiten"
+				header={`Filter für ${moduleName || "Modul"} bearbeiten`}
 				showSecondaryContent={!!activeFilter}
 				secondaryContent={
 					<AppModuleEditFilter
+						key={activeFilter}
 						filter={findActiveFilter(activeFilter)}
 						setFilters={setFilters}
 						modulePath={modulePath}
+						modules={modules}
+						settingsFields={settingsFields}
+						dataFields={dataFields}
+						additionnalFields={additionnalFields}
 					/>
 				}
 				loading={loading}

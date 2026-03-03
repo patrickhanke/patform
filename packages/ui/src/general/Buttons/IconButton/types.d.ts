@@ -55,7 +55,10 @@ export type IconTypes =
 	| "minus"
 	| "upload"
 	| "refresh"
-	| "login";
+	| "login"
+	| "search"
+	| "eye-off"
+	| "eye";
 
 export type IconProps = {
 	icon: IconTypes;

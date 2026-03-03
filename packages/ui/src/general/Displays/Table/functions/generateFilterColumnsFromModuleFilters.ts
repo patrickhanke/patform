@@ -37,10 +37,9 @@ const generateFilterColumnsFromModuleFilters = <T extends object>(
 		/** GraphQL field name - used as Filter.key for query */
 		accessorKey: filter.field,
 		label: filter.label || filter.field,
-		type: moduleFilterTypeToColumnType(filter.type) as ColumnDataTypes,
+		type: filter.type as ColumnDataTypes,
 		enableSorting: false,
-		operator: filter.operator,
-		operatorTemplate: filter.operatorTemplate
+		operator: filter.operator
 	}));
 };
 

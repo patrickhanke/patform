@@ -11,7 +11,8 @@ import {
 	AppointmentClass,
 	PageClass,
 	PatstoreUser,
-	ModuleFieldType
+	ModuleFieldType,
+	ModuleFilter
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -34,10 +35,7 @@ export type TableTypes = {
 	setOrder?: Dispatch<SetStateAction<string>>;
 	filters?: Filter[];
 	setFilters?: Dispatch<SetStateAction<Filter[]>>;
-	filterColumns?: (ColumnData<TData> & {
-		operator?: string;
-		operatorTemplate?: string;
-	})[];
+	filterColumns?: ModuleFilter[];
 };
 
 export type ColumnDef<TData> = ColumnDef<TData>;

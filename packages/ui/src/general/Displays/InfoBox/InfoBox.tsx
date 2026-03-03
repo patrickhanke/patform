@@ -5,10 +5,16 @@ type InfoBoxComponent = {
 	content?: () => React.ReactElement;
 	text?: string;
 	status?: "info" | "success" | "warning" | "error";
+	maxWidth?: string;
 };
 
-const InfoBox = ({ content, text, status = "info" }: InfoBoxComponent) => (
-	<Alert.Root status={status}>
+const InfoBox = ({
+	content,
+	text,
+	status = "info",
+	maxWidth = "500px"
+}: InfoBoxComponent) => (
+	<Alert.Root status={status} maxWidth={maxWidth}>
 		<Alert.Indicator />
 		<Alert.Title fontSize="xs">
 			{content && content()}

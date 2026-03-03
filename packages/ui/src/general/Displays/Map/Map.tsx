@@ -6,6 +6,7 @@ import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import "./styles.scss";
 import { LatLng, MapProps } from "./types";
 import { Divider } from "../../Layout";
+import { IconButton } from "../../Buttons";
 const containerStyle = {
 	width: "400px",
 	height: "400px"
@@ -13,28 +14,33 @@ const containerStyle = {
 
 const API_KEY = "AIzaSyAJgX9vOxmGb-w5JtU4z9xrlXJ0vKpQHP8";
 
-const Map = ({ initialPlace, onChange }: MapProps) => {
-	console.log(initialPlace);
+const defaultPlace = { lat: 52.51226761820683, lng: 13.379393221148042 };
 
+const MAP_LIBRARIES = ["places"] as ["places"];
+
+const Map = ({ initialPlace = defaultPlace, onChange }: MapProps) => {
 	const [selectedPlace, setSelectedPlace] = useState<LatLng>(
-		initialPlace || { lat: 0, lng: 0 }
+		initialPlace || defaultPlace
 	);
 	const [searchQuery, setSearchQuery] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const { isLoaded } = useJsApiLoader({
 		id: "google-map-script",
 		googleMapsApiKey: API_KEY,
-		libraries: ["places"]
+		libraries: MAP_LIBRARIES
 	});
 
 	const [map, setMap] = useState<google.maps.Map | null>(null);
 
-	const onLoad = useCallback(function callback(map: google.maps.Map) {
-		const bounds = new window.google.maps.LatLngBounds(selectedPlace);
-		map.fitBounds(bounds);
-
-		setMap(map);
-	}, []);
+	const onLoad = useCallback(
+		function callback(map: google.maps.Map) {
+			map.setCenter(selectedPlace);
+			map.setZoom(10);
+			setMap(map);
+		},
+		[selectedPlace]
+	);
 
 	const onUnmount = useCallback(function callback() {
 		setMap(null);
@@ -42,7 +48,7 @@ const Map = ({ initialPlace, onChange }: MapProps) => {
 
 	const handleSearch = async () => {
 		if (!map || !searchQuery) return;
-
+		setLoading(true);
 		const request = {
 			query: searchQuery,
 			fields: ["geometry"]
@@ -73,10 +79,10 @@ const Map = ({ initialPlace, onChange }: MapProps) => {
 			};
 			setSelectedPlace(newPlace);
 			map.panTo(newPlace);
-			console.log(newPlace);
 
 			if (onChange) onChange(newPlace);
 		}
+		setLoading(false);
 	};
 
 	return isLoaded ? (
@@ -88,15 +94,19 @@ const Map = ({ initialPlace, onChange }: MapProps) => {
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}
 				/>
-				<button className="full_button sm grey" onClick={handleSearch}>
-					Search
-				</button>
+				<IconButton
+					icon="search"
+					text="Nach Ort suchen"
+					onClick={handleSearch}
+					disabled={loading || !searchQuery}
+					loading={loading}
+				/>
 			</div>
 			<Divider />
 			<GoogleMap
 				mapContainerStyle={containerStyle}
 				center={selectedPlace}
-				zoom={7}
+				zoom={10}
 				onLoad={onLoad}
 				onUnmount={onUnmount}
 			>
