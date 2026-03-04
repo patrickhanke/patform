@@ -1,6 +1,6 @@
 @use "@repo/styles/constants";
 
-.upload_container {
+.document_upload_container {
   @include constants.flexbox($direction: column, $align: flex-star, $gap: 0);
   width: 100%;
   height: auto;

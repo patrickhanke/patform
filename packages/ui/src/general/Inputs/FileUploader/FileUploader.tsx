@@ -51,7 +51,7 @@ const FileUploader = ({
 	}
 
 	return (
-		<div className={"upload_container"}>
+		<div className={"file_upload_container"}>
 			<button
 				type="button"
 				className="full_button sm grey"

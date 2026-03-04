@@ -1,7 +1,7 @@
 @use "@repo/styles/constants";
 
-.upload_container {
-  @include constants.flexbox($direction: column, $align: flex-star, $gap: 0);
+.patstore_image_uploader_container {
+  @include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: 12px);
   width: 100%;
   height: fit-content;
   position: relative;
@@ -100,14 +100,4 @@
       // }
     }
   }
-}
-
-.image_uploader_display_container {
-  @include constants.flexbox(
-    $direction: row,
-    $align: flex-start,
-    $justify: flex-start,
-    $gap: constants.$sm,
-    $wrap: wrap
-  );
 }

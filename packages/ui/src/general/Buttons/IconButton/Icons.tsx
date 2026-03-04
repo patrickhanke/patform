@@ -12,7 +12,14 @@ import {
 	BsPeople,
 	BsPlusLg
 } from "react-icons/bs";
-import { FaInfo, FaRegEye, FaRegEyeSlash, FaSave, FaTrash, FaUsers } from "react-icons/fa";
+import {
+	FaInfo,
+	FaRegEye,
+	FaRegEyeSlash,
+	FaSave,
+	FaTrash,
+	FaUsers
+} from "react-icons/fa";
 import { GrClose, GrProjects } from "react-icons/gr";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
@@ -51,177 +58,296 @@ import { TfiList, TfiViewList } from "react-icons/tfi";
 import { IoIosTimer } from "react-icons/io";
 import { IconProps } from "./types";
 
-const Icons: React.FC<IconProps> = ({ icon, color }) => {
+const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "delete") {
-		return <FaTrash color={color || "inherit"} />;
+		return <FaTrash color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "edit") {
-		return <MdEdit color={color || "inherit"} />;
+		return <MdEdit color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "cancel") {
-		return <MdOutlineCancel color={color || "inherit"} />;
+		return (
+			<MdOutlineCancel color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "save") {
-		return <FaSave color={color || "inherit"} />;
+		return <FaSave color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "arrow") {
-		return <AiOutlineArrowRight color={color || "inherit"} />;
+		return (
+			<AiOutlineArrowRight
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "download") {
-		return <AiOutlineDownload color={color || "inherit"} />;
+		return (
+			<AiOutlineDownload
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "view") {
-		return <FaRegEye color={color || "inherit"} />;
+		return <FaRegEye color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "email") {
-		return <AiOutlineMail color={color || "inherit"} />;
+		return (
+			<AiOutlineMail color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "message") {
-		return <TbMessage color={color || "inherit"} />;
+		return <TbMessage color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "settings") {
-		return <IoSettingsOutline color={color || "inherit"} />;
+		return (
+			<IoSettingsOutline
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "check") {
-		return <GiCheckMark color={color || "inherit"} />;
+		return <GiCheckMark color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "copy") {
-		return <RxCopy color={color || "inherit"} />;
+		return <RxCopy color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "info") {
-		return <FaInfo color={color || "inherit"} />;
+		return <FaInfo color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "link") {
-		return <RxExternalLink color={color || "inherit"} />;
+		return (
+			<RxExternalLink color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "change") {
-		return <MdOutlineChangeCircle color={color || "inherit"} />;
+		return (
+			<MdOutlineChangeCircle
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "chart") {
-		return <HiOutlineChartBarSquare color={color || "inherit"} />;
+		return (
+			<HiOutlineChartBarSquare
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "page") {
-		return <AiOutlineFileText color={color || "inherit"} />;
+		return (
+			<AiOutlineFileText
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "text") {
-		return <BsCardText color={color || "inherit"} />;
+		return <BsCardText color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "grid") {
-		return <GrGrid color={color || "inherit"} />;
+		return <GrGrid color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "documents") {
-		return <IoDocumentsOutline color={color || "inherit"} />;
+		return (
+			<IoDocumentsOutline
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "comments") {
-		return <LiaCommentsSolid color={color || "inherit"} />;
+		return (
+			<LiaCommentsSolid
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "password") {
-		return <MdOutlinePassword color={color || "inherit"} />;
+		return (
+			<MdOutlinePassword
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "images") {
-		return <IoImagesOutline color={color || "inherit"} />;
+		return (
+			<IoImagesOutline color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "projects") {
-		return <GrProjects color={color || "inherit"} />;
+		return <GrProjects color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "participants") {
-		return <BsPeople color={color || "inherit"} />;
+		return <BsPeople color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "users") {
-		return <FaUsers color={color || "inherit"} />;
+		return <FaUsers color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "project") {
-		return <RiListSettingsLine color={color || "inherit"} />;
+		return (
+			<RiListSettingsLine
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "admin") {
-		return <RiAdminLine color={color || "inherit"} />;
+		return <RiAdminLine color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "templates") {
-		return <AiFillCopy color={color || "inherit"} />;
+		return <AiFillCopy color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "dashboard") {
-		return <BsFillBarChartFill color={color || "inherit"} />;
+		return (
+			<BsFillBarChartFill
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "products") {
-		return <HiOutlineShoppingBag color={color || "inherit"} />;
+		return (
+			<HiOutlineShoppingBag
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "contact") {
-		return <MdOutlineContactPage color={color || "inherit"} />;
+		return (
+			<MdOutlineContactPage
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "orders") {
-		return <IoReceiptOutline color={color || "inherit"} />;
+		return (
+			<IoReceiptOutline
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "content") {
-		return <BsLayoutTextWindowReverse color={color || "inherit"} />;
+		return (
+			<BsLayoutTextWindowReverse
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "shop") {
-		return <AiOutlineShoppingCart color={color || "inherit"} />;
+		return (
+			<AiOutlineShoppingCart
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "profile") {
-		return <CgProfile color={color || "inherit"} />;
+		return <CgProfile color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "waste") {
-		return <BiSolidTrashAlt color={color || "inherit"} />;
+		return (
+			<BiSolidTrashAlt color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "tasks") {
-		return <GrTask color={color || "inherit"} />;
+		return <GrTask color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "tickets") {
-		return <BiMessageSquareError color={color || "inherit"} />;
+		return (
+			<BiMessageSquareError
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "objects") {
-		return <BsHousesFill color={color || "inherit"} />;
+		return (
+			<BsHousesFill color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "tours") {
-		return <FaShuttleVan color={color || "inherit"} />;
+		return (
+			<FaShuttleVan color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "workers") {
-		return <CgProfile color={color || "inherit"} />;
+		return <CgProfile color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "staff") {
-		return <CgProfile color={color || "inherit"} />;
+		return <CgProfile color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "services") {
-		return <MdOutlineCleaningServices color={color || "inherit"} />;
+		return (
+			<MdOutlineCleaningServices
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "extended_list") {
-		return <TfiViewList color={color || "inherit"} />;
+		return <TfiViewList color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "small_list") {
-		return <TfiList color={color || "inherit"} />;
+		return <TfiList color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "calendar") {
-		return <MdOutlineEditCalendar color={color || "inherit"} />;
+		return (
+			<MdOutlineEditCalendar
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "close") {
-		return <GrClose color={color || "inherit"} />;
+		return <GrClose color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "archive") {
-		return <LuArchive color={color || "inherit"} />;
+		return <LuArchive color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "time") {
-		return <IoIosTimer color={color || "inherit"} />;
+		return <IoIosTimer color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "plus") {
-		return <BsPlusLg color={color || "inherit"} />;
+		return <BsPlusLg color={color || "inherit"} fontSize={size || 12} />;
 	}
 	if (icon === "minus") {
-		return <AiOutlineMinus color={color || "inherit"} />;
+		return (
+			<AiOutlineMinus color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "upload") {
-		return <AiOutlineUpload color={color || "inherit"} />;
+		return (
+			<AiOutlineUpload color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "refresh") {
-		return <LuRefreshCcw color={color || "inherit"} />;
+		return (
+			<LuRefreshCcw color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "search") {
-		return <AiOutlineSearch color={color || "inherit"} />;
+		return (
+			<AiOutlineSearch color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "eye-off") {
-		return <FaRegEyeSlash color={color || "inherit"} />;
+		return (
+			<FaRegEyeSlash color={color || "inherit"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "eye") {
-		return <FaRegEye color={color || "inherit"} />;
+		return <FaRegEye color={color || "inherit"} fontSize={size || 12} />;
 	}
 	return null;
 };

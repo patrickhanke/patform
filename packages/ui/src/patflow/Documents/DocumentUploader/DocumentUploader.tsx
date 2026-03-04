@@ -15,7 +15,7 @@ const DocumentUploader = ({
   label: string;
 }) => {
   return (
-    <div className={styles.upload_container}>
+    <div className={styles.document_upload_container}>
       <label htmlFor="logo">{label}</label>
       <input
         className={styles.upload_button}

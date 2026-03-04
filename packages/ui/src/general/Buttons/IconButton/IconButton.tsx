@@ -28,10 +28,18 @@ const IconButton: FC<IconButtonProps> = ({
 				disabled={disabled}
 				color={color}
 				loading={loading}
-				style={{ transformOrigin: "center", height: "auto" }}
+				style={{
+					transformOrigin: "center",
+					height: "auto",
+					fontSize: size
+				}}
 				padding={text ? "6px 12px" : "8px"}
 			>
-				<Icons icon={icon} />
+				<Icons
+					icon={icon}
+					size={size}
+					color={typeof color === "string" ? color : undefined}
+				/>
 				{text}
 			</Button>
 		);
@@ -53,7 +61,7 @@ const IconButton: FC<IconButtonProps> = ({
 					target={isBlank ? "_blank" : "_self"}
 					style={{ fontSize: size }}
 				>
-					<Icons icon={icon} />
+					<Icons icon={icon} size={size} />
 					{text}
 				</Link>
 			</Button>

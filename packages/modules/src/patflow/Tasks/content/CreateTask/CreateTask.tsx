@@ -14,7 +14,7 @@ import {
 import initial_task from "./constants/initial_task";
 import { Icon, ImageUploader, SlideIn, TextInput } from "@repo/ui";
 import { modi_options, date_category_options } from "@repo/ui";
-import { useDataHandler } from "@repo/provider";
+import { useDataHandler, useFindData } from "@repo/provider";
 import SelectTicket from "./components/SelectTicket";
 import SelectProperty from "./components/SelectProperty";
 import SelectWorker from "./components/SelectWorker";
@@ -53,6 +53,19 @@ const CreateTask = ({
 
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
 	const [task, setTask] = useImmer<CreateTaskType>(initial_task);
+
+	const { data } = useFindData({
+		objectName: "Image",
+		fields: ["objectId", "title", "file { name url }"],
+		filters: [
+			{
+				key: "objectId",
+				value: task.images,
+				operator: "in"
+			}
+		]
+	});
+	console.log({ data });
 
 	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
 
@@ -221,6 +234,8 @@ const CreateTask = ({
 			);
 		}
 	}, [date, setDate, secContent, task]);
+
+	console.log({ task });
 
 	return (
 		<>
@@ -404,19 +419,31 @@ const CreateTask = ({
 								label="Bilder"
 								onChange={(images) =>
 									setTask((draft) => {
-										draft.images.push(...images);
+										draft.images.push(
+											...images.map(
+												(image) => image.objectId
+											)
+										);
 									})
 								}
 								maxFileCount={10}
-								previewImage={task.images}
-								deleteHandler={(image: string) =>
+								previewImages={data.map((image) => ({
+									objectId: image.objectId,
+									title: image.title,
+									file: {
+										name: image.file.name,
+										url: image.file.url
+									}
+								}))}
+								deleteHandler={(image) => {
+									console.log({ image });
 									setTask((draft) => {
 										const index = draft.images.findIndex(
-											(i: string) => i === image
+											(i: string) => i === image.objectId
 										);
 										draft.images.splice(index, 1);
-									})
-								}
+									});
+								}}
 							/>
 						</div>
 					</div>

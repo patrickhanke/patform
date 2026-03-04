@@ -2,7 +2,7 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import "./styles.scss";
-import { ErrorDisplay, IconButton } from "@repo/ui";
+import { ErrorDisplay, IconButton, InfoBox } from "@repo/ui";
 import { ErrorMessage } from "@repo/types";
 import { useAppContext, Parse } from "@repo/provider";
 import { Alert, Box, FileUpload, Icon, Input } from "@chakra-ui/react";
@@ -44,6 +44,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 		new Map()
 	);
 	const [isUploading, setIsUploading] = useState(false);
+	const [uploadSuccess, setUploadSuccess] = useState(false);
+	const [uploadSuccessCounter, setUploadSuccessCounter] = useState(0);
 
 	const replaceUmlaute = (fileName: string): string => {
 		return fileName
@@ -73,18 +75,15 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 			for (const file of files) {
 				const title = customFileNames.get(file.name) || file.name;
 				const fileName = replaceUmlaute(file.name);
-				console.log({ fileName });
 				try {
 					// Upload file to Parse
 					const parseFile = new Parse.File(fileName, file);
 					await parseFile.save();
-					console.log({ parseFile });
 
 					// Create Image object with file and title
 					const imageObject = new Parse.Object("Image");
 					imageObject.set("file", parseFile);
 					imageObject.set("title", title);
-					console.log({ imageObject });
 					if (userId) {
 						imageObject.set("created_by", {
 							__type: "Pointer",
@@ -103,8 +102,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 					const sessionToken = Cookies.get(
 						process.env.SESSION_TOKEN as string
 					);
-
-					console.log({ sessionToken });
 
 					if (!sessionToken) {
 						throw new Error("Session token not found");
@@ -153,6 +150,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 
 			if (uploadedImages.length > 0) {
 				onChange(uploadedImages);
+				setUploadSuccess(true);
 			}
 		}
 
@@ -170,7 +168,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 		return (
 			<div className="image_uploader_display_container">
 				{previewImages.map((image) => (
-					<div key={image.objectId} className="image_preview_item">
+					<div
+						key={image.objectId}
+						className="content_element image_preview_item"
+					>
 						<img
 							src={image.file.url}
 							alt={image.title}
@@ -181,13 +182,15 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 							}}
 						/>
 						<span style={{ fontSize: "12px" }}>{image.title}</span>
-						{deleteHandler && (
-							<IconButton
-								icon="delete"
-								onClick={() => deleteHandler(image)}
-								size={14}
-							/>
-						)}
+						<div className="delete_button_container">
+							{deleteHandler && (
+								<IconButton
+									icon="delete"
+									onClick={() => deleteHandler(image)}
+									size={6}
+								/>
+							)}
+						</div>
 					</div>
 				))}
 			</div>
@@ -206,9 +209,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 				</Alert.Title>
 			</Alert.Root>
 			<FileUpload.Root
+				key={`upload-${uploadSuccessCounter}`}
 				accept={["image/*"]}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					if (e.target.files) {
+						setUploadSuccess(false);
 						setFiles(e.target.files);
 					}
 				}}
@@ -230,42 +235,54 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 					</FileUpload.DropzoneContent>
 				</FileUpload.Dropzone>
 				<FileUpload.ItemGroup>
-					<FileUpload.Context>
-						{({ acceptedFiles }) =>
-							acceptedFiles.map((file) => (
-								<FileUpload.Item key={file.name} file={file}>
-									<FileUpload.ItemPreviewImage
-										width="100px"
-										height="60px"
-										borderRadius="md"
-										objectFit="cover"
-										alt={file.name}
-									/>
-									<Input
-										defaultValue={file.name}
-										placeholder="Bildtitel"
-										onChange={(e) => {
-											setCustomFileNames((prev) => {
-												const newMap = new Map(prev);
-												newMap.set(
-													file.name,
-													e.target.value
-												);
-												return newMap;
-											});
-										}}
-										width="180px"
-										minWidth="180px"
-										disabled={isUploading}
-										size="sm"
-										flex="1"
-									/>
-									<FileUpload.ItemSizeText />
-									<FileUpload.ItemDeleteTrigger />
-								</FileUpload.Item>
-							))
-						}
-					</FileUpload.Context>
+					{uploadSuccess ? (
+						<InfoBox
+							status="success"
+							text="Alle Dateien erfolgreich hochgeladen"
+						/>
+					) : (
+						<FileUpload.Context>
+							{({ acceptedFiles }) =>
+								acceptedFiles.map((file) => (
+									<FileUpload.Item
+										key={file.name}
+										file={file}
+									>
+										<FileUpload.ItemPreviewImage
+											width="100px"
+											height="60px"
+											borderRadius="md"
+											objectFit="cover"
+											alt={file.name}
+										/>
+										<Input
+											defaultValue={file.name}
+											placeholder="Bildtitel"
+											onChange={(e) => {
+												setCustomFileNames((prev) => {
+													const newMap = new Map(
+														prev
+													);
+													newMap.set(
+														file.name,
+														e.target.value
+													);
+													return newMap;
+												});
+											}}
+											width="180px"
+											minWidth="180px"
+											disabled={isUploading}
+											size="sm"
+											flex="1"
+										/>
+										<FileUpload.ItemSizeText />
+										<FileUpload.ItemDeleteTrigger />
+									</FileUpload.Item>
+								))
+							}
+						</FileUpload.Context>
+					)}
 				</FileUpload.ItemGroup>
 			</FileUpload.Root>
 			<IconButton

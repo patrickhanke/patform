@@ -63,6 +63,7 @@ export type IconTypes =
 export type IconProps = {
 	icon: IconTypes;
 	color?: string;
+	size?: number;
 };
 
 export type IconButtonProps = {

@@ -1,12 +1,5 @@
 @use "@repo/styles/constants";
 
-.upload_container {
-  @include constants.flexbox($direction: column, $align: flex-star, $gap: 0);
-  width: 100%;
-  height: fit-content;
-  position: relative;
-}
-
 .upload_zone {
   min-height: 240px;
   .upload-widget__root {
@@ -95,14 +88,4 @@
       // }
     }
   }
-}
-
-.image_uploader_display_container {
-  @include constants.flexbox(
-    $direction: row,
-    $align: flex-start,
-    $justify: flex-start,
-    $gap: constants.$sm,
-    $wrap: wrap
-  );
 }

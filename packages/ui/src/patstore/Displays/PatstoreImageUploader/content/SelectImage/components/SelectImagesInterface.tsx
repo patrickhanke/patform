@@ -125,7 +125,7 @@ const SelectImagesInterface: FC<SelectImagesInterfaceProps> = ({
 			</div>
 			<Divider size="small" />
 
-			<div className="upload_container">
+			<div className="patstore_image_uploader_container">
 				<ElementSelectInterface
 					elements={elements}
 					selectedElements={elements.filter((element) =>

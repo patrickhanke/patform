@@ -1,7 +1,7 @@
 @use "@repo/styles/constants";
 
 .upload_container {
-  @include constants.flexbox($direction: column, $align: flex-star, $gap: 0);
+  @include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: 12px);
   width: 100%;
   height: fit-content;
   position: relative;
@@ -99,10 +99,21 @@
 
 .image_uploader_display_container {
   @include constants.flexbox(
-    $direction: row,
-    $align: flex-start,
+    $direction: column,
+    $align: stretch,
     $justify: flex-start,
     $gap: constants.$sm,
     $wrap: wrap
   );
+  width: 100%;
+}
+
+.image_preview_item {
+  @include constants.flexbox($direction: row, $align: center, $justify: space-between, $gap: constants.$sm);
+  position: relative;
+}
+
+.delete_button_container {
+  @include constants.flexbox($direction: row, $align: center, $justify: center);
+  cursor: pointer;
 }
