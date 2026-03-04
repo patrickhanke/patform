@@ -1,6 +1,6 @@
 import { FC, useCallback, useMemo } from "react";
 import { AppModuleEditFilterProps } from "../types";
-import { InfoBox, Select } from "@repo/ui";
+import { Select } from "@repo/ui";
 import { useDebounceCallback } from "usehooks-ts";
 import { cloneDeep, set } from "lodash-es";
 import filterOperators from "../constants/filterOperators";
@@ -21,6 +21,8 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 	if (!filter) {
 		return null;
 	}
+
+	console.log({ modules });
 
 	const filterChangeHandler = useCallback(
 		(
@@ -80,37 +82,41 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 		return fieldArray;
 	}, [modulePath]);
 
-	const operatorTemplateOptions = useMemo(() => {
-		const options: {
-			value: string;
-			label: string;
-			search_path: string;
-		}[] = additionnalFields || [];
+	const operatorTemplateOptions = useCallback(() => {
+		const options: AppModuleEditFilterProps["additionnalFields"] =
+			cloneDeep(additionnalFields) || [];
 
-		if (filter.type === "search") {
-			settingsFields.forEach((f) => {
-				options.push({
-					value: f.id,
-					label: `${f.label} (Settings)`,
-					search_path: f.name
-				});
-			});
+		if (filter.field === "data") {
 			dataFields.forEach((f) => {
 				options.push({
 					value: f.id,
+					label: `${f.label} (Settings)`,
+					search_path: f.name,
+					type: f.type
+				});
+			});
+		} else if (filter.field === "settings") {
+			settingsFields.forEach((f) => {
+				options.push({
+					value: f.id,
 					label: `${f.label} (Data)`,
-					search_path: f.name
+					search_path: f.name,
+					type: f.type
 				});
 			});
 		}
 
 		return options;
-	}, [filter.operator, settingsFields]);
+	}, [filter.field, settingsFields]);
 
 	const changeHandler = useDebounceCallback(filterChangeHandler, 500);
 
+	console.log({ operatorTemplateOptions: operatorTemplateOptions() });
+
 	console.log({ filterSelectOptions });
 	console.log({ filter });
+	console.log({ settingsFields });
+	console.log({ additionnalFields });
 	return (
 		<div>
 			<h3>{filter.label || filter.field || "Neuer Filter"}</h3>
@@ -148,37 +154,41 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 				/>
 			</div>
 			{filter.type === "pointer" ||
-				filter.type === "id" ||
-				(filter.type === "ids" && (
-					<div>
-						<label>Pointer Klasse</label>
-						<Select
-							label="Pointer Klasse"
-							options={modules}
-							value={
-								modules.find(
-									(m) =>
-										m.connected_class ===
-										filter.options?.class_name
-								) || null
-							}
-							onChange={(e) =>
-								changeHandler(
-									["options"],
-									[{ ...filter.options, class_name: e.value }]
-								)
-							}
-						/>
-					</div>
-				))}
+			filter.type === "id" ||
+			filter.type === "ids" ? (
+				<div>
+					<Select
+						label="Pointer Klasse"
+						options={modules}
+						value={
+							modules.find(
+								(m) =>
+									m.connected_class ===
+									filter.options?.class_name
+							) || null
+						}
+						onChange={(e) =>
+							changeHandler(
+								["options"],
+								[
+									{
+										...filter.options,
+										class_name: e.connected_class
+									}
+								]
+							)
+						}
+					/>
+				</div>
+			) : null}
 			{filter.type === "search" && (
 				<div>
 					<label>Suchfeld</label>
 					<Select
 						label="Operator-Template"
-						options={operatorTemplateOptions}
+						options={operatorTemplateOptions()}
 						value={
-							operatorTemplateOptions.find(
+							operatorTemplateOptions().find(
 								(o) =>
 									o.search_path ===
 									filter.options?.search_path
@@ -187,7 +197,13 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 						onChange={(e) =>
 							changeHandler(
 								["options"],
-								[{ ...filter.options, search_path: e.value }]
+								[
+									{
+										...filter.options,
+										search_path: e.search_path,
+										type: e.type
+									}
+								]
 							)
 						}
 					/>

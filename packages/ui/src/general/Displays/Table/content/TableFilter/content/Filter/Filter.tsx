@@ -1,7 +1,7 @@
 import { FC, useCallback, useMemo } from "react";
-import { FilterProps } from "./types";
+import { FilterProps, OnValueChange } from "./types";
 import { Check } from "lucide-react";
-import { StringFilter } from "./components";
+import { IdFilter, SearchFilter, StringFilter } from "./components";
 import transformOperatorValueToObject from "./functions/transformOperatorValueToString";
 
 const Filter: FC<FilterProps> = ({
@@ -12,10 +12,12 @@ const Filter: FC<FilterProps> = ({
 	isActive,
 	activeFilter,
 	toggleFilter,
-	updateFilterValue
+	updateFilterValue,
+	options
 }) => {
-	const onValueChange = useCallback(
-		(value: string) => {
+	const onValueChange: OnValueChange = useCallback(
+		(value) => {
+			console.log({ value });
 			const transformedValue = transformOperatorValueToObject({
 				type,
 				operator,
@@ -23,25 +25,47 @@ const Filter: FC<FilterProps> = ({
 			});
 			if (transformedValue) {
 				updateFilterValue(id, transformedValue);
+			} else {
+				updateFilterValue(id, null);
 			}
 		},
 		[updateFilterValue, id, type, operator]
 	);
 
 	const renderFilterInput = useMemo(() => {
-		if (type === "string") {
+		if (!activeFilter) {
+			return null;
+		}
+		if (isActive && type === "string") {
+			return <StringFilter onValueChange={onValueChange} />;
+		}
+		if (isActive && type === "id") {
 			return (
-				<StringFilter
-					id={id}
-					operator={operator}
-					isActive={isActive}
-					activeFilter={activeFilter}
-					toggleFilter={toggleFilter}
+				<IdFilter
+					label={label || ""}
+					className={options?.class_name}
+					value={activeFilter.value as string | string[]}
+					onValueChange={onValueChange}
+					isMulti={operator === "in"}
+				/>
+			);
+		}
+		if (isActive && type === "search") {
+			return (
+				<SearchFilter
+					label={label || ""}
+					path={options?.search_path || ""}
+					type={options?.type || "input"}
+					value={activeFilter.value as string}
 					onValueChange={onValueChange}
 				/>
 			);
 		}
-	}, [type, id, label, isActive, activeFilter, toggleFilter]);
+		return null;
+	}, [type, id, label, isActive, activeFilter, toggleFilter, options]);
+
+	console.log({ options });
+
 	return (
 		<div key={id} className="filter-select-item" data-selected={isActive}>
 			<button

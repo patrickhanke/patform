@@ -41,7 +41,14 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 	const { createData, updateData } = useDataHandler(true, false);
 	const { data, refetch } = useFindData({
 		objectName: "Module",
-		fields: ["objectId", "name", "createdAt", "icon", "path"],
+		fields: [
+			"objectId",
+			"name",
+			"createdAt",
+			"icon",
+			"path",
+			"connected_class"
+		],
 		projectId: params.project_id
 	});
 

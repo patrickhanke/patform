@@ -31,12 +31,13 @@ const TableFilter: FC<TableFilterProps> = ({
 		[filters]
 	);
 
-	const getActiveFilter = useCallback(
-		(columnId: string) => {
-			return filters.find((f) => (f.id || f.key) === columnId);
-		},
-		[filters]
-	);
+	const getActiveFilter: (columnId: string) => FilterType | undefined =
+		useCallback(
+			(columnId: string) => {
+				return filters.find((f) => (f.id || f.key) === columnId);
+			},
+			[filters]
+		);
 
 	useEffect(() => {
 		return () => {
@@ -61,9 +62,14 @@ const TableFilter: FC<TableFilterProps> = ({
 			} else {
 				// Add filter - use column operator when from Module, else default
 				// key = fieldKey for GraphQL (e.g. "title", "location"), id for UI matching
+
+				let key = columnInfo.field || columnInfo.id;
+				if (columnInfo.type === "search") {
+					key = "search";
+				}
 				const newFilter: FilterType = {
 					id: columnInfo.id,
-					key: columnInfo.field || columnInfo.id,
+					key,
 					operator: columnInfo.operator,
 					value: ""
 				};
@@ -124,6 +130,7 @@ const TableFilter: FC<TableFilterProps> = ({
 										toggleFilter(columnInfo)
 									}
 									updateFilterValue={updateFilterValue}
+									options={columnInfo.options}
 								/>
 							);
 						})}

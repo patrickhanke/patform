@@ -1,5 +1,6 @@
 import { Updater } from "use-immer";
 import { Field, ModuleFilter } from "@repo/types";
+import { AdditionalField } from "../../types";
 
 export type { ModuleFilter };
 
@@ -11,7 +12,7 @@ export type AppModuleEditFiltersProps = {
 	modules: { value: string; label: string; connected_class: string }[];
 	settingsFields: Field[];
 	dataFields: Field[];
-	additionnalFields?: { value: string; label: string; search_path: string }[];
+	additionnalFields?: AdditionalField[];
 };
 
 export type AppModuleFilterProps = {
@@ -27,5 +28,5 @@ export type AppModuleEditFilterProps = {
 	modules: { value: string; label: string; connected_class: string }[];
 	settingsFields: Field[];
 	dataFields: Field[];
-	additionnalFields?: { value: string; label: string; search_path: string }[];
+	additionnalFields?: AdditionalField[];
 };

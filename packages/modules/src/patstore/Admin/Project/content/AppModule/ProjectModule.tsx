@@ -11,6 +11,7 @@ import {
 } from "./content";
 import { Module } from "@repo/types";
 import { useMemo } from "react";
+import { AdditionalField } from "./types";
 
 const AppModule = ({
 	id,
@@ -43,11 +44,7 @@ const AppModule = ({
 	});
 
 	const additionnalFields = useMemo(() => {
-		const additionalFieldsArray: {
-			value: string;
-			label: string;
-			search_path: string;
-		}[] = [];
+		const additionalFieldsArray: AdditionalField[] = [];
 		const hasEmailModule = modules.find(
 			(module) => module.path === "/emails"
 		);
@@ -57,12 +54,14 @@ const AppModule = ({
 			additionalFieldsArray.push({
 				value: "email",
 				label: "E-Mail",
-				search_path: "email"
+				search_path: "email",
+				type: "input"
 			});
 			additionalFieldsArray.push({
 				value: "lists",
 				label: "Listen",
-				search_path: "lists"
+				search_path: "lists",
+				type: "input"
 			});
 		}
 

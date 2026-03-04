@@ -1,6 +1,7 @@
 import { ButtonProps } from "@chakra-ui/react";
 
 export type ButtonProps = {
+	styles?: React.CSSProperties;
 	maxWidth?: number;
 	minWidth?: number;
 	isLink?: boolean;

@@ -116,5 +116,6 @@ export type ModuleFilter = {
   options?: {
     class_name?: string;
     search_path?: string;
+    type?: Field["type"];
   }
 };

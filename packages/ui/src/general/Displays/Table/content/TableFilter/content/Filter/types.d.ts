@@ -1,4 +1,5 @@
 import { Filter, FilterOperator, ModuleFilter } from "@repo/types";
+import { Field } from "@repo/ui";
 import { ColumnDataTypes } from "../../../../types";
 
 export type FilterProps = {
@@ -7,9 +8,28 @@ export type FilterProps = {
 	label: ModuleFilter["label"];
 	operator: ModuleFilter["operator"];
 	isActive: boolean;
-	activeFilter: ModuleFilter["value"];
+	activeFilter?: Filter;
 	toggleFilter: (id: string) => void;
 	updateFilterValue: (id: string, value: ModuleFilter["value"]) => void;
+	options: ModuleFilter["options"];
+};
+
+export type OnValueChange = (value: string | string[]) => void;
+
+export type IdFilterProps = {
+	label: string;
+	isMulti?: boolean;
+	className?: string;
+	value: string | string[];
+	onValueChange: (value: string | string[]) => void;
+};
+
+export type SearchFilterProps = {
+	label: string;
+	path: string;
+	type: Field["type"];
+	onValueChange: OnValueChange;
+	value?: string;
 };
 
 export type TransformOperatorValueToObject = (T: {
@@ -32,12 +52,7 @@ export type FilterInputProps = {
 };
 
 export type StringFilterProps = {
-	id: ModuleFilter["id"];
-	operator: ModuleFilter["operator"];
-	value: ModuleFilter["value"];
 	onValueChange: (value: ModuleFilter["value"]) => void;
-	onOperatorChange: (operator: ModuleFilter["operator"]) => void;
-	hideOperator?: boolean;
 };
 export type BooleanFilterProps = FilterInputProps;
 export type DateFilterProps = FilterInputProps;

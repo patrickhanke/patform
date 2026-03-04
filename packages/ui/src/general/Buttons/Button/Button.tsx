@@ -32,7 +32,8 @@ const Button: FC<ButtonProps> = ({
 	size = 12,
 	color,
 	loading = false,
-	type = "button"
+	type = "button",
+	styles = {}
 }) => {
 	const displayText = useMemo(
 		() => truncateText(text, maxWidth, size),
@@ -41,6 +42,7 @@ const Button: FC<ButtonProps> = ({
 	if (!isLink && onClick)
 		return (
 			<ChakraButton
+				style={styles}
 				maxW={maxWidth}
 				minW={minWidth}
 				type={type}

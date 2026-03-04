@@ -2,22 +2,9 @@
 
 import { FC } from "react";
 import { StringFilterProps } from "../types";
-import { Select } from "@repo/ui";
-import { Input } from "@chakra-ui/react";
-import { useDebounceCallback, useDebounceValue } from "usehooks-ts";
+import { useDebounceCallback } from "usehooks-ts";
 
-const operatorOptions = [
-	{ value: "equalTo", label: "ist gleich" },
-	{ value: "matchesRegex", label: "enthält" },
-	{ value: "notEqualTo", label: "ist nicht" }
-];
-
-const StringFilter: FC<StringFilterProps> = ({
-	id,
-	operator,
-	value,
-	onValueChange
-}) => {
+const StringFilter: FC<StringFilterProps> = ({ onValueChange }) => {
 	const debouncedOnValueChange = useDebounceCallback(onValueChange, 1000);
 	return (
 		<div className="flex col gap-xs" style={{ paddingTop: "12px" }}>
