@@ -11,7 +11,7 @@ import { TableColumnEmailSettings } from "@repo/ui";
 // In your component
 const UsersOverview = () => {
 	const { data: users, refetch } = useFindData({
-		objectName: "_User",
+		objectName: "User",
 		fields: ["objectId", "username", "email", "emails"],
 		// ... other options
 	});
@@ -103,7 +103,7 @@ const columnConfigs = [
 
 ## Required User Fields
 
-Make sure to fetch these fields from the `_User` class:
+Make sure to fetch these fields from the `User` class:
 
 ```tsx
 fields: [
@@ -140,6 +140,6 @@ const MyComponent = () => {
 ## Permissions
 
 Ensure the user has permission to:
-- Read from `_User` class
-- Update `_User` class (for email modifications)
+- Read from `User` class
+- Update `User` class (for email modifications)
 - Read from `Item` class with `type: "list"` (for fetching lists)

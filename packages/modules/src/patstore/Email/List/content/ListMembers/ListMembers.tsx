@@ -146,7 +146,7 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 									return;
 								}
 								await updateData({
-									className: "_User",
+									className: "User",
 									objectId: user.objectId,
 									updateObject: {
 										lists: [...(user.lists || []), listId]

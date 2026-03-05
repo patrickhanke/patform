@@ -67,7 +67,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 
 			await axiosclient(useMasterKey)
 				.put(
-					`classes/${className}/${objectId}`,
+					`classes/${className === "User" ? "_User" : className}/${objectId}`,
 					updateObjectCopy as AxiosRequestConfig<any>
 				)
 				.then((response: AxiosResponse<any, any>) => {
@@ -115,7 +115,9 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 				setFeedback("lädt", "loading", new Date());
 			}
 			await axiosclient(useMasterKey)
-				.delete(`classes/${className}/${objectId}`)
+				.delete(
+					`classes/${className === "User" ? "_User" : className}/${objectId}`
+				)
 				.then((response: AxiosResponse<any, any>) => {
 					if (feedback) {
 						feedbackHandler({
@@ -175,7 +177,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 
 			await axiosclient(useMasterKey)
 				.post(
-					`classes/${className}`,
+					`classes/${className === "User" ? "_User" : className}`,
 					updateObjectCopy as AxiosRequestConfig<any>
 				)
 				.then((response: AxiosResponse<any, any>) => {
@@ -206,7 +208,9 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 			setLoading(true);
 			if (query) {
 				await axiosclient(useMasterKey)
-					.get(`classes/${className}?where={${query}}`)
+					.get(
+						`classes/${className === "User" ? "_User" : className}?where={${query}}`
+					)
 					.then((response: AxiosResponse<any, any>) => {
 						data = response.data.results;
 					})
@@ -216,7 +220,9 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 			}
 			if (!query) {
 				await axiosclient(useMasterKey)
-					.get(`classes/${className}`)
+					.get(
+						`classes/${className === "User" ? "_User" : className}`
+					)
 					.then((response: AxiosResponse<any, any>) => {
 						data = response.data.results;
 					})

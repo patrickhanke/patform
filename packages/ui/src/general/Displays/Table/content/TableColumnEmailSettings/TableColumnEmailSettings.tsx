@@ -136,7 +136,7 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 			const finalEmails = getFinalEmails(emails);
 
 			await updateData({
-				className: "_User",
+				className: "User",
 				objectId: userId,
 				updateObject: {
 					emails: finalEmails

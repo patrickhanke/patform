@@ -233,7 +233,7 @@ export const module_option_fields: ModuleOptionsField = {
 		data_fields: [],
 		position: 10,
 		categories: [],
-		connected_class: "_User",
+		connected_class: "User",
 		sub_menu: [],
 		setting_fields: [],
 		default_fields: []

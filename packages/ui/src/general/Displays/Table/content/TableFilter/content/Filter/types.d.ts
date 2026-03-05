@@ -21,7 +21,7 @@ export type IdFilterProps = {
 	isMulti?: boolean;
 	className?: string;
 	value: string | string[];
-	onValueChange: (value: string | string[]) => void;
+	onValueChange: OnValueChange;
 	type: ModuleFilter["type"];
 };
 

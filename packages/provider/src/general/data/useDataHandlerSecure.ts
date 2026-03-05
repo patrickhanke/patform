@@ -57,7 +57,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
-						className,
+						className: className === "User" ? "_User" : className,
 						objectId,
 						updateObject,
 						useMasterKey,
@@ -124,7 +124,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 
 			try {
 				const response = await fetch(
-					`${API_BASE}/data?className=${className}&objectId=${objectId}&useMasterKey=${useMasterKey}`,
+					`${API_BASE}/data?className=${className === "User" ? "_User" : className}&objectId=${objectId}&useMasterKey=${useMasterKey}`,
 					{
 						method: "DELETE"
 					}
@@ -186,7 +186,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 						"Content-Type": "application/json"
 					},
 					body: JSON.stringify({
-						className,
+						className: className === "User" ? "_User" : className,
 						updateObject,
 						useMasterKey,
 						userId: userId || user?.objectId,
@@ -233,7 +233,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 
 			try {
 				const queryParams = new URLSearchParams({
-					className,
+					className: className === "User" ? "_User" : className,
 					useMasterKey: useMasterKey.toString()
 				});
 

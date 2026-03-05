@@ -98,7 +98,7 @@ const DataTransfer = <T extends Classes, D extends object>({
 							},
 							created_by: {
 								__type: "Pointer",
-								className: "_User",
+								className: "User",
 								objectId: userId
 							}
 						}

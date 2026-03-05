@@ -87,7 +87,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
 		settings: currentModule.setting_fields,
-		className: "_User",
+		className: "User",
 		refetch,
 		categories: currentModule?.categories,
 		useMasterKey: true,

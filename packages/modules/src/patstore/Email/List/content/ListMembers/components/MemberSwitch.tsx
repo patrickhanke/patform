@@ -56,7 +56,7 @@ const MemberSwitch: FC<MemberSwitchProps> = ({
 				}
 
 				await updateData({
-					className: "_User",
+					className: "User",
 					objectId: userId,
 					updateObject: {
 						emails: updatedEmails
@@ -125,7 +125,7 @@ const MemberSwitch: FC<MemberSwitchProps> = ({
 			}
 
 			await updateData({
-				className: "_User",
+				className: "User",
 				objectId: userId,
 				updateObject: {
 					emails: updatedEmails

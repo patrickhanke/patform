@@ -72,7 +72,7 @@ const AppUsers: FC<AppUsersProps> = ({
 		setLoading(true);
 		if (createUser && user) {
 			await createData({
-				className: "_User",
+				className: "User",
 				updateObject: {
 					username: user?.username,
 					label: user?.label,
@@ -90,7 +90,7 @@ const AppUsers: FC<AppUsersProps> = ({
 			const projectsCopy = cloneDeep(user.projects);
 			projectsCopy.push(projectId);
 			await updateData({
-				className: "_User",
+				className: "User",
 				objectId: user?.value,
 				updateObject: {
 					projects: projectsCopy

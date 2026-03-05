@@ -46,7 +46,7 @@ const SetStaffMemberPassword = ({ userId }: { userId: string }) => {
 
   const resetPassword = (password: string) => {
     updateData({
-      className: "_User",
+      className: "User",
       objectId: userId,
       updateObject: {
         password: password,

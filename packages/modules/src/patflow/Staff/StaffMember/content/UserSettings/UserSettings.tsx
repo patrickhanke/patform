@@ -51,7 +51,7 @@ const UserSettings = ({ userId }: { userId: string }) => {
 		<div className="site_content">
 			<Form
 				fields={renderFields}
-				apiClass="_User"
+				apiClass="User"
 				id={userId}
 				entry="settings"
 				afterSaveFunction={() => refetch()}

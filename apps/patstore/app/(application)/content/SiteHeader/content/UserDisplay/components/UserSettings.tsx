@@ -62,7 +62,7 @@ const UserSettings: FC<UserSettingsProps> = ({
     setLoading(true);
 
     await updateData({
-      className: "_User",
+      className: "User",
       objectId: data.objectId,
       updateObject,
       feedback: "Nutzerdaten erfolgreich aktualisiert",
@@ -112,7 +112,7 @@ const UserSettings: FC<UserSettingsProps> = ({
         <FileUploader
           maxFileCount={1}
           type="image"
-          className="_User"
+          className="User"
           classKey="portrait"
           classId={user.objectId}
           afterUploadHandler={() => getUser()}

@@ -15,7 +15,7 @@ const useUserColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 						value={row.name}
 						onChange={(value) => {
 							updateData({
-								className: "_User",
+								className: "User",
 								objectId: row.objectId,
 								updateObject: {
 									name: value

@@ -7,7 +7,7 @@ import { PatstoreUser } from "@repo/types";
 const AddUser: FC<AddUserProps> = ({ user, setUser, projectId }) => {
 	const [searchValue, setSearchValue] = useState("");
 	const { data } = useFindData({
-		objectName: "_User",
+		objectName: "User",
 		fields: ["objectId", "username", "email", "label", "projects"],
 		filters: [
 			{

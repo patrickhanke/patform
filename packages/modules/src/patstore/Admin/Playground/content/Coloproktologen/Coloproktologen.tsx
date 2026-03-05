@@ -52,7 +52,7 @@ const Playground = () => {
 
 		users.forEach((user) => {
 			updateData({
-				className: "_User",
+				className: "User",
 				objectId: user.objectId,
 				updateObject: {
 					projects: ["EgRR0prozh"]
@@ -133,7 +133,7 @@ const Playground = () => {
 			};
 
 			return await createData({
-				className: "_User",
+				className: "User",
 				updateObject
 			});
 		});

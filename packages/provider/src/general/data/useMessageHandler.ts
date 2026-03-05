@@ -35,7 +35,7 @@ const useMessageHandler = () => {
 					...updateObject,
 					user: {
 						__type: "Pointer",
-						className: "_User",
+						className: "User",
 						objectId: user
 					}
 				}

@@ -111,8 +111,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			) {
 				columnArray.push({
 					accessorFn: (row) =>
-						columnElement.id === "email" &&
-						className === "_User" ? (
+						columnElement.id === "email" && className === "User" ? (
 							<TableColumnHiddenField
 								id={row.objectId}
 								className={className}

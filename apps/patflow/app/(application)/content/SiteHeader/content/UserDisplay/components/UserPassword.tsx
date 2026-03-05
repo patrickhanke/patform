@@ -80,7 +80,7 @@ const UserPassword: FC<UserPasswordProps> = ({
       return;
     }
     await updateData({
-      className: "_User",
+      className: "User",
       objectId: user.objectId,
       updateObject,
     }).then(() => {

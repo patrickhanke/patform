@@ -87,7 +87,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 					if (userId) {
 						imageObject.set("created_by", {
 							__type: "Pointer",
-							className: "_User",
+							className: "User",
 							objectId: userId
 						});
 					}

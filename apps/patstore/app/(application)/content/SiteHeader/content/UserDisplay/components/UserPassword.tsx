@@ -76,7 +76,7 @@ const UserPassword: FC<UserPasswordProps> = ({
     setLoading(true);
 
     await updateData({
-      className: "_User",
+      className: "User",
       objectId: user.objectId,
       updateObject,
     }).then(() => {

@@ -45,7 +45,7 @@ const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 						value={row.color}
 						onChange={async (value) => {
 							await updateData({
-								className: "_User",
+								className: "User",
 								objectId: row.objectId,
 								updateObject: {
 									color: value

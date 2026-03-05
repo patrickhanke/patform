@@ -24,11 +24,20 @@ const IdFilter: FC<IdFilterProps> = ({
 	const { data, loading } = useFindData({
 		objectName: className || "",
 		fields: ["objectId", "label"],
-		filters: [],
+		filters:
+			className === "User"
+				? [
+						{
+							key: "projects",
+							value: [project?.objectId],
+							operator: "in"
+						}
+					]
+				: [],
 		limit: 1000,
 		order: "label_ASC",
 		skipQuery: !className,
-		projectId: project?.objectId
+		projectId: className !== "User" ? project?.objectId : undefined
 	});
 
 	console.log({ data });
@@ -164,7 +173,7 @@ const IdFilter: FC<IdFilterProps> = ({
 								const pointerValue = {
 									id: { equalTo: `${value}` }
 								};
-								onValueChange(pointerValue as object);
+								onValueChange(pointerValue);
 							} else {
 								onValueChange("");
 							}

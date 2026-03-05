@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
 		if (userId) {
 			dataToSave.created_by = {
 				__type: "Pointer",
-				className: "_User",
+				className: "User",
 				objectId: userId
 			};
 		}
@@ -150,7 +150,7 @@ export async function PUT(request: NextRequest) {
 		if (userId) {
 			dataToUpdate.updated_by = {
 				__type: "Pointer",
-				className: "_User",
+				className: "User",
 				objectId: userId
 			};
 		}

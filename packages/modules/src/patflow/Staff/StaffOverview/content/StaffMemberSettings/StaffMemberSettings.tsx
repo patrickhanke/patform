@@ -19,7 +19,7 @@ const StaffMemberSettings: FC<StaffMemberSettingsProps> = ({
 		if (!data) return;
 
 		await updateData({
-			className: "_User",
+			className: "User",
 			objectId: userId,
 			updateObject: data,
 			feedback: "Einstellungen aktualisiert"

@@ -69,7 +69,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 
 	const updateUser = useCallback(async () => {
 		await updateData({
-			className: "_User",
+			className: "User",
 			objectId: userId,
 			updateObject: {
 				email: staffMember.email,

@@ -222,7 +222,7 @@ const results = await getData({
     priority: { $gte: 5 },
     assignedTo: {
       __type: "Pointer",
-      className: "_User",
+      className: "User",
       objectId: user.objectId
     }
   })

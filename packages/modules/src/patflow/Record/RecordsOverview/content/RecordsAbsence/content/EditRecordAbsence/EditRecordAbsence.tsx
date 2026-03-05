@@ -178,13 +178,13 @@ const EditRecordAbsence = ({
 							comment: absenceState.comment,
 							user: {
 								__type: "Pointer",
-								className: "_User",
+								className: "User",
 								objectId: absenceState?.user?.objectId
 							},
 							year: record.year,
 							created_by: {
 								__type: "Pointer",
-								className: "_User",
+								className: "User",
 								objectId: user?.objectId
 							}
 						}
@@ -201,13 +201,13 @@ const EditRecordAbsence = ({
 							comment: absenceState.comment,
 							user: {
 								__type: "Pointer",
-								className: "_User",
+								className: "User",
 								objectId: absenceState?.user?.objectId
 							},
 							year: absenceState.year,
 							created_by: {
 								__type: "Pointer",
-								className: "_User",
+								className: "User",
 								objectId: user?.objectId
 							}
 						},
@@ -243,7 +243,7 @@ const EditRecordAbsence = ({
 									},
 									user: {
 										__type: "Pointer",
-										className: "_User",
+										className: "User",
 										objectId: absenceState?.user?.objectId
 									},
 									absence: {

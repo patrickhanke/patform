@@ -37,7 +37,7 @@ const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
 					<Toggle
 						onClick={async () => {
 							await updateData({
-								className: "_User",
+								className: "User",
 								objectId: row.objectId,
 								updateObject: {
 									is_worker: !row.is_worker
