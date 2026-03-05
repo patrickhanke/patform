@@ -150,7 +150,7 @@ export async function PUT(request: NextRequest) {
 		if (userId) {
 			dataToUpdate.updated_by = {
 				__type: "Pointer",
-				className: "User",
+				className: "_User",
 				objectId: userId
 			};
 		}
