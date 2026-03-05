@@ -1,13 +1,14 @@
 import { FC, useCallback, useMemo } from "react";
 import { AppModuleEditFilterProps } from "../types";
-import { Select } from "@repo/ui";
+import { Select, StatelessToggle } from "@repo/ui";
 import { useDebounceCallback } from "usehooks-ts";
 import { cloneDeep, set } from "lodash-es";
 import filterOperators from "../constants/filterOperators";
-import type { ModuleFilter } from "../types";
+import type { ModuleFilter, ModuleFilterPath } from "../types";
 import { generateInitialFields } from "../../AppModuleEditFields";
 import generateFieldTypes from "../functions/generateFieldTypes";
 import { ModuleField, ModuleFilterType } from "@repo/types";
+import CreateOptions from "./CreateOptions";
 
 const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 	filter,
@@ -26,7 +27,7 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 
 	const filterChangeHandler = useCallback(
 		(
-			keys: (keyof ModuleFilter)[],
+			keys: ModuleFilterPath[],
 			value: ModuleFilter[keyof ModuleFilter][]
 		) => {
 			setFilters((draft) => {
@@ -208,6 +209,30 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 						}
 					/>
 				</div>
+			)}
+			{filter.type === "string" && (
+				<>
+					<div>
+						<label>Operator</label>
+						<StatelessToggle
+							value={filter.options?.fixed || false}
+							onChange={(e) =>
+								changeHandler(["options.fixed"], [e])
+							}
+						/>
+					</div>
+					<div>
+						{filter.options?.fixed && (
+							<div>
+								<label>Select Optionen</label>
+								<CreateOptions
+									filter={filter}
+									changeHandler={changeHandler}
+								/>
+							</div>
+						)}
+					</div>
+				</>
 			)}
 		</div>
 	);

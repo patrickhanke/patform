@@ -5,7 +5,6 @@ import {
 	generateColumnsFromFields,
 	Modal,
 	Page,
-	RenderFilters,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
@@ -22,7 +21,6 @@ import state from "./constants/articleState";
 
 const ArticlesOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
-	console.log({ currentModule });
 	const { deleteData } = useDataHandler();
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
@@ -76,28 +74,6 @@ const ArticlesOverview = () => {
 		[selectedRows]
 	);
 
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, []);
-
-	console.log(currentModule);
-
 	return (
 		<Page
 			title={currentModule.name}
@@ -123,7 +99,9 @@ const ArticlesOverview = () => {
 				enableRowSelection
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
-				filterContent={renderFilters}
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={currentModule.filters || []}
 				setOrder={setOrder}
 			/>
 			<Modal

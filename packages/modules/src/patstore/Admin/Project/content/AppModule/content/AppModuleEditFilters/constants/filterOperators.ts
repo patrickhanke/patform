@@ -16,6 +16,7 @@ const filterOperators = (fieldType: string) => {
 				{ value: "greaterThanOrEqualTo", label: "greaterThanOrEqualTo" }
 			];
 		case "pointer":
+			return [{ value: "have", label: "have" }];
 		case "id": {
 			return [
 				{ value: "equalTo", label: "equalTo" },

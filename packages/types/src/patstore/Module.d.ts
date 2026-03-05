@@ -117,5 +117,25 @@ export type ModuleFilter = {
     class_name?: string;
     search_path?: string;
     type?: Field["type"];
+    select_options?: { label: string; value: string }[];
+    fixed?: boolean;
   }
 };
+
+/** Explicit path union - avoids keyof ModuleFilter which can be any due to Field/operator refs */
+export type ModuleFilterPath =
+	| "id"
+	| "field"
+	| "type"
+	| "operator"
+	| "label"
+	| "position"
+	| "options"
+	| "options.class_name"
+	| "options.search_path"
+	| "options.type"
+	| "options.fixed"
+	| "options.select_options"
+	| `options.select_options[${number}]`
+	| `options.select_options[${number}].label`
+	| `options.select_options[${number}].value`;

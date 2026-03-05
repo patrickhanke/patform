@@ -8,26 +8,24 @@ import {
 	SelectElement
 } from "@repo/ui";
 import { IdFilterProps } from "../types";
-import { isArray } from "lodash-es";
+import { get, isArray } from "lodash-es";
 
 const IdFilter: FC<IdFilterProps> = ({
 	label,
 	isMulti = false,
 	className,
 	value,
-	onValueChange
+	onValueChange,
+	type
 }) => {
 	const { project } = useAppContext();
 	const [isOpen, setIsOpen] = useState(false);
-	console.log({ className });
-	console.log({ value });
 
 	const { data, loading } = useFindData({
 		objectName: className || "",
 		fields: ["objectId", "label"],
 		filters: [],
 		limit: 1000,
-		skip: 0,
 		order: "label_ASC",
 		skipQuery: !className,
 		projectId: project?.objectId
@@ -58,12 +56,19 @@ const IdFilter: FC<IdFilterProps> = ({
 		}
 		if (value) {
 			const element = selectElements.find(
-				(element) => element.value === value
+				(element) => element.value === getValue()
 			);
 			return element ? [element] : [];
 		}
 		return [];
 	}, [value, isMulti, selectElements]);
+
+	const getValue = useCallback(() => {
+		if (type === "pointer") {
+			return get(value, "id.equalTo");
+		}
+		return value;
+	}, [value, type]);
 
 	if (!className) {
 		return null;
@@ -112,7 +117,8 @@ const IdFilter: FC<IdFilterProps> = ({
 							<p>
 								{
 									selectElements.find(
-										(element) => element.value === value
+										(element) =>
+											element.value === getValue()
 									)?.label
 								}
 							</p>
@@ -152,21 +158,33 @@ const IdFilter: FC<IdFilterProps> = ({
 					selectedElements={getElementsFromValue()}
 					onSelect={(elements) => {
 						console.log(elements);
-						if (isMulti) {
-							const values = elements.map(
-								(element) => element.value
-							);
-							if (values) {
-								onValueChange(values as string[]);
+						if (type === "pointer") {
+							const value = elements[0]?.value;
+							if (value) {
+								const pointerValue = {
+									id: { equalTo: `${value}` }
+								};
+								onValueChange(pointerValue as object);
 							} else {
 								onValueChange("");
 							}
 						} else {
-							const value = elements[0]?.value;
-							if (value) {
-								onValueChange(value as string);
+							if (isMulti) {
+								const values = elements.map(
+									(element) => element.value
+								);
+								if (values) {
+									onValueChange(values as string[]);
+								} else {
+									onValueChange("");
+								}
 							} else {
-								onValueChange("");
+								const value = elements[0]?.value;
+								if (value) {
+									onValueChange(value as string);
+								} else {
+									onValueChange("");
+								}
 							}
 						}
 					}}

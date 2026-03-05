@@ -17,10 +17,9 @@ const generateFieldTypes = (type: ModuleFieldType): ModuleFilterType | null => {
 		case "edit_texteditor":
 			return "string";
 		case "date":
-			return "string";
 		case "state":
 		case "edit_state":
-			return "select";
+			return "string";
 		case "person":
 		case "edit_person":
 		case "location":

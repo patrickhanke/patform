@@ -14,7 +14,7 @@ export type FilterProps = {
 	options: ModuleFilter["options"];
 };
 
-export type OnValueChange = (value: string | string[]) => void;
+export type OnValueChange = (value: string | string[] | object) => void;
 
 export type IdFilterProps = {
 	label: string;
@@ -22,6 +22,7 @@ export type IdFilterProps = {
 	className?: string;
 	value: string | string[];
 	onValueChange: (value: string | string[]) => void;
+	type: ModuleFilter["type"];
 };
 
 export type SearchFilterProps = {
@@ -53,6 +54,7 @@ export type FilterInputProps = {
 
 export type StringFilterProps = {
 	onValueChange: (value: ModuleFilter["value"]) => void;
+	options: ModuleFilter["options"];
 };
 export type BooleanFilterProps = FilterInputProps;
 export type DateFilterProps = FilterInputProps;

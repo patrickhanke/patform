@@ -1,8 +1,8 @@
 import { Updater } from "use-immer";
-import { Field, ModuleFilter } from "@repo/types";
+import { Field, ModuleFilter, ModuleFilterPath } from "@repo/types";
 import { AdditionalField } from "../../types";
 
-export type { ModuleFilter };
+export type { ModuleFilter, ModuleFilterPath };
 
 export type AppModuleEditFiltersProps = {
 	moduleName: string;
@@ -29,4 +29,12 @@ export type AppModuleEditFilterProps = {
 	settingsFields: Field[];
 	dataFields: Field[];
 	additionnalFields?: AdditionalField[];
+};
+
+export type CreateOptionsProps = {
+	filter: ModuleFilter;
+	changeHandler: (
+		keys: ModuleFilterPath[],
+		value: ModuleFilter[keyof ModuleFilter][]
+	) => void;
 };

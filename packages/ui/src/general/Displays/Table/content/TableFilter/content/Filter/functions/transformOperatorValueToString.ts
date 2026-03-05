@@ -11,6 +11,9 @@ const transformOperatorValueToObject: TransformOperatorValueToObject = ({
 	if (type === "id" || type === "ids") {
 		return value;
 	}
+	if (type === "pointer") {
+		return value;
+	}
 	if (type === "search") {
 		return value;
 	}

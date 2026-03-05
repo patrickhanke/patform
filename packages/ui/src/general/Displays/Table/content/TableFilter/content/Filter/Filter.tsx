@@ -37,16 +37,19 @@ const Filter: FC<FilterProps> = ({
 			return null;
 		}
 		if (isActive && type === "string") {
-			return <StringFilter onValueChange={onValueChange} />;
+			return (
+				<StringFilter onValueChange={onValueChange} options={options} />
+			);
 		}
-		if (isActive && type === "id") {
+		if (isActive && (type === "id" || type === "pointer")) {
 			return (
 				<IdFilter
 					label={label || ""}
 					className={options?.class_name}
 					value={activeFilter.value as string | string[]}
 					onValueChange={onValueChange}
-					isMulti={operator === "in"}
+					type={type}
+					isMulti={type === "pointer" ? false : operator === "in"}
 				/>
 			);
 		}
