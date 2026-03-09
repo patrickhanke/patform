@@ -184,7 +184,7 @@ const EditRecordAbsence = ({
 							year: record.year,
 							created_by: {
 								__type: "Pointer",
-								className: "User",
+								className: "_User",
 								objectId: user?.objectId
 							}
 						}
@@ -207,7 +207,7 @@ const EditRecordAbsence = ({
 							year: absenceState.year,
 							created_by: {
 								__type: "Pointer",
-								className: "User",
+								className: "_User",
 								objectId: user?.objectId
 							}
 						},

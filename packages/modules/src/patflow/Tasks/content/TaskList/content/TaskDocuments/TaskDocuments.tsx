@@ -36,7 +36,7 @@ const TaskDocuments = ({
 					name: content.name,
 					created_by: {
 						__type: "Pointer",
-						className: "User",
+						className: "_User",
 						objectId: content.user
 					},
 					object:

@@ -92,7 +92,7 @@ const CreateContent: FC<CreateContentProps> = ({
 						categories: [],
 						created_by: {
 							__type: "Pointer",
-							className: "User",
+							className: "_User",
 							objectId: user?.objectId
 						}
 					}

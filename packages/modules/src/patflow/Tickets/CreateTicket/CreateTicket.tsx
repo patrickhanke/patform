@@ -59,7 +59,7 @@ const CreateTicket = ({
 			title: ticket.title,
 			created_by: {
 				__type: "Pointer",
-				className: "User",
+				className: "_User",
 				objectId: user.objectId
 			},
 			description: ticket.description,

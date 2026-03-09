@@ -14,7 +14,7 @@ export type CreateTaskUpdateObject = {
   title: string;
   description: string;
   documents: Document[];
-  created_by: { __type: "Pointer"; className: "User"; objectId: string };
+  created_by: { __type: "Pointer"; className: "_User"; objectId: string };
   state: TaskState;
   time: DateTypes.DateObject | null;
   comments: Comment[];

@@ -84,7 +84,7 @@ const AddService: FC<AddServiceProps> = ({
 					title: service.name,
 					created_by: {
 						__type: "Pointer",
-						className: "User",
+						className: "_User",
 						objectId: user?.objectId
 					},
 					description: service.description,
@@ -132,7 +132,7 @@ const AddService: FC<AddServiceProps> = ({
 			name: service.name,
 			created_by: {
 				__type: "Pointer",
-				className: "User",
+				className: "_User",
 				objectId: user?.objectId
 			},
 			description: service.description,

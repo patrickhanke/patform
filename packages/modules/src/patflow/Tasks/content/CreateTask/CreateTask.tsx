@@ -138,7 +138,7 @@ const CreateTask = ({
 			title: task.title,
 			created_by: {
 				__type: "Pointer",
-				className: "User",
+				className: "_User",
 				objectId: user?.objectId
 			},
 			description: task.description,
