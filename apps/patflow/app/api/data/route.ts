@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
 		if (userId) {
 			dataToSave.created_by = {
 				__type: "Pointer",
-				className: "User",
+				className: "_User",
 				objectId: userId
 			};
 		}

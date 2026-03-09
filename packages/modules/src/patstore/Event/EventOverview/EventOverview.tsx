@@ -1,10 +1,9 @@
 "use client";
 
-import { useContext, useMemo, useState } from "react";
+import { useContext, useState } from "react";
 import {
 	generateColumnsFromFields,
 	Page,
-	RenderFilters,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
@@ -54,26 +53,6 @@ const EventOverview = () => {
 		categories: currentModule?.categories
 	});
 
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, []);
-
 	return (
 		<Page
 			title={currentModule.name}
@@ -98,7 +77,9 @@ const EventOverview = () => {
 				enableRowSelection
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
-				filterContent={renderFilters}
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={currentModule.filters}
 				setOrder={setOrder}
 			/>
 		</Page>

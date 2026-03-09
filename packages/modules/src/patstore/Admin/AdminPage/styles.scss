@@ -2,9 +2,9 @@
 
 .admin_page-content {
   height: 100%;
-  width: 100%;
+  width: auto;
   flex: 1 0;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
   padding: map-get($map: constants.$padding, $key: "site");
 }

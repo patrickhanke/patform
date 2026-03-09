@@ -1,6 +1,5 @@
 import { useGetData } from "@repo/provider";
 import { Loader } from "@repo/ui";
-import "./styles.scss";
 import {
 	AppModuleEditCategories,
 	AppModuleEditDataFields,
@@ -72,11 +71,13 @@ const AppModule = ({
 
 	const module = data;
 
-	console.log("module", module);
 	if (!module) return null;
 
 	return (
-		<div className="app_module_container">
+		<div
+			style={{ width: "fit-content" }}
+			className="flex row gap-md a-ce j-sb"
+		>
 			<div style={{ width: "300px" }}>
 				<h3>{module?.name}</h3>
 			</div>

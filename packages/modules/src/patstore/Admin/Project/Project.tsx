@@ -137,7 +137,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 			navOnClick={setSiteState}
 		>
 			{siteState?.value === "modules" && (
-				<>
+				<div style={{ width: "fit-content" }}>
 					<DnDDisplay
 						items={
 							sortItemsByPosition(modules).map(
@@ -162,7 +162,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 						createModuleHandler={createModuleHandler}
 						modules={modules}
 					/>
-				</>
+				</div>
 			)}
 			{siteState?.value === "users" && (
 				<>

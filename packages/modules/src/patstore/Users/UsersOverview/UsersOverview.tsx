@@ -39,8 +39,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		page_states[0]
 	);
 
-	console.log("currentModule", currentModule);
-
 	const initialFilters: Filter[] = useMemo(
 		() => [
 			{
