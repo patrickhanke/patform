@@ -296,5 +296,21 @@ export const module_option_fields: ModuleOptionsField = {
 		],
 		setting_fields: [],
 		default_fields: []
+	},
+	"/videos": {
+		path: "/videos",
+		name: "Videos",
+		icon: "video",
+		settings: {
+			categories: []
+		},
+		fields: [],
+		data_fields: [],
+		position: 14,
+		categories: [],
+		connected_class: "Video",
+		sub_menu: [],
+		setting_fields: [],
+		default_fields: ["title", "video"]
 	}
 };

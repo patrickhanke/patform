@@ -1,12 +1,13 @@
 "use client";
 
-import { getImageUrlFromBytescale } from "@repo/provider";
+import { getImageUrl, useFindData } from "@repo/provider";
 import { TableColumnGalleryProps } from "../types";
 import { Modal } from "@repo/ui";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { PatstoreImageUploader } from "@repo/ui";
 import "../styles.scss";
 import { isArray } from "lodash-es";
+import { ImageClass } from "@repo/types";
 
 const TableColumnGallery = ({
 	value = [],
@@ -15,6 +16,30 @@ const TableColumnGallery = ({
 }: TableColumnGalleryProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [image, setImage] = useState<string[]>([]);
+	const { data: imageData } = useFindData({
+		objectName: "Image",
+		fields: ["objectId", "file { name url }"],
+		filters: [
+			{
+				key: "objectId",
+				value: value,
+				operator: "in"
+			}
+		]
+	});
+
+	const getImageUrlHandler = useCallback(
+		(imageId: string) => {
+			return getImageUrl({
+				fileName:
+					imageData?.find(
+						(image: ImageClass) => image.objectId === imageId
+					)?.file?.name || "",
+				width: 240
+			});
+		},
+		[imageData]
+	);
 
 	return (
 		<>
@@ -46,12 +71,7 @@ const TableColumnGallery = ({
 						<label>Bilder</label>
 						{value.map((url: string) => (
 							<div key={url}>
-								<img
-									src={getImageUrlFromBytescale({
-										filePath: url,
-										width: 240
-									})}
-								/>
+								<img src={getImageUrlHandler(url)} />
 							</div>
 						))}
 					</div>

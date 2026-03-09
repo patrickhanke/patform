@@ -9,6 +9,7 @@ import {
 	BsFillBarChartFill,
 	BsLayoutTextWindowReverse,
 	BsPeople,
+	BsPlayFill,
 	BsPlusLg
 } from "react-icons/bs";
 import { FaUsers, FaUser, FaList } from "react-icons/fa";
@@ -188,6 +189,9 @@ const Icons = ({ icon, color }: { icon: string; color?: string }) => {
 	}
 	if (icon === "lists" || icon === "list") {
 		return <FaList color={color || "inherit"} />;
+	}
+	if (icon === "video") {
+		return <BsPlayFill color={color || "inherit"} />;
 	}
 
 	return null;

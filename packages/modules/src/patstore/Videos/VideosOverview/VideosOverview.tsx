@@ -1,50 +1,32 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
 	Page,
-	RenderFilters,
-	Separator,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
+import { Filter, VideoClass } from "@repo/types";
 import {
 	PatstoreAppContext,
 	useDataHandler,
-	useFindCategoryPageStates,
-	useFindModuleData,
-	filterModuleCategories
+	useFindModuleData
 } from "@repo/provider";
-import { Filter, GroupClass } from "@repo/types";
 
-const GroupOverview = () => {
-	const { deleteData } = useDataHandler();
+const VideosOverview = () => {
+	const { deleteData } = useDataHandler(false);
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
-	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
-		{
-			categories:
-				filterModuleCategories(currentModule.categories).categoryIds ||
-				[],
-			categoryModuleId: filterModuleCategories(currentModule.categories)
-				.categoryModuleId,
-			filters,
-			setFilters
-		}
-	);
-	const [loading, setLoading] = useState(false);
-
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
 	});
-
-	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
+	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<GroupClass>({
+	const { data, refetch, count } = useFindModuleData<VideoClass>({
 		module: currentModule,
 		filters,
 		limit: pagination.pageSize,
@@ -52,38 +34,20 @@ const GroupOverview = () => {
 		order
 	});
 
-	const columns = useCreateColumns<GroupClass>({
+	const [deleteModal, setDeleteModal] = useState<boolean>(false);
+
+	const columns = useCreateColumns<VideoClass>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
-		className: "Group",
+		className: "Video",
 		refetch,
 		categories: currentModule?.categories
 	});
 
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, []);
-
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
-				text: "Gruppen löschen",
+				text: "Personen löschen",
 				onClick: () => {
 					setDeleteModal(true);
 				},
@@ -97,31 +61,30 @@ const GroupOverview = () => {
 	return (
 		<Page
 			title={currentModule.name}
-			emptyContent={true}
+			// pageHeaderContent={<CreatePerson refetch={refetch} />}
 			pageHeaderButtons={pageHeaderButtons}
 			createClass={{
-				className: "Group",
-				text: "Neue Gruppe erstellen",
+				className: "Video",
+				text: "Neue Video erstellen",
 				fields: currentModule.fields,
 				refetch: refetch
 			}}
+			emptyContent={true}
 			refetch={refetch}
-			pageStates={pageStates}
-			setPageState={setActivePage}
-			pageState={activePage}
 		>
-			<Separator size="xs" noLine />
 			<Table
 				columns={columns}
 				data={data || []}
-				setPagination={setPagination}
-				pagination={pagination}
 				rowCount={count}
-				filterContent={renderFilters}
+				pagination={pagination}
+				setPagination={setPagination}
+				enableRowSelection
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				setOrder={setOrder}
-				enableRowSelection
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={currentModule.filters || []}
 			/>
 			<Modal
 				isOpen={deleteModal}
@@ -132,21 +95,25 @@ const GroupOverview = () => {
 					await Promise.all(
 						selectedRows.map(async (objectId) => {
 							await deleteData({
-								className: "Group",
+								className: "Video",
 								objectId
 							});
 						})
 					);
 					await refetch();
+					setSelectedRows([]);
 					setLoading(false);
 					setDeleteModal(false);
 				}}
-				header={"Gruppe löschen"}
+				header={"Bilder löschen"}
 			>
-				<p>Sind sich Sicher, dass sie die Gruppen löschen möchten?</p>
+				<p>
+					Sind sich Sicher, dass sie {selectedRows.length} Videos
+					löschen möchten?
+				</p>
 			</Modal>
 		</Page>
 	);
 };
 
-export default GroupOverview;
+export default VideosOverview;

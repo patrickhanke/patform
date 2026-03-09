@@ -41,7 +41,7 @@ export type TableTypes = {
 export type ColumnDef<TData> = ColumnDef<TData>;
 
 export type TableColumnImageProps = {
-	file?: string | File;
+	file?: File;
 };
 
 export type TableColumnImagesProps = {
@@ -179,4 +179,10 @@ export type UpdateColumnData = (t: {
 
 export type TableColumnUserProps = {
 	value: PatstoreUser;
+};
+
+export type TableColumnGalleryProps = {
+	value?: string[];
+	onChange: (images: string[]) => Promise<void>;
+	maxFileCount?: number;
 };

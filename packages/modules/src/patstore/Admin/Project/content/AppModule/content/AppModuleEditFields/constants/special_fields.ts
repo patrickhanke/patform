@@ -86,7 +86,7 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				id: "address",
 				label: "Adresse",
 				required: true,
-				type: "adit_textfield",
+				type: "edit_textfield",
 				active: false,
 				position: 6,
 				default: false
@@ -197,6 +197,19 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				active: false,
 				position: 22,
 				default: false
+			}
+		];
+	}
+	if (modulePath === "/videos") {
+		return [
+			{
+				id: "video",
+				label: "Video",
+				required: false,
+				type: "video",
+				active: true,
+				position: 2,
+				default: true
 			}
 		];
 	}

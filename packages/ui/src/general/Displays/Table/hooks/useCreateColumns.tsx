@@ -55,10 +55,11 @@ import {
 	TableColumnFile,
 	TableColumnDocuments,
 	TableColumnUser,
-	TableColumnUserRole
+	TableColumnUserRole,
+	TableColumnVideo,
+	TableColumnLocation,
+	TableColumnHiddenField
 } from "../components";
-import TableColumnHiddenField from "../components/TableColumnHiddenField";
-import TableColumnLocation from "../components/TableColumnLocation";
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -266,6 +267,19 @@ const useCreateColumns = <T extends ColumnClasses>({
 					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
 					enableSorting: columnElement.enableSorting ?? false
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "video") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnVideo
+							value={row[columnElement.id] as string}
+						/>
+					),
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: false
 				} as ColumnDef<T>);
 			}
 			if (
@@ -745,7 +759,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "custom") {
 				columnArray.push({
-					accessorFn: (row) => columnElement.render(row),
+					accessorFn: (row) => columnElement?.render?.(row),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),

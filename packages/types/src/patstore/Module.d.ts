@@ -3,11 +3,11 @@ import { Module } from './Module.d';
 import { Field } from "@repo/ui";
 import { Project } from "./Classes";
 
-export type ModulePath = "/articles" | "/events" | "/groups" | "/locations" | "/persons" | "/downloads" | "/forms" | "/entries" | "/categories" | "/images" | "/emails" | "/calendar" | "/website" | "/users";
+export type ModulePath = "/articles" | "/events" | "/groups" | "/locations" | "/persons" | "/downloads" | "/forms" | "/entries" | "/categories" | "/images" | "/emails" | "/calendar" | "/website" | "/users" | "/videos";
 
-export type ModuleFieldIds = "title" | "description" | "text" | "image" | "date" | "dates" | "gallery" | "color" | "data" | "content" | "file" | "documents" | "link" | "state" | "active" ;
+export type ModuleFieldIds = "title" | "description" | "text" | "image" | "date" | "dates" | "gallery" | "color" | "data" | "content" | "file" | "documents" | "link" | "state" | "active";
 
-export type ModuleDataFieldsSpecific = "team" | "author" | "location" | "coordinates" | "address" | "email" ;
+export type ModuleDataFieldsSpecific = "team" | "author" | "location" | "coordinates" | "address" | "email" | "video" ;
 
 export type ModuleCategory = {
   id: string;
@@ -70,7 +70,9 @@ export type ModuleFieldType =
 | "user"
 | "edit_role"
 | "location"
-| "custom";
+| "custom"
+| "emails"
+| "video";
 
 export type ModuleField = {
 	id: ModuleDataFields;

@@ -15,3 +15,4 @@ export * from "./Users";
 export * from "./Calendar";
 export * from "./Project";
 export * from "./Email";
+export * from "./Videos";

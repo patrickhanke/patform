@@ -10,7 +10,6 @@ export * from "./InfoBox";
 export * from "./Icon";
 export * from "./DateDisplay";
 export * from "./Calendar";
-export * from "./ImageDisplay";
 export * from "./FileDisplay";
 export * from "./UserMessages";
 export * from "./StateDisplay";

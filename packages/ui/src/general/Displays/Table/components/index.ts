@@ -20,3 +20,6 @@ export { default as TableColumnImages } from "./TableColumnImages";
 export { default as TableColumnDocuments } from "./TableColumnDocuments";
 export { default as TableColumnUser } from "./TableColumnUser";
 export { default as TableColumnUserRole } from "./TableColumnUserRole";
+export { default as TableColumnVideo } from "./TableColumnVideo";
+export { default as TableColumnHiddenField } from "./TableColumnHiddenField";
+export { default as TableColumnLocation } from "./TableColumnLocation";

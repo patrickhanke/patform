@@ -1,12 +1,11 @@
 import { useContext, useMemo } from "react";
 import styles from "../WorkersInterface.module.scss";
 import { DisplayWorkerInterfaceComponent } from "../types";
-import { useFindData } from "@repo/provider";
+import { getImageUrl, useFindData } from "@repo/provider";
 import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { Absence, Day } from "@repo/types";
 import { StateDisplay } from "@repo/ui";
-import { getImageUrlFromBytescale } from "@repo/provider";
 
 const DisplayWorkerInterface = ({
 	worker,
@@ -84,8 +83,8 @@ const DisplayWorkerInterface = ({
 				<div className={styles.display_worker_image_container}>
 					{worker.portrait ? (
 						<img
-							src={getImageUrlFromBytescale({
-								filePath: worker.portrait,
+							src={getImageUrl({
+								fileName: worker.portrait,
 								height: 60,
 								width: 60
 							})}

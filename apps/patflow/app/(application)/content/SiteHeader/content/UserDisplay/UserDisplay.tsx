@@ -3,7 +3,7 @@
 import "./styles.scss";
 import { Icon, MessageIndicator } from "@repo/ui";
 import { FC, useContext, useEffect, useMemo, useState } from "react";
-import { getImageUrlFromBytescale, NotificationContext, UserContext } from "@repo/provider";
+import { NotificationContext, UserContext } from "@repo/provider";
 import { UserDisplayProps } from "./types";
 import { AnimatePresence } from "motion/react";
 import UserMenu from "./content/UserMenu/UserMenu";
@@ -18,16 +18,6 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
     const { unreadNotifications } = useContext(NotificationContext);
 
     const userData = useMemo(() => {
-        if (user && user.portrait) {
-        return {
-            url: getImageUrlFromBytescale({
-            filePath: user.portrait,
-            width: 60,
-            height: 60,
-            }),
-            alt: `${user.first_name} ${user.last_name}`,
-        };
-        }
         return {
         url: "",
         alt: "",

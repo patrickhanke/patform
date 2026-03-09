@@ -3,7 +3,7 @@ import { ModuleFieldIds, Module } from "@repo/types";
 const disabled_fields: {
 	[key in Module["path"]]: ModuleFieldIds[];
 } = {
-	"/arcticles": [],
+	"/articles": [],
 	"/events": [],
 	"/groups": [],
 	"/locations": [],
@@ -12,7 +12,11 @@ const disabled_fields: {
 	"/forms": [],
 	"/images": ["image"],
 	"/entries": [],
-	"/categories": []
+	"/categories": [],
+	"/emails": [],
+	"/calendar": [],
+	"/website": [],
+	"/users": []
 };
 
 export default disabled_fields;

@@ -3,7 +3,7 @@
 import styles from "./UserDisplay.module.scss";
 import { Icon } from "@repo/ui";
 import { FC, useCallback, useEffect, useState } from "react";
-import { axiosclient, getImageUrl, getImageUrlFromBytescale } from "@repo/provider";
+import { axiosclient, getImageUrl } from "@repo/provider";
 import { UserDisplayProps } from "./types";
 import UserSettings from "./components/UserSettings";
 import { PatstoreUser } from "@repo/types";

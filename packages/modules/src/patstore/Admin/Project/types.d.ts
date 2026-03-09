@@ -32,7 +32,8 @@ export type ModuleOptionsKeys =
 	| "/groups"
 	| "/locations"
 	| "/calendar"
-	| "/emails";
+	| "/emails"
+	| "/videos";
 
 export type ModuleOptionsField = {
 	[key in ModuleOptionsKeys]: Omit<Module, "objectId" | "project">;

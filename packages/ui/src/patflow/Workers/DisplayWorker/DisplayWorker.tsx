@@ -1,9 +1,8 @@
 import { useContext, useMemo } from "react";
-import { useDataStore, useFindData } from "@repo/provider";
+import { getImageUrl, useDataStore, useFindData } from "@repo/provider";
 import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
-import { getImageUrlFromBytescale } from "@repo/provider";
 import { Loader, StateDisplay } from "@repo/ui";
 import { Absence, Day } from "@repo/types";
 import "./styles.scss";
@@ -100,7 +99,7 @@ const DisplayWorker = ({
 						name={`${worker.first_name} ${worker.last_name}`}
 					/>
 					<Avatar.Image
-						src={getImageUrlFromBytescale({
+						src={getImageUrl({
 							filePath: worker.portrait,
 							height: 60,
 							width: 60
