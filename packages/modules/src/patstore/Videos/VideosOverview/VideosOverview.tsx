@@ -58,6 +58,8 @@ const VideosOverview = () => {
 		[selectedRows]
 	);
 
+	console.log(data);
+
 	return (
 		<Page
 			title={currentModule.name}

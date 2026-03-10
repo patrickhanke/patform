@@ -274,6 +274,16 @@ const useCreateColumns = <T extends ColumnClasses>({
 					accessorFn: (row) => (
 						<TableColumnVideo
 							value={row[columnElement.id] as string}
+							onChange={(filePath: string) =>
+								updateColumnData({
+									objectId: row.objectId,
+									updateObject: {
+										[columnElement.id]: filePath
+									},
+									feedback: "Video aktualisiert"
+								})
+							}
+							id={row.objectId}
 						/>
 					),
 					id: columnElement.id as string,
