@@ -8,7 +8,7 @@ const UserInvitations = () => {
 	const { data, refetch } = useGetData({
 		objectName: "Project",
 		fields: ["objectId", "name", "invitations"],
-		id: project.objectId
+		id: project?.objectId || ""
 	});
 
 	const [pagination, setPagination] = useState({
@@ -19,7 +19,7 @@ const UserInvitations = () => {
 	const columns = useInvitationColumns({
 		refetch,
 		invitations: data ? data?.objects?.getProject?.invitations : [],
-		projectId: project.objectId
+		projectId: project?.objectId || ""
 	});
 
 	if (!data) return <div>Loading</div>;
