@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { Modal, TextInput } from "@repo/ui";
 import { PasswordFormProps } from "../types";
 import { ErrorMessage, Response } from "@repo/types";
+import axios from "axios";
 
 const PasswordForm: FC<PasswordFormProps> = ({
   passwordReset,
@@ -28,8 +29,16 @@ const PasswordForm: FC<PasswordFormProps> = ({
       });
     });
 
+    const axiosClient = axios.create({
+      baseURL: process.env.SASHIDO_API_URL,
+      headers: {
+        "X-Parse-Application-Id": process.env.SASHIDO_APP_ID,
+		    "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY,
+      },
+    });
+
     if (errorArray.length === 0) {
-      const response = await axiosclient()
+      const response = await axiosClient
         .post("functions/send_password_reset", { email })
         .then((response) => {
           return response.data.result;
