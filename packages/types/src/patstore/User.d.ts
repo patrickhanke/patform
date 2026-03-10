@@ -43,6 +43,10 @@ export type PatstoreUser = {
     {
       email: string;
       lists: string[];
+      suppressed: {
+        value: boolean;
+        reason?: string | null;
+      };
       settings:  {
         [key: string]: {
           optIn: string | null;

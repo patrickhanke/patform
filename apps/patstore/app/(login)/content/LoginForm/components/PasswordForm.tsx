@@ -29,25 +29,26 @@ const PasswordForm: FC<PasswordFormProps> = ({
       });
     });
 
-    const axiosClient = axios.create({
-      baseURL: process.env.SASHIDO_API_URL,
-      headers: {
-        "X-Parse-Application-Id": process.env.SASHIDO_APP_ID,
-		    "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY,
-      },
-    });
 
     if (errorArray.length === 0) {
-      const response = await axiosClient
-        .post("functions/send_password_reset", { email })
-        .then((response) => {
-          return response.data.result;
-        })
-        .catch((error) => {
-          return compileAxiosError(error);
-        });
-      setResponse(response);
-    }
+      const response = await fetch("/api/password_reset", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					email: email,
+				}),
+			});
+
+      const data = await response.json();
+
+      if (data.error) {
+        setErrors([{ message: data.error, id: "email", key: "email" }]);
+      } else {
+        setResponse(data);
+        }
+      }
     setErrors(errorArray);
   }, [email]);
 

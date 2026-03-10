@@ -12,14 +12,19 @@ interface EmailListProps {
 	onAddEmail: () => void;
 }
 
-const EmailList: FC<EmailListProps> = ({ emails, projectListIds, onEmailClick, onAddEmail }) => {
+const EmailList: FC<EmailListProps> = ({
+	emails,
+	projectListIds,
+	onEmailClick,
+	onAddEmail
+}) => {
 	return (
 		<div className="flex col gap-md">
 			<div className="flex col gap-sm">
 				<h4>E-Mail-Adressen</h4>
 				<p style={{ fontSize: "0.9rem", color: "#666" }}>
-					Klicken Sie auf eine E-Mail-Adresse, um die Listenzugehörigkeit zu
-					verwalten.
+					Klicken Sie auf eine E-Mail-Adresse, um die
+					Listenzugehörigkeit zu verwalten.
 				</p>
 			</div>
 
@@ -29,10 +34,10 @@ const EmailList: FC<EmailListProps> = ({ emails, projectListIds, onEmailClick, o
 				<div className="flex col gap-sm">
 					{emails.map((emailEntry, index) => {
 						// Count only lists from current project
-						const projectListsCount = emailEntry.lists.filter((listId) =>
-							projectListIds.has(listId)
+						const projectListsCount = emailEntry.lists.filter(
+							(listId) => projectListIds.has(listId)
 						).length;
-						
+
 						// Count lists from other projects
 						const otherProjectListsCount = emailEntry.lists.filter(
 							(listId) => !projectListIds.has(listId)
@@ -50,14 +55,19 @@ const EmailList: FC<EmailListProps> = ({ emails, projectListIds, onEmailClick, o
 									transition: "all 0.2s ease",
 									backgroundColor: "#fff"
 								}}
-								onClick={() => onEmailClick(emailEntry.email, index)}
+								onClick={() =>
+									onEmailClick(emailEntry.email, index)
+								}
 								onMouseEnter={(e) => {
-									e.currentTarget.style.backgroundColor = "#f5f5f5";
+									e.currentTarget.style.backgroundColor =
+										"#f5f5f5";
 									e.currentTarget.style.borderColor = "#999";
 								}}
 								onMouseLeave={(e) => {
-									e.currentTarget.style.backgroundColor = "#fff";
-									e.currentTarget.style.borderColor = "#e0e0e0";
+									e.currentTarget.style.backgroundColor =
+										"#fff";
+									e.currentTarget.style.borderColor =
+										"#e0e0e0";
 								}}
 							>
 								<div className="flex col gap-xs">
@@ -65,14 +75,26 @@ const EmailList: FC<EmailListProps> = ({ emails, projectListIds, onEmailClick, o
 										{emailEntry.email}
 									</span>
 									<div className="flex col gap-xxs">
-										<span style={{ fontSize: "0.85rem", color: "#666" }}>
+										<span
+											style={{
+												fontSize: "0.85rem",
+												color: "#666"
+											}}
+										>
 											{projectListsCount > 0
 												? `${projectListsCount} Listen (dieses Projekt)`
 												: "Keine Listen (dieses Projekt)"}
 										</span>
 										{otherProjectListsCount > 0 && (
-											<span style={{ fontSize: "0.8rem", color: "#999", fontStyle: "italic" }}>
-												+ {otherProjectListsCount} Listen (andere Projekte)
+											<span
+												style={{
+													fontSize: "0.8rem",
+													color: "#999",
+													fontStyle: "italic"
+												}}
+											>
+												+ {otherProjectListsCount}{" "}
+												Listen (andere Projekte)
 											</span>
 										)}
 									</div>
@@ -83,7 +105,13 @@ const EmailList: FC<EmailListProps> = ({ emails, projectListIds, onEmailClick, o
 					})}
 				</div>
 			) : (
-				<p style={{ color: "#999", textAlign: "center", padding: "2rem 0" }}>
+				<p
+					style={{
+						color: "#999",
+						textAlign: "center",
+						padding: "2rem 0"
+					}}
+				>
 					Noch keine E-Mail-Adressen vorhanden
 				</p>
 			)}
