@@ -5,7 +5,6 @@ import * as yup from "yup";
 import { Modal, TextInput } from "@repo/ui";
 import { PasswordFormProps } from "../types";
 import { ErrorMessage, Response } from "@repo/types";
-import axios from "axios";
 
 const PasswordForm: FC<PasswordFormProps> = ({
   passwordReset,
