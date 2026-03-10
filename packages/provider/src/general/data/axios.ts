@@ -7,8 +7,11 @@ const axiosclient = (useMasterKey = false) => {
 	const headers = {
 		"X-Parse-Application-Id": process.env.SASHIDO_APP_ID,
 		"X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY,
-		"X-Parse-Session-Token": localToken
+		// "X-Parse-Session-Token": localToken
 	};
+	if (localToken) {
+		headers["X-Parse-Session-Token"] = localToken;
+	}
 
 	if (useMasterKey) {
 		headers["X-Parse-Master-Key"] = process.env

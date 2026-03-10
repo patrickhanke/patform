@@ -52,8 +52,8 @@ const ArticlesOverview = () => {
 	const [loading, setLoading] = useState(false);
 
 	const columns = useCreateColumns<ArticleClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(currentModule?.fields),
+		fields: currentModule?.data_fields,
 		className: "Article",
 		refetch,
 		categories: currentModule?.categories,

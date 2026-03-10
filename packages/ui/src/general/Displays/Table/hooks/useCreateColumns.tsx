@@ -798,8 +798,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 			} as ColumnDef<T>);
 		});
 
-		console.log("editDisabled", editDisabled);
-
 		if (editDisabled === false) {
 			if (typeof editLink === "string") {
 				columnArray.push({
