@@ -2,13 +2,15 @@ import { FC, useCallback } from "react";
 import { SearchFilterProps } from "../types";
 import StringFilter from "./StringFilter";
 import { StatelessToggle } from "../../../../../../../Buttons";
+import SelectFilter from "./SelectFilter";
 
 const SearchFilter: FC<SearchFilterProps> = ({
 	label,
 	path,
 	type,
 	onValueChange,
-	value = ""
+	value = "",
+	selectOptions = []
 }) => {
 	const valueChangeHandler = useCallback(
 		(value: boolean | string) => {
@@ -18,7 +20,6 @@ const SearchFilter: FC<SearchFilterProps> = ({
 		[onValueChange, path]
 	);
 
-	console.log({ path, type, value });
 
 	if (!type) {
 		return null;
@@ -39,6 +40,16 @@ const SearchFilter: FC<SearchFilterProps> = ({
 					onChange={valueChangeHandler}
 				/>
 			</div>
+		);
+	}
+	if (type === "select" && selectOptions?.length > 0) {
+		return (
+			<SelectFilter
+				label={label}
+				selectOptions={selectOptions}
+				value={value}
+				onChange={valueChangeHandler}
+			/>
 		);
 	}
 };

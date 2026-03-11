@@ -23,12 +23,18 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 		return null;
 	}
 
-	console.log({ modules });
-
 	const filterChangeHandler = useCallback(
 		(
 			keys: ModuleFilterPath[],
-			value: ModuleFilter[keyof ModuleFilter][]
+			value: (
+				| ModuleFilter[keyof ModuleFilter]
+				| NonNullable<ModuleFilter["options"]>[keyof NonNullable<
+						ModuleFilter["options"]
+				  >]
+				| NonNullable<
+						NonNullable<ModuleFilter["options"]>["select_options"]
+				  >[number]
+			)[]
 		) => {
 			setFilters((draft) => {
 				const index = draft.findIndex((f) => f.id === filter.id);
@@ -48,7 +54,6 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 		const fields: ModuleField[] = generateInitialFields([], modulePath);
 		// return type from field, when Field has no filter type, ignore it
 
-		console.log({ fields });
 		const fieldArray: {
 			value: string;
 			label: string;
@@ -83,15 +88,14 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 		return fieldArray;
 	}, [modulePath]);
 
-	const operatorTemplateOptions = useCallback(() => {
-		const options: AppModuleEditFilterProps["additionnalFields"] =
-			cloneDeep(additionnalFields) || [];
+	const operatorTemplateOptions = useMemo(() => {
+		const options: AppModuleEditFilterProps["additionnalFields"] = [];
 
 		if (filter.field === "data") {
 			dataFields.forEach((f) => {
 				options.push({
 					value: f.id,
-					label: `${f.label} (Settings)`,
+					label: `${f.label} (Data)`,
 					search_path: f.name,
 					type: f.type
 				});
@@ -100,24 +104,29 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 			settingsFields.forEach((f) => {
 				options.push({
 					value: f.id,
-					label: `${f.label} (Data)`,
+					label: `${f.label} (Settings)`,
 					search_path: f.name,
 					type: f.type
 				});
 			});
 		}
 
+		if (additionnalFields) {
+			additionnalFields.forEach((f) => {
+				options.push({
+					value: f.value,
+					label: f.label,
+					search_path: f.search_path,
+					type: f.type
+				});
+			});
+		}
+
 		return options;
-	}, [filter.field, settingsFields]);
+	}, [filter.field, settingsFields, additionnalFields]);
 
 	const changeHandler = useDebounceCallback(filterChangeHandler, 500);
 
-	console.log({ operatorTemplateOptions: operatorTemplateOptions() });
-
-	console.log({ filterSelectOptions });
-	console.log({ filter });
-	console.log({ settingsFields });
-	console.log({ additionnalFields });
 	return (
 		<div>
 			<h3>{filter.label || filter.field || "Neuer Filter"}</h3>
@@ -141,7 +150,6 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 						) || null
 					}
 					onChange={(e) => {
-						console.log({ e });
 						changeHandler(["field", "type"], [e.value, e.type]);
 					}}
 				/>
@@ -187,9 +195,9 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 					<label>Suchfeld</label>
 					<Select
 						label="Operator-Template"
-						options={operatorTemplateOptions()}
+						options={operatorTemplateOptions}
 						value={
-							operatorTemplateOptions().find(
+							operatorTemplateOptions.find(
 								(o) =>
 									o.search_path ===
 									filter.options?.search_path
@@ -208,6 +216,15 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 							)
 						}
 					/>
+					{filter.options?.type === "select" && (
+						<div>
+							<label>Select Optionen</label>
+							<CreateOptions
+								filter={filter}
+								changeHandler={changeHandler}
+							/>
+						</div>
+					)}
 				</div>
 			)}
 			{filter.type === "string" && (

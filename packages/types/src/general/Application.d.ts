@@ -23,7 +23,12 @@ export type FilterOperator =
   | "greaterThanOrEqualTo"
   | "in"
   | "notIn"
-  | "matchesRegex";
+  | "matchesRegex"
+  | "search" 
+  | "exists"
+  | "containedIn"
+  | "have"
+  | "haveNot";
 
 export type Filter = {
   id?: string;

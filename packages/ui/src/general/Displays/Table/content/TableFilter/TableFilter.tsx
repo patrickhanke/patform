@@ -14,8 +14,6 @@ const TableFilter: FC<TableFilterProps> = ({
 	filters,
 	setFilters
 }) => {
-	console.log({ filterColumns });
-	console.log({ filters });
 	const [isOpen, setIsOpen] = useState(false);
 
 	const debounceTimers = useRef<
@@ -81,7 +79,6 @@ const TableFilter: FC<TableFilterProps> = ({
 
 	const updateFilterValue = useCallback(
 		(columnId: string, value: FilterType["value"]) => {
-			console.log("value", value);
 			setFilters((prev) =>
 				prev.map((f) => (f.id === columnId ? { ...f, value } : f))
 			);

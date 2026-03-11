@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { CreateButton } from "@repo/ui";
 import { get } from "lodash-es";
 import { CreateOptionsProps } from "../types";
@@ -18,7 +18,6 @@ const CreateOptions: FC<CreateOptionsProps> = ({ filter, changeHandler }) => {
 					const existingOptions =
 						filter.options?.select_options || [];
 					const newOptions = [...existingOptions, newOption];
-					console.log({ newOptions });
 					changeHandler(["options.select_options"], [newOptions]);
 				}}
 			/>
@@ -37,11 +36,11 @@ const CreateOptions: FC<CreateOptionsProps> = ({ filter, changeHandler }) => {
 								<input
 									key={get(
 										filter,
-										`select_options[${index}].label`
+										`options.select_options[${index}].label`
 									)}
 									defaultValue={get(
 										filter,
-										`select_options[${index}].label`,
+										`options.select_options[${index}].label`,
 										""
 									)}
 									type="text"

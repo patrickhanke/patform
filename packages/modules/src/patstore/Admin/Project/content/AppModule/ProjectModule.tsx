@@ -60,7 +60,7 @@ const AppModule = ({
 				value: "lists",
 				label: "Listen",
 				search_path: "lists",
-				type: "input"
+				type: "select"
 			});
 		}
 

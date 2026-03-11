@@ -1,6 +1,6 @@
 import { FormField } from './../../../modules/src/patstore/Form/Form/content/FormFields/content/CreateField/types.d';
 import { Module } from './Module.d';
-import { Field } from "@repo/ui";
+import { Field, FilterOperator } from "@repo/ui";
 import { Project } from "./Classes";
 
 export type ModulePath = "/articles" | "/events" | "/groups" | "/locations" | "/persons" | "/downloads" | "/forms" | "/entries" | "/categories" | "/images" | "/emails" | "/calendar" | "/website" | "/users" | "/videos";
@@ -112,13 +112,13 @@ export type ModuleFilter = {
   id: string;
   field: string;
   type: ModuleFilterType;
-  operator: equalTo | notEqualTo | in | notIn | contains | containedIn | containedBy | matchesRegex | exists | have | haveNot | lessThan | lessThanOrEqualTo | greaterThan | greaterThanOrEqualTo | search;
+  operator: FilterOperator;
   label?: string;
   position?: number;
   options?: {
     class_name?: string;
     search_path?: string;
-    type?: Field["type"];
+    type?: "select" | "input" | "toggle";
     select_options?: { label: string; value: string }[];
     fixed?: boolean;
   }

@@ -1,5 +1,4 @@
 import { Filter, FilterOperator, ModuleFilter } from "@repo/types";
-import { Field } from "@repo/ui";
 import { ColumnDataTypes } from "../../../../types";
 
 export type FilterProps = {
@@ -28,9 +27,10 @@ export type IdFilterProps = {
 export type SearchFilterProps = {
 	label: string;
 	path: string;
-	type: Field["type"];
+	type: "select" | "input" | "toggle";
 	onValueChange: OnValueChange;
 	value?: string;
+	selectOptions?: { label: string; value: string }[];
 };
 
 export type TransformOperatorValueToObject = (T: {
@@ -54,9 +54,17 @@ export type FilterInputProps = {
 
 export type StringFilterProps = {
 	onValueChange: (value: ModuleFilter["value"]) => void;
-	options: ModuleFilter["options"];
 };
-export type BooleanFilterProps = FilterInputProps;
-export type DateFilterProps = FilterInputProps;
-export type NumberFilterProps = FilterInputProps;
-export type LocationFilterProps = FilterInputProps;
+
+export type SelectFilterProps = {
+	label: string;
+	selectOptions: { label: string; value: string }[];
+	value?: string;
+	onChange: (value: string) => void;
+};
+
+export type BooleanFilterProps = {
+	label: string;
+	value?: boolean;
+	onChange: (value: boolean) => void;
+};

@@ -66,8 +66,6 @@ const AppModuleEditFilters = ({
 		[setFilters]
 	);
 
-	console.log({ filters });
-
 	return (
 		<div>
 			<button

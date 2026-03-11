@@ -1,8 +1,14 @@
 import { FC, useCallback, useMemo } from "react";
 import { FilterProps, OnValueChange } from "./types";
 import { Check } from "lucide-react";
-import { IdFilter, SearchFilter, StringFilter } from "./components";
+import {
+	BooleanFilter,
+	IdFilter,
+	SearchFilter,
+	StringFilter
+} from "./components";
 import transformOperatorValueToObject from "./functions/transformOperatorValueToString";
+import SelectFilter from "./components/SelectFilter";
 
 const Filter: FC<FilterProps> = ({
 	id,
@@ -17,7 +23,6 @@ const Filter: FC<FilterProps> = ({
 }) => {
 	const onValueChange: OnValueChange = useCallback(
 		(value) => {
-			console.log({ value });
 			const transformedValue = transformOperatorValueToObject({
 				type,
 				operator,
@@ -36,11 +41,28 @@ const Filter: FC<FilterProps> = ({
 		if (!activeFilter) {
 			return null;
 		}
-		if (isActive && type === "string") {
+		if (isActive && type === "string" && options?.fixed) {
 			return (
-				<StringFilter onValueChange={onValueChange} options={options} />
+				<SelectFilter
+					label={label || ""}
+					selectOptions={options?.select_options || []}
+					value={activeFilter.value as string}
+					onChange={onValueChange}
+				/>
+			);
+		} else if (type === "string") {
+			return <StringFilter onValueChange={onValueChange} />;
+		}
+		if (isActive && type === "boolean") {
+			return (
+				<BooleanFilter
+					label={label || ""}
+					value={activeFilter.value as boolean}
+					onChange={onValueChange}
+				/>
 			);
 		}
+
 		if (isActive && (type === "id" || type === "pointer")) {
 			return (
 				<IdFilter
@@ -61,13 +83,12 @@ const Filter: FC<FilterProps> = ({
 					type={options?.type || "input"}
 					value={activeFilter.value as string}
 					onValueChange={onValueChange}
+					selectOptions={options?.select_options || []}
 				/>
 			);
 		}
 		return null;
 	}, [type, id, label, isActive, activeFilter, toggleFilter, options]);
-
-	console.log({ options });
 
 	return (
 		<div key={id} className="filter-select-item" data-selected={isActive}>
