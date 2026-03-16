@@ -15,7 +15,15 @@ type ReturnObject = {
 const useGetActiveRecord: { (T: Props): ReturnObject } = ({ year, userId }) => {
 	const { data: recordData, loading } = useFindData({
 		objectName: "Record",
-		fields: ["objectId", "year", "user { objectId }"],
+		fields: [
+			"objectId",
+			"year",
+			"user { objectId }",
+			"default_times",
+			"start_date",
+			"end_date",
+			"time_settings"
+		],
 		filters: [{ key: "year", operator: "equalTo", value: year }],
 		userId: userId,
 		skipQuery: !year || !userId

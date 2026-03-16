@@ -32,7 +32,7 @@ const EditRecordAbsence = ({
 	);
 
 	const { data: staffData } = useFindDataSecure({
-		objectName: "User",
+		objectName: "_User",
 		fields: [
 			"objectId",
 			"first_name",
@@ -178,7 +178,7 @@ const EditRecordAbsence = ({
 							comment: absenceState.comment,
 							user: {
 								__type: "Pointer",
-								className: "User",
+								className: "_User",
 								objectId: absenceState?.user?.objectId
 							},
 							year: record.year,
@@ -201,7 +201,7 @@ const EditRecordAbsence = ({
 							comment: absenceState.comment,
 							user: {
 								__type: "Pointer",
-								className: "User",
+								className: "_User",
 								objectId: absenceState?.user?.objectId
 							},
 							year: absenceState.year,
@@ -225,9 +225,11 @@ const EditRecordAbsence = ({
 
 					interval.forEach(async (date) => {
 						const dayRecord = record;
+						console.log(dayRecord);
 						const defaultTime = findDefaultTimeForDate(date, [
 							record
 						]);
+						console.log(defaultTime);
 
 						if (dayRecord && defaultTime) {
 							const is_working_day = defaultTime.is_working_day;
@@ -243,7 +245,7 @@ const EditRecordAbsence = ({
 									},
 									user: {
 										__type: "Pointer",
-										className: "User",
+										className: "_User",
 										objectId: absenceState?.user?.objectId
 									},
 									absence: {

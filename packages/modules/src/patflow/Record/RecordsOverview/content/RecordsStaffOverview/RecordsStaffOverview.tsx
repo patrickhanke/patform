@@ -43,6 +43,8 @@ const RecordsStaffOverview = ({
 			"user {objectId}",
 			"year",
 			"surcharges",
+			"default_time",
+			"is_working_day",
 			"type",
 			"absence { objectId  type }"
 		],

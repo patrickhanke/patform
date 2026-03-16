@@ -100,7 +100,7 @@ const ProperyDocuments = ({ id }: { id: string }) => {
 					type: "object",
 					created_by: {
 						__type: "Pointer",
-						className: "User",
+						className: "_User",
 						objectId: content.user
 					},
 					property: {

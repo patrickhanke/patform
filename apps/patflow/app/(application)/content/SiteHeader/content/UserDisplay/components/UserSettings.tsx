@@ -63,7 +63,7 @@ const UserSettings: FC<UserSettingsProps> = ({
     setLoading(true);
 
     await updateData({
-      className: "User",
+      className: "_User",
       objectId: data.objectId,
       updateObject,
       feedback: "Nutzerdaten erfolgreich aktualisiert",

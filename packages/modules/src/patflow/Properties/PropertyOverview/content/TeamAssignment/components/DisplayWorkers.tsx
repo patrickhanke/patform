@@ -19,7 +19,7 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 		id: propertyId
 	});
 	const { data: workerData } = useFindDataSecure({
-		objectName: "User",
+		objectName: "_User",
 		fields: [
 			"objectId",
 			"first_name",
