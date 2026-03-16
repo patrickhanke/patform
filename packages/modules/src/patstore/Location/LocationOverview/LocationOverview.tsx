@@ -8,7 +8,6 @@ import {
 } from "@repo/provider";
 import {
 	generateColumnsFromFields,
-	generateFilterColumnsFromFields,
 	Modal,
 	Page,
 	Table,
@@ -85,9 +84,7 @@ const LocationOverview = () => {
 				setOrder={setOrder}
 				filters={filters}
 				setFilters={setFilters}
-				filterColumns={generateFilterColumnsFromFields(
-					currentModule.fields
-				)}
+				filterColumns={currentModule.filters}
 				enableRowSelection
 			/>
 			<Modal
