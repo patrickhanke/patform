@@ -14,10 +14,6 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 	records
 }) => {
 	const isEditable = type !== "absence";
-	console.log({ type });
-	console.log({ time });
-	console.log({ date });
-	console.log({ records });
 
 	const sortedTime = time
 		? time.sort(

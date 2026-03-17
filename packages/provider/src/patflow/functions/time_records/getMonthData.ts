@@ -71,14 +71,11 @@ const getMonthData = ({
 					});
 				} else if (dayArray.length === 1) {
 					const day = dayArray[0];
-					console.log(day);
 					if (day && day.type === "work") {
 						const time = day.time;
 						const timeSpan = time.duration - time.pause;
 						monthTimes += timeSpan || 0;
 					} else if (day && day.type === "absence") {
-						console.log(day.is_working_day);
-						console.log(day.default_time);
 						if (day.is_working_day) {
 							monthTimes += day.default_time
 								? day.default_time.duration -

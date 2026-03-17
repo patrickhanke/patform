@@ -37,8 +37,6 @@ const EditRecordAbsence = ({
 		userId: absenceState?.user?.objectId as string
 	});
 
-	console.log(absenceState);
-
 	const { updateData, createData, deleteData, loading } = useDataHandler();
 	const { data: dayData, refetch: refetchDays } = useFindDays({
 		year: absenceState?.year,
@@ -171,11 +169,9 @@ const EditRecordAbsence = ({
 
 					interval.forEach(async (date) => {
 						const dayRecord = record;
-						console.log(dayRecord);
 						const defaultTime = findDefaultTimeForDate(date, [
 							record
 						]);
-						console.log(defaultTime);
 
 						if (dayRecord && defaultTime) {
 							const is_working_day = defaultTime.is_working_day;
