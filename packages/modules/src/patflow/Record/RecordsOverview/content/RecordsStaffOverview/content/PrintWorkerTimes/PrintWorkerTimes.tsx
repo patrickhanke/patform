@@ -8,12 +8,12 @@ import {
 	axiosclient,
 	months,
 	useDataContext,
-	useFindData
+	useFindData,
+	useFindDays
 } from "@repo/provider";
 import { Day } from "@repo/types";
 import SelectFields from "./components/SelectFields";
 import { RenderRecordData } from "./content";
-import useFindDays from "./hooks/useFindDays";
 import useFindRecord from "./hooks/useFindRecord";
 import useFindSurcharges from "./hooks/useFindSurcharges";
 import table_fields from "./constants/table_fields";
@@ -33,12 +33,14 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 		year: number;
 		month: number;
 	}>({ year: new Date().getFullYear(), month: new Date().getMonth() });
+
 	const [selectedFields, setSelectedFields] = useState<
 		Array<(typeof table_fields)[number]["value"]>
 	>(table_fields.map((field) => field.value));
-	const { days } = useFindDays({
+
+	const { data: days } = useFindDays({
 		year: selectedTimes.year,
-		users: selectedWorker.map((worker) => worker.value as string)
+		userIds: selectedWorker.map((worker) => worker.value as string)
 	});
 
 	const { records } = useFindRecord({

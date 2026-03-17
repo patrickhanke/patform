@@ -4,12 +4,14 @@ const useFindDays = ({
 	userId,
 	skipQuery = false,
 	absenceId,
-	year
+	year,
+	userIds
 }: {
-	userId: string;
+	userId?: string;
 	skipQuery?: boolean;
 	absenceId?: string;
 	year?: number;
+	userIds?: string[];
 }) => {
 	const filters = [];
 	if (absenceId) {
@@ -48,6 +50,7 @@ const useFindDays = ({
 			"record { objectId }"
 		],
 		userId: userId,
+		userIds: userIds,
 		skipQuery: skipQuery
 	});
 
