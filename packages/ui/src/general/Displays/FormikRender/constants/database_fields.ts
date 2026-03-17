@@ -8,9 +8,7 @@ const database_fields: Field[] = [
 		type: "input",
 		label: "Titel",
 		validation: {
-			required: "Pflichtfeld",
-			min_length: 4,
-			max_length: 128
+			required: "Pflichtfeld"
 		}
 	},
 	{
