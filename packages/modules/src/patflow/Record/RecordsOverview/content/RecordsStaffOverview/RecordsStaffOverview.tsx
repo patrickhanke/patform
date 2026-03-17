@@ -3,9 +3,10 @@ import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
 import {
 	useFindData,
-	useFindDataSecure,
 	months,
-	UserContext
+	UserContext,
+	useFindDays,
+	useDataStore
 } from "@repo/provider";
 import { Divider } from "@repo/ui";
 import StaffRecord from "./content/StaffRecord";
@@ -34,22 +35,9 @@ const RecordsStaffOverview = ({
 		) as (typeof months)[number]
 	);
 
-	const { data: days, refetch } = useFindData({
-		objectName: "Day",
-		fields: [
-			"objectId",
-			"date",
-			"time",
-			"user {objectId}",
-			"year",
-			"surcharges",
-			"default_time",
-			"is_working_day",
-			"type",
-			"absence { objectId  type }"
-		],
-		filters: [{ key: "year", value: year, operator: "equalTo" }],
-		userId: selectedUser?.value,
+	const { data: days, refetch } = useFindDays({
+		userId: selectedUser?.value as string,
+		year: year,
 		skipQuery: !year || !selectedUser?.value
 	});
 
@@ -76,24 +64,7 @@ const RecordsStaffOverview = ({
 		skipQuery: !year
 	});
 
-	const { data: staffData } = useFindDataSecure({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"first_name",
-			"last_name",
-			"is_worker",
-			"portrait",
-			"color",
-			"time_settings",
-			"number",
-			"data",
-			"role { objectId name type color }"
-		],
-		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC",
-		useMasterKey: true
-	});
+	const { workers } = useDataStore();
 
 	const currentRecords = useMemo(() => {
 		const rec: Record[] = [];
@@ -101,12 +72,10 @@ const RecordsStaffOverview = ({
 		if (!recordData || !selectedUser) return rec;
 		recordData.forEach((record: Record) => {
 			if (record.user.objectId === selectedUser.value) {
-				const holidayTemplate = cloneDeep(record.holiday_template) as {
-					value: string[];
-				};
+				const holidayTemplate = cloneDeep(record.holiday_template);
 
 				const holidayArray: string[] = holidayTemplate.holidays.map(
-					(holiday: { value: string }) => holiday.value as string
+					(holiday: string ) => holiday as string
 				);
 
 				rec.push({
@@ -128,15 +97,15 @@ const RecordsStaffOverview = ({
 				selectedMonth={selectedMonth}
 				setSelectedUser={setSelectedUser}
 				selectedUser={selectedUser}
-				staff={staffData || []}
+				staff={workers || []}
 			/>
 		),
-		[selectedMonth, selectedUser, staffData]
+		[selectedMonth, selectedUser, workers]
 	);
 
 	return (
 		<div>
-			<StaffRecord days={days} year={year} staff={staffData || []} />
+			<StaffRecord days={days} year={year} staff={workers || []} />
 			<div className="button_container">{siteHeaderContent}</div>
 			<Divider size="small" showLine={false} />
 			{selectedUser ? (

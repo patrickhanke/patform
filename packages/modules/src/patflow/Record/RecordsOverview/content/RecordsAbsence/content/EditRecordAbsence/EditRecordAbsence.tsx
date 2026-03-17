@@ -7,7 +7,7 @@ import {
 	useGetActiveRecord,
 	UserContext,
 	useFindData,
-	useFindDataSecure
+	useFindDays
 } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -31,86 +31,24 @@ const EditRecordAbsence = ({
 		type === "edit" ? absence : { ...initialAbsence, year }
 	);
 
-	const { data: staffData } = useFindDataSecure({
-		objectName: "_User",
-		fields: [
-			"objectId",
-			"first_name",
-			"last_name",
-			"is_worker",
-			"portrait",
-			"color",
-			"time_settings",
-			"number",
-			"data",
-			"role { objectId name type color }"
-		],
-		filters: [
-			{
-				key: "is_worker",
-				value: true,
-				operator: "equalTo"
-			}
-		],
-		order: "last_name_DESC",
-		useMasterKey: true
-	});
 	const { user } = useContext(UserContext);
 	const { record } = useGetActiveRecord({
 		year,
 		userId: absenceState?.user?.objectId as string
 	});
 
+	console.log(absenceState);
+
 	const { updateData, createData, deleteData, loading } = useDataHandler();
-	const { data: dayData } = useFindData({
-		objectName: "Day",
-		fields: [
-			"objectId",
-			"year",
-			"month",
-			"date",
-			"is_working_day",
-			"time",
-			"default_time",
-			"surcharges",
-			"iso_date",
-			"absence { objectId start_date end_date state type }",
-			"saldo",
-			"type",
-			"iso_date",
-			"user { objectId }",
-			"record { objectId }"
-		],
-		userId: absenceState?.user?.objectId,
-		skipQuery: !absenceState?.user
+	const { data: dayData, refetch: refetchDays } = useFindDays({
+		year: absenceState?.year,
+		userId: absenceState?.user?.objectId as string,
+		skipQuery: !!absenceState?.user?.objectId || !!absenceState?.year
 	});
 
-	const { data: absenceDayData } = useFindData({
-		objectName: "Day",
-		fields: [
-			"objectId",
-			"year",
-			"month",
-			"date",
-			"is_working_day",
-			"time",
-			"default_time",
-			"surcharges",
-			"iso_date",
-			"absence { objectId start_date end_date state type }",
-			"saldo",
-			"type",
-			"iso_date",
-			"user { objectId }",
-			"record { objectId }"
-		],
-		filters: [
-			{
-				key: "absence",
-				value: absence?.objectId as string,
-				operator: "equalTo"
-			}
-		],
+	const { data: absenceDayData, refetch: refetchAbsenceDays } = useFindDays({
+		userId: absenceState?.user?.objectId as string,
+		absenceId: absence?.objectId as string,
 		skipQuery: !absence
 	});
 
@@ -138,6 +76,13 @@ const EditRecordAbsence = ({
 		}
 	}, [editAbsence]);
 
+	useEffect(() => {
+		if (editAbsence) {
+			refetchDays();
+			refetchAbsenceDays();
+		}
+	}, [editAbsence]);
+
 	const { errors } = useErrors({
 		absenceState,
 		record,
@@ -145,6 +90,7 @@ const EditRecordAbsence = ({
 		userAbsenceData,
 		absence: absence || null
 	});
+
 	const createAbsenceHandler = useCallback(async () => {
 		const absenceStateCopy = { ...absenceState };
 		if (record) {
@@ -296,7 +242,6 @@ const EditRecordAbsence = ({
 		>
 			<EditAbsence
 				type={type}
-				staffData={staffData}
 				user={user}
 				absenceState={absenceState}
 				setAbsenceState={setAbsenceState}

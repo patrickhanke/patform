@@ -51,8 +51,17 @@ const PatflowAppContextProvider = ({
 			"last_name",
 			"email",
 			"portrait",
-			"color"
+			"color",
+			"time_settings",
+			"is_worker",
+			"number",
+			"data",
+			"role { objectId name type color }",
+			"value: objectId",
+			"label: label"
 		],
+		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
+		order: "last_name_ASC",
 		projectId,
 		useMasterKey: true
 	});

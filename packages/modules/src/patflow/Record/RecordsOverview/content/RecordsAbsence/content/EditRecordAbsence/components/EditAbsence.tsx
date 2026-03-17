@@ -1,38 +1,29 @@
-import { StaffMember } from "@repo/types";
 import { DatePicker, DisplayWorker, Select, TextInput } from "@repo/ui";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { EditAbsenceProps } from "../types";
-import { absence_type_options, absence_state_options } from "@repo/provider";
+import {
+	absence_type_options,
+	absence_state_options,
+	useDataStore
+} from "@repo/provider";
 
 const EditAbsence: FC<EditAbsenceProps> = ({
 	type,
-	staffData,
 	user,
 	absenceState,
 	setAbsenceState,
 	record
 }) => {
-	const selectOptions = useMemo(() => {
-		let staffOptions = [] as { value: string; label: string }[];
-
-		if (staffData) {
-			staffOptions = staffData.map((staff: StaffMember) => ({
-				value: staff.objectId,
-				label: `${staff.first_name} ${staff.last_name}`,
-				...staff
-			}));
-		}
-		return { staffOptions };
-	}, [staffData]);
+	const { workers } = useDataStore();
 
 	return (
 		<div className="flex col gap-sm">
 			<form>
-				{type === "create" && staffData && (
+				{type === "create" && workers && (
 					<Select
 						label="Mitarbeiter auswählen"
 						width="300px"
-						options={selectOptions.staffOptions}
+						options={workers}
 						value={
 							type === "create"
 								? absenceState.user

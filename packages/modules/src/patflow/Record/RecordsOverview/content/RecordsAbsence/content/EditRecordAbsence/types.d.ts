@@ -1,5 +1,5 @@
 import { EditRecordAbsenceComponent } from "./types.d";
-import { Absence, ApolloRefetch, Record } from "@repo/types";
+import { Absence, ApolloRefetch, PatflowUser, Record } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type GetRecordObject = {
@@ -68,8 +68,7 @@ export type UseRecordAbsenceColumnsProps = {
 
 export type EditAbsenceProps = {
 	type: "edit" | "create";
-	staffData: StaffMember[];
-	user: User;
+	user: PatflowUser;
 	absenceState: InitialAbsence;
 	setAbsenceState: Dispatch<SetStateAction<InitialAbsence>>;
 	record: Record | null;

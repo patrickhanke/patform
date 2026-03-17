@@ -5,32 +5,15 @@ import { get, set } from "lodash-es";
 import {
 	absence_type_options,
 	PatflowAppContext,
-	useFindData,
-	useFindDataSecure
+	useDataStore,
+	useFindData
 } from "@repo/provider";
 import { Absence, PatflowUser } from "@repo/types";
 import { Calendar, CalendarData } from "@repo/ui";
 
 const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 	const { year } = useContext(PatflowAppContext);
-	const { data: staffData } = useFindDataSecure({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"first_name",
-			"last_name",
-			"is_worker",
-			"portrait",
-			"color",
-			"time_settings",
-			"number",
-			"data",
-			"role { objectId name type color }"
-		],
-		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC",
-		useMasterKey: true
-	});
+	const { workers } = useDataStore();
 
 	const { data: absences } = useFindData({
 		objectName: "Absence",
@@ -48,16 +31,18 @@ const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 
 	const calendarData = useMemo(() => {
 		const data: CalendarData = {};
-		const staff = staffData || [];
-		if (staff.length === 0) {
+		if (workers.length === 0) {
 			return data;
 		}
 		absences.forEach((absence: Absence) => {
 			if (absence.state === "approved") {
-				const user = staff.find(
+				const user = workers.find(
 					(user: PatflowUser) =>
 						user.objectId === absence.user.objectId
 				);
+				if (!user) {
+					return;
+				}
 				const start = new Date(absence.start_date);
 				const end = new Date(absence.end_date);
 				const dayInterval = eachDayOfInterval(
@@ -101,7 +86,7 @@ const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 		});
 
 		return data;
-	}, [records, absences, staffData]);
+	}, [records, absences, workers]);
 
 	return (
 		<>

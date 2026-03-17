@@ -8,7 +8,6 @@ import {
 	getDateString
 } from "@repo/provider";
 import EditAbsence from "../components/EditAbsence";
-import { StateSelect } from "@repo/ui";
 
 const useRecordAbsenceColumns = ({ refetch }: UseRecordAbsenceColumnsProps) => {
 	const columns: ColumnDef<AbsenceWithRecordIs>[] = useMemo(

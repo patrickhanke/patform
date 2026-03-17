@@ -1,10 +1,6 @@
 import { useContext, useEffect, useMemo } from "react";
-import { Absence, StaffMember } from "@repo/types";
-import {
-	PatflowAppContext,
-	useFindData,
-	useFindDataSecure
-} from "@repo/provider";
+import { Absence } from "@repo/types";
+import { PatflowAppContext, useDataStore, useFindData } from "@repo/provider";
 import { LoadingIndicator, Select } from "@repo/ui";
 import { RecordAbsenceProps } from "./types";
 import useRecordAbsenceColumns from "./hooks/useRecordAbsenceColumns";
@@ -19,40 +15,15 @@ const RecordAbsence = ({
 	setSelectedUser
 }: RecordAbsenceProps) => {
 	const { year } = useContext(PatflowAppContext);
-	const { data: staffData } = useFindDataSecure({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"first_name",
-			"last_name",
-			"is_worker",
-			"portrait",
-			"color",
-			"time_settings",
-			"number",
-			"data",
-			"role { objectId name type color }"
-		],
-		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC",
-		useMasterKey: true
-	});
+	const { workers } = useDataStore();
 
 	const siteHeaderContent = useMemo(() => {
-		let staffOptions = [] as { value: string; label: string }[];
-		if (staffData) {
-			staffOptions = staffData.map((staff: StaffMember) => ({
-				value: staff.objectId,
-				label: `${staff.first_name} ${staff.last_name}`
-			}));
-		}
-
 		return (
 			<div className="horizontal_container">
 				<Select
 					label=""
 					width="180px"
-					options={staffOptions}
+					options={workers}
 					value={selectedUser}
 					onChange={(value) => setSelectedUser(value)}
 					placeholder="Mitarbeiter..."
@@ -60,7 +31,7 @@ const RecordAbsence = ({
 				/>
 			</div>
 		);
-	}, [year, staffData, selectedUser]);
+	}, [year, workers, selectedUser]);
 
 	const { data, refetch, loading } = useFindData({
 		objectName: "Absence",
