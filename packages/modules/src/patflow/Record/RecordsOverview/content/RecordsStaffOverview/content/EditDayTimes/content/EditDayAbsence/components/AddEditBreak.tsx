@@ -10,12 +10,15 @@ const AddEditBreak: FC<AddEditBreakProps> = ({
 	updateHandler,
 	defaultTime
 }) => {
+	console.log({ time });
 	const addPause = useCallback(() => {
 		if (time) {
 			let pauseDuration = 0;
 			if (defaultTime.pause) {
 				pauseDuration = defaultTime.pause;
 			}
+
+			console.log({ time });
 
 			const pauseStart = new Date(time.end).getTime() - pauseDuration;
 			const breakArray = [];
@@ -41,7 +44,7 @@ const AddEditBreak: FC<AddEditBreakProps> = ({
 						if (value === true) {
 							addPause();
 						} else {
-							debounced("breaks", []);
+							updateHandler("breaks", []);
 						}
 					}
 				}}

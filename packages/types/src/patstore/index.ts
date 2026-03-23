@@ -21,3 +21,4 @@ export type * from "./Project";
 export type * from "./Template";
 export type * from "./Email";
 export type * from "./Video";
+export type * from "./Item";

@@ -12,4 +12,5 @@ export type ModalProps = {
 	confirmButtonText?: string;
 	cancelButtonText?: string;
 	styles?: React.CSSProperties;
+	loading?: boolean;
 };

@@ -24,6 +24,7 @@ import UserInvitations from "./content/UserInvitations";
 import create_user_fieds from "./constants/create_user_fields";
 import useFindRoles from "./hooks/useFindRoles";
 import create_user from "./constants/create_user";
+import EmailSuppression from "./components/EmailSuppression";
 
 const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { project } = useAppContext();
@@ -31,6 +32,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	const { roles } = useFindRoles({ projectId: project.objectId });
 	const [order, setOrder] = useState<string>("name_ASC");
 
+	const [emailSuppression, setEmailSuppression] = useState(false);
 	const [inviteUser, setInviteUser] = useState(false);
 	const [createUser, setCreateUser] = useState(false);
 
@@ -100,7 +102,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				value: role.objectId,
 				label: role.name
 			}))
-		)?.[project.objectId];
+		)?.[project?.objectId || ""];
 
 	const updateUserHandler = useCallback(
 		async (values: Partial<PatstoreUser>) => {
@@ -109,7 +111,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				email: values.username,
 				name: values.name,
 				roles: [values.role],
-				project_id: project.objectId,
+				project_id: project?.objectId || "",
 				initial_invitation: true
 			});
 
@@ -130,7 +132,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			axiosclient().post("/functions/create_user_from_data", {
 				...values,
 				email: values.username,
-				project_id: project.objectId,
+				project_id: project?.objectId || "",
 				roles: [values.role]
 			});
 
@@ -145,22 +147,32 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		[project]
 	);
 
-	const pageHeaderButtons = useMemo(
-		() => [
-			{
-				text: "Neuen Benutzer erstellen",
-				onClick: () => setCreateUser(true),
-				is_add_button: true,
-				disabled: !createUserFields
-			},
-			{
-				text: "Neuen Benutzer einladen",
-				onClick: () => setInviteUser(true),
-				is_add_button: true
-			}
-		],
-		[createUserFields]
-	);
+	const pageHeaderButtons = useMemo(() => {
+		const buttonArray = [];
+		if (
+			currentModule.fields?.find((field) => field.id === "emails")?.active
+		) {
+			buttonArray.push({
+				text: "Email Adressen prüfen",
+				onClick: () => setEmailSuppression(true),
+				is_add_button: false
+			});
+		}
+
+		buttonArray.push({
+			text: "Neuen Nutzer erstellen",
+			onClick: () => setCreateUser(true),
+			is_add_button: true,
+			disabled: false
+		});
+
+		buttonArray.push({
+			text: "Neuen Nutzer einladen",
+			onClick: () => setInviteUser(true),
+			is_add_button: true
+		});
+		return buttonArray;
+	}, [createUserFields]);
 
 	return (
 		<Page
@@ -203,6 +215,11 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				dataHandler={createUserHandler}
 				fields={createUserFields?.fields || []}
 				data={createUserFields?.data || {}}
+			/>
+			<EmailSuppression
+				isOpen={emailSuppression}
+				setIsOpen={setEmailSuppression}
+				projectId={project.objectId}
 			/>
 		</Page>
 	);

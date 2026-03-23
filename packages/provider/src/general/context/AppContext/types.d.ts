@@ -2,7 +2,7 @@ import { ApolloError } from "@apollo/client";
 import { PatstoreProject, PatstoreRoleClass } from "@repo/types";
 
 export type ContextValues = {
-	project: PatstoreProject | undefined;
+	project: PatstoreProject;
 	loadProject: (projectId: string) => void;
 	roles: PatstoreRoleClass[];
 };

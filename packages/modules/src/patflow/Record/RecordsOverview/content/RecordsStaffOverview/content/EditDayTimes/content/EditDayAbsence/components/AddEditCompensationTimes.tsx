@@ -1,5 +1,5 @@
 import { cloneDeep, set } from "lodash-es";
-import { FC, useCallback } from "react";
+import { FC, useCallback, useState } from "react";
 import { AbsenceTime } from "@repo/types";
 import { AddEditCompensationTimesProps } from "../types";
 import { useDebounceCallback } from "usehooks-ts";
@@ -12,6 +12,7 @@ const AddEditCompensationTimes: FC<AddEditCompensationTimesProps> = ({
 	timeChangeHandler,
 	defaultTime
 }) => {
+	const [pauseTime, setPauseTime] = useState<boolean>(false);
 	const updateHandler = useCallback(
 		(key: string, value: string | object[]) => {
 			const timeCopy: AbsenceTime = cloneDeep(time);
@@ -32,7 +33,7 @@ const AddEditCompensationTimes: FC<AddEditCompensationTimesProps> = ({
 			<AddEditBreak
 				time={time}
 				updateHandler={(key, value) => {
-					debounced(key, value);
+					updateHandler(key, value);
 				}}
 				defaultTime={defaultTime}
 			/>

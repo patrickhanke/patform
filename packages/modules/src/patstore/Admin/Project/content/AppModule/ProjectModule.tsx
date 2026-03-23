@@ -62,6 +62,12 @@ const AppModule = ({
 				search_path: "lists",
 				type: "select"
 			});
+			additionalFieldsArray.push({
+				value: "suppression",
+				label: "Unterdrückung",
+				search_path: "suppression.suppressed",
+				type: "toggle"
+			});
 		}
 
 		return additionalFieldsArray;

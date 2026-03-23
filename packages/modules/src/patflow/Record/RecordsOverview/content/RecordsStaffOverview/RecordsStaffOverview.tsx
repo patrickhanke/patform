@@ -70,12 +70,13 @@ const RecordsStaffOverview = ({
 		const rec: Record[] = [];
 
 		if (!recordData || !selectedUser) return rec;
+
 		recordData.forEach((record: Record) => {
 			if (record.user.objectId === selectedUser.value) {
 				const holidayTemplate = cloneDeep(record.holiday_template);
 
 				const holidayArray: string[] = holidayTemplate.holidays.map(
-					(holiday: string ) => holiday as string
+					(holiday: string) => holiday as string
 				);
 
 				rec.push({
@@ -87,6 +88,7 @@ const RecordsStaffOverview = ({
 				});
 			}
 		});
+
 		return rec;
 	}, [recordData, selectedUser, setSelectedMonth]);
 

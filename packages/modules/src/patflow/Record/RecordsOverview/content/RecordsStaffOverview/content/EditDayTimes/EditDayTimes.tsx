@@ -38,6 +38,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	userId,
 	records
 }) => {
+	console.log({ initialTime });
+	console.log({ times });
 	const [slideIn, setSlideIn] = useState(false);
 	const [dayType, setDayType] = useState<(typeof day_type_options)[number]>(
 		day_type_options[0]
@@ -53,6 +55,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	]);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 	const [deleteModal, setDeleteModal] = useState(false);
+
+	console.log({ time });
 
 	useErrors({
 		date,

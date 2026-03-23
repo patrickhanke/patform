@@ -2,8 +2,7 @@
 
 import { FC } from "react";
 import { PatstoreUser } from "@repo/types";
-import { IconButton } from "@repo/ui";
-import { Divider } from "../../../../../Layout";
+import { StateDisplay, Divider } from "@repo/ui";
 
 interface EmailListProps {
 	emails: PatstoreUser["emails"];
@@ -46,10 +45,13 @@ const EmailList: FC<EmailListProps> = ({
 						return (
 							<div
 								key={index}
-								className="flex row a-ce j-sb gap-sm"
+								className="flex row a-ce j-sb gap-sm w-100"
 								style={{
+									width: "100%",
 									padding: "1rem",
-									border: "1px solid #e0e0e0",
+									border: emailEntry.suppression.suppressed
+										? `1px solid red`
+										: "1px solid #e0e0e0",
 									borderRadius: "8px",
 									cursor: "pointer",
 									transition: "all 0.2s ease",
@@ -61,18 +63,32 @@ const EmailList: FC<EmailListProps> = ({
 								onMouseEnter={(e) => {
 									e.currentTarget.style.backgroundColor =
 										"#f5f5f5";
-									e.currentTarget.style.borderColor = "#999";
+									e.currentTarget.style.borderColor =
+										emailEntry.suppression.suppressed
+											? `red`
+											: "#999";
 								}}
 								onMouseLeave={(e) => {
 									e.currentTarget.style.backgroundColor =
 										"#fff";
 									e.currentTarget.style.borderColor =
-										"#e0e0e0";
+										emailEntry.suppression.suppressed
+											? `red`
+											: "#e0e0e0";
 								}}
 							>
-								<div className="flex col gap-xs">
-									<span style={{ fontWeight: 600 }}>
+								<div className="flex col gap-xs w-100">
+									<span
+										className="flex row a-ce j-sb gap-xs w-100"
+										style={{ fontWeight: 600 }}
+									>
 										{emailEntry.email}
+										{emailEntry.suppression.suppressed && (
+											<StateDisplay
+												label="Unterdrückt"
+												color="red"
+											/>
+										)}
 									</span>
 									<div className="flex col gap-xxs">
 										<span
@@ -99,7 +115,7 @@ const EmailList: FC<EmailListProps> = ({
 										)}
 									</div>
 								</div>
-								<IconButton icon="chevron_right" />
+								{/* <IconButton icon="chevron_right" /> */}
 							</div>
 						);
 					})}

@@ -43,9 +43,10 @@ export type PatstoreUser = {
     {
       email: string;
       lists: string[];
-      suppressed: {
-        value: boolean;
+      suppression: {
+        suppressed: boolean;
         reason?: string | null;
+        suppressedAt?: string | null;
       };
       settings:  {
         [key: string]: {

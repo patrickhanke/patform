@@ -2,6 +2,7 @@ import { FormDataElement } from "@repo/ui";
 import { CategoryClass } from "./Category";
 import { PatstoreUser } from "./User";
 import { VideoClass } from "./Video";
+import { ItemClass } from "./Item";
 
 export type ClassCategories = string[];
 
@@ -35,3 +36,4 @@ export type Classes =
   | AppointmentClass
   | TemplateClass
   | VideoClass
+  | ItemClass

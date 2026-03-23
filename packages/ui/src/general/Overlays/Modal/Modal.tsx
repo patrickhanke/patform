@@ -4,6 +4,7 @@ import { ModalProps } from "./types";
 import clsx from "clsx";
 import { ErrorDisplay } from "@repo/ui";
 import React from "react";
+import { Button } from "@chakra-ui/react";
 
 const Modal: React.FC<ModalProps> = ({
 	children,
@@ -15,7 +16,8 @@ const Modal: React.FC<ModalProps> = ({
 	errors = [],
 	confirmButtonText = "Bestätigen",
 	cancelButtonText = "Abbrechen",
-	styles = {}
+	styles = {},
+	loading = false
 }) => {
 	if (isOpen === true)
 		return (
@@ -33,21 +35,23 @@ const Modal: React.FC<ModalProps> = ({
 						<ErrorDisplay errors={errors} />
 					</div>
 					<div className={"modal_footer"}>
-						<button
-							className={clsx("full_button", "md", "light")}
+						<Button
+							className="full_button md light"
 							onClick={() => cancelButtonHandler()}
 							disabled={buttonDisabled[0]}
+							loading={loading}
 						>
 							{cancelButtonText}
-						</button>
+						</Button>
 						{confirmButtonHandler && (
-							<button
-								className={clsx("full_button", "md", "dark")}
+							<Button
+								className="full_button md primary"
 								onClick={() => confirmButtonHandler()}
 								disabled={buttonDisabled[1]}
+								loading={loading}
 							>
 								{confirmButtonText}
-							</button>
+							</Button>
 						)}
 					</div>
 				</div>

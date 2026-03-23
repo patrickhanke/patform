@@ -7,7 +7,7 @@ import {
 	PatstoreAppContext,
 	useFindData
 } from "@repo/provider";
-import { PatstoreUser, ApolloRefetch } from "@repo/types";
+import { PatstoreUser, ApolloRefetch, ItemClass } from "@repo/types";
 import EmailList from "./components/EmailList";
 import EmailListManager from "./components/EmailListManager";
 import AddEmailForm from "./components/AddEmailForm";
@@ -53,7 +53,9 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 
 	// Create a set of project list IDs for quick lookup
 	const projectListIds = useMemo(() => {
-		return new Set(projectLists?.map((list: any) => list.objectId) || []);
+		return new Set(
+			projectLists?.map((list: ItemClass) => list.objectId) || []
+		);
 	}, [projectLists]);
 
 	// Use custom hook for managing email state

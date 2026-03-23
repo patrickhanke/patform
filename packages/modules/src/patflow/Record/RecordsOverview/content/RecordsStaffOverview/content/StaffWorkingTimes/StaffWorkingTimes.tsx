@@ -18,8 +18,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	records
 }) => {
 	const { currentHolidays } = useGetHolidays({ year, records });
-	console.log({ currentHolidays });
-	console.log({ days });
 
 	const columns = useTableColumns({
 		refetch,
@@ -141,8 +139,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 
 		return interval;
 	}, [days, month, year]);
-
-	console.log({ tableData });
 
 	return (
 		<div>

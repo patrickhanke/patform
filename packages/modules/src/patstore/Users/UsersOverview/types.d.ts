@@ -54,3 +54,9 @@ export type CreateUser = {
 		data: Partial<PatstoreUser>;
 	};
 };
+
+export type EmailSuppressionProps = {
+	isOpen: boolean;
+	setIsOpen: Dispatch<SetStateAction<boolean>>;
+	projectId: string;
+};
