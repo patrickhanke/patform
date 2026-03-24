@@ -51,14 +51,13 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({
 					(emailRecipient) =>
 						emailRecipient.userId === recipient.userId
 				);
-				if (!emailRecipient) return null;
 				return {
-					last_name: emailRecipient.data?.last_name ?? "",
-					first_name: emailRecipient.data?.first_name ?? "",
-					title: emailRecipient.data?.title ?? "",
-					email: emailRecipient.email,
+					last_name: recipient.data?.last_name ?? "",
+					first_name: recipient.data?.first_name ?? "",
+					title: recipient.data?.title ?? "",
+					email: recipient.email,
 					suppressed: recipient.suppressed,
-					status: emailRecipient.status
+					status: emailRecipient?.status ?? undefined
 				};
 			})
 			.filter((data) => data !== null)

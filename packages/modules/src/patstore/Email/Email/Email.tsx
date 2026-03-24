@@ -186,6 +186,8 @@ const Email = ({ params }: { params: Params }) => {
 		return <div>Lädt ...</div>;
 	}
 
+	console.log("suppressedRecipients", suppressedRecipients);
+
 	return (
 		<Page
 			title={email ? email?.title : "Lädt ..."}
