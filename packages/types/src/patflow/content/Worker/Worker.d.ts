@@ -1,6 +1,13 @@
-import { PatflowUser, User } from "@repo/types";
+import { PatflowUser, PatflowUserRole, User } from "@repo/types";
 
 export type Worker = {
+			color: string,
+			time_settings: string,
+			is_worker: boolean,
+			number: string,
+			role: PatflowUserRole,
+			value: string,
+			label: string,
   objectId: string;
   first_name: string;
   last_name: string;

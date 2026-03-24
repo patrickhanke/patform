@@ -1,5 +1,5 @@
 import { DisplayWorker } from "@repo/ui";
-import { useDataHandler, useGetData, useFindDataSecure } from "@repo/provider";
+import { useDataHandler, useDataStore, useGetData } from "@repo/provider";
 import { DisplayWorkersProps, Worker } from "@repo/types";
 import { FC, useMemo, useState } from "react";
 
@@ -18,24 +18,7 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 		fields: ["assigned_staff"],
 		id: propertyId
 	});
-	const { data: workerData } = useFindDataSecure({
-		objectName: "_User",
-		fields: [
-			"objectId",
-			"first_name",
-			"last_name",
-			"is_worker",
-			"portrait",
-			"color",
-			"time_settings",
-			"number",
-			"data",
-			"role { objectId name type color }"
-		],
-		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC",
-		useMasterKey: true
-	});
+	const { workers: workerData } = useDataStore();
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
@@ -59,7 +42,7 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 	const workerComponent = useMemo(
 		() => (
 			<ElementSelectInterface
-				elements={elements}
+				elements={workerData}
 				selectedElements={
 					property
 						? property.assigned_staff.map((element: string) =>

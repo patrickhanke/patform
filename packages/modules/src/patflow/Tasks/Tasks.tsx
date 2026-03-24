@@ -61,8 +61,6 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 	const { refetchTask } = useContext(PatflowAppContext);
 	const { newNotification } = useContext(NotificationContext);
 
-	console.log("pageState", pageState);
-	console.log("filters", filters);
 	const initialFilters: () => Filter[] = useCallback(() => {
 		const filterArray: Filter[] = [];
 		if (!id) {
