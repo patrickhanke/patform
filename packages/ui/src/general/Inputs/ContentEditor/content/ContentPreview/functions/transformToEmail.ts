@@ -16,29 +16,29 @@ export const transformToEmail = (blocks: ContentBlock[]): string => {
 		.join("\n");
 
 	return `
-<!DOCTYPE html>
-<html lang="de">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Email Preview</title>
-</head>
-<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
-	<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-		<tr>
-			<td align="center" style="padding: 20px 10px;">
-				<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff;">
-					<tr>
-						<td style="padding: 40px 30px;">
-							${blocksHtml}
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</body>
-</html>
+		<!DOCTYPE html>
+		<html lang="de">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Email Preview</title>
+		</head>
+		<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+			<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+				<tr>
+					<td align="center" style="padding: 20px 10px;">
+						<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff;">
+							<tr>
+								<td style="padding: 40px 30px;">
+									${blocksHtml}
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</body>
+		</html>
 	`.trim();
 };
 
