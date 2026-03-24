@@ -41,6 +41,9 @@ export interface ContentBlock {
 		alignment?: string;
 		buttonText?: string;
 		buttonUrl?: string;
+		buttonSize?: "small" | "medium" | "large";
+		buttonBackgroundColor?: string;
+		buttonFontColor?: string;
 		imageUrl?: string;
 		imageAlt?: string;
 		width?: string;
@@ -348,7 +351,10 @@ export default function ContentEditor({
 						config: {
 							buttonText: "Click me",
 							buttonUrl: "#",
-							alignment: "center"
+							alignment: "center",
+							buttonSize: "large",
+							buttonBackgroundColor: "#007bff",
+							buttonFontColor: "#ffffff"
 						}
 					};
 				case "divider":

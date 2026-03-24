@@ -1,4 +1,9 @@
 import { ContentBlock } from "../../../ContentEditor";
+import {
+	buttonPaddingAndFontSize,
+	DEFAULT_BUTTON_BACKGROUND,
+	DEFAULT_BUTTON_FONT_COLOR
+} from "../../ButtonBlock/buttonBlockStyles";
 
 /**
  * Transform ContentBlock[] into HTML string for email preview
@@ -90,6 +95,12 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 	const alignment = block.config?.alignment || "center";
 	const buttonText = block.config?.buttonText || "Click me";
 	const buttonUrl = block.config?.buttonUrl || "#";
+	const bg =
+		block.config?.buttonBackgroundColor || DEFAULT_BUTTON_BACKGROUND;
+	const fontColor = block.config?.buttonFontColor || DEFAULT_BUTTON_FONT_COLOR;
+	const { padding, fontSize } = buttonPaddingAndFontSize(
+		block.config?.buttonSize
+	);
 
 	return `
 		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0;">
@@ -97,8 +108,8 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 				<td align="${alignment}">
 					<table role="presentation" cellspacing="0" cellpadding="0" border="0">
 						<tr>
-							<td style="border-radius: 4px; background-color: #007bff;">
-								<a href="${buttonUrl}" target="_blank" style="display: inline-block; padding: 12px 24px; font-size: 16px; color: #ffffff; text-decoration: none; font-weight: 500;">
+							<td style="border-radius: 4px; background-color: ${bg};">
+								<a href="${buttonUrl}" target="_blank" style="display: inline-block; padding: ${padding}; font-size: ${fontSize}; color: ${fontColor}; text-decoration: none; font-weight: 500;">
 									${buttonText}
 								</a>
 							</td>

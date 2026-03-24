@@ -2,13 +2,14 @@
 
 import { FC, useMemo } from "react";
 import { RecipientCount } from "./components";
-import { EmailClass } from "@repo/types";
+import { EmailOverviewProps } from "./types";
 
-export interface EmailOverviewProps {
-	email: EmailClass;
-}
-
-const EmailOverview: FC<EmailOverviewProps> = ({ email }) => {
+const EmailOverview: FC<EmailOverviewProps> = ({
+	email,
+	recipients,
+	suppressedRecipients,
+	findRecipients
+}) => {
 	const attachmentCount = useMemo(() => {
 		return email?.attachments?.length || 0;
 	}, [email]);
@@ -48,7 +49,12 @@ const EmailOverview: FC<EmailOverviewProps> = ({ email }) => {
 							Anzahl Empfänger:
 						</div>
 						<div>
-							<RecipientCount email={email} />
+							<RecipientCount
+								email={email}
+								recipients={recipients}
+								suppressedRecipients={suppressedRecipients}
+								findRecipients={findRecipients}
+							/>
 						</div>
 					</div>
 

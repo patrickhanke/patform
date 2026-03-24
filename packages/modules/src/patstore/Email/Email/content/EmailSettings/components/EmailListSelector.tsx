@@ -3,18 +3,13 @@
 import { FC, useContext, useMemo, useState } from "react";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
-import { EmailClass } from "@repo/types";
-
-interface EmailListSelectorProps {
-	settings: EmailClass["settings"];
-	updateSettings: (settings: EmailClass["settings"]) => Promise<void>;
-	loading: boolean;
-}
+import { EmailListSelectorProps } from "../types";
 
 const EmailListSelector: FC<EmailListSelectorProps> = ({
 	settings,
 	updateSettings,
-	loading
+	loading,
+	findRecipients
 }) => {
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
@@ -122,6 +117,7 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 						...settings,
 						recipient_list: selectedListId
 					});
+					findRecipients();
 					setIsOpen(false);
 				}}
 				disabled={[loading, loading]}

@@ -8,9 +8,14 @@ import {
 	Page,
 	PageHeaderButton
 } from "@repo/ui";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Params } from "@repo/types";
-import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
+import {
+	useAppContext,
+	useDataHandler,
+	useGetData,
+	axiosclient
+} from "@repo/provider";
 import TestEmail from "./components/TestEmail";
 import BulkEmailSender from "./components/BulkEmailSender";
 import RecipientEmailSender from "./components/RecipientEmailSender";
@@ -24,6 +29,8 @@ import {
 } from "./content";
 import { isEqual } from "lodash-es";
 import EmailImport from "./components/EmailImport";
+import { EmailRecipient, EmailRescipientResponse } from "./types";
+import { AxiosResponse } from "axios";
 
 const Email = ({ params }: { params: Params }) => {
 	const { deleteData } = useDataHandler();
@@ -66,8 +73,26 @@ const Email = ({ params }: { params: Params }) => {
 	const [recipientEmailOpen, setRecipientEmailOpen] =
 		useState<boolean>(false);
 	const [importModalOpen, setImportModalOpen] = useState<boolean>(false);
+	const [recipients, setRecipients] = useState<EmailRecipient[]>([]);
+	const [suppressedRecipients, setSuppressedRecipients] = useState<
+		EmailRecipient[]
+	>([]);
 
-	console.log("email", email);
+	const findRecipients = useCallback(async () => {
+		if (!email) return;
+		if (!email.settings?.recipient_list) return;
+		const recipientListId = email.settings.recipient_list;
+		const response: AxiosResponse<EmailRescipientResponse> =
+			await axiosclient().post("functions/get_list_recipients", {
+				list_id: recipientListId
+			});
+
+		setRecipients(response.data.result.recipients || []);
+		setSuppressedRecipients(
+			response.data.result.suppressedRecipients || []
+		);
+	}, [email]);
+
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
 			return [
@@ -148,9 +173,14 @@ const Email = ({ params }: { params: Params }) => {
 		if (email && emailContent?.length === 0) {
 			setEmailContent(email.content);
 		}
+		if (
+			email &&
+			email.settings?.recipient_list &&
+			recipients.length === 0
+		) {
+			findRecipients();
+		}
 	}, [email]);
-
-	console.log("email", email);
 
 	if (!email) {
 		return <div>Lädt ...</div>;
@@ -171,7 +201,12 @@ const Email = ({ params }: { params: Params }) => {
 			) : (
 				<>
 					{siteState.value === "overview" && (
-						<EmailOverview email={email} />
+						<EmailOverview
+							email={email}
+							recipients={recipients}
+							suppressedRecipients={suppressedRecipients}
+							findRecipients={findRecipients}
+						/>
 					)}
 					{siteState.value === "data" && (
 						<EmailData
@@ -181,7 +216,11 @@ const Email = ({ params }: { params: Params }) => {
 						/>
 					)}
 					{siteState.value === "recipients" && (
-						<EmailRecipients email={email} />
+						<EmailRecipients
+							email={email}
+							recipients={recipients}
+							emailRecipients={email.recipients}
+						/>
 					)}
 					{siteState.value === "content" && (
 						<EmailContent
@@ -193,7 +232,10 @@ const Email = ({ params }: { params: Params }) => {
 						<EmailAttachments emailId={emailId} email={email} />
 					)}
 					{siteState.value === "settings" && (
-						<EmailSettings emailId={emailId} />
+						<EmailSettings
+							emailId={emailId}
+							findRecipients={findRecipients}
+						/>
 					)}
 				</>
 			)}
@@ -237,7 +279,7 @@ const Email = ({ params }: { params: Params }) => {
 				setIsOpen={setBulkEmailOpen}
 				emailContent={emailContent}
 				emailId={emailId}
-				listId={email?.settings?.recipient_list}
+				recipients={recipients}
 			/>
 			<RecipientEmailSender
 				recipientEmailOpen={recipientEmailOpen}

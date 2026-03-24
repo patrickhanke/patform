@@ -35,6 +35,7 @@ import { useInView } from "react-cool-inview";
 
 import setLink from "../functions/setLink";
 import TextColorPicker from "./TextColorPicker";
+import FontSizePicker from "./FontSizePicker";
 
 // sample(['teste']);
 
@@ -101,6 +102,7 @@ function Toolbar({ editor }: ToolbarProps) {
 				</div>
 				<div className="divider"></div>
 				<TextColorPicker editor={editor} />
+				<FontSizePicker editor={editor} />
 				<div className="divider"></div>
 				<div
 					className="icon"

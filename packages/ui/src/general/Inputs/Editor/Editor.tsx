@@ -19,7 +19,7 @@ import type { Extensions } from "@tiptap/react";
 import { createLowlight, common } from "lowlight";
 const lowlight = createLowlight(common);
 
-import { MentionSuggestion, HexColorDecorator } from "./extensions";
+import { MentionSuggestion, HexColorDecorator, FontSize } from "./extensions";
 
 import Toolbar from "./components/Toolbar";
 import Popover from "./components/Popover";
@@ -68,8 +68,8 @@ function Editor({
 		})
 	);
 
-	// TextStyle + Color for text color support
-	extensions.push(TextStyle, Color);
+	// TextStyle + Color + FontSize (inline marks on textStyle)
+	extensions.push(TextStyle, Color, FontSize);
 
 	if (withTypographyExtension) {
 		extensions.push(Typography);

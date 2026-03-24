@@ -51,6 +51,49 @@ const ButtonPanel = ({
 					<option value="right">Right</option>
 				</select>
 			</div>
+
+			<div className="property-group">
+				<label className="property-label">Größe</label>
+				<select
+					className="property-select"
+					value={selectedBlock.config?.buttonSize || "large"}
+					onChange={(e) =>
+						onChange("config.buttonSize", e.target.value)
+					}
+				>
+					<option value="small">Small</option>
+					<option value="medium">Medium</option>
+					<option value="large">Large</option>
+				</select>
+			</div>
+
+			<div className="property-group">
+				<label className="property-label">Hintergrundfarbe</label>
+				<input
+					type="color"
+					className="property-input"
+					style={{ height: 40, padding: 4, cursor: "pointer" }}
+					value={
+						selectedBlock.config?.buttonBackgroundColor || "#007bff"
+					}
+					onChange={(e) =>
+						onChange("config.buttonBackgroundColor", e.target.value)
+					}
+				/>
+			</div>
+
+			<div className="property-group">
+				<label className="property-label">Schriftfarbe</label>
+				<input
+					type="color"
+					className="property-input"
+					style={{ height: 40, padding: 4, cursor: "pointer" }}
+					value={selectedBlock.config?.buttonFontColor || "#ffffff"}
+					onChange={(e) =>
+						onChange("config.buttonFontColor", e.target.value)
+					}
+				/>
+			</div>
 		</>
 	);
 };

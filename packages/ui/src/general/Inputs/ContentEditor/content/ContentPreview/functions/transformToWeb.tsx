@@ -1,5 +1,10 @@
 import React from "react";
 import { ContentBlock } from "../../../ContentEditor";
+import {
+	buttonPaddingAndFontSize,
+	DEFAULT_BUTTON_BACKGROUND,
+	DEFAULT_BUTTON_FONT_COLOR
+} from "../../ButtonBlock/buttonBlockStyles";
 
 /**
  * Transform ContentBlock[] into React components for web preview
@@ -55,6 +60,12 @@ const renderButtonBlock = (block: ContentBlock): React.ReactNode => {
 	const alignment = block.config?.alignment || "center";
 	const buttonText = block.config?.buttonText || "Click me";
 	const buttonUrl = block.config?.buttonUrl || "#";
+	const bg =
+		block.config?.buttonBackgroundColor || DEFAULT_BUTTON_BACKGROUND;
+	const color = block.config?.buttonFontColor || DEFAULT_BUTTON_FONT_COLOR;
+	const { padding, fontSize } = buttonPaddingAndFontSize(
+		block.config?.buttonSize
+	);
 
 	return (
 		<div
@@ -68,9 +79,10 @@ const renderButtonBlock = (block: ContentBlock): React.ReactNode => {
 				href={buttonUrl}
 				style={{
 					display: "inline-block",
-					padding: "12px 24px",
-					backgroundColor: "#007bff",
-					color: "#ffffff",
+					padding,
+					fontSize,
+					backgroundColor: bg,
+					color,
 					textDecoration: "none",
 					borderRadius: "4px",
 					fontWeight: "500"

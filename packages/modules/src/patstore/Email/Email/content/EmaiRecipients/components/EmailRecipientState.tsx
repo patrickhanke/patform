@@ -1,13 +1,29 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { EmailStatus } from "../types";
-
+import { EmailStatus } from "@repo/types";
+import { FC } from "react";
+import { StateDisplay } from "../../../../../../../../ui/src/general";
 // Use same-origin API proxy to avoid CORS (browser -> our API -> LetterMint)
 const getMessageUrl = (messageId: string) =>
 	`/api/lettermint/messages/${messageId}`;
 
-const mapLettermintStatus = (status: string): EmailStatus => {
+const NORMALIZED_STATUSES: readonly EmailStatus[] = [
+	"sent",
+	"delivered",
+	"opened",
+	"clicked",
+	"bounced",
+	"complained",
+	"unsubscribed",
+	"failed",
+	"pending",
+	"unknown"
+];
+
+export const mapLettermintStatus = (status: string): EmailStatus => {
+	if (NORMALIZED_STATUSES.includes(status as EmailStatus)) {
+		return status as EmailStatus;
+	}
 	const map: Record<string, EmailStatus> = {
 		delivered: "delivered",
 		opened: "opened",
@@ -28,44 +44,35 @@ const mapLettermintStatus = (status: string): EmailStatus => {
 };
 
 interface EmailRecipientStateProps {
-	messageId: string;
+	status: EmailStatus;
 }
 
-const EmailRecipientState = ({ messageId }: EmailRecipientStateProps) => {
-	const [state, setState] = useState<EmailStatus>("unknown");
-	const [loading, setLoading] = useState(!!messageId);
+const EmailRecipientState: FC<EmailRecipientStateProps> = ({
+	status = "unknown"
+}) => {
 
-	useEffect(() => {
-		if (!messageId) return;
+	const state = mapLettermintStatus(status);
 
-		const fetchEmailStatus = async () => {
-			try {
-				const response = await fetch(getMessageUrl(messageId), {
-					method: "GET",
-					headers: { "Content-Type": "application/json" }
-				});
+	const getColor = (colorState: EmailStatus) => {
+		switch (colorState) {
+			case "sent":
+				return "blue";
+			case "delivered":
+				return "green";
+			case "opened":
+				return "green";
+			case "clicked":
+				return "green";
+			case "bounced":
+				return "red";
+			case "complained":
+				return "red";
+			default:
+				return "blue";
+		}
+	};
 
-				if (response.ok) {
-					const data = await response.json();
-					setState(mapLettermintStatus(data.status ?? "unknown"));
-				} else {
-					setState("unknown");
-				}
-			} catch {
-				setState("unknown");
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchEmailStatus();
-	}, [messageId]);
-
-	if (loading) {
-		return <span className="badge default">Lädt...</span>;
-	}
-
-	return <span className={`badge ${state}`}>{state}</span>;
+	return <StateDisplay label={state} color={getColor(state)} />;
 };
 
 export default EmailRecipientState;

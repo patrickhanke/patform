@@ -14,6 +14,7 @@ import {
 
 import setLink from "../functions/setLink";
 import TextColorPicker from "./TextColorPicker";
+import FontSizePicker from "./FontSizePicker";
 
 type PopoverProps = {
 	editor: Editor;
@@ -60,6 +61,7 @@ function Popover({ editor }: PopoverProps) {
 				<RiStrikethrough />
 			</div>
 			<TextColorPicker editor={editor} />
+			<FontSizePicker editor={editor} />
 			<div
 				className={classNames("icon", {
 					active: editor.isActive("heading", { level: 1 })

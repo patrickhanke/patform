@@ -1,9 +1,34 @@
 import { ClassProperties } from "./Classes";
 
+export type EmailStatus =
+	| "sent"
+	| "delivered"
+	| "opened"
+	| "clicked"
+	| "bounced"
+	| "complained"
+	| "unsubscribed"
+	| "failed"
+	| "pending"
+	| "unknown";
+
 export type EmailRecipient = {
-  name: string;
   email: string;
-  message_id?: string;
+    userId: string,
+    unsubscribeLink?: string,
+    listName?: string,
+    data: {
+      label: string,
+      first_name: string,
+      last_name: string,
+      title: string,
+      pre_title: string,
+      name: string
+    },
+    message_id?: string,
+    status?: EmailStatus,
+    delivered_at?: string
+
 };
 
 export type EmailClass = ClassProperties & {

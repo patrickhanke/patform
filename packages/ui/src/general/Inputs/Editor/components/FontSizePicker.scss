@@ -1,0 +1,97 @@
+.editor-font-size-picker {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	z-index: 8;
+
+	&.is-open {
+		z-index: 100;
+	}
+}
+
+.editor-font-size-trigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.2s;
+
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.08);
+	}
+
+	&.active {
+		background-color: #333333;
+		color: #ffffff;
+	}
+}
+
+.Toolbar .editor-font-size-trigger:hover {
+	background-color: #333333;
+
+	svg {
+		color: #ffffff !important;
+	}
+}
+
+.Popover .editor-font-size-trigger {
+	&:hover {
+		background-color: #555555;
+	}
+
+	&.active {
+		background-color: #555555;
+	}
+}
+
+.Popover .editor-font-size-popover {
+	left: auto;
+	right: 0;
+}
+
+.editor-font-size-popover {
+	position: absolute;
+	top: calc(100% + 4px);
+	left: 0;
+	min-width: 120px;
+	padding: 6px;
+	background: #ffffff;
+	border: 1px solid #d1d5da;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	z-index: 100;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.editor-font-size-option {
+	width: 100%;
+	padding: 6px 10px;
+	text-align: left;
+	font-size: 13px;
+	line-height: 1.2;
+	background: transparent;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	color: #333;
+
+	&:hover {
+		background: #f6f8fa;
+	}
+
+	&.selected {
+		background: #eef2ff;
+		font-weight: 600;
+	}
+}
+
+.editor-font-size-option-preview {
+	display: inline-block;
+	line-height: 1;
+	white-space: nowrap;
+}

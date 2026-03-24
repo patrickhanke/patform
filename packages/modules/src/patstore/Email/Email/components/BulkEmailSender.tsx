@@ -1,45 +1,17 @@
 "use client";
 
-import {
-	Dispatch,
-	FC,
-	SetStateAction,
-	useCallback,
-	useEffect,
-	useState
-} from "react";
-import { ContentBlock, Modal, ProgressBar } from "@repo/ui";
+import { FC, useCallback, useEffect, useState } from "react";
+import { Modal, ProgressBar, Select, SelectElement } from "@repo/ui";
 import { axiosclient, compileAxiosError, useAppContext } from "@repo/provider";
 import { transformToEmail } from "@repo/ui";
-
-export type BulkEmailSenderProps = {
-	isOpen: boolean;
-	setIsOpen: Dispatch<SetStateAction<boolean>>;
-	emailContent: ContentBlock[];
-	emailId: string;
-	listId: string;
-};
-
-interface EmailRecipient {
-	name: string;
-	email: string;
-	data: {
-		first_name: string;
-		last_name: string;
-		title: string;
-		pre_title: string;
-		post_title: string;
-		unsubscribe_link: string | undefined;
-		list_name: string;
-	};
-}
+import { BulkEmailSenderProps } from "../types";
 
 const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 	isOpen,
 	setIsOpen,
 	emailContent,
 	emailId,
-	listId
+	recipients
 }) => {
 	const { project } = useAppContext();
 	const [loading, setLoading] = useState(false);
@@ -47,24 +19,7 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 	const [totalEmails, setTotalEmails] = useState(0);
 	const [sentEmails, setSentEmails] = useState(0);
 	const [error, setError] = useState<string | null>(null);
-	const [recipients, setRecipients] = useState<EmailRecipient[]>([]);
-
-	const findRecipients = useCallback(async () => {
-		const response = await axiosclient().post(
-			"functions/get_list_recipients",
-			{
-				list_id: listId
-			}
-		);
-		console.log("response", response.data);
-		setRecipients(response.data.result);
-	}, [listId]);
-
-	useEffect(() => {
-		if (listId) {
-			findRecipients();
-		}
-	}, [listId]);
+	const [sendBroadcast, setSendBroadcast] = useState(false);
 
 	useEffect(() => {
 		if (
@@ -96,15 +51,20 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 				const start = i * BATCH_SIZE;
 				const end = Math.min(start + BATCH_SIZE, recipients.length);
 				const batch = recipients.slice(start, end);
-				
+
 				// Send batch
 				await axiosclient()
-					.post("functions/send_broadcast_email", {
-						email_id: emailId,
-						project_id: project.objectId,
-						content: transformToEmail(emailContent),
-						recipients: batch
-					})
+					.post(
+						sendBroadcast
+							? "functions/send_broadcast_email"
+							: "functions/send_email_to_users",
+						{
+							email_id: emailId,
+							project_id: project.objectId,
+							content: transformToEmail(emailContent),
+							recipients: batch
+						}
+					)
 					.catch((error) => {
 						throw new Error(compileAxiosError(error).message);
 					});
@@ -147,6 +107,7 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 		}
 	};
 
+	console.log("sendBroadcast", sendBroadcast);
 	return (
 		<Modal
 			header="E-Mails versenden"
@@ -158,6 +119,25 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 			cancelButtonText="Abbrechen"
 		>
 			<div className="flex col gap-md">
+				<div className="flex row a-ce j-sb gap-sm">
+					<label>Sendungstyp</label>
+					<Select
+						options={[
+							{
+								label: "Broadcast",
+								value: "broadcast"
+							},
+							{
+								label: "Transactional",
+								value: "transactional"
+							}
+						]}
+						value={sendBroadcast ? "broadcast" : "transactional"}
+						onChange={(value) =>
+							setSendBroadcast(value.value === "broadcast")
+						}
+					/>
+				</div>
 				{!loading && !error && sentEmails === 0 && (
 					<>
 						<p>

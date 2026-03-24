@@ -1,22 +1,19 @@
 "use client";
 
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { IconButton, SlideIn, Table, useCreateColumns } from "@repo/ui";
-import { axiosclient, useGetData } from "@repo/provider";
-import { PatstoreUser, Filter, EmailClass, EmailRecipient } from "@repo/types";
+import { useGetData } from "@repo/provider";
+import { PatstoreUser } from "@repo/types";
+import { RecipientCountProps } from "../types";
 
-export interface RecipientCountProps {
-	email: EmailClass;
-}
-
-const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
+const RecipientCount: FC<RecipientCountProps> = ({
+	email,
+	recipients,
+	suppressedRecipients,
+	findRecipients
+}) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [recipients, setRecipients] = useState<EmailRecipient[]>([]);
 	const recipientListId = email?.settings?.recipient_list;
-
-	console.log("recipientListId", recipientListId);
-
-	console.log("email", email);
 
 	// Fetch the list to get filter settings
 	const { data: list } = useGetData({
@@ -24,18 +21,6 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 		fields: ["objectId", "title", "data", "settings"],
 		id: recipientListId
 	});
-
-	const findRecipients = useCallback(async () => {
-		const response = await axiosclient().post(
-			"functions/get_list_recipients",
-			{
-				list_id: recipientListId
-			}
-		);
-		console.log("response", response.data);
-
-		setRecipients(response.data.result);
-	}, [recipientListId]);
 
 	console.log("recipients", recipients);
 
@@ -115,7 +100,14 @@ const RecipientCount: FC<RecipientCountProps> = ({ email }) => {
 							{recipients.length > 0 ? (
 								<Table
 									columns={columns}
-									data={recipients}
+									data={recipients.map((recipient) => ({
+										...recipient,
+										title: recipient.data?.title,
+										pre_title: recipient.data?.pre_title,
+										first_name: recipient.data?.first_name,
+										last_name: recipient.data?.last_name,
+										email: recipient.email
+									}))}
 									rowCount={recipients.length}
 								/>
 							) : (

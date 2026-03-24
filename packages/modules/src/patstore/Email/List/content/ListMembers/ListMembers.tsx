@@ -2,13 +2,8 @@
 
 import { FC, useMemo, useState } from "react";
 import { useAppContext, useDataHandler, useFindData } from "@repo/provider";
-import { IconButton, Table, TextInput, useCreateColumns } from "@repo/ui";
-import {
-	ApolloRefetch,
-	EmailRecipient,
-	Filter,
-	PatstoreUser
-} from "@repo/types";
+import { Table, TextInput, useCreateColumns } from "@repo/ui";
+import { ApolloRefetch, Filter, PatstoreUser } from "@repo/types";
 import MemberSwitch from "./components/MemberSwitch";
 
 export interface ListMembersProps {
@@ -137,28 +132,6 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 		<div>
 			<div className="flex row a-ce j-sb gap-sm w-100">
 				<div className="flex col a-st w-100">
-					<IconButton
-						icon="check"
-						onClick={async () => {
-							setLoading(true);
-							users.forEach(async (user: PatstoreUser) => {
-								if (user.lists?.includes(listId)) {
-									return;
-								}
-								await updateData({
-									className: "User",
-									objectId: user.objectId,
-									updateObject: {
-										lists: [...(user.lists || []), listId]
-									}
-								});
-							});
-							await refetchUsers();
-							setLoading(false);
-						}}
-						text="Alle auswählen"
-						loading={loading}
-					/>
 					<p>
 						Ausgewählte Mitglieder: {selectedRecipients.length} /{" "}
 						{count || 0}
