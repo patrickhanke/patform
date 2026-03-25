@@ -1,5 +1,5 @@
 import { User, UserDisplayData } from "@/types/General";
-import { Absence } from "../Worker";
+import { Absence, AbsenceType } from "./Absence";
 import { DayTime, TimeObject } from "./Times";
 import { AbsenceStateOptions, Surcharge } from "@repo/types";
 
@@ -36,13 +36,4 @@ export type Record = {
   former_record: Record | undefined;
   holiday_template: HolidayTemplate;
   surcharges: string[]
-};
-
-export type Abence = {
-  objectId: string;
-  state: AbsenceStateOptions[number]["value"];
-  user: UserDisplayData;
-  comment: string;
-  type: "vacation" | "illness" | "other";
-  year: number;
 };

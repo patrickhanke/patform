@@ -6,6 +6,7 @@ import {
   StateColors,
   Absence,
   AbsenceTime,
+  AbsenceType,
 } from "@repo/types";
 
 export type AbsenceStateOptions = [
@@ -36,7 +37,7 @@ export type DayAbsence = {
   comment: string;
   state: AbsenceStateOptions[number]["value"];
   user: User["objectId"];
-  type: "vacation" | "compensation_times" | "illness" | "payed_absence";
+  type: AbsenceType;
 };
 
 export type DaySurcharge = {
@@ -49,7 +50,7 @@ export type DaySurcharge = {
 // compensation_times is used to compensate overtime
 
 export type AbsenceTime = {
-  type: "vacation" | "compensation_times" | "illness" | "payed_absence";
+  type: AbsenceType;
   start: string;
   end: string;
   pause: number;
