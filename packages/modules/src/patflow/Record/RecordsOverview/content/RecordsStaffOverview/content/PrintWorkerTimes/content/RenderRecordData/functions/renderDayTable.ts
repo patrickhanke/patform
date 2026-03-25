@@ -33,6 +33,9 @@ const renderDayTable = ({
 				weekdays.find((weekday) => weekday.day === getDay(day.date))
 					?.short || "";
 
+			const isCompensationTimes = day?.time?.find(
+				(time) => time.type === "compensation_times"
+			);
 			if (day) {
 				// has absence
 				if (day.absence && day.absence.type && day.default_time) {
@@ -42,9 +45,18 @@ const renderDayTable = ({
 						)?.label || "frei";
 					weekday += " - " + absenceLabel;
 
-					hoursInt =
-						day.default_time.duration - day.default_time.pause;
-					saldoInt = 0;
+					// check for compensation_times
+
+					if (isCompensationTimes) {
+						hoursInt = 0;
+						saldoInt =
+							day.default_time.duration - day.default_time.pause;
+					} else {
+						hoursInt =
+							day.default_time.duration - day.default_time.pause;
+
+						saldoInt = 0;
+					}
 				} else if (
 					day &&
 					day.default_time &&
@@ -101,7 +113,7 @@ const renderDayTable = ({
 				}
 			}
 
-			if (day.time && day.time.length > 0) {
+			if (day.time && day.time.length > 0 && !isCompensationTimes) {
 				day.time.forEach((time: DayDataTime, index: number) => {
 					if (time && time?.start && time?.end) {
 						if (index > 0) {

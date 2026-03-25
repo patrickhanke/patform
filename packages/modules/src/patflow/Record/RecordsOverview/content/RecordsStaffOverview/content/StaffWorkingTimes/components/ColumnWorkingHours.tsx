@@ -30,6 +30,13 @@ const ColumnWorkingHours = ({
 	}
 
 	if (type === "absence" && date.default_time) {
+		if (date.time?.find((time) => time.type === "compensation_times")) {
+			return (
+				<div style={{ textAlign: "right", float: "right" }}>
+					{convertMillisecondsToString(0)}
+				</div>
+			);
+		}
 		return (
 			<div style={{ textAlign: "right", float: "right" }}>
 				{convertMillisecondsToString(

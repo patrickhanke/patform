@@ -1,4 +1,4 @@
-import { DayData, DayDataTime } from "../StaffWorkingTimes";
+import { DayDataTime } from "../StaffWorkingTimes";
 import { WorkingTimes } from "./types";
 import {
 	AbsenceTime,

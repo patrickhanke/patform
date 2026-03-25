@@ -32,8 +32,6 @@ const AddEditBreak: FC<AddEditBreakProps> = ({
 		}
 	}, [time, defaultTime]);
 
-	const debounced = useDebounceCallback(updateHandler, 600);
-
 	return (
 		<div>
 			<div className={"label"}>Ganztägig</div>

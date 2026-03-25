@@ -1,13 +1,7 @@
 import React, { useContext, useEffect, useMemo } from "react";
 import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
-import {
-	useFindData,
-	months,
-	UserContext,
-	useFindDays,
-	useDataStore
-} from "@repo/provider";
+import { months, UserContext, useFindDays, useDataStore } from "@repo/provider";
 import { Divider } from "@repo/ui";
 import StaffRecord from "./content/StaffRecord";
 import { TimesSaldo } from "./content/TimesSaldo";
@@ -47,22 +41,7 @@ const RecordsStaffOverview = ({
 		}
 	}, [selectedUser, year]);
 
-	const { data: recordData } = useFindData({
-		objectName: "Record",
-		fields: [
-			"objectId",
-			"year",
-			"user {objectId}",
-			"default_times",
-			"createdAt",
-			"start_date",
-			"end_date",
-			"time_settings",
-			"holiday_template { objectId name holidays { ... on Element { value } } }"
-		],
-		filters: [{ key: "year", value: year, operator: "equalTo" }],
-		skipQuery: !year
-	});
+	const { records: recordData } = useDataStore();
 
 	const { workers } = useDataStore();
 
@@ -72,7 +51,10 @@ const RecordsStaffOverview = ({
 		if (!recordData || !selectedUser) return rec;
 
 		recordData.forEach((record: Record) => {
-			if (record.user.objectId === selectedUser.value) {
+			if (
+				record.user.objectId === selectedUser.value &&
+				record.year === year
+			) {
 				const holidayTemplate = cloneDeep(record.holiday_template);
 
 				const holidayArray: string[] = holidayTemplate.holidays.map(
@@ -90,7 +72,7 @@ const RecordsStaffOverview = ({
 		});
 
 		return rec;
-	}, [recordData, selectedUser, setSelectedMonth]);
+	}, [recordData, selectedUser, year]);
 
 	const siteHeaderContent = useMemo(
 		() => (

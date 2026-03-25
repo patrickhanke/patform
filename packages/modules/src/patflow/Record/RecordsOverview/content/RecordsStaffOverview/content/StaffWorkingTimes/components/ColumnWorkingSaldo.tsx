@@ -23,6 +23,15 @@ const ColumnWorkingSaldo = ({
 					saldoInt -= timeValue.duration - timeValue.pause;
 				}
 			});
+
+			// compensation_times is used to compensate overtime, should return negative saldo
+			if (date.time?.find((time) => time.type === "compensation_times")) {
+				date?.time?.forEach((timeValue) => {
+					if (timeValue) {
+						saldoInt += timeValue.duration - timeValue.pause;
+					}
+				});
+			}
 		} else if (date) {
 			date?.time?.forEach((timeValue) => {
 				if (timeValue) {
@@ -34,7 +43,7 @@ const ColumnWorkingSaldo = ({
 		return -saldoInt;
 	}, [date]);
 
-	if (type === "work" && date.time) {
+	if (date.time && saldo) {
 		return (
 			<div>
 				<span>{convertMillisecondsToString(saldo)}</span>

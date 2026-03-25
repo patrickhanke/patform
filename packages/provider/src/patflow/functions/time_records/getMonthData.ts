@@ -76,8 +76,16 @@ const getMonthData = ({
 						const timeSpan = time.duration - time.pause;
 						monthTimes += timeSpan || 0;
 					} else if (day && day.type === "absence") {
-						if (day.is_working_day) {
+						if (
+							day.is_working_day &&
+							day.time?.type !== "compensation_times"
+						) {
 							monthTimes += day.default_time
+								? day.default_time.duration -
+									day.default_time.pause
+								: 0;
+						} else if (day.time?.type === "compensation_times") {
+							monthTimes -= day.default_time
 								? day.default_time.duration -
 									day.default_time.pause
 								: 0;

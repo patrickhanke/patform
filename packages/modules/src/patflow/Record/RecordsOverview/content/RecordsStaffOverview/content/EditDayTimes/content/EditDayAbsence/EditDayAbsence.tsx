@@ -15,6 +15,7 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	setTime,
 	records
 }) => {
+	console.log({ time });
 	const absenceTypeChangeHandler = useCallback(
 		(newAbsenceType: (typeof absence_type_options)[number]) => {
 			setTime({
@@ -22,7 +23,7 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				type: newAbsenceType.value
 			});
 		},
-		[]
+		[time]
 	);
 
 	const absenceChangeHandler = useCallback(

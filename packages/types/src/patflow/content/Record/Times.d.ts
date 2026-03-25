@@ -11,17 +11,6 @@ export type DayTime = {
   state: "created" | "submitted" | "approved" | "initial";
 };
 
-export type AbsenceTime = {
-  type: "vacation" | "compensation_times" | "illness" | "payed_absence";
-  start: string;
-  end: string;
-  pause: number;
-  breaks: {start: string; end: string; id: string;}[];
-  duration: number;
-  comment: string;
-  state: "full" | "part";
-};
-
 export type TimeObject = {
   absence: Absence | null;
   default_time: DayTime | null;
