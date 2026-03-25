@@ -1,5 +1,5 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { ReactNode, useContext, useMemo } from "react";
+import { ColumnDef, Row } from "@tanstack/react-table";
+import { ReactNode, useCallback, useContext, useMemo } from "react";
 import {
 	findDefaultTimeForDate,
 	getDateString,
@@ -36,6 +36,24 @@ const useTableColumns = ({
 		projectId: projectId,
 		skipQuery: !projectId
 	});
+
+	const secondaryRow = useCallback((row: Row<DayData>) => {
+		const text = row.original.comment?.trim();
+		if (!text) return null;
+		return (
+			<div
+				style={{
+					paddingTop: 6,
+					paddingBottom: 6,
+					fontSize: "9px",
+					color: "#4a5568",
+					lineHeight: 1
+				}}
+			>
+				<span style={{ fontWeight: "bold" }}>Kommentar:</span> {text}
+			</div>
+		);
+	}, []);
 
 	const columns: ColumnDef<DayData>[] = useMemo(
 		() => [
@@ -169,10 +187,10 @@ const useTableColumns = ({
 				footer: (info) => info.column.id
 			}
 		],
-		[userId, refetch, data, holidays]
+		[userId, refetch, data, holidays, records]
 	);
 
-	return columns;
+	return { columns, secondaryRow };
 };
 
 export default useTableColumns;

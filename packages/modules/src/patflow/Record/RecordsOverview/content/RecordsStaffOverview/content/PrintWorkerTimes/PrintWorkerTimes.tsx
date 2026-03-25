@@ -82,7 +82,8 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 							date: day.date,
 							day_id: day.objectId,
 							user_id: day.user.objectId,
-							type: day.type || "work"
+							type: day.type || "work",
+							comment: day.time.comment
 						})
 					);
 				}

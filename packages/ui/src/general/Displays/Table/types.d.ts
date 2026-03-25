@@ -22,7 +22,9 @@ import { ColorValues } from "@repo/ui";
 export type TableTypes = {
 	data: TData[];
 	columns: ColumnDef<TData>[];
-	rowStyles?: (row: TData[number]) => React.StyleHTMLAttributes;
+	/** Optional extra table row rendered directly under each data row (e.g. merged detail cells). */
+	secondaryRow?: (row: Row<TData>) => ReactNode | null;
+	rowStyles?: (row: Row<TData>) => React.StyleHTMLAttributes;
 	cellBorders?: boolean;
 	enableRowSelection?: boolean;
 	onRowSelection?: (rowSelection: string[]) => void;

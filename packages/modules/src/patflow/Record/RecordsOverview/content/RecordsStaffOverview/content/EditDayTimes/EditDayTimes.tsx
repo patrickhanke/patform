@@ -189,7 +189,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 				date: date,
 				day_id: dayId,
 				user_id: userId,
-				type: dayType.value
+				type: dayType.value,
+				comment: time.comment
 			});
 		}
 
@@ -326,6 +327,9 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 					returnValue = true;
 				}
 				if (timeElement?.type === "vacation") {
+					returnValue = true;
+				}
+				if (timeElement?.type === "compensation_times") {
 					returnValue = true;
 				}
 			});

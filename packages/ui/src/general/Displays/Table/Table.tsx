@@ -19,6 +19,7 @@ const Table: React.FC<TableTypes> = ({
 	data,
 	columns,
 	rowStyles,
+	secondaryRow,
 	cellBorders = false,
 	enableRowSelection = false,
 	onRowSelection,
@@ -245,49 +246,93 @@ const Table: React.FC<TableTypes> = ({
 										)
 									: false;
 
+								const subRowContent = secondaryRow?.(row);
+								const colspanRest = Math.max(
+									1,
+									row.getVisibleCells().length - 1
+								);
+
 								return (
-									<tr
-										key={row.id}
-										data-is_selected={isSelected}
-										style={{
-											...(rowStyles ? rowStyles(row) : {})
-										}}
-									>
-										{enableRowSelection && (
-											<td>
-												<input
-													style={{
-														minWidth:
-															"30px !important"
-													}}
-													type="checkbox"
-													checked={isSelected}
-													onChange={() =>
-														handleRowSelection(
-															row.original
-																.objectId
-														)
+									<React.Fragment key={row.id}>
+										<tr
+											data-is_selected={isSelected}
+											style={{
+												...(rowStyles
+													? rowStyles(row)
+													: {})
+											}}
+										>
+											{enableRowSelection && (
+												<td>
+													<input
+														style={{
+															minWidth:
+																"30px !important"
+														}}
+														type="checkbox"
+														checked={isSelected}
+														onChange={() =>
+															handleRowSelection(
+																row.original
+																	.objectId
+															)
+														}
+													/>
+												</td>
+											)}
+											{row.getVisibleCells().map(
+												(cell) => {
+													return (
+														<td
+															key={cell.id}
+															data-cell_borders={
+																cellBorders
+															}
+														>
+															{flexRender(
+																cell.column
+																	.columnDef
+																	.cell,
+																cell.getContext()
+															)}
+														</td>
+													);
+												}
+											)}
+										</tr>
+										{subRowContent != null ? (
+											<tr
+												key={`${row.id}__sub`}
+												data-table_sub_row
+												style={{
+													...(rowStyles
+														? rowStyles(row)
+														: {})
+												}}
+											>
+												{enableRowSelection && (
+													<td
+														data-cell_borders={
+															cellBorders
+														}
+													/>
+												)}
+												<td
+													data-cell_borders={
+														cellBorders
 													}
 												/>
-											</td>
-										)}
-										{row.getVisibleCells().map((cell) => {
-											return (
 												<td
-													key={cell.id}
+													colSpan={colspanRest}
 													data-cell_borders={
 														cellBorders
 													}
 												>
-													{flexRender(
-														cell.column.columnDef
-															.cell,
-														cell.getContext()
-													)}
+													{subRowContent}
 												</td>
-											);
-										})}
-									</tr>
+											</tr>
+										) : null}
+									</React.Fragment>
 								);
 							})}
 						</tbody>

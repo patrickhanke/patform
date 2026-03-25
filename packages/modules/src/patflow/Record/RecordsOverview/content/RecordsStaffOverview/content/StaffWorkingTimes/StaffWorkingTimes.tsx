@@ -19,7 +19,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 }) => {
 	const { currentHolidays } = useGetHolidays({ year, records });
 
-	const columns = useTableColumns({
+	const { columns, secondaryRow } = useTableColumns({
 		refetch,
 		userId: selectedUser?.value,
 		records,
@@ -27,7 +27,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	});
 
 	const rowStyles = useCallback(
-		(row: Row<Day>) => {
+		(row: Row<DayData>) => {
 			if (
 				currentHolidays.find(
 					(holiday) =>
@@ -111,6 +111,10 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					return;
 				}
 
+				const allComments = daysToFind
+					.map((day) => day.comment)
+					.join(" - ");
+
 				interval.push({
 					date: daysToFind[0].date,
 					is_working_day: daysToFind[0].is_working_day,
@@ -118,7 +122,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					time: timeArray,
 					absence: daysToFind[0].absence,
 					type: daysToFind[0].type,
-					surcharges: getSurchagesFromDays(daysToFind)
+					surcharges: getSurchagesFromDays(daysToFind),
+					comment: allComments
 				});
 			} else {
 				const def = findDefaultTimeForDate(
@@ -132,13 +137,16 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					time: undefined,
 					absence: null,
 					type: "initial",
-					surcharges: []
+					surcharges: [],
+					comment: undefined
 				});
 			}
 		});
 
 		return interval;
 	}, [days, month, year]);
+
+	console.log({ tableData });
 
 	return (
 		<div>
@@ -148,6 +156,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					data={tableData}
 					columns={columns}
 					rowStyles={rowStyles}
+					secondaryRow={secondaryRow}
 				/>
 			</div>
 		</div>

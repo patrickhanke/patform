@@ -72,6 +72,7 @@ type BasicDay = {
   user: UserDisplayData;
   default_time: DayTime | null;
   saldo: number;
+  comment?: string;
 };
 
 type InitialDay = {

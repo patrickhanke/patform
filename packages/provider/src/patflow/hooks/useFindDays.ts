@@ -46,6 +46,7 @@ const useFindDays = ({
 			"saldo",
 			"type",
 			"iso_date",
+			"comment",
 			"user { objectId }",
 			"record { objectId }"
 		],

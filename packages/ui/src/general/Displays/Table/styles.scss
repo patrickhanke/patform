@@ -74,6 +74,9 @@
       max-width: 240px;
     }
   }
+  tr[data-table_sub_row] td[colspan] {
+    max-width: none;
+  }
   tr[data-is_selected="true"] {
     background-color: constants.$blue_tinted !important;
   }

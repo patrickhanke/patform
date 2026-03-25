@@ -22,6 +22,7 @@ export type DayData = {
 	absence: Day["absence"];
 	time?: Array<DayDataTime> | null;
 	surcharges: Day["surcharges"];
+	comment: Day["comment"];
 };
 
 export type ColumnWorkingTimeProps = {
