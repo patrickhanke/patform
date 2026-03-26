@@ -64,6 +64,8 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 		hasChanges,
 		updateEmailLists,
 		addEmail,
+		updateEmailAddress,
+		removeEmail,
 		getFinalEmails,
 		reset
 	} = useEmailListsState({ emails, projectListIds });
@@ -94,6 +96,29 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 		},
 		[selectedEmail, updateEmailLists]
 	);
+
+	const handleEmailAddressChange = useCallback(
+		(newEmail: string): boolean => {
+			if (!selectedEmail) return false;
+			const duplicate = localEmails.find(
+				(e, i) => i !== selectedEmail.index && e.email === newEmail
+			);
+			if (duplicate) {
+				alert("Diese E-Mail-Adresse existiert bereits");
+				return false;
+			}
+			updateEmailAddress(selectedEmail.index, newEmail);
+			setSelectedEmail({ email: newEmail, index: selectedEmail.index });
+			return true;
+		},
+		[selectedEmail, localEmails, updateEmailAddress]
+	);
+
+	const handleEmailDelete = useCallback(() => {
+		if (!selectedEmail) return;
+		removeEmail(selectedEmail.index);
+		setSelectedEmail(null);
+	}, [selectedEmail, removeEmail]);
 
 	// Handle adding new email address (local state only)
 	const handleAddEmail = useCallback(
@@ -183,6 +208,8 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 					listsLoading={listsLoading}
 					onListsChange={handleListsChange}
 					onClose={handleCloseSecondary}
+					onEmailChange={handleEmailAddressChange}
+					onEmailDelete={handleEmailDelete}
 				/>
 			);
 		}
@@ -205,6 +232,8 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 		projectListIds,
 		listsLoading,
 		handleListsChange,
+		handleEmailAddressChange,
+		handleEmailDelete,
 		handleAddEmail,
 		handleCloseSecondary
 	]);

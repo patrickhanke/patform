@@ -109,8 +109,6 @@ const EmailSuppression: FC<EmailSuppressionProps> = ({
 		setLoading(false);
 	}, [projectId]);
 
-	console.log("emailAddresses", emailAddresses);
-
 	return (
 		<Modal
 			header="E-Mail Adressen prüfen"

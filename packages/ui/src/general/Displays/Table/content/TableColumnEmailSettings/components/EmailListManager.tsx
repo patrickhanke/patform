@@ -1,17 +1,19 @@
 "use client";
 
-import { FC, useMemo } from "react";
-import { ElementSelectInterface, SelectElement } from "@repo/ui";
-import { Divider } from "../../../../../Layout";
+import { FC, useMemo, useState, useCallback, useEffect } from "react";
+import {
+	ElementSelectInterface,
+	IconButton,
+	Modal,
+	SelectElement
+} from "@repo/ui";
+import { Divider } from "@repo/ui";
+import { EmailListManagerProps } from "../types";
 
-interface EmailListManagerProps {
-	email: string;
-	currentLists: string[];
-	projectLists: { objectId: string; title: string }[];
-	listsLoading: boolean;
-	onListsChange: (lists: string[]) => void;
-	onClose: () => void;
-}
+const validateEmailFormat = (value: string): boolean => {
+	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	return emailRegex.test(value);
+};
 
 const EmailListManager: FC<EmailListManagerProps> = ({
 	email,
@@ -19,19 +21,63 @@ const EmailListManager: FC<EmailListManagerProps> = ({
 	projectLists,
 	listsLoading,
 	onListsChange,
-	onClose
+	onClose,
+	onEmailChange,
+	onEmailDelete
 }) => {
+	const [editModalOpen, setEditModalOpen] = useState(false);
+	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+	const [editEmailDraft, setEditEmailDraft] = useState(email);
+	const [editError, setEditError] = useState("");
+
+	useEffect(() => {
+		if (editModalOpen) {
+			setEditEmailDraft(email);
+			setEditError("");
+		}
+	}, [editModalOpen, email]);
+
+	const handleOpenEdit = useCallback(() => {
+		setEditEmailDraft(email);
+		setEditError("");
+		setEditModalOpen(true);
+	}, [email]);
+
+	const handleConfirmEdit = useCallback(() => {
+		const trimmed = editEmailDraft.trim();
+		if (!trimmed) {
+			setEditError("Bitte geben Sie eine E-Mail-Adresse ein");
+			return;
+		}
+		if (!validateEmailFormat(trimmed)) {
+			setEditError("Bitte geben Sie eine gültige E-Mail-Adresse ein");
+			return;
+		}
+		const ok = onEmailChange(trimmed);
+		if (ok) {
+			setEditModalOpen(false);
+			setEditError("");
+		}
+	}, [editEmailDraft, onEmailChange]);
+
+	const handleConfirmDelete = useCallback(() => {
+		setDeleteModalOpen(false);
+		onEmailDelete();
+	}, [onEmailDelete]);
+
 	// Convert lists to SelectElement format
 	const elements = useMemo(() => {
 		const listOptionsArray: SelectElement[] = [];
 		if (projectLists && projectLists.length > 0) {
-			projectLists.forEach((list: { objectId: string; title: string }) => {
-				listOptionsArray.push({
-					value: list.objectId,
-					id: list.objectId,
-					label: list.title || "Unbenannte Liste"
-				});
-			});
+			projectLists.forEach(
+				(list: { objectId: string; title: string }) => {
+					listOptionsArray.push({
+						value: list.objectId,
+						id: list.objectId,
+						label: list.title || "Unbenannte Liste"
+					});
+				}
+			);
 		}
 		listOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
@@ -45,17 +91,85 @@ const EmailListManager: FC<EmailListManagerProps> = ({
 
 	return (
 		<div className="flex col gap-md" style={{ padding: "1rem" }}>
-			<div className="flex row a-ce j-sb">
-				<div className="flex col gap-xs">
+			<div className="flex row a-ce j-sb gap-sm">
+				<div
+					className="flex col gap-xs"
+					style={{ flex: 1, minWidth: 0 }}
+				>
 					<h4>Listen verwalten</h4>
 					<p style={{ fontSize: "0.85rem", color: "#666" }}>
 						{email}
 					</p>
-					<p style={{ fontSize: "0.75rem", color: "#999", fontStyle: "italic" }}>
+					<p
+						style={{
+							fontSize: "0.75rem",
+							color: "#999",
+							fontStyle: "italic"
+						}}
+					>
 						Nur Listen des aktuellen Projekts werden angezeigt
 					</p>
 				</div>
+				<div className="flex row gap-xs" style={{ flexShrink: 0 }}>
+					<IconButton icon="edit" onClick={handleOpenEdit} />
+					<IconButton
+						icon="delete"
+						onClick={() => setDeleteModalOpen(true)}
+					/>
+				</div>
 			</div>
+
+			<Modal
+				isOpen={editModalOpen}
+				header="E-Mail-Adresse bearbeiten"
+				cancelButtonHandler={() => {
+					setEditModalOpen(false);
+					setEditError("");
+				}}
+				confirmButtonHandler={handleConfirmEdit}
+				confirmButtonText="Speichern"
+			>
+				<div className="flex col gap-sm">
+					<label htmlFor="edit-email-address">E-Mail-Adresse</label>
+					<input
+						id="edit-email-address"
+						type="email"
+						style={{ width: "100%", boxSizing: "border-box" }}
+						value={editEmailDraft}
+						onChange={(e) => {
+							setEditEmailDraft(e.target.value);
+							setEditError("");
+						}}
+						placeholder="beispiel@email.de"
+						autoComplete="email"
+					/>
+					{editError ? (
+						<p
+							style={{
+								color: "red",
+								fontSize: "0.85rem",
+								margin: 0
+							}}
+						>
+							{editError}
+						</p>
+					) : null}
+				</div>
+			</Modal>
+
+			<Modal
+				isOpen={deleteModalOpen}
+				header="E-Mail-Adresse löschen"
+				cancelButtonHandler={() => setDeleteModalOpen(false)}
+				confirmButtonHandler={handleConfirmDelete}
+				confirmButtonText="Löschen"
+			>
+				<p>
+					Möchten Sie diese E-Mail-Adresse wirklich entfernen? Die
+					Zuordnung zu Listen für diese Adresse geht verloren, bis Sie
+					sie erneut hinzufügen.
+				</p>
+			</Modal>
 
 			<Divider showLine size="small" />
 
@@ -82,13 +196,7 @@ const EmailListManager: FC<EmailListManagerProps> = ({
 			<Divider showLine size="small" />
 
 			<div className="flex row gap-sm">
-				<button
-					className="full_button md light"
-					onClick={onClose}
-					type="button"
-				>
-					<span>Zurück</span>
-				</button>
+				<IconButton onClick={onClose} text="Zurück" />
 			</div>
 		</div>
 	);

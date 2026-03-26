@@ -35,11 +35,13 @@ const IconButton: FC<IconButtonProps> = ({
 				}}
 				padding={text ? "6px 12px" : "8px"}
 			>
-				<Icons
-					icon={icon}
-					size={size}
-					color={typeof color === "string" ? color : undefined}
-				/>
+				{icon && (
+					<Icons
+						icon={icon}
+						size={size}
+						color={typeof color === "string" ? color : undefined}
+					/>
+				)}
 				{text}
 			</Button>
 		);
@@ -61,7 +63,15 @@ const IconButton: FC<IconButtonProps> = ({
 					target={isBlank ? "_blank" : "_self"}
 					style={{ fontSize: size }}
 				>
-					<Icons icon={icon} size={size} />
+					{icon && (
+						<Icons
+							icon={icon}
+							size={size}
+							color={
+								typeof color === "string" ? color : undefined
+							}
+						/>
+					)}
 					{text}
 				</Link>
 			</Button>

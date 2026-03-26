@@ -7,11 +7,6 @@ interface UseEmailListsStateProps {
 	projectListIds: Set<string>;
 }
 
-interface EmailListChange {
-	emailIndex: number;
-	newLists: string[];
-}
-
 export const useEmailListsState = ({
 	emails,
 	projectListIds
@@ -40,7 +35,10 @@ export const useEmailListsState = ({
 					);
 
 					// Combine other project lists with new project lists
-					emailEntry.lists = [...otherProjectLists, ...newProjectLists];
+					emailEntry.lists = [
+						...otherProjectLists,
+						...newProjectLists
+					];
 				}
 
 				return updatedEmails;
@@ -68,9 +66,45 @@ export const useEmailListsState = ({
 			updatedEmails.push({
 				email: newEmail,
 				lists: [],
-				settings: {}
+				settings: {},
+				suppression: {
+					suppressed: false,
+					reason: null,
+					suppressedAt: null
+				}
 			});
 
+			return updatedEmails;
+		});
+		setHasChanges(true);
+	}, []);
+
+	// Change email address at index (string only; lists/settings preserved)
+	const updateEmailAddress = useCallback(
+		(emailIndex: number, newEmail: string) => {
+			setLocalEmails((prevEmails) => {
+				const updatedEmails = cloneDeep(prevEmails);
+				const entry = updatedEmails[emailIndex];
+				if (entry) {
+					entry.email = newEmail;
+					entry.suppression = {
+						suppressed: false,
+						reason: null,
+						suppressedAt: null
+					};
+				}
+				return updatedEmails;
+			});
+			setHasChanges(true);
+		},
+		[]
+	);
+
+	// Remove email entry at index
+	const removeEmail = useCallback((emailIndex: number) => {
+		setLocalEmails((prevEmails) => {
+			const updatedEmails = cloneDeep(prevEmails);
+			updatedEmails.splice(emailIndex, 1);
 			return updatedEmails;
 		});
 		setHasChanges(true);
@@ -147,6 +181,8 @@ export const useEmailListsState = ({
 		hasChanges,
 		updateEmailLists,
 		addEmail,
+		updateEmailAddress,
+		removeEmail,
 		getFinalEmails,
 		reset
 	};

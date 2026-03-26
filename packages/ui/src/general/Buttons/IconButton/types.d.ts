@@ -67,7 +67,7 @@ export type IconProps = {
 };
 
 export type IconButtonProps = {
-	icon: IconTypes;
+	icon?: IconTypes;
 	isLink?: boolean;
 	isDarkButton?: boolean;
 	onClick?: () => void;

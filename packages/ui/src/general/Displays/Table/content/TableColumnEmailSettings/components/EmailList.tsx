@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { PatstoreUser } from "@repo/types";
-import { StateDisplay, Divider } from "@repo/ui";
+import { StateDisplay, Divider, IconButton } from "@repo/ui";
 
 interface EmailListProps {
 	emails: PatstoreUser["emails"];
@@ -134,13 +134,11 @@ const EmailList: FC<EmailListProps> = ({
 
 			<Divider showLine size="small" />
 
-			<button
-				className="full_button md light"
+			<IconButton
+				icon="plus"
 				onClick={onAddEmail}
-				type="button"
-			>
-				<span>Neue E-Mail-Adresse hinzufügen</span>
-			</button>
+				text="Neue E-Mail-Adresse hinzufügen"
+			/>
 		</div>
 	);
 };

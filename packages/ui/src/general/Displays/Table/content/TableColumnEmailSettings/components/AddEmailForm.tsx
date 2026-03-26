@@ -20,7 +20,7 @@ const AddEmailForm: FC<AddEmailFormProps> = ({ onAdd, onCancel }) => {
 
 	const handleAdd = () => {
 		const trimmedEmail = email.trim();
-		
+
 		if (!trimmedEmail) {
 			setError("Bitte geben Sie eine E-Mail-Adresse ein");
 			return;
@@ -41,8 +41,8 @@ const AddEmailForm: FC<AddEmailFormProps> = ({ onAdd, onCancel }) => {
 			<div className="flex col gap-sm">
 				<h4>Neue E-Mail-Adresse hinzufügen</h4>
 				<p style={{ fontSize: "0.9rem", color: "#666" }}>
-					Geben Sie eine neue E-Mail-Adresse ein, die zu diesem Benutzer
-					hinzugefügt werden soll.
+					Geben Sie eine neue E-Mail-Adresse ein, die zu diesem
+					Benutzer hinzugefügt werden soll.
 				</p>
 			</div>
 
