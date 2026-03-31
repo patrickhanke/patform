@@ -14,11 +14,12 @@ export type Property = {
 
 export type PropertyService = {
   id: string;
+  name: string;
   assigned_staff: string[];
   substitutes: {
     [key: number]: string[];
   };
-  serviceId: string;
+  service_id: string;
   active: boolean;
   days: string[];
   type: "interval" | "dates";
@@ -49,6 +50,7 @@ export type Service = {
   is_active: boolean;
   project: string;
   assigned_staff: string[];
+  properties: string[];
 };
 
 export type CreateService = Pick<

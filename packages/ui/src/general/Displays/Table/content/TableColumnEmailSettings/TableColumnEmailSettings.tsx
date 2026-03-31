@@ -5,9 +5,15 @@ import React, { useState, useMemo, useCallback, useContext } from "react";
 import {
 	useDataHandlerSecure,
 	PatstoreAppContext,
-	useFindData
+	useFindData,
+	axiosclient
 } from "@repo/provider";
-import { PatstoreUser, ApolloRefetch, ItemClass } from "@repo/types";
+import {
+	PatstoreUser,
+	ApolloRefetch,
+	ItemClass,
+	ErrorMessage
+} from "@repo/types";
 import EmailList from "./components/EmailList";
 import EmailListManager from "./components/EmailListManager";
 import AddEmailForm from "./components/AddEmailForm";
@@ -70,6 +76,8 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 		reset
 	} = useEmailListsState({ emails, projectListIds });
 
+	const [errors, setErrors] = useState<ErrorMessage[]>([]);
+
 	// Handle email click to show list management
 	const handleEmailClick = useCallback((email: string, index: number) => {
 		setSelectedEmail({ email, index });
@@ -127,7 +135,13 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 			const existingEmail = localEmails.find((e) => e.email === newEmail);
 
 			if (existingEmail) {
-				alert("Diese E-Mail-Adresse existiert bereits");
+				setErrors([
+					{
+						id: "email_already_exists",
+						key: "email_already_exists",
+						message: "Diese E-Mail-Adresse existiert bereits"
+					}
+				]);
 				return;
 			}
 
@@ -158,6 +172,30 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 		}
 
 		setIsUpdating(true);
+
+		const suppressionResponse = await axiosclient().post(
+			"/functions/check_single_email_suppressions",
+			{
+				email: selectedEmail?.email,
+				project_id: project.objectId
+			}
+		);
+
+		const isSuppressed =
+			suppressionResponse.data?.result?.suppressed || false;
+
+		if (isSuppressed) {
+			setErrors([
+				{
+					id: "email_suppressed",
+					key: "email_suppressed",
+					message:
+						"Diese E-Mail-Adresse ist unterdrückt. Bitte geben Sie eine andere E-Mail Adresse an oder wenden Sie sich an den Projekt Administrator."
+				}
+			]);
+			setIsUpdating(false);
+			return;
+		}
 
 		try {
 			const finalEmails = getFinalEmails(emails);
@@ -256,6 +294,7 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 				loading={isUpdating}
 				secondaryContent={secondaryContent}
 				showSecondaryContent={!!secondaryContent}
+				errors={errors}
 			>
 				<EmailList
 					emails={localEmails || []}

@@ -42,13 +42,18 @@ const FormData: FC<FormDataProps> = ({
 		skip: pagination.pageIndex * pagination.pageSize
 	});
 
-	const columns = useCreateColumns<FormDataClass["data"]>({
-		data: [
-			{ id: "createdAt", type: "date", label: "Datum" },
+	const formExportColumnData = useMemo(
+		() => [
+			{ id: "createdAt" as const, type: "date" as const, label: "Datum" },
 			...geneateFormColumns(
 				isArray(data) ? data.map((data) => data.data) : []
 			)
 		],
+		[data]
+	);
+
+	const columns = useCreateColumns<FormDataClass["data"]>({
+		data: formExportColumnData,
 		fields: [],
 		className: "Item",
 		refetch,
@@ -94,7 +99,9 @@ const FormData: FC<FormDataProps> = ({
 						style={{
 							marginBottom: "16px",
 							display: "flex",
-							justifyContent: "flex-end"
+							justifyContent: "flex-end",
+							gap: 8,
+							alignItems: "center"
 						}}
 					>
 						<ExportButton
@@ -119,6 +126,8 @@ const FormData: FC<FormDataProps> = ({
 						setSelectedRows={setSelectedDataRows}
 						selectedRows={selectedDataRows}
 						enableRowSelection
+						rowIdResolver={(row) => (row as { id: string }).id}
+						exportColumns={formExportColumnData}
 					/>
 				</div>
 			)}

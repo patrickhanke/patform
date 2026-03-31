@@ -10,6 +10,16 @@
   margin-bottom: constants.$md;
 }
 
+.table_header__filter_actions {
+  @include constants.flexbox(
+    $direction: row,
+    $align: center,
+    $justify: flex-start,
+    $gap: constants.$sm
+  );
+  flex-wrap: wrap;
+}
+
 .table_container {
   width: 100%;
   height: auto;

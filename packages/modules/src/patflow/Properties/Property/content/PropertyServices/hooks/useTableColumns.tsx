@@ -1,21 +1,35 @@
-import { PropertyTypes } from "@repo/types";
+import { PropertyService } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { DateSelectInterface, Toggle } from "@repo/ui";
+import {
+	DateSelectInterface,
+	StatelessToggle,
+	TeamAssignment,
+	WorkersInterface
+} from "@repo/ui";
 import { useMemo } from "react";
+import { PropertyServiceChangeHandler } from "../types";
 
-const useTableColumns = () => {
+const useTableColumns = ({
+	serviceChangeHandler
+}: {
+	serviceChangeHandler: PropertyServiceChangeHandler;
+}) => {
 	const columns = useMemo(
 		() => [
 			{
 				accessorFn: (row) => row.name,
-				header: () => "hello",
+				header: () => "Name",
 				id: "name",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id
 			},
 			{
 				accessorFn: (row) => (
-					<DateSelectInterface objectId={row.objectId} />
+					<DateSelectInterface
+						onChange={(value) =>
+							serviceChangeHandler(row.id, "time", value)
+						}
+					/>
 				),
 				header: () => "Zeiten",
 				id: "time",
@@ -23,7 +37,18 @@ const useTableColumns = () => {
 				footer: (info) => info.column.id
 			},
 			{
-				accessorFn: () => <p> Arbeiter wählen</p>,
+				accessorFn: (row) => (
+					<TeamAssignment
+						workers={row.assigned_staff}
+						onChange={(value: string[]) => {
+							serviceChangeHandler(
+								row.id,
+								"assigned_staff",
+								value
+							);
+						}}
+					/>
+				),
 				header: () => "Arbeiter",
 				id: "workers",
 				cell: (info) => info.getValue(),
@@ -31,7 +56,12 @@ const useTableColumns = () => {
 			},
 			{
 				accessorFn: (row) => (
-					<Toggle objectId={row.objectId} type="get_service_active" />
+					<StatelessToggle
+						value={row.active}
+						onChange={(value: boolean) => {
+							serviceChangeHandler(row.id, "active", value);
+						}}
+					/>
 				),
 				header: () => "Aktiv",
 				id: "active",
@@ -40,7 +70,7 @@ const useTableColumns = () => {
 			}
 		],
 		[]
-	) as ColumnDef<PropertyTypes.PropertyService>[];
+	) as ColumnDef<PropertyService>[];
 
 	return columns;
 };

@@ -12,7 +12,7 @@ import {
 import { TableTypes } from "./types";
 import clsx from "clsx";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
-import { PaginationHandlers, TableFilter } from "./content";
+import { PaginationHandlers, TableExport, TableFilter } from "./content";
 import { isArray } from "lodash";
 
 const Table: React.FC<TableTypes> = ({
@@ -32,10 +32,41 @@ const Table: React.FC<TableTypes> = ({
 	setOrder,
 	filters,
 	setFilters,
-	filterColumns
+	filterColumns,
+	exportColumns = [],
+	rowIdResolver
 }) => {
 	const tableData = useMemo(() => data, [data]);
 	const [sorting, setSorting] = useState<SortingState>([]);
+
+	const resolveRowId = useCallback(
+		(row: unknown) => {
+			if (rowIdResolver) {
+				return rowIdResolver(row);
+			}
+			const r = row as Record<string, unknown>;
+			if (typeof r.objectId === "string") {
+				return r.objectId;
+			}
+			if (typeof r.id === "string") {
+				return r.id;
+			}
+			return "";
+		},
+		[rowIdResolver]
+	);
+
+	const selectedRowData = useMemo(() => {
+		if (
+			!exportColumns?.length ||
+			!selectedRows?.length ||
+			!tableData.length
+		) {
+			return [];
+		}
+		const idSet = new Set(selectedRows);
+		return tableData.filter((row) => idSet.has(resolveRowId(row)));
+	}, [exportColumns, selectedRows, tableData, resolveRowId]);
 
 	useEffect(() => {
 		if (setOrder) {
@@ -60,7 +91,8 @@ const Table: React.FC<TableTypes> = ({
 		enableRowSelection,
 		getCoreRowModel: getCoreRowModel(),
 		// getSortedRowModel: getSortedRowModel(),
-		getRowId: (row) => row.objectId,
+		getRowId: (originalRow, index) =>
+			resolveRowId(originalRow) || `__row_${index}`,
 		manualPagination: true,
 		manualSorting: true,
 		rowCount: rowCount || tableData.length,
@@ -124,7 +156,7 @@ const Table: React.FC<TableTypes> = ({
 			} else {
 				const allRowIds = table
 					.getRowModel()
-					.rows.map((row) => row.original.objectId);
+					.rows.map((row) => resolveRowId(row.original));
 				setSelectedRows(allRowIds);
 			}
 			if (onRowSelection) {
@@ -134,28 +166,39 @@ const Table: React.FC<TableTypes> = ({
 					onRowSelection(
 						table
 							.getRowModel()
-							.rows.map((row) => row.original.objectId)
+							.rows.map((row) => resolveRowId(row.original))
 					);
 				}
 			}
 		}
-	}, [selectedRows, table, onRowSelection]);
+	}, [selectedRows, table, onRowSelection, resolveRowId]);
 
 	return (
 		<>
 			{pagination && setPagination && (
 				<div className="table_header">
-					{filters &&
-						setFilters &&
-						columns &&
-						filterColumns &&
-						filterColumns.length > 0 && (
-							<TableFilter
-								filterColumns={filterColumns}
-								filters={filters}
-								setFilters={setFilters}
-							/>
-						)}
+					<div className="table_header__filter_actions">
+						{filters &&
+							setFilters &&
+							columns &&
+							filterColumns &&
+							filterColumns.length > 0 && (
+								<TableFilter
+									filterColumns={filterColumns}
+									filters={filters}
+									setFilters={setFilters}
+								/>
+							)}
+						{exportColumns.length > 0 &&
+							enableRowSelection &&
+							selectedRows &&
+							setSelectedRows && (
+								<TableExport
+									columns={exportColumns}
+									selectedRowData={selectedRowData}
+								/>
+							)}
+					</div>
 					{filterContent ? (
 						<div className="filter_content">{filterContent}</div>
 					) : (
@@ -242,7 +285,7 @@ const Table: React.FC<TableTypes> = ({
 							{table.getRowModel().rows.map((row) => {
 								const isSelected = selectedRows
 									? selectedRows.includes(
-											row?.original?.objectId
+											resolveRowId(row.original)
 										)
 									: false;
 
@@ -273,15 +316,17 @@ const Table: React.FC<TableTypes> = ({
 														checked={isSelected}
 														onChange={() =>
 															handleRowSelection(
-																row.original
-																	.objectId
+																resolveRowId(
+																	row.original
+																)
 															)
 														}
 													/>
 												</td>
 											)}
-											{row.getVisibleCells().map(
-												(cell) => {
+											{row
+												.getVisibleCells()
+												.map((cell) => {
 													return (
 														<td
 															key={cell.id}
@@ -297,8 +342,7 @@ const Table: React.FC<TableTypes> = ({
 															)}
 														</td>
 													);
-												}
-											)}
+												})}
 										</tr>
 										{subRowContent != null ? (
 											<tr

@@ -15,6 +15,7 @@ const TableFilter: FC<TableFilterProps> = ({
 	setFilters
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
+	console.log(filterColumns);
 
 	const debounceTimers = useRef<
 		Record<string, ReturnType<typeof setTimeout>>
@@ -93,6 +94,10 @@ const TableFilter: FC<TableFilterProps> = ({
 	const handleCancel = useCallback(() => {
 		setIsOpen(false);
 	}, []);
+
+	console.log(filterColumns);
+	console.log(filters);
+	console.log(setFilters);
 
 	return (
 		<>

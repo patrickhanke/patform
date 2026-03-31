@@ -14,6 +14,7 @@ import {
 } from "react-icons/bs";
 import {
 	FaInfo,
+	FaRegBuilding,
 	FaRegEye,
 	FaRegEyeSlash,
 	FaSave,
@@ -59,6 +60,11 @@ import { IoIosTimer } from "react-icons/io";
 import { IconProps } from "./types";
 
 const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
+	if (icon === "property") {
+		return (
+			<FaRegBuilding color={color || "inherit"} fontSize={size || 12} />
+		);
+	}
 	if (icon === "delete") {
 		return <FaTrash color={color || "inherit"} fontSize={size || 12} />;
 	}

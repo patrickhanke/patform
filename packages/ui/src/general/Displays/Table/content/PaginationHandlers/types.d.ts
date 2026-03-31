@@ -1,4 +1,5 @@
 import { PaginationState } from "@tanstack/react-table";
+
 export type PaginationHandlersProps = {
 	rowCount?: number;
 	pagination: PaginationState;

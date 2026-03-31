@@ -64,10 +64,26 @@ const menu_items = [
     ],
   },
   {
-    label: "Touren",
-    value: "/tours",
-    icon: "tours",
-    sub_menu: [],
+    label: "Leistungen",
+    value: "/services",
+    icon: "services",
+    sub_menu: [
+      {
+        label: "Leistungen",
+        value: "/services",
+        icon: "services",
+      },
+      {
+        label: "Objekte",
+        value: "/objects",
+        icon: "objects",
+      },
+      {
+        label: "Touren",
+        value: "/tours",
+        icon: "tours",
+      }
+    ],
   },
   {
     label: "Zeiterfassung",

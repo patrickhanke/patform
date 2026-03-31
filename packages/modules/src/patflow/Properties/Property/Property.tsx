@@ -26,10 +26,13 @@ const Property = ({ params }: { params: Params }) => {
 			"name",
 			"createdAt",
 			"created_by {objectId username}",
-			"archived"
+			"archived",
+			"services"
 		],
 		id: params.object_id
 	});
+
+	console.log(property);
 
 	const siteContent = useMemo(() => {
 		const content = {
@@ -87,6 +90,7 @@ const Property = ({ params }: { params: Params }) => {
 			{siteState.value === "services" && (
 				<PropertyServices
 					objectId={params.object_id}
+					propertyServices={property.services}
 					addService={addService}
 					setAddService={setAddService}
 				/>

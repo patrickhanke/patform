@@ -3,6 +3,7 @@ export * from "./TableColumnEditField";
 export * from "./TableColumnDeleteField";
 export * from "./TableColumnDatesField";
 export * from "./PaginationHandlers";
+export * from "./TableExport";
 export * from "./TableColumnEditDate";
 export * from "./TableColumnEditTeam";
 export * from "./TableColumnTimesField";

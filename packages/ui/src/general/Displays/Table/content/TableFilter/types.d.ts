@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { ColumnData, ColumnDataTypes } from "../../types";
+import { ColumnDataTypes } from "../../types";
 import { Filter, FilterOperator, ModuleFilter } from "@repo/types";
 
 export type FilterOperator = FilterOperator;

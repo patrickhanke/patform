@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import DateSelect from "./content/DateSelect";
-import { useDataHandler, useFindData } from "@repo/provider";
 import TimeDisplay from "./content/TimeDisplay";
 import { date_select_options } from "./constants/date_select_options";
 import { DateObject } from "@repo/types";
-import { SlideInRight } from "@repo/ui";
+import { SlideIn } from "@repo/ui";
 
-const DateSelectInterface = ({ objectId }: { objectId: string }) => {
-	const { updateData } = useDataHandler();
+const DateSelectInterface = ({
+	onChange
+}: {
+	onChange: (value: DateObject) => void;
+}) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [date, setDate] = useState({
@@ -21,29 +23,8 @@ const DateSelectInterface = ({ objectId }: { objectId: string }) => {
 		time: undefined
 	} as any);
 
-	const { refetch } = useFindData({
-		objectName: "Service",
-		fields: ["time", "objectId"],
-		filters: [{ key: "objectId", value: objectId, operator: "equalTo" }]
-	});
-
-	const dataHandler = (timeValue: DateObject) => {
-		console.log(timeValue);
-
-		updateData({
-			className: "Service",
-			objectId,
-			updateObject: {
-				time: timeValue,
-				dates: timeValue.dates
-			}
-		});
-		refetch();
-	};
-
 	const dateHandler = (value: DateObject) => {
 		setDate(value);
-		dataHandler(value);
 	};
 
 	return (
@@ -51,11 +32,12 @@ const DateSelectInterface = ({ objectId }: { objectId: string }) => {
 			<div>
 				<TimeDisplay date={date} />
 			</div>
-			<SlideInRight
+			<SlideIn
 				size="medium"
 				header="Zeit bearbeiten"
 				isOpen={isOpen}
-				setIsOpen={setIsOpen}
+				cancel={() => setIsOpen(false)}
+				confirm={() => onChange(date)}
 				preventClickOutside
 			>
 				<DateSelect
@@ -63,7 +45,7 @@ const DateSelectInterface = ({ objectId }: { objectId: string }) => {
 					dataHandler={dateHandler}
 					setShowSlideIn={setIsOpen}
 				/>
-			</SlideInRight>
+			</SlideIn>
 		</>
 	);
 };

@@ -71,7 +71,9 @@ const PatflowAppContextProvider = ({
 		fields: [
 			"objectId",
 			"name",
-			"created_by { objectId first_name last_name portrait }"
+			"created_by { objectId first_name last_name portrait }",
+			"value: objectId",
+			"label"
 		],
 		projectId
 	});

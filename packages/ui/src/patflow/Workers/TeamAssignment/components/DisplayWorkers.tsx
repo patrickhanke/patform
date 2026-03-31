@@ -1,13 +1,13 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import { DisplayWorker, SelectElement } from "@repo/ui";
-import { useFindData } from "@repo/provider";
+import { DisplayWorker, SelectElement, SlideIn } from "@repo/ui";
 
 import styles from "../TeamAssignment.module.scss";
-import { ElementSelectInterface, SlideInRight } from "@repo/ui";
-import { DisplayWorkersProps, WorkerOption } from "../types";
+import { ElementSelectInterface } from "@repo/ui";
+import { DisplayWorkersProps } from "../types";
 import { Worker } from "@repo/types";
+import { useDataStore } from "@repo/provider";
 
 const DisplayWorkers: FC<DisplayWorkersProps> = ({
 	workers,
@@ -15,59 +15,27 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 	showAsButton = false
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const [selectedWorkers, setSelectedWorkers] =
+		useState<Worker["objectId"][]>(workers);
 
-	const { data: workerData } = useFindData({
-		objectName: "User",
-		fields: ["objectId", "first_name", "last_name"],
-		filters: [
-			{
-				key: "is_worker",
-				value: true,
-				operator: "equalTo",
-				id: "is_worker"
-			}
-		]
-	});
-
-	const elements = useMemo(() => {
-		const workerOptionsArray: WorkerOption[] = [];
-		if (workerData) {
-			workerData.forEach((worker: Worker) => {
-				if (worker) {
-					workerOptionsArray.push({
-						value: worker.objectId,
-						id: worker.objectId,
-						label: `${worker.first_name} ${worker.last_name}`,
-						element: <DisplayWorker workerId={worker.objectId} />
-					});
-				}
-			});
-		}
-		workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
-
-		return workerOptionsArray;
-	}, [workerData]);
-
-	const selectedElements = useMemo(() => {
-		const elementsArray: WorkerOption[] = [];
-		workers.forEach((workerId: Worker["objectId"]) => {
-			const worker = elements.find(
-				(element) => element.value === workerId
-			);
-			if (worker) {
-				elementsArray.push(worker);
-			}
-		});
-
-		return elementsArray;
-	}, []);
+	const { workers: workerData } = useDataStore();
 
 	const workerComponent = useMemo(
 		() => (
 			<ElementSelectInterface
-				elements={elements}
-				selectedElements={selectedElements}
-				onSelect={(values: SelectElement[]) => onChange(values)}
+				elements={workerData}
+				selectedElements={workerData.filter((worker: Worker) =>
+					selectedWorkers.includes(worker.objectId)
+				)}
+				onSelect={(values: SelectElement[]) => {
+					if (values.length > 0) {
+						setSelectedWorkers(
+							values.map((value) => value.value as string)
+						);
+					} else {
+						setSelectedWorkers([]);
+					}
+				}}
 				max={100}
 				isSearchable
 			/>
@@ -86,13 +54,17 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 					onlyImage={false}
 				/>
 			))}
-			<SlideInRight
+			<SlideIn
 				isOpen={isOpen}
-				setIsOpen={setIsOpen}
+				cancel={() => setIsOpen(false)}
+				confirm={() => {
+					onChange(selectedWorkers);
+					setIsOpen(false);
+				}}
 				header="Arbeiter auswählen"
 			>
 				{workerComponent}
-			</SlideInRight>
+			</SlideIn>
 		</>
 	) : (
 		<>
@@ -126,13 +98,17 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 					)}
 				</div>
 			</button>
-			<SlideInRight
+			<SlideIn
 				isOpen={isOpen}
-				setIsOpen={setIsOpen}
+				cancel={() => setIsOpen(false)}
+				confirm={() => {
+					onChange(selectedWorkers);
+					setIsOpen(false);
+				}}
 				header="Arbeiter auswählen"
 			>
 				{workerComponent}
-			</SlideInRight>
+			</SlideIn>
 		</>
 	);
 	return null;

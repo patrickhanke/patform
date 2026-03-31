@@ -38,6 +38,10 @@ export type TableTypes = {
 	filters?: Filter[];
 	setFilters?: Dispatch<SetStateAction<Filter[]>>;
 	filterColumns?: ModuleFilter[];
+	/** Stable row id for selection; defaults to `objectId` or `id`. */
+	rowIdResolver?: (row: unknown) => string;
+	/** Columns to export when row selection is enabled. */
+	exportColumns?: ColumnData<TData>[];
 };
 
 export type ColumnDef<TData> = ColumnDef<TData>;

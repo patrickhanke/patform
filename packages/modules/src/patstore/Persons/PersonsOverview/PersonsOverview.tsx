@@ -85,6 +85,8 @@ const PersonsOverview = () => {
 				filters={filters}
 				setFilters={setFilters}
 				filterColumns={currentModule.filters || []}
+				rowIdResolver={(row) => (row as PersonClass).objectId}
+				exportColumns={generateColumnsFromFields(currentModule.fields)}
 			/>
 			<Modal
 				isOpen={deleteModal}

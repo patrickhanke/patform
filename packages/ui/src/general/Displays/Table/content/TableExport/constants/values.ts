@@ -1,0 +1,1 @@
+export const PDF_IMAGE_MIN_CELL_HEIGHT_MM = 28;

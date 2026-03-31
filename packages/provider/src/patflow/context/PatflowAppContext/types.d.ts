@@ -1,11 +1,6 @@
-import {
-	PatflowProject,
-	PatflowUser,
-	PatflowUserRoleTypes,
-	Property,
-	StaffMember
-} from "@repo/types";
+import { PatflowProject, PatflowUser, PatflowUserRoleTypes } from "@repo/types";
 import { Dispatch } from "react";
+import { Worker, Record, Surcharge, Holiday, Property } from "@repo/types";
 
 export type dynamicItem = {
 	value: string;
@@ -47,4 +42,42 @@ export type YearOptions = { value: number; label: string }[];
 export type SelectYearProps = {
 	year: number;
 	setYear: (value: number) => void;
+};
+
+export type PropertyDataStore = Property & {
+	value: string;
+	label: string;
+};
+
+export type WorkerDataStore = Worker & {
+	value: string;
+	label: string;
+};
+
+export type RecordDataStore = Record & {
+	value: string;
+	label: string;
+};
+
+export type SurchargeDataStore = Surcharge & {
+	value: string;
+	label: string;
+};
+
+export type HolidayDataStore = Holiday & {
+	value: string;
+	label: string;
+};
+
+export type DataStoreState = {
+	holidays: HolidayDataStore[];
+	workers: WorkerDataStore[];
+	records: RecordDataStore[];
+	properties: PropertyDataStore[];
+	surcharges: SurchargeDataStore[];
+	setHolidays: (holidays: HolidayDataStore[]) => void;
+	setWorkers: (workers: WorkerDataStore[]) => void;
+	setRecords: (records: RecordDataStore[]) => void;
+	setProperties: (properties: PropertyDataStore[]) => void;
+	setSurcharges: (surcharges: SurchargeDataStore[]) => void;
 };
