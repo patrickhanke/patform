@@ -21,6 +21,8 @@ const TaskList = ({
 		pageState
 	});
 
+	console.log({ taskList });
+
 	return (
 		<>
 			<div>

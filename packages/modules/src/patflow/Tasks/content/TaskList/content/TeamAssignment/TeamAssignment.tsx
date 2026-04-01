@@ -3,10 +3,9 @@ import DisplayWorkers from "./components/DisplayWorkers";
 import { TeamAssignmentProps } from "./types";
 import "./styles.scss";
 
-const TeamAssignments: FC<TeamAssignmentProps> = ({
-	taskId,
-	taskState,
-	refetchTask,
+const TaskTeamAssignments: FC<TeamAssignmentProps> = ({
+	task,
+	refetch,
 	showAsButton = false,
 	isEditable = true
 }) => {
@@ -14,9 +13,8 @@ const TeamAssignments: FC<TeamAssignmentProps> = ({
 		<div className="team_assignment_container">
 			<div className="team_assignment_workers_container">
 				<DisplayWorkers
-					taskId={taskId}
-					taskState={taskState}
-					refetchTask={refetchTask}
+					task={task}
+					refetch={refetch}
 					showAsButton={showAsButton}
 					selectWorkers={isEditable}
 				/>
@@ -25,4 +23,4 @@ const TeamAssignments: FC<TeamAssignmentProps> = ({
 	);
 };
 
-export default TeamAssignments;
+export default TaskTeamAssignments;

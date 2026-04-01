@@ -5,7 +5,7 @@ import {
   TDateISO,
   UserTypes,
 } from "@repo/types";
-import { PropertyTypes } from "../Property";
+import { Property, PropertyTypes } from "../Property";
 
 export type TaskState =
   | "completed"
@@ -21,7 +21,7 @@ export type Task = {
   description: string;
   documents: Document[];
   state: TaskState;
-  object: PropertyTypes.Property;
+  property: Property;
   time: DateObject;
   ticket?: TicketTypes.Ticket;
   assigned_staff: string[];

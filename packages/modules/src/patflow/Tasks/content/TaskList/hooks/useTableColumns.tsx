@@ -56,7 +56,12 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 			},
 			{
 				accessorFn: (task) => (
-					<DisplayProperty taskId={task.objectId} />
+					<DisplayProperty
+						taskId={task.objectId}
+						taskProperty={task.property}
+						isEditable={pageState === "active"}
+						refetchTasks={refetch}
+					/>
 				),
 				header: () => <span>Objekt</span>,
 				id: "property",
@@ -77,9 +82,8 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 			{
 				accessorFn: (task) => (
 					<TeamAssignments
-						taskId={task.objectId}
-						refetchTask={refetch}
-						taskState={task.state}
+						task={task}
+						refetch={refetch}
 						showAsButton
 					/>
 				),

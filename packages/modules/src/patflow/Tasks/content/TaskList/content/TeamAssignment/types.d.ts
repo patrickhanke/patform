@@ -2,17 +2,15 @@ import { ApolloRefetch, Task } from "@repo/types";
 import { ReactNode } from "react";
 
 export type TeamAssignmentProps = {
-	taskId: string;
-	taskState: Task["state"];
-	refetchTask: ApolloRefetch;
+	task: Task;
+	refetch: ApolloRefetch;
 	showAsButton?: boolean;
 	isEditable?: boolean;
 };
 
 export type DisplayWorkerProps = {
-	taskId: string;
-	refetchTask: ApolloRefetch;
-	taskState: Task["state"];
+	task: Task;
+	refetch: ApolloRefetch;
 	showAsButton?: boolean;
 	selectWorkers?: boolean;
 };

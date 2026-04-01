@@ -48,6 +48,8 @@ const PropertyServices: FC<PropertyServicesProps> = ({
 		return propertyServices;
 	}, [propertyServices, currentStates]);
 
+	console.log(serviceData);
+
 	return (
 		<div className="site_content">
 			<div className="flex row j-sb">

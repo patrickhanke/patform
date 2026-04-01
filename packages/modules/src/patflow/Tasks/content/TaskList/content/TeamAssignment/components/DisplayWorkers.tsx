@@ -1,36 +1,34 @@
-import { DisplayWorker } from "@repo/ui";
-import { axiosclient, useDataStore, useGetData } from "@repo/provider";
+import { DisplayWorker, SlideIn } from "@repo/ui";
+import { axiosclient, useDataStore } from "@repo/provider";
 import { StaffMember, Task, Worker } from "@repo/types";
 import { FC, useEffect, useMemo, useState } from "react";
 import { cloneDeep } from "lodash-es";
 
 import { formatISO9075 } from "date-fns";
-import { ElementSelectInterface, SlideInRight } from "@repo/ui";
+import { ElementSelectInterface } from "@repo/ui";
 import { DisplayWorkerProps, WorkerOption } from "../types";
 import "../styles.scss";
 import { AvatarGroup } from "@chakra-ui/react";
 
 const DisplayWorkers: FC<DisplayWorkerProps> = ({
-	taskId,
-	taskState,
-	refetchTask,
+	task,
+	refetch,
 	showAsButton = false,
 	selectWorkers = false
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { data: taskData, refetch } = useGetData({
-		objectName: "Task",
-		fields: ["objectId", "assigned_staff", "dates", "time", "title"],
-		id: taskId
-	});
 	const { workers } = useDataStore();
+	const [selectedWorkers, setSelectedWorkers] = useState<
+		Worker["objectId"][]
+	>(task.assigned_staff || []);
+	const [loading, setLoading] = useState(false);
 
 	const nextDate = useMemo(() => {
 		let date;
-		if (taskData) {
-			const datesCopy = cloneDeep(taskData.dates) || [];
+		if (task.assigned_staff) {
+			const datesCopy = cloneDeep(task.dates) || [];
 			if (datesCopy.length > 0) {
-				const timeCopy: Task["time"] = cloneDeep(taskData.time);
+				const timeCopy: Task["time"] = cloneDeep(task.time);
 				date = timeCopy.dates?.find(
 					(dateToFind: string) =>
 						formatISO9075(dateToFind, {
@@ -41,7 +39,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		}
 
 		return date;
-	}, [taskData, workers]);
+	}, [task, workers]);
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
@@ -74,52 +72,45 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 			<ElementSelectInterface
 				elements={elements}
 				selectedElements={
-					taskData
-						? taskData.assigned_staff.map((element: string) =>
-								elements.find((el) => el.value === element)
-							)
-						: []
+					elements.filter((element) =>
+						selectedWorkers.includes(element.value)
+					) || []
 				}
 				onSelect={async (values) => {
-					const newWorkers = values.map((value) => value.value);
-					await axiosclient().post("functions/change-task-staff", {
-						task_id: taskId,
-						new_staff: [...newWorkers]
-					});
-					refetch();
+					setSelectedWorkers(
+						values.map((value) => value.value as string)
+					);
 				}}
 				max={100}
 				isSearchable
 			/>
 		),
-		[taskData, taskData?.assigned_staff?.length, nextDate]
+		[task, task.assigned_staff?.length, nextDate, selectedWorkers]
 	);
 
 	useEffect(() => {
-		if (!isOpen) {
-			refetchTask();
+		if (isOpen) {
+			setSelectedWorkers(task.assigned_staff || []);
 		}
-	}, [isOpen, refetchTask]);
+	}, [isOpen, task.assigned_staff]);
 
-	const staffNumber = taskData?.assigned_staff.length || 0;
+	const staffNumber = task.assigned_staff?.length || 0;
 
-	if (taskData)
+	if (task)
 		return !showAsButton ? (
 			<>
 				<AvatarGroup>
-					{taskData.assigned_staff.map(
-						(workerId: Worker["objectId"]) => (
-							<DisplayWorker
-								key={workerId}
-								workerId={workerId}
-								nextDate={nextDate}
-								showAvailability
-								onlyImage={false}
-							/>
-						)
-					)}
+					{task.assigned_staff.map((workerId: Worker["objectId"]) => (
+						<DisplayWorker
+							key={workerId}
+							workerId={workerId}
+							nextDate={nextDate}
+							showAvailability
+							onlyImage={false}
+						/>
+					))}
 				</AvatarGroup>
-				{(taskState === "created" || taskState === "assigned") && (
+				{(task.state === "created" || task.state === "assigned") && (
 					<button
 						className="full_button sm light"
 						onClick={() => setIsOpen(true)}
@@ -127,13 +118,27 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 						+ Arbeiter ändern
 					</button>
 				)}
-				<SlideInRight
+				<SlideIn
 					isOpen={isOpen}
-					setIsOpen={setIsOpen}
+					cancel={() => setIsOpen(false)}
+					confirm={async () => {
+						setLoading(true);
+						await axiosclient().post(
+							"functions/change-task-staff",
+							{
+								task_id: task.objectId,
+								new_staff: [...selectedWorkers]
+							}
+						);
+						refetch();
+						setLoading(false);
+						setIsOpen(false);
+					}}
+					loading={loading}
 					header="Arbeiter auswählen"
 				>
 					{workerComponent}
-				</SlideInRight>
+				</SlideIn>
 			</>
 		) : (
 			<>
@@ -146,7 +151,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 							{/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
 							<div className="button_workers_container">
 								{staffNumber > 0 ? (
-									taskData.assigned_staff.map(
+									task.assigned_staff.map(
 										(
 											workerId: Worker["objectId"],
 											index: number
@@ -174,17 +179,31 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 								)}
 							</div>
 						</button>
-						<SlideInRight
+						<SlideIn
 							isOpen={isOpen}
-							setIsOpen={setIsOpen}
+							cancel={() => setIsOpen(false)}
+							confirm={async () => {
+								setLoading(true);
+								await axiosclient().post(
+									"functions/change-task-staff",
+									{
+										task_id: task.objectId,
+										new_staff: [...selectedWorkers]
+									}
+								);
+								refetch();
+								setLoading(false);
+								setIsOpen(false);
+							}}
+							loading={loading}
 							header="Arbeiter auswählen"
 						>
 							{workerComponent}
-						</SlideInRight>
+						</SlideIn>
 					</>
 				) : (
 					<div className="button_workers_container">
-						{taskData.assigned_staff.map(
+						{task.assigned_staff.map(
 							(workerId: Worker["objectId"], index: number) => (
 								<div
 									key={workerId}

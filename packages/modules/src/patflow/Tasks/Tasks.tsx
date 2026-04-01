@@ -49,7 +49,8 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 			"time",
 			"assigned_staff",
 			"dates",
-			"executed_at"
+			"executed_at",
+			"property { name objectId }"
 		],
 		skip:
 			pageState !== "active"
