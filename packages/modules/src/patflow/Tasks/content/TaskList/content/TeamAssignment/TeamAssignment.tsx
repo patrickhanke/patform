@@ -9,6 +9,7 @@ const TaskTeamAssignments: FC<TeamAssignmentProps> = ({
 	showAsButton = false,
 	isEditable = true
 }) => {
+	console.log("task", task);
 	return (
 		<div className="team_assignment_container">
 			<div className="team_assignment_workers_container">

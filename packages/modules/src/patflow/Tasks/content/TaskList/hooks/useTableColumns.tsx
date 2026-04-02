@@ -96,8 +96,7 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 			{
 				accessorFn: (task) => (
 					<TaskSlideIn
-						title={task.title}
-						taskId={task.objectId}
+						task={task}
 						isEditable={
 							task.state === "created" ||
 							task.state === "assigned"

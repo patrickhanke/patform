@@ -46,9 +46,13 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 			"objectId",
 			"title",
 			"state",
+			"comments",
+			"images",
+			"ticket { objectId title description created_by { objectId username }}",
 			"time",
 			"assigned_staff",
 			"dates",
+			"description",
 			"executed_at",
 			"property { name objectId }"
 		],
