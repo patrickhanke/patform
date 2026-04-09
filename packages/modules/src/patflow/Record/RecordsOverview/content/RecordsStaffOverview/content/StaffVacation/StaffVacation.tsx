@@ -18,7 +18,7 @@ const StaffVacation: FC<StaffVacationProps> = ({
 		}
 		const data = getRemainingVacation(start, end, record, days);
 		return data;
-	}, [record, start, end]);
+	}, [record, start, end, days]);
 
 	return (
 		<div>

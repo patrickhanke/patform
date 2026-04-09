@@ -16,7 +16,7 @@ const getRemainingVacation: (
 
 	let takenVacation = 0;
 	let remainingVacation = initial_vacation;
-
+	console.log(days);
 	days.forEach((day) => {
 		const date = new Date(day.date).getTime();
 
