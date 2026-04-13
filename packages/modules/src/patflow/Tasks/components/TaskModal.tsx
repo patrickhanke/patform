@@ -7,15 +7,11 @@ const TaskModal: FC<TaskModalProps> = ({
 	isOpen,
 	setIsOpen,
 	type,
-	tasks = [],
-	refetch
+	tasks = []
 }) => {
 	const { updateData } = useDataHandler();
 
 	const [loading, setLoading] = useState(false);
-
-	console.log({ tasks });
-	console.log({ type });
 
 	const archiveTasks = useCallback(() => {
 		if (type === "archive") {
@@ -53,7 +49,6 @@ const TaskModal: FC<TaskModalProps> = ({
 				confirmAction: async () => {
 					setLoading(true);
 					await Promise.all(tasks.map(archiveTasks()));
-					await refetch();
 					setLoading(false);
 					setIsOpen(false);
 				}
@@ -67,7 +62,6 @@ const TaskModal: FC<TaskModalProps> = ({
 				confirmAction: async () => {
 					setLoading(true);
 					await Promise.all(tasks.map(archiveTasks()));
-					await refetch();
 					setLoading(false);
 					setIsOpen(false);
 				}

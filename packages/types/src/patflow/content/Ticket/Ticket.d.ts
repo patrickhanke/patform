@@ -44,7 +44,6 @@ export type TicketDetailsProps = {
   ticket: TicketTypes.Ticket;
   deleteTicket: (T: Ticket["objectId"]) => Promise<void>;
   archiveTicket: (T: Ticket["objectId"]) => Promise<void>;
-  refetch: ApolloRefetch
 };
 
 export type TicketStateProps = {

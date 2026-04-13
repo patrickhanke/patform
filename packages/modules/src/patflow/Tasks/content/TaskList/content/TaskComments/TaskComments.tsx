@@ -7,12 +7,10 @@ import React from "react";
 const TaskComments = ({
 	taskId,
 	comments,
-	refetch,
 	isEditable = true
 }: {
 	taskId: string;
 	comments: Comment[];
-	refetch: () => void;
 	isEditable?: boolean;
 }) => {
 	const { updateData } = useDataHandler();
@@ -25,7 +23,6 @@ const TaskComments = ({
 				comments: value
 			}
 		});
-		refetch();
 	};
 
 	if (comments)

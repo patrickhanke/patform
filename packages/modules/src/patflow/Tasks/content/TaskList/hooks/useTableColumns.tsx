@@ -10,7 +10,7 @@ import { UseTaskColumnsProps } from "../types";
 import { getDateString } from "@repo/provider";
 import { TaskDate } from "../content/TaskDate";
 
-const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
+const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 	const columns: ColumnDef<Task>[] = useMemo(() => {
 		const col: ColumnDef<Task>[] = [
 			{
@@ -18,7 +18,6 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 					<TaskTitle
 						taskId={task.objectId}
 						taskTitle={task.title}
-						refetch={refetch}
 						taskState={task.state}
 					/>
 				),
@@ -36,9 +35,7 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 				}
 			},
 			{
-				accessorFn: (task) => (
-					<TaskDate taskId={task.objectId} tasksRefetch={refetch} />
-				),
+				accessorFn: (task) => <TaskDate taskId={task.objectId} />,
 				header: () => <span>Termin</span>,
 				id: "start_time",
 				cell: (info) => info.getValue(),
@@ -60,7 +57,6 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 						taskId={task.objectId}
 						taskProperty={task.property}
 						isEditable={pageState === "active"}
-						refetchTasks={refetch}
 					/>
 				),
 				header: () => <span>Objekt</span>,
@@ -81,11 +77,7 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 
 			{
 				accessorFn: (task) => (
-					<TeamAssignments
-						task={task}
-						refetch={refetch}
-						showAsButton
-					/>
+					<TeamAssignments task={task} showAsButton />
 				),
 				header: () => <span>Zugewiesen an</span>,
 				id: "absence_days",
@@ -101,7 +93,6 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 							task.state === "created" ||
 							task.state === "assigned"
 						}
-						refetchTasks={refetch}
 					/>
 				),
 				header: () => <span>Info</span>,
@@ -116,7 +107,7 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 			col.splice(2, 0, {
 				accessorFn: (task) =>
 					task.executed_at
-						? `${getDateString(task.executed_at).date} - ${getDateString(task.executed_at).time}`
+						? `${getDateString(task.executed_at?.iso).date} - ${getDateString(task.executed_at?.iso).time}`
 						: "-",
 				header: () => {
 					return <span>Ausgeführt am</span>;
@@ -127,10 +118,10 @@ const useTableColumns = ({ refetch, pageState }: UseTaskColumnsProps) => {
 				enableSorting: true,
 				sortingFn: (rowA, rowB) => {
 					const dateA = rowA.original.executed_at
-						? new Date(rowA.original.executed_at).getTime()
+						? new Date(rowA.original.executed_at?.iso).getTime()
 						: 0;
 					const dateB = rowB.original.executed_at
-						? new Date(rowB.original.executed_at).getTime()
+						? new Date(rowB.original.executed_at?.iso).getTime()
 						: 0;
 					return dateA - dateB;
 					// return 0;

@@ -7,8 +7,7 @@ import { Icon, IconButton, ImagesDisplay, Modal, SlideInRight } from "@repo/ui";
 const TicketDetails = ({
 	ticket,
 	deleteTicket,
-	archiveTicket,
-	refetch
+	archiveTicket
 }: TicketDetailsProps) => {
 	const [archiveModal, setArchiveModal] = useState(false);
 	const [deleteTicketModal, setDeleteTicketkModal] = useState(false);
@@ -18,7 +17,6 @@ const TicketDetails = ({
 	const deleteTicketHandler = useCallback(async () => {
 		setDeleteTicketkModal(false);
 		await deleteTicket(ticket.objectId);
-		await refetch();
 		setShowDetails(false);
 	}, [ticket]);
 
@@ -89,7 +87,6 @@ const TicketDetails = ({
 					setLoading(true);
 					setArchiveModal(false);
 					await archiveTicket(ticket.objectId);
-					await refetch();
 					setShowDetails(false);
 					setLoading(false);
 				}}

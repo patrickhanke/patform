@@ -1,9 +1,8 @@
 "use client";
 
-import React, { Suspense, useContext, useEffect, useMemo } from "react";
-import useGetTickets from "./hooks/useGetTickets";
+import React, { Suspense, useEffect, useMemo } from "react";
 import styles from "./Tickets.module.scss";
-import { useDataHandler } from "@repo/provider";
+import { useDataHandler, useDataStore } from "@repo/provider";
 import { TicketsComponent } from "./types";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
@@ -12,7 +11,6 @@ import { Filter } from "@repo/types";
 import { useCallback, useState } from "react";
 import useTicketColumns from "./hooks/useTicketColumns";
 import { Modal, Page, Table } from "@repo/ui";
-import { PatflowAppContext, NotificationContext } from "@repo/provider";
 
 const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 	const [filters, setFilters] = React.useState([] as Filter[]);
@@ -20,21 +18,24 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 		pageIndex: 0,
 		pageSize: 20
 	});
-	const { tickets, refetch, count } = useGetTickets({
-		id,
-		className,
+
+	const { tickets: storeTickets, getTickets } = useDataStore();
+	const count = storeTickets.length;
+
+	const tickets = getTickets(
 		filters,
-		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
-	});
+		pagination.pageIndex * pagination.pageSize,
+		pagination.pageSize,
+		id || ""
+	);
+
 	const searchParams = useSearchParams();
 	const { updateData, deleteData } = useDataHandler();
-	const { refetchTicket } = useContext(PatflowAppContext);
-	const { newNotification } = useContext(NotificationContext);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [archiveTickets, setArchiveTickets] = useState<boolean>(false);
 	const [deleteTickets, setDeleteTickets] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
+
 	const archiveTicket = useCallback(async (objectId: string) => {
 		await updateData({
 			className: "Ticket",
@@ -52,7 +53,7 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 		});
 	}, []);
 
-	const columns = useTicketColumns({ refetch, archiveTicket, deleteTicket });
+	const columns = useTicketColumns({ archiveTicket, deleteTicket });
 
 	const initialFilters: () => Filter[] = useCallback(() => {
 		const filterArray: Filter[] = [];
@@ -60,7 +61,7 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 			filterArray.push({
 				key: "state",
 				value: "open",
-				operator: "in",
+				operator: "equalTo",
 				id: "state"
 			});
 		} else if (pageState === "in_progress") {
@@ -115,18 +116,6 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 	useEffect(() => {
 		setFilters(initialFilters());
 	}, [searchParams.get("ticket"), pageState]);
-
-	useEffect(() => {
-		if (refetchTicket) {
-			refetch();
-		}
-	}, [refetchTicket]);
-
-	useEffect(() => {
-		if (newNotification) {
-			refetch();
-		}
-	}, [newNotification]);
 
 	const siteHeaderContent = useMemo(
 		() => (
@@ -195,7 +184,6 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 								});
 							})
 						);
-						await refetch();
 						setSelectedRows([]);
 						setLoading(false);
 					},
@@ -228,7 +216,6 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 								});
 							})
 						);
-						await refetch();
 						setSelectedRows([]);
 						setLoading(false);
 					},
@@ -251,7 +238,6 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 		<Page
 			title={siteContent.title}
 			description={siteContent.description}
-			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
 		>
 			<div className={clsx(styles.ticket_overview)}>
@@ -280,7 +266,6 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 							return archiveTicket(id);
 						})
 					);
-					await refetch();
 					setSelectedRows([]);
 					setArchiveTickets(false);
 					setLoading(false);
@@ -304,7 +289,6 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 							return deleteTicket(id);
 						})
 					);
-					await refetch();
 					setSelectedRows([]);
 					setDeleteTickets(false);
 					setLoading(false);

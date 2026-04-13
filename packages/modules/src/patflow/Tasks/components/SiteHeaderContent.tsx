@@ -15,6 +15,9 @@ const SiteHeaderContent = ({
 }: SiteHeaderContentComponent) => {
 	const { properties, workers } = useDataStore();
 
+	console.log({ properties });
+	console.log({ workers });
+
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();
@@ -37,7 +40,7 @@ const SiteHeaderContent = ({
 		}
 
 		return { objectOptions, staffOptions };
-	}, [properties, workers]);
+	}, [properties, workers, filters]);
 
 	return (
 		<div className="flex row j-sb a-ce">
@@ -61,7 +64,7 @@ const SiteHeaderContent = ({
 						)
 					}
 					placeholder="Task ID..."
-					width="120px"
+					width="90px"
 				/>
 				{!id && (
 					<Select

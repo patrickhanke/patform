@@ -5,13 +5,11 @@ import { ImageUploader, ImagesDisplay, ParseImage } from "@repo/ui";
 
 const TaskImages = ({
 	taskId,
-	refetch,
 	images,
 	isEditable = true
 }: {
 	taskId: string;
 	images: string[];
-	refetch: () => void;
 	isEditable?: boolean;
 }) => {
 	const { updateData } = useDataHandler();
@@ -30,7 +28,6 @@ const TaskImages = ({
 					images: newImages
 				}
 			});
-			refetch();
 		},
 		[images]
 	);

@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState
-} from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Filter } from "@repo/types";
 import { TasksComponent } from "./types";
 import { useSearchParams } from "next/navigation";
@@ -15,8 +9,7 @@ import sortTasksForList from "./functions/sortTasksForList";
 import TaskList from "./content/TaskList";
 import { Divider, generatePagination, Page } from "@repo/ui";
 import site_states from "./constants/site_states";
-import { PatflowAppContext, useFindData } from "@repo/provider";
-import { NotificationContext } from "@repo/provider";
+import { useDataStore } from "@repo/provider";
 import TaskModal from "./components/TaskModal";
 
 const Tasks = ({ id, className, pageState }: TasksComponent) => {
@@ -35,36 +28,15 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		pageSize: 20
 	});
 
-	const {
-		count,
-		data: tasks,
-		refetch
-	} = useFindData({
-		objectName: "Task",
-		filters: filters,
-		fields: [
-			"objectId",
-			"title",
-			"state",
-			"comments",
-			"images",
-			"ticket { objectId title description created_by { objectId username }}",
-			"time",
-			"assigned_staff",
-			"dates",
-			"description",
-			"executed_at",
-			"property { name objectId }"
-		],
-		skip:
-			pageState !== "active"
-				? pagination.pageIndex * pagination.pageSize
-				: 0,
-		limit: pageState !== "active" ? pagination.pageSize : 300,
-		propertyId: id
-	});
-	const { refetchTask } = useContext(PatflowAppContext);
-	const { newNotification } = useContext(NotificationContext);
+	const { tasks: storeTasks, getTasks } = useDataStore();
+	const count = storeTasks.length;
+
+	const tasks = getTasks(
+		filters,
+		pageState !== "active" ? pagination.pageIndex * pagination.pageSize : 0,
+		pageState !== "active" ? pagination.pageSize : 300,
+		id || ""
+	);
 
 	const initialFilters: () => Filter[] = useCallback(() => {
 		const filterArray: Filter[] = [];
@@ -133,22 +105,6 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		setFilters(initialFilters());
 	}, [siteState, initialFilters]);
 
-	useEffect(() => {
-		if (refetchTask) {
-			refetch();
-		}
-	}, [refetchTask]);
-
-	useEffect(() => {
-		if (newNotification) {
-			refetch();
-		}
-	}, [newNotification]);
-
-	useEffect(() => {
-		refetch();
-	}, [pageState]);
-
 	const siteStates = useMemo(() => {
 		return site_states.map((state) => ({
 			...state,
@@ -190,7 +146,6 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 				<Divider size="small" showLine={false} />
 				<TaskList
 					taskList={tasks || []}
-					refetch={refetch}
 					pageState={pageState}
 					pagination={pagination}
 					setPagination={setPagination}
@@ -212,7 +167,6 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 		<Page
 			title={siteContent.title}
 			description={siteContent.description}
-			refetch={refetch}
 			pageStates={pageState === "active" ? siteStates : undefined}
 			pageState={siteState}
 			setPageState={setSiteState}
@@ -222,7 +176,6 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 				<TaskList
 					key={pageState}
 					taskList={tasks || []}
-					refetch={refetch}
 					pageState={pageState}
 					pagination={pagination}
 					setPagination={setPagination}
@@ -249,7 +202,6 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 							)?.data || [],
 						pagination
 					})}
-					refetch={refetch}
 					pageState={pageState}
 					pagination={pagination}
 					setPagination={setPagination}
@@ -278,7 +230,6 @@ const Tasks = ({ id, className, pageState }: TasksComponent) => {
 				}}
 				tasks={selectedRows}
 				type={taskModal}
-				refetch={refetch}
 			/>
 		</Page>
 	);

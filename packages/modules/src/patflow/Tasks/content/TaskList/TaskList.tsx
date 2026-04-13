@@ -6,7 +6,6 @@ import { Table } from "@repo/ui";
 
 const TaskList = ({
 	taskList,
-	refetch,
 	pageState,
 	pagination,
 	setPagination,
@@ -17,11 +16,8 @@ const TaskList = ({
 	setSelectedRows
 }: TaskListComponent) => {
 	const columns = useTableColumns({
-		refetch,
 		pageState
 	});
-
-	console.log({ taskList });
 
 	return (
 		<>

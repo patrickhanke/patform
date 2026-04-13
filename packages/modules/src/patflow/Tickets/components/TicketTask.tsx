@@ -10,7 +10,6 @@ const TicketTask = ({
 	ticketTask,
 	ticketPropertyId,
 	ticketUserId,
-	refetch,
 	ticketState
 }: TicketTaskProps) => {
 	const Button = ({ onClick }: { onClick: () => void }) => (
@@ -41,7 +40,6 @@ const TicketTask = ({
 					</Link>
 				) : (
 					<CreateTask
-						refetch={refetch}
 						button={Button}
 						initialData={{
 							ticket: ticketId || "",

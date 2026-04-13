@@ -27,7 +27,7 @@ export type Task = {
   assigned_staff: string[];
   dates: string[];
   images: string[];
-  executed_at?: TDateISO;
+  executed_at?: { iso: TDateISO; date: string; time: string };
   category: "fixed" | "opportunity";
 };
 

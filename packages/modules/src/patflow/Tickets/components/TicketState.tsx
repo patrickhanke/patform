@@ -5,7 +5,7 @@ import { TicketStateProps } from "../types";
 import { StateSelect } from "@repo/ui";
 import { ticket_state_options } from "@repo/provider";
 
-const TicketState = ({ ticketId, ticketState, refetch }: TicketStateProps) => {
+const TicketState = ({ ticketId, ticketState }: TicketStateProps) => {
 	const { updateData } = useDataHandler();
 	const updateTicketState = useCallback(
 		async (state: (typeof ticket_state_options)[number]) => {
@@ -18,7 +18,6 @@ const TicketState = ({ ticketId, ticketState, refetch }: TicketStateProps) => {
 					state: state.value
 				}
 			});
-			refetch();
 		},
 		[ticketId, ticketState]
 	);

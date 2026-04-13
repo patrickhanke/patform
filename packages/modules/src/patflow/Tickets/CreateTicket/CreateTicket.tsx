@@ -6,14 +6,7 @@ import {
 	TicketUpdateObject
 } from "@repo/types";
 import clsx from "clsx";
-import {
-	Dispatch,
-	SetStateAction,
-	useCallback,
-	useContext,
-	useEffect,
-	useState
-} from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useImmer } from "use-immer";
 import { Plus } from "lucide-react";
 import initial_ticket from "./constants/initial_ticket";
@@ -23,13 +16,9 @@ import { useDataHandler } from "@repo/provider";
 import { UserContext } from "@repo/provider";
 import "./styles.scss";
 
-const CreateTicket = ({
-	setRefetchTicket
-}: {
-	setRefetchTicket: Dispatch<SetStateAction<Date | undefined>>;
-}) => {
+const CreateTicket = () => {
 	const { createData } = useDataHandler();
-	const { user } = useContext(UserContext);
+	const { user, projectId } = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
 
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
@@ -67,7 +56,12 @@ const CreateTicket = ({
 			is_closed: false,
 			archived: false,
 			state: "open",
-			comments: []
+			comments: [],
+			project: {
+				__type: "Pointer",
+				className: "Project",
+				objectId: projectId
+			}
 		};
 
 		if (ticket.property) {
@@ -79,9 +73,9 @@ const CreateTicket = ({
 		}
 		await createData({
 			className: "Ticket",
-			updateObject
+			updateObject,
+			feedback: "Ticket erfolgreich erstellt"
 		});
-		setRefetchTicket(new Date());
 
 		setTicket((draft) => {
 			draft.title = initial_ticket.title;

@@ -54,5 +54,4 @@ export type TaskModalProps = {
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	type?: "archive" | "close";
 	tasks: string[];
-	refetch: ApolloRefetch;
 };

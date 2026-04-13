@@ -1,4 +1,4 @@
-import { ApolloRefetch, ApplicationTypes, Task, Ticket } from "@repo/types";
+import { ApplicationTypes, Task, Ticket } from "@repo/types";
 
 export type TicketsComponent = {
 	id?: string;
@@ -24,13 +24,11 @@ export type SiteHeaderContentComponent = {
 };
 
 export type UseTicketColumnsProps = {
-	refetch: ApolloRefetch;
 	archiveTicket: (objectId: string) => Promise<void>;
 	deleteTicket: (objectId: string) => Promise<void>;
 };
 
 export type TicketStateProps = {
-	refetch: ApolloRefetch;
 	ticketId: string;
 	ticketState: string;
 };
@@ -40,6 +38,5 @@ export type TicketTaskProps = {
 	ticketPropertyId: string;
 	ticketUserId: string;
 	ticketTask?: Pick<Task, "objectId" | "title" | "state">;
-	refetch: ApolloRefetch;
 	ticketState: string;
 };

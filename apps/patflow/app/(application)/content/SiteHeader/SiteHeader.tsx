@@ -9,16 +9,15 @@ import { CreateTask, CreateTicket } from "@repo/modules";
 import { UserDisplay } from "./content/UserDisplay";
 
 const SiteHeader = ({ title }: SiteHeaderComponent) => {
-  const { setRefetchTask, setRefetchTicket, selectYear } =
-    useContext(PatflowAppContext);
+  const { selectYear } = useContext(PatflowAppContext);
 
   return (
     <div className={styles.siteheader_container}>
       <h1>{title}</h1>
       <div className={styles.siteheader_right_container}>
-        <CreateTask setRefetchTask={setRefetchTask} />
+        <CreateTask />
         <div className="vertical_line" />
-        <CreateTicket setRefetchTicket={setRefetchTicket} />
+        <CreateTicket />
         <div className="vertical_line" />
         {selectYear}
         <div className="vertical_line" />

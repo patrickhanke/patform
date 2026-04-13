@@ -1,6 +1,14 @@
 import { PatflowProject, PatflowUser, PatflowUserRoleTypes } from "@repo/types";
 import { Dispatch } from "react";
-import { Worker, Record, Surcharge, Holiday, Property } from "@repo/types";
+import {
+	Worker,
+	Record,
+	Surcharge,
+	Holiday,
+	Property,
+	Task,
+	Ticket
+} from "@repo/types";
 
 export type dynamicItem = {
 	value: string;
@@ -12,10 +20,6 @@ export type RoleUsers = {
 };
 
 export type ContextValues = {
-	refetchTicket: Date | undefined;
-	refetchTask?: Date | undefined;
-	setRefetchTicket: Dispatch<SetStateAction<Date | undefined>>;
-	setRefetchTask: Dispatch<SetStateAction<Date | undefined>>;
 	createTicket: JSX.Element;
 	createTask: JSX.Element;
 	selectYear: JSX.Element;
@@ -75,9 +79,25 @@ export type DataStoreState = {
 	records: RecordDataStore[];
 	properties: PropertyDataStore[];
 	surcharges: SurchargeDataStore[];
+	tasks: Task[];
+	tickets: Ticket[];
 	setHolidays: (holidays: HolidayDataStore[]) => void;
 	setWorkers: (workers: WorkerDataStore[]) => void;
 	setRecords: (records: RecordDataStore[]) => void;
 	setProperties: (properties: PropertyDataStore[]) => void;
 	setSurcharges: (surcharges: SurchargeDataStore[]) => void;
+	setTasks: (tasks: Task[]) => void;
+	setTickets: (tickets: Ticket[]) => void;
+	getTasks: (
+		filters: Filter[],
+		skip: number,
+		limit: number,
+		propertyId: string
+	) => Task[];
+	getTickets: (
+		filters: Filter[],
+		skip: number,
+		limit: number,
+		propertyId: string
+	) => Ticket[];
 };

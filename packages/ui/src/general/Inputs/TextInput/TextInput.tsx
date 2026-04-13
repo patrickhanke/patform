@@ -76,7 +76,7 @@ const TextInput = ({
 					id={id}
 					onChange={(e) => setValue(e.target.value)}
 					type={type ? type : "text"}
-					style={{ width }}
+					style={{ width, minWidth: width }}
 					onBlur={onBlur}
 					min={min}
 					max={max}

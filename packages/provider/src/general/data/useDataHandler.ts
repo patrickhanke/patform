@@ -13,8 +13,6 @@ import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
 import { ClientParseError } from "@apollo/client";
 
-console.log({ Parse });
-
 const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 	const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
 	const [loading, setLoading] = useState(false);

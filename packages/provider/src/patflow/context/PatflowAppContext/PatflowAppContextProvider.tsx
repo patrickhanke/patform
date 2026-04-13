@@ -8,7 +8,12 @@ import React, {
 	useState
 } from "react";
 import PatflowAppContext from "./PatflowAppContext";
-import { useFindData, useFindDataSecure } from "@repo/provider";
+import {
+	useFindData,
+	useFindDataSecure,
+	useTaskSubscription,
+	useTicketSubscription
+} from "@repo/provider";
 import { RoleUsers } from "./types";
 import { PatflowUserRole } from "@repo/types";
 import { CreateTask, CreateTicket } from "@repo/modules";
@@ -26,10 +31,10 @@ const PatflowAppContextProvider = ({
 	children: React.ReactNode;
 }) => {
 	const { project } = useAppContext();
-	const [refetchTicket, setRefetchTicket] = useState<Date | undefined>();
-	const [refetchTask, setRefetchTask] = useState<Date | undefined>();
 	const [year, setYear] = useState(new Date().getFullYear());
 	const projectId = project?.objectId;
+	useTaskSubscription(projectId);
+	useTicketSubscription(projectId);
 
 	const { data: roleData } = useFindData({
 		objectName: "Role",
@@ -208,12 +213,8 @@ const PatflowAppContextProvider = ({
 
 	const appContextObject = useMemo(
 		() => ({
-			refetchTask,
-			refetchTicket,
-			setRefetchTask,
-			setRefetchTicket,
-			createTicket: <CreateTicket setRefetchTicket={setRefetchTicket} />,
-			createTask: <CreateTask setRefetchTask={setRefetchTask} />,
+			createTicket: <CreateTicket />,
+			createTask: <CreateTask />,
 			selectYear: <SelectYear year={year} setYear={setYear} />,
 			year,
 			refetchWorkers,
@@ -242,8 +243,6 @@ const PatflowAppContextProvider = ({
 			roleUsers
 		}),
 		[
-			refetchTask,
-			refetchTicket,
 			roleUsers,
 			year,
 			roleData,

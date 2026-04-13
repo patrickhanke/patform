@@ -5,11 +5,7 @@ import { formatISO9075 } from "date-fns";
 import { getISOWeek, startOfISOWeek, endOfISOWeek } from "date-fns";
 import { Task } from "@repo/types";
 
-const TaskDate: FC<TaskDateProps> = ({
-	taskId,
-	tasksRefetch,
-	isEditable = true
-}) => {
+const TaskDate: FC<TaskDateProps> = ({ taskId, isEditable = true }) => {
 	const [showInterface, setShowInterface] = useState(false);
 	const { data } = useGetData({
 		objectName: "Task",
@@ -153,7 +149,6 @@ const TaskDate: FC<TaskDateProps> = ({
 					taskId={taskId}
 					showDateInterface={showInterface}
 					setShowDateInterface={setShowInterface}
-					tasksRefetch={tasksRefetch}
 				/>
 			</>
 		);

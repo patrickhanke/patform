@@ -1,9 +1,8 @@
-import { ApolloRefetch, Task } from "@repo/types";
+import { Task } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type TaskListComponent = {
 	taskList: Task[];
-	refetch: ApolloRefetch;
 	pageState?: string;
 	pagination?: {
 		pageIndex: number;
@@ -23,6 +22,5 @@ export type TaskListComponent = {
 };
 
 export type UseTaskColumnsProps = {
-	refetch: ApolloRefetch;
 	pageState?: string;
 };

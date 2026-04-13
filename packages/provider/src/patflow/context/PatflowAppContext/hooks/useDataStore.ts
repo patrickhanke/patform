@@ -1,17 +1,63 @@
 import { create } from "zustand";
 import { DataStoreState } from "../types";
+import { Filter } from "@repo/types";
+import dataFilterHandler from "../functions/dataFilterHandler";
 
-const useDataStore = create<DataStoreState>((set) => ({
+const useDataStore = create<DataStoreState>((set, get) => ({
 	holidays: [],
 	workers: [],
 	surcharges: [],
 	records: [],
 	properties: [],
+	tasks: [],
+	tickets: [],
 	setSurcharges: (surcharges) => set({ surcharges }),
 	setHolidays: (holidays) => set({ holidays }),
 	setWorkers: (workers) => set({ workers }),
 	setRecords: (records) => set({ records }),
-	setProperties: (properties) => set({ properties })
+	setProperties: (properties) => set({ properties }),
+	setTasks: (tasks) => set({ tasks }),
+	setTickets: (tickets) => set({ tickets }),
+	getTasks: (
+		filters: Filter[],
+		skip: number,
+		limit: number,
+		propertyId: string
+	) =>
+		get()
+			.tasks.filter((task) => {
+				let match = true;
+				if (filters.length > 0) {
+					match = dataFilterHandler(task, filters);
+				}
+				if (propertyId) {
+					if (task.property?.objectId !== propertyId) {
+						match = false;
+					}
+				}
+				return match;
+			})
+			.slice(skip, skip + limit),
+	getTickets: (
+		filters: Filter[],
+		skip: number,
+		limit: number,
+		propertyId: string
+	) =>
+		get()
+			.tickets.filter((ticket) => {
+				let match = true;
+				if (filters.length > 0) {
+					match = dataFilterHandler(ticket, filters);
+				}
+				if (propertyId) {
+					if (ticket.property?.objectId !== propertyId) {
+						match = false;
+					}
+				}
+				return match;
+			})
+			.slice(skip, skip + limit)
 }));
 
 export default useDataStore;

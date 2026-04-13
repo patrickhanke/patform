@@ -10,7 +10,6 @@ import TicketDetails from "../content/TicketDetails";
 import { UseTicketColumnsProps } from "../types";
 
 const useTicketColumns = ({
-	refetch,
 	archiveTicket,
 	deleteTicket
 }: UseTicketColumnsProps) => {
@@ -48,7 +47,9 @@ const useTicketColumns = ({
 			},
 			{
 				accessorFn: (ticket) => (
-					<TicketProperty ticketProperty={ticket?.property?.name} />
+					<TicketProperty
+						ticketProperty={ticket?.property.objectId}
+					/>
 				),
 				header: () => <span>Objekt</span>,
 				id: "property",
@@ -72,7 +73,6 @@ const useTicketColumns = ({
 				accessorFn: (ticket) => (
 					<TicketState
 						ticketState={ticket.state}
-						refetch={refetch}
 						ticketId={ticket.objectId}
 					/>
 				),
@@ -87,13 +87,12 @@ const useTicketColumns = ({
 					<TicketTask
 						ticketId={ticket.objectId}
 						ticketTask={ticket.task}
-						refetch={refetch}
 						ticketUserId={ticket.created_by?.objectId as string}
 						ticketPropertyId={ticket?.property?.objectId}
 						ticketState={ticket.state}
 					/>
 				),
-				header: () => <span>Verbundenes Ticket</span>,
+				header: () => <span>Verbundene Aufgabe</span>,
 				id: "ticket",
 				enableSorting: false,
 				cell: (info) => info.getValue(),
@@ -105,7 +104,6 @@ const useTicketColumns = ({
 						ticket={ticket}
 						archiveTicket={archiveTicket}
 						deleteTicket={deleteTicket}
-						refetch={refetch}
 					/>
 				),
 				header: () => <span>Details</span>,

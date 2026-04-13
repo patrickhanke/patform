@@ -1,18 +1,16 @@
 import { useDataHandler } from "@repo/provider";
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import styles from "../Task.module.scss";
-import { IconButton, TextInput } from "@repo/ui";
+import { IconButton, Modal, TextInput } from "@repo/ui";
 
 const TaskTitle = ({
 	taskId,
 	taskState,
-	taskTitle,
-	refetch
+	taskTitle
 }: {
 	taskId: string;
 	taskState: string;
 	taskTitle: string;
-	refetch: () => void;
 }) => {
 	const [title, setTitle] = useState(taskTitle || "");
 	const { updateData } = useDataHandler();
@@ -26,7 +24,6 @@ const TaskTitle = ({
 				title
 			}
 		});
-		refetch();
 		setTitleEdit(false);
 	}, [title]);
 
@@ -34,26 +31,29 @@ const TaskTitle = ({
 		return <div className={styles.task_title_container}>{taskTitle}</div>;
 	}
 
-	return titleEdit ? (
-		<div className={styles.task_title_container}>
-			<TextInput
-				id="task_title"
-				label=""
-				defaultValue={taskTitle}
-				onChange={(value) => setTitle(value)}
-			/>
-			<div className="button_container">
-				<IconButton icon="cancel" onClick={() => setTitleEdit(false)} />
-				<IconButton icon="check" onClick={() => titleDataHandler()} />
+	return (
+		<>
+			<div className={styles.task_title_container}>
+				<div style={{ flex: "1", display: "inline-flex" }}>
+					<p style={{ textWrap: "wrap" }}>{taskTitle}</p>
+				</div>
+				<IconButton icon="edit" onClick={() => setTitleEdit(true)} />
 			</div>
-		</div>
-	) : (
-		<div className={styles.task_title_container}>
-			<div style={{ flex: "1", display: "inline-flex" }}>
-				<p style={{ textWrap: "wrap" }}>{taskTitle}</p>
-			</div>
-			<IconButton icon="edit" onClick={() => setTitleEdit(true)} />
-		</div>
+			<Modal
+				isOpen={titleEdit}
+				cancelButtonHandler={() => setTitleEdit(false)}
+				confirmButtonHandler={() => titleDataHandler()}
+				header="Titel bearbeiten"
+				buttonDisabled={[false, false]}
+			>
+				<TextInput
+					id="task_title"
+					label=""
+					defaultValue={taskTitle}
+					onChange={(value) => setTitle(value)}
+				/>
+			</Modal>
+		</>
 	);
 };
 

@@ -100,7 +100,7 @@ const PaginationHandlers: FC<PaginationHandlersProps> = ({
 						style={{ transform: "translateY(2px)" }}
 					/>
 				</button>
-				<p>
+				<p className="whitespace-nowrap">
 					{pageIndex + 1} / {pageNumber}
 				</p>
 				<button

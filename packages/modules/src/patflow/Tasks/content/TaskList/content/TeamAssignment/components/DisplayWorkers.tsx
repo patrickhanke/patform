@@ -12,7 +12,6 @@ import { AvatarGroup } from "@chakra-ui/react";
 
 const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	task,
-	refetch,
 	showAsButton = false,
 	selectWorkers = false
 }) => {
@@ -130,7 +129,6 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 								new_staff: [...selectedWorkers]
 							}
 						);
-						refetch();
 						setLoading(false);
 						setIsOpen(false);
 					}}

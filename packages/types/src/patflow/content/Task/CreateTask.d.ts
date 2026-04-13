@@ -29,7 +29,6 @@ export type CreateTaskUpdateObject = {
 };
 
 export type CreateTaskProps = {
-  setRefetchTask: Dispatch<SetStateAction<Date | undefined>>;
   button?: React.FC<{ onClick: () => void }>;
   initialData?: {
     assigned_staff?: [string];

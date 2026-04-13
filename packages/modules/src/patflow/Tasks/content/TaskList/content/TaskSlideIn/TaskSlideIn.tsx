@@ -19,11 +19,7 @@ import { TaskSlideInProps } from "./types";
 import TaskSlideInTicketDetails from "./components/TaskSlideInTicketDetails";
 import { TaskDate } from "../TaskDate";
 
-const TaskSlideIn: FC<TaskSlideInProps> = ({
-	task,
-	isEditable = true,
-	refetchTasks
-}) => {
+const TaskSlideIn: FC<TaskSlideInProps> = ({ task, isEditable = true }) => {
 	const { title } = task;
 	const taskId = task.objectId;
 	const { deleteData } = useDataHandler();
@@ -101,7 +97,6 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 					<TaskImages
 						taskId={taskId}
 						images={task?.images}
-						refetch={refetchTasks}
 						isEditable={isEditable}
 					/>
 				)}
@@ -109,7 +104,6 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 					<TaskComments
 						taskId={taskId}
 						comments={task?.comments}
-						refetch={refetchTasks}
 						isEditable={isEditable}
 					/>
 				)}
@@ -231,7 +225,6 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 									taskId={taskId}
 									taskProperty={task.property}
 									isEditable={isEditable}
-									refetchTasks={refetchTasks}
 								/>
 							</div>
 						</div>
@@ -244,10 +237,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 								Zugeteilt
 							</label>
 							<div>
-								<TeamAssignment
-									task={task}
-									refetch={refetchTasks}
-								/>
+								<TeamAssignment task={task} />
 							</div>
 						</div>
 						<div
@@ -309,7 +299,6 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 						objectId: taskId,
 						feedback: "Aufgabe erfolgreich gelöscht"
 					});
-					await refetchTasks();
 					setDeleteTask(false);
 					setShowDetails(false);
 				}}

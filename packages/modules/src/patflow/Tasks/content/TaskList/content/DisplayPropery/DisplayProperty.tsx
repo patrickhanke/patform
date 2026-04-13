@@ -1,26 +1,29 @@
-import { useDataHandler } from "@repo/provider";
+import { useDataHandler, useDataStore } from "@repo/provider";
 import { Modal, StateDisplay } from "@repo/ui";
 import "./styles.scss";
 import TaskSelectPropery from "./components/TaskSelectProperty";
 import { useState } from "react";
-import { ApolloRefetch, Property } from "@repo/types";
+import { Property } from "@repo/types";
 
 const DisplayProperty = ({
 	taskId,
 	taskProperty,
-	isEditable = true,
-	refetchTasks
+	isEditable = true
 }: {
 	taskId: string;
 	taskProperty: Property;
 	isEditable?: boolean;
-	refetchTasks: ApolloRefetch;
 }) => {
 	const { updateData } = useDataHandler();
 	const [selectProperty, setSelectProperty] = useState(false);
 	const [loading, setLoading] = useState(false);
-
-	const [selectedProperty, setSelectedProperty] = useState<string>("");
+	const { properties } = useDataStore();
+	const property = properties.find(
+		(property) => property.objectId === taskProperty.objectId
+	);
+	const [selectedProperty, setSelectedProperty] = useState<string>(
+		property?.objectId || ""
+	);
 
 	return (
 		<>
@@ -34,7 +37,7 @@ const DisplayProperty = ({
 				<StateDisplay
 					// type="label"
 					color="light"
-					label={taskProperty?.name || "Kein Objekt zugewiesen"}
+					label={property?.name || "Kein Objekt zugewiesen"}
 					icon="house"
 					// noBackground
 				/>
@@ -59,7 +62,6 @@ const DisplayProperty = ({
 						},
 						feedback: "Objekt erfolgreich zugewiesen"
 					});
-					await refetchTasks();
 					setLoading(false);
 					setSelectProperty(false);
 				}}

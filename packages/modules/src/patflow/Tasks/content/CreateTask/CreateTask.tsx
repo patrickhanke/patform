@@ -23,11 +23,7 @@ import "./styles.scss";
 import { isArray } from "lodash-es";
 import { isToday } from "date-fns";
 
-const CreateTask = ({
-	setRefetchTask,
-	button,
-	initialData
-}: CreateTaskProps) => {
+const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 	const { createData, updateData } = useDataHandler();
 	const { user, projectId } = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
@@ -65,7 +61,6 @@ const CreateTask = ({
 			}
 		]
 	});
-	console.log({ data });
 
 	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
 
@@ -191,15 +186,13 @@ const CreateTask = ({
 						}
 					});
 				}
-			}
+			},
+			feedback: "Aufgabe erfolgreich erstellt"
 		}).catch((error) => {
 			console.log(error);
 			setLoading(false);
 		});
 
-		if (setRefetchTask) {
-			setRefetchTask(new Date());
-		}
 		resetState();
 	}, [task, date]);
 
@@ -234,8 +227,6 @@ const CreateTask = ({
 			);
 		}
 	}, [date, setDate, secContent, task]);
-
-	console.log({ task });
 
 	return (
 		<>
@@ -436,7 +427,6 @@ const CreateTask = ({
 									}
 								}))}
 								deleteHandler={(image) => {
-									console.log({ image });
 									setTask((draft) => {
 										const index = draft.images.findIndex(
 											(i: string) => i === image.objectId
