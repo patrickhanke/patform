@@ -1,5 +1,9 @@
-import { PatflowProject, PatflowUser, PatflowUserRoleTypes } from "@repo/types";
-import { Dispatch } from "react";
+import {
+	PatflowProject,
+	PatflowUser,
+	PatflowUserRoleTypes,
+	Service
+} from "@repo/types";
 import {
 	Worker,
 	Record,
@@ -74,6 +78,7 @@ export type HolidayDataStore = Holiday & {
 };
 
 export type DataStoreState = {
+	services: Taks[];
 	holidays: HolidayDataStore[];
 	workers: WorkerDataStore[];
 	records: RecordDataStore[];
@@ -81,6 +86,7 @@ export type DataStoreState = {
 	surcharges: SurchargeDataStore[];
 	tasks: Task[];
 	tickets: Ticket[];
+	setServices: (services: Task[]) => void;
 	setHolidays: (holidays: HolidayDataStore[]) => void;
 	setWorkers: (workers: WorkerDataStore[]) => void;
 	setRecords: (records: RecordDataStore[]) => void;
@@ -92,12 +98,18 @@ export type DataStoreState = {
 		filters: Filter[],
 		skip: number,
 		limit: number,
-		propertyId: string
+		propertyId?: string
 	) => Task[];
 	getTickets: (
 		filters: Filter[],
 		skip: number,
 		limit: number,
-		propertyId: string
+		propertyId?: string
 	) => Ticket[];
+	getServices: (
+		filters: Filter[],
+		skip: number,
+		limit: number,
+		propertyId?: string
+	) => Task[];
 };

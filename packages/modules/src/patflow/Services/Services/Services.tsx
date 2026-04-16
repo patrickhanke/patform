@@ -1,25 +1,30 @@
 "use client";
 
 import { useContext, useMemo, useState } from "react";
-import { Page } from "@repo/ui";
+import { Icon, IconButton, Page } from "@repo/ui";
 import { Services as ServicesContent, ServicesOverview } from "./content";
-import { UserContext } from "@repo/provider";
+import { useDataStore, UserContext } from "@repo/provider";
+import { CreateTask } from "@repo/modules";
+
+const Button = ({ onClick }: { onClick: () => void }) => (
+	<IconButton
+		onClick={() => onClick()}
+		icon="plus"
+		text="Leistung hinzufügen"
+	/>
+);
 
 const Services = () => {
 	const { projectId } = useContext(UserContext);
 	const [createService, setCreateService] = useState<boolean>(false);
+	
 
-	const pageHeaderButtons = useMemo(() => {
-		return [
-			{
-				text: "Service erstellen",
-				onClick: () => setCreateService(true)
-			}
-		];
+	const createServiceButton = useMemo(() => {
+		return <CreateTask isService={true} button={Button} />;
 	}, []);
 
 	return (
-		<Page title="Leistungen" pageHeaderButtons={pageHeaderButtons}>
+		<Page title="Leistungen" pageHeaderContent={createServiceButton}>
 			<ServicesOverview
 				projectId={projectId}
 				createService={createService}

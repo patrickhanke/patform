@@ -1,4 +1,4 @@
-import { IconTypes } from "../Icon";
+import { IconTypes } from "@repo/ui";
 import { ClassState, UserTypes } from "@repo/types";
 
 type Options<T> = T extends "Absence"

@@ -1,103 +1,142 @@
-import { StatelessToggle, TableColumnTextfield } from "@repo/ui";
-import { ColumnDef } from "@tanstack/react-table";
-import { Service } from "@repo/types";
-import { useMemo } from "react";
-import { UseServiceSettingsTableColumns } from "../types";
-import ServicePropertiesColumn from "../components/ServicePropertiesColumn";
+"use client";
 
-const useServiceSettingsTableColumns: UseServiceSettingsTableColumns = ({
-	updateHandler
-}) => {
-	const columns: ColumnDef<Service>[] = useMemo(
-		() => [
+import { ColumnDef } from "@tanstack/react-table";
+import { useMemo } from "react";
+import { Task } from "@repo/types";
+import type { UseTaskColumnsProps } from "@repo/modules";
+import { getDateString } from "@repo/provider";
+import {
+	DisplayProperty,
+	DisplayTaskState,
+	TaskDate,
+	TaskSlideIn,
+	TeamAssignments,
+	TaskTitle
+} from "@repo/modules";
+
+const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
+	const columns: ColumnDef<Task>[] = useMemo(() => {
+		const col: ColumnDef<Task>[] = [
 			{
-				accessorKey: "name",
-				header: () => <span>Name</span>,
-				if: "name",
+				accessorFn: (task) => (
+					<TaskTitle
+						taskId={task.objectId}
+						taskTitle={task.title}
+						taskState={task.state}
+					/>
+				),
+				header: () => <span>Titel</span>,
+				id: "title",
 				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				sortingFn: "alphanumeric",
-				meta: {
-					exportLabel: "Name"
+				// footer: info => info.column.id,
+				enableSorting: true,
+				sortingFn: (rowA, rowB) => {
+					const titleA = rowA.original.title.toLowerCase();
+					const titleB = rowB.original.title.toLowerCase();
+					if (titleA < titleB) return -1;
+					if (titleA > titleB) return 1;
+					return 0;
 				}
 			},
 			{
-				accessorFn: (row) => (
-					<TableColumnTextfield
-						value={row.description}
-						isEditable={true}
-						onChange={(value) =>
-							updateHandler({
-								serviceId: row.objectId,
-								updateObject: { description: value }
-							})
+				accessorFn: (task) => <TaskDate taskId={task.objectId} />,
+				header: () => <span>Termin</span>,
+				id: "start_time",
+				cell: (info) => info.getValue(),
+				enableSorting: pageState === "active" ? true : false,
+				sortingFn: (rowA, rowB) => {
+					const dateA = rowA.original.dates[0]
+						? new Date(rowA.original.dates[0]).getTime()
+						: 0;
+					const dateB = rowB.original.dates[0]
+						? new Date(rowB.original.dates[0]).getTime()
+						: 0;
+					return dateA - dateB;
+				},
+				footer: (info) => info.column.id
+			},
+			{
+				accessorFn: (task) => (
+					<DisplayProperty
+						taskId={task.objectId}
+						taskProperty={task.property}
+						isEditable={pageState === "active"}
+					/>
+				),
+				header: () => <span>Objekt</span>,
+				id: "property",
+				cell: (info) => info.getValue(),
+				enableSorting: false,
+				footer: (info) => info.column.id
+			},
+			{
+				accessorFn: (task) => (
+					<DisplayTaskState taskState={task.state} />
+				),
+				header: () => <span>Status</span>,
+				id: "state",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id
+			},
+
+			{
+				accessorFn: (task) => (
+					<TeamAssignments task={task} showAsButton />
+				),
+				header: () => <span>Zugewiesen an</span>,
+				id: "absence_days",
+				enableSorting: false,
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id
+			},
+			{
+				accessorFn: (task) => (
+					<TaskSlideIn
+						task={task}
+						isEditable={
+							task.state === "created" ||
+							task.state === "assigned"
 						}
 					/>
 				),
-				header: () => <span>Beschreibung</span>,
-				id: "description",
+				header: () => <span>Info</span>,
+				id: "info",
+				enableSorting: false,
 				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				sortingFn: "alphanumeric",
-				meta: {
-					exportValue: (row: Service) => row.description ?? ""
-				}
-			},
-			{
-				accessorFn: (row) => (
-					<ServicePropertiesColumn
-						properties={row.properties}
-						onChange={async (value: string[]) => {
-							updateHandler({
-								serviceId: row.objectId,
-								updateObject: {
-									properties: value
-								}
-							});
-						}}
-					/>
-				),
-				header: () => <span>Objekte</span>,
-				id: "properties",
-				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				sortingFn: "alphanumeric",
-				meta: {
-					exportLabel: "Objekte",
-					exportValue: (row: Service) =>
-						Array.isArray(row.properties)
-							? row.properties.join(", ")
-							: ""
-				}
-			},
-			{
-				accessorFn: (row) => (
-					<StatelessToggle
-						value={row.is_active}
-						onChange={(value: boolean) =>
-							updateHandler({
-								serviceId: row.objectId,
-								updateObject: { is_active: value }
-							})
-						}
-					/>
-				),
-				header: () => <span>Aktiv</span>,
-				id: "is_active",
-				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				sortingFn: "alphanumeric",
-				meta: {
-					exportLabel: "Aktiv",
-					exportValue: (row: Service) =>
-						row.is_active ? "Aktiv" : "Inaktiv"
-				}
+				footer: (info) => info.column.id
 			}
-		],
-		[]
-	);
+		];
+
+		if (pageState !== "active") {
+			col.splice(2, 0, {
+				accessorFn: (task) =>
+					task.executed_at
+						? `${getDateString(task.executed_at?.iso).date} - ${getDateString(task.executed_at?.iso).time}`
+						: "-",
+				header: () => {
+					return <span>Ausgeführt am</span>;
+				},
+				id: "executed_at",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: true,
+				sortingFn: (rowA, rowB) => {
+					const dateA = rowA.original.executed_at
+						? new Date(rowA.original.executed_at?.iso).getTime()
+						: 0;
+					const dateB = rowB.original.executed_at
+						? new Date(rowB.original.executed_at?.iso).getTime()
+						: 0;
+					return dateA - dateB;
+					// return 0;
+				}
+			});
+		}
+
+		return col;
+	}, []);
 
 	return columns;
 };
 
-export default useServiceSettingsTableColumns;
+export default useTableColumns;

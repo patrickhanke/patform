@@ -1,5 +1,5 @@
 import { DateTypes, UserTypes } from "@/types/General";
-import { DateObject, User } from "@repo/types";
+import { DateObject, Task, User } from "@repo/types";
 
 export type Property = {
   objectId: string;
@@ -42,15 +42,8 @@ export type PropertySelect = {
   label: string;
 };
 
-export type Service = {
-  objectId: string;
-  name: string;
-  created_by: User | null | undefined;
-  description: string;
-  is_active: boolean;
-  project: string;
-  assigned_staff: string[];
-  properties: string[];
+export type Service = Task & {
+  is_service: true;
 };
 
 export type CreateService = Pick<

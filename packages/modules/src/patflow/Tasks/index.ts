@@ -1,5 +1,13 @@
 export { default as Tasks } from "./Tasks";
-export { default as TaskList } from "./content/TaskList";
-export { default as CreateTask } from "./content/CreateTask";
+export {
+	TaskList,
+	CreateTask,
+	DisplayProperty,
+	DisplayTaskState,
+	TaskDate,
+	TaskSlideIn,
+	TeamAssignments,
+	TaskTitle
+} from "./content";
 export type * from "./types";
-export type * from "./content/CreateTask";
+export type { UseTaskColumnsProps } from "./content";

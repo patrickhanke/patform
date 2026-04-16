@@ -1,3 +1,5 @@
+"use client";
+
 import { useDataHandler, useDataStore } from "@repo/provider";
 import { Modal, StateDisplay } from "@repo/ui";
 import "./styles.scss";

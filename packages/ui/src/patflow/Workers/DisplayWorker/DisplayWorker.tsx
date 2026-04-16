@@ -4,7 +4,7 @@ import { absence_type_options, PatflowAppContext } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import { DisplayWorkersProps } from "./types";
 import { Loader, StateDisplay } from "@repo/ui";
-import { Absence, Day } from "@repo/types";
+import { Absence, Day, Property } from "@repo/types";
 import "./styles.scss";
 import { Avatar, defineStyle } from "@chakra-ui/react";
 
@@ -13,10 +13,17 @@ const DisplayWorker = ({
 	showState = false,
 	nextDate,
 	showAvailability = false,
-	onlyImage = false
+	onlyImage = false,
+	propertyId
 }: DisplayWorkersProps) => {
 	const { year } = useContext(PatflowAppContext);
-	const { workers } = useDataStore();
+	const { workers, properties } = useDataStore();
+
+	const propertyData = useMemo(() => {
+		return properties.find(
+			(property: Property) => property.objectId === propertyId
+		);
+	}, [properties, propertyId]);
 
 	const { data, loading: dayLoading } = useFindData({
 		objectName: "Day",
@@ -46,7 +53,7 @@ const DisplayWorker = ({
 
 	const workerAbsence = useMemo(() => {
 		let isAbsent = false;
-		let type: Absence["type"] = "other";
+		let type: Absence["type"] = "vacation";
 		if (data && nextDate) {
 			const dates: Day[] = data;
 			const formattedNextDay = formatISO9075(new Date(nextDate), {
@@ -81,6 +88,8 @@ const DisplayWorker = ({
 		scale: 0.82
 	});
 
+	console.log({ propertyData });
+
 	if (dayLoading) return <Loader width={"24px"} height={"24px"} />;
 
 	if (worker) {
@@ -100,7 +109,7 @@ const DisplayWorker = ({
 					/>
 					<Avatar.Image
 						src={getImageUrl({
-							filePath: worker.portrait,
+							fileName: worker.portrait?.name || "",
 							height: 60,
 							width: 60
 						})}
@@ -110,7 +119,7 @@ const DisplayWorker = ({
 				{!onlyImage && (
 					<div>{`${worker.first_name} ${worker.last_name}`}</div>
 				)}
-				<div>
+				<div className="flex row a-ce j-sb gap-xs">
 					{showState &&
 						workerAbsence.isAbsent &&
 						workerAbsence.type &&
@@ -120,6 +129,15 @@ const DisplayWorker = ({
 								<StateDisplay
 									label={workerAbsence.label}
 									color={workerAbsence.color}
+								/>
+							</div>
+						)}
+					{propertyData &&
+						propertyData?.assigned_staff?.includes(workerId) && (
+							<div>
+								<StateDisplay
+									label="zugewiesen"
+									color="green"
 								/>
 							</div>
 						)}

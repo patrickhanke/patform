@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import { Task, TaskState } from "@repo/types";
+import { Service, Task, TaskState } from "@repo/types";
 import Parse from "../../../../general/data/parse";
 import useDataStore from "./useDataStore";
 
@@ -23,11 +23,12 @@ const toTask = (taskObject: Parse.Object) =>
 	}) as Task;
 
 const useTaskSubscription = (projectId?: string) => {
-	const { setTasks } = useDataStore();
+	const { setTasks, setServices } = useDataStore();
 
 	const fetchTasks = useCallback(async () => {
 		if (!projectId) {
 			setTasks([]);
+			setServices([]);
 			return;
 		}
 
@@ -53,9 +54,11 @@ const useTaskSubscription = (projectId?: string) => {
 
 			skip += TASK_PAGE_SIZE;
 		}
-
-		setTasks(fetchedTasks);
-	}, [projectId, setTasks]);
+		setServices(
+			fetchedTasks.filter((task) => task.is_service === true) as Service[]
+		);
+		setTasks(fetchedTasks.filter((task) => task.is_service !== true));
+	}, [projectId, setTasks, setServices]);
 
 	useEffect(() => {
 		void fetchTasks();

@@ -1,3 +1,5 @@
+"use client";
+
 import { useDataHandler, useGetData } from "@repo/provider";
 import { useEffect } from "react";
 import styles from "./TaskDescription.module.scss";

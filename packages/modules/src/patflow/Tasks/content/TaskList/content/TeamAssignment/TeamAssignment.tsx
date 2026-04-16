@@ -15,6 +15,7 @@ const TaskTeamAssignments: FC<TeamAssignmentProps> = ({
 					task={task}
 					showAsButton={showAsButton}
 					selectWorkers={isEditable}
+					propertyId={task.property?.objectId}
 				/>
 			</div>
 		</div>

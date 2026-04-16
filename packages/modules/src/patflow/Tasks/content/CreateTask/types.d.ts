@@ -12,6 +12,7 @@ export type SelectPropertyProps = {
 	setTask: Dispatch<SetStateAction<CreateTask>>;
 	task: CreateTask;
 	showPropertyOnly?: boolean;
+	isService?: boolean;
 };
 
 export type SelectWorkerProps = {

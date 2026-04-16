@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useMemo, useState } from "react";
 import { getDateString, useGetData } from "@repo/provider";
 import { DateSelectInterfaceTask, Loader, StateDisplay } from "@repo/ui";

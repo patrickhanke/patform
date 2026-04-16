@@ -12,7 +12,6 @@ const dataFilterHandler = (task: Task | Ticket, filters: Filter[]) => {
 		if (filter.operator === "in") {
 			const taskValues = task[filter.key as keyof (Task | Ticket)];
 			const filterValues = filter.value;
-			console.log({ taskValues, filterValues });
 			if (isArray(taskValues) && isArray(filterValues)) {
 				if (
 					!taskValues.some(

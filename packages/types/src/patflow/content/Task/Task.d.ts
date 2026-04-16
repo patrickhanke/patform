@@ -29,6 +29,7 @@ export type Task = {
   images: string[];
   executed_at?: { iso: TDateISO; date: string; time: string };
   category: "fixed" | "opportunity";
+  is_service?: boolean;
 };
 
 export type Comment = {

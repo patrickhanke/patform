@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useState, useMemo } from "react";
 import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
@@ -17,7 +19,7 @@ import {
 } from "@repo/ui";
 import { TaskSlideInProps } from "./types";
 import TaskSlideInTicketDetails from "./components/TaskSlideInTicketDetails";
-import { TaskDate } from "../TaskDate";
+import TaskDate from "../TaskDate";
 
 const TaskSlideIn: FC<TaskSlideInProps> = ({ task, isEditable = true }) => {
 	const { title } = task;

@@ -6,4 +6,5 @@ export type DisplayWorkersProps = {
 	showState?: boolean;
 	showAvailability?: boolean;
 	onlyImage?: boolean;
+	propertyId?: string;
 };

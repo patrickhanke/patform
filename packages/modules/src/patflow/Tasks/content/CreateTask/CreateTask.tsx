@@ -1,6 +1,10 @@
 "use client";
 
-import { DateSelectWithExternalState, DisplayWorker } from "@repo/ui";
+import {
+	DateSelectWithExternalState,
+	DisplayWorker,
+	IntervalSelectWithExternalState
+} from "@repo/ui";
 import clsx from "clsx";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useImmer } from "use-immer";
@@ -23,7 +27,7 @@ import "./styles.scss";
 import { isArray } from "lodash-es";
 import { isToday } from "date-fns";
 
-const CreateTask = ({ button, initialData }: CreateTaskProps) => {
+const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 	const { createData, updateData } = useDataHandler();
 	const { user, projectId } = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +37,7 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 	>("date");
 
 	const initialDate = {
-		type: modi_options[0],
+		type: isService ? modi_options[2] : modi_options[0],
 		category: date_category_options[0],
 		interval: {
 			number: 1,
@@ -64,6 +68,10 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 
 	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
 
+	console.log(date);
+	console.log(initialDate);
+	console.log(isService);
+
 	const resetState = () => {
 		setTask(initial_task);
 		setDate(initialDate);
@@ -88,40 +96,58 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 
 	useEffect(() => {
 		const errorArray: ErrorMessage[] = [];
-		if (!task.title) {
-			errorArray.push({
-				message: "Bitte einen Title für eine Aufgabe angeben",
-				key: "task_title",
-				id: "task_title"
-			});
-		}
-		if (!task.property) {
-			errorArray.push({
-				message: "Bitte ein zugehöriges Objekt angeben",
-				key: "taks_object",
-				id: "taks_object"
-			});
-		}
-		if (!date.next_dates || date.next_dates.length === 0) {
-			errorArray.push({
-				message: "Bitte das Datum vollständig ausfüllen",
-				key: "taks_date",
-				id: "taks_date"
-			});
-		}
 
-		if (isArray(date.next_dates)) {
-			const now = new Date();
-			const invalidDates = date.dates.filter(
-				(d) => d && new Date(d) < now && !isToday(new Date(d))
-			);
-
-			if (invalidDates.length > 0) {
+		if (isService) {
+			if (!task.title) {
 				errorArray.push({
-					message: "Bitte nur zukünftige Daten angeben",
-					key: "date",
-					id: "date_future"
+					message: "Bitte einen Title für eine Aufgabe angeben",
+					key: "task_title",
+					id: "task_title"
 				});
+			}
+			if (!task.properties || task.properties.length === 0) {
+				errorArray.push({
+					message: "Bitte mindestens ein Objekt auswählen",
+					key: "task_properties",
+					id: "task_properties"
+				});
+			}
+		} else {
+			if (!task.title) {
+				errorArray.push({
+					message: "Bitte einen Title für eine Aufgabe angeben",
+					key: "task_title",
+					id: "task_title"
+				});
+			}
+			if (!task.property) {
+				errorArray.push({
+					message: "Bitte ein zugehöriges Objekt angeben",
+					key: "taks_object",
+					id: "taks_object"
+				});
+			}
+			if (!date.next_dates || date.next_dates.length === 0) {
+				errorArray.push({
+					message: "Bitte das Datum vollständig ausfüllen",
+					key: "taks_date",
+					id: "taks_date"
+				});
+			}
+
+			if (isArray(date.next_dates)) {
+				const now = new Date();
+				const invalidDates = date.dates.filter(
+					(d) => d && new Date(d) < now && !isToday(new Date(d))
+				);
+
+				if (invalidDates.length > 0) {
+					errorArray.push({
+						message: "Bitte nur zukünftige Daten angeben",
+						key: "date",
+						id: "date_future"
+					});
+				}
 			}
 		}
 		setErrors(errorArray);
@@ -153,6 +179,12 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 			}
 		};
 
+		if (isService) {
+			updateObject["is_service"] = true;
+		} else {
+			updateObject["is_service"] = false;
+		}
+
 		if (task.ticket) {
 			updateObject["ticket"] = {
 				__type: "Pointer",
@@ -169,29 +201,64 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 			};
 		}
 
-		await createData({
-			className: "Task",
-			updateObject,
-			async afterSaveHandler(data) {
-				if (task.ticket) {
-					await updateData({
-						className: "Ticket",
-						objectId: task.ticket,
+		if (isService && task.properties) {
+			setLoading(true);
+			await Promise.all(
+				task.properties.map((property) =>
+					createData({
+						className: "Task",
 						updateObject: {
-							task: {
+							...updateObject,
+							property: {
 								__type: "Pointer",
-								className: "Task",
-								objectId: data.objectId
+								className: "Property",
+								objectId: property
+							}
+						},
+						async afterSaveHandler(data) {
+							if (task.ticket) {
+								await updateData({
+									className: "Ticket",
+									objectId: task.ticket,
+									updateObject: {
+										task: {
+											__type: "Pointer",
+											className: "Task",
+											objectId: data.objectId
+										}
+									}
+								});
 							}
 						}
-					});
-				}
-			},
-			feedback: "Aufgabe erfolgreich erstellt"
-		}).catch((error) => {
-			console.log(error);
+					})
+				)
+			);
 			setLoading(false);
-		});
+		} else {
+			await createData({
+				className: "Task",
+				updateObject,
+				async afterSaveHandler(data) {
+					if (task.ticket) {
+						await updateData({
+							className: "Ticket",
+							objectId: task.ticket,
+							updateObject: {
+								task: {
+									__type: "Pointer",
+									className: "Task",
+									objectId: data.objectId
+								}
+							}
+						});
+					}
+				},
+				feedback: "Aufgabe erfolgreich erstellt"
+			}).catch((error) => {
+				console.log(error);
+				setLoading(false);
+			});
+		}
 
 		resetState();
 	}, [task, date]);
@@ -216,9 +283,23 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 			);
 		}
 		if (secContent === "property") {
-			return <SelectProperty setTask={setTask} task={task} />;
+			return (
+				<SelectProperty
+					setTask={setTask}
+					task={task}
+					isService={isService}
+				/>
+			);
 		}
 		if (secContent === "date") {
+			if (isService) {
+				return (
+					<IntervalSelectWithExternalState
+						date={date}
+						dataHandler={setDate}
+					/>
+				);
+			}
 			return (
 				<DateSelectWithExternalState
 					date={date}
@@ -226,7 +307,7 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 				/>
 			);
 		}
-	}, [date, setDate, secContent, task]);
+	}, [date, setDate, secContent, task, isService]);
 
 	return (
 		<>
@@ -326,6 +407,7 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 											setTask={setTask}
 											task={task}
 											showPropertyOnly
+											isService={isService}
 										/>
 									</div>
 								) : (
@@ -371,29 +453,35 @@ const CreateTask = ({ button, initialData }: CreateTaskProps) => {
 									</button>
 								)}
 							</div>
-							<div>
-								<label>Ticket auswählen</label>
-								{task.ticket ? (
-									<div
-										className="content_element"
-										onClick={() => setSecContent("ticket")}
-									>
-										<SelectTicket
-											projectId={projectId}
-											setTask={setTask}
-											task={task}
-											showTicketOnly
-										/>
-									</div>
-								) : (
-									<button
-										className="full_button sm secondary"
-										onClick={() => setSecContent("ticket")}
-									>
-										Ticket wählen
-									</button>
-								)}
-							</div>
+							{!isService && (
+								<div>
+									<label>Ticket auswählen</label>
+									{task.ticket ? (
+										<div
+											className="content_element"
+											onClick={() =>
+												setSecContent("ticket")
+											}
+										>
+											<SelectTicket
+												projectId={projectId}
+												setTask={setTask}
+												task={task}
+												showTicketOnly
+											/>
+										</div>
+									) : (
+										<button
+											className="full_button sm secondary"
+											onClick={() =>
+												setSecContent("ticket")
+											}
+										>
+											Ticket wählen
+										</button>
+									)}
+								</div>
+							)}
 							<TextInput
 								label="Beschreibung"
 								id="description"

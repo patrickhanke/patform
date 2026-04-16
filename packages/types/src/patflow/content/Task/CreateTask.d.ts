@@ -26,10 +26,12 @@ export type CreateTaskUpdateObject = {
   category: string;
   dates: string[] | undefined;
   images: string[];
+  is_service?: boolean;
 };
 
 export type CreateTaskProps = {
   button?: React.FC<{ onClick: () => void }>;
+  isService?: boolean;
   initialData?: {
     assigned_staff?: [string];
     ticket?: string;
@@ -46,6 +48,8 @@ export type CreateTask = Pick<
   | "ticket"
   | "assigned_staff"
   | "images"
+  | "is_service"
 > & { property?: PropertyTypes.PropertySelect | undefined } & {
+  properties?: string[];
   time: DateObject | undefined;
 };

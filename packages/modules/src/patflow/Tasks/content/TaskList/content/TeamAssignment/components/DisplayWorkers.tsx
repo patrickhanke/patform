@@ -1,3 +1,5 @@
+"use client";
+
 import { DisplayWorker, SlideIn } from "@repo/ui";
 import { axiosclient, useDataStore } from "@repo/provider";
 import { StaffMember, Task, Worker } from "@repo/types";
@@ -13,14 +15,19 @@ import { AvatarGroup } from "@chakra-ui/react";
 const DisplayWorkers: FC<DisplayWorkerProps> = ({
 	task,
 	showAsButton = false,
-	selectWorkers = false
+	selectWorkers = false,
+	propertyId
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { workers } = useDataStore();
 	const [selectedWorkers, setSelectedWorkers] = useState<
 		Worker["objectId"][]
 	>(task.assigned_staff || []);
+
 	const [loading, setLoading] = useState(false);
+
+	console.log({ propertyId });
+	console.log({ workers });
 
 	const nextDate = useMemo(() => {
 		let date;
@@ -55,6 +62,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 								nextDate={nextDate}
 								showAvailability
 								showState
+								propertyId={propertyId}
 							/>
 						)
 					});
@@ -64,7 +72,7 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 		workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
 		return workerOptionsArray;
-	}, [workers]);
+	}, [workers, propertyId]);
 
 	const workerComponent = useMemo(
 		() => (
@@ -189,7 +197,6 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 										new_staff: [...selectedWorkers]
 									}
 								);
-								refetch();
 								setLoading(false);
 								setIsOpen(false);
 							}}

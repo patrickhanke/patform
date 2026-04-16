@@ -13,9 +13,12 @@ export const DisplayProperty = ({ title }: { title: string }) => (
 const SelectProperty: FC<SelectPropertyProps> = ({
 	setTask,
 	task,
-	showPropertyOnly = false
+	showPropertyOnly = false,
+	isService = false
 }) => {
 	const { properties } = useDataStore();
+
+	console.log(isService);
 
 	const elements = useMemo(() => {
 		const objectOptionsArray: PropertyOptions[] = [];
@@ -48,22 +51,39 @@ const SelectProperty: FC<SelectPropertyProps> = ({
 			title="Objekt auswählen"
 			elements={elements}
 			isSearchable
-			selectedElements={elements.filter(
-				(el) => el.value === task.property
+			selectedElements={elements.filter((el) =>
+				isService
+					? task.properties?.includes(el.value)
+					: el.value === task.property
 			)}
 			onSelect={(values) => {
-				if (values.length > 0) {
-					setTask((task: Task) => ({
-						...task,
-						property: values[0]?.value
-					}));
-				} else if (values.length === 0 && task.property) {
-					setTask((task: Task) => ({
-						...task,
-						property: undefined
-					}));
+				if (isService) {
+					if (values.length > 0) {
+						setTask((task: Task) => ({
+							...task,
+							properties: values.map((value) => value.value)
+						}));
+					} else if (values.length === 0 && task.property) {
+						setTask((task: Task) => ({
+							...task,
+							properties: []
+						}));
+					}
+				} else {
+					if (values.length > 0) {
+						setTask((task: Task) => ({
+							...task,
+							property: values[0]?.value
+						}));
+					} else if (values.length === 0 && task.property) {
+						setTask((task: Task) => ({
+							...task,
+							property: undefined
+						}));
+					}
 				}
 			}}
+			max={isService ? 200 : 1}
 		/>
 	);
 };

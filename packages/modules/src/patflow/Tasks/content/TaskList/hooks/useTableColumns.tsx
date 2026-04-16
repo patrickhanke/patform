@@ -2,13 +2,15 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { Task } from "@repo/types";
 import TaskTitle from "../components/TaskTitle";
-import DisplayProperty from "../content/DisplayPropery";
-import DisplayTaskState from "../content/DisplayTaskState";
-import TeamAssignments from "../content/TeamAssignment";
-import TaskSlideIn from "../content/TaskSlideIn";
 import { UseTaskColumnsProps } from "../types";
 import { getDateString } from "@repo/provider";
-import { TaskDate } from "../content/TaskDate";
+import {
+	DisplayProperty,
+	DisplayTaskState,
+	TaskDate,
+	TaskSlideIn,
+	TeamAssignments
+} from "../content";
 
 const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 	const columns: ColumnDef<Task>[] = useMemo(() => {

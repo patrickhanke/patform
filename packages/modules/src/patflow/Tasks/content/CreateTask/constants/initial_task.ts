@@ -9,7 +9,8 @@ const initial_task = {
 	images: [],
 	time: undefined,
 	property: undefined,
-	ticket: undefined
+	ticket: undefined,
+	properties: []
 };
 
 export default initial_task;

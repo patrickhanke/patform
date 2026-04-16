@@ -177,7 +177,13 @@ const Table: React.FC<TableTypes> = ({
 		<>
 			{pagination && setPagination && (
 				<div className="table_header">
-					<div className="table_header__filter_actions">
+					<div 
+						className="table_header__filter_actions" 
+						style={{ 
+							display: 
+								!filters && !exportColumns.length 
+								? "none" : "flex" 
+						}}>
 						{filters &&
 							setFilters &&
 							columns &&

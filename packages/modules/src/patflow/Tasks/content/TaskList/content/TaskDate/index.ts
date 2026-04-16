@@ -1,1 +1,1 @@
-export { default as TaskDate } from "./TaskDate";
+export { default } from "./TaskDate";

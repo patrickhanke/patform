@@ -1,13 +1,6 @@
 import { ApolloRefetch } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { Service } from "@repo/types";
-import { Dispatch, SetStateAction } from "react";
-
-export type ServiceSettingsProps = {
-	projectId: string;
-	createService: boolean;
-	setCreateService: Dispatch<SetStateAction<boolean>>;
-};
 
 export type UpdateHandler = (T: {
 	serviceId: string;

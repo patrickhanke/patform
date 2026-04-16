@@ -1,3 +1,5 @@
+"use client";
+
 import { useDataHandler } from "@repo/provider";
 import { useCallback } from "react";
 import styles from "./TaskImages.module.scss";

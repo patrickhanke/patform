@@ -1,3 +1,5 @@
+"use client";
+
 import { useDataHandler, useGetData } from "@repo/provider";
 import { useCallback } from "react";
 import CreateDocument from "./components/CreateDocument";

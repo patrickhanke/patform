@@ -11,6 +11,8 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 	properties: [],
 	tasks: [],
 	tickets: [],
+	services: [],
+	setServices: (services) => set({ services }),
 	setSurcharges: (surcharges) => set({ surcharges }),
 	setHolidays: (holidays) => set({ holidays }),
 	setWorkers: (workers) => set({ workers }),
@@ -22,7 +24,7 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 		filters: Filter[],
 		skip: number,
 		limit: number,
-		propertyId: string
+		propertyId?: string
 	) =>
 		get()
 			.tasks.filter((task) => {
@@ -42,7 +44,7 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 		filters: Filter[],
 		skip: number,
 		limit: number,
-		propertyId: string
+		propertyId?: string
 	) =>
 		get()
 			.tickets.filter((ticket) => {
@@ -57,7 +59,30 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 				}
 				return match;
 			})
-			.slice(skip, skip + limit)
+			.slice(skip, skip + limit),
+	getServices: (
+		filters: Filter[],
+		skip: number,
+		limit: number,
+		propertyId?: string
+	) => {
+		const services = get().services;
+
+		return services
+			.filter((service) => {
+				let match = true;
+				if (filters.length > 0) {
+					match = dataFilterHandler(service, filters);
+				}
+				if (propertyId) {
+					if (!service?.properties?.includes(propertyId)) {
+						match = false;
+					}
+				}
+				return match;
+			})
+			.slice(skip, skip + limit);
+	}
 }));
 
 export default useDataStore;

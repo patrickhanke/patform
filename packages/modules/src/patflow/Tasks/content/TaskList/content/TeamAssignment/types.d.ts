@@ -11,6 +11,7 @@ export type DisplayWorkerProps = {
 	task: Task;
 	showAsButton?: boolean;
 	selectWorkers?: boolean;
+	propertyId?: string;
 };
 
 export type WorkerOption = {

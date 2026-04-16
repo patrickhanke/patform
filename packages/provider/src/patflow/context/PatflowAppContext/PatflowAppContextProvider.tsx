@@ -15,7 +15,7 @@ import {
 	useTicketSubscription
 } from "@repo/provider";
 import { RoleUsers } from "./types";
-import { PatflowUserRole } from "@repo/types";
+import { PatflowUserRole, Property } from "@repo/types";
 import { CreateTask, CreateTicket } from "@repo/modules";
 import dynamic from "next/dynamic";
 import { useAppContext } from "@repo/provider";
@@ -78,7 +78,11 @@ const PatflowAppContextProvider = ({
 			"name",
 			"created_by { objectId first_name last_name portrait }",
 			"value: objectId",
-			"label"
+			"label",
+			"assigned_staff",
+			"images",
+			"settings",
+			"archived"
 		],
 		projectId
 	});
@@ -173,7 +177,9 @@ const PatflowAppContextProvider = ({
 			.join(",");
 		if (ids !== prevPropertyIdsRef.current) {
 			prevPropertyIdsRef.current = ids;
-			setProperties(propertyData ?? []);
+			setProperties(
+				propertyData.filter((p: Property) => !p.archived) ?? []
+			);
 		}
 	}, [propertyData, setProperties]);
 
