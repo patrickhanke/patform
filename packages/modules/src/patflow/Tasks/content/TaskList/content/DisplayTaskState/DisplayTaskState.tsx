@@ -1,20 +1,21 @@
 import { TaskState } from "@repo/types";
 import { StateDisplay, StateSelect } from "@repo/ui";
-import { task_state_options } from "@repo/provider";
+import { task_state_options, useDataHandler } from "@repo/provider";
 import "./styles.scss";
 
 const DisplayTaskState = ({
 	taskState,
+	taskId,
 	isService = false
 }: {
 	taskState: TaskState;
 	isService?: boolean;
+	taskId?: string;
 }) => {
+	const { updateData } = useDataHandler();
 	const state: (typeof task_state_options)[number] = task_state_options.find(
 		(state) => state.value === taskState
 	) as (typeof task_state_options)[number];
-
-	console.log({ isService });
 
 	if (isService) {
 		const service_state_options = task_state_options.filter(
@@ -28,7 +29,15 @@ const DisplayTaskState = ({
 					icon="info"
 					type="state"
 					stateSelectHandler={(state) => {
-						console.log(state);
+						if (taskId) {
+							updateData({
+								className: "Task",
+								objectId: taskId,
+								updateObject: {
+									state: state.value
+								}
+							});
+						}
 					}}
 				/>
 			</div>

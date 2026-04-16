@@ -26,9 +26,6 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 
 	const [loading, setLoading] = useState(false);
 
-	console.log({ propertyId });
-	console.log({ workers });
-
 	const nextDate = useMemo(() => {
 		let date;
 		if (task.assigned_staff) {

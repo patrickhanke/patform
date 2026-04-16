@@ -4,7 +4,12 @@ import { FC, useState, useMemo } from "react";
 import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
 import styles from "./TaskSlideIn.module.scss";
-import { getDateString, useDataHandler, useGetData } from "@repo/provider";
+import {
+	getDateString,
+	useDataHandler,
+	useDataStore,
+	useGetData
+} from "@repo/provider";
 import TaskDocuments from "../TaskDocuments";
 import TaskImages from "../TaskImages";
 import DisplayTaskState from "../DisplayTaskState";
@@ -20,26 +25,24 @@ import {
 import { TaskSlideInProps } from "./types";
 import TaskSlideInTicketDetails from "./components/TaskSlideInTicketDetails";
 import TaskDate from "../TaskDate";
+import { Ticket } from "@repo/types";
 
-const TaskSlideIn: FC<TaskSlideInProps> = ({ task, isEditable = true }) => {
+const TaskSlideIn: FC<TaskSlideInProps> = ({
+	task,
+	isEditable = true,
+	isService = false
+}) => {
 	const { title } = task;
 	const taskId = task.objectId;
 	const { deleteData } = useDataHandler();
 	const [deleteTask, setDeleteTask] = useState(false);
 	const [showDetails, setShowDetails] = useState(false);
 
-	const { data: ticketData } = useGetData({
-		objectName: "Ticket",
-		fields: [
-			"objectId",
-			"title",
-			"description",
-			"images",
-			"created_by { objectId username }"
-		],
-		id: taskId,
-		skip: !task || !task.ticket
-	});
+	const { tickets } = useDataStore();
+
+	const ticketData = useMemo(() => {
+		return tickets.find((ticket: Ticket) => ticket.objectId === taskId);
+	}, [tickets, taskId]);
 
 	const { data: dataDocuments, refetch: refetchDocuments } = useGetData({
 		objectName: "Document",
@@ -52,7 +55,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ task, isEditable = true }) => {
 			{
 				value: "comments",
 				label: "Kommentare",
-				disabled: false
+				disabled: isService
 			},
 			{
 				value: "images",
@@ -67,11 +70,11 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ task, isEditable = true }) => {
 			{
 				value: "ticket",
 				label: "Ticket",
-				disabled: !ticketData
+				disabled: !ticketData || isService
 			}
 		] as const;
 		return buttonStates;
-	}, [task, ticketData]);
+	}, [task, ticketData, isService]);
 
 	const [buttonState, setButtonState] = useState<
 		(typeof buttonStates)[number]
@@ -109,7 +112,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ task, isEditable = true }) => {
 						isEditable={isEditable}
 					/>
 				)}
-				{buttonState.value === "ticket" && task && (
+				{buttonState.value === "ticket" && task && ticketData && (
 					<TaskSlideInTicketDetails ticket={ticketData} />
 				)}
 			</div>
@@ -127,6 +130,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({ task, isEditable = true }) => {
 				<IconButton
 					icon="comments"
 					text={task ? task.comments.length.toString() : "0"}
+					disabled={isService}
 					onClick={() => {
 						setShowDetails(true);
 						setButtonState(buttonStates[0]);

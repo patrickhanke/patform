@@ -71,7 +71,11 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 			},
 			{
 				accessorFn: (task) => (
-					<DisplayTaskState taskState={task.state} />
+					<DisplayTaskState
+						taskId={task.objectId}
+						taskState={task.state}
+						isService
+					/>
 				),
 				header: () => <span>Status</span>,
 				id: "state",
@@ -97,6 +101,7 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 							task.state === "created" ||
 							task.state === "assigned"
 						}
+						isService
 					/>
 				),
 				header: () => <span>Info</span>,
