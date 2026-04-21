@@ -15,9 +15,6 @@ const SiteHeaderContent = ({
 }: SiteHeaderContentComponent) => {
 	const { properties, workers } = useDataStore();
 
-	console.log({ properties });
-	console.log({ workers });
-
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const pathname = usePathname();

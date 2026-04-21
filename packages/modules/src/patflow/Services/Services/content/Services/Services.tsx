@@ -1,3 +1,5 @@
+"use client";
+
 import { useDataStore } from "@repo/provider";
 import { useMemo, useState } from "react";
 import { AddEditServiceState, ServiceData } from "./types";

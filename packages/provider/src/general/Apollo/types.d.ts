@@ -13,6 +13,7 @@ type QueryProps = {
 	queryName: string;
 	fields: fields;
 	constraints?: Filter[];
+	is_user_class?: boolean;
 };
 
 type ParamsHandlerProps = {

@@ -74,6 +74,7 @@ const MultiDateSelectInterface = ({
 					</div>
 				)
 			)}
+			<div className="divider" />
 			<CreateButton
 				text="Neues Datum hinzufügen"
 				size="small"

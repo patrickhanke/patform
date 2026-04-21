@@ -56,13 +56,13 @@ const UserMenu: FC<UserMenuProps> = ({
             {user.portrait ? (
               <Image
                 src={getImageUrl({
-                  fileName: user.portrait,
+                  fileName: user.portrait.name,
                   width: 80,
                   height: 80,
                 })}
                 height={40}
                 width={40}
-                alt={user.email}
+                alt={user.label}
               />
             ) : (
               <Icon

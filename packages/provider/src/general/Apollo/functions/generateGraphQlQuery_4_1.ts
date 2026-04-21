@@ -61,13 +61,26 @@ const generateGraphQLQuery_4_1: GenerateGraphQLQueryFunction = ({
 	type,
 	objectName,
 	queryName,
-	fields
+	fields,
+	is_user_class = false
 }) => {
 	const fieldsString = getQueryStringFromFields(fields || []);
 
 	const processedFields = stringreplace(fieldsString);
 
-	if (type === "find") {
+	if (is_user_class && type === "find") {
+		return gql`
+            query ${type}${objectName}($params: ${objectName}WhereInput, $first: Int, $skip: Int, $order: [${objectName}Order!]) {
+                ${queryName}(where: $params, first: $first, skip: $skip, order: $order) {
+                    edges {
+                        node {
+                            ${processedFields}
+                        }
+                    }
+                }
+            }
+        `;
+	} else if (type === "find") {
 		return gql`
             query ${type}${objectName}($params: ${objectName}WhereInput, $first: Int, $skip: Int, $order: [${objectName}Order!]) {
                 ${queryName}(where: $params, first: $first, skip: $skip, order: $order) {

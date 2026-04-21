@@ -8,7 +8,7 @@ import IntervalDateSelectInterface from "./components/IntervalDateSelectInterfac
 import { DateSelectExternalStateProps } from "./types";
 import { Divider } from "@repo/ui";
 
-const DateSelectWithExternalState = ({
+const IntervalSelectWithExternalState = ({
 	date,
 	dataHandler
 }: DateSelectExternalStateProps) => {
@@ -69,4 +69,4 @@ const DateSelectWithExternalState = ({
 	);
 };
 
-export default DateSelectWithExternalState;
+export default IntervalSelectWithExternalState;

@@ -14,17 +14,17 @@ import {
 	DateObjectWithNextDates,
 	ErrorMessage
 } from "@repo/types";
-import { SlideIn, TextInput, ImageUploader } from "@repo/ui";
-import { getDateString, UserContext } from "@repo/provider";
 import {
-	date_category_options,
-	DateSelectWithExternalState,
-	DisplayWorker,
-	modi_options
+	SlideIn,
+	TextInput,
+	ImageUploader,
+	DateSelectInterface
 } from "@repo/ui";
+import { getDateString, UserContext } from "@repo/provider";
+import { date_category_options, DisplayWorker, modi_options } from "@repo/ui";
 import SelectWorker from "./components/SelectWorker";
 import clsx from "clsx";
-import styles from "./AddService.module.scss";
+import "./add_service.scss";
 
 const AddService: FC<AddServiceProps> = ({
 	addService,
@@ -182,9 +182,10 @@ const AddService: FC<AddServiceProps> = ({
 		}
 		if (secContent === "date") {
 			return (
-				<DateSelectWithExternalState
-					date={date}
-					dataHandler={setDate}
+				<DateSelectInterface
+					isInline
+					externalDate={date}
+					setExternalDate={setDate}
 				/>
 			);
 		}
@@ -218,12 +219,12 @@ const AddService: FC<AddServiceProps> = ({
 		>
 			<div
 				className={clsx(
-					styles.create_service_container,
+					"add_service_create_service_container",
 					"flexbox_column_with_gap"
 				)}
 			>
-				<div className={styles.main_inputs_container}>
-					<div className={styles.inputs_container}>
+				<div className="add_service_main_inputs_container">
+					<div className="add_service_inputs_container">
 						<TextInput
 							label="Service"
 							id="name"
@@ -263,7 +264,7 @@ const AddService: FC<AddServiceProps> = ({
 						<div>
 							<label>Arbeiter zuweisen</label>
 							{service.assigned_staff.length > 0 ? (
-								<div className={styles.worker_container}>
+								<div className="add_service_worker_container">
 									{service.assigned_staff.map((workerId) => (
 										<div
 											key={workerId}

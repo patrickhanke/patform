@@ -29,7 +29,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 			type: "find",
 			objectName,
 			queryName,
-			fields
+			fields,
+			is_user_class: objectName === "User" || objectName === "_User"
 		}),
 		{
 			variables: {

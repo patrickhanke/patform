@@ -1,9 +1,4 @@
-import {
-	PatflowProject,
-	PatflowUser,
-	PatflowUserRoleTypes,
-	Service
-} from "@repo/types";
+import { PatflowProject, PatflowUser, PatflowUserRoleTypes } from "@repo/types";
 import {
 	Worker,
 	Record,

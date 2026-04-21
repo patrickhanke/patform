@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import styles from "./TeamAssignment.module.scss";
 import DisplayWorkers from "./components/DisplayWorkers";
 import { TeamAssignmentsProps } from "./types";

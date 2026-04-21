@@ -25,7 +25,7 @@ export type FileUplaoderProps = {
 export type UplaoderProps = {
 	type?: "image" | "file";
 	afterUploadHandler?: (images: string[]) => void | Promise<void>;
-	className: "Download" | "Image" | "User";
+	className: "Download" | "Image" | "User" | "_User";
 	classKey: string;
 	classId?: string;
 	setLoading?: Dispatch<SetStateAction<boolean>>;

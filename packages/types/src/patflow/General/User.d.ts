@@ -28,9 +28,10 @@ export type PatflowUser = {
   color: typeof colors[number]["value"];
   role: PatflowUserRole;
   is_worker: boolean;
-  portrait: Image;
+  portrait: ParseImage | null;
   projects: string[];
   notification_settings: {[key: string]: boolean};
+  label: string;
   data: {
     street: string;
     zip: string;

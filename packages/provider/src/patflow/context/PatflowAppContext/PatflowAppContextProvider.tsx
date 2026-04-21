@@ -55,7 +55,7 @@ const PatflowAppContextProvider = ({
 			"first_name",
 			"last_name",
 			"email",
-			"portrait",
+			"portrait { name url }",
 			"color",
 			"time_settings",
 			"is_worker",

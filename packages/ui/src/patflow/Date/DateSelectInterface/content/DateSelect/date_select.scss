@@ -51,17 +51,6 @@
   background-color: constants.$secondary;
 }
 
-.footer {
-  @include constants.flexbox(
-    $direction: column,
-    $align: flex-start,
-    $justify: flex-end
-  );
-  height: 100%;
-  width: 100%;
-  padding: map-get(constants.$padding, "md");
-}
-
 .interval_info_container {
   width: 100%;
   height: auto;

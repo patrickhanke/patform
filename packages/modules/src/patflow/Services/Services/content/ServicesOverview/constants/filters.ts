@@ -2,21 +2,21 @@ import { ModuleFilter } from "@repo/types";
 
 const filter_columns: ModuleFilter[] = [
 	{
-		field: "name",
+		field: "title",
 		operator: "matchesRegex",
 		type: "string",
-		id: "name",
+		id: "title",
 		label: "Name"
 	},
 	{
-		field: "properties",
+		field: "property",
 		operator: "have",
 		type: "pointer",
-		id: "properties",
-		label: "Properties",
+		id: "property",
+		label: "property",
 		options: {
 			class_name: "Property",
-			search_path: "name"
+			search_path: "id"
 		}
 	}
 ];

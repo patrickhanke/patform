@@ -1,9 +1,25 @@
 import { Task, Filter, Ticket } from "@repo/types";
-import { isArray } from "lodash-es";
+import { get, isArray } from "lodash-es";
 
 const dataFilterHandler = (task: Task | Ticket, filters: Filter[]) => {
 	let match = true;
 	for (const filter of filters) {
+		if (filter.operator === "matchesRegex") {
+			if (
+				!task[filter.key as keyof (Task | Ticket)]?.includes(
+					filter.value
+				)
+			) {
+				match = false;
+			}
+		}
+		if (filter.operator === "have") {
+			const filterValue = get(filter, `value.id.equalTo`, undefined);
+			const taskValue = get(task, `${filter.key}.objectId`, undefined);
+			if (taskValue !== filterValue) {
+				match = false;
+			}
+		}
 		if (filter.operator === "equalTo") {
 			if (task[filter.key as keyof (Task | Ticket)] !== filter.value) {
 				match = false;

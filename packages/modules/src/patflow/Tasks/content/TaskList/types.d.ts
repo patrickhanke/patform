@@ -19,6 +19,9 @@ export type TaskListComponent = {
 	enableRowSelection?: boolean;
 	selectedRows?: string[];
 	setSelectedRows?: Dispatch<SetStateAction<string[]>>;
+	filters?: Filter[];
+	setFilters?: Dispatch<SetStateAction<Filter[]>>;
+	filterColumns?: ModuleFilter[];
 };
 
 export type UseTaskColumnsProps = {

@@ -6,7 +6,7 @@ import {
 	SlideIn
 } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
-import { PatstoreAppContext, generateGraphQLQuery } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import { useFindData } from "@repo/provider";
 import { PersonClass } from "@repo/types";
 

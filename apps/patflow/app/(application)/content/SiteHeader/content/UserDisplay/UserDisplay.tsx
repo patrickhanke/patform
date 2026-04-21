@@ -3,7 +3,7 @@
 import "./styles.scss";
 import { Icon, MessageIndicator } from "@repo/ui";
 import { FC, useContext, useEffect, useMemo, useState } from "react";
-import { NotificationContext, UserContext } from "@repo/provider";
+import { getImageUrl, NotificationContext, UserContext } from "@repo/provider";
 import { UserDisplayProps } from "./types";
 import { AnimatePresence } from "motion/react";
 import UserMenu from "./content/UserMenu/UserMenu";
@@ -17,13 +17,6 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
     const [client, setClient] = useState(false);
     const { unreadNotifications } = useContext(NotificationContext);
 
-    const userData = useMemo(() => {
-        return {
-        url: "",
-        alt: "",
-        };
-    }, [user]);
-
     useEffect(() => {
         setClient(true);
     }, []);
@@ -36,8 +29,8 @@ const UserDisplay: FC<UserDisplayProps> = ({ userMessages = false }) => {
                 onClick={() => setUserMenu(!userMenu)}
             >
             <div className={"patflow_user_image_container"}>
-                {client && userData.url ? (
-                    <Image src={userData.url} alt={userData.alt} width={24} height={24} />
+                {client && user.portrait ? (
+                    <Image src={getImageUrl({ fileName: user?.portrait?.name })} alt={user.label} width={24} height={24} />
                 ) : (
                     <div className={"patflow_user_image_placeholder"} />
                 )}

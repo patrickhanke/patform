@@ -280,12 +280,12 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 		}: {
 			file: File;
 			name: string;
-			className: "Download" | "Image" | "_User";
+			className: "Download" | "Image" | "User" | "_User";
 			classKey: string;
 			classId?: string;
 			afterSaveHandler?: (data: any) => void;
 			feedback?: string;
-			moduleId: string;
+			moduleId?: string;
 		}) => {
 			const replaceUmlaute = (fileName: string): string => {
 				return fileName

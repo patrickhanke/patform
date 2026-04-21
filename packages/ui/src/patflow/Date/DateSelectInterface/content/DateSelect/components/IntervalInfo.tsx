@@ -1,23 +1,23 @@
-import React from "react";
-import styles from "../DateSelect.module.scss";
+import "../date_select.scss";
 import { IntervalInfoProps } from "../types";
 import { getDateString } from "@repo/provider";
 
 const IntervalInfo = ({ dates }: IntervalInfoProps) => {
-  return (
-    <div className={styles.interval_info_container}>
-      <label>Terminvorschau</label>
-      <div className={styles.interval_info_content}>
-        {dates.map((date) => (
-          <div key={date} className={styles.interval_info_element}>
-            <p>
-              {getDateString(date).date} - {getDateString(date).time}
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+	return (
+		<div className={"interval_info_container"}>
+			<label>Terminvorschau</label>
+			<div className={"interval_info_content"}>
+				{dates.map((date) => (
+					<div key={date} className={"interval_info_element"}>
+						<p>
+							{getDateString(date).date} -{" "}
+							{getDateString(date).time}
+						</p>
+					</div>
+				))}
+			</div>
+		</div>
+	);
 };
 
 export default IntervalInfo;

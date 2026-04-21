@@ -88,8 +88,6 @@ const DisplayWorker = ({
 		scale: 0.82
 	});
 
-	console.log({ propertyData });
-
 	if (dayLoading) return <Loader width={"24px"} height={"24px"} />;
 
 	if (worker) {

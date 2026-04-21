@@ -1,7 +1,7 @@
 "use client";
 
 import {
-	DateSelectWithExternalState,
+	DateSelectInterface,
 	DisplayWorker,
 	IntervalSelectWithExternalState
 } from "@repo/ui";
@@ -68,7 +68,7 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 
 	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
 
-	console.log(date);
+	console.log({ date });
 	console.log(initialDate);
 	console.log(isService);
 
@@ -127,7 +127,7 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 					id: "taks_object"
 				});
 			}
-			if (!date.next_dates || date.next_dates.length === 0) {
+			if (!date?.next_dates || date?.next_dates?.length === 0) {
 				errorArray.push({
 					message: "Bitte das Datum vollständig ausfüllen",
 					key: "taks_date",
@@ -135,7 +135,7 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 				});
 			}
 
-			if (isArray(date.next_dates)) {
+			if (isArray(date?.next_dates)) {
 				const now = new Date();
 				const invalidDates = date.dates.filter(
 					(d) => d && new Date(d) < now && !isToday(new Date(d))
@@ -155,6 +155,16 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 
 	const createTask = useCallback(async () => {
 		setLoading(true);
+		if (!date) {
+			setErrors([
+				{
+					message: "Bitte ein Datum auswählen",
+					key: "task_date",
+					id: "task_date"
+				}
+			]);
+			return;
+		}
 		const updateObject: CreateTaskUpdateObject = {
 			title: task.title,
 			created_by: {
@@ -170,7 +180,7 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 			images: task.images || [],
 			type: date.type.value,
 			category: date.category.value,
-			dates: date.next_dates,
+			dates: date?.next_dates,
 			time: date,
 			project: {
 				__type: "Pointer",
@@ -301,9 +311,10 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 				);
 			}
 			return (
-				<DateSelectWithExternalState
-					date={date}
-					dataHandler={setDate}
+				<DateSelectInterface
+					isInline
+					externalDate={date}
+					setExternalDate={setDate}
 				/>
 			);
 		}
@@ -366,9 +377,9 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 							/>
 							<div>
 								<label>Datum auswählen</label>
-								{date.dates.length > 0 ? (
+								{date?.dates?.length > 0 ? (
 									<div>
-										{date.dates.map((date: string) => (
+										{date?.dates?.map((date: string) => (
 											<div
 												key={date}
 												className="content_element"

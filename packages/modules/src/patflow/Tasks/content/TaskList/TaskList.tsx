@@ -13,7 +13,10 @@ const TaskList = ({
 	filterContent,
 	enableRowSelection = false,
 	selectedRows,
-	setSelectedRows
+	setSelectedRows,
+	filters,
+	setFilters,
+	filterColumns
 }: TaskListComponent) => {
 	const columns = useTableColumns({
 		pageState
@@ -32,6 +35,9 @@ const TaskList = ({
 					enableRowSelection={enableRowSelection}
 					selectedRows={selectedRows}
 					setSelectedRows={setSelectedRows}
+					filters={filters}
+					setFilters={setFilters}
+					filterColumns={filterColumns}
 				/>
 			</div>
 		</>

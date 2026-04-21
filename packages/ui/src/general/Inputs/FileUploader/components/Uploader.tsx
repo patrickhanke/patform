@@ -1,11 +1,15 @@
+"use client";
+
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { UplaoderProps } from "../types";
-import { useDataHandler, PatstoreAppContext } from "@repo/provider";
+import { useDataHandler, PatstoreAppContext, useDataHandlerSecure } from "@repo/provider";
 import { ErrorMessage } from "@repo/types";
 import { Alert, Box, FileUpload, Icon, Input } from "@chakra-ui/react";
 import { LuUpload } from "react-icons/lu";
 import { ErrorDisplay, IconButton } from "@repo/ui";
 import getAcceptedFiles from "../constants/getAcceptedFiles";
+
+console.log(process.env.APP_NAME);
 
 const Uploader: React.FC<UplaoderProps> = ({
 	type = "image",
@@ -25,7 +29,9 @@ const Uploader: React.FC<UplaoderProps> = ({
 
 	const [isUploading, setIsUploading] = useState(false);
 
-	const moduleId = modules.find(
+	const appName = process.env.APP_NAME;
+
+	const moduleId = modules?.find(
 		(module) => module.connected_class === className
 	)?.objectId;
 
@@ -38,7 +44,7 @@ const Uploader: React.FC<UplaoderProps> = ({
 			setLoading(true);
 		}
 
-		if (!moduleId) {
+		if (appName === "patstore" && !moduleId) {
 			setErrors([
 				{
 					id: "1",
@@ -49,15 +55,17 @@ const Uploader: React.FC<UplaoderProps> = ({
 			]);
 		}
 
-		if (moduleId && files) {
+		if (appName === "patflow") {
 			const images: any[] = [];
+			if (!files) {
+				return;
+			}
 			for (const file of files) {
 				const fileName: string =
 					customFileNames.get(file.name) || file.name;
 				try {
 					const upload = await createUpdateFile({
 						file: file,
-						moduleId,
 						name: fileName,
 						classKey,
 						classId,
@@ -92,7 +100,53 @@ const Uploader: React.FC<UplaoderProps> = ({
 			if (afterUploadHandler) {
 				afterUploadHandler(images);
 			}
+		} else {
+			if (moduleId && files) {
+				const images: any[] = [];
+				for (const file of files) {
+					const fileName: string =
+						customFileNames.get(file.name) || file.name;
+					try {
+						const upload = await createUpdateFile({
+							file: file,
+							moduleId,
+							name: fileName,
+							classKey,
+							classId,
+							className
+						});
+						images.push(upload);
+					} catch (error: any) {
+						let errorMessage = "Unbekannter Fehler";
+
+						if (error.code === 122) {
+							errorMessage =
+								"Diese Datei hat ungültige Zeichen in ihrem Dateinamen (bspw. &, % ...). Bitte benennen Sie die Datei um und versuchen Sie es erneut.";
+						}
+						if (
+							!error.code &&
+							error.message.includes("request entity too large")
+						) {
+							errorMessage =
+								"Die Datei ist zu groß. Bitte versuchen Sie es mit einer kleineren Datei.";
+						}
+
+						setErrors((prev) => [
+							...prev,
+							{
+								id: `${prev.length + 1}`,
+								key: "uploadError",
+								message: `${fileName}: ${errorMessage}`
+							} as ErrorMessage
+						]);
+					}
+				}
+				if (afterUploadHandler) {
+					afterUploadHandler(images);
+				}
+			}
 		}
+
 		setIsUploading(false);
 		if (setLoading) {
 			setLoading(false);

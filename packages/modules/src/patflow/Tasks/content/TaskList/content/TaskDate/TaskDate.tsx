@@ -1,24 +1,28 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import { getDateString, useGetData } from "@repo/provider";
-import { DateSelectInterfaceTask, Loader, StateDisplay } from "@repo/ui";
+import { getDateString } from "@repo/provider";
+import { DateSelectInterface, Loader, StateDisplay } from "@repo/ui";
 import { formatISO9075 } from "date-fns";
 import { getISOWeek, startOfISOWeek, endOfISOWeek } from "date-fns";
 import { Task } from "@repo/types";
 
-const TaskDate: FC<TaskDateProps> = ({ taskId, isEditable = true }) => {
+const TaskDate: FC<TaskDateProps> = ({
+	task,
+	isEditable = true,
+	isService = false
+}) => {
 	const [showInterface, setShowInterface] = useState(false);
-	const { data } = useGetData({
-		objectName: "Task",
-		fields: ["objectId", "dates", "state", "time"],
-		id: taskId
-	});
+
+	const data = task;
+
 	const nextDate = useMemo(() => {
 		let value = "Kein Termin";
 		let is_overdue = false;
 		let allDates: string[] = [];
 		let color = "light";
+
+		console.log({ data });
 
 		if (data) {
 			const task = data;
@@ -55,7 +59,7 @@ const TaskDate: FC<TaskDateProps> = ({ taskId, isEditable = true }) => {
 						const lastDayStr = `${lastDay.getDate().toString().padStart(2, "0")}.${(lastDay.getMonth() + 1).toString().padStart(2, "0")}`;
 						value = `KW ${week} (${firstDayStr} - ${lastDayStr}) - T`;
 					}
-					if (timeCopy.category.value === "interval") {
+					if (timeCopy.type.value === "interval") {
 						color = "yellow";
 					}
 					if (
@@ -94,7 +98,7 @@ const TaskDate: FC<TaskDateProps> = ({ taskId, isEditable = true }) => {
 							const lastDayStr = `${lastDay.getDate().toString().padStart(2, "0")}.${(lastDay.getMonth() + 1).toString().padStart(2, "0")}`;
 							value = `KW ${week} (${firstDayStr} - ${lastDayStr}) - T`;
 						}
-						if (timeCopy.category.value === "interval") {
+						if (timeCopy.type.value === "interval") {
 							color = "green";
 						}
 						if (
@@ -127,7 +131,9 @@ const TaskDate: FC<TaskDateProps> = ({ taskId, isEditable = true }) => {
 	if (data) {
 		const task = data;
 		const taskIsEditable =
-			task.state === "assigned" || task.state === "created";
+			task.state === "assigned" ||
+			task.state === "created" ||
+			task.state === "executed";
 
 		return (
 			<>
@@ -147,10 +153,11 @@ const TaskDate: FC<TaskDateProps> = ({ taskId, isEditable = true }) => {
 					/>
 				</div>
 
-				<DateSelectInterfaceTask
-					taskId={taskId}
+				<DateSelectInterface
+					task={task}
 					showDateInterface={showInterface}
 					setShowDateInterface={setShowInterface}
+					isService={isService}
 				/>
 			</>
 		);

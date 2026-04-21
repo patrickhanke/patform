@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo, useState } from "react";
-import { useAppContext, useFindData } from "@repo/provider";
+import { useAppContext, useFindData, useFindDataSecure } from "@repo/provider";
 import {
 	Button,
 	ElementSelectInterface,
@@ -56,7 +56,7 @@ const IdFilter: FC<IdFilterProps> = ({
 
 	const getElementsFromValue = useCallback((): SelectElement[] => {
 		if (isMulti) {
-			if (value.length === 0) {
+			if (value && value.length === 0) {
 				return [];
 			}
 			return selectElements.filter((element) =>

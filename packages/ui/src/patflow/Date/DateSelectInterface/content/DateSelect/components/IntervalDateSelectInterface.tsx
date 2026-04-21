@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { IntervalDateSelectInterfaceProps } from "../types";
 import { DateObjectWithNextDates } from "@repo/types";
 import { Select, DatePicker } from "@repo/ui";
 import { cloneDeep, set } from "lodash-es";
 import { formatISO9075 } from "date-fns";
-import styles from "../DateSelect.module.scss";
+import "../date_select.scss";
 import getDatesFromInterval from "../functions/getDatesFromInterval";
 
 type keys = keyof DateObjectWithNextDates;
@@ -155,7 +155,7 @@ const IntervalDateSelectInterface = ({
 			)}
 			<div>
 				<label>Intervall festlegen</label>
-				<div className={styles.interval_container}>
+				<div className={"interval_container"}>
 					<p>Alle</p>
 					<input
 						type="number"

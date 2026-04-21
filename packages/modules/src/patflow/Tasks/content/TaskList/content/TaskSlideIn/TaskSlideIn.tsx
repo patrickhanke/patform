@@ -3,7 +3,6 @@
 import { FC, useState, useMemo } from "react";
 import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
-import styles from "./TaskSlideIn.module.scss";
 import {
 	getDateString,
 	useDataHandler,
@@ -26,6 +25,7 @@ import { TaskSlideInProps } from "./types";
 import TaskSlideInTicketDetails from "./components/TaskSlideInTicketDetails";
 import TaskDate from "../TaskDate";
 import { Ticket } from "@repo/types";
+import "./task_slidein.scss";
 
 const TaskSlideIn: FC<TaskSlideInProps> = ({
 	task,
@@ -82,8 +82,8 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 
 	const secondaryContent = useMemo(() => {
 		return (
-			<div className={styles.task_slidein_bottom_content}>
-				<div className={styles.task_slidein_bottom_buttons}>
+			<div className={"task_slidein_bottom_content"}>
+				<div className={"task_slidein_bottom_buttons"}>
 					<SwitchButtons
 						buttonStates={[...buttonStates]}
 						currentStates={buttonState}
@@ -126,7 +126,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 	return (
 		<>
 			<div className="button_container">
-				<div className={styles.task_slidein_content}></div>
+				<div className={"task_slidein_content"}></div>
 				<IconButton
 					icon="comments"
 					text={task ? task.comments.length.toString() : "0"}
@@ -178,13 +178,11 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 				secondaryContent={secondaryContent}
 				showSecondaryContent={true}
 			>
-				<div className={styles.task_slidein_content}>
+				<div className={"task_slidein_content"}>
 					<div className={"flex col a-st gap-md"}>
-						<div className={styles.task_slidein_content_element}>
+						<div className={"task_slidein_content_element"}>
 							<label
-								className={
-									styles.task_slidein_content_element_label
-								}
+								className={"task_slidein_content_element_label"}
 							>
 								Status
 							</label>
@@ -192,37 +190,38 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 								<DisplayTaskState taskState={task?.state} />
 							</div>
 						</div>
-						<div className={styles.task_slidein_content_element}>
+						<div className={"task_slidein_content_element"}>
 							<label
-								className={
-									styles.task_slidein_content_element_label
-								}
+								className={"task_slidein_content_element_label"}
 							>
 								Datum
 							</label>
 							<div>
-								<TaskDate taskId={task.objectId} />
+								<TaskDate
+									task={task}
+									isEditable={
+										task.state === "assigned" ||
+										task.state === "created" ||
+										task.state === "executed"
+									}
+								/>
 							</div>
 						</div>
-						<div className={styles.task_slidein_content_element}>
+						<div className={"task_slidein_content_element"}>
 							<label
-								className={
-									styles.task_slidein_content_element_label
-								}
+								className={"task_slidein_content_element_label"}
 							>
 								Abgeschlossen
 							</label>
 							<div>
 								{task.executed_at
-									? `${getDateString(task.executed_at).date} - ${getDateString(task.executed_at).time}`
+									? `${getDateString(task.executed_at.iso).dateTime}`
 									: "-"}
 							</div>
 						</div>
-						<div className={styles.task_slidein_content_element}>
+						<div className={"task_slidein_content_element"}>
 							<label
-								className={
-									styles.task_slidein_content_element_label
-								}
+								className={"task_slidein_content_element_label"}
 							>
 								Objekt
 							</label>
@@ -234,11 +233,9 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 								/>
 							</div>
 						</div>
-						<div className={styles.task_slidein_content_element}>
+						<div className={"task_slidein_content_element"}>
 							<label
-								className={
-									styles.task_slidein_content_element_label
-								}
+								className={"task_slidein_content_element_label"}
 							>
 								Zugeteilt
 							</label>
@@ -247,13 +244,11 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 							</div>
 						</div>
 						<div
-							className={styles.task_slidein_content_element}
+							className={"task_slidein_content_element"}
 							data-flexstart="true"
 						>
 							<label
-								className={
-									styles.task_slidein_content_element_label
-								}
+								className={"task_slidein_content_element_label"}
 							>
 								Beschreibung
 							</label>
@@ -263,13 +258,11 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 							/>
 						</div>
 						<div
-							className={styles.task_slidein_content_element}
+							className={"task_slidein_content_element"}
 							data-flexstart="true"
 						>
 							<label
-								className={
-									styles.task_slidein_content_element_label
-								}
+								className={"task_slidein_content_element_label"}
 							>
 								Ticket
 							</label>

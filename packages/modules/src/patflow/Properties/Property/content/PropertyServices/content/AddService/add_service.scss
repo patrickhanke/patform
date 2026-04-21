@@ -1,6 +1,6 @@
 @use "@repo/styles/constants";
 
-.create_service_container {
+.add_service_create_service_container {
   @include constants.flexbox(
     $direction: column,
     $justify: space-between,
@@ -9,7 +9,7 @@
   width: 100%;
 }
 
-.main_inputs_container {
+.add_service_main_inputs_container {
   @include constants.flexbox(
     $direction: row,
     $justify: space-between,
@@ -18,7 +18,7 @@
   width: 100%;
 }
 
-.inputs_container {
+.add_service_inputs_container {
   @include constants.flexbox(
     $direction: column,
     $justify: space-between,
@@ -29,7 +29,7 @@
   min-width: 300px;
 }
 
-.create_service_button {
+.add_service_create_service_button {
   @include constants.flexbox(
     $direction: row,
     $align: center,
@@ -39,7 +39,7 @@
   white-space: nowrap;
 }
 
-.ticket_container {
+.add_service_ticket_container {
   @include constants.flexbox(
     $direction: column,
     $align: flex-start,
@@ -48,7 +48,7 @@
   );
 }
 
-.property_container {
+.add_service_property_container {
   @include constants.flexbox(
     $direction: column,
     $align: flex-start,
@@ -57,7 +57,7 @@
   );
 }
 
-.worker_container {
+.add_service_worker_container {
   @include constants.flexbox(
     $direction: column,
     $align: stretch,
@@ -66,7 +66,7 @@
   );
 }
 
-.worker_display_container {
+.add_service_worker_display_container {
   @include constants.flexbox(
     $direction: row,
     $align: center,

@@ -37,7 +37,7 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 				}
 			},
 			{
-				accessorFn: (task) => <TaskDate taskId={task.objectId} />,
+				accessorFn: (task) => <TaskDate task={task} />,
 				header: () => <span>Termin</span>,
 				id: "start_time",
 				cell: (info) => info.getValue(),

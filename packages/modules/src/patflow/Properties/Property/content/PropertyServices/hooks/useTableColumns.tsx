@@ -24,13 +24,7 @@ const useTableColumns = ({
 				footer: (info) => info.column.id
 			},
 			{
-				accessorFn: (row) => (
-					<DateSelectInterface
-						onChange={(value) =>
-							serviceChangeHandler(row.id, "time", value)
-						}
-					/>
-				),
+				accessorFn: (row) => <p> Keine Komponente</p>,
 				header: () => "Zeiten",
 				id: "time",
 				cell: (info) => info.getValue(),

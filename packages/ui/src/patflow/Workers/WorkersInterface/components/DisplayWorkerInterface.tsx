@@ -52,7 +52,6 @@ const DisplayWorkerInterface = ({
 			const dateObject = dates.find(
 				(date) => date.date === formattedNextDay
 			);
-			console.log(dateObject);
 
 			if (dateObject) {
 				isAbsent = true;

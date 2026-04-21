@@ -2,16 +2,17 @@ import { PatflowAppContext } from "@repo/provider";
 import { useDataHandler, useGetData } from "@repo/provider";
 import { useCallback, useContext, useState, useEffect } from "react";
 import { useImmer } from "use-immer";
-import styles from "../UserOverview.module.scss";
 import clsx from "clsx";
-import { ErrorMessage, Image } from "@repo/types";
+import { ErrorMessage } from "@repo/types";
 import {
+	FileObject,
+	FileUploader,
 	IconButton,
-	ImageUploader,
 	Select,
 	SlideInRight,
 	TextInput
 } from "@repo/ui";
+import "../user_overview.scss";
 
 const EditStaffMember = ({ userId }: { userId: string }) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +26,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 		last_name: "",
 		email: "",
 		role: null,
-		portrait: undefined as unknown as Image
+		portrait: undefined as unknown as FileObject
 	});
 
 	const { data: userData, refetch } = useGetData({
@@ -35,7 +36,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 			"first_name",
 			"last_name",
 			"email",
-			"portrait",
+			"portrait { name url }",
 			"role {objectId}"
 		],
 		id: userId
@@ -89,12 +90,12 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 		<>
 			<IconButton icon="edit" onClick={() => setIsOpen(true)} />
 			<SlideInRight
-				header="Nutzerdaten aktualisierten"
+				header="Nutzerdaten aktualisieren"
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 				preventClickOutside
 			>
-				<div className={styles.slidein_container}>
+				<div className={"slidein_container"}>
 					<form>
 						{staffMember.email && (
 							<TextInput
@@ -131,21 +132,12 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 							/>
 						)}
 
-						<ImageUploader
-							filename={`${staffMember.first_name}_${staffMember.last_name}_${new Date()}_portrait.jpg`}
-							label="Portrait"
-							onChange={(images) => {
-								if (
-									images[0] &&
-									typeof images[0] === "string"
-								) {
-									setStaffMember((draft) => {
-										draft.portrait = images[0] as string;
-									});
-								}
-							}}
-							previewImage={staffMember.portrait}
-							maxFileCount={1}
+						<FileUploader
+							inline={true}
+							type="image"
+							className="User"
+							classKey="portrait"
+							classId={userId}
 						/>
 					</form>
 					<div className="button_container">

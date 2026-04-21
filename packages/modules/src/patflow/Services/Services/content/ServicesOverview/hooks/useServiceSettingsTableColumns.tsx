@@ -3,8 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { Task } from "@repo/types";
-import type { UseTaskColumnsProps } from "@repo/modules";
-import { getDateString } from "@repo/provider";
 import {
 	DisplayProperty,
 	DisplayTaskState,
@@ -14,7 +12,7 @@ import {
 	TaskTitle
 } from "@repo/modules";
 
-const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
+const useTableColumns = () => {
 	const columns: ColumnDef<Task>[] = useMemo(() => {
 		const col: ColumnDef<Task>[] = [
 			{
@@ -39,11 +37,11 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 				}
 			},
 			{
-				accessorFn: (task) => <TaskDate taskId={task.objectId} />,
+				accessorFn: (task) => <TaskDate task={task} isService />,
 				header: () => <span>Termin</span>,
 				id: "start_time",
 				cell: (info) => info.getValue(),
-				enableSorting: pageState === "active" ? true : false,
+				enableSorting: true,
 				sortingFn: (rowA, rowB) => {
 					const dateA = rowA.original.dates[0]
 						? new Date(rowA.original.dates[0]).getTime()
@@ -60,7 +58,7 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 					<DisplayProperty
 						taskId={task.objectId}
 						taskProperty={task.property}
-						isEditable={pageState === "active"}
+						isEditable={false}
 					/>
 				),
 				header: () => <span>Objekt</span>,
@@ -111,32 +109,6 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 				footer: (info) => info.column.id
 			}
 		];
-
-		if (pageState !== "active") {
-			col.splice(2, 0, {
-				accessorFn: (task) =>
-					task.executed_at
-						? `${getDateString(task.executed_at?.iso).date} - ${getDateString(task.executed_at?.iso).time}`
-						: "-",
-				header: () => {
-					return <span>Ausgeführt am</span>;
-				},
-				id: "executed_at",
-				cell: (info) => info.getValue(),
-				footer: (info) => info.column.id,
-				enableSorting: true,
-				sortingFn: (rowA, rowB) => {
-					const dateA = rowA.original.executed_at
-						? new Date(rowA.original.executed_at?.iso).getTime()
-						: 0;
-					const dateB = rowB.original.executed_at
-						? new Date(rowB.original.executed_at?.iso).getTime()
-						: 0;
-					return dateA - dateB;
-					// return 0;
-				}
-			});
-		}
 
 		return col;
 	}, []);

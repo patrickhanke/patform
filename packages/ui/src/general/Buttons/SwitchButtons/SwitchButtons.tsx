@@ -13,7 +13,6 @@ const SwitchButtons: React.FC<SwitchButtonProps> = ({
 	useFragment,
 	showBottomLine = false
 }) => {
-	console.log({ buttonStates });
 	React.useEffect(() => {
 		if (useFragment && window.location.hash) {
 			const urlHash = window.location.hash.substring(1);

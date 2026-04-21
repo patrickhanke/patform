@@ -1,11 +1,11 @@
 import { DateTypes, Task } from "@repo/types";
 import date_category_options from "./constants/date_category_options";
+import { Dispatch, SetStateAction } from "react";
 
 export type DateSelectProps = {
-	initialValue: Task["times"] | undefined;
-	dataHandler: (value: DateTypes.DateObjectWithNextDates) => void;
-	setShowSlideIn: React.Dispatch<React.SetStateAction<boolean>>;
-	loading?: boolean;
+	date: Task["times"] | undefined;
+	setDate: Dispatch<SetStateAction<DateTypes.DateObjectWithNextDates>>;
+	isService?: boolean;
 };
 
 export type DateSelectExternalStateProps = {

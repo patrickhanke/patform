@@ -9,7 +9,7 @@ import { LiaCommentDots } from "react-icons/lia";
 const Entry = ({ entry }: { entry: TallyTypes.Entry }) => {
   const { data: userData } = useGetDataSecure({
     objectName: "User",
-    fields: ["objectId", "first_name", "last_name", "email", "portrait", "role {name}"],
+    fields: ["objectId", "first_name", "last_name", "email", "portrait { name url }", "role {name}"],
     id: entry.user,
   });
 

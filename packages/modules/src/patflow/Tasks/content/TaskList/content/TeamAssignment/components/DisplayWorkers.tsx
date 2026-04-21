@@ -20,11 +20,10 @@ const DisplayWorkers: FC<DisplayWorkerProps> = ({
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const { workers } = useDataStore();
+	const [loading, setLoading] = useState(false);
 	const [selectedWorkers, setSelectedWorkers] = useState<
 		Worker["objectId"][]
 	>(task.assigned_staff || []);
-
-	const [loading, setLoading] = useState(false);
 
 	const nextDate = useMemo(() => {
 		let date;

@@ -247,12 +247,12 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 		}: {
 			file: File;
 			name: string;
-			className: "Download" | "Image" | "_User";
+			className: "Download" | "Image" | "_User" | "User";
 			classKey: string;
 			classId?: string;
 			afterSaveHandler?: (data: any) => void;
 			feedback?: string;
-			moduleId: string;
+			moduleId?: string;
 		}) => {
 			const replaceUmlaute = (fileName: string): string => {
 				return fileName
@@ -340,7 +340,9 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 				}
 				await obj
 					.save(null, {
-						sessionToken: Cookies.get("patstore_token")
+						sessionToken: Cookies.get(
+							process.env.SESSION_TOKEN as string
+						)
 					})
 					.then((response: any) => {
 						if (feedback) {
@@ -368,7 +370,9 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 
 				await existingClassObject
 					.save(null, {
-						sessionToken: Cookies.get("patstore_token")
+						sessionToken: Cookies.get(
+							process.env.SESSION_TOKEN as string
+						)
 					})
 					.then((response: any) => {
 						if (feedback) {
@@ -434,7 +438,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 
 			const parseFile = new Parse.File(fileName, file);
 			await parseFile.save(null, {
-				sessionToken: Cookies.get("patstore_token")
+				sessionToken: Cookies.get(process.env.SESSION_TOKEN as string)
 			});
 
 			return parseFile;

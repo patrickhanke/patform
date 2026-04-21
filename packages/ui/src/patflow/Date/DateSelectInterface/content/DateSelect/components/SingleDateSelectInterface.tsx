@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { SingleDateSelectInterfaceProps } from "../types";
 import { formatISO9075, isValid } from "date-fns";
 import { DateObjectWithNextDates } from "@repo/types";

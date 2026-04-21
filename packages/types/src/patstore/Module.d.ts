@@ -115,12 +115,13 @@ export type ModuleFilter = {
   operator: FilterOperator;
   label?: string;
   position?: number;
+  value?: string | string[] | number | boolean | null;
   options?: {
     class_name?: string;
     search_path?: string;
     type?: "select" | "input" | "toggle";
     select_options?: { label: string; value: string }[];
-    fixed?: boolean;
+    fixed?: boolean; // if true, the filter is a fixed filter and the user cannot change the operator, only the value (e.g. for select)
   }
 };
 
