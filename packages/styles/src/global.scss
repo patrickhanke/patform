@@ -61,18 +61,3 @@ button {
 .whitespace-nowrap {
   white-space: nowrap;
 }
-
-.divider {
-  position: relative;
-  width: 100%;
-  height: $md;
-  &.small {
-    height: $lg;
-  }
-  &.medium {
-    height: $md;
-  }
-  &.large {
-    height: $lg;
-  }
-}

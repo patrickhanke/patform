@@ -100,10 +100,10 @@ function Toolbar({ editor }: ToolbarProps) {
 				>
 					<RiCodeSSlashLine />
 				</div>
-				<div className="divider"></div>
+				<div className="toolbar-divider"></div>
 				<TextColorPicker editor={editor} />
 				<FontSizePicker editor={editor} />
-				<div className="divider"></div>
+				<div className="toolbar-divider"></div>
 				<div
 					className="icon"
 					onClick={() =>
