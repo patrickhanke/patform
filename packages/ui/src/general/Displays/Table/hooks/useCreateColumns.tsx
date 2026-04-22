@@ -76,7 +76,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	hasEmailSettings = false
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandlerSecure(useMasterKey);
-	console.log(data);
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
 			await updateData({

@@ -13,7 +13,9 @@ export type FilterProps = {
 	options: ModuleFilter["options"];
 };
 
-export type OnValueChange = (value: string | string[] | object) => void;
+export type OnValueChange = (
+	value: string | string[] | object | boolean
+) => void;
 
 export type IdFilterProps = {
 	label: string;

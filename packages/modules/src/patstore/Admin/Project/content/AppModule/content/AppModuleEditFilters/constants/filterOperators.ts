@@ -4,7 +4,8 @@ const filterOperators = (fieldType: string) => {
 			return [
 				{ value: "matchesRegex", label: "matchesRegex" },
 				{ value: "equalTo", label: "equalTo" },
-				{ value: "in", label: "in" }
+				{ value: "in", label: "in" },
+				{ value: "exists", label: "exists" }
 			];
 		case "number":
 			return [

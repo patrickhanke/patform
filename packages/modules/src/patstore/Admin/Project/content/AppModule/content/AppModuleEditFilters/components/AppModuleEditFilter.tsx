@@ -230,7 +230,7 @@ const AppModuleEditFilter: FC<AppModuleEditFilterProps> = ({
 			{filter.type === "string" && (
 				<>
 					<div>
-						<label>Operator</label>
+						<label>Feste Werte</label>
 						<StatelessToggle
 							value={filter.options?.fixed || false}
 							onChange={(e) =>

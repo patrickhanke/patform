@@ -9,6 +9,7 @@ import {
 } from "./components";
 import transformOperatorValueToObject from "./functions/transformOperatorValueToString";
 import SelectFilter from "./components/SelectFilter";
+import { StatelessToggle } from "@repo/ui";
 
 const Filter: FC<FilterProps> = ({
 	id,
@@ -48,6 +49,13 @@ const Filter: FC<FilterProps> = ({
 					selectOptions={options?.select_options || []}
 					value={activeFilter.value as string}
 					onChange={onValueChange}
+				/>
+			);
+		} else if (type === "string" && operator === "exists") {
+			return (
+				<StatelessToggle
+					value={activeFilter.value as boolean}
+					onChange={(value) => onValueChange(value as boolean)}
 				/>
 			);
 		} else if (type === "string") {

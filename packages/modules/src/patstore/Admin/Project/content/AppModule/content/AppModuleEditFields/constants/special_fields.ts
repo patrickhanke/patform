@@ -197,6 +197,15 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				active: false,
 				position: 22,
 				default: false
+			},
+			{
+				id: "expires_at",
+				label: "Ablaufdatum",
+				required: false,
+				type: "date",
+				active: false,
+				position: 25,
+				default: false
 			}
 		];
 	}
