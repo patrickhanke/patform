@@ -95,7 +95,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 				setIsOpen={setIsOpen}
 				preventClickOutside
 			>
-				<div className={"slidein_container"}>
+				<div className={"user_slidein_container"}>
 					<form>
 						{staffMember.email && (
 							<TextInput

@@ -1,6 +1,6 @@
 @use "@repo/styles/constants";
 
-.slidein_container {
+.user_slidein_container {
   @include constants.flexbox(
     $direction: column,
     $justify: space-between,

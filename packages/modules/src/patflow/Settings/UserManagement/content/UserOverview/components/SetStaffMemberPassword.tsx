@@ -64,7 +64,7 @@ const SetStaffMemberPassword = ({ userId }: { userId: string }) => {
 				setIsOpen={setShowSlideIn}
 				preventClickOutside
 			>
-				<div className={"slidein_container"}>
+				<div className={"user_slidein_container"}>
 					<form>
 						<p>
 							Sie können hier ein neues Passowort für den Nutzer
