@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { FC } from "react";
@@ -30,11 +31,7 @@ const DateSelect: FC<DateSelectProps> = ({
 						options={
 							isService ? modi_options_service : modi_options
 						}
-						onChange={(value) =>
-							setDate((draft: DateObjectWithNextDates) => {
-								draft.type = value;
-							})
-						}
+						onChange={(value) => setDate({ ...date, type: value })}
 					/>
 					{date.type.value === "single" && (
 						<div className={clsx("info_container", "margin_top")}>
@@ -71,9 +68,7 @@ const DateSelect: FC<DateSelectProps> = ({
 					<DateCategories
 						value={date.category}
 						onChange={(value) =>
-							setDate((draft: DateObjectWithNextDates) => {
-								draft.category = value;
-							})
+							setDate({ ...date, category: value })
 						}
 					/>
 				</div>
@@ -82,18 +77,18 @@ const DateSelect: FC<DateSelectProps> = ({
 						<SingleDateSelectInterface
 							date={date}
 							category={date.category.value}
-							onChange={(newDate: DateObjectWithNextDates) =>
-								setDate(newDate)
-							}
+							onChange={(newDate: DateObjectWithNextDates) => {
+								setDate(newDate);
+							}}
 						/>
 					)}
 					{date.type.value === "multi" && (
 						<MultiDateSelectInterface
 							date={date}
 							category={date.category.value}
-							onChange={(newDate: DateObjectWithNextDates) =>
-								setDate(newDate)
-							}
+							onChange={(newDate: DateObjectWithNextDates) => {
+								setDate(newDate);
+							}}
 						/>
 					)}
 					{(date.type.value === "weekly" ||

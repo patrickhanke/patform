@@ -68,10 +68,6 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 
 	const [date, setDate] = useState(initialDate as DateObjectWithNextDates);
 
-	console.log({ date });
-	console.log(initialDate);
-	console.log(isService);
-
 	const resetState = () => {
 		setTask(initial_task);
 		setDate(initialDate);

@@ -11,7 +11,6 @@ import { isArray } from "lodash-es";
 import { DateInterval, ErrorMessage } from "@repo/types";
 import { SlideIn } from "@repo/ui";
 import { TaskDateDisplay } from "./content/TaskDateDisplay";
-import { useImmer } from "use-immer";
 
 const DateSelectInterface: FC<DateSelectInterfaceProps> = (props) => {
 	const { task, isService = false, tasksRefetch, setExternalDate } = props;
@@ -36,7 +35,7 @@ const DateSelectInterface: FC<DateSelectInterfaceProps> = (props) => {
 
 	const taskData = task;
 
-	const [date, setDate] = useImmer(taskData?.time || initialTime);
+	const [date, setDate] = useState(taskData?.time || initialTime);
 
 	const dataHandler = useCallback(async () => {
 		const timeValueCopy = { ...date };
@@ -69,7 +68,7 @@ const DateSelectInterface: FC<DateSelectInterfaceProps> = (props) => {
 		if (!props.isInline) {
 			props.setShowDateInterface(false);
 		}
-	}, [taskData?.objectId]);
+	}, [taskData?.objectId, date]);
 
 	useEffect(() => {
 		const errorArray: ErrorMessage[] = [];
