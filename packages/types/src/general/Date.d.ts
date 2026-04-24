@@ -1,5 +1,6 @@
 import { date_category_options } from "@repo/ui";
 import { weekdays } from "@repo/provider";
+import { EventLocation } from "../patstore";
 
 export interface Date {
   /**
@@ -48,6 +49,16 @@ export type DateObject = {
   end_date: string;
   weekday: string;
   time: string;
+};
+
+export type CalendarDateObject = {
+  label: string;
+  time: DateObject;
+  place: EventLocation;
+  full_day: boolean;
+  id: string;
+  text: string;
+  assigned_users: string[];
 };
 
 export type DateObjectWithNextDates = DateObject & { next_dates?: string[] };

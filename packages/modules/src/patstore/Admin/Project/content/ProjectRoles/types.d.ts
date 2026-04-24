@@ -3,6 +3,7 @@ import { ApolloRefetch, Module, PatstoreRoleClass } from "@repo/types";
 
 export type ProjectRolesProps = {
 	projectId: string;
+	projectPath: string;
 	createRole: boolean;
 	setCreateRole: Dispatch<SetStateAction<boolean>>;
 	modules: Module[];

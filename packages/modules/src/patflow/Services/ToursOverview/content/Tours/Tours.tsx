@@ -3,7 +3,7 @@ import React, { FC, useContext, useEffect, useMemo } from "react";
 import Tour from "./content/Tour";
 import { ToursProps } from "./types";
 import { differenceInCalendarISOWeeks } from "date-fns";
-import { Select } from "@repo/ui";
+import { EventCalendar, Select } from "@repo/ui";
 import { SelectOption } from "@repo/types";
 import useTourStore from "./hooks/useTourStore";
 
@@ -43,7 +43,6 @@ const Tours: FC<ToursProps> = ({ projectId, setPageHeaderContent }) => {
 					onChange={(value) => setWeek(value)}
 					options={weekOptions}
 				/>
-				
 			</div>
 		);
 	}, [week, worker]);
@@ -54,9 +53,11 @@ const Tours: FC<ToursProps> = ({ projectId, setPageHeaderContent }) => {
 
 	return (
 		<div>
-			{worker && week && (
+			<p>Test</p>
+			{/* {worker && week && (
 				<Tour projectId={projectId} workerId={worker} year={year} />
-			)}
+			)} */}
+			<EventCalendar dates={[]} />
 		</div>
 	);
 };

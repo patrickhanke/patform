@@ -1,0 +1,672 @@
+@use "@repo/styles/constants";
+
+.calendar_root {
+	@include constants.flexbox(
+		$direction: column,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 0
+	);
+	width: 100%;
+	height: 100%;
+	min-height: 500px;
+	background-color: constants.$white;
+	border: 1px solid constants.$grey;
+	border-radius: map-get(constants.$border_radius, "md");
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+// ---------- Header ----------
+
+.calendar_header {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: space-between,
+		$align: center,
+		$gap: constants.$sm
+	);
+	padding: map-get(constants.$padding, "sm");
+	border-bottom: 1px solid constants.$grey;
+	background-color: constants.$lightest;
+	flex: 0 0 auto;
+}
+
+.calendar_header_nav {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: center,
+		$gap: constants.$xs
+	);
+}
+
+.calendar_header_title {
+	font-size: map-get(constants.$font_size, "lg");
+	font-weight: 600;
+	color: constants.$dark;
+	min-width: 200px;
+}
+
+.calendar_header_actions {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-end,
+		$align: center,
+		$gap: constants.$xs
+	);
+}
+
+.calendar_nav_button {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: center,
+		$align: center
+	);
+	width: 28px;
+	height: 28px;
+	border-radius: map-get(constants.$border_radius, "sm");
+	border: 1px solid constants.$grey;
+	background-color: constants.$white;
+	cursor: pointer;
+	color: constants.$dark;
+	transition: background-color 0.15s ease;
+
+	&:hover {
+		background-color: constants.$light;
+	}
+}
+
+.calendar_today_button {
+	padding: map-get(constants.$padding, "sm");
+	border-radius: map-get(constants.$border_radius, "sm");
+	border: 1px solid constants.$grey;
+	background-color: constants.$white;
+	cursor: pointer;
+	color: constants.$dark;
+	font-size: map-get(constants.$font_size, "md");
+
+	&:hover {
+		background-color: constants.$light;
+	}
+}
+
+.calendar_create_button {
+	padding: map-get(constants.$padding, "sm");
+	border-radius: map-get(constants.$border_radius, "sm");
+	border: none;
+	background-color: constants.$blue;
+	color: constants.$white;
+	cursor: pointer;
+	font-size: map-get(constants.$font_size, "md");
+	font-weight: 500;
+
+	&:hover {
+		background-color: constants.$blue_shaded;
+	}
+}
+
+// ---------- View container ----------
+
+.calendar_view {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: auto;
+	position: relative;
+}
+
+// ---------- Weekday header row ----------
+
+.calendar_weekday_row {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 0
+	);
+	border-bottom: 1px solid constants.$grey;
+	background-color: constants.$lightest;
+	position: sticky;
+	top: 0;
+	z-index: 2;
+}
+
+.calendar_weekday_cell {
+	flex: 1 1 0;
+	text-align: center;
+	padding: map-get(constants.$padding, "sm");
+	font-size: map-get(constants.$font_size, "md");
+	font-weight: 600;
+	color: constants.$grey_shaded;
+	border-right: 1px solid constants.$grey;
+
+	&:last-child {
+		border-right: none;
+	}
+}
+
+// ---------- Month view ----------
+
+.calendar_month_grid {
+	@include constants.flexbox(
+		$direction: column,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 0
+	);
+	width: 100%;
+}
+
+.calendar_month_week {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 0
+	);
+	border-bottom: 1px solid constants.$grey;
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.calendar_month_day {
+	flex: 1 1 0;
+	min-height: 110px;
+	border-right: 1px solid constants.$grey;
+	padding: 4px;
+	position: relative;
+	background-color: constants.$white;
+	cursor: pointer;
+	overflow: hidden;
+
+	&:last-child {
+		border-right: none;
+	}
+
+	&[data-out_of_month="true"] {
+		background-color: constants.$lightest;
+
+		.calendar_day_number {
+			color: constants.$grey;
+		}
+	}
+
+	&[data-is_today="true"] {
+		.calendar_day_number {
+			background-color: constants.$blue;
+			color: constants.$white;
+		}
+	}
+
+	&[data-is_drop_target="true"] {
+		background-color: constants.$blue_tinted;
+	}
+}
+
+.calendar_day_number {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: center,
+		$align: center
+	);
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	font-size: map-get(constants.$font_size, "md");
+	font-weight: 600;
+	color: constants.$dark;
+	margin-bottom: 4px;
+}
+
+.calendar_month_events {
+	@include constants.flexbox(
+		$direction: column,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 2px
+	);
+}
+
+.calendar_more_events {
+	font-size: map-get(constants.$font_size, "sm");
+	color: constants.$grey_shaded;
+	padding-left: 4px;
+	cursor: pointer;
+
+	&:hover {
+		color: constants.$dark;
+	}
+}
+
+// ---------- Event chip (month / year) ----------
+
+.calendar_event_chip {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: center,
+		$gap: constants.$xxs
+	);
+	width: 100%;
+	padding: 2px 6px;
+	border-radius: map-get(constants.$border_radius, "xs");
+	color: constants.$white;
+	font-size: map-get(constants.$font_size, "sm");
+	cursor: pointer;
+	overflow: hidden;
+	box-sizing: border-box;
+
+	&[data-compact="true"] {
+		padding: 1px 4px;
+	}
+
+	.calendar_event_chip_dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		flex: 0 0 6px;
+		background-color: constants.$white;
+		opacity: 0.8;
+	}
+
+	.calendar_event_chip_time {
+		font-weight: 600;
+		opacity: 0.85;
+	}
+
+	.calendar_event_chip_label {
+		flex: 1 1 auto;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+// ---------- Time grid (day / week) ----------
+
+.calendar_time_grid {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 0
+	);
+	position: relative;
+	min-height: 100%;
+}
+
+.calendar_time_axis {
+	flex: 0 0 60px;
+	border-right: 1px solid constants.$grey;
+	background-color: constants.$lightest;
+	position: sticky;
+	left: 0;
+}
+
+.calendar_time_axis_cell {
+	height: 48px;
+	padding: 2px 6px;
+	font-size: map-get(constants.$font_size, "sm");
+	color: constants.$grey_shaded;
+	text-align: right;
+	border-bottom: 1px solid constants.$grey;
+	box-sizing: border-box;
+}
+
+.calendar_time_days {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 0
+	);
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.calendar_time_day_column {
+	flex: 1 1 0;
+	min-width: 0;
+	position: relative;
+	border-right: 1px solid constants.$grey;
+
+	&:last-child {
+		border-right: none;
+	}
+
+	&[data-is_today="true"] {
+		background-color: rgba(13, 106, 135, 0.04);
+	}
+
+	&[data-is_drop_target="true"] {
+		background-color: constants.$blue_tinted;
+	}
+}
+
+.calendar_time_hour_cell {
+	height: 48px;
+	border-bottom: 1px solid constants.$grey;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+// ---------- All-day lane ----------
+
+.calendar_allday_row {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 0
+	);
+	border-bottom: 1px solid constants.$grey;
+	background-color: constants.$lightest;
+	min-height: 28px;
+}
+
+.calendar_allday_axis {
+	flex: 0 0 60px;
+	padding: 4px 6px;
+	font-size: map-get(constants.$font_size, "sm");
+	color: constants.$grey_shaded;
+	text-align: right;
+	border-right: 1px solid constants.$grey;
+}
+
+.calendar_allday_day {
+	flex: 1 1 0;
+	min-width: 0;
+	padding: 2px 4px;
+	border-right: 1px solid constants.$grey;
+	@include constants.flexbox(
+		$direction: column,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 2px
+	);
+
+	&:last-child {
+		border-right: none;
+	}
+}
+
+// ---------- Event block (day / week) ----------
+
+.calendar_event_block {
+	position: absolute;
+	left: 2px;
+	right: 2px;
+	padding: 4px 6px;
+	border-radius: map-get(constants.$border_radius, "sm");
+	color: constants.$white;
+	font-size: map-get(constants.$font_size, "sm");
+	cursor: grab;
+	overflow: hidden;
+	box-sizing: border-box;
+	user-select: none;
+	transition: box-shadow 0.15s ease;
+	z-index: 1;
+
+	&:hover {
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+		z-index: 2;
+	}
+
+	&[data-dragging="true"] {
+		cursor: grabbing;
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+		z-index: 10;
+		opacity: 0.85;
+	}
+
+	.calendar_event_block_title {
+		font-weight: 600;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.calendar_event_block_meta {
+		font-size: map-get(constants.$font_size, "xs");
+		opacity: 0.85;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.calendar_event_resize_handle {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 6px;
+		cursor: ns-resize;
+		background-color: rgba(0, 0, 0, 0.15);
+		opacity: 0;
+		transition: opacity 0.15s ease;
+	}
+
+	&:hover .calendar_event_resize_handle {
+		opacity: 1;
+	}
+}
+
+// ---------- Year view ----------
+
+.calendar_year_grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: constants.$sm;
+	padding: constants.$sm;
+}
+
+.calendar_year_month {
+	border: 1px solid constants.$grey;
+	border-radius: map-get(constants.$border_radius, "sm");
+	background-color: constants.$white;
+	overflow: hidden;
+	cursor: pointer;
+	transition: box-shadow 0.15s ease;
+
+	&:hover {
+		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+	}
+}
+
+.calendar_year_month_header {
+	padding: map-get(constants.$padding, "sm");
+	font-size: map-get(constants.$font_size, "md");
+	font-weight: 600;
+	color: constants.$dark;
+	background-color: constants.$lightest;
+	border-bottom: 1px solid constants.$grey;
+	text-align: center;
+}
+
+.calendar_year_weekday_row {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	padding: 4px 0;
+	background-color: constants.$light;
+}
+
+.calendar_year_weekday {
+	text-align: center;
+	font-size: map-get(constants.$font_size, "xs");
+	color: constants.$grey_shaded;
+	font-weight: 600;
+}
+
+.calendar_year_days {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	gap: 1px;
+	padding: 4px;
+}
+
+.calendar_year_day {
+	aspect-ratio: 1 / 1;
+	@include constants.flexbox(
+		$direction: column,
+		$justify: center,
+		$align: center,
+		$gap: 1px
+	);
+	position: relative;
+	border-radius: 50%;
+	font-size: map-get(constants.$font_size, "sm");
+	color: constants.$dark;
+
+	&[data-out_of_month="true"] {
+		color: constants.$grey;
+	}
+
+	&[data-is_today="true"] {
+		background-color: constants.$blue;
+		color: constants.$white;
+	}
+}
+
+.calendar_year_day_indicator {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: center,
+		$align: center,
+		$gap: 2px
+	);
+	position: absolute;
+	bottom: 2px;
+	left: 0;
+	right: 0;
+}
+
+.calendar_year_day_dot {
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: constants.$blue;
+}
+
+// ---------- Slide-in form ----------
+
+.calendar_form {
+	@include constants.flexbox(
+		$direction: column,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: constants.$sm
+	);
+	width: 100%;
+}
+
+.calendar_form_field {
+	@include constants.flexbox(
+		$direction: column,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: constants.$xxs
+	);
+
+	label {
+		font-size: map-get(constants.$font_size, "md");
+		font-weight: 600;
+		color: constants.$dark;
+	}
+
+	input[type="text"],
+	input[type="date"],
+	input[type="time"],
+	textarea {
+		padding: map-get(constants.$padding, "sm");
+		border: 1px solid constants.$grey;
+		border-radius: map-get(constants.$border_radius, "sm");
+		font-size: map-get(constants.$font_size, "md");
+		color: constants.$dark;
+		background-color: constants.$white;
+		width: 100%;
+		box-sizing: border-box;
+
+		&:focus {
+			outline: none;
+			border-color: constants.$blue;
+		}
+	}
+
+	textarea {
+		resize: vertical;
+		min-height: 80px;
+	}
+}
+
+.calendar_form_row {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: constants.$xs
+	);
+
+	> * {
+		flex: 1 1 0;
+		min-width: 0;
+	}
+}
+
+.calendar_form_checkbox {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: center,
+		$gap: constants.$xs
+	);
+
+	label {
+		font-size: map-get(constants.$font_size, "md");
+		font-weight: 500;
+		cursor: pointer;
+	}
+}
+
+.calendar_form_users {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: constants.$xxs,
+		$wrap: wrap
+	);
+}
+
+.calendar_form_user_chip {
+	padding: 2px 8px;
+	border-radius: map-get(constants.$border_radius, "sm");
+	border: 1px solid constants.$grey;
+	background-color: constants.$white;
+	color: constants.$dark;
+	font-size: map-get(constants.$font_size, "sm");
+	cursor: pointer;
+
+	&[data-active="true"] {
+		background-color: constants.$blue;
+		color: constants.$white;
+		border-color: constants.$blue;
+	}
+}
+
+.calendar_form_delete_button {
+	margin-top: constants.$sm;
+	padding: map-get(constants.$padding, "sm");
+	border: 1px solid constants.$red;
+	border-radius: map-get(constants.$border_radius, "sm");
+	background-color: constants.$white;
+	color: constants.$red;
+	cursor: pointer;
+	font-size: map-get(constants.$font_size, "md");
+
+	&:hover {
+		background-color: constants.$red;
+		color: constants.$white;
+	}
+}

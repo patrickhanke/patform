@@ -24,7 +24,13 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 			type: "get",
 			queryName: "project",
 			objectName: "Project",
-			fields: ["objectId", "name", "createdAt", "logo { url name }"]
+			fields: [
+				"objectId",
+				"name",
+				"createdAt",
+				"logo { url name }",
+				"path"
+			]
 		}),
 		{
 			variables: { id: params.project_id }
@@ -122,11 +128,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 
 	if (!data && !projectData) return <div> loading ...</div>;
 
-	console.log(data);
-
 	const modules = data || [];
-
-	console.log(modules);
 
 	return (
 		<AdminPage
@@ -179,6 +181,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 				<>
 					<ProjectRoles
 						projectId={params.project_id}
+						projectPath={projectData?.project?.path}
 						createRole={createRole}
 						setCreateRole={setCreateRole}
 						modules={modules}

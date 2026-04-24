@@ -3,11 +3,12 @@ import { axiosclient, useDataHandler, useFindData } from "@repo/provider";
 import { ProjectRolesProps } from "./types";
 import { Button, Divider, SlideInForm, Table } from "@repo/ui";
 import useRoleColumns from "./hooks/useRoleColumns";
-import { v4 } from "uuid";
 import { PatstoreRoleClass } from "@repo/types";
+import createProjectName from "./functions/createProjectName";
 
 const ProjectRoles: FC<ProjectRolesProps> = ({
 	projectId,
+	projectPath,
 	createRole,
 	setCreateRole,
 	modules
@@ -63,13 +64,22 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				isOpen={createRole}
 				setIsOpen={setCreateRole}
 				dataHandler={async (data) => {
-					if (data.name && data.title) {
+					if (!projectPath) {
+						console.error("Project path is required");
+						return;
+					}
+					if (data.title) {
 						await createData({
 							className: "_Role",
 							updateObject: {
-								name: v4() as string,
-								title: data.name,
+								name: createProjectName(
+									data.title,
+									projectPath
+								),
+								title: data.title,
 								default: false,
+								admin: false,
+								modules: [],
 								project: {
 									__type: "Pointer",
 									className: "Project",
@@ -92,13 +102,11 @@ const ProjectRoles: FC<ProjectRolesProps> = ({
 				}}
 				fields={[
 					{
-						label: `Name`,
-						id: "name",
-						name: "name",
+						label: `Titel`,
+						id: "title",
+						name: "title",
 						type: "input",
-						initialValue: {
-							name: ""
-						},
+						initialValue: "",
 						placeholder: "Admin"
 					}
 				]}
