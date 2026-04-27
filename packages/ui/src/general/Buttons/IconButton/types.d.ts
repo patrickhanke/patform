@@ -59,7 +59,8 @@ export type IconTypes =
 	| "search"
 	| "eye-off"
 	| "eye"
-	| "property";
+	| "property"
+	| "color";
 
 export type IconProps = {
 	icon: IconTypes;

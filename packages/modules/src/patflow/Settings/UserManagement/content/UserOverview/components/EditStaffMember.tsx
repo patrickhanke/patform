@@ -2,14 +2,13 @@ import { PatflowAppContext } from "@repo/provider";
 import { useDataHandler, useGetData } from "@repo/provider";
 import { useCallback, useContext, useState, useEffect } from "react";
 import { useImmer } from "use-immer";
-import clsx from "clsx";
 import { ErrorMessage } from "@repo/types";
 import {
 	FileObject,
 	FileUploader,
 	IconButton,
 	Select,
-	SlideInRight,
+	SlideIn,
 	TextInput
 } from "@repo/ui";
 import "../user_overview.scss";
@@ -43,7 +42,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 	});
 
 	useEffect(() => {
-		if (userData) {
+		if (userData && !staffMember.first_name) {
 			setStaffMember((draft) => {
 				draft.first_name = userData.first_name;
 				draft.last_name = userData.last_name;
@@ -53,20 +52,6 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 			});
 		}
 	}, [userData]);
-
-	// useEffect(() => {
-	// 	const errorArray: ErrorMessage[] = [];
-
-	// 	if (!staffMember.email) {
-	// 		errorArray.push({
-	// 			message: "Bitte eine E-Mail Adresse angeben",
-	// 			key: "email",
-	// 			id: "email"
-	// 		});
-	// 	}
-
-	// 	setErrors(errorArray);
-	// }, [staffMember]);
 
 	const updateUser = useCallback(async () => {
 		await updateData({
@@ -89,11 +74,13 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 	return (
 		<>
 			<IconButton icon="edit" onClick={() => setIsOpen(true)} />
-			<SlideInRight
-				header="Nutzerdaten aktualisieren"
+			<SlideIn
+				header={`Nutzerdaten aktualisieren (${userData?.first_name} ${userData?.last_name})`}
 				isOpen={isOpen}
-				setIsOpen={setIsOpen}
+				cancel={() => setIsOpen(false)}
+				confirm={updateUser}
 				preventClickOutside
+				errors={errors}
 			>
 				<div className={"user_slidein_container"}>
 					<form>
@@ -131,6 +118,7 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 								}
 							/>
 						)}
+						<label>Bild auswählen</label>
 
 						<FileUploader
 							inline={true}
@@ -140,23 +128,8 @@ const EditStaffMember = ({ userId }: { userId: string }) => {
 							classId={userId}
 						/>
 					</form>
-					<div className="button_container">
-						<button
-							className={clsx("full_button", "primary", "md")}
-							disabled={errors.length > 0}
-							onClick={() => updateUser()}
-						>
-							Daten aktualisieren
-						</button>
-						<button
-							className={clsx("full_button", "secondary", "md")}
-							onClick={() => setIsOpen(false)}
-						>
-							Abbrechen
-						</button>
-					</div>
 				</div>
-			</SlideInRight>
+			</SlideIn>
 		</>
 	);
 };

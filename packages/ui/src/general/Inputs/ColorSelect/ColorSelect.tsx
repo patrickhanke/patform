@@ -13,7 +13,7 @@ const ColorSelect: FC<ColorSelectProps> = ({ value, onChange }) => {
 		);
 		return selectedColor ? [selectedColor] : [];
 	}, [value]);
-	
+
 	return (
 		<ElementSelectInterface
 			isSearchable

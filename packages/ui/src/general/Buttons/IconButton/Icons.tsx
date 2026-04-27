@@ -26,6 +26,7 @@ import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoReceiptOutline, IoSettingsOutline } from "react-icons/io5";
 import {
 	MdOutlineCleaningServices,
+	MdOutlineColorLens,
 	MdOutlineContactPage
 } from "react-icons/md";
 import { RiAdminLine, RiListSettingsLine } from "react-icons/ri";
@@ -60,6 +61,14 @@ import { IoIosTimer } from "react-icons/io";
 import { IconProps } from "./types";
 
 const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
+	if (icon === "color") {
+		return (
+			<MdOutlineColorLens
+				color={color || "inherit"}
+				fontSize={size || 12}
+			/>
+		);
+	}
 	if (icon === "property") {
 		return (
 			<FaRegBuilding color={color || "inherit"} fontSize={size || 12} />

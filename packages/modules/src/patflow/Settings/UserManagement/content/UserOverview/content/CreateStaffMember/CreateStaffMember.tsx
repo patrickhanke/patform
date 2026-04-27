@@ -8,7 +8,7 @@ import { CreateStaffMemberProps } from "./types";
 import EditStaffData from "./components/EditStaffData";
 import EditStaffSecondaryData from "./components/EditStaffSecondaryData";
 import { formatISO } from "date-fns";
-import { CreateUser } from "@repo/types";
+import { CreatePatflowUser } from "@repo/types";
 import { UserContext } from "@repo/provider";
 
 const CreateStaffMember: FC<CreateStaffMemberProps> = ({
@@ -25,7 +25,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 		fields: ["objectId", "name", "type", "color"]
 	});
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
-	const [worker, setWorker] = useImmer<CreateUser>({
+	const [worker, setWorker] = useImmer<CreatePatflowUser>({
 		last_name: "",
 		first_name: "",
 		portrait: "",
@@ -33,7 +33,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 		role: "",
 		password: "",
 		repeat_password: "",
-		color: generateColor()
+		color: "blue"
 	});
 
 	useEffect(() => {
@@ -106,34 +106,50 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 		setErrors(errorArray);
 	}, [worker]);
 
-	const createWorkerHandler = async (worker: CreateUser, number: number) => {
+	const createWorkerHandler = async (
+		worker: CreatePatflowUser,
+		number: number
+	) => {
 		setLoading(true);
+
+		const updateObject = {
+			username: worker.email,
+			last_name: worker.last_name,
+			first_name: worker.first_name,
+			role: {
+				__type: "Pointer",
+				className: "_Role",
+				objectId: worker.role
+			},
+			project: {
+				__type: "Pointer",
+				className: "Project",
+				objectId: projectId
+			},
+			email: worker.email,
+			number: number,
+			password: worker.password,
+			portrait: undefined,
+			color: worker.color,
+			settings: {
+				start_date: formatISO(new Date()),
+				vacation_days: 30,
+				color: generateColor()
+			}
+		};
+
+		if (worker.portrait) {
+			updateObject.portrait = worker.portrait;
+		}
+
+		if (worker.color) {
+			updateObject.color = worker.color;
+		}
+
 		await createData({
 			className: "_User",
-			updateObject: {
-				username: worker.email,
-				last_name: worker.last_name,
-				first_name: worker.first_name,
-				role: {
-					__type: "Pointer",
-					className: "_Role",
-					objectId: worker.role
-				},
-				project: {
-					__type: "Pointer",
-					className: "Project",
-					objectId: projectId
-				},
-				email: worker.email,
-				number: number,
-				password: worker.password,
-				portrait: worker.portrait,
-				settings: {
-					start_date: formatISO(new Date()),
-					vacation_days: 30,
-					color: generateColor()
-				}
-			},
+			updateObject,
+			feedback: "Mitarbeiter erfolgreich erstellt",
 			afterSaveHandler: async (data) => {
 				await updateData({
 					className: "_Role",

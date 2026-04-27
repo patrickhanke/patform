@@ -4,10 +4,10 @@ import EditStaffMember from "../components/EditStaffMember";
 import SetStaffMemberPassword from "../components/SetStaffMemberPassword";
 import { ApolloRefetch, PatflowUser } from "@repo/types";
 import { StateDisplay, Toggle } from "@repo/ui";
-import { useDataHandler } from "@repo/provider";
+import { useDataHandlerSecure } from "@repo/provider";
 
 const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
-	const { updateData } = useDataHandler();
+	const { updateData } = useDataHandlerSecure(true);
 
 	const columns = useMemo<ColumnDef<PatflowUser>[]>(
 		() => [

@@ -16,7 +16,10 @@ const UserOverview: FC<UserOverviewProps> = ({ isOpen, setIsOpen }) => {
 			"last_name",
 			"email",
 			"username",
-			"role {name}"
+			"role {name}",
+			"color",
+			"portrait { name url }",
+			"is_worker"
 		],
 		useMasterKey: true
 	});

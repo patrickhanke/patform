@@ -1,26 +1,20 @@
-import React, { FC } from "react";
-import { ColorPicker, ImageUploader } from "@repo/ui";
+import { FC, useState } from "react";
+import { ColorSelect, IconButton, ImageUploader, Modal } from "@repo/ui";
 import { EditStaffSecondaryDataProps } from "../types";
-import { generateImagePath, useAppContext } from "@repo/provider";
+import { CreatePatflowUser } from "@repo/types";
 
 const EditStaffSecondaryData: FC<EditStaffSecondaryDataProps> = ({
 	staffMember = [],
 	setStaffMember
 }) => {
-	const { project } = useAppContext();
-
+	const [selectColor, setSelectColor] = useState(false);
+	const [color, setColor] = useState(staffMember.color || "blue");
 	return (
-		<form>
+		<div>
 			<ImageUploader
 				label="Bild auswählen"
-				path={generateImagePath(
-					process.env.APP_NAME as string,
-					project.path
-				)}
-				filename={`${staffMember.first_name}_${staffMember.last_name}_${new Date()}_portrait.jpg`}
-				previewImage={staffMember.portrait || undefined}
 				onChange={(images) =>
-					setStaffMember((draft) => {
+					setStaffMember((draft: CreatePatflowUser) => {
 						if (typeof images[0] === "string") {
 							draft.portrait = images[0];
 						}
@@ -30,16 +24,30 @@ const EditStaffSecondaryData: FC<EditStaffSecondaryDataProps> = ({
 			/>
 			<div>
 				<label>Farbe auswählen</label>
-				<ColorPicker
-					value={staffMember.color}
-					onChange={(value: string) =>
-						setStaffMember((draft) => {
-							draft.color = value;
-						})
-					}
+				<IconButton
+					text="Farbe auswählen"
+					icon="color"
+					onClick={() => setSelectColor(true)}
+					color={color}
 				/>
+				<Modal
+					isOpen={selectColor}
+					cancelButtonHandler={() => setSelectColor(false)}
+					confirmButtonHandler={() => {
+						setStaffMember((draft: CreatePatflowUser) => {
+							draft.color = color;
+						});
+						setSelectColor(false);
+					}}
+					header="Farbe auswählen"
+				>
+					<ColorSelect
+						value={color}
+						onChange={(value) => setColor(value)}
+					/>
+				</Modal>
 			</div>
-		</form>
+		</div>
 	);
 };
 
