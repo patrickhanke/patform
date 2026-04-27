@@ -1,43 +1,19 @@
 import { ElementSelectInterface, PersonDisplay, SelectElement } from "@repo/ui";
 import { Worker } from "@repo/types";
 import { FC, useMemo } from "react";
-import { useFindDataSecure } from "@repo/provider";
 import { SelectUserProps } from "../types";
+import { useDataStore } from "@repo/provider";
 
 const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {
-	const { loading, error, data } = useFindDataSecure({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"first_name",
-			"last_name",
-			"is_worker",
-			"portrait",
-			"color",
-			"time_settings",
-			"number",
-			"data",
-			"role { objectId name type color }"
-		],
-		filters: [
-			{
-				key: "is_worker",
-				value: true,
-				operator: "equalTo"
-			}
-		],
-		order: "last_name_DESC",
-		useMasterKey: true
-	});
+	const { workers } = useDataStore();
 
-	const elements = useMemo(() => {
-		const users: Worker[] = data || [];
+	const elements: SelectElement[] = useMemo(() => {
+		const users: Worker[] = workers || [];
 
 		if (users) {
 			return users.map((user: Worker) => ({
 				value: user.objectId,
 				label: `${user.first_name} ${user.last_name}`,
-				user: user,
 				element: (
 					<PersonDisplay
 						person={{
@@ -49,7 +25,7 @@ const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {
 			}));
 		}
 		return [];
-	}, [data, selectedUser]);
+	}, [workers, selectedUser]);
 
 	const selectedElement = useMemo(() => {
 		if (selectedUser && elements) {
@@ -61,17 +37,25 @@ const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {
 		return [];
 	}, [selectedUser, elements]);
 
-	if (loading) return <p>Loading...</p>;
-	if (error) return <p>Error: {error.message}</p>;
-
 	return (
 		<div>
 			<ElementSelectInterface
 				elements={elements}
 				selectedElements={selectedElement as SelectElement[]}
-				onSelect={(elements) =>
-					setSelectedUser(elements as SelectElement[])
-				}
+				onSelect={(selectedElements) => {
+					if (selectedElements.length === 0) {
+						return;
+					} else if (selectedElements[0]) {
+						const user = workers?.find(
+							(worker) =>
+								worker.objectId === selectedElements[0]?.value
+						);
+
+						if (user) {
+							setSelectedUser(user);
+						}
+					}
+				}}
 				isSearchable
 			/>
 		</div>

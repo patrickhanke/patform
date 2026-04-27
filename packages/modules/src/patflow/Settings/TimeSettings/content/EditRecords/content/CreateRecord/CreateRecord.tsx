@@ -329,7 +329,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 			updateObject: {
 				user: {
 					__type: "Pointer",
-					className: "User",
+					className: "_User",
 					objectId: userId
 				},
 				year,

@@ -32,9 +32,3 @@ export type UseGetImage = (T: { id: string }) => {
 	loading: boolean;
 	error: Error | undefined;
 };
-
-export type PatstoreImageDisplayProps = {
-	id: string;
-	height: number;
-	width: number;
-};

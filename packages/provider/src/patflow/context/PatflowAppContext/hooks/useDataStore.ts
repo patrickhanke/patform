@@ -74,10 +74,6 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 				if (filters.length > 0) {
 					match = dataFilterHandler(service, filters);
 				}
-				console.log(filters);
-				console.log(match);
-				console.log(service);
-				console.log(propertyId);
 				if (propertyId) {
 					if (service?.property?.objectId !== propertyId) {
 						match = false;

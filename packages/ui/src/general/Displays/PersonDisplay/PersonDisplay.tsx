@@ -1,6 +1,7 @@
+import { getImageUrl } from "@repo/provider";
 import "./styles.scss";
 import { PersonDisplayProps } from "./types";
-import { PatstoreImageDisplay } from "@repo/ui";
+import Image from "next/image";
 
 const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 	if (!person) {
@@ -14,8 +15,13 @@ const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 					className={"display_person_image_container"}
 					data-onlyimage={onlyImage}
 				>
-					<PatstoreImageDisplay
-						id={person.portrait}
+					<Image
+						alt={person.label}
+						src={getImageUrl({
+							fileName: person?.portrait?.name,
+							height: onlyImage ? 24 : 18,
+							width: onlyImage ? 24 : 18
+						})}
 						height={onlyImage ? 24 : 18}
 						width={onlyImage ? 24 : 18}
 					/>

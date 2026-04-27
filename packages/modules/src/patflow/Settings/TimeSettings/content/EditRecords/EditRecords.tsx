@@ -36,6 +36,8 @@ const EditRecords: FC<EditRecordsProps> = ({
 		return <div>Loading...</div>;
 	}
 
+	console.log({ selectedUser });
+
 	return (
 		<>
 			<div className="site_content">
@@ -69,13 +71,7 @@ const EditRecords: FC<EditRecordsProps> = ({
 			>
 				<SelectUser
 					selectedUser={selectedUser}
-					setSelectedUser={(values) => {
-						if (values.length === 0) {
-							return;
-						} else if (values[0]) {
-							setSelectedUser(values[0].user);
-						}
-					}}
+					setSelectedUser={(worker) => setSelectedUser(worker)}
 				/>
 			</Modal>
 		</>

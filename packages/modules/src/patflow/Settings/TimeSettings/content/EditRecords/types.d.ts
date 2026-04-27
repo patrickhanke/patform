@@ -15,7 +15,7 @@ type TableColumnProps = {
 
 export type SelectUserProps = {
 	selectedUser?: Worker;
-	setSelectedUser: (workers: SelectUser[]) => void;
+	setSelectedUser: (worker: Worker) => void;
 };
 
 export type SelectUser = {

@@ -21,6 +21,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 		record.time_settings
 	);
 
+	console.log({ record });
 	console.log({ timeSettings });
 
 	const [startDate, setStartDate] = useState<string>(record.start_date);
@@ -97,7 +98,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 		() => [
 			{
 				id: "vacation",
-				label: `Urlaubstage pro Jahr (${record.time_settings.vacation})`,
+				label: `Urlaubstage pro Jahr (${record?.time_settings?.vacation})`,
 				name: "vacation",
 				type: "number" as const,
 				value: timeSettings?.vacation || 27,
@@ -112,7 +113,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 			},
 			{
 				id: "hours",
-				label: `Wochenstunden (${record.time_settings.hours})`,
+				label: `Wochenstunden (${record?.time_settings?.hours})`,
 				name: "hours",
 				type: "number" as const,
 				value: timeSettings?.hours || 40,
@@ -127,7 +128,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 			},
 			{
 				id: "weekdays",
-				label: `Wochentage (${record.time_settings.weekdays})`,
+				label: `Wochentage (${record?.time_settings?.weekdays})`,
 				name: "weekdays",
 				type: "number" as const,
 				value: timeSettings?.weekdays || 5,
@@ -142,7 +143,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 			},
 			{
 				id: "pause",
-				label: `Pausenzeit (${record.time_settings.pause})`,
+				label: `Pausenzeit (${record?.time_settings?.pause})`,
 				name: "pause",
 				type: "number" as const,
 				value: timeSettings?.pause || 30,
@@ -157,7 +158,7 @@ const Editrecord: React.FC<EditRecordProps> = ({
 			},
 			{
 				id: "start",
-				label: `Standard-Startzeit (${record.time_settings.start})`,
+				label: `Standard-Startzeit (${record?.time_settings?.start})`,
 				name: "start",
 				type: "time",
 				value: timeSettings?.start,

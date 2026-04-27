@@ -11,12 +11,6 @@ export type CreateRecordProps = {
   person: { label: string; portrait: string };
 };
 
-export type UserSelectProps = {
-  worker: StaffMember;
-  isSelected: boolean;
-  onChange: (action: "add" | "remove", id: string) => void;
-};
-
 export type RecordSettingsProps = {
   record: Record;
   days: Day[];

@@ -135,6 +135,20 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 				start_date: formatISO(new Date()),
 				vacation_days: 30,
 				color: generateColor()
+			},
+			time_settings: {
+				hours: 40,
+				weekdays: 5,
+				pause: 30,
+				vacation: 30
+			},
+			projects: [projectId],
+			data: {
+				street: "",
+				zip: "",
+				city: "",
+				email: "",
+				phone: ""
 			}
 		};
 
