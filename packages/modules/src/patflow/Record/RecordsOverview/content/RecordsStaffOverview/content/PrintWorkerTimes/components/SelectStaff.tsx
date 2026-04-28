@@ -15,7 +15,7 @@ const SelectStaff: FC<SelectStaffProps> = ({
 			"first_name",
 			"last_name",
 			"is_worker",
-			"portrait",
+			"portrait { name url }",
 			"color",
 			"time_settings",
 			"number",

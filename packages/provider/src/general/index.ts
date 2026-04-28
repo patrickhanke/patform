@@ -4,5 +4,4 @@ export * from "./functions";
 export * from "./constants";
 export * from "./firebase";
 export * from "./user";
-export * from "./queries";
 export * from "./context";
