@@ -4,7 +4,7 @@ import {
 	PatflowAppContext,
 	getWeekDayKeys,
 	useFindData,
-	useFindDataSecure
+	useDataStore
 } from "@repo/provider";
 import useTableColumns from "./hooks/useTableColumns";
 import { getWeek, hoursToMilliseconds } from "date-fns";
@@ -37,24 +37,7 @@ const WeeklyRecords = ({ records, filters, setFilters }: WeeklyRecordProps) => {
 			{ key: "date", value: getWeekDayKeys(selectedWeek), operator: "in" }
 		]
 	});
-	const { data: staffData } = useFindDataSecure({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"first_name",
-			"last_name",
-			"is_worker",
-			"portrait",
-			"color",
-			"time_settings",
-			"number",
-			"data",
-			"role { objectId name type color }"
-		],
-		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
-		order: "last_name_DESC",
-		useMasterKey: true
-	});
+	const { workers: staffData } = useDataStore();
 	const columns = useTableColumns({ selectedWeek });
 	const { year } = useContext(PatflowAppContext);
 

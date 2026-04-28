@@ -9,8 +9,6 @@ import arzt from "./constants/arzt.json";
 import { Specialist } from "./constants/types";
 import { LocationClass } from "@repo/types";
 
-
-
 const Playground = () => {
 	const { data: locationData } = useQuery(gql`
 		query {
@@ -41,14 +39,10 @@ const Playground = () => {
 		}
 	`);
 
-	console.log(locationData);
-
 	const { updateData, createData } = useDataHandler(true, false);
 
 	const updateUsers = useCallback(() => {
 		const users = userData?.objects.find_User.results;
-
-		console.log(users);
 
 		users.forEach((user) => {
 			updateData({

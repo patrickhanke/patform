@@ -6,7 +6,7 @@ import { ApolloRefetch, PatflowUser } from "@repo/types";
 import { StateDisplay, Toggle } from "@repo/ui";
 import { useDataHandlerSecure } from "@repo/provider";
 
-const useTableColumns = ({ refetch }: { refetch: ApolloRefetch }) => {
+const useTableColumns = ({ refetch }: { refetch: () => Promise<void> }) => {
 	const { updateData } = useDataHandlerSecure(true);
 
 	const columns = useMemo<ColumnDef<PatflowUser>[]>(
