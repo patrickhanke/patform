@@ -46,6 +46,7 @@ const SelectProperty: FC<SelectPropertyProps> = ({
 		}
 		return <DisplayProperty title={property?.label} />;
 	}
+
 	return (
 		<ElementSelectInterface
 			title="Objekt auswählen"
@@ -57,30 +58,16 @@ const SelectProperty: FC<SelectPropertyProps> = ({
 					: el.value === task.property
 			)}
 			onSelect={(values) => {
-				if (isService) {
-					if (values.length > 0) {
-						setTask((task: Task) => ({
-							...task,
-							properties: values.map((value) => value.value)
-						}));
-					} else if (values.length === 0 && task.property) {
-						setTask((task: Task) => ({
-							...task,
-							properties: []
-						}));
-					}
-				} else {
-					if (values.length > 0) {
-						setTask((task: Task) => ({
-							...task,
-							property: values[0]?.value
-						}));
-					} else if (values.length === 0 && task.property) {
-						setTask((task: Task) => ({
-							...task,
-							property: undefined
-						}));
-					}
+				if (values.length > 0) {
+					setTask((task: Task) => ({
+						...task,
+						property: values[0]?.value
+					}));
+				} else if (values.length === 0 && task.property) {
+					setTask((task: Task) => ({
+						...task,
+						property: undefined
+					}));
 				}
 			}}
 			max={isService ? 200 : 1}

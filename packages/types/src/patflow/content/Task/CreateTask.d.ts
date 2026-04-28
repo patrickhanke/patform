@@ -31,7 +31,10 @@ export type CreateTaskUpdateObject = {
 
 export type CreateTaskProps = {
   button?: React.FC<{ onClick: () => void }>;
+  propertyId?: string;
   isService?: boolean;
+  openSlideIn?: boolean;
+  setOpenSlideIn?: Dispatch<SetStateAction<boolean>>;
   initialData?: {
     assigned_staff?: [string];
     ticket?: string;

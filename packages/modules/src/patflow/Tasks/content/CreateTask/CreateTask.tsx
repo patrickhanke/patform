@@ -27,7 +27,14 @@ import "./styles.scss";
 import { isArray } from "lodash-es";
 import { isToday } from "date-fns";
 
-const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
+const CreateTask = ({
+	button,
+	initialData,
+	openSlideIn = false,
+	setOpenSlideIn,
+	isService,
+	propertyId
+}: CreateTaskProps) => {
 	const { createData, updateData } = useDataHandler();
 	const { user, projectId } = useContext(UserContext);
 	const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +59,10 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 	} as DateObjectWithNextDates;
 
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
-	const [task, setTask] = useImmer<CreateTaskType>(initial_task);
+	const [task, setTask] = useImmer<CreateTaskType>({
+		...initial_task,
+		property: propertyId
+	});
 
 	const { data } = useFindData({
 		objectName: "Image",
@@ -73,6 +83,9 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 		setDate(initialDate);
 		setSecContent("date");
 		setIsOpen(false);
+		if (setOpenSlideIn) {
+			setOpenSlideIn(false);
+		}
 		setLoading(false);
 		setErrors([]);
 	};
@@ -294,6 +307,7 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 					setTask={setTask}
 					task={task}
 					isService={isService}
+					showPropertyOnly={!!propertyId}
 				/>
 			);
 		}
@@ -318,7 +332,7 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 
 	return (
 		<>
-			{button ? (
+			{setOpenSlideIn ? null : button ? (
 				button({ onClick: () => setIsOpen(true) })
 			) : (
 				<button
@@ -335,7 +349,7 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 				</button>
 			)}
 			<SlideIn
-				isOpen={isOpen}
+				isOpen={isOpen || openSlideIn}
 				cancel={async () => {
 					setTask((draft) => {
 						draft.title = "";
@@ -346,10 +360,10 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 					resetState();
 				}}
 				confirm={() => createTask()}
-				header="Aufgabe erstellen"
+				header={isService ? "Leistung erstellen" : "Aufgabe erstellen"}
 				disabled={[false, errors.length > 0 || loading]}
 				errors={errors}
-				showSecondaryContent={isOpen}
+				showSecondaryContent={isOpen || openSlideIn}
 				secondaryContent={secondaryContent}
 				preventClickOutside
 			>
@@ -420,9 +434,12 @@ const CreateTask = ({ button, initialData, isService }: CreateTaskProps) => {
 								) : (
 									<button
 										className="full_button sm secondary"
-										onClick={() =>
-											setSecContent("property")
-										}
+										onClick={() => {
+											if (propertyId) {
+												return;
+											}
+											setSecContent("property");
+										}}
 									>
 										Objekt wählen
 									</button>

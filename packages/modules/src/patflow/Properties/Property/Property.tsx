@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import useSiteStates from "./constants/siteStates";
 import { useGetData } from "@repo/provider";
 import PropertyTasks from "./content/PropertyTasks";
@@ -9,8 +9,9 @@ import PropertyServices from "./content/PropertyServices";
 import PropertyTallies from "./content/PropertyTallies";
 import PropertyDocuments from "./content/PropertyDocuments";
 import PropertyTickets from "./content/PropertyTickets";
-import { Params, Property as PropertyType } from "@repo/types";
+import { Params } from "@repo/types";
 import { Page, PageHeaderButton } from "@repo/ui";
+import { CreateTask } from "@repo/modules";
 
 const Property = ({ params }: { params: Params }) => {
 	const siteStates = useSiteStates();
@@ -88,12 +89,7 @@ const Property = ({ params }: { params: Params }) => {
 				/>
 			)}
 			{siteState.value === "services" && (
-				<PropertyServices
-					objectId={params.object_id}
-					propertyServices={property.services}
-					addService={addService}
-					setAddService={setAddService}
-				/>
+				<PropertyServices objectId={params.object_id} />
 			)}
 			{siteState.value === "tallies" && (
 				<PropertyTallies objectId={params.object_id} />
@@ -103,6 +99,14 @@ const Property = ({ params }: { params: Params }) => {
 			)}
 			{siteState.value === "tickets" && (
 				<PropertyTickets id={params.object_id} />
+			)}
+			{addService && (
+				<CreateTask
+					isService={true}
+					openSlideIn={addService}
+					setOpenSlideIn={setAddService}
+					propertyId={params.object_id}
+				/>
 			)}
 		</Page>
 	);

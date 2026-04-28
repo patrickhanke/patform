@@ -40,7 +40,7 @@ const RecordAbsence = ({
 			"start_date",
 			"end_date",
 			"state",
-			"user {objectId first_name last_name portrait}",
+			"user {objectId first_name last_name portrait { name url }}",
 			"comment",
 			"type",
 			"year"

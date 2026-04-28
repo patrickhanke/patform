@@ -1,15 +1,11 @@
 const switch_buttons = [
 	{
-		value: "active",
-		label: "Aktive Leistungen"
+		value: "overview",
+		label: "Übersicht"
 	},
 	{
-		value: "inactive",
-		label: "Inaktive Leistungen"
-	},
-	{
-		value: "specific",
-		label: "Spezifische Leistungen"
+		value: "calendar",
+		label: "Kalender"
 	}
 ] as const;
 

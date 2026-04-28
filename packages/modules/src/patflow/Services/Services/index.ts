@@ -1,2 +1,2 @@
 export { default as Services } from "./Services";
-export { ServicesOverview } from "./content";
+export { ServicesOverview, ServicesCalendar } from "./content";

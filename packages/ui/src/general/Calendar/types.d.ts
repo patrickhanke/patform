@@ -79,7 +79,10 @@ export type CalendarEventBlockProps = {
 	users?: CalendarUser[];
 	onClick?: (instance: CalendarEventInstance) => void;
 	onDragEnd?: (instance: CalendarEventInstance, deltaMinutes: number) => void;
-	onResizeEnd?: (instance: CalendarEventInstance, deltaMinutes: number) => void;
+	onResizeEnd?: (
+		instance: CalendarEventInstance,
+		deltaMinutes: number
+	) => void;
 	/** Height per minute (in px). */
 	minuteHeight: number;
 	/** Left offset in percent (0-100). */
@@ -102,7 +105,9 @@ export type CalendarViewRenderProps = {
 	users?: CalendarUser[];
 	onEventClick: (instance: CalendarEventInstance) => void;
 	onEventChange: (event: CalendarDateObject) => void;
-	onCreate: (prefill: Partial<CalendarDateObject> & { date?: string }) => void;
+	onCreate: (
+		prefill: Partial<CalendarDateObject> & { date?: string }
+	) => void;
 	setCursorDate: Dispatch<SetStateAction<Date>>;
 	setView: (view: CalendarView) => void;
 	readOnly?: boolean;

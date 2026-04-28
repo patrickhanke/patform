@@ -47,19 +47,13 @@ const CalendarMonthView: FC<CalendarViewRenderProps> = ({
 		<div className="calendar_month_grid">
 			<div className="calendar_weekday_row">
 				{weekdays.map((weekday) => (
-					<div
-						key={weekday.value}
-						className="calendar_weekday_cell"
-					>
+					<div key={weekday.value} className="calendar_weekday_cell">
 						{weekday.short}
 					</div>
 				))}
 			</div>
 			{weeks.map((week, index) => (
-				<div
-					className="calendar_month_week"
-					key={`week-${index}`}
-				>
+				<div className="calendar_month_week" key={`week-${index}`}>
 					{week.map((day) => (
 						<MonthDayCell
 							key={day.toISOString()}

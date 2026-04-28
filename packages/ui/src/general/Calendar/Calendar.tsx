@@ -71,6 +71,8 @@ const Calendar: FC<EventCalendarProps> = ({
 
 	const instances = useMemo(() => expandEvents(dates), [dates]);
 
+	console.log({ instances });
+
 	const openCreate = useCallback(
 		(
 			prefill: Partial<CalendarDateObject> & {

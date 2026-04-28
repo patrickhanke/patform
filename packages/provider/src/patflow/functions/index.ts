@@ -12,5 +12,6 @@ export * from "./dayFunctions";
 export { default as getRecordSaldo } from "./getRecordSaldo";
 export { default as getRemainingVacation } from "./getRemainingVacation";
 export { default as getCurrentRecord } from "./getCurrentRecord";
+export { default as createEventFromTask } from "./createEventFromTask";
 
 export * from "./time_records";
