@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Image from "next/image";
 
+import patflow_lettering from "../images/patflow_lettering.png";
 import patstore_lettering from "../images/patstore_lettering.png";
 import patstore_logo from "../images/patstore_logo.png";
 import patflow_logo from "../images/patflow_logo.png";
@@ -16,7 +17,7 @@ const ProjectLoader: FC<ProjectLoaderProps> = ({
 }) => {
 	const logo = appId === "patstore" ? patstore_logo : patflow_logo;
 	const lettering =
-		appId === "patstore" ? patstore_lettering : patstore_lettering;
+		appId === "patstore" ? patstore_lettering : patflow_lettering;
 
 	if (!loading) {
 		return null;
