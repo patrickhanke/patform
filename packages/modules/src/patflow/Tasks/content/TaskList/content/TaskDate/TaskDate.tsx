@@ -22,8 +22,6 @@ const TaskDate: FC<TaskDateProps> = ({
 		let allDates: string[] = [];
 		let color = "light";
 
-		console.log({ data });
-
 		if (data) {
 			const task = data;
 			if (

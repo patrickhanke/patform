@@ -2,6 +2,7 @@ import {
   DateObject,
   DateTypes,
   Document,
+  PatflowUser,
   TDateISO,
   UserTypes,
 } from "@repo/types";
@@ -28,6 +29,7 @@ export type Task = {
   dates: string[];
   images: string[];
   executed_at?: { iso: TDateISO; date: string; time: string };
+  executed_by?: PatflowUser;
   category: "fixed" | "opportunity";
   is_service?: boolean;
 };

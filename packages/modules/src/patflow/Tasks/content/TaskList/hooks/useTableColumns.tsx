@@ -11,6 +11,8 @@ import {
 	TaskSlideIn,
 	TeamAssignments
 } from "../content";
+import { UserDisplay } from "../../../../../../../ui/src/general";
+import { DisplayWorker } from "../../../../../../../ui/src/patflow";
 
 const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 	const columns: ColumnDef<Task>[] = useMemo(() => {
@@ -128,6 +130,20 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 					return dateA - dateB;
 					// return 0;
 				}
+			});
+			col.splice(3, 0, {
+				accessorFn: (task) =>
+					task.executed_by ? (
+						<DisplayWorker workerId={task.executed_by?.objectId} />
+					) : (
+						"-"
+					),
+				header: () => {
+					return <span>Ausgeführt von</span>;
+				},
+				id: "executed_by",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id
 			});
 		}
 
