@@ -30,7 +30,14 @@ const WebsitePageDocuments: FC<WebsitePageDocumentsProps> = ({
 
 	const { data } = useFindData({
 		objectName: "Download",
-		fields: ["objectId", "title", "info", "image", "file", "categories"],
+		fields: [
+			"objectId",
+			"title",
+			"info",
+			"image",
+			"file { name url }",
+			"categories"
+		],
 		moduleId: downloadModule?.objectId,
 		skipQuery: !downloadModule?.objectId
 	});

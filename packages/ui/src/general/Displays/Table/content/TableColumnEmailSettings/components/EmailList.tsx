@@ -32,13 +32,14 @@ const EmailList: FC<EmailListProps> = ({
 			{emails && emails.length > 0 ? (
 				<div className="flex col gap-sm">
 					{emails.map((emailEntry, index) => {
+						const lists = emailEntry?.lists || [];
 						// Count only lists from current project
-						const projectListsCount = emailEntry.lists.filter(
-							(listId) => projectListIds.has(listId)
+						const projectListsCount = lists.filter((listId) =>
+							projectListIds.has(listId)
 						).length;
 
 						// Count lists from other projects
-						const otherProjectListsCount = emailEntry.lists.filter(
+						const otherProjectListsCount = lists.filter(
 							(listId) => !projectListIds.has(listId)
 						).length;
 
@@ -49,7 +50,7 @@ const EmailList: FC<EmailListProps> = ({
 								style={{
 									width: "100%",
 									padding: "1rem",
-									border: emailEntry.suppression.suppressed
+									border: emailEntry?.suppression?.suppressed
 										? `1px solid red`
 										: "1px solid #e0e0e0",
 									borderRadius: "8px",
@@ -64,7 +65,7 @@ const EmailList: FC<EmailListProps> = ({
 									e.currentTarget.style.backgroundColor =
 										"#f5f5f5";
 									e.currentTarget.style.borderColor =
-										emailEntry.suppression.suppressed
+										emailEntry?.suppression?.suppressed
 											? `red`
 											: "#999";
 								}}
@@ -72,7 +73,7 @@ const EmailList: FC<EmailListProps> = ({
 									e.currentTarget.style.backgroundColor =
 										"#fff";
 									e.currentTarget.style.borderColor =
-										emailEntry.suppression.suppressed
+										emailEntry?.suppression?.suppressed
 											? `red`
 											: "#e0e0e0";
 								}}
@@ -83,7 +84,8 @@ const EmailList: FC<EmailListProps> = ({
 										style={{ fontWeight: 600 }}
 									>
 										{emailEntry.email}
-										{emailEntry.suppression.suppressed && (
+										{emailEntry?.suppression
+											?.suppressed && (
 											<StateDisplay
 												label="Unterdrückt"
 												color="red"

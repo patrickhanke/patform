@@ -1,11 +1,6 @@
 "use client";
 
-import { useQuery } from "@apollo/client";
-import {
-	generateGraphQLQuery_4_1,
-	PatstoreAppContext,
-	useDataHandler
-} from "@repo/provider";
+import { PatstoreAppContext, useDataHandler, useGetData } from "@repo/provider";
 import { WebpageClass, WebpageContent } from "@repo/types";
 import {
 	CreateButton,
@@ -17,7 +12,7 @@ import {
 	sortItemsByPosition,
 	TextInput
 } from "@repo/ui";
-import { useEffect, useState, useContext, useCallback } from "react";
+import { useState, useContext, useCallback } from "react";
 import initial_content_element from "./constants/initial_content_element";
 import { v4 } from "uuid";
 import { cloneDeep } from "lodash-es";
@@ -31,33 +26,26 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 
 	const { updateData } = useDataHandler();
 	const { user, currentModule } = useContext(PatstoreAppContext);
-
-	const { data: pageData, refetch } = useQuery(
-		generateGraphQLQuery_4_1({
-			type: "get",
-			objectName: "Webpage",
-			queryName: "webpage",
-			fields: [
-				"objectId",
-				"path",
-				"data",
-				"title",
-				"subtitle",
-				"categories",
-				"image",
-				"documents"
-			]
-		}),
-		{ variables: { id: websiteId } }
-	);
-
 	const [content, setContent] = useState<WebpageContent[]>([]);
 
-	useEffect(() => {
-		if (pageData) {
-			setContent(pageData.objects.getWebpage.data);
+	const { data: pageData, refetch } = useGetData({
+		objectName: "Webpage",
+		id: websiteId,
+		fields: [
+			"objectId",
+			"path",
+			"data",
+			"title",
+			"subtitle",
+			"categories",
+			"image",
+			"documents",
+			"content"
+		],
+		afterSaveHandler(data) {
+			setContent(data.content);
 		}
-	}, [pageData]);
+	});
 
 	const removeContentHandler = useCallback(
 		async (contentId: string) => {
@@ -65,7 +53,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 				className: "Webpage",
 				objectId: websiteId,
 				updateObject: {
-					data: content.filter((item) => item.id !== contentId)
+					content: content.filter((item) => item.id !== contentId)
 				}
 			});
 			await refetch();
@@ -77,7 +65,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 		return null;
 	}
 
-	const webPage: WebpageClass = pageData.objects.getWebpage;
+	const webPage: WebpageClass = pageData;
 
 	return (
 		<Page
@@ -102,7 +90,7 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 								className: "Webpage",
 								objectId: websiteId,
 								updateObject: {
-									data: contentCopy
+									content: contentCopy
 								}
 							});
 							await refetch();
@@ -126,8 +114,8 @@ const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
 								removeContentHandler={removeContentHandler}
 							/>
 						)}
-						onChange={(items) => {
-							updateData({
+						onChange={async (items) => {
+							await updateData({
 								className: "Webpage",
 								objectId: websiteId,
 								updateObject: {

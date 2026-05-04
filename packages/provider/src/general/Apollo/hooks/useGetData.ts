@@ -33,7 +33,11 @@ const useGetData: UseGetDataHook<Classes> = ({
 
 	useEffect(() => {
 		if (afterSaveHandler && data) {
-			afterSaveHandler(data);
+			afterSaveHandler(
+				sanitizeGraphQlNode<Classes>(
+					get(data, `${cleanObjectName.toLowerCase()}`, null)
+				)
+			);
 		}
 	}, [data]);
 

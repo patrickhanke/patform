@@ -29,6 +29,11 @@ const EditContentField: FC<EditContentFieldProps> = ({
 	const [editContent, setEditContent] = useState(false);
 	const [field, setField] = useState<WebpageContent>(initialField);
 	const { currentModule } = useContext(PatstoreAppContext);
+
+	useEffect(() => {
+		setField(initialField);
+	}, [initialField]);
+
 	const [pagination] = useState({
 		pageIndex: 0,
 		pageSize: 50
