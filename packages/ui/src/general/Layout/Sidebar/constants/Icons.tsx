@@ -41,8 +41,12 @@ import { TfiClose, TfiList, TfiViewList } from "react-icons/tfi";
 import { LuArchive, LuMessageSquareText } from "react-icons/lu";
 import { IoIosTimer } from "react-icons/io";
 import { IoBookmarksOutline } from "react-icons/io5";
+import { RxActivityLog } from "react-icons/rx";
 
 const Icons = ({ icon, color }: { icon: string; color?: string }) => {
+	if (icon === "logs") {
+		return <RxActivityLog color={color || "inherit"} />;
+	}
 	if (icon === "projects") {
 		return <GrProjects color={color || "inherit"} />;
 	}

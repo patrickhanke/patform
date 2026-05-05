@@ -172,25 +172,6 @@ const module_fields: ModuleField[] = [
 		position: 19,
 		default: false
 	}
-
-	// {
-	// 	id: "webpage_components",
-	// 	label: "Inhalt",
-	// 	required: false,
-	// 	type: "edit_webpage_components",
-	// 	active: false,
-	// 	position: 10,
-	// 	default: false
-	// },
-	// {
-	// 	id: "content",
-	// 	label: "Inhalt",
-	// 	required: false,
-	// 	type: "content",
-	// 	active: false,
-	// 	position: 11,
-	// 	default: false
-	// },
 ] as const;
 
 export default module_fields;

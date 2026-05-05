@@ -48,6 +48,12 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
         icon: "project",
         sub_menu: [],
       })
+      menuItemsArray.push({
+        label: "Logs",
+        value: "/settings/logs",
+        icon: "logs",
+        sub_menu: [],
+      })
     }
 
     return menuItemsArray;

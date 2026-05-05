@@ -74,7 +74,8 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			...generateQueryFromFields(currentModule.fields),
 			"data",
 			"roles",
-			"settings"
+			"settings",
+			"name"
 		],
 		filters: [...initialFilters, ...filters] as Filter[],
 		limit: pagination.pageSize,
@@ -83,6 +84,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		useMasterKey: true
 	});
 
+	console.log(users);
 	const columns = useCreateColumns<PatstoreUser>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,

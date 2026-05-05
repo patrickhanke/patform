@@ -16,3 +16,4 @@ export * from "./Calendar";
 export * from "./Project";
 export * from "./Email";
 export * from "./Videos";
+export * from "./Log";

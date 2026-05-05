@@ -84,6 +84,25 @@ export type ModuleField = {
 	default: boolean;
 };
 
+export type ModuleClass = 
+  "Webpage" | 
+  "Article" | 
+  "Event" | 
+  "Entry" | 
+  "Category" | 
+  "Person" | 
+  "Image" | 
+  "Group" | 
+  "Download" | 
+  "Form" | 
+  "Email" | 
+  "Calendar" | 
+  "User" | 
+  "Video" |
+  "Location" |
+  "Dates" |
+  "TrainingGroup";
+
 export type Module = {
   objectId: string;
   name: string;
@@ -94,7 +113,7 @@ export type Module = {
   setting_fields: Field[];
   position: number;
   project: Project;
-  connected_class: string;
+  connected_class: ModuleClass;
   categories: ModuleCategory[];
   settings: ModuleSettings;
   default_fields: ModuleFieldIds[];

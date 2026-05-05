@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import EditStaffMember from "../components/EditStaffMember";
 import SetStaffMemberPassword from "../components/SetStaffMemberPassword";
-import { ApolloRefetch, PatflowUser } from "@repo/types";
+import { PatflowUser } from "@repo/types";
 import { StateDisplay, Toggle } from "@repo/ui";
 import { useDataHandlerSecure } from "@repo/provider";
 
