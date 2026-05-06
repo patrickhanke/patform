@@ -70,11 +70,15 @@ const Table: React.FC<TableTypes> = ({
 
 	useEffect(() => {
 		if (setOrder) {
-			if (isArray(sorting) && sorting.length > 0) {
+			if (isArray(sorting) && sorting.length > 0 && sorting[0]?.id) {
+				const sortinValue =
+					sorting[0].id === "dates"
+						? "order_newest_date"
+						: sorting[0].id;
 				if (sorting[0]?.desc === true) {
-					setOrder(sorting[0].id + "_DESC");
+					setOrder(sortinValue + "_DESC");
 				} else if (sorting[0]?.desc === false) {
-					setOrder(sorting[0].id + "_ASC");
+					setOrder(sortinValue + "_ASC");
 				}
 			}
 		}
@@ -177,13 +181,15 @@ const Table: React.FC<TableTypes> = ({
 		<>
 			{pagination && setPagination && (
 				<div className="table_header">
-					<div 
-						className="table_header__filter_actions" 
-						style={{ 
-							display: 
-								!filters && !exportColumns.length 
-								? "none" : "flex" 
-						}}>
+					<div
+						className="table_header__filter_actions"
+						style={{
+							display:
+								!filters && !exportColumns.length
+									? "none"
+									: "flex"
+						}}
+					>
 						{filters &&
 							setFilters &&
 							columns &&
