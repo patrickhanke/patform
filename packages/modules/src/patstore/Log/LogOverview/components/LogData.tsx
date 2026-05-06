@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import type { LogData } from "@repo/types";
 import { IconButton, Modal } from "@repo/ui";
 

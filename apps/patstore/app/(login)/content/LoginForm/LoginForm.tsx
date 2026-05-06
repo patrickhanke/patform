@@ -47,6 +47,16 @@ const LoginForm = () => {
           setError("");
         })
         .catch((error) => {
+          axiosclient().post("/functions/create_log", {
+            type: "error",
+            operation: "login",
+            className: "Patstore",
+            message: `Ungültiger Login: ${error.response.data.error}`,
+            data: {
+                username: values.email
+            },
+            service: "login_patstore"
+          });
           if (error.message === "Invalid username/password.") {
             setError("Falsche E-Mail / Passwort Kombination");
             setDisabled(false);
