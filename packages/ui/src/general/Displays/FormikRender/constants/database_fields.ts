@@ -74,6 +74,27 @@ const database_fields: Field[] = [
 		name: "documents",
 		type: "file",
 		label: "Dokumente"
+	},
+	{
+		id: "path",
+		position: 12,
+		name: "path",
+		type: "input",
+		label: "Pfad"
+	},
+	{
+		id: "subtitle",
+		position: 13,
+		name: "subtitle",
+		type: "textarea",
+		label: "Untertitel"
+	},
+	{
+		id: "type",
+		position: 14,
+		name: "type",
+		type: "input",
+		label: "Typ"
 	}
 ];
 
