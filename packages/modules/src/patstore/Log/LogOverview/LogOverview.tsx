@@ -5,6 +5,7 @@ import { Page, Table } from "@repo/ui";
 import { useMemo, useState } from "react";
 import { Filter } from "@repo/types";
 import { useLogFilters, useLogColumns } from "./hooks";
+import query_fields from "./constants/query_fields";
 
 const LogOverview = () => {
 	const { project } = useAppContext();
@@ -16,20 +17,7 @@ const LogOverview = () => {
 
 	const { data, count, refetch } = useFindData({
 		objectName: "Log",
-		fields: [
-			"objectId",
-			"type",
-			"class",
-			"data",
-			"message",
-			"user { label, first_name, last_name, email, name, portrait { name url } }",
-			"module { name }",
-			"service",
-			"object_id",
-			"operation",
-			"createdAt",
-			"updatedAt"
-		],
+		fields: query_fields,
 		filters,
 		projectId: project?.objectId
 	});

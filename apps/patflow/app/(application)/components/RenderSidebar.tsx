@@ -116,12 +116,12 @@ const menu_items = [
     icon: "project",
     sub_menu: [],
   },
-  // {
-  //   label: "Logs",
-  //   value: "/settings/logs",
-  //   icon: "calendar",
-  //   sub_menu: [],
-  // },
+  {
+    label: "Logs",
+    value: "/settings/logs",
+    icon: "logs",
+    sub_menu: [],
+  },
 ];
 
 const RenderSidebar = ({ user }: { user: PatflowUser }) => {

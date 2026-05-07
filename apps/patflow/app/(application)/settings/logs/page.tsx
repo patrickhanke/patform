@@ -1,0 +1,1 @@
+export {LogOverview as default } from "@repo/modules";

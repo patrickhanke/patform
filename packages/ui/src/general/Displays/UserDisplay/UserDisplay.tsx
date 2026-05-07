@@ -18,7 +18,7 @@ const UserDisplay = ({ user, onlyImage = false }: UserDisplayProps) => {
 					size={"2xs"}
 					// css={ringCss}
 				>
-					<Avatar.Fallback name={`${user.name}`} />
+					<Avatar.Fallback name={`${user.label}`} />
 					<Avatar.Image
 						src={getImageUrl({
 							fileName: user?.portrait?.name || "",
@@ -29,7 +29,7 @@ const UserDisplay = ({ user, onlyImage = false }: UserDisplayProps) => {
 				</Avatar.Root>
 			</div>
 
-			<div>{`${user.name}`}</div>
+			<div>{`${user.label}`}</div>
 		</div>
 	);
 };
