@@ -9,11 +9,12 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 	type,
 	time,
 	date,
+	days,
 	refetch,
 	userId,
 	records
 }) => {
-	const isEditable = type !== "absence";
+	const isEditable = true;
 
 	const sortedTime = time
 		? time.sort(
@@ -45,6 +46,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 						<>
 							{isEditable ? (
 								<EditDayTimes
+									days={days}
 									type="edit"
 									date={date}
 									dayId={timeValue.day_id}
@@ -53,6 +55,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 									refetch={refetch}
 									userId={userId}
 									records={records}
+									absenceId={absence?.objectId}
 								/>
 							) : (
 								<span key={getDateString(timeValue.start).time}>
@@ -81,6 +84,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 						<>
 							{isEditable ? (
 								<EditDayTimes
+									days={days}
 									type="edit"
 									date={date}
 									dayId={timeValue.day_id}

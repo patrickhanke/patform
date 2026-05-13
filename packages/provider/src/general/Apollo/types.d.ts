@@ -23,6 +23,7 @@ type ParamsHandlerProps = {
 	filters?: Filter[];
 	propertyId?: string;
 	userIds?: string[];
+	absenceId?: string;
 };
 
 export type GenerateGraphQLQueryFunction = (
@@ -73,6 +74,7 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	useMasterKey?: boolean;
 	propertyId?: string;
 	userIds?: string[];
+	absenceId?: string;
 }) => {
 	loading: boolean;
 	data: T[];

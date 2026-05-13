@@ -68,7 +68,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		refetch,
 		userId: selectedUser?.value,
 		records,
-		holidays: currentHolidays
+		holidays: currentHolidays,
+		days
 	});
 
 	const rowStyles = useCallback(

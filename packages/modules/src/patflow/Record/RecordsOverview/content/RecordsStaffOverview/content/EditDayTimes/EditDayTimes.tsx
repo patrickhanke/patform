@@ -1,6 +1,6 @@
 import { FC, useCallback, useState, useEffect, useMemo } from "react";
 import { EditDayTimesProps, WorkingTime } from "./types";
-import { AbsenceTime, Day, ErrorMessage } from "@repo/types";
+import { Absence, AbsenceTime, Day, ErrorMessage } from "@repo/types";
 import {
 	absence_type_options,
 	axiosclient,
@@ -34,11 +34,15 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	dayId,
 	initialTime,
 	times,
+	days,
 	refetch,
 	userId,
-	records
+	records,
+	absenceId
 }) => {
+	console.log({ days });
 	const [slideIn, setSlideIn] = useState(false);
+	const [editAbsence, setEditAbsence] = useState(false);
 	const [dayType, setDayType] = useState<(typeof day_type_options)[number]>(
 		day_type_options[0]
 	);
@@ -221,25 +225,12 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	);
 
 	console.log({ dayId });
+	console.log({ initialTime });
+	console.log({ absenceId });
 
 	const secondaryContent = useMemo(() => {
 		return (
 			<div className="vertical_container gap-md">
-				<SwitchButtons
-					buttonStates={
-						type === "edit"
-							? [...day_type_options].map((option) => ({
-									...option,
-									disabled: true
-								}))
-							: [...day_type_options]
-					}
-					currentStates={dayType}
-					changeHandler={dayTypeHandler}
-					underlineButtons
-					showBottomLine
-				/>
-				<Divider size="small" showLine={false} />
 				{dayType.value === "work" && (
 					<>
 						<EditTime
@@ -250,16 +241,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 							errors={errors}
 						/>
 					</>
-				)}
-				{dayType.value === "absence" && (
-					<EditDayAbsence
-						date={date}
-						time={time}
-						setTime={(timeValue) => {
-							absenceChangeHandler(timeValue);
-						}}
-						records={records}
-					/>
 				)}
 				{dayId && (
 					<>
@@ -318,6 +299,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 						${getDateString(time.end).time}`;
 	}, [time]);
 
+	console.log({ time });
+
 	const addButtonDisabled = useMemo(() => {
 		let returnValue = false;
 		if (isArray(times) && times.length > 0) {
@@ -346,20 +329,52 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 				{type === "edit" ? (
 					<StateDisplay
 						// icon="edit"
-						onClick={() => setSlideIn(true)}
+						onClick={() => {
+							if (absenceId) {
+								setEditAbsence(true);
+							} else {
+								setSlideIn(true);
+							}
+						}}
 						label={stateLabel}
 						color={timeType.color}
 					/>
 				) : (
-					<IconButton
-						icon="plus"
-						onClick={() => setSlideIn(true)}
-						text="Zeit hinzufügen"
-						disabled={addButtonDisabled}
-						color="dark"
-					/>
+					<>
+						<IconButton
+							icon="plus"
+							onClick={() => {
+								setEditAbsence(true);
+							}}
+							text="Abwesenheit"
+							color="dark"
+							disabled={addButtonDisabled}
+						/>
+						<IconButton
+							icon="plus"
+							onClick={() => {
+								setDayType(day_type_options[0]);
+								setSlideIn(true);
+							}}
+							text="Arbeitszeit"
+							disabled={addButtonDisabled}
+							color="dark"
+						/>
+					</>
 				)}
 			</div>
+			<EditDayAbsence
+				date={date}
+				type={absenceId ? "edit" : "create"}
+				times={times}
+				days={days}
+				absenceId={absenceId}
+				records={records}
+				workerId={userId}
+				year={new Date().getFullYear()}
+				isOpen={editAbsence}
+				setIsOpen={setEditAbsence}
+			/>
 			<SlideIn
 				header={`Zeiten bearbeiten (${getDateString(formatISO9075(new Date(date))).date})`}
 				confirm={() => confirmButtonHandler()}
@@ -386,6 +401,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 							}
 						</p>
 					</div>
+					<Divider size="small" showLine />
 					<div className="horizontal_container">
 						<div className="label">Zeittyp</div>
 						{dayType.value === "absence" ? (
@@ -405,10 +421,12 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 							<StateDisplay label="Arbeitszeit" color={"green"} />
 						)}
 					</div>
+					<Divider size="small" showLine={false} />
 					<div className="horizontal_container">
 						<div className="label">Startzeit</div>
 						<p>{getDateString(time?.start).time}</p>
 					</div>
+					<Divider size="small" showLine={false} />
 					<div className="horizontal_container">
 						<div className="label">Endzeit</div>
 						<p>{getDateString(time?.end).time}</p>

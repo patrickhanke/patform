@@ -15,14 +15,6 @@ const useFindDays = ({
 	userIds?: string[];
 }) => {
 	const filters: Filter[] = [];
-	if (absenceId) {
-		filters.push({
-			key: "absence",
-			value: absenceId,
-			operator: "equalTo"
-		});
-	}
-
 	if (year) {
 		filters.push({
 			key: "year",
@@ -54,7 +46,8 @@ const useFindDays = ({
 		filters,
 		userId: userId,
 		userIds: userIds,
-		skipQuery: skipQuery
+		skipQuery: skipQuery,
+		absenceId: absenceId
 	});
 
 	return {

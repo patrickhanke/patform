@@ -8,7 +8,7 @@ import {
 } from "@repo/provider";
 import ColumnWorkingTime from "../components/ColumnWorkingTime";
 import ColumnWorkingHours from "../components/ColumnWorkingHours";
-import { ApolloRefetch, Holiday, Record } from "@repo/types";
+import { ApolloRefetch, Day, Holiday, Record } from "@repo/types";
 import EditDayTimes from "../../EditDayTimes";
 import { DayData } from "../types";
 import ColumnWorkingTarget from "../components/ColumnWorkingTarget";
@@ -22,12 +22,14 @@ const useTableColumns = ({
 	refetch,
 	userId,
 	records,
-	holidays
+	holidays,
+	days
 }: {
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];
 	holidays: Holiday[];
+	days: Day[];
 }) => {
 	const { projectId } = useContext(UserContext);
 	const { data } = useFindData({
@@ -177,6 +179,7 @@ const useTableColumns = ({
 						refetch={refetch}
 						userId={userId}
 						records={records}
+						days={days}
 					/>
 				),
 				header: () => (

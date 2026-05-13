@@ -1,46 +1,243 @@
-import { FC, useCallback } from "react";
-import { Divider, SwitchButtons } from "@repo/ui";
-import absence_type_options from "./constants/absence_type_options";
-import AddEditVacation from "./components/AddEditVacation";
-import AddEditCompensationTimes from "./components/AddEditCompensationTimes";
-import AddEditDaySick from "./components/AddEditDaySick";
-import AddEditPayedAbsence from "./components/AddEditPayedAbsence";
-import { EditDayAbsenceProps } from "./types";
-import { AbsenceTime } from "@repo/types";
-import { findDefaultTimeForDate } from "@repo/provider";
+import { FC, useEffect, useState, useMemo } from "react";
+import {
+	DatePicker,
+	DisplayWorker,
+	Divider,
+	LoadingIndicator,
+	Select,
+	SlideIn,
+	StatelessToggle,
+	TextInput
+} from "@repo/ui";
+import { EditDayAbsenceProps, InitialAbsence } from "./types";
+import {
+	absence_state_options,
+	absence_type_options,
+	findDefaultTimeForDate,
+	useGetData
+} from "@repo/provider";
+import initialAbsence from "./constants/initialAbsence";
+import { useAbsenceDays, useErrors } from "./hooks";
+import AbsenceDay from "./components/AbsenceDay";
+import { ErrorMessage } from "@repo/types";
 
 const EditDayAbsence: FC<EditDayAbsenceProps> = ({
+	type,
+	absenceId,
 	date,
-	time,
-	setTime,
-	records
+	days,
+	times,
+	records,
+	workerId,
+	year,
+	isOpen,
+	setIsOpen
 }) => {
-	console.log({ time });
-	const absenceTypeChangeHandler = useCallback(
-		(newAbsenceType: (typeof absence_type_options)[number]) => {
-			setTime({
-				...time,
-				type: newAbsenceType.value
-			});
-		},
-		[time]
-	);
+	const [isFull, setIsFull] = useState(true);
+	const [errors, setErrors] = useState<ErrorMessage[]>([]);
+	const [overlap, setOverlap] = useState<string[]>([]);
+	const { default_time } = findDefaultTimeForDate(date, records);
 
-	const absenceChangeHandler = useCallback(
-		(newAbsence: AbsenceTime) => {
-			setTime({
-				...time,
-				...newAbsence
-			});
-		},
-		[time]
-	);
+	const { data: absence, loading: absenceLoading } = useGetData({
+		objectName: "Absence",
+		fields: [
+			"objectId",
+			"start_date",
+			"end_date",
+			"state",
+			"comment",
+			"type"
+		],
+		id: absenceId,
+		skip: !absenceId || !isOpen
+	});
 
-	const defaultTime = findDefaultTimeForDate(date, records);
+	const [absenceState, setAbsenceState] = useState<InitialAbsence>({
+		...initialAbsence,
+		year,
+		start_date: date,
+		end_date: date
+	});
+
+	const { daysLoading, intervalDays } = useAbsenceDays({
+		absence: absenceState || undefined
+	});
+
+	console.log({ absenceState });
+
+	useErrors({
+		date,
+		dayType: "absence",
+		absence: absenceState || undefined,
+		days,
+		setErrors,
+		setOverlap,
+		records,
+		isFull
+	});
+
+	console.log({ daysLoading });
+	console.log({ default_time });
+
+	useEffect(() => {
+		if (absence && !absenceState.objectId) {
+			console.log({ absence });
+			setAbsenceState(absence);
+		}
+	}, [absence, absenceState]);
+
+	useEffect(() => {
+		if (isFull === false) {
+			setAbsenceState({
+				...absenceState,
+				start_date: default_time?.start || date,
+				end_date: default_time?.end || date
+			});
+		} else if (isFull === true) {
+			setAbsenceState({
+				...absenceState,
+				start_date: date,
+				end_date: date
+			});
+		}
+	}, [isFull, default_time]);
+
+	const secondaryContent = useMemo(() => {
+		return (
+			<div>
+				<h3>Zeiten/ Tage</h3>
+				<Divider />
+				<AbsenceDay days={intervalDays} overlap={overlap} />
+			</div>
+		);
+	}, [intervalDays]);
+
+	if (absenceLoading) {
+		return <LoadingIndicator />;
+	}
 
 	return (
-		<div>
-			<div>
+		<SlideIn
+			isOpen={isOpen}
+			cancel={() => setIsOpen(false)}
+			confirm={() => {}}
+			header="Abwesenheit bearbeiten"
+			showSecondaryContent={true}
+			secondaryContent={secondaryContent}
+			errors={errors}
+		>
+			<form className="flex col gap-lg">
+				<DisplayWorker workerId={workerId} />
+				<div>
+					<Select
+						key={absenceState.type}
+						value={absenceState.type}
+						options={absence_type_options}
+						onChange={(value) =>
+							setAbsenceState({
+								...absenceState,
+								type: value.value
+							})
+						}
+						placeholder="Art der Abwesenheit"
+						label="Art der Abwesenheit"
+						width={300}
+						isDisabled={type === "edit"}
+					/>
+				</div>
+				<div className="horizontal_container">
+					<div className={"label"}>Ganztägig</div>
+					<StatelessToggle
+						onChange={(value) => {
+							if (typeof value === "boolean") {
+								if (value === true) {
+									setIsFull(true);
+								} else {
+									setIsFull(false);
+								}
+							}
+						}}
+						value={isFull}
+						disabled={type === "edit"}
+					/>
+				</div>
+				<div>
+					<DatePicker
+						id="dstart"
+						defaultValue={absenceState.start_date}
+						onChange={(value) => {
+							setAbsenceState({
+								...absenceState,
+								start_date: value
+							});
+						}}
+						disabled={false}
+						disabledDate={isFull === false}
+						type={isFull ? "date" : "datetime"}
+						label="Anfangsdatum"
+						width={300}
+						onlyDate
+					/>
+				</div>
+				<div>
+					<DatePicker
+						key={absenceState.end_date}
+						id="end"
+						defaultValue={absenceState.end_date}
+						onChange={(value) =>
+							setAbsenceState({
+								...absenceState,
+								end_date: value
+							})
+						}
+						disabled={!absenceState.start_date}
+						disabledDate={isFull === false}
+						type={isFull ? "date" : "datetime"}
+						label="Enddatum"
+						width={300}
+						onlyDate
+					/>
+				</div>
+
+				<div style={{ position: "relative" }}>
+					<Select
+						value={absenceState.state}
+						options={absence_state_options}
+						onChange={(value) =>
+							setAbsenceState({
+								...absenceState,
+								state: value.value
+							})
+						}
+						placeholder="Status"
+						label="Status"
+						width={300}
+						isDisabled={
+							!absenceState.end_date ||
+							!absenceState.start_date ||
+							absenceState.state === "approved"
+						}
+					/>
+					{/* {type === 'edit' && absence.state === 'approved' && <InfoBox text='Eine bereits bestätigte Abwesenheit kann nicht bestätigt werden. Bitte die Abwesenheit löschen und eine neue erstellen.' /> } */}
+				</div>
+				<div>
+					<TextInput
+						id="comment"
+						defaultValue={absenceState.comment}
+						onChange={(value) =>
+							setAbsenceState({
+								...absenceState,
+								comment: value
+							})
+						}
+						label="Kommentar"
+						placeholder="Kommentar"
+						isTextArea
+						width={"300px"}
+					/>
+				</div>
+			</form>
+			{/* <div>
 				<SwitchButtons
 					buttonStates={[...absence_type_options]}
 					currentStates={
@@ -81,8 +278,8 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 					time={time}
 					timeChangeHandler={absenceChangeHandler}
 				/>
-			)}
-		</div>
+			)} */}
+		</SlideIn>
 	);
 };
 

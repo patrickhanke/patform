@@ -30,6 +30,7 @@ export type ColumnWorkingTimeProps = {
 	type: DayData["type"];
 	time: DayData["time"];
 	date: string;
+	days?: Day[];
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];

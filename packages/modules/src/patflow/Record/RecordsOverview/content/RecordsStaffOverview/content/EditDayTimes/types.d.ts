@@ -10,12 +10,14 @@ import {
 export type EditDayTimesProps = {
 	type: "create" | "edit";
 	date: string;
+	days?: Day[];
 	dayId?: string;
 	initialTime?: WorkingTime | AbsenceTime;
 	times: DayDataTime[] | undefined;
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];
+	absenceId?: string;
 };
 
 export type EditTimeProps = {
@@ -36,5 +38,5 @@ export type UseErrors = (props: {
 	dayType: "absence" | "work";
 	setErrors: React.Dispatch<React.SetStateAction<ErrorMessage[]>>;
 	setDisabled: React.Dispatch<React.SetStateAction<[boolean, boolean]>>;
-	records: Record[]
+	records: Record[];
 }) => void;

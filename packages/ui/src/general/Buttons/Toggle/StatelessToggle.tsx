@@ -21,7 +21,12 @@ const StatelessToggle: FC<StatelessToggleProps> = ({
 					disabled={disabled}
 				/>
 				<span
-					onClick={() => onChange(!value)}
+					onClick={() => {
+						if (disabled) {
+							return;
+						}
+						onChange(!value);
+					}}
 					className="toggle-slider"
 				></span>
 			</div>

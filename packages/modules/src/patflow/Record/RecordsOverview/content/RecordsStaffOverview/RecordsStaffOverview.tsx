@@ -29,10 +29,6 @@ const RecordsStaffOverview = ({
 		) as (typeof months)[number]
 	);
 
-	console.log({ selectedMonth });
-	console.log({ year });
-	console.log({ selectedUser });
-
 	const { data: days, refetch } = useFindDays({
 		userId: selectedUser?.value as string,
 		year: year,
