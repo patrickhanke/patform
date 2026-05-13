@@ -62,6 +62,7 @@ const useTableColumns = ({
 					const holiday = holidays.find((holiday) =>
 						holiday.dates.includes(row?.date)
 					);
+
 					return (
 						<div>
 							{getDateString(row.date).date}

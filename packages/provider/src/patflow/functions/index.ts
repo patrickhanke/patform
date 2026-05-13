@@ -1,4 +1,3 @@
-export { default as getDatesFromAbsences } from "./getDatesFromAbsences";
 export { default as sortArrayHandler } from "./sortArrayHandler";
 export { default as currencyFormatter } from "./currencyFormatter";
 export { default as getTaskStateLabel } from "./getTaskStateLabel";

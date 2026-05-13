@@ -15,6 +15,7 @@ const TimesSaldo: FC<TimesSaldoProps> = ({ days, month, year, records }) => {
 
 	const findMonthData: () => MonthData | null = useCallback(() => {
 		const monthToFind = monthData.find((m) => m.id === month.id);
+		console.log({ monthToFind });
 		if (monthToFind) {
 			return monthToFind;
 		}

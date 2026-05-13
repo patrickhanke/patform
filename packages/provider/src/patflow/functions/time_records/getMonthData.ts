@@ -55,14 +55,19 @@ const getMonthData = ({
 			target += default_time;
 		});
 
+		const daysToLog = [];
+
 		if (days && records) {
 			dateInterval.forEach((dayString) => {
 				const dayArray = days.filter(
 					(dayToFind: Day) => dayToFind.date === dayString
 				);
 
+				// console.log({ dayArray });
+
 				if (dayArray.length > 1) {
 					dayArray.forEach((day: Day) => {
+						daysToLog.push(day);
 						if (day && day.type === "work") {
 							const time = day.time;
 							const timeSpan = time.duration - time.pause;
@@ -71,6 +76,7 @@ const getMonthData = ({
 					});
 				} else if (dayArray.length === 1) {
 					const day = dayArray[0];
+					daysToLog.push(day);
 					if (day && day.type === "work") {
 						const time = day.time;
 						const timeSpan = time.duration - time.pause;
@@ -94,6 +100,7 @@ const getMonthData = ({
 				}
 			});
 		}
+		// console.log({ daysToLog });
 		totalSaldo += monthTimes - target;
 		totalTarget += target;
 		totalTimes += monthTimes;

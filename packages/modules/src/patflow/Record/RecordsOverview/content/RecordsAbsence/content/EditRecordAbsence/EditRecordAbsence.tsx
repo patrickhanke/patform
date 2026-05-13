@@ -7,7 +7,8 @@ import {
 	useGetActiveRecord,
 	UserContext,
 	useFindData,
-	useFindDays
+	useFindDays,
+	axiosclient
 } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -175,6 +176,14 @@ const EditRecordAbsence = ({
 
 						if (dayRecord && defaultTime) {
 							const is_working_day = defaultTime.is_working_day;
+							await axiosclient().post("/functions/create-time", {
+								time: time,
+								date: date,
+								day_id: dayId,
+								user_id: absenceState?.user?.objectId,
+								type: "absence",
+								comment: time.comment
+							});
 							await createData({
 								className: "Day",
 								updateObject: {

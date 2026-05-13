@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { DataStoreState } from "../types";
-import { Filter } from "@repo/types";
+import { Filter, Record } from "@repo/types";
 import dataFilterHandler from "../functions/dataFilterHandler";
 
 const useDataStore = create<DataStoreState>((set, get) => ({
@@ -16,7 +16,7 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 	setSurcharges: (surcharges) => set({ surcharges }),
 	setHolidays: (holidays) => set({ holidays }),
 	setWorkers: (workers) => set({ workers }),
-	setRecords: (records) => set({ records }),
+	setRecords: (records: Record[]) => set({ records }),
 	setProperties: (properties) => set({ properties }),
 	setTasks: (tasks) => set({ tasks }),
 	setTickets: (tickets) => set({ tickets }),

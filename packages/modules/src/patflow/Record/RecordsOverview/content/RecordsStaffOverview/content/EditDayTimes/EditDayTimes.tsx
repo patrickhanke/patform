@@ -220,6 +220,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		[setDayType]
 	);
 
+	console.log({ dayId });
+
 	const secondaryContent = useMemo(() => {
 		return (
 			<div className="vertical_container gap-md">
@@ -320,6 +322,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		let returnValue = false;
 		if (isArray(times) && times.length > 0) {
 			times.forEach((timeElement) => {
+				// console.log({ timeElement });
 				if (
 					timeElement?.type === "illness" &&
 					timeElement?.state === "full"

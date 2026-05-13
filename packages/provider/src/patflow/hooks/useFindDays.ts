@@ -1,4 +1,5 @@
 import { useFindData } from "@repo/provider";
+import { Filter } from "@repo/types";
 
 const useFindDays = ({
 	userId,
@@ -13,7 +14,7 @@ const useFindDays = ({
 	year?: number;
 	userIds?: string[];
 }) => {
-	const filters = [];
+	const filters: Filter[] = [];
 	if (absenceId) {
 		filters.push({
 			key: "absence",
@@ -50,6 +51,7 @@ const useFindDays = ({
 			"user { objectId }",
 			"record { objectId }"
 		],
+		filters,
 		userId: userId,
 		userIds: userIds,
 		skipQuery: skipQuery

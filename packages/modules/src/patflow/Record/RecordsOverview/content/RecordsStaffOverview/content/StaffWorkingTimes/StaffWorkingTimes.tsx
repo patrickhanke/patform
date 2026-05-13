@@ -4,10 +4,9 @@ import { DayData, StaffWorkingTimesProps } from "./types";
 import { eachDayOfInterval, formatISO9075, isWeekend } from "date-fns";
 import useTableColumns from "./hooks/useTableColumns";
 import { Row } from "@tanstack/react-table";
-import { Day } from "@repo/types";
-import { findDefaultTimeForDate } from "@repo/provider";
+import { Day, Holiday } from "@repo/types";
+import { findDefaultTimeForDate, useDataStore } from "@repo/provider";
 import { set, get, cloneDeep, isArray } from "lodash-es";
-import useGetHolidays from "./hooks/useGetHolidays";
 
 const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	days,
@@ -17,7 +16,53 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	selectedUser,
 	records
 }) => {
-	const { currentHolidays } = useGetHolidays({ year, records });
+	const { holidays } = useDataStore();
+	console.log(holidays);
+	console.log(year);
+
+	const currentHolidays = useMemo(() => {
+		if (!year) {
+			return [];
+		}
+
+		const recordHolidays: Holiday[] = [];
+
+		holidays.forEach((holiday) => {
+			const date = holiday.dates.find(
+				(dt) => new Date(dt).getFullYear() === year
+			);
+			if (!date) {
+				return [];
+			}
+
+			console.log(date);
+			console.log(records);
+
+			const recordForHoliday = records.find((record) =>
+				record.start_date <= record.end_date &&
+				new Date(record.start_date).getTime() <=
+					new Date(record.end_date).getTime()
+					? new Date(record.start_date).getTime() <=
+							new Date(date).getTime() &&
+						new Date(record.end_date).getTime() >=
+							new Date(date).getTime()
+					: false
+			);
+			console.log({ recordForHoliday });
+
+			if (recordForHoliday) {
+				if (
+					recordForHoliday?.holiday_template?.holidays?.includes(
+						holiday.objectId
+					)
+				) {
+					recordHolidays.push(holiday);
+				}
+			}
+		});
+
+		return recordHolidays;
+	}, [holidays, year, records]);
 
 	const { columns, secondaryRow } = useTableColumns({
 		refetch,
@@ -44,7 +89,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 
 			return { backgroundColor: "transparent" };
 		},
-		[currentHolidays, year]
+		[holidays, year]
 	);
 
 	const tableData = useMemo(() => {
@@ -90,6 +135,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 			return surcharges;
 		};
 
+		console.log({ days: days.filter((day) => day.month === 3) });
 		dayInterval.forEach((element: Date) => {
 			const daysToFind: Day[] | undefined = days.filter(
 				(day) =>
@@ -110,6 +156,9 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 				if (!daysToFind[0]) {
 					return;
 				}
+
+				console.log({ daysToFind });
+				console.log({ timeArray });
 
 				const allComments = daysToFind
 					.map((day) => day.comment)
@@ -142,6 +191,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 				});
 			}
 		});
+
+		console.log({ interval });
 
 		return interval;
 	}, [days, month, year]);

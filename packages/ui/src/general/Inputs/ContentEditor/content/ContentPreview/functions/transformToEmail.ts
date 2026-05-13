@@ -95,9 +95,9 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 	const alignment = block.config?.alignment || "center";
 	const buttonText = block.config?.buttonText || "Click me";
 	const buttonUrl = block.config?.buttonUrl || "#";
-	const bg =
-		block.config?.buttonBackgroundColor || DEFAULT_BUTTON_BACKGROUND;
-	const fontColor = block.config?.buttonFontColor || DEFAULT_BUTTON_FONT_COLOR;
+	const bg = block.config?.buttonBackgroundColor || DEFAULT_BUTTON_BACKGROUND;
+	const fontColor =
+		block.config?.buttonFontColor || DEFAULT_BUTTON_FONT_COLOR;
 	const { padding, fontSize } = buttonPaddingAndFontSize(
 		block.config?.buttonSize
 	);
@@ -144,7 +144,7 @@ const renderEmailImageBlock = (block: ContentBlock): string => {
 		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0;">
 			<tr>
 				<td align="${alignment}">
-					<img src="${imageUrl}" alt="${imageAlt}" style="max-width: ${width}; height: ${height}; display: block;" />
+					<img src="${imageUrl}" alt="${imageAlt}" width="${width}" style="max-width: ${width}; height: ${height}; display: block;" />
 				</td>
 			</tr>
 		</table>

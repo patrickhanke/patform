@@ -29,6 +29,10 @@ const RecordsStaffOverview = ({
 		) as (typeof months)[number]
 	);
 
+	console.log({ selectedMonth });
+	console.log({ year });
+	console.log({ selectedUser });
+
 	const { data: days, refetch } = useFindDays({
 		userId: selectedUser?.value as string,
 		year: year,
@@ -56,6 +60,7 @@ const RecordsStaffOverview = ({
 				record.year === year
 			) {
 				const holidayTemplate = cloneDeep(record.holiday_template);
+				console.log({ holidayTemplate });
 
 				const holidayArray: string[] = holidayTemplate.holidays.map(
 					(holiday: string) => holiday as string

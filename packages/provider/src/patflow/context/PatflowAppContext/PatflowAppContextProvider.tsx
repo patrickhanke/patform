@@ -14,7 +14,7 @@ import {
 	useTaskSubscription,
 	useTicketSubscription
 } from "@repo/provider";
-import { RoleUsers } from "./types";
+import { RecordDataStore, RoleUsers } from "./types";
 import { PatflowUserRole, Property } from "@repo/types";
 import { CreateTask, CreateTicket } from "@repo/modules";
 import dynamic from "next/dynamic";
@@ -165,7 +165,21 @@ const PatflowAppContextProvider = ({
 			.join(",");
 		if (ids !== prevRecordIdsRef.current) {
 			prevRecordIdsRef.current = ids;
-			setRecords(recordData ?? []);
+
+			// get flat values of holiday_template.holidays
+
+			const recordsCopy: RecordDataStore[] = recordData.map((r) => ({
+				...r,
+				holiday_template: {
+					...r.holiday_template,
+					holidays: r.holiday_template.holidays.map(
+						(h: { value: string }) => h.value as string
+					)
+				},
+				value: r.objectId,
+				label: r.user.first_name + " " + r.user.last_name + " " + r.year
+			}));
+			setRecords(recordsCopy ?? []);
 		}
 	}, [recordData, setRecords]);
 
