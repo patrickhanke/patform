@@ -120,29 +120,25 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 		block.config?.buttonSize
 	);
 
+	// Parse padding values for MSO-specific rendering
+	// padding format is typically "10px 24px" or "12px 28px"
+	const paddingParts = padding.split(" ");
+	const verticalPadding = paddingParts[0] || "10px";
+	const horizontalPadding = paddingParts[1] || paddingParts[0] || "24px";
+
 	return `
 		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0;">
 			<tr>
-				<td align="${alignment}">
-					<!--[if mso]>
-					<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${buttonUrl}" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="${bg}">
-						<w:anchorlock/>
-						<center style="color:${fontColor};font-family:Arial,sans-serif;font-size:${fontSize};font-weight:500;">
-							${buttonText}
-						</center>
-					</v:roundrect>
-					<![endif]-->
-					<!--[if !mso]><!-->
-					<table role="presentation" cellspacing="0" cellpadding="0" border="0">
+				<td align="${alignment}" style="padding: 0;">
+					<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="display: inline-block;">
 						<tr>
-							<td style="border-radius: 4px; background-color: ${bg}; padding: ${padding};">
-								<a href="${buttonUrl}" target="_blank" style="display: inline-block; font-size: ${fontSize}; color: ${fontColor}; text-decoration: none; font-weight: 500; line-height: 1.2;">
+							<td align="center" style="border-radius: 4px; background-color: ${bg}; mso-padding-alt: ${verticalPadding} ${horizontalPadding}; padding: ${padding};">
+								<a href="${buttonUrl}" target="_blank" style="display: inline-block; mso-padding-alt: 0; padding: 0; font-family: Arial, sans-serif; font-size: ${fontSize}; color: ${fontColor}; text-decoration: none; font-weight: 500; line-height: 1.4; white-space: nowrap;">
 									${buttonText}
 								</a>
 							</td>
 						</tr>
 					</table>
-					<!--<![endif]-->
 				</td>
 			</tr>
 		</table>
