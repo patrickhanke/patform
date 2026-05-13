@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useCallback, useEffect, useState } from "react";
-import { Modal, ProgressBar, Select, SelectElement } from "@repo/ui";
+import { Modal, ProgressBar, Select } from "@repo/ui";
 import { axiosclient, compileAxiosError, useAppContext } from "@repo/provider";
 import { transformToEmail } from "@repo/ui";
 import { BulkEmailSenderProps } from "../types";
@@ -20,6 +20,12 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 	const [sentEmails, setSentEmails] = useState(0);
 	const [error, setError] = useState<string | null>(null);
 	const [sendBroadcast, setSendBroadcast] = useState(false);
+	const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
+	const [startBatch, setStartBatch] = useState<number>(1);
+	const [endBatch, setEndBatch] = useState<number | null>(null);
+
+	const BATCH_SIZE = 20;
+	const totalBatches = Math.ceil(recipients.length / BATCH_SIZE);
 
 	useEffect(() => {
 		if (
@@ -31,7 +37,11 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 		}
 	}, [recipients, totalEmails]);
 
-	console.log("recipients", recipients);
+	useEffect(() => {
+		if (endBatch === null && totalBatches > 0) {
+			setEndBatch(totalBatches);
+		}
+	}, [totalBatches, endBatch]);
 
 	const sendEmailsInBulk = useCallback(async () => {
 		if (recipients.length === 0) {
@@ -43,11 +53,11 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 		setError(null);
 		setSentEmails(0);
 
-		const BATCH_SIZE = 20;
-		const totalBatches = Math.ceil(recipients.length / BATCH_SIZE);
+		const actualEndBatch = endBatch || totalBatches;
+		const batchesToSend = actualEndBatch - startBatch + 1;
 
 		try {
-			for (let i = 0; i < totalBatches; i++) {
+			for (let i = startBatch - 1; i < actualEndBatch; i++) {
 				const start = i * BATCH_SIZE;
 				const end = Math.min(start + BATCH_SIZE, recipients.length);
 				const batch = recipients.slice(start, end);
@@ -70,12 +80,13 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 					});
 
 				// Update progress
-				const emailsSent = end;
-				setSentEmails(emailsSent);
-				setProgress((emailsSent / recipients.length) * 100);
+				const batchesSent = i - (startBatch - 1) + 1;
+				const emailsSent = Math.min(end, recipients.length);
+				setSentEmails(emailsSent - (startBatch - 1) * BATCH_SIZE);
+				setProgress((batchesSent / batchesToSend) * 100);
 
 				// Small delay between batches to avoid overwhelming the server
-				if (i < totalBatches - 1) {
+				if (i < actualEndBatch - 1) {
 					await new Promise((resolve) => setTimeout(resolve, 500));
 				}
 			}
@@ -94,9 +105,17 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 			);
 			setLoading(false);
 		}
-	}, [recipients, emailContent, emailId, project, setIsOpen]);
-
-	console.log("recipients", recipients);
+	}, [
+		recipients,
+		emailContent,
+		emailId,
+		project,
+		setIsOpen,
+		sendBroadcast,
+		startBatch,
+		endBatch,
+		totalBatches
+	]);
 
 	const handleClose = () => {
 		if (!loading) {
@@ -104,10 +123,12 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 			setProgress(0);
 			setSentEmails(0);
 			setError(null);
+			setShowAdvancedSettings(false);
+			setStartBatch(1);
+			setEndBatch(totalBatches);
 		}
 	};
 
-	console.log("sendBroadcast", sendBroadcast);
 	return (
 		<Modal
 			header="E-Mails versenden"
@@ -138,6 +159,101 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 						}
 					/>
 				</div>
+
+				{/* Advanced Settings Panel */}
+				<div className="flex col gap-sm">
+					<button
+						type="button"
+						className="text-left text-sm text-primary"
+						onClick={() =>
+							setShowAdvancedSettings(!showAdvancedSettings)
+						}
+						disabled={loading}
+					>
+						{showAdvancedSettings ? "▼" : "▶"} Erweiterte
+						Einstellungen
+					</button>
+
+					{showAdvancedSettings && (
+						<div
+							className="flex col gap-sm p-sm"
+							style={{
+								backgroundColor: "#f5f5f5",
+								borderRadius: "4px"
+							}}
+						>
+							<p className="text-sm">
+								Batch-Bereich auswählen (Batch-Größe:{" "}
+								{BATCH_SIZE} Empfänger)
+							</p>
+							<div className="flex row gap-sm a-ce">
+								<label className="text-sm">Von Batch:</label>
+								<Select
+									options={Array.from(
+										{ length: totalBatches },
+										(_, i) => ({
+											label: `${i + 1} (${i * BATCH_SIZE + 1}-${Math.min(
+												(i + 1) * BATCH_SIZE,
+												recipients.length
+											)})`,
+											value: String(i + 1)
+										})
+									)}
+									value={String(startBatch)}
+									onChange={(value) => {
+										const newStart = Number(value.value);
+										setStartBatch(newStart);
+										if (endBatch && newStart > endBatch) {
+											setEndBatch(newStart);
+										}
+									}}
+								/>
+							</div>
+							<div className="flex row gap-sm a-ce">
+								<label className="text-sm">Bis Batch:</label>
+								<Select
+									options={Array.from(
+										{ length: totalBatches },
+										(_, i) => ({
+											label: `${i + 1} (${i * BATCH_SIZE + 1}-${Math.min(
+												(i + 1) * BATCH_SIZE,
+												recipients.length
+											)})`,
+											value: String(i + 1)
+										})
+									).filter(
+										(option) =>
+											Number(option.value) >= startBatch
+									)}
+									value={String(endBatch || totalBatches)}
+									onChange={(value) =>
+										setEndBatch(Number(value.value))
+									}
+								/>
+							</div>
+							<p className="text-xs text-gray-600">
+								Es werden{" "}
+								{((endBatch || totalBatches) - startBatch + 1) *
+									BATCH_SIZE >
+								recipients.length
+									? recipients.length -
+										(startBatch - 1) * BATCH_SIZE
+									: ((endBatch || totalBatches) -
+											startBatch +
+											1) *
+										BATCH_SIZE}{" "}
+								Empfänger versendet (Empfänger{" "}
+								{(startBatch - 1) * BATCH_SIZE + 1} bis{" "}
+								{Math.min(
+									(endBatch || totalBatches) * BATCH_SIZE,
+									recipients.length
+								)}
+								)
+							</p>
+						</div>
+					)}
+				</div>
+
 				{!loading && !error && sentEmails === 0 && (
 					<>
 						<p>
