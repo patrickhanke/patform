@@ -24,10 +24,15 @@ export const transformToEmail = (blocks: ContentBlock[]): string => {
 			<title>Email Preview</title>
 		</head>
 		<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+			<!--[if mso | IE]>
+			<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" align="center" style="width: 600px;">
+				<tr>
+					<td>
+			<![endif]-->
 			<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
 				<tr>
 					<td align="center" style="padding: 20px 10px;">
-						<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="max-width: 600px; background-color: #ffffff;">
+						<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width: 600px; max-width: 600px; background-color: #ffffff;">
 							<tr>
 								<td style="padding: 40px 30px;">
 									${blocksHtml}
@@ -37,6 +42,11 @@ export const transformToEmail = (blocks: ContentBlock[]): string => {
 					</td>
 				</tr>
 			</table>
+			<!--[if mso | IE]>
+					</td>
+				</tr>
+			</table>
+			<![endif]-->
 		</body>
 		</html>
 	`.trim();
