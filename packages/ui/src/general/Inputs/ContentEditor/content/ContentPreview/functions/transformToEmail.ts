@@ -22,6 +22,14 @@ export const transformToEmail = (blocks: ContentBlock[]): string => {
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<title>Email Preview</title>
+			<!--[if gte mso 9]>
+			<xml>
+				<o:OfficeDocumentSettings>
+					<o:AllowPNG/>
+					<o:PixelsPerInch>96</o:PixelsPerInch>
+				</o:OfficeDocumentSettings>
+			</xml>
+			<![endif]-->
 		</head>
 		<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
 			<!--[if mso | IE]>
@@ -116,15 +124,25 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0;">
 			<tr>
 				<td align="${alignment}">
+					<!--[if mso]>
+					<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${buttonUrl}" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="${bg}">
+						<w:anchorlock/>
+						<center style="color:${fontColor};font-family:Arial,sans-serif;font-size:${fontSize};font-weight:500;">
+							${buttonText}
+						</center>
+					</v:roundrect>
+					<![endif]-->
+					<!--[if !mso]><!-->
 					<table role="presentation" cellspacing="0" cellpadding="0" border="0">
 						<tr>
-							<td style="border-radius: 4px; background-color: ${bg};">
-								<a href="${buttonUrl}" target="_blank" style="display: inline-block; padding: ${padding}; font-size: ${fontSize}; color: ${fontColor}; text-decoration: none; font-weight: 500;">
+							<td style="border-radius: 4px; background-color: ${bg}; padding: ${padding};">
+								<a href="${buttonUrl}" target="_blank" style="display: inline-block; font-size: ${fontSize}; color: ${fontColor}; text-decoration: none; font-weight: 500; line-height: 1.2;">
 									${buttonText}
 								</a>
 							</td>
 						</tr>
 					</table>
+					<!--<![endif]-->
 				</td>
 			</tr>
 		</table>
@@ -145,16 +163,25 @@ const renderEmailImageBlock = (block: ContentBlock): string => {
 	const imageUrl = block.config?.imageUrl || "";
 	const alignment = block.config?.alignment || "center";
 	const imageAlt = block.config?.imageAlt || "Image";
-	const width = block.config?.width || "600px";
+	const configWidth = block.config?.width || "600px";
 	const height = block.config?.height || "auto";
 
 	if (!imageUrl) return "";
 
+	// Parse width and ensure it doesn't exceed container (540px = 600px - 60px padding)
+	const maxContainerWidth = 540;
+	let widthValue = parseInt(configWidth);
+	if (isNaN(widthValue) || widthValue > maxContainerWidth) {
+		widthValue = maxContainerWidth;
+	}
+
+	// For Outlook Classic: width attribute needs numeric value only (no "px")
+	// For other clients: use both width and max-width in styles
 	return `
 		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0;">
 			<tr>
 				<td align="${alignment}">
-					<img src="${imageUrl}" alt="${imageAlt}" width="${width}" style="max-width: ${width}; height: ${height}; display: block;" />
+					<img src="${imageUrl}" alt="${imageAlt}" width="${widthValue}" style="width: ${widthValue}px; max-width: 100%; height: ${height}; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;" />
 				</td>
 			</tr>
 		</table>
@@ -170,16 +197,16 @@ const renderEmailLayoutBlock = (block: ContentBlock): string => {
 
 	const columnCells = block.children
 		.map((column, index) => {
-			const width = Math.round(
-				(columnWidths[index] || 0 / 100) * totalWidth
-			);
+			const widthPercent = columnWidths[index] || 50;
+			const width = Math.round((widthPercent / 100) * totalWidth);
 			const columnHtml = column
 				.map((childBlock) => renderEmailBlock(childBlock))
 				.filter(Boolean)
 				.join("\n");
 
+			// For Outlook Classic: use width attribute with numeric value and width style
 			return `
-				<td width="${width}" valign="top" style="padding: 0 ${index < block.children!.length - 1 ? "10px" : "0"} 0 0;">
+				<td width="${width}" valign="top" style="width: ${width}px; padding: 0 ${index < block.children!.length - 1 ? "10px" : "0"} 0 0;">
 					${columnHtml}
 				</td>
 			`;
@@ -187,7 +214,7 @@ const renderEmailLayoutBlock = (block: ContentBlock): string => {
 		.join("\n");
 
 	return `
-		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0;">
+		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width: 100%; margin: 24px 0;">
 			<tr>
 				${columnCells}
 			</tr>
