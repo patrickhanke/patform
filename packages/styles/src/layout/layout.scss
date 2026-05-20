@@ -233,3 +233,19 @@ label.error {
   padding: map-get($map: constants.$padding, $key: "md");
   box-shadow: constants.$shadow_light;
 }
+
+.divider {
+  width: 100%;
+  &.tiny {
+    height: 3px;
+  }
+  &.small {
+    height: 6px;
+  }
+  &.medium {
+    height: 12px;
+  }
+  &.large {
+    height: 18px;
+  }
+}

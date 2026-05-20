@@ -1,9 +1,12 @@
-import { FC, useEffect, useState, useMemo } from "react";
+import { FC, useEffect, useState, useMemo, useCallback } from "react";
 import {
+	Button,
 	DatePicker,
 	DisplayWorker,
 	Divider,
+	IconButton,
 	LoadingIndicator,
+	Modal,
 	Select,
 	SlideIn,
 	StatelessToggle,
@@ -14,15 +17,18 @@ import {
 	absence_state_options,
 	absence_type_options,
 	findDefaultTimeForDate,
+	useDataHandler,
 	useGetData
 } from "@repo/provider";
 import initialAbsence from "./constants/initialAbsence";
-import { useAbsenceDays, useErrors } from "./hooks";
+import { useAbsenceDays, useCreateAbsence, useErrors } from "./hooks";
 import AbsenceDay from "./components/AbsenceDay";
 import { ErrorMessage } from "@repo/types";
+import { outOfBounds } from "./functions";
 
 const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	type,
+	dayId,
 	absenceId,
 	date,
 	days,
@@ -31,13 +37,16 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	workerId,
 	year,
 	isOpen,
-	setIsOpen
+	setIsOpen,
+	refetch
 }) => {
+	const { updateData, deleteData, createData } = useDataHandler();
+	const [deleteModal, setDeleteModal] = useState(false);
 	const [isFull, setIsFull] = useState(true);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 	const [overlap, setOverlap] = useState<string[]>([]);
 	const { default_time } = findDefaultTimeForDate(date, records);
-
+	const [loading, setLoading] = useState(false);
 	const { data: absence, loading: absenceLoading } = useGetData({
 		objectName: "Absence",
 		fields: [
@@ -59,16 +68,15 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		end_date: date
 	});
 
-	const { daysLoading, intervalDays } = useAbsenceDays({
+	const { daysLoading, intervalDays, daysData } = useAbsenceDays({
 		absence: absenceState || undefined
 	});
 
-	console.log({ absenceState });
-
 	useErrors({
 		date,
+		dayId,
 		dayType: "absence",
-		absence: absenceState || undefined,
+		absence: absenceState,
 		days,
 		setErrors,
 		setOverlap,
@@ -76,38 +84,58 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		isFull
 	});
 
-	console.log({ daysLoading });
-	console.log({ default_time });
+	const { editAbsenceHandler, createAbsenceHandler } = useCreateAbsence({
+		setLoading,
+		setErrors,
+		errors,
+		type,
+		absenceState,
+		intervalDays,
+		daysData,
+		records,
+		times,
+		isFull,
+		workerId,
+		absenceId
+	});
+
+	const slideInHandler = useCallback(async () => {
+		setLoading(true);
+		if (type === "edit") {
+			await editAbsenceHandler();
+		} else if (type === "create") {
+			await createAbsenceHandler();
+		}
+		refetch();
+		setLoading(false);
+	}, [type, editAbsenceHandler, createAbsenceHandler, refetch, setLoading]);
 
 	useEffect(() => {
 		if (absence && !absenceState.objectId) {
-			console.log({ absence });
+			if (absence.start_date.length > 10) {
+				setIsFull(false);
+			}
 			setAbsenceState(absence);
 		}
 	}, [absence, absenceState]);
 
-	useEffect(() => {
-		if (isFull === false) {
-			setAbsenceState({
-				...absenceState,
-				start_date: default_time?.start || date,
-				end_date: default_time?.end || date
-			});
-		} else if (isFull === true) {
-			setAbsenceState({
-				...absenceState,
-				start_date: date,
-				end_date: date
-			});
-		}
-	}, [isFull, default_time]);
-
 	const secondaryContent = useMemo(() => {
 		return (
-			<div>
-				<h3>Zeiten/ Tage</h3>
-				<Divider />
-				<AbsenceDay days={intervalDays} overlap={overlap} />
+			<div className="flex col j-sb gap-md h-100">
+				<div>
+					<h3>Zeiten/ Tage</h3>
+					<Divider />
+					<AbsenceDay days={intervalDays} overlap={overlap} />
+				</div>
+				<div>
+					<IconButton
+						icon="delete"
+						text="Abwesenheit löschen"
+						onClick={() => setDeleteModal(true)}
+						color="red"
+						size={12}
+					/>
+				</div>
 			</div>
 		);
 	}, [intervalDays]);
@@ -117,127 +145,179 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	}
 
 	return (
-		<SlideIn
-			isOpen={isOpen}
-			cancel={() => setIsOpen(false)}
-			confirm={() => {}}
-			header="Abwesenheit bearbeiten"
-			showSecondaryContent={true}
-			secondaryContent={secondaryContent}
-			errors={errors}
-		>
-			<form className="flex col gap-lg">
-				<DisplayWorker workerId={workerId} />
-				<div>
-					<Select
-						key={absenceState.type}
-						value={absenceState.type}
-						options={absence_type_options}
-						onChange={(value) =>
-							setAbsenceState({
-								...absenceState,
-								type: value.value
-							})
-						}
-						placeholder="Art der Abwesenheit"
-						label="Art der Abwesenheit"
-						width={300}
-						isDisabled={type === "edit"}
-					/>
-				</div>
-				<div className="horizontal_container">
-					<div className={"label"}>Ganztägig</div>
-					<StatelessToggle
-						onChange={(value) => {
-							if (typeof value === "boolean") {
-								if (value === true) {
-									setIsFull(true);
-								} else {
-									setIsFull(false);
-								}
+		<>
+			<SlideIn
+				isOpen={isOpen}
+				cancel={() => setIsOpen(false)}
+				confirm={slideInHandler}
+				header="Abwesenheit bearbeiten"
+				showSecondaryContent={true}
+				secondaryContent={secondaryContent}
+				errors={errors}
+				disabled={[daysLoading, errors.length > 0 || daysLoading]}
+			>
+				<form className="flex col gap-lg">
+					<DisplayWorker workerId={workerId} />
+					<div>
+						<Select
+							key={absenceState.type}
+							value={absenceState.type}
+							options={absence_type_options}
+							onChange={(value) =>
+								setAbsenceState({
+									...absenceState,
+									type: value.value
+								})
 							}
-						}}
-						value={isFull}
-						disabled={type === "edit"}
-					/>
-				</div>
-				<div>
-					<DatePicker
-						id="dstart"
-						defaultValue={absenceState.start_date}
-						onChange={(value) => {
-							setAbsenceState({
-								...absenceState,
-								start_date: value
-							});
-						}}
-						disabled={false}
-						disabledDate={isFull === false}
-						type={isFull ? "date" : "datetime"}
-						label="Anfangsdatum"
-						width={300}
-						onlyDate
-					/>
-				</div>
-				<div>
-					<DatePicker
-						key={absenceState.end_date}
-						id="end"
-						defaultValue={absenceState.end_date}
-						onChange={(value) =>
-							setAbsenceState({
-								...absenceState,
-								end_date: value
-							})
-						}
-						disabled={!absenceState.start_date}
-						disabledDate={isFull === false}
-						type={isFull ? "date" : "datetime"}
-						label="Enddatum"
-						width={300}
-						onlyDate
-					/>
-				</div>
+							placeholder="Art der Abwesenheit"
+							label="Art der Abwesenheit"
+							width={300}
+							isDisabled={type === "edit"}
+						/>
+					</div>
+					<div>
+						<div className={"label"}>Ganztägig</div>
+						<div className="divider small" />
+						<StatelessToggle
+							onChange={(value) => {
+								if (typeof value === "boolean") {
+									if (value === true) {
+										setIsFull(true);
+										setAbsenceState({
+											...absenceState,
+											start_date: date,
+											end_date: date
+										});
+									} else {
+										setIsFull(false);
+										setAbsenceState({
+											...absenceState,
+											start_date:
+												default_time?.start || date,
+											end_date: default_time?.end || date
+										});
+									}
+								}
+							}}
+							value={isFull}
+							disabled={type === "edit"}
+						/>
+					</div>
+					<div>
+						<label htmlFor="start">Anfangsdatum</label>
+						<div className="light_box">
+							<DatePicker
+								id="dstart"
+								defaultValue={absenceState.start_date}
+								onChange={(value) => {
+									if (value) {
+										if (
+											outOfBounds({ date: value, year })
+										) {
+											setErrors([
+												...errors,
+												{
+													id: "out_of_bounds",
+													key: "out_of_bounds",
+													message:
+														"Das Datum liegt außerhalb des Jahres"
+												}
+											]);
+											return;
+										}
+									}
+									setAbsenceState({
+										...absenceState,
+										start_date: value
+									});
+								}}
+								disabled={false}
+								disabledDate={isFull === false}
+								type={isFull ? "date" : "datetime"}
+								label=""
+								width={300}
+								onlyDate
+							/>
+						</div>
+					</div>
+					<div>
+						<label htmlFor="end">Enddatum</label>
+						<div className="light_box">
+							<DatePicker
+								key={absenceState.end_date}
+								id="end"
+								defaultValue={absenceState.end_date}
+								onChange={(value) => {
+									if (value) {
+										if (
+											outOfBounds({ date: value, year })
+										) {
+											setErrors([
+												...errors,
+												{
+													id: "out_of_bounds",
+													key: "out_of_bounds",
+													message:
+														"Das Datum liegt außerhalb des Jahres"
+												}
+											]);
+											return;
+										}
+									}
+									setAbsenceState({
+										...absenceState,
+										end_date: value
+									});
+								}}
+								disabled={!absenceState.start_date}
+								disabledDate={isFull === false}
+								type={isFull ? "date" : "datetime"}
+								label=""
+								width={300}
+								onlyDate
+							/>
+						</div>
+					</div>
 
-				<div style={{ position: "relative" }}>
-					<Select
-						value={absenceState.state}
-						options={absence_state_options}
-						onChange={(value) =>
-							setAbsenceState({
-								...absenceState,
-								state: value.value
-							})
-						}
-						placeholder="Status"
-						label="Status"
-						width={300}
-						isDisabled={
-							!absenceState.end_date ||
-							!absenceState.start_date ||
-							absenceState.state === "approved"
-						}
-					/>
-					{/* {type === 'edit' && absence.state === 'approved' && <InfoBox text='Eine bereits bestätigte Abwesenheit kann nicht bestätigt werden. Bitte die Abwesenheit löschen und eine neue erstellen.' /> } */}
-				</div>
-				<div>
-					<TextInput
-						id="comment"
-						defaultValue={absenceState.comment}
-						onChange={(value) =>
-							setAbsenceState({
-								...absenceState,
-								comment: value
-							})
-						}
-						label="Kommentar"
-						placeholder="Kommentar"
-						isTextArea
-						width={"300px"}
-					/>
-				</div>
-			</form>
-			{/* <div>
+					<div style={{ position: "relative" }}>
+						<Select
+							value={absenceState.state}
+							options={absence_state_options}
+							onChange={(value) =>
+								setAbsenceState({
+									...absenceState,
+									state: value.value
+								})
+							}
+							placeholder="Status"
+							label="Status"
+							width={300}
+							isDisabled={
+								!absenceState.end_date ||
+								!absenceState.start_date ||
+								absenceState.state === "approved"
+							}
+						/>
+						{/* {type === 'edit' && absence.state === 'approved' && <InfoBox text='Eine bereits bestätigte Abwesenheit kann nicht bestätigt werden. Bitte die Abwesenheit löschen und eine neue erstellen.' /> } */}
+					</div>
+					<div>
+						<TextInput
+							id="comment"
+							defaultValue={absenceState.comment}
+							onChange={(value) =>
+								setAbsenceState({
+									...absenceState,
+									comment: value
+								})
+							}
+							label="Kommentar"
+							placeholder="Kommentar"
+							isTextArea
+							width={"300px"}
+						/>
+					</div>
+				</form>
+				{/* <div>
 				<SwitchButtons
 					buttonStates={[...absence_type_options]}
 					currentStates={
@@ -279,7 +359,29 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 					timeChangeHandler={absenceChangeHandler}
 				/>
 			)} */}
-		</SlideIn>
+			</SlideIn>
+			<Modal
+				header="Abwesenheit löschen"
+				isOpen={deleteModal}
+				confirmButtonHandler={async () => {
+					if (absenceId) {
+						await deleteData({
+							className: "Absence",
+							objectId: absenceId
+						});
+					}
+					await refetch();
+					setDeleteModal(false);
+				}}
+				loading={loading}
+				cancelButtonHandler={() => setDeleteModal(false)}
+			>
+				<p>
+					Sind Sie sicher, dass Sie die Abwesenheit löschen möchten?
+					Alle dazugehörigen Zeiteinträge werden ebenfalls gelöscht.
+				</p>
+			</Modal>
+		</>
 	);
 };
 

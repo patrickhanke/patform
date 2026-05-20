@@ -87,9 +87,9 @@ const useTableColumns = ({
 			{
 				accessorFn: (row) => (
 					<ColumnWorkingTime
-						absence={row.absence}
 						type={row.type}
-						time={row.time}
+						days={days || []}
+						times={row.times || []}
 						date={row.date}
 						refetch={refetch}
 						userId={userId}
@@ -174,7 +174,7 @@ const useTableColumns = ({
 							findDefaultTimeForDate(row.date, records)
 								.default_time ?? undefined
 						}
-						times={row.time || undefined}
+						times={row.times || undefined}
 						date={row.date}
 						refetch={refetch}
 						userId={userId}

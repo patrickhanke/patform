@@ -3,6 +3,7 @@ import { WorkingTimes } from "./types";
 import {
 	AbsenceTime,
 	ApolloRefetch,
+	Day,
 	DefaultWorkingDay,
 	ErrorMessage
 } from "@repo/types";
@@ -12,12 +13,14 @@ export type EditDayTimesProps = {
 	date: string;
 	days?: Day[];
 	dayId?: string;
-	initialTime?: WorkingTime | AbsenceTime;
+	initialTime?: Day["time"];
 	times: DayDataTime[] | undefined;
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];
 	absenceId?: string;
+	color?: string;
+	label?: string;
 };
 
 export type EditTimeProps = {

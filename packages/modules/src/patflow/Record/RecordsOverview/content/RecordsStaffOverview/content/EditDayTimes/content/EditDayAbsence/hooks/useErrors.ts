@@ -8,6 +8,7 @@ import {
 
 const useErrors: UseErrors = ({
 	date,
+	dayId,
 	dayType,
 	days,
 	absence,
@@ -44,6 +45,14 @@ const useErrors: UseErrors = ({
 
 		const defaultTime = findDefaultTimeForDate(date, records).default_time;
 
+		if (!absence.type) {
+			errorArray.push({
+				id: "type_required",
+				key: `type_required`,
+				message: "Typ ist erforderlich"
+			});
+		}
+
 		if (!defaultTime) {
 			disabledArray[1] = true;
 			errorArray.push({
@@ -58,9 +67,9 @@ const useErrors: UseErrors = ({
 					absence.end_date
 				);
 
-				console.log({ timesInterval });
-				const currentTimes = days.filter((t) =>
-					timesInterval.includes(t.date)
+				const currentTimes = days.filter(
+					(t) =>
+						timesInterval.includes(t.date) && t.objectId !== dayId
 				);
 				currentTimes.forEach((timeEntry, index) => {
 					if (
@@ -72,17 +81,24 @@ const useErrors: UseErrors = ({
 						)
 					) {
 						disabledArray[1] = true;
+						overlapArray.push(timeEntry.date);
+						if (
+							errorArray.find((error) => error.id === `overlap`)
+						) {
+							return;
+						}
 						errorArray.push({
-							id: `overlap_${index}`,
+							id: `overlap`,
 							key: `overlap_with_time_${index}`,
 							message: `Die Zeit überschneidet sich mit einem anderen Eintrag.`
 						});
-						overlapArray.push(timeEntry.date);
 					}
 				});
+
 				if (
+					!isFull &&
 					new Date(defaultTime.start).getTime() >
-					new Date(absence.start_date).getTime()
+						new Date(absence.start_date).getTime()
 				) {
 					disabledArray[1] = true;
 					errorArray.push({
@@ -93,8 +109,9 @@ const useErrors: UseErrors = ({
 					});
 				}
 				if (
+					!isFull &&
 					new Date(defaultTime.end).getTime() <
-					new Date(absence.end_date).getTime()
+						new Date(absence.end_date).getTime()
 				) {
 					disabledArray[1] = true;
 					errorArray.push({
@@ -106,9 +123,10 @@ const useErrors: UseErrors = ({
 				}
 			}
 		}
+		console.log({ errorArray });
 		setErrors(errorArray);
 		setOverlap(overlapArray);
-	}, [date, dayType, absence, days, isFull]);
+	}, [date, dayId, dayType, absence, days, isFull]);
 };
 
 export default useErrors;

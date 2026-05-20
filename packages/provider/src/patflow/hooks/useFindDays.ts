@@ -1,18 +1,24 @@
 import { useFindData } from "@repo/provider";
-import { Filter } from "@repo/types";
+import { Day, ApolloRefetch, Filter } from "@repo/types";
 
-const useFindDays = ({
-	userId,
-	skipQuery = false,
-	absenceId,
-	year,
-	userIds
-}: {
+type UseFindDays = (P: {
 	userId?: string;
 	skipQuery?: boolean;
 	absenceId?: string;
 	year?: number;
 	userIds?: string[];
+}) => {
+	data: Day[];
+	loading: boolean;
+	refetch: ApolloRefetch;
+};
+
+const useFindDays: UseFindDays = ({
+	userId,
+	skipQuery = false,
+	absenceId,
+	year,
+	userIds
 }) => {
 	const filters: Filter[] = [];
 	if (year) {

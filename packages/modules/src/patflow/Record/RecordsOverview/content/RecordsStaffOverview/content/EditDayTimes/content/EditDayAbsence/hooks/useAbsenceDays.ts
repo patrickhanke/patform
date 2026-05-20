@@ -40,7 +40,8 @@ const useAbsenceDays: UseAbsenceDaysHook = ({ absence }) => {
 				console.log({ day });
 				intervalArray.push({
 					date: day.date,
-					state: "delete"
+					state: "delete",
+					objectId: day.objectId
 				});
 			}
 		});
@@ -67,7 +68,8 @@ const useAbsenceDays: UseAbsenceDaysHook = ({ absence }) => {
 
 	return {
 		daysLoading,
-		intervalDays
+		intervalDays,
+		daysData
 	};
 };
 

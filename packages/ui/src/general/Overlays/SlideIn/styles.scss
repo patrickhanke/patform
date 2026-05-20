@@ -97,7 +97,14 @@
   width: 420px;
   order: 2;
   padding: map-get(constants.$padding, "sm");
-  overflow: auto;
+  overflow: hidden;
+  .children-container {
+    flex: 1 1 auto;
+    overflow: auto;
+  }
+  .errors-container {
+    flex: 1 0 auto;
+  }
 }
 
 .slidein_secondary_content {

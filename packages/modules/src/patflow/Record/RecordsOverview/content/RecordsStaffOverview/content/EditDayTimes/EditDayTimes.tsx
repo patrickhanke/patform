@@ -1,6 +1,6 @@
 import { FC, useCallback, useState, useEffect, useMemo } from "react";
 import { EditDayTimesProps, WorkingTime } from "./types";
-import { Absence, AbsenceTime, Day, ErrorMessage } from "@repo/types";
+import { AbsenceTime, Day, ErrorMessage } from "@repo/types";
 import {
 	absence_type_options,
 	axiosclient,
@@ -12,21 +12,13 @@ import {
 import { useDataHandler } from "@repo/provider";
 import EditTime from "./content/EditDayTime";
 import { cloneDeep, isArray, set } from "lodash-es";
-import {
-	Divider,
-	IconButton,
-	Modal,
-	SlideIn,
-	StateDisplay,
-	SwitchButtons
-} from "@repo/ui";
+import { Divider, IconButton, Modal, SlideIn, StateDisplay } from "@repo/ui";
 import { getDateString } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
 import EditDayAbsence from "./content/EditDayAbsence";
 import day_type_options from "./constants/day_type_options";
 import useErrors from "./hooks/useErrors";
 import { v4 as generateUuid } from "uuid";
-import { DayDataTime } from "../StaffWorkingTimes";
 
 const EditDayTimes: FC<EditDayTimesProps> = ({
 	type,
@@ -38,15 +30,16 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	refetch,
 	userId,
 	records,
-	absenceId
+	absenceId,
+	color,
+	label
 }) => {
-	console.log({ days });
 	const [slideIn, setSlideIn] = useState(false);
 	const [editAbsence, setEditAbsence] = useState(false);
 	const [dayType, setDayType] = useState<(typeof day_type_options)[number]>(
 		day_type_options[0]
 	);
-	const [time, setTime] = useState<WorkingTime | AbsenceTime | DayDataTime>(
+	const [time, setTime] = useState<WorkingTime | AbsenceTime>(
 		initialTime ? initialTime : getDefaultTime(date).time
 	);
 	const [currentIndex, setCurrentIndex] = useState<number>(NaN);
@@ -121,13 +114,14 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 
 				let currentDuration = 0;
 
-				if (isArray(times) && time?.day_id) {
+				if (isArray(times) && dayId) {
 					const currentTimes = times.filter(
-						(t) => t.day_id !== time.day_id
+						(t) => t.day_id !== dayId
 					);
 
-					currentTimes.forEach((time) => {
-						currentDuration += time.duration - time.pause;
+					currentTimes.forEach((currentTime) => {
+						currentDuration +=
+							currentTime.time.duration - currentTime.time.pause;
 					});
 				}
 
@@ -144,14 +138,14 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 					const pauseDuration = currentDuration - totalDuration;
 
 					const pauseStart =
-						new Date(time.end).getTime() - pauseDuration;
+						new Date(timeValue.end).getTime() - pauseDuration;
 					const pauseId = generateUuid();
 
 					breakArray.push({
 						start: convertDateToString(
 							new Date(pauseStart).toISOString()
 						),
-						end: time.end,
+						end: timeValue.end,
 						id: pauseId
 					});
 
@@ -194,7 +188,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 				day_id: dayId,
 				user_id: userId,
 				type: dayType.value,
-				comment: time.comment
+				comment: initialTime?.comment
 			});
 		}
 
@@ -223,10 +217,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		},
 		[setDayType]
 	);
-
-	console.log({ dayId });
-	console.log({ initialTime });
-	console.log({ absenceId });
 
 	const secondaryContent = useMemo(() => {
 		return (
@@ -273,6 +263,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		);
 	}, [time, date, errors, records, dayType, deleteModal, dayId]);
 
+	console.log({ initialTime });
 	const timeType = useMemo(() => {
 		const absenceType = absence_type_options.find(
 			(option) => option.value === initialTime?.type
@@ -282,9 +273,9 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 			return absenceType;
 		} else {
 			return {
-				value: time.type,
-				label: ` A - ${getDateString(time.start).time} -
-						${getDateString(time.end).time}`,
+				value: initialTime?.type,
+				label: ` A - ${getDateString(initialTime?.start).time} -
+						${getDateString(initialTime?.end).time}`,
 				color: "green"
 			};
 		}
@@ -295,11 +286,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 			return `${getDateString(initialTime.start).time} -
 						${getDateString(initialTime.end).time}`;
 		}
-		return `${getDateString(time.start).time} -
-						${getDateString(time.end).time}`;
+		return null;
 	}, [time]);
-
-	console.log({ time });
 
 	const addButtonDisabled = useMemo(() => {
 		let returnValue = false;
@@ -307,21 +295,25 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 			times.forEach((timeElement) => {
 				// console.log({ timeElement });
 				if (
-					timeElement?.type === "illness" &&
-					timeElement?.state === "full"
+					timeElement?.time?.type === "illness" &&
+					timeElement?.time?.state === "full"
 				) {
 					returnValue = true;
 				}
-				if (timeElement?.type === "vacation") {
+				if (timeElement?.time?.type === "vacation") {
 					returnValue = true;
 				}
-				if (timeElement?.type === "compensation_times") {
+				if (timeElement?.time?.type === "compensation_times") {
 					returnValue = true;
 				}
 			});
 		}
 		return returnValue;
-	}, [times]);
+	}, [initialTime]);
+
+	if (!initialTime) {
+		return null;
+	}
 
 	return (
 		<>
@@ -336,8 +328,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 								setSlideIn(true);
 							}
 						}}
-						label={stateLabel}
-						color={timeType.color}
+						label={label || stateLabel || ""}
+						color={color || timeType.color}
 					/>
 				) : (
 					<>
@@ -365,6 +357,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 			</div>
 			<EditDayAbsence
 				date={date}
+				dayId={dayId}
 				type={absenceId ? "edit" : "create"}
 				times={times}
 				days={days}
@@ -374,6 +367,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 				year={new Date().getFullYear()}
 				isOpen={editAbsence}
 				setIsOpen={setEditAbsence}
+				refetch={refetch}
 			/>
 			<SlideIn
 				header={`Zeiten bearbeiten (${getDateString(formatISO9075(new Date(date))).date})`}
@@ -424,12 +418,12 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 					<Divider size="small" showLine={false} />
 					<div className="horizontal_container">
 						<div className="label">Startzeit</div>
-						<p>{getDateString(time?.start).time}</p>
+						<p>{getDateString(initialTime?.start).time}</p>
 					</div>
 					<Divider size="small" showLine={false} />
 					<div className="horizontal_container">
 						<div className="label">Endzeit</div>
-						<p>{getDateString(time?.end).time}</p>
+						<p>{getDateString(initialTime?.end).time}</p>
 					</div>
 				</div>
 			</SlideIn>
