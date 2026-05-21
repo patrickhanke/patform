@@ -6,7 +6,7 @@ const initialAbsence: InitialAbsence = {
 	user: undefined,
 	start_date: "",
 	end_date: "",
-	state: "created",
+	state: "approved",
 	comment: "",
 	type: "" as Absence["type"],
 	year: new Date().getFullYear()

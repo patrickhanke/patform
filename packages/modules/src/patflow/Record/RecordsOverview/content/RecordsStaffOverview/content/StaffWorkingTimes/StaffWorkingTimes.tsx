@@ -188,6 +188,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		return interval;
 	}, [days, month, year]);
 
+	console.log({ tableData });
+
 	return (
 		<div>
 			<h3>Arbeitszeiten</h3>

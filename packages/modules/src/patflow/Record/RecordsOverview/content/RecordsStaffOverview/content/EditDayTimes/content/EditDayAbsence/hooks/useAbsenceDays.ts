@@ -1,43 +1,58 @@
 import { formatISO } from "date-fns";
-import { createIntervalFromTimes, useFindDays } from "@repo/provider";
+import { createIntervalFromTimes } from "@repo/provider";
 import { useMemo } from "react";
 import { IntervalDay, UseAbsenceDaysHook } from "../types";
 
-const useAbsenceDays: UseAbsenceDaysHook = ({ absence }) => {
-	const { data: daysData, loading: daysLoading } = useFindDays({
-		absenceId: absence?.objectId,
-		skipQuery: !absence?.objectId
-	});
-
+const useAbsenceDays: UseAbsenceDaysHook = ({
+	absence,
+	days,
+	isFull = true
+}) => {
 	const intervalDays = useMemo(() => {
-		if (!absence || !daysData || !absence.start_date || !absence.end_date)
+		if (!absence || !days || !absence.start_date || !absence.end_date)
 			return [];
 		const interval = createIntervalFromTimes(
 			absence.start_date,
 			absence.end_date
 		);
 
-		console.log({ interval });
 		const intervalArray: IntervalDay[] = [];
 
 		interval.forEach((date) => {
-			const day = daysData.find((day) => day.date === date);
+			const day = days.find((day) => day.date === date);
 			if (day) {
-				intervalArray.push({
-					date,
-					state: "keep"
-				});
+				if (
+					!isFull &&
+					(day.time?.start !== absence.start_date ||
+						day.time?.end !== absence.end_date)
+				) {
+					intervalArray.push({
+						date,
+						state: "change",
+						objectId: day.objectId
+					});
+				} else {
+					intervalArray.push({
+						date,
+						state: "keep",
+						objectId: day.objectId
+					});
+				}
 			} else {
 				intervalArray.push({
 					date,
-					state: "create"
+					state: "create",
+					objectId: undefined
 				});
 			}
 		});
 
-		daysData.forEach((day) => {
+		const filteredDays = days.filter(
+			(day) => day.absence?.objectId === absence?.objectId
+		);
+
+		filteredDays.forEach((day) => {
 			if (!interval.includes(day.date)) {
-				console.log({ day });
 				intervalArray.push({
 					date: day.date,
 					state: "delete",
@@ -64,12 +79,13 @@ const useAbsenceDays: UseAbsenceDaysHook = ({ absence }) => {
 		return intervalArray.sort(
 			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 		);
-	}, [daysData, absence]);
+	}, [days, absence]);
 
 	return {
-		daysLoading,
 		intervalDays,
-		daysData
+		daysData: days.filter(
+			(day) => day.absence?.objectId === absence?.objectId
+		)
 	};
 };
 

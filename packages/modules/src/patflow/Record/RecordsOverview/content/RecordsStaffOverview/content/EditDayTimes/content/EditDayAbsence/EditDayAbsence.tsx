@@ -1,6 +1,5 @@
-import { FC, useEffect, useState, useMemo, useCallback } from "react";
+import { FC, useEffect, useState, useCallback } from "react";
 import {
-	Button,
 	DatePicker,
 	DisplayWorker,
 	Divider,
@@ -40,7 +39,7 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	setIsOpen,
 	refetch
 }) => {
-	const { updateData, deleteData, createData } = useDataHandler();
+	const { deleteData } = useDataHandler();
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [isFull, setIsFull] = useState(true);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
@@ -68,8 +67,10 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		end_date: date
 	});
 
-	const { daysLoading, intervalDays, daysData } = useAbsenceDays({
-		absence: absenceState || undefined
+	const { intervalDays, daysData } = useAbsenceDays({
+		absence: absenceState || undefined,
+		days: days || [],
+		isFull
 	});
 
 	useErrors({
@@ -99,6 +100,21 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		absenceId
 	});
 
+	const resetStateHandler = useCallback(() => {
+		setAbsenceState({
+			...initialAbsence,
+			year,
+			start_date: date,
+			end_date: date
+		});
+		setIsFull(true);
+		setErrors([]);
+		setOverlap([]);
+		setDeleteModal(false);
+		setLoading(false);
+		setIsOpen(false);
+	}, [year, date, setIsOpen]);
+
 	const slideInHandler = useCallback(async () => {
 		setLoading(true);
 		if (type === "edit") {
@@ -107,8 +123,14 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 			await createAbsenceHandler();
 		}
 		refetch();
-		setLoading(false);
-	}, [type, editAbsenceHandler, createAbsenceHandler, refetch, setLoading]);
+		resetStateHandler();
+	}, [
+		type,
+		editAbsenceHandler,
+		createAbsenceHandler,
+		refetch,
+		resetStateHandler
+	]);
 
 	useEffect(() => {
 		if (absence && !absenceState.objectId) {
@@ -119,26 +141,24 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		}
 	}, [absence, absenceState]);
 
-	const secondaryContent = useMemo(() => {
-		return (
-			<div className="flex col j-sb gap-md h-100">
-				<div>
-					<h3>Zeiten/ Tage</h3>
-					<Divider />
-					<AbsenceDay days={intervalDays} overlap={overlap} />
-				</div>
-				<div>
-					<IconButton
-						icon="delete"
-						text="Abwesenheit löschen"
-						onClick={() => setDeleteModal(true)}
-						color="red"
-						size={12}
-					/>
-				</div>
+	const secondaryContent = (
+		<div className="flex col j-sb gap-md h-100">
+			<div>
+				<h3>Zeiten/ Tage</h3>
+				<Divider />
+				<AbsenceDay days={intervalDays} overlap={overlap} />
 			</div>
-		);
-	}, [intervalDays]);
+			<div>
+				<IconButton
+					icon="delete"
+					text="Abwesenheit löschen"
+					onClick={() => setDeleteModal(true)}
+					color="red"
+					size={12}
+				/>
+			</div>
+		</div>
+	);
 
 	if (absenceLoading) {
 		return <LoadingIndicator />;
@@ -148,13 +168,13 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		<>
 			<SlideIn
 				isOpen={isOpen}
-				cancel={() => setIsOpen(false)}
+				cancel={resetStateHandler}
 				confirm={slideInHandler}
 				header="Abwesenheit bearbeiten"
 				showSecondaryContent={true}
 				secondaryContent={secondaryContent}
 				errors={errors}
-				disabled={[daysLoading, errors.length > 0 || daysLoading]}
+				disabled={[errors.length > 0 || loading, loading]}
 			>
 				<form className="flex col gap-lg">
 					<DisplayWorker workerId={workerId} />
@@ -207,6 +227,7 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 						<label htmlFor="start">Anfangsdatum</label>
 						<div className="light_box">
 							<DatePicker
+								key={absenceState.start_date}
 								id="dstart"
 								defaultValue={absenceState.start_date}
 								onChange={(value) => {
@@ -225,11 +246,11 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 											]);
 											return;
 										}
+										setAbsenceState({
+											...absenceState,
+											start_date: value
+										});
 									}
-									setAbsenceState({
-										...absenceState,
-										start_date: value
-									});
 								}}
 								disabled={false}
 								disabledDate={isFull === false}
@@ -263,11 +284,11 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 											]);
 											return;
 										}
+										setAbsenceState({
+											...absenceState,
+											end_date: value
+										});
 									}
-									setAbsenceState({
-										...absenceState,
-										end_date: value
-									});
 								}}
 								disabled={!absenceState.start_date}
 								disabledDate={isFull === false}
@@ -303,7 +324,7 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 					<div>
 						<TextInput
 							id="comment"
-							defaultValue={absenceState.comment}
+							defaultValue={absenceState?.comment}
 							onChange={(value) =>
 								setAbsenceState({
 									...absenceState,

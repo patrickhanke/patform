@@ -17,7 +17,6 @@ const createTimeFromAbsence: CreateTimesFromAbsence = (
 	times,
 	timeId
 ) => {
-	console.log({ start, end, date, records, times, timeId });
 	const timeCopy: DayTime = {
 		type: "regular",
 		state: "created",
@@ -72,8 +71,6 @@ const createTimeFromAbsence: CreateTimesFromAbsence = (
 				end
 			);
 		}
-
-		console.log({ timeCopy });
 
 		set(timeCopy, "duration", getWorktimeDuration(start, end));
 		set(timeCopy, "breaks", breakArray);

@@ -39,66 +39,125 @@ const useCreateAbsence = ({
 }) => {
 	const { updateData, deleteData, createData } = useDataHandler();
 
-	console.log({ isFull });
-
 	const editAbsenceHandler = useCallback(async () => {
-		console.log({ intervalDays });
 		setLoading(true);
-		if (type === "edit") {
-			if (absenceState.objectId) {
-				// Remove day handling error
-				setErrors((prev) =>
-					prev.filter((e) => e.id !== "day_handling_error")
-				);
 
-				try {
-					const dayPromises = intervalDays
-						.filter((day) => day.state)
-						.map(async (intervalDay) => {
-							const existingDay = daysData?.find(
-								(d) => d.date === intervalDay.date
+		if (!absenceId) {
+			throw new Error("Absence ID is required");
+		}
+
+		await updateData({
+			className: "Absence",
+			objectId: absenceId,
+			updateObject: {
+				start_date: absenceState.start_date,
+				end_date: absenceState.end_date,
+				state: absenceState.state,
+				comment: absenceState?.comment
+			}
+		});
+		if (absenceState.objectId) {
+			// Remove day handling error
+			setErrors((prev) =>
+				prev.filter((e) => e.id !== "day_handling_error")
+			);
+
+			try {
+				const dayPromises = intervalDays
+					.filter((day) => day.state)
+					.map(async (intervalDay) => {
+						const existingDay = daysData?.find(
+							(d) => d.date === intervalDay.date
+						);
+						// receive times for day
+						const defaultTimeData = findDefaultTimeForDate(
+							intervalDay.date,
+							records
+						);
+
+						const timeData = isFull
+							? defaultTimeData.default_time
+							: createTimeFromAbsence(
+									absenceState.start_date,
+									absenceState.end_date,
+									intervalDay.date,
+									records,
+									times,
+									absenceState.objectId
+								);
+
+						if (intervalDay.state === "create" && timeData) {
+							return await axiosclient().post(
+								"/functions/create-time",
+								{
+									time: timeData,
+									type: "absence",
+									date: intervalDay.date,
+									user_id: workerId,
+									day_id: undefined,
+									absence_id: absenceId,
+									comment: timeData?.comment
+								}
 							);
-							// receive times for day
-							console.log({ existingDay });
-							const defaultTimeData = findDefaultTimeForDate(
-								intervalDay.date,
-								records
+						} else if (
+							intervalDay.state === "change" &&
+							timeData &&
+							intervalDay.objectId
+						) {
+							if (
+								!isFull &&
+								(timeData.start !== absenceState.start_date ||
+									timeData.end !== absenceState.end_date)
+							) {
+								return await axiosclient().post(
+									"/functions/update-time",
+									{
+										time: timeData,
+										type: "absence",
+										date: intervalDay.date,
+										user_id: workerId,
+										day_id: intervalDay.objectId,
+										absence_id: absenceId,
+										comment: timeData?.comment
+									}
+								);
+							}
+							return await axiosclient().post(
+								"/functions/create-time",
+								{
+									time: timeData,
+									type: "absence",
+									date: intervalDay.date,
+									user_id: workerId,
+									day_id: intervalDay.objectId,
+									absence_id: absenceId,
+									comment: timeData?.comment
+								}
 							);
-
-							console.log({ defaultTimeData });
-
-							const is_working_day =
-								defaultTimeData?.is_working_day || false;
-
-							const timeData = isFull
-								? defaultTimeData.time
-								: createTimeFromAbsence(
-										absenceState.start_date,
-										absenceState.end_date,
-										intervalDay.date,
-										records,
-										times,
-										absenceState.objectId
-									);
-
-							console.log({ timeData });
-						});
-
-					await Promise.all(dayPromises);
-				} catch (error) {
-					console.error("Error creating absence:", error);
-					setErrors([
-						...errors,
-						{
-							id: "day_handling_error",
-							key: "create_absence_error",
-							message:
-								error instanceof Error
-									? error.message
-									: "Fehler beim Verarbeiten der Tage"
+						} else if (
+							intervalDay.state === "delete" &&
+							intervalDay.objectId
+						) {
+							return await deleteData({
+								className: "Day",
+								objectId: intervalDay.objectId
+							});
 						}
-					]);
-				}
+					});
+
+				await Promise.all(dayPromises);
+			} catch (error) {
+				setErrors([
+					...errors,
+					{
+						id: "day_handling_error",
+						key: "create_absence_error",
+						message:
+							error instanceof Error
+								? error.message
+								: "Fehler beim Verarbeiten der Tage"
+					}
+				]);
 			}
 		}
 	}, [
@@ -115,7 +174,6 @@ const useCreateAbsence = ({
 	]);
 
 	const createAbsenceHandler = useCallback(async () => {
-		console.log({ intervalDays });
 		setLoading(true);
 		let absence: Absence;
 
@@ -125,7 +183,7 @@ const useCreateAbsence = ({
 				start_date: absenceState.start_date,
 				end_date: absenceState.end_date,
 				state: absenceState.state,
-				comment: absenceState.comment,
+				comment: absenceState?.comment,
 				type: absenceState.type,
 				year: absenceState.year,
 				user: {
@@ -135,7 +193,6 @@ const useCreateAbsence = ({
 				}
 			},
 			afterSaveHandler: (data) => {
-				console.log({ data });
 				absence = data;
 			}
 		});
@@ -144,19 +201,11 @@ const useCreateAbsence = ({
 			const dayPromises = intervalDays
 				.filter((day) => day.state)
 				.map(async (intervalDay) => {
-					console.log({ intervalDay });
 					const defaultTimeData = findDefaultTimeForDate(
 						intervalDay.date,
 						records
 					);
 
-					console.log({ defaultTimeData });
-
-					const is_working_day =
-						defaultTimeData?.is_working_day || false;
-
-					console.log({ is_working_day });
-					console.log({ isFull });
 					const timeData = isFull
 						? defaultTimeData.default_time
 						: createTimeFromAbsence(
@@ -166,7 +215,6 @@ const useCreateAbsence = ({
 								records,
 								times
 							);
-					console.log({ timeData });
 					return await axiosclient().post("/functions/create-time", {
 						time: timeData,
 						type: "absence",
@@ -174,13 +222,12 @@ const useCreateAbsence = ({
 						user_id: workerId,
 						day_id: undefined,
 						absence_id: absence.objectId,
-						comment: timeData.comment
+						comment: timeData?.comment
 					});
 				});
 
 			await Promise.all(dayPromises);
 		} catch (error) {
-			console.error("Error creating absence:", error);
 			setErrors([
 				...errors,
 				{

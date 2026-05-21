@@ -5,7 +5,6 @@ import { weekdays } from "@repo/provider";
 import { getDay } from "date-fns";
 
 const AbsenceDay: FC<AbsenceDayProps> = ({ days, overlap }) => {
-	console.log({ days, overlap });
 	const getWeekday = (date: string) => {
 		return weekdays.find(
 			(weekday) => weekday.day === getDay(new Date(date))
@@ -77,18 +76,6 @@ const AbsenceDay: FC<AbsenceDayProps> = ({ days, overlap }) => {
 					))}
 				</tbody>
 			</table>
-			{/* <div className="horizontal_container">
-				<p style={{ fontWeight: !day.state ? "normal" : "bold" }}>
-					{" "}
-					{weekday?.short} - {day.date}
-				</p>
-				{day.state && (
-					<StateDisplay
-						label={day.state === "create" ? "Erstellen" : "Löschen"}
-						color={day.state === "create" ? "green" : "red"}
-					/>
-				)}
-			</div> */}
 		</>
 	);
 };

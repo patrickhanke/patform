@@ -55,10 +55,13 @@ export type AbsenceDayProps = {
 	overlap: string[];
 };
 
-export type UseAbsenceDaysHook = (T: { absence: InitialAbsence }) => {
-	daysLoading: boolean;
+export type UseAbsenceDaysHook = (T: {
+	absence: InitialAbsence;
+	days: Day[];
+	isFull?: boolean;
+}) => {
 	intervalDays: IntervalDay[];
-	daysData: Day[] | undefined;
+	daysData: Day[];
 };
 
 export type IntervalDay = {

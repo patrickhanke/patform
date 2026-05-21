@@ -69,7 +69,9 @@ const useErrors: UseErrors = ({
 
 				const currentTimes = days.filter(
 					(t) =>
-						timesInterval.includes(t.date) && t.objectId !== dayId
+						timesInterval.includes(t.date) &&
+						t.objectId !== dayId &&
+						t.absence?.objectId !== absence.objectId
 				);
 				currentTimes.forEach((timeEntry, index) => {
 					if (
@@ -123,7 +125,6 @@ const useErrors: UseErrors = ({
 				}
 			}
 		}
-		console.log({ errorArray });
 		setErrors(errorArray);
 		setOverlap(overlapArray);
 	}, [date, dayId, dayType, absence, days, isFull]);
