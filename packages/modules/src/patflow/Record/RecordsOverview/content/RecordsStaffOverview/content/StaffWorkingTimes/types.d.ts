@@ -11,10 +11,12 @@ export type StaffWorkingTimesProps = {
 };
 
 export type DayDataTime = {
+	saldo: number;
 	time: DayTime | AbsenceTime;
 	day_id?: string;
 	absence?: Day["absence"];
 	type?: "absence" | "work";
+	worktime: number;
 };
 
 export type DayData = {

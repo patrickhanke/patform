@@ -66,27 +66,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		days
 	});
 
-	const rowStyles = useCallback(
-		(row: Row<DayData>) => {
-			if (
-				currentHolidays.find(
-					(holiday) =>
-						holiday.dates?.find(
-							(dt) => new Date(dt).getFullYear() === year
-						) === row.original.date
-				)
-			) {
-				return { backgroundColor: "rgba(86, 138, 212, 0.4)" };
-			}
-			if (isWeekend(row.original.date)) {
-				return { backgroundColor: "#f5f5f5ff" };
-			}
-
-			return { backgroundColor: "transparent" };
-		},
-		[holidays, year]
-	);
-
 	const tableData = useMemo(() => {
 		const interval: DayData[] = [];
 		const startDay = new Date(year, month.id, 1);
@@ -142,10 +121,12 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 				daysToFind.forEach((day) => {
 					if (day.time) {
 						timeArray.push({
+							saldo: day.saldo,
 							time: day.time,
 							day_id: day.objectId,
 							absence: day.absence,
-							type: day.type
+							type: day.type,
+							worktime: day.worktime || 0
 						});
 					}
 				});
@@ -187,6 +168,27 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 
 		return interval;
 	}, [days, month, year]);
+
+	const rowStyles = useCallback(
+		(row: Row<DayData>) => {
+			if (
+				currentHolidays.find(
+					(holiday) =>
+						holiday.dates?.find(
+							(dt) => new Date(dt).getFullYear() === year
+						) === row.original.date
+				)
+			) {
+				return { backgroundColor: "rgba(86, 138, 212, 0.4)" };
+			}
+			if (isWeekend(row.original.date)) {
+				return { backgroundColor: "#f5f5f5ff" };
+			}
+
+			return { backgroundColor: "transparent" };
+		},
+		[currentHolidays, year, tableData]
+	);
 
 	console.log({ tableData });
 

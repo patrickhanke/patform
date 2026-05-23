@@ -8,7 +8,7 @@ import siteStates from "./constants/site_states";
 import RecordsCalendar from "./content/RecordsCalendar";
 import RecordsAbsence from "./content/RecordsAbsence";
 import RecordsStaffOverview from "./content/RecordsStaffOverview";
-import { PatflowAppContext } from "@repo/provider";
+import { PatflowAppContext, useFindData } from "@repo/provider";
 import { Filter } from "@repo/types";
 import RecordsSettings from "./content/RecordsSettings";
 import { Page } from "@repo/ui";
@@ -21,9 +21,10 @@ const RecordsOverview = () => {
 		initialFilters(year) as Filter[]
 	);
 	const { records, refetch } = useGetRecords({ filters });
-	const [siteState, setSiteState] = useState(
-		siteStates[0] as (typeof siteStates)[0]
-	);
+	const [siteState, setSiteState] = useState<{
+		value: string;
+		label: string;
+	}>(siteStates(0)[0]);
 	const [editAbsence, setEditAbsence] = useState(false);
 	const [resetWorkerTimes, setResetWorkerTimes] = useState(false);
 	const [printWorkerTimes, setprintWorkerTimes] = useState(false);
@@ -31,6 +32,27 @@ const RecordsOverview = () => {
 	const [selectedUser, setSelectedUser] = React.useState<StaffOption | null>(
 		null
 	);
+
+	const { data } = useFindData({
+		objectName: "Absence",
+		fields: [
+			"objectId",
+			"start_date",
+			"end_date",
+			"state",
+			"user {objectId first_name last_name portrait { name url }}",
+			"comment",
+			"type",
+			"year"
+		],
+		filters: [
+			{ key: "year", value: year, operator: "equalTo" },
+			{ key: "state", value: "approved", operator: "notEqualTo" }
+		],
+		skipQuery: !year
+	});
+
+	console.log({ data });
 
 	const pageHeaderButtons = useMemo(() => {
 		if (siteState.value === "workers") {
@@ -79,7 +101,7 @@ const RecordsOverview = () => {
 			title="Zeiterfassung"
 			description="Hier finden Sie alle erfassten Arbeitszeiten und Urlaube."
 			pageState={siteState}
-			pageStates={siteStates}
+			pageStates={[...siteStates(data?.length || 0)]}
 			setPageState={setSiteState}
 			pageHeaderButtons={pageHeaderButtons}
 		>

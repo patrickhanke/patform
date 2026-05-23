@@ -15,6 +15,7 @@ import { EditDayAbsenceProps, InitialAbsence } from "./types";
 import {
 	absence_state_options,
 	absence_type_options,
+	axiosclient,
 	findDefaultTimeForDate,
 	useDataHandler,
 	useGetData
@@ -46,6 +47,8 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	const [overlap, setOverlap] = useState<string[]>([]);
 	const { default_time } = findDefaultTimeForDate(date, records);
 	const [loading, setLoading] = useState(false);
+	console.log({ absenceId });
+	console.log({ deleteModal });
 	const { data: absence, loading: absenceLoading } = useGetData({
 		objectName: "Absence",
 		fields: [
@@ -149,13 +152,12 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				<AbsenceDay days={intervalDays} overlap={overlap} />
 			</div>
 			<div>
-				<IconButton
-					icon="delete"
-					text="Abwesenheit löschen"
+				<button
+					className="full_button md red"
 					onClick={() => setDeleteModal(true)}
-					color="red"
-					size={12}
-				/>
+				>
+					Abwesenheit löschen
+				</button>
 			</div>
 		</div>
 	);
@@ -175,6 +177,7 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				secondaryContent={secondaryContent}
 				errors={errors}
 				disabled={[errors.length > 0 || loading, loading]}
+				preventClickOutside
 			>
 				<form className="flex col gap-lg">
 					<DisplayWorker workerId={workerId} />
@@ -319,7 +322,6 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 								absenceState.state === "approved"
 							}
 						/>
-						{/* {type === 'edit' && absence.state === 'approved' && <InfoBox text='Eine bereits bestätigte Abwesenheit kann nicht bestätigt werden. Bitte die Abwesenheit löschen und eine neue erstellen.' /> } */}
 					</div>
 					<div>
 						<TextInput
@@ -338,58 +340,36 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 						/>
 					</div>
 				</form>
-				{/* <div>
-				<SwitchButtons
-					buttonStates={[...absence_type_options]}
-					currentStates={
-						absence_type_options.find(
-							(option) => option.value === time.type
-						) || absence_type_options[0]
-					}
-					changeHandler={absenceTypeChangeHandler}
-				/>
-			</div>
-			<Divider size="small" showLine={false} />
-			<h3>
-				{absence_type_options.find(
-					(option) => option.value === time.type
-				)?.title || absence_type_options[0].title}
-			</h3>
-			{time.type === "vacation" && (
-				<AddEditVacation date={date} records={records} />
-			)}
-			{time.type === "compensation_times" && (
-				<AddEditCompensationTimes
-					date={date}
-					time={time}
-					timeChangeHandler={absenceChangeHandler}
-					defaultTime={defaultTime?.default_time}
-				/>
-			)}
-			{time.type === "illness" && (
-				<AddEditDaySick
-					date={date}
-					time={time}
-					timeChangeHandler={absenceChangeHandler}
-				/>
-			)}
-			{time.type === "payed_absence" && (
-				<AddEditPayedAbsence
-					date={date}
-					time={time}
-					timeChangeHandler={absenceChangeHandler}
-				/>
-			)} */}
 			</SlideIn>
 			<Modal
 				header="Abwesenheit löschen"
 				isOpen={deleteModal}
 				confirmButtonHandler={async () => {
+					console.log({ absenceId });
 					if (absenceId) {
 						await deleteData({
 							className: "Absence",
 							objectId: absenceId
 						});
+					}
+
+					// update days with do not belong to the absence
+					if (days && days.length > 1) {
+						const otherDays = days.filter(
+							(day) =>
+								day.absence?.objectId !== absenceId &&
+								day.date === date
+						);
+						otherDays.forEach((day) =>
+							axiosclient().post(`/functions/create-time`, {
+								time: day.time,
+								date: day.date,
+								day_id: day.objectId,
+								user_id: workerId,
+								type: day.type,
+								comment: day.comment
+							})
+						);
 					}
 					await refetch();
 					setDeleteModal(false);

@@ -32,7 +32,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	records,
 	absenceId,
 	color,
-	label
+	label,
+	isWorkingDay
 }) => {
 	const [slideIn, setSlideIn] = useState(false);
 	const [editAbsence, setEditAbsence] = useState(false);
@@ -311,10 +312,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		return returnValue;
 	}, [initialTime]);
 
-	if (!initialTime) {
-		return null;
-	}
-
 	return (
 		<>
 			<div className="horizontal_container j-fe">
@@ -340,7 +337,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 							}}
 							text="Abwesenheit"
 							color="dark"
-							disabled={addButtonDisabled}
+							disabled={addButtonDisabled || !isWorkingDay}
 						/>
 						<IconButton
 							icon="plus"

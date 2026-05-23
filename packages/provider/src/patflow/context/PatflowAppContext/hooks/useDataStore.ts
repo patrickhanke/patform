@@ -1,10 +1,11 @@
 import { create } from "zustand";
-import { DataStoreState } from "../types";
-import { Filter, Record } from "@repo/types";
+import { AbsenceDataStore, DataStoreState, RecordDataStore } from "../types";
+import { Absence, Filter, Record } from "@repo/types";
 import dataFilterHandler from "../functions/dataFilterHandler";
 
 const useDataStore = create<DataStoreState>((set, get) => ({
 	holidays: [],
+	absences: [],
 	workers: [],
 	surcharges: [],
 	records: [],
@@ -16,7 +17,8 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 	setSurcharges: (surcharges) => set({ surcharges }),
 	setHolidays: (holidays) => set({ holidays }),
 	setWorkers: (workers) => set({ workers }),
-	setRecords: (records: Record[]) => set({ records }),
+	setRecords: (records: RecordDataStore[]) => set({ records }),
+	setAbsences: (absences: AbsenceDataStore[]) => set({ absences }),
 	setProperties: (properties) => set({ properties }),
 	setTasks: (tasks) => set({ tasks }),
 	setTickets: (tickets) => set({ tickets }),

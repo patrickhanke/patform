@@ -66,9 +66,6 @@ const useCreateAbsence = ({
 				const dayPromises = intervalDays
 					.filter((day) => day.state)
 					.map(async (intervalDay) => {
-						const existingDay = daysData?.find(
-							(d) => d.date === intervalDay.date
-						);
 						// receive times for day
 						const defaultTimeData = findDefaultTimeForDate(
 							intervalDay.date,
@@ -87,18 +84,21 @@ const useCreateAbsence = ({
 								);
 
 						if (intervalDay.state === "create" && timeData) {
-							return await axiosclient().post(
-								"/functions/create-time",
-								{
-									time: timeData,
-									type: "absence",
-									date: intervalDay.date,
-									user_id: workerId,
-									day_id: undefined,
-									absence_id: absenceId,
-									comment: timeData?.comment
-								}
-							);
+							if (timeData) {
+								return await axiosclient().post(
+									"/functions/create-time",
+									{
+										time: timeData,
+										type: "absence",
+										date: intervalDay.date,
+										user_id: workerId,
+										day_id: undefined,
+										absence_id: absenceId,
+										comment: timeData?.comment
+									}
+								);
+							}
+							return null;
 						} else if (
 							intervalDay.state === "change" &&
 							timeData &&
@@ -122,18 +122,20 @@ const useCreateAbsence = ({
 									}
 								);
 							}
-							return await axiosclient().post(
-								"/functions/create-time",
-								{
-									time: timeData,
-									type: "absence",
-									date: intervalDay.date,
-									user_id: workerId,
-									day_id: intervalDay.objectId,
-									absence_id: absenceId,
-									comment: timeData?.comment
-								}
-							);
+							if (timeData) {
+								return await axiosclient().post(
+									"/functions/create-time",
+									{
+										time: timeData,
+										type: "absence",
+										date: intervalDay.date,
+										user_id: workerId,
+										day_id: intervalDay.objectId,
+										absence_id: absenceId,
+										comment: timeData?.comment
+									}
+								);
+							}
 						} else if (
 							intervalDay.state === "delete" &&
 							intervalDay.objectId
@@ -215,15 +217,21 @@ const useCreateAbsence = ({
 								records,
 								times
 							);
-					return await axiosclient().post("/functions/create-time", {
-						time: timeData,
-						type: "absence",
-						date: intervalDay.date,
-						user_id: workerId,
-						day_id: undefined,
-						absence_id: absence.objectId,
-						comment: timeData?.comment
-					});
+					if (timeData) {
+						return await axiosclient().post(
+							"/functions/create-time",
+							{
+								time: timeData,
+								type: "absence",
+								date: intervalDay.date,
+								user_id: workerId,
+								day_id: undefined,
+								absence_id: absence.objectId,
+								comment: timeData?.comment
+							}
+						);
+					}
+					return null;
 				});
 
 			await Promise.all(dayPromises);
@@ -233,7 +241,7 @@ const useCreateAbsence = ({
 				{
 					id: "day_handling_error",
 					key: "create_absence_error",
-					message: "Fehler beim Erstellen der Anwesenheit"
+					message: "Fehler beim Erstellen der Anwesenheit: " + error
 				}
 			]);
 		}

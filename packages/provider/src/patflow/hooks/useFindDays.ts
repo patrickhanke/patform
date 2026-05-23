@@ -47,7 +47,8 @@ const useFindDays: UseFindDays = ({
 			"iso_date",
 			"comment",
 			"user { objectId }",
-			"record { objectId }"
+			"record { objectId }",
+			"worktime"
 		],
 		filters,
 		userId: userId,

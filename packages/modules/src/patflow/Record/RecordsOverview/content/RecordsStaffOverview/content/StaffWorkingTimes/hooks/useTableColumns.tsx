@@ -120,9 +120,7 @@ const useTableColumns = ({
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => (
-					<ColumnWorkingHours type={row.type} date={row} />
-				),
+				accessorFn: (row) => <ColumnWorkingHours times={row.times} />,
 				id: "is",
 				header: () => <div style={{ textAlign: "right" }}>Ist</div>,
 				cell: (info) => (
@@ -134,9 +132,7 @@ const useTableColumns = ({
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => (
-					<ColumnWorkingSaldo type={row.type} date={row} />
-				),
+				accessorFn: (row) => <ColumnWorkingSaldo date={row} />,
 				id: "saldo",
 				header: () => <div style={{ textAlign: "right" }}>Saldo</div>,
 				cell: (info) => (
@@ -170,6 +166,7 @@ const useTableColumns = ({
 				accessorFn: (row) => (
 					<EditDayTimes
 						type="create"
+						isWorkingDay={row.is_working_day}
 						initialTime={
 							findDefaultTimeForDate(row.date, records)
 								.default_time ?? undefined

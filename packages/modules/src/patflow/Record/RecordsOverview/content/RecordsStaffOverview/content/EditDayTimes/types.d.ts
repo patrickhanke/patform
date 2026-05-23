@@ -21,6 +21,7 @@ export type EditDayTimesProps = {
 	absenceId?: string;
 	color?: string;
 	label?: string;
+	isWorkingDay: boolean;
 };
 
 export type EditTimeProps = {

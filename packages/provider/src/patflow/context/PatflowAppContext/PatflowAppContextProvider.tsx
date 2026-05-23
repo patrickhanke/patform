@@ -112,13 +112,29 @@ const PatflowAppContextProvider = ({
 		skipQuery: !projectId
 	});
 
-	const { setHolidays, setWorkers, setRecords, setProperties } =
+	const { data: absenceData, refetch: refetchAbsences } = useFindData({
+		objectName: "Absence",
+		fields: [
+			"objectId",
+			"year",
+			"type",
+			"dates",
+			"state",
+			"start_date",
+			"end_date"
+		],
+		projectId,
+		skipQuery: !projectId
+	});
+
+	const { setHolidays, setWorkers, setRecords, setProperties, setAbsences } =
 		useDataStore();
 
 	const prevHolidayIdsRef = useRef("");
 	const prevWorkerIdsRef = useRef("");
 	const prevRecordIdsRef = useRef("");
 	const prevPropertyIdsRef = useRef("");
+	const prevAbsenceIdsRef = useRef("");
 
 	useEffect(() => {
 		if (!projectId) {
@@ -197,6 +213,18 @@ const PatflowAppContextProvider = ({
 		}
 	}, [propertyData, setProperties]);
 
+	useEffect(() => {
+		if (absenceData === undefined) return;
+		const ids = (absenceData ?? [])
+			.map((a) => a.objectId)
+			.sort()
+			.join(",");
+		if (ids !== prevAbsenceIdsRef.current) {
+			prevAbsenceIdsRef.current = ids;
+			setAbsences(absenceData ?? []);
+		}
+	}, [absenceData, setAbsences]);
+
 	const reloadHolidays = useCallback(async () => {
 		await refetchHolidays();
 	}, [refetchHolidays]);
@@ -212,6 +240,10 @@ const PatflowAppContextProvider = ({
 	const reloadProperties = useCallback(async () => {
 		await refetchProperties();
 	}, [refetchProperties]);
+
+	const reloadAbsences = useCallback(async () => {
+		await refetchAbsences();
+	}, [refetchAbsences]);
 
 	const roleUsers = useMemo(() => {
 		const roleObject: RoleUsers = {
@@ -243,6 +275,7 @@ const PatflowAppContextProvider = ({
 			reloadWorkers,
 			reloadRecords,
 			reloadProperties,
+			reloadAbsences,
 			project: project ?? { objectId: "" },
 			roles: roleData
 				? roleData.map((role: PatflowUserRole) => ({
@@ -272,7 +305,8 @@ const PatflowAppContextProvider = ({
 			reloadHolidays,
 			reloadWorkers,
 			reloadRecords,
-			reloadProperties
+			reloadProperties,
+			reloadAbsences
 		]
 	);
 

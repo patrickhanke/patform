@@ -73,6 +73,7 @@ type BasicDay = {
   default_time: DayTime | null;
   saldo: number;
   comment?: string;
+  worktime: number;
 };
 
 type InitialDay = {
