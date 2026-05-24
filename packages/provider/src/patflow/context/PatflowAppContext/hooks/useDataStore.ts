@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { AbsenceDataStore, DataStoreState, RecordDataStore } from "../types";
-import { Absence, Filter, Record } from "@repo/types";
+import { Filter } from "@repo/types";
 import dataFilterHandler from "../functions/dataFilterHandler";
 
 const useDataStore = create<DataStoreState>((set, get) => ({
@@ -13,15 +13,24 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 	tasks: [],
 	tickets: [],
 	services: [],
-	setServices: (services) => set({ services }),
-	setSurcharges: (surcharges) => set({ surcharges }),
-	setHolidays: (holidays) => set({ holidays }),
-	setWorkers: (workers) => set({ workers }),
-	setRecords: (records: RecordDataStore[]) => set({ records }),
-	setAbsences: (absences: AbsenceDataStore[]) => set({ absences }),
-	setProperties: (properties) => set({ properties }),
-	setTasks: (tasks) => set({ tasks }),
-	setTickets: (tickets) => set({ tickets }),
+	servicesUpdatedAt: null,
+	holidaysUpdatedAt: null,
+	absencesUpdatedAt: null,
+	workersUpdatedAt: null,
+	recordsUpdatedAt: null,
+	propertiesUpdatedAt: null,
+	surchargesUpdatedAt: null,
+	tasksUpdatedAt: null,
+	ticketsUpdatedAt: null,
+	setServices: (services) => set({ services, servicesUpdatedAt: Date.now() }),
+	setSurcharges: (surcharges) => set({ surcharges, surchargesUpdatedAt: Date.now() }),
+	setHolidays: (holidays) => set({ holidays, holidaysUpdatedAt: Date.now() }),
+	setWorkers: (workers) => set({ workers, workersUpdatedAt: Date.now() }),
+	setRecords: (records: RecordDataStore[]) => set({ records, recordsUpdatedAt: Date.now() }),
+	setAbsences: (absences: AbsenceDataStore[]) => set({ absences, absencesUpdatedAt: Date.now() }),
+	setProperties: (properties) => set({ properties, propertiesUpdatedAt: Date.now() }),
+	setTasks: (tasks) => set({ tasks, tasksUpdatedAt: Date.now() }),
+	setTickets: (tickets) => set({ tickets, ticketsUpdatedAt: Date.now() }),
 	getTasks: (
 		filters: Filter[],
 		skip: number,

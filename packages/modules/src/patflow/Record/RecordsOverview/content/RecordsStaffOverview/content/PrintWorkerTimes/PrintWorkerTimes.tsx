@@ -1,3 +1,5 @@
+"use client";
+
 import { Divider, Modal, SelectElement, Steps } from "@repo/ui";
 import { useState, FC, useMemo, useCallback } from "react";
 import modal_steps from "./constants/modal_steps";

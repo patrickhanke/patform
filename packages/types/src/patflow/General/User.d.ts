@@ -18,6 +18,7 @@ export type PatflowUserRole = {
 
 export type PatflowUser = {
   objectId: string;
+  updatedAt: string;
   email: string;
   username: string;
   first_name: string;

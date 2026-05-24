@@ -1,9 +1,10 @@
+"use client";
+
 import { FC, useEffect, useState, useCallback } from "react";
 import {
 	DatePicker,
 	DisplayWorker,
 	Divider,
-	IconButton,
 	LoadingIndicator,
 	Modal,
 	Select,
@@ -47,8 +48,6 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	const [overlap, setOverlap] = useState<string[]>([]);
 	const { default_time } = findDefaultTimeForDate(date, records);
 	const [loading, setLoading] = useState(false);
-	console.log({ absenceId });
-	console.log({ deleteModal });
 	const { data: absence, loading: absenceLoading } = useGetData({
 		objectName: "Absence",
 		fields: [
@@ -345,7 +344,6 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				header="Abwesenheit löschen"
 				isOpen={deleteModal}
 				confirmButtonHandler={async () => {
-					console.log({ absenceId });
 					if (absenceId) {
 						await deleteData({
 							className: "Absence",

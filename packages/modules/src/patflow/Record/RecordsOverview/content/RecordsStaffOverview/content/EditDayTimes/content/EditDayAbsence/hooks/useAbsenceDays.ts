@@ -1,3 +1,5 @@
+"use client";
+
 import { formatISO } from "date-fns";
 import { createIntervalFromTimes } from "@repo/provider";
 import { useMemo } from "react";

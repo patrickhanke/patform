@@ -7,8 +7,8 @@ const absence_type_options = [
 	},
 	{
 		value: "compensation_times",
+		id: "compensation_times",
 		label: "Ausgleich",
-		title: "Ausgleichszeiten",
 		color: "blue"
 	},
 	{
@@ -19,8 +19,8 @@ const absence_type_options = [
 	},
 	{
 		value: "payed_absence",
+		id: "payed_absence",
 		label: "Freistellung",
-		title: "Bezahlte Freistellung",
 		color: "orange"
 	}
 ] as const;

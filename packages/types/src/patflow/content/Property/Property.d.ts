@@ -3,6 +3,7 @@ import { DateObject, Task, User } from "@repo/types";
 
 export type Property = {
   objectId: string;
+  updatedAt: string;
   name: string;
   settings: object;
   created_by: UserTypes.User;

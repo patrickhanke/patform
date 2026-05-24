@@ -1,4 +1,6 @@
-import { Dispatch, SetStateAction, useCallback } from "react";
+"use client";
+
+import { Dispatch, SetStateAction, useCallback, useContext } from "react";
 import { Absence, Day, ErrorMessage, Record } from "@repo/types";
 import { InitialAbsence } from "../../../../../../RecordsAbsence/content/EditRecordAbsence/types";
 import { IntervalDay } from "../types";
@@ -6,7 +8,8 @@ import { DayDataTime } from "../../../../StaffWorkingTimes/types";
 import {
 	axiosclient,
 	findDefaultTimeForDate,
-	useDataHandler
+	useDataHandler,
+	UserContext
 } from "@repo/provider";
 import { createTimeFromAbsence } from "../functions";
 
@@ -37,6 +40,7 @@ const useCreateAbsence = ({
 	workerId: string;
 	absenceId?: string;
 }) => {
+	const { projectId } = useContext(UserContext);
 	const { updateData, deleteData, createData } = useDataHandler();
 
 	const editAbsenceHandler = useCallback(async () => {
@@ -192,6 +196,11 @@ const useCreateAbsence = ({
 					__type: "Pointer",
 					className: "_User",
 					objectId: workerId
+				},
+				project: {
+					__type: "Pointer",
+					className: "Project",
+					objectId: projectId
 				}
 			},
 			afterSaveHandler: (data) => {

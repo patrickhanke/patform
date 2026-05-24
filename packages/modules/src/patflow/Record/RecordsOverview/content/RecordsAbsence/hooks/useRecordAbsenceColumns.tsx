@@ -7,7 +7,7 @@ import {
 	absence_type_options,
 	getDateString
 } from "@repo/provider";
-import EditAbsence from "../components/EditAbsence";
+import { EditRecordAbsence } from "../content";
 
 const useRecordAbsenceColumns = ({ refetch }: UseRecordAbsenceColumnsProps) => {
 	const columns: ColumnDef<AbsenceWithRecordIs>[] = useMemo(
@@ -32,22 +32,25 @@ const useRecordAbsenceColumns = ({ refetch }: UseRecordAbsenceColumnsProps) => {
 				footer: (info) => info.column.id
 			},
 			{
-				accessorFn: (row) => (
-					<StateDisplay
-						label={
-							absence_type_options.find(
-								(option) => option.value === row.type
-							)?.label || ""
-						}
-						color={
-							absence_type_options.find(
-								(option) => option.value === row.type
-							)?.color || ""
-						}
-					/>
-				),
+				accessorFn: (row) => {
+					console.log({ row });
+					return (
+						<StateDisplay
+							label={
+								absence_type_options.find(
+									(option) => option.value === row.type
+								)?.label || ""
+							}
+							color={
+								absence_type_options.find(
+									(option) => option.value === row.type
+								)?.color || ""
+							}
+						/>
+					);
+				},
 				header: () => <span>Typ</span>,
-				id: "absennce_type",
+				id: "type",
 				cell: (info) => info.getValue(),
 				enableSorting: false,
 				footer: (info) => info.column.id
@@ -83,7 +86,7 @@ const useRecordAbsenceColumns = ({ refetch }: UseRecordAbsenceColumnsProps) => {
 			},
 			{
 				accessorFn: (row) => (
-					<EditAbsence absence={row} refetch={refetch} />
+					<EditRecordAbsence absence={row} refetch={refetch} />
 				),
 				header: () => <span>Bearbeiten</span>,
 				id: "edit",

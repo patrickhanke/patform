@@ -87,7 +87,7 @@ const useTableColumns = ({
 			{
 				accessorFn: (row) => (
 					<ColumnWorkingTime
-						type={row.type}
+						isWorkingDay={row.is_working_day}
 						days={days || []}
 						times={row.times || []}
 						date={row.date}

@@ -32,7 +32,7 @@ export type DayData = {
 };
 
 export type ColumnWorkingTimeProps = {
-	type: DayData["type"];
+	isWorkingDay: boolean;
 	times: DayData["times"];
 	date: string;
 	days?: Day[];

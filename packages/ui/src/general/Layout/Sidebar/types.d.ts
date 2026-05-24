@@ -15,6 +15,10 @@ export type MenuItem = Readonly<{
 	icon?: string;
 	disabled?: boolean;
 	divider?: string;
+	badge?: {
+		label: string;
+		color: string;
+	};
 	sub_menu: {
 		value: string;
 		label: string;
@@ -30,4 +34,8 @@ export type MenuItemProps = {
 	subMenu: MenuItem["sub_menu"];
 	disabled?: boolean;
 	divider?: string;
+	badge?: {
+		label: string;
+		color: string;
+	};
 };

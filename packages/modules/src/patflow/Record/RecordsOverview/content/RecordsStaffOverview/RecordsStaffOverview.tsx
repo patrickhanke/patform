@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext, useEffect, useMemo } from "react";
 import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";

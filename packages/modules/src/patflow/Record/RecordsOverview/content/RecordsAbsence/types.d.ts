@@ -17,11 +17,6 @@ export type CreateAbsenceComponent = {
 	initialData?: Absence;
 };
 
-export type EditAbsenceProps = {
-	absence: Absence;
-	refetch: ApolloRefetch;
-};
-
 export type AbsenceWithRecordIs = Absence & {
 	recordId: string;
 };
@@ -29,11 +24,7 @@ export type AbsenceWithRecordIs = Absence & {
 export type FindRecordFunction = (recordIs: string) => Record;
 
 export type RecordAbsenceProps = {
-	records: Record[];
-	editAbsence: boolean;
-	setEditAbsence: Dispatch<SetStateAction<boolean>>;
-	selectedUser: StaffOption | null;
-	setSelectedUser: Dispatch<SetStateAction<StaffOption | null>>;
+	days: Day[];
 };
 
 export type DeleteAbsenceProps = {
@@ -50,5 +41,5 @@ export type ChangeAbsenceStateProps = {
 };
 
 export type UseRecordAbsenceColumnsProps = {
-	refetch: ApolloRefetch;
+	refetch: () => Promise<void>;
 };

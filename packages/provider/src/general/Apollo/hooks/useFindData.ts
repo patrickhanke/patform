@@ -7,6 +7,7 @@ import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
 import { pluralize, sanitizeGraphQlNode } from "../functions/helpers";
 import paramsHandler from "../functions/paramsHandler";
+import { useCallback } from "react";
 
 const useFindData: UseFindDataHook<Classes> = ({
 	objectName,
@@ -25,7 +26,12 @@ const useFindData: UseFindDataHook<Classes> = ({
 	absenceId
 }) => {
 	const queryName = pluralize(objectName);
-	const { loading, data, refetch, error } = useQuery(
+	const {
+		loading,
+		data,
+		refetch: apolloRefetch,
+		error
+	} = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "find",
 			objectName,
@@ -52,6 +58,11 @@ const useFindData: UseFindDataHook<Classes> = ({
 			pollInterval: pollInterval
 		}
 	);
+
+	const refetch = useCallback(async () => {
+		console.log("refetch called");
+		return await apolloRefetch();
+	}, [apolloRefetch]);
 
 	return {
 		loading,

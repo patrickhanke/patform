@@ -22,7 +22,7 @@ const useGetRecords = ({ filters }: { filters: Filter[] }) => {
 			records: data || [],
 			refetch
 		};
-	}, [loading, data, refetch]);
+	}, [loading, data]);
 
 	return returnValue;
 };

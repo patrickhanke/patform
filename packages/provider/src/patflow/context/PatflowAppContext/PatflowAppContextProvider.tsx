@@ -15,7 +15,14 @@ import {
 	useTicketSubscription
 } from "@repo/provider";
 import { RecordDataStore, RoleUsers } from "./types";
-import { PatflowUserRole, Property } from "@repo/types";
+import {
+	Absence,
+	Holiday,
+	PatflowUser,
+	PatflowUserRole,
+	Property,
+	Record
+} from "@repo/types";
 import { CreateTask, CreateTicket } from "@repo/modules";
 import dynamic from "next/dynamic";
 import { useAppContext } from "@repo/provider";
@@ -63,7 +70,8 @@ const PatflowAppContextProvider = ({
 			"data",
 			"role { objectId name type color }",
 			"value: objectId",
-			"label: label"
+			"label: label",
+			"updatedAt"
 		],
 		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
 		order: "last_name_ASC",
@@ -82,14 +90,15 @@ const PatflowAppContextProvider = ({
 			"assigned_staff",
 			"images",
 			"settings",
-			"archived"
+			"archived",
+			"updatedAt"
 		],
 		projectId
 	});
 
 	const { data: holidayData, refetch: refetchHolidays } = useFindData({
 		objectName: "Holiday",
-		fields: ["objectId", "name", "label", "type", "dates"],
+		fields: ["objectId", "name", "label", "type", "dates", "updatedAt"],
 		projectId,
 		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
 		skipQuery: !projectId
@@ -106,7 +115,8 @@ const PatflowAppContextProvider = ({
 			"start_date",
 			"end_date",
 			"time_settings",
-			"holiday_template { objectId name holidays { ... on Element { value } } }"
+			"holiday_template { objectId name holidays { ... on Element { value } } }",
+			"updatedAt"
 		],
 		projectId,
 		skipQuery: !projectId
@@ -118,14 +128,18 @@ const PatflowAppContextProvider = ({
 			"objectId",
 			"year",
 			"type",
-			"dates",
 			"state",
 			"start_date",
-			"end_date"
+			"end_date",
+			"user {objectId first_name last_name portrait { name url }}",
+			"updatedAt"
 		],
+		filters: [{ key: "year", value: year, operator: "equalTo" }],
 		projectId,
 		skipQuery: !projectId
 	});
+
+	console.log({ absenceData });
 
 	const { setHolidays, setWorkers, setRecords, setProperties, setAbsences } =
 		useDataStore();
@@ -151,38 +165,36 @@ const PatflowAppContextProvider = ({
 
 	useEffect(() => {
 		if (holidayData === undefined) return;
-		const ids = (holidayData ?? [])
-			.map((h) => h.objectId)
+		const updatedAtHash = (holidayData ?? [])
+			.map((h) => `${h.objectId}:${h.updatedAt}`)
 			.sort()
 			.join(",");
-		if (ids !== prevHolidayIdsRef.current) {
-			prevHolidayIdsRef.current = ids;
+		if (updatedAtHash !== prevHolidayIdsRef.current) {
+			prevHolidayIdsRef.current = updatedAtHash;
 			setHolidays(holidayData ?? []);
 		}
 	}, [holidayData, setHolidays]);
 
 	useEffect(() => {
 		if (workerData === undefined) return;
-		const ids = (workerData ?? [])
-			.map((w) => w.objectId)
+		const updatedAtHash = (workerData ?? [])
+			.map((w) => `${w.objectId}:${w.updatedAt}`)
 			.sort()
 			.join(",");
-		if (ids !== prevWorkerIdsRef.current) {
-			prevWorkerIdsRef.current = ids;
+		if (updatedAtHash !== prevWorkerIdsRef.current) {
+			prevWorkerIdsRef.current = updatedAtHash;
 			setWorkers(workerData ?? []);
 		}
 	}, [workerData, setWorkers]);
 
 	useEffect(() => {
 		if (recordData === undefined) return;
-		const ids = (recordData ?? [])
-			.map((r) => r.objectId)
+		const updatedAtHash = (recordData ?? [])
+			.map((r) => `${r.objectId}:${r.updatedAt}`)
 			.sort()
 			.join(",");
-		if (ids !== prevRecordIdsRef.current) {
-			prevRecordIdsRef.current = ids;
-
-			// get flat values of holiday_template.holidays
+		if (updatedAtHash !== prevRecordIdsRef.current) {
+			prevRecordIdsRef.current = updatedAtHash;
 
 			const recordsCopy: RecordDataStore[] = recordData.map((r) => ({
 				...r,
@@ -201,12 +213,12 @@ const PatflowAppContextProvider = ({
 
 	useEffect(() => {
 		if (propertyData === undefined) return;
-		const ids = (propertyData ?? [])
-			.map((p) => p.objectId)
+		const updatedAtHash = (propertyData ?? [])
+			.map((p) => `${p.objectId}:${p.updatedAt}`)
 			.sort()
 			.join(",");
-		if (ids !== prevPropertyIdsRef.current) {
-			prevPropertyIdsRef.current = ids;
+		if (updatedAtHash !== prevPropertyIdsRef.current) {
+			prevPropertyIdsRef.current = updatedAtHash;
 			setProperties(
 				propertyData.filter((p: Property) => !p.archived) ?? []
 			);
@@ -215,35 +227,110 @@ const PatflowAppContextProvider = ({
 
 	useEffect(() => {
 		if (absenceData === undefined) return;
-		const ids = (absenceData ?? [])
-			.map((a) => a.objectId)
+		const updatedAtHash = (absenceData ?? [])
+			.map((a) => `${a.objectId}:${a.updatedAt}`)
 			.sort()
 			.join(",");
-		if (ids !== prevAbsenceIdsRef.current) {
-			prevAbsenceIdsRef.current = ids;
+		if (updatedAtHash !== prevAbsenceIdsRef.current) {
+			prevAbsenceIdsRef.current = updatedAtHash;
 			setAbsences(absenceData ?? []);
 		}
 	}, [absenceData, setAbsences]);
 
 	const reloadHolidays = useCallback(async () => {
-		await refetchHolidays();
-	}, [refetchHolidays]);
+		const result = await refetchHolidays();
+		if (result.data) {
+			const queryData =
+				result.data.holidays?.edges?.map(
+					(edge: { node: Holiday }) => edge.node
+				) || [];
+			setHolidays(queryData);
+			prevHolidayIdsRef.current = queryData
+				.map((h: Holiday) => `${h.objectId}:${h.updatedAt}`)
+				.sort()
+				.join(",");
+		}
+	}, [refetchHolidays, setHolidays]);
 
 	const reloadWorkers = useCallback(async () => {
-		await refetchWorkers();
-	}, [refetchWorkers]);
+		const result = await refetchWorkers();
+		if (result.data) {
+			const queryData =
+				result.data.users?.edges?.map(
+					(edge: { node: PatflowUser }) => edge.node
+				) || [];
+			setWorkers(queryData);
+			prevWorkerIdsRef.current = queryData
+				.map((w: PatflowUser) => `${w.objectId}:${w.updatedAt}`)
+				.sort()
+				.join(",");
+		}
+	}, [refetchWorkers, setWorkers]);
 
 	const reloadRecords = useCallback(async () => {
-		await refetchRecords();
-	}, [refetchRecords]);
+		const result = await refetchRecords();
+		if (result.data) {
+			const queryData =
+				result.data.records?.edges?.map(
+					(edge: { node: Record }) => edge.node
+				) || [];
+			const recordsCopy: RecordDataStore[] = queryData.map(
+				(r: Record) => ({
+					...r,
+					holiday_template: {
+						...r.holiday_template,
+						holidays: r.holiday_template.holidays.map(
+							(h: { value: string }) => h.value as string
+						)
+					},
+					value: r.objectId,
+					label:
+						r.user.first_name +
+						" " +
+						r.user.last_name +
+						" " +
+						r.year
+				})
+			);
+			setRecords(recordsCopy);
+			prevRecordIdsRef.current = queryData
+				.map((r: Record) => `${r.objectId}:${r.updatedAt}`)
+				.sort()
+				.join(",");
+		}
+	}, [refetchRecords, setRecords]);
 
 	const reloadProperties = useCallback(async () => {
-		await refetchProperties();
-	}, [refetchProperties]);
+		const result = await refetchProperties();
+		if (result.data) {
+			const queryData =
+				result.data.properties?.edges?.map(
+					(edge: { node: Property }) => edge.node
+				) || [];
+			setProperties(queryData.filter((p: Property) => !p.archived) ?? []);
+			prevPropertyIdsRef.current = queryData
+				.map((p: Property) => `${p.objectId}:${p.updatedAt}`)
+				.sort()
+				.join(",");
+		}
+	}, [refetchProperties, setProperties]);
 
 	const reloadAbsences = useCallback(async () => {
-		await refetchAbsences();
-	}, [refetchAbsences]);
+		console.log("reloadAbsences");
+		const result = await refetchAbsences();
+		if (result.data) {
+			const queryData =
+				result.data.absences?.edges?.map(
+					(edge: { node: Absence }) => edge.node
+				) || [];
+			setAbsences(queryData);
+			prevAbsenceIdsRef.current = queryData
+				.map((a: Absence) => `${a.objectId}:${a.updatedAt}`)
+				.sort()
+				.join(",");
+		}
+		console.log("reloadAbsences done");
+	}, [refetchAbsences, setAbsences]);
 
 	const roleUsers = useMemo(() => {
 		const roleObject: RoleUsers = {

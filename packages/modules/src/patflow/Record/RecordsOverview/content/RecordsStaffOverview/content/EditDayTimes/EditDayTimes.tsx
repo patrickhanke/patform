@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useCallback, useState, useEffect, useMemo } from "react";
 import { EditDayTimesProps, WorkingTime } from "./types";
 import { AbsenceTime, Day, ErrorMessage } from "@repo/types";
@@ -15,7 +17,7 @@ import { cloneDeep, isArray, set } from "lodash-es";
 import { Divider, IconButton, Modal, SlideIn, StateDisplay } from "@repo/ui";
 import { getDateString } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
-import EditDayAbsence from "./content/EditDayAbsence";
+import { EditDayAbsence } from "./content";
 import day_type_options from "./constants/day_type_options";
 import useErrors from "./hooks/useErrors";
 import { v4 as generateUuid } from "uuid";
@@ -264,7 +266,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		);
 	}, [time, date, errors, records, dayType, deleteModal, dayId]);
 
-	console.log({ initialTime });
 	const timeType = useMemo(() => {
 		const absenceType = absence_type_options.find(
 			(option) => option.value === initialTime?.type

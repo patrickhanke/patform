@@ -6,7 +6,6 @@ import {
 } from "@repo/provider";
 import { CreateTimesFromAbsence } from "../types";
 import { v4 as generateUuid } from "uuid";
-import { WorkingTime } from "../../../types";
 import { DayTime } from "@repo/types";
 
 const createTimeFromAbsence: CreateTimesFromAbsence = (

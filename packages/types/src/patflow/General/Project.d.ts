@@ -39,6 +39,7 @@ export type TimeSettings = {
 };
 
 export type Holiday = {
+  updatedAt: string;
   date: string;
   name: string;
   comment: string;

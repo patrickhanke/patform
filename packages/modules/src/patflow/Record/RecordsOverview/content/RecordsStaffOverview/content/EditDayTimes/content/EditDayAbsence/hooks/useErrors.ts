@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import { ErrorMessage } from "@repo/types";
 import { UseErrors } from "../types";

@@ -6,7 +6,7 @@ import { cloneDeep, set } from "lodash-es";
 import "./styles.scss";
 import { v4 as generateUuid } from "uuid";
 import { IconButton } from "@repo/ui";
-import { Day } from "@repo/types";
+import { WorkDay } from "@repo/types";
 
 const EditDayTime: FC<EditTimeProps> = ({
 	time,
@@ -104,7 +104,7 @@ const EditDayTime: FC<EditTimeProps> = ({
 						{time?.breaks &&
 							time?.breaks.map(
 								(
-									breakTime: Day["time"]["breaks"][number],
+									breakTime: WorkDay["time"]["breaks"][number],
 									index: number
 								) => {
 									return (

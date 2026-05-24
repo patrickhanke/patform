@@ -87,6 +87,7 @@ const Sidebar: FC<SidebarProps> = ({
 								subMenu={menu_item.sub_menu}
 								disabled={menu_item.disabled}
 								divider={menu_item.divider}
+								badge={menu_item.badge}
 							/>
 						))}
 					</ul>

@@ -8,18 +8,20 @@ import siteStates from "./constants/site_states";
 import RecordsCalendar from "./content/RecordsCalendar";
 import RecordsAbsence from "./content/RecordsAbsence";
 import RecordsStaffOverview from "./content/RecordsStaffOverview";
-import { PatflowAppContext, useFindData } from "@repo/provider";
+import { PatflowAppContext, useDataStore, useFindData } from "@repo/provider";
 import { Filter } from "@repo/types";
 import RecordsSettings from "./content/RecordsSettings";
 import { Page } from "@repo/ui";
 import ResetWorkerTimes from "./content/ResetWorkerTimes";
 import { StaffOption } from "./types";
+import { filterAbsences } from "./content";
 
 const RecordsOverview = () => {
 	const { year } = useContext(PatflowAppContext);
 	const [filters, setFilters] = React.useState(
 		initialFilters(year) as Filter[]
 	);
+	const { absences } = useDataStore();
 	const { records, refetch } = useGetRecords({ filters });
 	const [siteState, setSiteState] = useState<{
 		value: string;
@@ -33,26 +35,9 @@ const RecordsOverview = () => {
 		null
 	);
 
-	const { data } = useFindData({
-		objectName: "Absence",
-		fields: [
-			"objectId",
-			"start_date",
-			"end_date",
-			"state",
-			"user {objectId first_name last_name portrait { name url }}",
-			"comment",
-			"type",
-			"year"
-		],
-		filters: [
-			{ key: "year", value: year, operator: "equalTo" },
-			{ key: "state", value: "approved", operator: "notEqualTo" }
-		],
-		skipQuery: !year
-	});
-
-	console.log({ data });
+	const absenceData = useMemo(() => {
+		return filterAbsences(absences, year);
+	}, [absences, selectedUser]);
 
 	const pageHeaderButtons = useMemo(() => {
 		if (siteState.value === "workers") {
@@ -101,7 +86,7 @@ const RecordsOverview = () => {
 			title="Zeiterfassung"
 			description="Hier finden Sie alle erfassten Arbeitszeiten und Urlaube."
 			pageState={siteState}
-			pageStates={[...siteStates(data?.length || 0)]}
+			pageStates={[...siteStates(absenceData?.length || 0)]}
 			setPageState={setSiteState}
 			pageHeaderButtons={pageHeaderButtons}
 		>
@@ -122,15 +107,7 @@ const RecordsOverview = () => {
 					setPrintWorkerTimes={setprintWorkerTimes}
 				/>
 			)}
-			{siteState.value === "absence" && (
-				<RecordsAbsence
-					records={records}
-					editAbsence={editAbsence}
-					setEditAbsence={setEditAbsence}
-					selectedUser={selectedUser}
-					setSelectedUser={setSelectedUser}
-				/>
-			)}
+			{siteState.value === "absence" && <RecordsAbsence />}
 			{siteState.value === "calendar" && (
 				<RecordsCalendar records={records} />
 			)}

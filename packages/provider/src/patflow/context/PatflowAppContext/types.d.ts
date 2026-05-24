@@ -93,6 +93,15 @@ export type DataStoreState = {
 	surcharges: SurchargeDataStore[];
 	tasks: Task[];
 	tickets: Ticket[];
+	servicesUpdatedAt: number | null;
+	holidaysUpdatedAt: number | null;
+	absencesUpdatedAt: number | null;
+	workersUpdatedAt: number | null;
+	recordsUpdatedAt: number | null;
+	propertiesUpdatedAt: number | null;
+	surchargesUpdatedAt: number | null;
+	tasksUpdatedAt: number | null;
+	ticketsUpdatedAt: number | null;
 	setServices: (services: Task[]) => void;
 	setHolidays: (holidays: HolidayDataStore[]) => void;
 	setWorkers: (workers: WorkerDataStore[]) => void;

@@ -5,7 +5,7 @@ import EditDayTimes from "../../EditDayTimes";
 import { StateDisplay } from "@repo/ui";
 
 const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
-	type,
+	isWorkingDay,
 	times,
 	date,
 	days,
@@ -63,6 +63,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 										days={days}
 										type="edit"
 										date={date}
+										isWorkingDay={isWorkingDay}
 										dayId={timeValue.day_id}
 										initialTime={timeValue.time}
 										times={times || []}
@@ -95,6 +96,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 									<EditDayTimes
 										days={days}
 										type="edit"
+										isWorkingDay={isWorkingDay}
 										date={date}
 										dayId={timeValue.day_id}
 										initialTime={timeValue.time}

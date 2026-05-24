@@ -16,7 +16,8 @@ const MenuItem = ({
 	icon,
 	subMenu = [],
 	disabled = false,
-	divider
+	divider,
+	badge
 }: MenuItemProps) => {
 	const [showSubMenu, setShowSubMenu] = useState(false);
 	const pathname = usePathname();
@@ -54,6 +55,8 @@ const MenuItem = ({
 		return false;
 	};
 
+	console.log({ badge });
+
 	return (
 		<>
 			{divider && <SidebarDivider text={divider} />}
@@ -83,6 +86,16 @@ const MenuItem = ({
 								<IoMdArrowDropdown />
 							</div>
 						)}
+						{badge && (
+							<div
+								className="sidebar_badge"
+								style={{ backgroundColor: badge.color }}
+							>
+								<span className="badge_label">
+									{badge.label}
+								</span>
+							</div>
+						)}
 					</button>
 				) : (
 					<Link
@@ -97,6 +110,14 @@ const MenuItem = ({
 					>
 						{icon && <Icons icon={icon} />}
 						<div className={"sidebar_label"}>{label}</div>
+						{badge && (
+							<div
+								className="sidebar_badge"
+								style={{ backgroundColor: badge.color }}
+							>
+								<p className="badge_label">{badge.label}</p>
+							</div>
+						)}
 					</Link>
 				)}
 			</li>
