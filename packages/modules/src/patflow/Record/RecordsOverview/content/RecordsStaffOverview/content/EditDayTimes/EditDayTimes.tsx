@@ -6,8 +6,6 @@ import { AbsenceTime, Day, ErrorMessage } from "@repo/types";
 import {
 	absence_type_options,
 	axiosclient,
-	convertDateToString,
-	findDefaultTimeForDate,
 	getDefaultTime,
 	getWorktimeDuration
 } from "@repo/provider";
@@ -20,7 +18,6 @@ import { formatISO9075 } from "date-fns";
 import { EditDayAbsence } from "./content";
 import day_type_options from "./constants/day_type_options";
 import useErrors from "./hooks/useErrors";
-import { v4 as generateUuid } from "uuid";
 
 const EditDayTimes: FC<EditDayTimesProps> = ({
 	type,
@@ -102,76 +99,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		[time]
 	);
 
-	const absenceChangeHandler = useCallback(
-		(timeValue: AbsenceTime) => {
-			const timeCopy = cloneDeep(timeValue);
-			if (timeValue?.start && timeValue?.end) {
-				const defaultTime = findDefaultTimeForDate(date, records);
-
-				let totalDuration = 0;
-				if (defaultTime?.default_time?.duration) {
-					totalDuration =
-						defaultTime?.default_time?.duration -
-						defaultTime?.default_time?.pause;
-				}
-
-				let currentDuration = 0;
-
-				if (isArray(times) && dayId) {
-					const currentTimes = times.filter(
-						(t) => t.day_id !== dayId
-					);
-
-					currentTimes.forEach((currentTime) => {
-						currentDuration +=
-							currentTime.time.duration - currentTime.time.pause;
-					});
-				}
-
-				const absenceDuration = getWorktimeDuration(
-					timeValue?.start,
-					timeValue?.end
-				);
-
-				currentDuration += absenceDuration;
-
-				const breakArray = [];
-				let pauseTime = 0;
-				if (currentDuration > totalDuration) {
-					const pauseDuration = currentDuration - totalDuration;
-
-					const pauseStart =
-						new Date(timeValue.end).getTime() - pauseDuration;
-					const pauseId = generateUuid();
-
-					breakArray.push({
-						start: convertDateToString(
-							new Date(pauseStart).toISOString()
-						),
-						end: timeValue.end,
-						id: pauseId
-					});
-
-					pauseTime = getWorktimeDuration(
-						convertDateToString(new Date(pauseStart)),
-						time.end
-					);
-				}
-
-				set(
-					timeCopy,
-					"duration",
-					getWorktimeDuration(timeValue?.start, timeValue?.end)
-				);
-				set(timeCopy, "breaks", breakArray);
-				set(timeCopy, "pause", pauseTime);
-			}
-
-			setTime(timeCopy);
-		},
-		[time, times, records]
-	);
-
 	const deleteDay = useCallback(async (objectId: string) => {
 		await deleteData({
 			className: "Day",
@@ -199,27 +126,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		setSlideIn(false);
 		setDisabled([false, false]);
 	}, [time]);
-
-	const dayTypeHandler = useCallback(
-		(newDayType: (typeof day_type_options)[number]) => {
-			if (newDayType.value === "work") {
-				if (initialTime) {
-					setTime(initialTime);
-				} else {
-					setTime(getDefaultTime(date).time);
-				}
-			} else if (newDayType.value === "absence") {
-				const defaultTime = getDefaultTime(date).time;
-				setTime({
-					...defaultTime,
-					type: "vacation",
-					state: "full"
-				} as AbsenceTime);
-			}
-			setDayType(newDayType);
-		},
-		[setDayType]
-	);
 
 	const secondaryContent = useMemo(() => {
 		return (

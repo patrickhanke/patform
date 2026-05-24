@@ -16,9 +16,6 @@ const ColumnWorkingSaldo = ({ date }: { date: DayData }) => {
 		}, 0);
 	}, [date]);
 
-	console.log({ saldo });
-	console.log({ date });
-
 	if (date.is_working_day || saldo !== 0) {
 		return (
 			<div>

@@ -13,4 +13,5 @@ export type Absence = {
   year: number;
   start_date: string;
   end_date: string;
+  approved_by: UserDisplayData | undefined;
 };

@@ -40,7 +40,7 @@ const useCreateAbsence = ({
 	workerId: string;
 	absenceId?: string;
 }) => {
-	const { projectId } = useContext(UserContext);
+	const { projectId, user } = useContext(UserContext);
 	const { updateData, deleteData, createData } = useDataHandler();
 
 	const editAbsenceHandler = useCallback(async () => {
@@ -57,7 +57,15 @@ const useCreateAbsence = ({
 				start_date: absenceState.start_date,
 				end_date: absenceState.end_date,
 				state: absenceState.state,
-				comment: absenceState?.comment
+				comment: absenceState?.comment,
+				approved_by:
+					absenceState.state === "approved"
+						? {
+								__type: "Pointer",
+								className: "_User",
+								objectId: user?.objectId
+							}
+						: undefined
 			}
 		});
 		if (absenceState.objectId) {
@@ -201,7 +209,15 @@ const useCreateAbsence = ({
 					__type: "Pointer",
 					className: "Project",
 					objectId: projectId
-				}
+				},
+				approved_by:
+					absenceState.state === "approved"
+						? {
+								__type: "Pointer",
+								className: "_User",
+								objectId: user?.objectId
+							}
+						: undefined
 			},
 			afterSaveHandler: (data) => {
 				absence = data;

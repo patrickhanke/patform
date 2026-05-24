@@ -132,7 +132,8 @@ const PatflowAppContextProvider = ({
 			"start_date",
 			"end_date",
 			"user {objectId first_name last_name portrait { name url }}",
-			"updatedAt"
+			"updatedAt",
+			"approved_by { objectId first_name last_name portrait { name url } }"
 		],
 		filters: [{ key: "year", value: year, operator: "equalTo" }],
 		projectId,

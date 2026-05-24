@@ -56,7 +56,8 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 			"end_date",
 			"state",
 			"comment",
-			"type"
+			"type",
+			"approved_by { objectId first_name last_name portrait { name url } }"
 		],
 		id: absenceId,
 		skip: !absenceId || !isOpen
@@ -151,12 +152,14 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				<AbsenceDay days={intervalDays} overlap={overlap} />
 			</div>
 			<div>
-				<button
-					className="full_button md red"
-					onClick={() => setDeleteModal(true)}
-				>
-					Abwesenheit löschen
-				</button>
+				{type === "edit" && (
+					<button
+						className="full_button md red"
+						onClick={() => setDeleteModal(true)}
+					>
+						Abwesenheit löschen
+					</button>
+				)}
 			</div>
 		</div>
 	);
@@ -164,6 +167,8 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	if (absenceLoading) {
 		return <LoadingIndicator />;
 	}
+
+	console.log({ absence });
 
 	return (
 		<>
@@ -179,7 +184,18 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				preventClickOutside
 			>
 				<form className="flex col gap-lg">
-					<DisplayWorker workerId={workerId} />
+					<div>
+						<label htmlFor="worker">Mitarbeiter</label>
+						<DisplayWorker workerId={workerId} />
+					</div>
+					{absenceState.approved_by && (
+						<div>
+							<label htmlFor="approved_by">Genehmigt von</label>
+							<DisplayWorker
+								workerId={absence?.approved_by?.objectId}
+							/>
+						</div>
+					)}
 					<div>
 						<Select
 							key={absenceState.type}
