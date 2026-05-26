@@ -140,12 +140,14 @@ const RecordsStaffOverview = ({
 				printWorkerTimes={printWorkerTimes}
 				setPrintWorkerTimes={setPrintWorkerTimes}
 			/>
-			<ShowAbsences
-				showAbsences={showAbsences}
-				setShowAbsences={setShowAbsences}
-				worker={selectedUser}
-				year={year}
-			/>
+			{selectedUser && (
+				<ShowAbsences
+					showAbsences={showAbsences}
+					setShowAbsences={setShowAbsences}
+					worker={selectedUser}
+					year={year}
+				/>
+			)}
 		</div>
 	);
 };

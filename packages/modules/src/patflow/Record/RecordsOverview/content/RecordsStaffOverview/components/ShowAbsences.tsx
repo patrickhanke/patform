@@ -26,10 +26,8 @@ const ShowAbsences: FC<ShowAbsencesProps> = ({
 		objectName: "Absence",
 		fields: ["objectId", "start_date", "end_date", "type", "state"],
 		filters: [{ key: "year", value: year, operator: "equalTo" }],
-		userId: worker.objectId
+		userId: worker?.objectId
 	});
-
-	console.log({ absences });
 
 	const columns: ColumnDef<Absence>[] = useMemo(
 		() => [
