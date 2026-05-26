@@ -55,8 +55,8 @@ const RecordsStaffOverview = ({
 
 		recordData.forEach((record: Record) => {
 			if (
-				record.user.objectId === selectedUser.value &&
-				record.year === year
+				record?.user?.objectId === selectedUser.value &&
+				record?.year === year
 			) {
 				const holidayTemplate = cloneDeep(record.holiday_template);
 
