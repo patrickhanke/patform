@@ -99,7 +99,9 @@ const ShowAbsences: FC<ShowAbsencesProps> = ({
 		[]
 	);
 
-	if (!absences || !worker) return null;
+	console.log({ absences, worker });
+
+	if (!absences?.length && !worker?.objectId) return null;
 
 	return (
 		<SlideIn
@@ -109,7 +111,7 @@ const ShowAbsences: FC<ShowAbsencesProps> = ({
 			header="Abwesenheiten"
 		>
 			<div>
-				<DisplayWorker workerId={worker.objectId} />
+				<DisplayWorker workerId={worker?.objectId} />
 			</div>
 			<Divider size="large" showLine />
 			<Table
