@@ -168,8 +168,6 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		return <LoadingIndicator />;
 	}
 
-	console.log({ absence });
-
 	return (
 		<>
 			<SlideIn

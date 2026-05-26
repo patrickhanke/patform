@@ -8,13 +8,14 @@ import siteStates from "./constants/site_states";
 import RecordsCalendar from "./content/RecordsCalendar";
 import RecordsAbsence from "./content/RecordsAbsence";
 import RecordsStaffOverview from "./content/RecordsStaffOverview";
-import { PatflowAppContext, useDataStore, useFindData } from "@repo/provider";
+import { PatflowAppContext, useDataStore } from "@repo/provider";
 import { Filter } from "@repo/types";
 import RecordsSettings from "./content/RecordsSettings";
-import { Page } from "@repo/ui";
+import { Page, PageHeaderButton } from "@repo/ui";
 import ResetWorkerTimes from "./content/ResetWorkerTimes";
 import { StaffOption } from "./types";
 import { filterAbsences } from "./content";
+import UpdateAllDays from "./components/UpdateAllDays";
 
 const RecordsOverview = () => {
 	const { year } = useContext(PatflowAppContext);
@@ -27,7 +28,6 @@ const RecordsOverview = () => {
 		value: string;
 		label: string;
 	}>(siteStates(0)[0]);
-	const [editAbsence, setEditAbsence] = useState(false);
 	const [resetWorkerTimes, setResetWorkerTimes] = useState(false);
 	const [printWorkerTimes, setprintWorkerTimes] = useState(false);
 
@@ -35,45 +35,44 @@ const RecordsOverview = () => {
 		null
 	);
 
+	const [resetDaysModal, setResetDaysModal] = useState(false);
+
 	const absenceData = useMemo(() => {
 		return filterAbsences(absences, year);
 	}, [absences, selectedUser]);
 
 	const pageHeaderButtons = useMemo(() => {
 		if (siteState.value === "workers") {
-			return [
-				{
-					type: "button",
+			const buttons: PageHeaderButton[] = [];
+			if (process.env.NODE_ENV === "development") {
+				buttons.push({
+					text: "All Daten aktualisieren",
+					onClick: () => {
+						setResetDaysModal(true);
+					},
+					color: "light",
+					is_add_button: false
+				});
+			}
+			if (process.env.NODE_ENV === "development") {
+				buttons.push({
 					text: "Monatsdaten aktualisieren",
 					onClick: () => {
 						setResetWorkerTimes(true);
 					},
 					color: "light",
 					is_add_button: false
+				});
+			}
+			buttons.push({
+				text: "Monatsdaten drucken",
+				onClick: () => {
+					setprintWorkerTimes(true);
 				},
-				{
-					type: "button",
-					text: "Monatsdaten drucken",
-					onClick: () => {
-						setprintWorkerTimes(true);
-					},
-					color: "primary",
-					is_add_button: false
-				}
-			];
-		}
-		if (siteState.value === "absence") {
-			return [
-				{
-					type: "button",
-					text: "Neue Abwesenheit",
-					onClick: () => {
-						setEditAbsence(true);
-					},
-					color: "primary",
-					is_add_button: true
-				}
-			];
+				color: "primary",
+				is_add_button: false
+			});
+			return buttons;
 		}
 	}, [siteState]);
 
@@ -115,6 +114,10 @@ const RecordsOverview = () => {
 			<ResetWorkerTimes
 				resetWorkerTimes={resetWorkerTimes}
 				setResetWorkerTimes={setResetWorkerTimes}
+			/>
+			<UpdateAllDays
+				resetDaysModal={resetDaysModal}
+				setResetDaysModal={setResetDaysModal}
 			/>
 		</Page>
 	);

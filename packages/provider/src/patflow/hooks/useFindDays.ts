@@ -8,6 +8,7 @@ type UseFindDays = (P: {
 	year?: number;
 	month?: number;
 	userIds?: string[];
+	limit?: number;
 }) => {
 	data: Day[];
 	loading: boolean;
@@ -20,7 +21,8 @@ const useFindDays: UseFindDays = ({
 	absenceId,
 	year,
 	month,
-	userIds
+	userIds,
+	limit
 }) => {
 	const filters: Filter[] = [];
 	if (year) {
@@ -63,7 +65,8 @@ const useFindDays: UseFindDays = ({
 		userId: userId,
 		userIds: userIds,
 		skipQuery: skipQuery,
-		absenceId: absenceId
+		absenceId: absenceId,
+		limit: limit
 	});
 
 	return {

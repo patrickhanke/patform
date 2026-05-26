@@ -190,8 +190,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		[currentHolidays, year, tableData]
 	);
 
-	console.log({ tableData });
-
 	return (
 		<div>
 			<h3>Arbeitszeiten</h3>

@@ -9,7 +9,6 @@ const ColumnWorkingTarget = ({
 	isWorkingDay: boolean;
 	date: DayData;
 }) => {
-	console.log({ date });
 	const target = useMemo(() => {
 		if (
 			isWorkingDay &&
