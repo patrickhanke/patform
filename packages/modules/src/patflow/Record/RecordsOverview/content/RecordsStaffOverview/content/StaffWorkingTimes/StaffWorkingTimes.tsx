@@ -17,8 +17,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	records
 }) => {
 	const { holidays } = useDataStore();
-	console.log(holidays);
-	console.log(year);
 
 	const currentHolidays = useMemo(() => {
 		if (!year) {
@@ -35,9 +33,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 				return [];
 			}
 
-			console.log(date);
-			console.log(records);
-
 			const recordForHoliday = records.find((record) =>
 				record.start_date <= record.end_date &&
 				new Date(record.start_date).getTime() <=
@@ -48,7 +43,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 							new Date(date).getTime()
 					: false
 			);
-			console.log({ recordForHoliday });
 
 			if (recordForHoliday) {
 				if (
@@ -68,29 +62,9 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		refetch,
 		userId: selectedUser?.value,
 		records,
-		holidays: currentHolidays
+		holidays: currentHolidays,
+		days
 	});
-
-	const rowStyles = useCallback(
-		(row: Row<DayData>) => {
-			if (
-				currentHolidays.find(
-					(holiday) =>
-						holiday.dates?.find(
-							(dt) => new Date(dt).getFullYear() === year
-						) === row.original.date
-				)
-			) {
-				return { backgroundColor: "rgba(86, 138, 212, 0.4)" };
-			}
-			if (isWeekend(row.original.date)) {
-				return { backgroundColor: "#f5f5f5ff" };
-			}
-
-			return { backgroundColor: "transparent" };
-		},
-		[holidays, year]
-	);
 
 	const tableData = useMemo(() => {
 		const interval: DayData[] = [];
@@ -135,7 +109,6 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 			return surcharges;
 		};
 
-		console.log({ days: days.filter((day) => day.month === 3) });
 		dayInterval.forEach((element: Date) => {
 			const daysToFind: Day[] | undefined = days.filter(
 				(day) =>
@@ -144,21 +117,23 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 			);
 
 			if (isArray(daysToFind) && daysToFind.length > 0) {
-				const timeArray: DayData["time"] = [];
+				const timeArray: DayData["times"] = [];
 				daysToFind.forEach((day) => {
 					if (day.time) {
 						timeArray.push({
-							...day.time,
-							day_id: day.objectId
+							saldo: day.saldo,
+							time: day.time,
+							day_id: day.objectId,
+							absence: day.absence,
+							type: day.type,
+							worktime: day.worktime || 0
 						});
 					}
 				});
+
 				if (!daysToFind[0]) {
 					return;
 				}
-
-				console.log({ daysToFind });
-				console.log({ timeArray });
 
 				const allComments = daysToFind
 					.map((day) => day.comment)
@@ -168,9 +143,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					date: daysToFind[0].date,
 					is_working_day: daysToFind[0].is_working_day,
 					default_time: daysToFind[0].default_time,
-					time: timeArray,
-					absence: daysToFind[0].absence,
-					type: daysToFind[0].type,
+					times: timeArray,
 					surcharges: getSurchagesFromDays(daysToFind),
 					comment: allComments
 				});
@@ -183,6 +156,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					date: formatISO9075(element, { representation: "date" }),
 					is_working_day: def.is_working_day,
 					default_time: def.default_time,
+					times: [],
 					time: undefined,
 					absence: null,
 					type: "initial",
@@ -192,10 +166,29 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 			}
 		});
 
-		console.log({ interval });
-
 		return interval;
 	}, [days, month, year]);
+
+	const rowStyles = useCallback(
+		(row: Row<DayData>) => {
+			if (
+				currentHolidays.find(
+					(holiday) =>
+						holiday.dates?.find(
+							(dt) => new Date(dt).getFullYear() === year
+						) === row.original.date
+				)
+			) {
+				return { backgroundColor: "rgba(86, 138, 212, 0.4)" };
+			}
+			if (isWeekend(row.original.date)) {
+				return { backgroundColor: "#f5f5f5ff" };
+			}
+
+			return { backgroundColor: "transparent" };
+		},
+		[currentHolidays, year, tableData]
+	);
 
 	return (
 		<div>

@@ -10,7 +10,9 @@ const SiteHeaderContent = ({
 	setSelectedMonth,
 	selectedUser,
 	setSelectedUser,
-	staff
+	staff,
+	showAbsences,
+	setShowAbsences
 }: SiteHeaderContentProps) => {
 	const selectOptions = useMemo(() => {
 		let staffOptions = [] as { value: string; label: string }[];
@@ -35,7 +37,7 @@ const SiteHeaderContent = ({
 	}, [selectedMonth, setSelectedMonth, staff]);
 
 	return (
-		<div className="flex row j-sb a-ce">
+		<div className="flex row j-sb a-ce w-100">
 			<div className="button_container">
 				{staff ? (
 					<Select
@@ -60,6 +62,12 @@ const SiteHeaderContent = ({
 					isDisabled={!selectedUser}
 				/>
 			</div>
+			<button
+				className="full_button sm primary"
+				onClick={() => setShowAbsences(!showAbsences)}
+			>
+				Abwesenheiten anzeigen{" "}
+			</button>
 		</div>
 	);
 };

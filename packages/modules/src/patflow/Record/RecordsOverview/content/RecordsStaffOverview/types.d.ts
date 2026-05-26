@@ -24,6 +24,8 @@ export type SiteHeaderContentProps = {
 	setSelectedUser: Dispatch<SetStateAction<StaffOption>>;
 	selectedUser: StaffOption | null;
 	staff: StaffMember[];
+	showAbsences: boolean;
+	setShowAbsences: Dispatch<SetStateAction<boolean>>;
 };
 
 export type TableData = Day;
@@ -49,4 +51,11 @@ export type ColumnWorkingTimeProps = {
 	date: string;
 	refetch: ApolloRefetch;
 	userId: string;
+};
+
+export type ShowAbsencesProps = {
+	showAbsences: boolean;
+	setShowAbsences: (showAbsences: boolean) => void;
+	worker: StaffMember;
+	year: number;
 };

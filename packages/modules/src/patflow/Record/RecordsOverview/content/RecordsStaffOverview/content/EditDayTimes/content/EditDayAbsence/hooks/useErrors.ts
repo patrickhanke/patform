@@ -1,0 +1,135 @@
+"use client";
+
+import { useEffect } from "react";
+import { ErrorMessage } from "@repo/types";
+import { UseErrors } from "../types";
+import {
+	createIntervalFromTimes,
+	findDefaultTimeForDate
+} from "@repo/provider";
+
+const useErrors: UseErrors = ({
+	date,
+	dayId,
+	dayType,
+	days,
+	absence,
+	setErrors,
+	setOverlap,
+	records,
+	isFull
+}) => {
+	const checkOverlap = (
+		startA: string,
+		endA: string,
+		startB?: string,
+		endB?: string
+	) => {
+		if (!startB || !endB) {
+			return false;
+		}
+		const startATime = new Date(startA).getTime();
+		const endATime = new Date(endA).getTime();
+		const startBTime = new Date(startB).getTime();
+		const endBTime = new Date(endB).getTime();
+
+		return (
+			(startATime < endBTime && startATime >= startBTime) || // A starts inside B
+			(endATime <= endBTime && endATime > startBTime) || // A ends inside B
+			(startATime <= startBTime && endATime >= endBTime) // A covers B
+		);
+	};
+
+	useEffect(() => {
+		const disabledArray: [boolean, boolean] = [false, false];
+		const errorArray: ErrorMessage[] = [];
+		const overlapArray: string[] = [];
+
+		const defaultTime = findDefaultTimeForDate(date, records).default_time;
+
+		if (!absence.type) {
+			errorArray.push({
+				id: "type_required",
+				key: `type_required`,
+				message: "Typ ist erforderlich"
+			});
+		}
+
+		if (!defaultTime) {
+			disabledArray[1] = true;
+			errorArray.push({
+				id: "default_time",
+				key: `default_time`,
+				message: "Für diesen Tag existiert keine Anwesenheitszeit"
+			});
+		} else {
+			if (days && absence.start_date && absence.end_date) {
+				const timesInterval = createIntervalFromTimes(
+					absence.start_date,
+					absence.end_date
+				);
+
+				const currentTimes = days.filter(
+					(t) =>
+						timesInterval.includes(t.date) &&
+						t.objectId !== dayId &&
+						t.absence?.objectId !== absence.objectId
+				);
+				currentTimes.forEach((timeEntry, index) => {
+					if (
+						checkOverlap(
+							absence.start_date,
+							absence.end_date,
+							timeEntry.time?.start,
+							timeEntry.time?.end
+						)
+					) {
+						disabledArray[1] = true;
+						overlapArray.push(timeEntry.date);
+						if (
+							errorArray.find((error) => error.id === `overlap`)
+						) {
+							return;
+						}
+						errorArray.push({
+							id: `overlap`,
+							key: `overlap_with_time_${index}`,
+							message: `Die Zeit überschneidet sich mit einem anderen Eintrag.`
+						});
+					}
+				});
+
+				if (
+					!isFull &&
+					new Date(defaultTime.start).getTime() >
+						new Date(absence.start_date).getTime()
+				) {
+					disabledArray[1] = true;
+					errorArray.push({
+						id: "start_before_default_time",
+						key: `start_before_default_time`,
+						message:
+							"Startzeit muss nach Beginn der Anwesenheitszeit liegen"
+					});
+				}
+				if (
+					!isFull &&
+					new Date(defaultTime.end).getTime() <
+						new Date(absence.end_date).getTime()
+				) {
+					disabledArray[1] = true;
+					errorArray.push({
+						id: "end_after_default_time",
+						key: `end_after_default_time`,
+						message:
+							"Endzeit muss vor Ende der Anwesenheitszeit liegen"
+					});
+				}
+			}
+		}
+		setErrors(errorArray);
+		setOverlap(overlapArray);
+	}, [date, dayId, dayType, absence, days, isFull]);
+};
+
+export default useErrors;

@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import Logo from "./Logo";
 import { Sidebar } from "@repo/ui";
 import { PatflowUser } from "@repo/types";
-import { useAppContext } from "@repo/provider";
+import { PatflowAppContext, useAppContext, useDataStore } from "@repo/provider";
+import { filterAbsences } from "@repo/modules";
 
 const menu_items = [
   {
@@ -125,7 +126,31 @@ const menu_items = [
 ];
 
 const RenderSidebar = ({ user }: { user: PatflowUser }) => {
+  const { year } = useContext(PatflowAppContext);
   const { project } = useAppContext();
+  const { absences } = useDataStore();
+
+  const menuItems = useMemo(() => {
+    const absencesCount = filterAbsences(absences, year).length;
+
+    console.log({ absencesCount });
+
+    return menu_items.map((item) => {
+      if (item.value === "/records") {
+        return {
+          ...item,
+          badge: absencesCount > 0 ? {
+                label: absencesCount.toString(),
+                color: "red",
+              }
+            : undefined,
+        };
+      }
+      return item;
+    });
+  }, [absences]);
+
+  console.log({ menuItems });
 
   if (!project) {
     return null;
@@ -137,7 +162,7 @@ const RenderSidebar = ({ user }: { user: PatflowUser }) => {
         <Logo logo={project.logo} alt={project.name} />
         <h1>{project.name ? project.name : "patflow"}</h1>
       </div>
-      <Sidebar menuItems={menu_items} user={user} />
+      <Sidebar menuItems={menuItems} user={user} />
     </div>
   );
 };

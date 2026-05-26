@@ -5,6 +5,7 @@ export type AbsenceType = "vacation" | "illness" | "compensation_times" | "payed
 
 export type Absence = {
   objectId: string;
+  updatedAt: string;
   state: AbsenceStateOptions[number]["value"];
   user: UserDisplayData;
   comment: string;
@@ -12,4 +13,5 @@ export type Absence = {
   year: number;
   start_date: string;
   end_date: string;
+  approved_by: UserDisplayData | undefined;
 };

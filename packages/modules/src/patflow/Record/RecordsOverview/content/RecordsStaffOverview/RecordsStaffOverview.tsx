@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useMemo } from "react";
+"use client";
+
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { RecordsStaffOverviwProps } from "./types";
 import SiteHeaderContent from "./components/SiteHeaderContent";
 import { months, UserContext, useFindDays, useDataStore } from "@repo/provider";
@@ -11,6 +13,7 @@ import { StaffVacation } from "./content/StaffVacation";
 import { StaffWorkingTimes } from "./content/StaffWorkingTimes";
 import { PrintWorkerTimes } from "./content";
 import { cloneDeep } from "lodash-es";
+import ShowAbsences from "./components/ShowAbsences";
 
 const RecordsStaffOverview = ({
 	year,
@@ -20,7 +23,7 @@ const RecordsStaffOverview = ({
 	setPrintWorkerTimes
 }: RecordsStaffOverviwProps) => {
 	const { projectId } = useContext(UserContext);
-
+	const [showAbsences, setShowAbsences] = useState(false);
 	const [selectedMonth, setSelectedMonth] = React.useState<
 		(typeof months)[number]
 	>(
@@ -28,10 +31,6 @@ const RecordsStaffOverview = ({
 			(month) => month.id === new Date().getMonth()
 		) as (typeof months)[number]
 	);
-
-	console.log({ selectedMonth });
-	console.log({ year });
-	console.log({ selectedUser });
 
 	const { data: days, refetch } = useFindDays({
 		userId: selectedUser?.value as string,
@@ -60,7 +59,6 @@ const RecordsStaffOverview = ({
 				record.year === year
 			) {
 				const holidayTemplate = cloneDeep(record.holiday_template);
-				console.log({ holidayTemplate });
 
 				const holidayArray: string[] = holidayTemplate.holidays.map(
 					(holiday: string) => holiday as string
@@ -87,6 +85,8 @@ const RecordsStaffOverview = ({
 				setSelectedUser={setSelectedUser}
 				selectedUser={selectedUser}
 				staff={workers || []}
+				showAbsences={showAbsences}
+				setShowAbsences={setShowAbsences}
 			/>
 		),
 		[selectedMonth, selectedUser, workers]
@@ -139,6 +139,12 @@ const RecordsStaffOverview = ({
 			<PrintWorkerTimes
 				printWorkerTimes={printWorkerTimes}
 				setPrintWorkerTimes={setPrintWorkerTimes}
+			/>
+			<ShowAbsences
+				showAbsences={showAbsences}
+				setShowAbsences={setShowAbsences}
+				worker={selectedUser}
+				year={year}
 			/>
 		</div>
 	);

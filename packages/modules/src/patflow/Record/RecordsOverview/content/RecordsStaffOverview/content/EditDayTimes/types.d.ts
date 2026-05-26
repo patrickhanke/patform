@@ -3,6 +3,7 @@ import { WorkingTimes } from "./types";
 import {
 	AbsenceTime,
 	ApolloRefetch,
+	Day,
 	DefaultWorkingDay,
 	ErrorMessage
 } from "@repo/types";
@@ -10,12 +11,17 @@ import {
 export type EditDayTimesProps = {
 	type: "create" | "edit";
 	date: string;
+	days?: Day[];
 	dayId?: string;
-	initialTime?: WorkingTime | AbsenceTime;
+	initialTime?: Day["time"];
 	times: DayDataTime[] | undefined;
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];
+	absenceId?: string;
+	color?: string;
+	label?: string;
+	isWorkingDay: boolean;
 };
 
 export type EditTimeProps = {
@@ -36,5 +42,5 @@ export type UseErrors = (props: {
 	dayType: "absence" | "work";
 	setErrors: React.Dispatch<React.SetStateAction<ErrorMessage[]>>;
 	setDisabled: React.Dispatch<React.SetStateAction<[boolean, boolean]>>;
-	records: Record[]
+	records: Record[];
 }) => void;

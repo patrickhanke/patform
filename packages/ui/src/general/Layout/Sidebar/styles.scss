@@ -189,3 +189,29 @@
 .main_content_open {
   width: calc(100% - 44px);
 }
+
+.sidebar_badge {
+  position: absolute;
+  right: constants.$xs;
+  top: 50%;
+  height: 18px;
+  width: 18px;
+  transform: translate(0, -50%);
+  background-color: constants.$red;
+  color: constants.$white;
+  border-radius: 50%;
+  padding: 4.2px;
+  z-index: 5;
+  .badge_label {
+    font-size: 7.2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-wrap: nowrap;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 0.6;
+    font-weight: 500;
+  }
+}

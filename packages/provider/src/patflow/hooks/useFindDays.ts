@@ -1,32 +1,41 @@
 import { useFindData } from "@repo/provider";
-import { Filter } from "@repo/types";
+import { Day, ApolloRefetch, Filter } from "@repo/types";
 
-const useFindDays = ({
-	userId,
-	skipQuery = false,
-	absenceId,
-	year,
-	userIds
-}: {
+type UseFindDays = (P: {
 	userId?: string;
 	skipQuery?: boolean;
 	absenceId?: string;
 	year?: number;
+	month?: number;
 	userIds?: string[];
+	limit?: number;
+}) => {
+	data: Day[];
+	loading: boolean;
+	refetch: ApolloRefetch;
+};
+
+const useFindDays: UseFindDays = ({
+	userId,
+	skipQuery = false,
+	absenceId,
+	year,
+	month,
+	userIds,
+	limit
 }) => {
 	const filters: Filter[] = [];
-	if (absenceId) {
-		filters.push({
-			key: "absence",
-			value: absenceId,
-			operator: "equalTo"
-		});
-	}
-
 	if (year) {
 		filters.push({
 			key: "year",
 			value: year,
+			operator: "equalTo"
+		});
+	}
+	if (month) {
+		filters.push({
+			key: "month",
+			value: month,
 			operator: "equalTo"
 		});
 	}
@@ -49,12 +58,15 @@ const useFindDays = ({
 			"iso_date",
 			"comment",
 			"user { objectId }",
-			"record { objectId }"
+			"record { objectId }",
+			"worktime"
 		],
 		filters,
 		userId: userId,
 		userIds: userIds,
-		skipQuery: skipQuery
+		skipQuery: skipQuery,
+		absenceId: absenceId,
+		limit: limit
 	});
 
 	return {

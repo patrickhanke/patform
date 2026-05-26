@@ -23,7 +23,8 @@ const DatePicker: FC<DatePickerProps> = ({
 	disabled = false,
 	width = 180,
 	min,
-	max
+	max,
+	disabledDate = false
 }) => {
 	const [debouncedValue, setDateValue] = useDebounceValue(
 		defaultValue || "",
@@ -183,7 +184,7 @@ const DatePicker: FC<DatePickerProps> = ({
 									: defaultValue
 							}
 							step={undefined}
-							disabled={disabled}
+							disabled={disabled || disabledDate}
 							min={min}
 							max={max}
 						/>

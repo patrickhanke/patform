@@ -55,52 +55,26 @@ const getMonthData = ({
 			target += default_time;
 		});
 
-		const daysToLog = [];
-
 		if (days && records) {
 			dateInterval.forEach((dayString) => {
 				const dayArray = days.filter(
 					(dayToFind: Day) => dayToFind.date === dayString
 				);
 
-				// console.log({ dayArray });
-
 				if (dayArray.length > 1) {
-					dayArray.forEach((day: Day) => {
-						daysToLog.push(day);
-						if (day && day.type === "work") {
-							const time = day.time;
-							const timeSpan = time.duration - time.pause;
-							monthTimes += timeSpan || 0;
+					dayArray.forEach((day) => {
+						if (day) {
+							monthTimes += day.worktime;
 						}
 					});
 				} else if (dayArray.length === 1) {
 					const day = dayArray[0];
-					daysToLog.push(day);
-					if (day && day.type === "work") {
-						const time = day.time;
-						const timeSpan = time.duration - time.pause;
-						monthTimes += timeSpan || 0;
-					} else if (day && day.type === "absence") {
-						if (
-							day.is_working_day &&
-							day.time?.type !== "compensation_times"
-						) {
-							monthTimes += day.default_time
-								? day.default_time.duration -
-									day.default_time.pause
-								: 0;
-						} else if (day.time?.type === "compensation_times") {
-							monthTimes -= day.default_time
-								? day.default_time.duration -
-									day.default_time.pause
-								: 0;
-						}
+					if (day) {
+						monthTimes += day.worktime;
 					}
 				}
 			});
 		}
-		// console.log({ daysToLog });
 		totalSaldo += monthTimes - target;
 		totalTarget += target;
 		totalTimes += monthTimes;

@@ -10,26 +10,32 @@ export type StaffWorkingTimesProps = {
 	records: Record[];
 };
 
-export type DayDataTime =
-	| (DayTime & { day_id?: string })
-	| (AbsenceTime & { day_id?: string });
+export type DayDataTime = {
+	saldo: number;
+	time: DayTime | AbsenceTime;
+	day_id?: string;
+	absence?: Day["absence"];
+	type?: "absence" | "work";
+	worktime: number;
+};
 
 export type DayData = {
-	type: Day["type"];
 	date: Day["date"];
 	is_working_day: Day["is_working_day"];
 	default_time: Day["default_time"];
-	absence: Day["absence"];
-	time?: Array<DayDataTime> | null;
+	times: DayDataTime[];
 	surcharges: Day["surcharges"];
 	comment: Day["comment"];
+	time?: DayTime;
+	absence?: Day["absence"];
+	type?: "work" | "absence" | "initial";
 };
 
 export type ColumnWorkingTimeProps = {
-	absence: DayData["absence"];
-	type: DayData["type"];
-	time: DayData["time"];
+	isWorkingDay: boolean;
+	times: DayData["times"];
 	date: string;
+	days?: Day[];
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];

@@ -1,110 +1,123 @@
-import { ColumnWorkingTimeProps } from "../types";
+import { ColumnWorkingTimeProps, DayDataTime } from "../types";
 import { absence_type_options, getDateString } from "@repo/provider";
 import { FC } from "react";
 import EditDayTimes from "../../EditDayTimes";
 import { StateDisplay } from "@repo/ui";
 
 const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
-	absence,
-	type,
-	time,
+	isWorkingDay,
+	times,
 	date,
+	days,
 	refetch,
 	userId,
 	records
 }) => {
-	const isEditable = type !== "absence";
+	const isEditable = true;
 
-	const sortedTime = time
-		? time.sort(
+	const sortedTime = times
+		? times.sort(
 				(a, b) =>
-					new Date(a.start).getTime() - new Date(b.start).getTime()
+					new Date(a.time?.start).getTime() -
+					new Date(b.time?.start).getTime()
 			)
 		: [];
 
-	if (type === "absence" && absence) {
-		return (
-			<div className="button_container">
-				<StateDisplay
-					label={
-						absence_type_options?.find(
-							(option) => option.value === absence?.type
-						)?.label || absence_type_options[0].label
-					}
-					color={
-						absence_type_options?.find(
-							(option) => option.value === absence?.type
-						)?.color || absence_type_options[0].color
-					}
-				/>
-				{sortedTime?.map((timeValue, index) => {
-					if (!timeValue) {
-						return null;
-					}
-					return (
-						<>
-							{isEditable ? (
-								<EditDayTimes
-									type="edit"
-									date={date}
-									dayId={timeValue.day_id}
-									initialTime={timeValue}
-									times={time || []}
-									refetch={refetch}
-									userId={userId}
-									records={records}
-								/>
-							) : (
-								<span key={getDateString(timeValue.start).time}>
-									{getDateString(timeValue.start).time} -{" "}
-									{getDateString(timeValue.end).time}{" "}
-								</span>
-							)}
-							{time && index !== time.length - 1 && (
-								<span> / </span>
-							)}
-						</>
-					);
-				})}
-			</div>
-		);
-	}
+	const getLabel = (timeValue: DayDataTime) => {
+		let absenceType = "";
+		if (timeValue.type === "absence") {
+			absenceType =
+				absence_type_options?.find(
+					(option) => option.value === timeValue.absence?.type
+				)?.label || absence_type_options[0].label;
+		}
+		if (absenceType) {
+			return `${absenceType} - ${getDateString(timeValue.time?.start).time} - ${getDateString(timeValue.time?.end).time}`;
+		}
+		return `${getDateString(timeValue.time?.start).time} - ${getDateString(timeValue.time?.end).time}`;
+	};
 
-	if (type === "work" && time) {
-		return (
-			<div className="button_container">
-				{time.map((timeValue, index) => {
-					if (!timeValue) {
-						return null;
-					}
-					return (
-						<>
-							{isEditable ? (
-								<EditDayTimes
-									type="edit"
-									date={date}
-									dayId={timeValue.day_id}
-									initialTime={timeValue}
-									times={time}
-									refetch={refetch}
-									userId={userId}
-									records={records}
-								/>
-							) : (
-								<span key={getDateString(timeValue.start).time}>
-									{getDateString(timeValue.start).time} -{" "}
-									{getDateString(timeValue.end).time}{" "}
-								</span>
-							)}
-							{index !== time.length - 1 && <span> / </span>}
-						</>
-					);
-				})}
-			</div>
-		);
-	}
+	const getColor = (timeValue: DayDataTime) => {
+		if (timeValue.type === "absence") {
+			return (
+				absence_type_options?.find(
+					(option) => option.value === timeValue.absence?.type
+				)?.color || absence_type_options[0].color
+			);
+		}
+		return "green";
+	};
 
-	return null;
+	return (
+		<div className="button_container">
+			{sortedTime.map((timeValue) => {
+				if (timeValue.type === "absence") {
+					return (
+						<div
+							key={timeValue.day_id}
+							className="button_container"
+						>
+							<>
+								{isEditable ? (
+									<EditDayTimes
+										days={days}
+										type="edit"
+										date={date}
+										isWorkingDay={isWorkingDay}
+										dayId={timeValue.day_id}
+										initialTime={timeValue.time}
+										times={times || []}
+										refetch={refetch}
+										userId={userId}
+										records={records}
+										absenceId={timeValue.absence?.objectId}
+										color={getColor(timeValue)}
+										label={getLabel(timeValue)}
+									/>
+								) : (
+									<StateDisplay
+										label={getLabel(timeValue)}
+										color={getColor(timeValue)}
+									/>
+								)}
+							</>
+						</div>
+					);
+				}
+
+				if (timeValue.type === "work") {
+					return (
+						<div
+							key={timeValue.day_id}
+							className="button_container"
+						>
+							<>
+								{isEditable ? (
+									<EditDayTimes
+										days={days}
+										type="edit"
+										isWorkingDay={isWorkingDay}
+										date={date}
+										dayId={timeValue.day_id}
+										initialTime={timeValue.time}
+										times={times || []}
+										refetch={refetch}
+										userId={userId}
+										records={records}
+									/>
+								) : (
+									<StateDisplay
+										label={getLabel(timeValue)}
+										color={getColor(timeValue)}
+									/>
+								)}
+							</>
+						</div>
+					);
+				}
+			})}
+		</div>
+	);
 };
 
 export default ColumnWorkingTime;

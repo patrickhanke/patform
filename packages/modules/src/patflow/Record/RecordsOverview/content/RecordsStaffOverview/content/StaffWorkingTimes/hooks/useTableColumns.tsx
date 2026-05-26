@@ -8,7 +8,7 @@ import {
 } from "@repo/provider";
 import ColumnWorkingTime from "../components/ColumnWorkingTime";
 import ColumnWorkingHours from "../components/ColumnWorkingHours";
-import { ApolloRefetch, Holiday, Record } from "@repo/types";
+import { ApolloRefetch, Day, Holiday, Record } from "@repo/types";
 import EditDayTimes from "../../EditDayTimes";
 import { DayData } from "../types";
 import ColumnWorkingTarget from "../components/ColumnWorkingTarget";
@@ -22,12 +22,14 @@ const useTableColumns = ({
 	refetch,
 	userId,
 	records,
-	holidays
+	holidays,
+	days
 }: {
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];
 	holidays: Holiday[];
+	days: Day[];
 }) => {
 	const { projectId } = useContext(UserContext);
 	const { data } = useFindData({
@@ -85,9 +87,9 @@ const useTableColumns = ({
 			{
 				accessorFn: (row) => (
 					<ColumnWorkingTime
-						absence={row.absence}
-						type={row.type}
-						time={row.time}
+						isWorkingDay={row.is_working_day}
+						days={days || []}
+						times={row.times || []}
 						date={row.date}
 						refetch={refetch}
 						userId={userId}
@@ -118,9 +120,7 @@ const useTableColumns = ({
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => (
-					<ColumnWorkingHours type={row.type} date={row} />
-				),
+				accessorFn: (row) => <ColumnWorkingHours times={row.times} />,
 				id: "is",
 				header: () => <div style={{ textAlign: "right" }}>Ist</div>,
 				cell: (info) => (
@@ -132,9 +132,7 @@ const useTableColumns = ({
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => (
-					<ColumnWorkingSaldo type={row.type} date={row} />
-				),
+				accessorFn: (row) => <ColumnWorkingSaldo date={row} />,
 				id: "saldo",
 				header: () => <div style={{ textAlign: "right" }}>Saldo</div>,
 				cell: (info) => (
@@ -168,15 +166,17 @@ const useTableColumns = ({
 				accessorFn: (row) => (
 					<EditDayTimes
 						type="create"
+						isWorkingDay={row.is_working_day}
 						initialTime={
 							findDefaultTimeForDate(row.date, records)
 								.default_time ?? undefined
 						}
-						times={row.time || undefined}
+						times={row.times || undefined}
 						date={row.date}
 						refetch={refetch}
 						userId={userId}
 						records={records}
+						days={days}
 					/>
 				),
 				header: () => (

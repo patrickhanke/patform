@@ -11,7 +11,8 @@ const paramsHandler: ParamsHandlerType = ({
 	filters,
 	userId,
 	propertyId,
-	userIds
+	userIds,
+	absenceId
 }) => {
 	const filterObject: FilterObject = {};
 
@@ -35,6 +36,10 @@ const paramsHandler: ParamsHandlerType = ({
 
 	if (userIds) {
 		filterObject.user = { have: { objectId: { in: userIds } } };
+	}
+
+	if (absenceId) {
+		filterObject.absence = { have: { objectId: { equalTo: absenceId } } };
 	}
 
 	let additionalFilters: FilterObject = {};

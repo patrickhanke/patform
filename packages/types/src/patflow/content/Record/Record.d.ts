@@ -21,6 +21,7 @@ export type RecordTimeSettings = {
 export type Record = {
   objectId: string;
   createdAt: string;
+  updatedAt: string;
   year: number;
   user: User;
   absence: Absence[];

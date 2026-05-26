@@ -50,8 +50,7 @@ export type DeleteAbsenceProps = {
 	deleteAbsence: boolean;
 	setDeleteAbsence: Dispatch<SetStateAction<boolean>>;
 	absence: Absence;
-	record: Record;
-	refetch: ApolloRefetch;
+	refetch: () => Promise<void>;
 };
 
 export type ChangeAbsenceStateProps = {
@@ -67,9 +66,6 @@ export type UseRecordAbsenceColumnsProps = {
 };
 
 export type EditAbsenceProps = {
-	type: "edit" | "create";
-	user: PatflowUser;
-	absenceState: InitialAbsence;
-	setAbsenceState: Dispatch<SetStateAction<InitialAbsence>>;
-	record: Record | null;
+	absence: Absence;
+	refetch: () => Promise<void>;
 };

@@ -1,32 +1,23 @@
+"use client";
+
 import { FC, useCallback, useState, useEffect, useMemo } from "react";
 import { EditDayTimesProps, WorkingTime } from "./types";
 import { AbsenceTime, Day, ErrorMessage } from "@repo/types";
 import {
 	absence_type_options,
 	axiosclient,
-	convertDateToString,
-	findDefaultTimeForDate,
 	getDefaultTime,
 	getWorktimeDuration
 } from "@repo/provider";
 import { useDataHandler } from "@repo/provider";
 import EditTime from "./content/EditDayTime";
 import { cloneDeep, isArray, set } from "lodash-es";
-import {
-	Divider,
-	IconButton,
-	Modal,
-	SlideIn,
-	StateDisplay,
-	SwitchButtons
-} from "@repo/ui";
+import { Divider, IconButton, Modal, SlideIn, StateDisplay } from "@repo/ui";
 import { getDateString } from "@repo/provider";
 import { formatISO9075 } from "date-fns";
-import EditDayAbsence from "./content/EditDayAbsence";
+import { EditDayAbsence } from "./content";
 import day_type_options from "./constants/day_type_options";
 import useErrors from "./hooks/useErrors";
-import { v4 as generateUuid } from "uuid";
-import { DayDataTime } from "../StaffWorkingTimes";
 
 const EditDayTimes: FC<EditDayTimesProps> = ({
 	type,
@@ -34,15 +25,21 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	dayId,
 	initialTime,
 	times,
+	days,
 	refetch,
 	userId,
-	records
+	records,
+	absenceId,
+	color,
+	label,
+	isWorkingDay
 }) => {
 	const [slideIn, setSlideIn] = useState(false);
+	const [editAbsence, setEditAbsence] = useState(false);
 	const [dayType, setDayType] = useState<(typeof day_type_options)[number]>(
 		day_type_options[0]
 	);
-	const [time, setTime] = useState<WorkingTime | AbsenceTime | DayDataTime>(
+	const [time, setTime] = useState<WorkingTime | AbsenceTime>(
 		initialTime ? initialTime : getDefaultTime(date).time
 	);
 	const [currentIndex, setCurrentIndex] = useState<number>(NaN);
@@ -102,75 +99,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		[time]
 	);
 
-	const absenceChangeHandler = useCallback(
-		(timeValue: AbsenceTime) => {
-			const timeCopy = cloneDeep(timeValue);
-			if (timeValue?.start && timeValue?.end) {
-				const defaultTime = findDefaultTimeForDate(date, records);
-
-				let totalDuration = 0;
-				if (defaultTime?.default_time?.duration) {
-					totalDuration =
-						defaultTime?.default_time?.duration -
-						defaultTime?.default_time?.pause;
-				}
-
-				let currentDuration = 0;
-
-				if (isArray(times) && time?.day_id) {
-					const currentTimes = times.filter(
-						(t) => t.day_id !== time.day_id
-					);
-
-					currentTimes.forEach((time) => {
-						currentDuration += time.duration - time.pause;
-					});
-				}
-
-				const absenceDuration = getWorktimeDuration(
-					timeValue?.start,
-					timeValue?.end
-				);
-
-				currentDuration += absenceDuration;
-
-				const breakArray = [];
-				let pauseTime = 0;
-				if (currentDuration > totalDuration) {
-					const pauseDuration = currentDuration - totalDuration;
-
-					const pauseStart =
-						new Date(time.end).getTime() - pauseDuration;
-					const pauseId = generateUuid();
-
-					breakArray.push({
-						start: convertDateToString(
-							new Date(pauseStart).toISOString()
-						),
-						end: time.end,
-						id: pauseId
-					});
-
-					pauseTime = getWorktimeDuration(
-						convertDateToString(new Date(pauseStart)),
-						time.end
-					);
-				}
-
-				set(
-					timeCopy,
-					"duration",
-					getWorktimeDuration(timeValue?.start, timeValue?.end)
-				);
-				set(timeCopy, "breaks", breakArray);
-				set(timeCopy, "pause", pauseTime);
-			}
-
-			setTime(timeCopy);
-		},
-		[time, times, records]
-	);
-
 	const deleteDay = useCallback(async (objectId: string) => {
 		await deleteData({
 			className: "Day",
@@ -190,7 +118,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 				day_id: dayId,
 				user_id: userId,
 				type: dayType.value,
-				comment: time.comment
+				comment: initialTime?.comment
 			});
 		}
 
@@ -199,47 +127,9 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 		setDisabled([false, false]);
 	}, [time]);
 
-	const dayTypeHandler = useCallback(
-		(newDayType: (typeof day_type_options)[number]) => {
-			if (newDayType.value === "work") {
-				if (initialTime) {
-					setTime(initialTime);
-				} else {
-					setTime(getDefaultTime(date).time);
-				}
-			} else if (newDayType.value === "absence") {
-				const defaultTime = getDefaultTime(date).time;
-				setTime({
-					...defaultTime,
-					type: "vacation",
-					state: "full"
-				} as AbsenceTime);
-			}
-			setDayType(newDayType);
-		},
-		[setDayType]
-	);
-
-	console.log({ dayId });
-
 	const secondaryContent = useMemo(() => {
 		return (
 			<div className="vertical_container gap-md">
-				<SwitchButtons
-					buttonStates={
-						type === "edit"
-							? [...day_type_options].map((option) => ({
-									...option,
-									disabled: true
-								}))
-							: [...day_type_options]
-					}
-					currentStates={dayType}
-					changeHandler={dayTypeHandler}
-					underlineButtons
-					showBottomLine
-				/>
-				<Divider size="small" showLine={false} />
 				{dayType.value === "work" && (
 					<>
 						<EditTime
@@ -250,16 +140,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 							errors={errors}
 						/>
 					</>
-				)}
-				{dayType.value === "absence" && (
-					<EditDayAbsence
-						date={date}
-						time={time}
-						setTime={(timeValue) => {
-							absenceChangeHandler(timeValue);
-						}}
-						records={records}
-					/>
 				)}
 				{dayId && (
 					<>
@@ -301,9 +181,9 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 			return absenceType;
 		} else {
 			return {
-				value: time.type,
-				label: ` A - ${getDateString(time.start).time} -
-						${getDateString(time.end).time}`,
+				value: initialTime?.type,
+				label: ` A - ${getDateString(initialTime?.start).time} -
+						${getDateString(initialTime?.end).time}`,
 				color: "green"
 			};
 		}
@@ -314,8 +194,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 			return `${getDateString(initialTime.start).time} -
 						${getDateString(initialTime.end).time}`;
 		}
-		return `${getDateString(time.start).time} -
-						${getDateString(time.end).time}`;
+		return null;
 	}, [time]);
 
 	const addButtonDisabled = useMemo(() => {
@@ -324,21 +203,21 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 			times.forEach((timeElement) => {
 				// console.log({ timeElement });
 				if (
-					timeElement?.type === "illness" &&
-					timeElement?.state === "full"
+					timeElement?.time?.type === "illness" &&
+					timeElement?.time?.state === "full"
 				) {
 					returnValue = true;
 				}
-				if (timeElement?.type === "vacation") {
+				if (timeElement?.time?.type === "vacation") {
 					returnValue = true;
 				}
-				if (timeElement?.type === "compensation_times") {
+				if (timeElement?.time?.type === "compensation_times") {
 					returnValue = true;
 				}
 			});
 		}
 		return returnValue;
-	}, [times]);
+	}, [initialTime]);
 
 	return (
 		<>
@@ -346,20 +225,54 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 				{type === "edit" ? (
 					<StateDisplay
 						// icon="edit"
-						onClick={() => setSlideIn(true)}
-						label={stateLabel}
-						color={timeType.color}
+						onClick={() => {
+							if (absenceId) {
+								setEditAbsence(true);
+							} else {
+								setSlideIn(true);
+							}
+						}}
+						label={label || stateLabel || ""}
+						color={color || timeType.color}
 					/>
 				) : (
-					<IconButton
-						icon="plus"
-						onClick={() => setSlideIn(true)}
-						text="Zeit hinzufügen"
-						disabled={addButtonDisabled}
-						color="dark"
-					/>
+					<>
+						<IconButton
+							icon="plus"
+							onClick={() => {
+								setEditAbsence(true);
+							}}
+							text="Abwesenheit"
+							color="dark"
+							disabled={addButtonDisabled || !isWorkingDay}
+						/>
+						<IconButton
+							icon="plus"
+							onClick={() => {
+								setDayType(day_type_options[0]);
+								setSlideIn(true);
+							}}
+							text="Arbeitszeit"
+							disabled={addButtonDisabled}
+							color="dark"
+						/>
+					</>
 				)}
 			</div>
+			<EditDayAbsence
+				date={date}
+				dayId={dayId}
+				type={absenceId ? "edit" : "create"}
+				times={times}
+				days={days}
+				absenceId={absenceId}
+				records={records}
+				workerId={userId}
+				year={new Date().getFullYear()}
+				isOpen={editAbsence}
+				setIsOpen={setEditAbsence}
+				refetch={refetch}
+			/>
 			<SlideIn
 				header={`Zeiten bearbeiten (${getDateString(formatISO9075(new Date(date))).date})`}
 				confirm={() => confirmButtonHandler()}
@@ -386,6 +299,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 							}
 						</p>
 					</div>
+					<Divider size="small" showLine />
 					<div className="horizontal_container">
 						<div className="label">Zeittyp</div>
 						{dayType.value === "absence" ? (
@@ -405,13 +319,15 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 							<StateDisplay label="Arbeitszeit" color={"green"} />
 						)}
 					</div>
+					<Divider size="small" showLine={false} />
 					<div className="horizontal_container">
 						<div className="label">Startzeit</div>
-						<p>{getDateString(time?.start).time}</p>
+						<p>{getDateString(initialTime?.start).time}</p>
 					</div>
+					<Divider size="small" showLine={false} />
 					<div className="horizontal_container">
 						<div className="label">Endzeit</div>
-						<p>{getDateString(time?.end).time}</p>
+						<p>{getDateString(initialTime?.end).time}</p>
 					</div>
 				</div>
 			</SlideIn>

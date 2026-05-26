@@ -1,4 +1,9 @@
-import { PatflowProject, PatflowUser, PatflowUserRoleTypes } from "@repo/types";
+import {
+	Absence,
+	PatflowProject,
+	PatflowUser,
+	PatflowUserRoleTypes
+} from "@repo/types";
 import {
 	Worker,
 	Record,
@@ -29,6 +34,7 @@ export type ContextValues = {
 	reloadWorkers: () => Promise<void>;
 	reloadRecords: () => Promise<void>;
 	reloadProperties: () => Promise<void>;
+	reloadAbsences: () => Promise<void>;
 	roles: {
 		value: string;
 		type: string;
@@ -72,15 +78,30 @@ export type HolidayDataStore = Holiday & {
 	label: string;
 };
 
+export type AbsenceDataStore = Absence & {
+	value: string;
+	label: string;
+};
+
 export type DataStoreState = {
 	services: Taks[];
 	holidays: HolidayDataStore[];
+	absences: AbsenceDataStore[];
 	workers: WorkerDataStore[];
 	records: RecordDataStore[];
 	properties: PropertyDataStore[];
 	surcharges: SurchargeDataStore[];
 	tasks: Task[];
 	tickets: Ticket[];
+	servicesUpdatedAt: number | null;
+	holidaysUpdatedAt: number | null;
+	absencesUpdatedAt: number | null;
+	workersUpdatedAt: number | null;
+	recordsUpdatedAt: number | null;
+	propertiesUpdatedAt: number | null;
+	surchargesUpdatedAt: number | null;
+	tasksUpdatedAt: number | null;
+	ticketsUpdatedAt: number | null;
 	setServices: (services: Task[]) => void;
 	setHolidays: (holidays: HolidayDataStore[]) => void;
 	setWorkers: (workers: WorkerDataStore[]) => void;
@@ -89,6 +110,7 @@ export type DataStoreState = {
 	setSurcharges: (surcharges: SurchargeDataStore[]) => void;
 	setTasks: (tasks: Task[]) => void;
 	setTickets: (tickets: Ticket[]) => void;
+	setAbsences: (absences: AbsenceDataStore[]) => void;
 	getTasks: (
 		filters: Filter[],
 		skip: number,
