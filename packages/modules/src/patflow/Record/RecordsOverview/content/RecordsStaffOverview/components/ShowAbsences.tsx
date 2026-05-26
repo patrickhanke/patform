@@ -98,6 +98,9 @@ const ShowAbsences: FC<ShowAbsencesProps> = ({
 		],
 		[]
 	);
+
+	if (!absences || !worker) return null;
+
 	return (
 		<SlideIn
 			isOpen={showAbsences}
