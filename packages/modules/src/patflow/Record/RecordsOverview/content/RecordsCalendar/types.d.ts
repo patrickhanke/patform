@@ -1,5 +1,6 @@
-import { AbsenceTypes, Record } from "@repo/types";
+import { AbsenceTypes, Day, Record } from "@repo/types";
 import { User } from "@/types/General/User";
+import { WorkerDataStore } from "@repo/provider";
 
 export type GetRecordObject = {
 	loading: boolean;
@@ -28,10 +29,14 @@ export type RecordsCalendarProps = {
 
 export type DayState = "open" | "completed" | "vacation" | "sick" | "holiday";
 
-export type SiteHeaderContentComponent = {
-	id?: string;
-	filters: ApplicationTypes.Filter[];
-	setFilters: React.Dispatch<React.SetStateAction<ApplicationTypes.Filter[]>>;
-	selectedWeek: number;
-	setSelectedWeek: React.Dispatch<React.SetStateAction<number>>;
-};
+export interface WorkerRowProps {
+	worker: WorkerDataStore;
+	interval: Date[];
+	days: Day[];
+}
+
+export interface MonthlyCalendarGridProps {
+	workers: WorkerDataStore[];
+	month: Date;
+	days: Day[];
+}

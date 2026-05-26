@@ -1,19 +1,18 @@
-import { useContext, useMemo } from "react";
+import { useContext, useState, useMemo } from "react";
 import { RecordsCalendarProps } from "./types";
-import { eachDayOfInterval, formatISO9075 } from "date-fns";
-import { get, set } from "lodash-es";
 import {
-	absence_type_options,
 	PatflowAppContext,
 	useDataStore,
-	useFindData
+	useFindData,
+	useFindDays
 } from "@repo/provider";
-import { Absence, PatflowUser } from "@repo/types";
-import { Calendar, CalendarData } from "@repo/ui";
+import MonthlyCalendarGrid from "./components/MonthlyCalendarGrid";
+import "./RecordsCalendar.scss";
 
 const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 	const { year } = useContext(PatflowAppContext);
 	const { workers } = useDataStore();
+	const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
 	const { data: absences } = useFindData({
 		objectName: "Absence",
@@ -29,70 +28,55 @@ const RecordsCalendar = ({ records }: RecordsCalendarProps) => {
 		skipQuery: !year
 	});
 
-	const calendarData = useMemo(() => {
-		const data: CalendarData = {};
-		if (workers.length === 0) {
-			return data;
-		}
-		absences.forEach((absence: Absence) => {
-			if (absence.state === "approved") {
-				const user = workers.find(
-					(user: PatflowUser) =>
-						user.objectId === absence.user.objectId
-				);
-				if (!user) {
-					return;
-				}
-				const start = new Date(absence.start_date);
-				const end = new Date(absence.end_date);
-				const dayInterval = eachDayOfInterval(
-					{
-						start,
-						end
-					},
-					{ step: 1 }
-				);
+	const { data: days } = useFindDays({
+		year: year,
+		month: selectedMonth
+	});
 
-				dayInterval
-					.map((day) =>
-						formatISO9075(day, { representation: "date" })
-					)
-					.forEach((day, index) => {
-						const dayElement = get(data, day, undefined);
+	console.log({ days });
 
-						if (!dayElement) {
-							set(data, day, [
-								{
-									...absence,
-									dataType: "absence",
-									dataColor: user.color,
-									dataLength: dayInterval.length,
-									dataIndex: index,
-									dataTitle: `${user.first_name} ${user.last_name} - ${absence_type_options.find((option) => option.value === absence.type)?.label}`
-								}
-							]);
-						} else if (data[day]) {
-							data[day].push({
-								...absence,
-								dataType: "absence",
-								dataColor: user.color,
-								dataLength: dayInterval.length,
-								dataIndex: index,
-								dataTitle: absence.type
-							});
-						}
-					});
-			}
-		});
+	const currentMonth = useMemo(() => {
+		return new Date(year, selectedMonth, 1);
+	}, [year, selectedMonth]);
 
-		return data;
-	}, [records, absences, workers]);
+	const months = [
+		"Januar",
+		"Februar",
+		"März",
+		"April",
+		"Mai",
+		"Juni",
+		"Juli",
+		"August",
+		"September",
+		"Oktober",
+		"November",
+		"Dezember"
+	];
 
 	return (
-		<>
-			<p>Kalender ist noch nicht eingebunden!</p>
-			<Calendar data={calendarData} />
-		</>
+		<div className="records-calendar">
+			<div className="calendar-controls">
+				<label htmlFor="month-select">Monat:</label>
+				<select
+					id="month-select"
+					value={selectedMonth}
+					onChange={(e) => setSelectedMonth(Number(e.target.value))}
+					className="month-select"
+				>
+					{months.map((month, index) => (
+						<option key={index} value={index}>
+							{month}
+						</option>
+					))}
+				</select>
+			</div>
+			<MonthlyCalendarGrid
+				workers={workers}
+				month={currentMonth}
+				days={days}
+			/>
+		</div>
 	);
 };
 

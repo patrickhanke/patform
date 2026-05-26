@@ -6,6 +6,7 @@ type UseFindDays = (P: {
 	skipQuery?: boolean;
 	absenceId?: string;
 	year?: number;
+	month?: number;
 	userIds?: string[];
 }) => {
 	data: Day[];
@@ -18,6 +19,7 @@ const useFindDays: UseFindDays = ({
 	skipQuery = false,
 	absenceId,
 	year,
+	month,
 	userIds
 }) => {
 	const filters: Filter[] = [];
@@ -25,6 +27,13 @@ const useFindDays: UseFindDays = ({
 		filters.push({
 			key: "year",
 			value: year,
+			operator: "equalTo"
+		});
+	}
+	if (month) {
+		filters.push({
+			key: "month",
+			value: month,
 			operator: "equalTo"
 		});
 	}

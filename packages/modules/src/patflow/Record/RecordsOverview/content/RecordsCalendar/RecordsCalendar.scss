@@ -1,37 +1,180 @@
 @use "@repo/styles/constants";
 
-.records_overview {
-  @include constants.flexbox(
-    $direction: column,
-    $justify: flex-start,
-    $align: stretch
-  );
-  background-color: constants.$lightest;
+.records-calendar {
+	@include constants.flexbox(
+		$direction: column,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: constants.$xs
+	);
+	padding: constants.$md;
+	background-color: constants.$lightest;
+	overflow-x: scroll;
+
+	.calendar-controls {
+		@include constants.flexbox(
+			$direction: row,
+			$justify: flex-start,
+			$align: center,
+			$gap: constants.$sm
+		);
+		background-color: constants.$white;
+		border-radius: constants.$xs;
+
+		label {
+			font-weight: 600;
+			color: constants.$dark;
+			font-size: map-get($map: constants.$font_size, $key: "sm");
+		}
+
+		.month-select {
+			padding: constants.$xxs constants.$sm;
+			border: 1px solid constants.$grey;
+			border-radius: constants.$xxs;
+			font-size: map-get($map: constants.$font_size, $key: "sm");
+			color: constants.$dark;
+			background-color: constants.$white;
+			cursor: pointer;
+			transition: border-color 0.2s ease;
+
+			&:hover {
+				border-color: constants.$grey_shaded;
+			}
+
+			&:focus {
+				outline: none;
+				border-color: constants.$primary;
+			}
+		}
+	}
+};
+
+.record-calendar-day-cell {
+	width: 30px;
+	height: 30px;
+	border-left: 1px solid constants.$grey_shaded;
+	transition: all 0.2s ease;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: constants.$xxs;
+	padding: constants.$xxs;
+	&:last-child {
+		border-right: 1px solid constants.$grey_shaded;
+	}
+	p {
+		font-size: map-get($map: constants.$font_size, $key: "xs");
+		text-align: center;
+	}
 }
 
-.records_container {
-  @include constants.flexbox(
-    $direction: column,
-    $justify: space-between,
-    $align: stretch,
-    $gap: constants.$xs
-  );
-
-  .records_subheadline {
-    @include constants.flexbox(
-      $direction: row,
-      $justify: flex-start,
-      $align: center
-    );
-    width: 120px;
-    color: constants.$grey;
-  }
+.record-calendar-day-cell[data-current-week="true"] {
+	p {
+		color: constants.$primary;
+		font-weight: 600;
+	}
 }
 
-.siteheader_content {
-  @include constants.flexbox(
-    $direction: row,
-    $justify: space-between,
-    $align: center
-  );
+.record-calendar-day-cell[data-is-header="true"] {
+	border: none;
 }
+
+.monthly-calendar-grid {
+	@include constants.flexbox(
+		$direction: column,
+		$justify: flex-start,
+		$align: stretch,
+		$gap: 0
+	);
+	width: fit-content;
+	overflow-x: auto;
+	background-color: constants.$white;
+	border-radius: constants.$xs;
+	padding: constants.$md;
+
+	.calendar-header {
+		@include constants.flexbox(
+			$direction: row,
+			$justify: flex-start,
+			$align: center,
+			$gap: constants.$sm
+		);
+		padding-bottom: constants.$xs;
+
+		.header-worker-label {
+			min-width: 200px;
+			width: 200px;
+			font-weight: 600;
+			color: constants.$dark;
+			font-size: map-get($map: constants.$font_size, $key: "md");
+		}
+
+		.header-days {
+			@include constants.flexbox(
+				$direction: row,
+				$justify: flex-start,
+				$align: center,
+				$gap: 0
+			);
+			flex: 1;
+
+			.day-header {
+				width: 30px;
+				text-align: center;
+				font-size: map-get($map: constants.$font_size, $key: "xs");
+				font-weight: 600;
+				color: constants.$grey;
+			}
+		}
+	}
+
+	.calendar-body {
+		@include constants.flexbox(
+			$direction: column,
+			$justify: flex-start,
+			$align: stretch,
+			$gap: 0
+		);
+	}
+}
+
+.worker-row {
+	@include constants.flexbox(
+		$direction: row,
+		$justify: flex-start,
+		$align: center,
+		$gap: constants.$sm
+	);
+	border-bottom: 1px solid constants.$grey_shaded;
+
+
+	&:first-child {
+		border-top: 1px solid constants.$grey_shaded;
+	}
+
+	.worker-info {
+		@include constants.flexbox(
+			$direction: row,
+			$justify: flex-start,
+			$align: center,
+			$gap: constants.$xs
+		);
+		min-width: 200px;
+		width: 200px;
+	}
+
+	.worker-days {
+		@include constants.flexbox(
+			$direction: row,
+			$justify: flex-start,
+			$align: center,
+			$gap: 0
+		);
+		flex: 1;
+		overflow-x: auto;
+		
+	}
+}
+
+
