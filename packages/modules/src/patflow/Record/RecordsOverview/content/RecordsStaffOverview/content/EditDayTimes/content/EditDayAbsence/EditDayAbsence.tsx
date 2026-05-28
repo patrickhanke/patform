@@ -149,7 +149,13 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 			<div>
 				<h3>Zeiten/ Tage</h3>
 				<Divider />
-				<AbsenceDay days={intervalDays} overlap={overlap} />
+				<AbsenceDay
+					days={intervalDays}
+					overlap={overlap}
+					startAfterEnd={
+						!!errors.find((error) => error.id === "start_after_end")
+					}
+				/>
 			</div>
 			<div>
 				{type === "edit" && (
@@ -178,7 +184,8 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				showSecondaryContent={true}
 				secondaryContent={secondaryContent}
 				errors={errors}
-				disabled={[errors.length > 0 || loading, loading]}
+				disabled={[loading, errors.length > 0 || loading]}
+				loading={loading}
 				preventClickOutside
 			>
 				<form className="flex col gap-lg">

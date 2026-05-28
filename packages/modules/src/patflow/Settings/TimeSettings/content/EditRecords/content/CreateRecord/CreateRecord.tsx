@@ -354,7 +354,8 @@ const CreateRecord: FC<CreateRecordProps> = ({
 					__type: "Pointer",
 					className: "Template",
 					objectId: nextRecord.holiday_template.objectId
-				}
+				},
+				surcharges: []
 			}
 		});
 

@@ -4,7 +4,7 @@ import { StateDisplay } from "@repo/ui";
 import { weekdays } from "@repo/provider";
 import { getDay } from "date-fns";
 
-const AbsenceDay: FC<AbsenceDayProps> = ({ days, overlap }) => {
+const AbsenceDay: FC<AbsenceDayProps> = ({ days, overlap, startAfterEnd }) => {
 	const getWeekday = (date: string) => {
 		return weekdays.find(
 			(weekday) => weekday.day === getDay(new Date(date))
@@ -39,6 +39,10 @@ const AbsenceDay: FC<AbsenceDayProps> = ({ days, overlap }) => {
 		}
 		return "gray";
 	};
+
+	if (startAfterEnd) {
+		return <div className="error">Startzeit muss vor Endzeit liegen</div>;
+	}
 
 	return (
 		<>

@@ -55,6 +55,20 @@ const useErrors: UseErrors = ({
 			});
 		}
 
+		if (
+			absence.start_date &&
+			absence.end_date &&
+			new Date(absence.start_date).getTime() >
+				new Date(absence.end_date).getTime()
+		) {
+			disabledArray[1] = true;
+			errorArray.push({
+				id: "start_after_end",
+				key: `start_after_end`,
+				message: "Startzeit muss vor Endzeit liegen"
+			});
+		}
+
 		if (!defaultTime) {
 			disabledArray[1] = true;
 			errorArray.push({

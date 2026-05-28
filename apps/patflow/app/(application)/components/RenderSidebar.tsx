@@ -128,12 +128,10 @@ const menu_items = [
 const RenderSidebar = ({ user }: { user: PatflowUser }) => {
   const { year } = useContext(PatflowAppContext);
   const { project } = useAppContext();
-  const { absences } = useDataStore();
+  const absences = useDataStore( (state) => state.absences );
 
   const menuItems = useMemo(() => {
     const absencesCount = filterAbsences(absences, year).length;
-
-    console.log({ absencesCount });
 
     return menu_items.map((item) => {
       if (item.value === "/records") {
@@ -149,8 +147,6 @@ const RenderSidebar = ({ user }: { user: PatflowUser }) => {
       return item;
     });
   }, [absences]);
-
-  console.log({ menuItems });
 
   if (!project) {
     return null;

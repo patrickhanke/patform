@@ -53,6 +53,7 @@ export type InitialAbsence = Omit<Absence, "user"> & {
 export type AbsenceDayProps = {
 	days: IntervalDay[];
 	overlap: string[];
+	startAfterEnd: boolen;
 };
 
 export type UseAbsenceDaysHook = (T: {

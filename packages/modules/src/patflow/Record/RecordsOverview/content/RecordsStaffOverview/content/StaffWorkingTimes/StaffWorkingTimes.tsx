@@ -110,6 +110,10 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		};
 
 		dayInterval.forEach((element: Date) => {
+			const def = findDefaultTimeForDate(
+				formatISO9075(element, { representation: "date" }),
+				records
+			);
 			const daysToFind: Day[] | undefined = days.filter(
 				(day) =>
 					day.date ===
@@ -138,20 +142,15 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 				const allComments = daysToFind
 					.map((day) => day.comment)
 					.join(" - ");
-
 				interval.push({
 					date: daysToFind[0].date,
-					is_working_day: daysToFind[0].is_working_day,
-					default_time: daysToFind[0].default_time,
+					is_working_day: def.is_working_day,
+					default_time: def.default_time,
 					times: timeArray,
 					surcharges: getSurchagesFromDays(daysToFind),
 					comment: allComments
 				});
 			} else {
-				const def = findDefaultTimeForDate(
-					formatISO9075(element, { representation: "date" }),
-					records
-				);
 				interval.push({
 					date: formatISO9075(element, { representation: "date" }),
 					is_working_day: def.is_working_day,
