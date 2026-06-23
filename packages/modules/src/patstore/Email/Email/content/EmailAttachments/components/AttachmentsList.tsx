@@ -7,8 +7,8 @@ import AttachmentItem from "./AttachmentItem";
 const AttachmentsList: FC<AttachmentsListProps> = ({
 	attachments,
 	emailId,
-	email,
-	refetch
+	refetch,
+	refetchEmail
 }) => {
 	if (!attachments || attachments.length === 0) {
 		return (
@@ -42,8 +42,8 @@ const AttachmentsList: FC<AttachmentsListProps> = ({
 						key={attachment.objectId}
 						attachment={attachment}
 						emailId={emailId}
-						email={email}
 						refetch={refetch}
+						refetchEmail={refetchEmail}
 					/>
 				))}
 			</div>

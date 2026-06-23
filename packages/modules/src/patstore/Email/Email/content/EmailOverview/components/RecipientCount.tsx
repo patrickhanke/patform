@@ -1,37 +1,18 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { IconButton, SlideIn, Table, useCreateColumns } from "@repo/ui";
-import { useGetData } from "@repo/provider";
-import { PatstoreUser } from "@repo/types";
 import { RecipientCountProps } from "../types";
 
 const RecipientCount: FC<RecipientCountProps> = ({
 	email,
 	recipients,
-	suppressedRecipients,
-	findRecipients
+	suppressedRecipients
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const recipientListId = email?.settings?.recipient_list;
 
-	// Fetch the list to get filter settings
-	const { data: list } = useGetData({
-		objectName: "Item",
-		fields: ["objectId", "title", "data", "settings"],
-		id: recipientListId
-	});
-
-	console.log("recipients", recipients);
-
-	useEffect(() => {
-		if (recipientListId) {
-			findRecipients();
-		}
-	}, [recipientListId]);
-
-	// Generate columns for the table
-	const columns = useCreateColumns<PatstoreUser>({
+	const columns = useCreateColumns({
 		data: [
 			{
 				id: "title",
@@ -56,7 +37,7 @@ const RecipientCount: FC<RecipientCountProps> = ({
 		],
 		categories: [],
 		className: "User",
-		refetch: findRecipients,
+		refetch: () => null,
 		useMasterKey: true,
 		editDisabled: true
 	});
@@ -84,39 +65,32 @@ const RecipientCount: FC<RecipientCountProps> = ({
 							Keine Empfängerliste ausgewählt. Bitte wählen Sie in
 							den Einstellungen eine Liste aus.
 						</p>
-					) : !list ? (
-						<p>Lädt Liste...</p>
-					) : (
+					) : recipients.length > 0 ? (
 						<>
-							<div className="flex col gap-sm">
-								<h4>Liste: {list.title}</h4>
+							{suppressedRecipients.length > 0 && (
 								<p>
-									{list.settings?.static_list
-										? "Statische Liste"
-										: "Dynamische Liste"}
-								</p>
-							</div>
-
-							{recipients.length > 0 ? (
-								<Table
-									columns={columns}
-									data={recipients.map((recipient) => ({
-										...recipient,
-										title: recipient.data?.title,
-										pre_title: recipient.data?.pre_title,
-										first_name: recipient.data?.first_name,
-										last_name: recipient.data?.last_name,
-										email: recipient.email
-									}))}
-									rowCount={recipients.length}
-								/>
-							) : (
-								<p>
-									Keine Empfänger gefunden, die die
-									Filterbedingungen erfüllen.
+									{suppressedRecipients.length} Empfänger sind
+									unterdrückt und nicht enthalten.
 								</p>
 							)}
+							<Table
+								columns={columns}
+								data={recipients.map((recipient) => ({
+									...recipient,
+									title: recipient.data?.title,
+									pre_title: recipient.data?.pre_title,
+									first_name: recipient.data?.first_name,
+									last_name: recipient.data?.last_name,
+									email: recipient.email
+								}))}
+								rowCount={recipients.length}
+							/>
 						</>
+					) : (
+						<p>
+							Keine Empfänger gefunden, die die Filterbedingungen
+							erfüllen.
+						</p>
 					)}
 				</div>
 			</SlideIn>

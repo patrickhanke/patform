@@ -6,10 +6,7 @@ import { UseRecordTableColumns } from "../types";
 import Editrecord from "../content/EditRecord";
 import { DisplayWorker } from "@repo/ui";
 
-const useRecordsTableColumns: UseRecordTableColumns = ({
-	refetch,
-	projectId
-}) => {
+const useRecordsTableColumns: UseRecordTableColumns = () => {
 	const columns: ColumnDef<Record>[] = useMemo(
 		() => [
 			{
@@ -70,14 +67,8 @@ const useRecordsTableColumns: UseRecordTableColumns = ({
 				footer: (info) => info.column.id
 			},
 			{
-				accessorFn: (row) => (
-					<Editrecord
-						record={row}
-						refetch={refetch}
-						projectId={projectId}
-					/>
-				),
-				header: () => <span>Bearbeiten</span>,
+				accessorFn: (row) => <Editrecord record={row} />,
+				header: () => <span>Details</span>,
 				id: "edit",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id

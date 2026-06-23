@@ -1,14 +1,16 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import { useAppContext, useDataHandler, useFindData } from "@repo/provider";
 import { Table, TextInput, useCreateColumns } from "@repo/ui";
-import { ApolloRefetch, Filter, PatstoreUser } from "@repo/types";
-import MemberSwitch from "./components/MemberSwitch";
+import { ApolloRefetch, PatstoreUser } from "@repo/types";
+import getListMembers from "../../functions/getListMembers";
+import { EmailList } from "../../types";
 
 export interface ListMembersProps {
-	listId: string;
-	refetch: ApolloRefetch;
+	list: EmailList;
+	users: PatstoreUser[];
+	refetchUsers: () => Promise<unknown>;
+	disabled?: boolean;
 }
 
 export interface RecipientData {
@@ -17,82 +19,60 @@ export interface RecipientData {
 	key: string;
 }
 
-const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
-	const { project } = useAppContext();
-	const { updateData } = useDataHandler();
-	const [order, setOrder] = useState<string>("name_ASC");
+const ListMembers: FC<ListMembersProps> = ({
+	list,
+	users,
+	refetchUsers,
+	disabled = false
+}) => {
+	const listId = list.objectId;
+	const [order, setOrder] = useState<string>("label_ASC");
+	const [searchTerm, setSearchTerm] = useState("");
 
-	const [loading, setLoading] = useState(false);
-
-	const initialFilters: Filter[] = useMemo(
-		() => [
-			{
-				key: "projects",
-				value: [project.objectId],
-				operator: "in",
-				id: "projects"
-			}
-		],
-		[project]
+	const listMembers = useMemo(
+		() => getListMembers(list, users, listId),
+		[list, users, listId]
 	);
 
-	const [filters, setFilters] = useState<Filter[]>([]);
+	const filteredUsers = useMemo(() => {
+		if (!searchTerm.trim()) {
+			return listMembers;
+		}
 
-	// Fetch users with email addresses
-	const {
-		data: users,
-		refetch: refetchUsers,
-		count
-	} = useFindData({
-		objectName: "User",
-		fields: [
-			"objectId",
-			"username",
-			"title",
-			"pre_title",
-			"post_title",
-			"email",
-			"first_name",
-			"last_name",
-			"data",
-			"settings",
-			"emails"
-		],
-		filters: [...initialFilters, ...filters] as Filter[],
-		limit: 1000,
-		skip: 0,
-		order: order
-	});
+		const term = searchTerm.trim().toLowerCase();
+		return listMembers.filter((user) => {
+			const label = user.label?.toLowerCase() || "";
+			const firstName = user.first_name?.toLowerCase() || "";
+			const lastName = user.last_name?.toLowerCase() || "";
 
-	console.log(
-		"users",
-		users.filter((user: PatstoreUser) => user.lists)
-	);
-	console.log(
-		"listUsers",
-		users.filter((user: PatstoreUser) => user?.lists?.includes(listId))
-	);
+			return (
+				label.includes(term) ||
+				firstName.includes(term) ||
+				lastName.includes(term)
+			);
+		});
+	}, [listMembers, searchTerm]);
 
-	// Get currently selected recipients from list
-	const selectedRecipients = useMemo(() => {
-		return users.filter((user: PatstoreUser) =>
-			user?.emails?.some((email) => email.lists.includes(listId))
-		);
-	}, [users, listId]);
+	const sortedUsers = useMemo(() => {
+		const [field, direction] = order.split("_");
+		const sorted = [...filteredUsers];
 
-	console.log("selectedRecipients", selectedRecipients);
+		sorted.sort((a, b) => {
+			const aValue = String(a[field as keyof PatstoreUser] ?? "");
+			const bValue = String(b[field as keyof PatstoreUser] ?? "");
+			const comparison = aValue.localeCompare(bValue, "de");
 
-	// Generate columns for the table
+			return direction === "DESC" ? -comparison : comparison;
+		});
+
+		return sorted;
+	}, [filteredUsers, order]);
+
 	const columns = useCreateColumns<PatstoreUser>({
 		data: [
 			{
 				id: "title",
 				label: "Anrede",
-				type: "string"
-			},
-			{
-				id: "pre_title",
-				label: "Titel",
 				type: "string"
 			},
 			{
@@ -104,26 +84,11 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 				id: "last_name",
 				label: "Nachname",
 				type: "string"
-			},
-			{
-				id: "lists",
-				label: "In dieser Liste",
-				type: "custom",
-				render: (row: PatstoreUser) => {
-					return (
-						<MemberSwitch
-							listId={listId}
-							emails={row.emails}
-							userId={row.objectId}
-							refetch={refetchUsers}
-						/>
-					);
-				}
 			}
 		],
 		categories: [],
 		className: "User",
-		refetch,
+		refetch: refetchUsers as ApolloRefetch,
 		useMasterKey: true,
 		editDisabled: true
 	});
@@ -132,35 +97,23 @@ const ListMembers: FC<ListMembersProps> = ({ listId, refetch }) => {
 		<div>
 			<div className="flex row a-ce j-sb gap-sm w-100">
 				<div className="flex col a-st w-100">
-					<p>
-						Ausgewählte Mitglieder: {selectedRecipients.length} /{" "}
-						{count || 0}
-					</p>
+					<p>Mitglieder: {listMembers.length}</p>
 				</div>
 				<div className="flex col a-st gap-sm">
 					<TextInput
 						label="Nach Vor- oder Nachname filtern"
 						id="search-filter"
-						defaultValue={""}
-						onChange={(e) =>
-							setFilters([
-								{
-									key: "label",
-									value: e,
-									operator: "matchesRegex",
-									id: "label"
-								}
-							])
-						}
+						defaultValue={searchTerm}
+						onChange={(value) => setSearchTerm(String(value))}
 						placeholder="Name eingeben..."
-						disabled={loading}
+						disabled={disabled}
 					/>
 				</div>
 			</div>
 			<Table
 				columns={columns}
-				data={users || []}
-				rowCount={users.length}
+				data={sortedUsers}
+				rowCount={sortedUsers.length}
 				setOrder={setOrder}
 			/>
 		</div>

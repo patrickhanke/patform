@@ -15,3 +15,16 @@ export type RecordSettingsProps = {
 	record: Record;
 	days: Day[];
 };
+
+export type RecordSurchargesProps = {
+	surcharges: string[];
+	setSurcharges: Dispatch<SetStateAction<string[]>>;
+};
+
+export type RecordTimesProps = {
+	activeRecord: Record | null;
+	adobt?: boolean;
+	setAdobt: Dispatch<SetStateAction<boolean>>;
+	setNextRecord: Dispatch<SetStateAction<Partial<Record>>>;
+	nextRecord: Partial<Record>;
+};

@@ -10,12 +10,7 @@ import {
 } from "@repo/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Params } from "@repo/types";
-import {
-	useAppContext,
-	useDataHandler,
-	useGetData,
-	axiosclient
-} from "@repo/provider";
+import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
 import TestEmail from "./components/TestEmail";
 import BulkEmailSender from "./components/BulkEmailSender";
 import RecipientEmailSender from "./components/RecipientEmailSender";
@@ -29,8 +24,7 @@ import {
 } from "./content";
 import { isEqual } from "lodash-es";
 import EmailImport from "./components/EmailImport";
-import { EmailRecipient, EmailRescipientResponse } from "./types";
-import { AxiosResponse } from "axios";
+import useEmailRecipients from "./hooks/useEmailRecipients";
 
 const Email = ({ params }: { params: Params }) => {
 	const { deleteData } = useDataHandler();
@@ -57,6 +51,16 @@ const Email = ({ params }: { params: Params }) => {
 		],
 		id: emailId
 	});
+
+	const recipientListId = email?.settings?.recipient_list;
+
+	const {
+		recipients,
+		suppressedRecipients,
+		loading: recipientsLoading,
+		refetch: refetchRecipients
+	} = useEmailRecipients(recipientListId);
+
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as { value: string; label: string }
 	);
@@ -73,25 +77,11 @@ const Email = ({ params }: { params: Params }) => {
 	const [recipientEmailOpen, setRecipientEmailOpen] =
 		useState<boolean>(false);
 	const [importModalOpen, setImportModalOpen] = useState<boolean>(false);
-	const [recipients, setRecipients] = useState<EmailRecipient[]>([]);
-	const [suppressedRecipients, setSuppressedRecipients] = useState<
-		EmailRecipient[]
-	>([]);
 
-	const findRecipients = useCallback(async () => {
-		if (!email) return;
-		if (!email.settings?.recipient_list) return;
-		const recipientListId = email.settings.recipient_list;
-		const response: AxiosResponse<EmailRescipientResponse> =
-			await axiosclient().post("functions/get_list_recipients", {
-				list_id: recipientListId
-			});
-
-		setRecipients(response.data.result.recipients || []);
-		setSuppressedRecipients(
-			response.data.result.suppressedRecipients || []
-		);
-	}, [email]);
+	const handleSettingsSaved = useCallback(async () => {
+		await refetch();
+		await refetchRecipients();
+	}, [refetch, refetchRecipients]);
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
@@ -103,6 +93,7 @@ const Email = ({ params }: { params: Params }) => {
 					},
 					disabled:
 						loading ||
+						recipientsLoading ||
 						email?.state !== "draft" ||
 						!email.settings.recipient_list ||
 						email?.content?.length === 0
@@ -114,6 +105,7 @@ const Email = ({ params }: { params: Params }) => {
 					},
 					disabled:
 						loading ||
+						recipientsLoading ||
 						email?.state !== "draft" ||
 						!email.settings.recipient_list ||
 						email?.content?.length === 0
@@ -167,26 +159,24 @@ const Email = ({ params }: { params: Params }) => {
 		}
 
 		return [];
-	}, [siteState, selectedDataRows, email, emailContent, loading, project]);
+	}, [
+		siteState,
+		selectedDataRows,
+		email,
+		emailContent,
+		loading,
+		recipientsLoading
+	]);
 
 	useEffect(() => {
 		if (email && emailContent?.length === 0) {
 			setEmailContent(email.content);
-		}
-		if (
-			email &&
-			email.settings?.recipient_list &&
-			recipients.length === 0
-		) {
-			findRecipients();
 		}
 	}, [email]);
 
 	if (!email) {
 		return <div>Lädt ...</div>;
 	}
-
-	console.log("suppressedRecipients", suppressedRecipients);
 
 	return (
 		<Page
@@ -207,7 +197,6 @@ const Email = ({ params }: { params: Params }) => {
 							email={email}
 							recipients={recipients}
 							suppressedRecipients={suppressedRecipients}
-							findRecipients={findRecipients}
 						/>
 					)}
 					{siteState.value === "data" && (
@@ -231,12 +220,17 @@ const Email = ({ params }: { params: Params }) => {
 						/>
 					)}
 					{siteState.value === "attachments" && (
-						<EmailAttachments emailId={emailId} email={email} />
+						<EmailAttachments
+							emailId={emailId}
+							refetchEmail={refetch}
+						/>
 					)}
 					{siteState.value === "settings" && (
 						<EmailSettings
 							emailId={emailId}
-							findRecipients={findRecipients}
+							recipients={recipients}
+							suppressedRecipients={suppressedRecipients}
+							onSettingsSaved={handleSettingsSaved}
 						/>
 					)}
 				</>

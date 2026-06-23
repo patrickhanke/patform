@@ -7,15 +7,13 @@ import { EmailOverviewProps } from "./types";
 const EmailOverview: FC<EmailOverviewProps> = ({
 	email,
 	recipients,
-	suppressedRecipients,
-	findRecipients
+	suppressedRecipients
 }) => {
 	const attachmentCount = useMemo(() => {
 		return email?.attachments?.length || 0;
 	}, [email]);
 
 	const emailState = useMemo(() => {
-		// Check if state field exists, otherwise default to "draft"
 		if (email?.state) {
 			return email.state === "sent" ? "Versendet" : "Entwurf";
 		}
@@ -23,7 +21,6 @@ const EmailOverview: FC<EmailOverviewProps> = ({
 	}, [email]);
 
 	const sendDate = useMemo(() => {
-		// Check if date field exists
 		if (email?.date) {
 			return new Date(email.date).toLocaleString("de-DE", {
 				year: "numeric",
@@ -53,7 +50,6 @@ const EmailOverview: FC<EmailOverviewProps> = ({
 								email={email}
 								recipients={recipients}
 								suppressedRecipients={suppressedRecipients}
-								findRecipients={findRecipients}
 							/>
 						</div>
 					</div>

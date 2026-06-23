@@ -21,7 +21,10 @@ const EditRecords: FC<EditRecordsProps> = ({
 			"year",
 			"user {objectId first_name last_name}",
 			"default_times",
-			"createdAt"
+			"createdAt",
+			"start_date",
+			"end_date",
+			"time_settings"
 		],
 		filters: [{ key: "year", value: year, operator: "equalTo" }]
 	});
@@ -30,7 +33,7 @@ const EditRecords: FC<EditRecordsProps> = ({
 	);
 	const [editRecordData, setEditRecordData] = useState(false);
 
-	const columns = useRecordsTableColumns({ refetch, projectId });
+	const columns = useRecordsTableColumns();
 
 	if (loading) {
 		return <div>Loading...</div>;

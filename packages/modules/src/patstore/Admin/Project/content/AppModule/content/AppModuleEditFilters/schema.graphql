@@ -1237,7 +1237,6 @@ enum CloudCodeFunction {
   send_email_to_users
   get_email_meta
   lettermint_webhook
-  get_list_recipients
   find_member
   search_specialist
   find_bcd_specialists

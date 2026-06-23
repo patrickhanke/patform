@@ -35,6 +35,7 @@ export type ContextValues = {
 	reloadRecords: () => Promise<void>;
 	reloadProperties: () => Promise<void>;
 	reloadAbsences: () => Promise<void>;
+	reloadSurcharges: () => Promise<void>;
 	roles: {
 		value: string;
 		type: string;

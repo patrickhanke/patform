@@ -1,5 +1,12 @@
 import { useCallback, useContext, useMemo } from "react";
-import { Map, Select, StatelessToggle, SwitchButtons } from "@repo/ui";
+import {
+	Divider,
+	InfoBox,
+	Map,
+	Select,
+	StatelessToggle,
+	SwitchButtons
+} from "@repo/ui";
 import { EventDate, LocationClass } from "@repo/types";
 import { TableColumnEditDateProps } from "../types";
 import { set, cloneDeep } from "lodash-es";
@@ -19,8 +26,6 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 		fields: ["objectId", "label"],
 		moduleId: locationModule?.objectId
 	});
-
-	console.log({ locationData });
 
 	const locationOptions = useMemo(() => {
 		if (!locationData) return [];
@@ -70,6 +75,8 @@ const TableColumnEditDate = ({ date, setDates }: TableColumnEditDateProps) => {
 					onChange={(e) => changeHandler("label", e.target.value)}
 				/>
 			</div>
+			<Divider />
+			<InfoBox text="Startzeit und Endzeit müssen mit Uhrzeit angegeben werden" />
 			<div>
 				<label>Startzeit</label>
 				<input

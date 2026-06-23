@@ -4,6 +4,10 @@ const siteStates: { value: string; label: string }[] = [
 		label: "Einstellungen"
 	},
 	{
+		value: "filter",
+		label: "Filter"
+	},
+	{
 		value: "members",
 		label: "Mitglieder"
 	}

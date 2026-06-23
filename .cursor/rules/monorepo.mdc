@@ -1,0 +1,41 @@
+---
+description: patform monorepo structure and package boundaries
+alwaysApply: true
+---
+
+# Monorepo conventions
+
+## Package boundaries
+
+- `apps/patflow` and `apps/patstore` — routes and app-specific layout only
+- `packages/modules` — feature UI and business logic (`patflow/` and `patstore/` subdirs)
+- `packages/types` — TypeScript types (`@repo/types`)
+- `packages/provider` — data hooks, contexts, auth (`@repo/provider`)
+- `packages/ui` — reusable components (`@repo/ui`)
+
+## Adding a feature
+
+1. Types in `packages/types/src/{app}/`
+2. UI/logic in `packages/modules/src/{app}/`
+3. Thin route in `apps/{app}/app/(application)/.../page.tsx`:
+
+```tsx
+export { MyFeature as default } from "@repo/modules";
+```
+
+4. Export new module from `packages/modules/src/{app}/index.ts` and `packages/modules/src/index.ts` if needed
+
+## Do not
+
+- Put feature logic directly in app `page.tsx` files
+- Duplicate types across packages
+- Import from apps into packages (packages must not depend on apps)
+- Expose `SASHIDO_MASTER_KEY` or master-key queries in client components
+
+## Commands
+
+```bash
+npm run dev:patflow   # port 3002
+npm run dev:patstore  # port 3001
+npm run lint
+```

@@ -8,7 +8,12 @@ import EmailListSelector from "./components/EmailListSelector";
 import initial_settings from "./constants/initial_settings";
 import { EmailSettingsProps } from "./types";
 
-const EmailSettings: FC<EmailSettingsProps> = ({ emailId, findRecipients }) => {
+const EmailSettings: FC<EmailSettingsProps> = ({
+	emailId,
+	recipients,
+	suppressedRecipients,
+	onSettingsSaved
+}) => {
 	const { updateData } = useDataHandler();
 	const [settings, setSettings] = useState<EmailClass["settings"]>();
 	const { data, refetch } = useGetData({
@@ -27,12 +32,14 @@ const EmailSettings: FC<EmailSettingsProps> = ({ emailId, findRecipients }) => {
 
 	const updateSettingsHandler = useCallback(
 		async (st: EmailClass["settings"]) => {
+			setLoading(true);
 			const updateObject = {
 				settings: {
 					...settings,
 					...st
 				}
 			};
+
 			await updateData({
 				className: "Email",
 				objectId: emailId,
@@ -41,9 +48,10 @@ const EmailSettings: FC<EmailSettingsProps> = ({ emailId, findRecipients }) => {
 			});
 
 			await refetch();
+			await onSettingsSaved();
 			setLoading(false);
 		},
-		[settings, data, loading, findRecipients]
+		[settings, emailId, updateData, refetch, onSettingsSaved]
 	);
 
 	if (!settings) {
@@ -56,7 +64,8 @@ const EmailSettings: FC<EmailSettingsProps> = ({ emailId, findRecipients }) => {
 				settings={settings}
 				updateSettings={updateSettingsHandler}
 				loading={loading}
-				findRecipients={findRecipients}
+				recipients={recipients}
+				suppressedRecipients={suppressedRecipients}
 			/>
 
 			{(

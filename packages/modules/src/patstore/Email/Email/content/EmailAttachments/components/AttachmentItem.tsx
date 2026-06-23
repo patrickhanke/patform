@@ -11,16 +11,15 @@ import { Modal } from "@repo/ui";
 interface AttachmentItemProps {
 	attachment: FileAttachment;
 	emailId: string;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	email: any;
 	refetch: ApolloRefetch;
+	refetchEmail: ApolloRefetch;
 }
 
 const AttachmentItem: FC<AttachmentItemProps> = ({
 	attachment,
 	emailId,
-	email,
-	refetch
+	refetch,
+	refetchEmail
 }) => {
 	const { deleteData, updateData } = useDataHandler();
 	const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -29,30 +28,39 @@ const AttachmentItem: FC<AttachmentItemProps> = ({
 	const handleDelete = async () => {
 		setLoading(true);
 
-		// Delete the Document record
-		await deleteData({
-			className: "Document",
-			objectId: attachment.objectId,
-			feedback: "Datei erfolgreich gelöscht"
-		});
+		try {
+			await deleteData({
+				className: "Document",
+				objectId: attachment.objectId,
+				feedback: "Datei erfolgreich gelöscht"
+			});
 
-		// Remove the attachment from the email's attachments array
-		const currentAttachments = email?.attachments || [];
-		const updatedAttachments = currentAttachments.filter(
-			(id: string) => id !== attachment.objectId
-		);
+			let updateFailed = false;
+			await updateData({
+				className: "Email",
+				objectId: emailId,
+				updateObject: {
+					attachments: {
+						__op: "Remove",
+						objects: [attachment.objectId]
+					}
+				},
+				onError: () => {
+					updateFailed = true;
+				}
+			});
 
-		await updateData({
-			className: "Email",
-			objectId: emailId,
-			updateObject: {
-				attachments: updatedAttachments
+			if (updateFailed) {
+				throw new Error("Failed to remove attachment from email");
 			}
-		});
 
-		await refetch();
-		setLoading(false);
-		setDeleteModalOpen(false);
+			await Promise.all([refetch(), refetchEmail()]);
+			setDeleteModalOpen(false);
+		} catch (error) {
+			console.error("Error deleting attachment:", error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const getFileIcon = (fileName: string) => {

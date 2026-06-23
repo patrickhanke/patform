@@ -1,0 +1,44 @@
+---
+description: Sashido/Parse data access — secure handlers, no client-side master key
+globs: packages/provider/**/*,apps/**/api/**/*
+alwaysApply: false
+---
+
+# Parse / Sashido data access
+
+## Client-side reads
+
+```tsx
+import { useFindData, useFindDataSecure } from "@repo/provider";
+
+const { data, refetch } = useFindData({
+  objectName: "Record",
+  fields: ["objectId", "name"],
+  projectId,
+});
+```
+
+Use `useFindDataSecure` when the query requires master key (runs via edge function).
+
+## Client-side writes
+
+```tsx
+import useDataHandlerSecure from "@repo/provider/general/data/useDataHandlerSecure";
+
+const { createData, updateData, deleteData } = useDataHandlerSecure();
+```
+
+All operations go through `app/api/data/route.ts` — never call Sashido REST directly from components.
+
+## API route pattern
+
+Both apps have identical edge routes at `app/api/data/route.ts`:
+- Headers: `X-Parse-Application-Id`, `X-Parse-REST-API-Key`, optional `X-Parse-Session-Token`, optional `X-Parse-Master-Key`
+- Session from cookie (`SESSION_TOKEN` env)
+
+## Rules
+
+- Never import or use `SASHIDO_MASTER_KEY` in client components
+- Never add master-key headers in browser-side fetch/axios
+- Add `projectId` pointer when creating project-scoped records
+- Reference: `packages/provider/src/general/data/README_SECURE_DATA_HANDLER.md`

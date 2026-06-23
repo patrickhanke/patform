@@ -21,7 +21,8 @@ import {
 	PatflowUser,
 	PatflowUserRole,
 	Property,
-	Record
+	Record,
+	Surcharge
 } from "@repo/types";
 import { CreateTask, CreateTicket } from "@repo/modules";
 import dynamic from "next/dynamic";
@@ -140,16 +141,40 @@ const PatflowAppContextProvider = ({
 		skipQuery: !projectId
 	});
 
-	console.log({ absenceData });
+	const { data: surchargeData, refetch: refetchSurcharges } = useFindData({
+		objectName: "Surcharge",
+		fields: [
+			"objectId",
+			"name",
+			"createdAt",
+			"active",
+			"type",
+			"time_value",
+			"day_value",
+			"work_value",
+			"value",
+			"start_date",
+			"end_date"
+		],
+		projectId,
+		skipQuery: !projectId
+	});
 
-	const { setHolidays, setWorkers, setRecords, setProperties, setAbsences } =
-		useDataStore();
+	const {
+		setHolidays,
+		setWorkers,
+		setRecords,
+		setProperties,
+		setAbsences,
+		setSurcharges
+	} = useDataStore();
 
 	const prevHolidayIdsRef = useRef("");
 	const prevWorkerIdsRef = useRef("");
 	const prevRecordIdsRef = useRef("");
 	const prevPropertyIdsRef = useRef("");
 	const prevAbsenceIdsRef = useRef("");
+	const prevSurchargeIdsRef = useRef("");
 
 	useEffect(() => {
 		if (!projectId) {
@@ -157,10 +182,12 @@ const PatflowAppContextProvider = ({
 			prevWorkerIdsRef.current = "";
 			prevRecordIdsRef.current = "";
 			prevPropertyIdsRef.current = "";
+			prevSurchargeIdsRef.current = "";
 			setHolidays([]);
 			setWorkers([]);
 			setRecords([]);
 			setProperties([]);
+			setSurcharges([]);
 		}
 	}, [projectId, setHolidays, setWorkers, setRecords, setProperties]);
 
@@ -252,6 +279,18 @@ const PatflowAppContextProvider = ({
 				.join(",");
 		}
 	}, [refetchHolidays, setHolidays]);
+
+	useEffect(() => {
+		if (surchargeData === undefined) return;
+		const updatedAtHash = (surchargeData ?? [])
+			.map((s) => `${s.objectId}:${s.updatedAt}`)
+			.sort()
+			.join(",");
+		if (updatedAtHash !== prevSurchargeIdsRef.current) {
+			prevSurchargeIdsRef.current = updatedAtHash;
+			setSurcharges(surchargeData ?? []);
+		}
+	}, [surchargeData, setSurcharges]);
 
 	const reloadWorkers = useCallback(async () => {
 		const result = await refetchWorkers();
@@ -351,6 +390,21 @@ const PatflowAppContextProvider = ({
 		return roleObject;
 	}, [roleData]);
 
+	const reloadSurcharges = useCallback(async () => {
+		const result = await refetchSurcharges();
+		if (result.data) {
+			const queryData =
+				result.data.surcharges?.edges?.map(
+					(edge: { node: Surcharge }) => edge.node
+				) || [];
+			setSurcharges(queryData);
+			prevSurchargeIdsRef.current = queryData
+				.map((s: Surcharge) => `${s.objectId}:${s.updatedAt}`)
+				.sort()
+				.join(",");
+		}
+	}, [refetchSurcharges, setSurcharges]);
+
 	const appContextObject = useMemo(
 		() => ({
 			createTicket: <CreateTicket />,
@@ -364,6 +418,7 @@ const PatflowAppContextProvider = ({
 			reloadRecords,
 			reloadProperties,
 			reloadAbsences,
+			reloadSurcharges,
 			project: project ?? { objectId: "" },
 			roles: roleData
 				? roleData.map((role: PatflowUserRole) => ({
@@ -394,7 +449,8 @@ const PatflowAppContextProvider = ({
 			reloadWorkers,
 			reloadRecords,
 			reloadProperties,
-			reloadAbsences
+			reloadAbsences,
+			reloadSurcharges
 		]
 	);
 

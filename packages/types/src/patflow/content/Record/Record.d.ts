@@ -26,14 +26,11 @@ export type Record = {
   user: User;
   absence: Absence[];
   default_times: TimeObject[];
-  working_days: Array<DayTime>;
   start_date: string;
   end_date: string;
   time_settings: RecordTimeSettings;
   absence_days: number;
   saldo: number;
-  initial_saldo: number;
-  initial_vacation: number;
   former_record: Record | undefined;
   holiday_template: HolidayTemplate;
   surcharges: string[]

@@ -10,10 +10,10 @@ const UploadAttachmentModal: FC<UploadAttachmentModalProps> = ({
 	isOpen,
 	setIsOpen,
 	emailId,
-	email,
-	refetch
+	refetch,
+	refetchEmail
 }) => {
-	const { updateData } = useDataHandler();
+	const { updateData, deleteData } = useDataHandler();
 	const [title, setTitle] = useState("");
 	const [file, setFile] = useState<File | null>(null);
 	const [loading, setLoading] = useState(false);
@@ -23,7 +23,6 @@ const UploadAttachmentModal: FC<UploadAttachmentModalProps> = ({
 		if (e.target.files && e.target.files[0]) {
 			const selectedFile = e.target.files[0];
 			setFile(selectedFile);
-			// Auto-fill title with filename if title is empty
 			if (!title) {
 				setTitle(selectedFile.name);
 			}
@@ -31,7 +30,6 @@ const UploadAttachmentModal: FC<UploadAttachmentModalProps> = ({
 	};
 
 	const handleUpload = async () => {
-		// Validation
 		if (!title.trim()) {
 			setError("Bitte geben Sie einen Titel ein.");
 			return;
@@ -44,39 +42,49 @@ const UploadAttachmentModal: FC<UploadAttachmentModalProps> = ({
 		setError("");
 		setLoading(true);
 
+		let fileObjectId: string | null = null;
+
 		try {
-			// Upload file and create File record
-			const fileObjectId = await uploadFileAndCreateRecord({
+			fileObjectId = await uploadFileAndCreateRecord({
 				file,
 				title: title.trim(),
 				referenceId: emailId
 			});
 
-			console.log("fileObjectId", fileObjectId);
-
-			// Update email's attachments array
-			const currentAttachments = email?.attachments || [];
+			let updateFailed = false;
 			await updateData({
 				className: "Email",
 				objectId: emailId,
 				updateObject: {
-					attachments: [...currentAttachments, fileObjectId]
+					attachments: {
+						__op: "AddUnique",
+						objects: [fileObjectId]
+					}
+				},
+				onError: () => {
+					updateFailed = true;
 				}
 			});
 
-			// Refetch to update the list
-			await refetch();
+			if (updateFailed) {
+				await deleteData({
+					className: "Document",
+					objectId: fileObjectId
+				});
+				throw new Error("Failed to link attachment to email");
+			}
 
-			// Reset form and close modal
+			await Promise.all([refetch(), refetchEmail()]);
+
 			setTitle("");
 			setFile(null);
-			setLoading(false);
 			setIsOpen(false);
-		} catch (error) {
-			console.error("Error uploading file:", error);
+		} catch (uploadError) {
+			console.error("Error uploading file:", uploadError);
 			setError(
 				"Fehler beim Hochladen der Datei. Bitte versuchen Sie es erneut."
 			);
+		} finally {
 			setLoading(false);
 		}
 	};

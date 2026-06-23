@@ -40,9 +40,6 @@ const PatflowLoginForm = () => {
 				userData?.data?.result;
 
 			if (!user) {
-				// window.alert(
-				// 	"Für diese E-Mail Adresse ist kein Nutzer hinterlegt"
-				// );
 				setDisabled(false);
 				return [] as PatflowUser[];
 			}

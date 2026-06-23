@@ -9,7 +9,8 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 	settings,
 	updateSettings,
 	loading,
-	findRecipients
+	recipients,
+	suppressedRecipients
 }) => {
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
@@ -17,14 +18,13 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 		settings.recipient_list
 	);
 
-	// Fetch all lists
 	const { data: lists } = useFindData({
-		objectName: "Item",
+		objectName: "List",
 		fields: ["objectId", "title"],
 		filters: [
 			{
 				key: "type",
-				value: "list",
+				value: "email",
 				operator: "equalTo",
 				id: "type_filter"
 			}
@@ -35,7 +35,6 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 		moduleId: currentModule.objectId
 	});
 
-	// Convert lists to SelectElement format
 	const elements = useMemo(() => {
 		const listOptionsArray: SelectElement[] = [];
 		if (lists && lists.length > 0) {
@@ -52,7 +51,6 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 		return listOptionsArray;
 	}, [lists]);
 
-	// Get selected list name
 	const selectedListName = useMemo(() => {
 		if (!selectedListId) return "Keine Liste ausgewählt";
 		const list = elements.find((element) => element.id === selectedListId);
@@ -95,6 +93,13 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 							Ausgewählt: {selectedListName}
 						</p>
 					)}
+					{settings.recipient_list && (
+						<p style={{ marginTop: "0.5rem" }}>
+							Empfänger: {recipients.length}
+							{suppressedRecipients.length > 0 &&
+								` (${suppressedRecipients.length} unterdrückt)`}
+						</p>
+					)}
 				</div>
 				<button
 					className="full_button sm light"
@@ -117,7 +122,6 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 						...settings,
 						recipient_list: selectedListId
 					});
-					findRecipients();
 					setIsOpen(false);
 				}}
 				disabled={[loading, loading]}

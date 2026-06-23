@@ -6,7 +6,10 @@ import { useFindData } from "@repo/provider";
 import AttachmentsList from "./components/AttachmentsList";
 import UploadAttachmentModal from "./components/UploadAttachmentModal";
 
-const EmailAttachments: FC<EmailAttachmentsProps> = ({ emailId, email }) => {
+const EmailAttachments: FC<EmailAttachmentsProps> = ({
+	emailId,
+	refetchEmail
+}) => {
 	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 
 	const { data: attachments, refetch } = useFindData({
@@ -40,16 +43,16 @@ const EmailAttachments: FC<EmailAttachmentsProps> = ({ emailId, email }) => {
 			<AttachmentsList
 				attachments={attachments || []}
 				emailId={emailId}
-				email={email}
 				refetch={refetch}
+				refetchEmail={refetchEmail}
 			/>
 
 			<UploadAttachmentModal
 				isOpen={uploadModalOpen}
 				setIsOpen={setUploadModalOpen}
 				emailId={emailId}
-				email={email}
 				refetch={refetch}
+				refetchEmail={refetchEmail}
 			/>
 		</div>
 	);

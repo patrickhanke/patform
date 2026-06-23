@@ -15,6 +15,8 @@ export type SurchargeTypes = "time" | "day" | "overtime" | "work";
 
 export type Surcharge = {
   objectId: string;
+  createdAt: string;
+  updatedAt: string;
   name: string;
   type: SurchargeTypes;
   time_value: { start: string; end: string };

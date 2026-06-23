@@ -103,8 +103,8 @@ export const module_option_fields: ModuleOptionsField = {
 		setting_fields: [],
 		default_fields: ["title"]
 	},
-	"/persons": {
-		path: "/persons",
+	"/people": {
+		path: "/people",
 		name: "Personen",
 		icon: "persons",
 		settings: {

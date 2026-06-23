@@ -29,7 +29,7 @@ const ListsOverview = () => {
 	const [filters] = useState<Filter[]>([
 		{
 			key: "type",
-			value: "list",
+			value: "email",
 			operator: "equalTo",
 			id: "type_filter"
 		}
@@ -46,7 +46,7 @@ const ListsOverview = () => {
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 
 	const { data, refetch, count } = useFindData({
-		objectName: "Item",
+		objectName: "List",
 		fields: ["objectId", "title", "createdAt", "updatedAt", "data"],
 		filters,
 		limit: pagination.pageSize,
@@ -105,13 +105,14 @@ const ListsOverview = () => {
 			createClass={{
 				initialData: {
 					reference_id: currentModule.objectId,
-					type: "list",
+					type: "email",
 					settings: {
 						unsubscribe: false,
 						unsubscribe_link: ""
-					}
+					},
+					filters: []
 				},
-				className: "Item",
+				className: "List",
 				text: "Neue Liste erstellen",
 				fields: [
 					{
@@ -124,7 +125,7 @@ const ListsOverview = () => {
 					}
 				],
 				refetch,
-				additionalData: { type: "list" }
+				additionalData: { type: "email" }
 			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}

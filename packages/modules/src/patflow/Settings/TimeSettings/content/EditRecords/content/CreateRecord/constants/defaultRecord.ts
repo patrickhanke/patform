@@ -5,7 +5,6 @@ const defaultRecord: (year: number) => Partial<Record> = (year) => {
 		year,
 		absence: [],
 		default_times: [],
-		working_days: [],
 		start_date: `${year}-01-01`,
 		end_date: `${year}-12-31`,
 		time_settings: {

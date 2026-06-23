@@ -1,8 +1,11 @@
 import { EmailClass } from "@repo/types";
+import { EmailRecipient } from "../../types";
 
 export type EmailSettingsProps = {
 	emailId: string;
-	findRecipients: () => void;
+	recipients: EmailRecipient[];
+	suppressedRecipients: EmailRecipient[];
+	onSettingsSaved: () => Promise<void>;
 };
 
 export type EmailSettingsToggleProps = {
@@ -24,5 +27,6 @@ export interface EmailListSelectorProps {
 	settings: EmailClass["settings"];
 	updateSettings: (settings: EmailClass["settings"]) => Promise<void>;
 	loading: boolean;
-	findRecipients: () => void;
+	recipients: EmailRecipient[];
+	suppressedRecipients: EmailRecipient[];
 }

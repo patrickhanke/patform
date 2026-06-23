@@ -18,8 +18,6 @@ const TableColumnDatesField = ({
 	const [dates, setDates] = useImmer<EventDate[]>(initialDates || []);
 	const [activeDate, setActiveDate] = useState<EventDate["id"] | null>(null);
 
-	console.log(initialDates);
-
 	const slideInConfirmHandler = useCallback(async () => {
 		setLoading(true);
 		await onChange(dates);
@@ -41,20 +39,15 @@ const TableColumnDatesField = ({
 				.map((date) => {
 					let label = date.label ? `${date.label} / ` : "";
 					if (date.start) {
-						console.log(date.start);
 						label += date.full_day
 							? getDateString(new Date(date.start)).date
 							: getDateString(new Date(date.start)).dateTime;
-
-					console.log(getDateString(new Date(date.start)));
 					}
 					if (date.end) {
 						label += date.full_day
 							? ` - ${getDateString(new Date(date.end)).date}`
 							: ` - ${getDateString(new Date(date.end)).dateTime}`;
 					}
-
-					console.log(label);
 
 					return label;
 				})

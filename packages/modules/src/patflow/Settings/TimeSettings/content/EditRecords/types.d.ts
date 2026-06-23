@@ -1,15 +1,10 @@
-import { ApolloRefetch, Record, Worker } from "@repo/types";
+import { Record, Worker } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 
 export type EditRecordsProps = {
 	createRecord: boolean;
 	setCreateRecord: Dispatch<SetStateAction<boolean>>;
-	projectId: string;
-};
-
-type TableColumnProps = {
-	refetch: ApolloRefetch;
 	projectId: string;
 };
 
@@ -25,4 +20,4 @@ export type SelectUser = {
 	element: JSX.Element;
 };
 
-export type UseRecordTableColumns = (TableColumnProps) => ColumnDef<Record>[];
+export type UseRecordTableColumns = () => ColumnDef<Record>[];
