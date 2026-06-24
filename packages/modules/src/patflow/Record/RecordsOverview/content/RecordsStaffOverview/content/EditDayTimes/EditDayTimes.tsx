@@ -6,6 +6,7 @@ import { AbsenceTime, Day, ErrorMessage } from "@repo/types";
 import {
 	absence_type_options,
 	axiosclient,
+	dayHasFullDayAbsence,
 	getDefaultTime,
 	getWorktimeDuration
 } from "@repo/provider";
@@ -32,7 +33,8 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	absenceId,
 	color,
 	label,
-	isWorkingDay
+	isWorkingDay,
+	hasRecordForDate
 }) => {
 	const [slideIn, setSlideIn] = useState(false);
 	const [editAbsence, setEditAbsence] = useState(false);
@@ -198,26 +200,37 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	}, [time]);
 
 	const addButtonDisabled = useMemo(() => {
-		let returnValue = false;
-		if (isArray(times) && times.length > 0) {
-			times.forEach((timeElement) => {
-				// console.log({ timeElement });
-				if (
-					timeElement?.time?.type === "illness" &&
-					timeElement?.time?.state === "full"
-				) {
-					returnValue = true;
-				}
-				if (timeElement?.time?.type === "vacation") {
-					returnValue = true;
-				}
-				if (timeElement?.time?.type === "compensation_times") {
-					returnValue = true;
-				}
-			});
+		if (dayHasFullDayAbsence(date, days)) {
+			return true;
 		}
-		return returnValue;
-	}, [initialTime]);
+
+		if (!isArray(times) || times.length === 0) {
+			return false;
+		}
+
+		return times.some((timeElement) => {
+			if (timeElement.type === "absence") {
+				if (
+					timeElement.absence?.type === "vacation" ||
+					timeElement.absence?.type === "compensation_times"
+				) {
+					return true;
+				}
+			}
+
+			const time = timeElement?.time;
+			if (!time || !("state" in time)) {
+				return false;
+			}
+
+			return (
+				time.type === "vacation" ||
+				time.type === "compensation_times" ||
+				(time.type === "illness" && time.state === "full") ||
+				time.state === "full"
+			);
+		});
+	}, [times, days, date]);
 
 	return (
 		<>
@@ -244,7 +257,11 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 							}}
 							text="Abwesenheit"
 							color="dark"
-							disabled={addButtonDisabled || !isWorkingDay}
+							disabled={
+								addButtonDisabled ||
+								!isWorkingDay ||
+								!hasRecordForDate
+							}
 						/>
 						<IconButton
 							icon="plus"
@@ -253,7 +270,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 								setSlideIn(true);
 							}}
 							text="Arbeitszeit"
-							disabled={addButtonDisabled}
+							disabled={addButtonDisabled || !hasRecordForDate}
 							color="dark"
 						/>
 					</>

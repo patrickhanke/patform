@@ -23,6 +23,7 @@ export type DayData = {
 	date: Day["date"];
 	is_working_day: Day["is_working_day"];
 	default_time: Day["default_time"];
+	has_record: boolean;
 	times: DayDataTime[];
 	surcharges: Day["surcharges"];
 	comment: Day["comment"];

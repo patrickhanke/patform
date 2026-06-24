@@ -8,9 +8,13 @@ import { PatflowAppContext } from "@repo/provider";
 import { Worker } from "@repo/types";
 import SelectUser from "./components/SelectUser";
 
+type RecordFlowMode = "create" | "edit" | null;
+
 const EditRecords: FC<EditRecordsProps> = ({
 	createRecord,
 	setCreateRecord,
+	editRecord,
+	setEditRecord,
 	projectId
 }) => {
 	const { year } = useContext(PatflowAppContext);
@@ -31,15 +35,26 @@ const EditRecords: FC<EditRecordsProps> = ({
 	const [selectedUser, setSelectedUser] = useState<Worker | undefined>(
 		undefined
 	);
-	const [editRecordData, setEditRecordData] = useState(false);
+	const [recordFlowMode, setRecordFlowMode] = useState<RecordFlowMode>(null);
 
 	const columns = useRecordsTableColumns();
+	const userSelectOpen = createRecord || editRecord;
+	const isEditUserSelect = editRecord && !createRecord;
+
+	const closeUserSelect = () => {
+		setCreateRecord(false);
+		setEditRecord(false);
+		setSelectedUser(undefined);
+	};
+
+	const closeRecordFlow = () => {
+		setRecordFlowMode(null);
+		setSelectedUser(undefined);
+	};
 
 	if (loading) {
 		return <div>Loading...</div>;
 	}
-
-	console.log({ selectedUser });
 
 	return (
 		<>
@@ -48,28 +63,40 @@ const EditRecords: FC<EditRecordsProps> = ({
 					<Table data={data || []} columns={columns} />
 				</div>
 			</div>
-			{!!selectedUser && (
+			{!!selectedUser && recordFlowMode && (
 				<CreateRecord
-					createRecord={editRecordData}
-					setCreateRecord={setEditRecordData}
-					userId={selectedUser?.objectId}
-					timeSettings={selectedUser?.time_settings}
+					createRecord={!!recordFlowMode}
+					setCreateRecord={(open) => {
+						if (!open) closeRecordFlow();
+					}}
+					mode={recordFlowMode}
+					userId={selectedUser.objectId}
+					timeSettings={selectedUser.time_settings}
 					refetch={refetch}
 					projectId={projectId}
 					person={{
-						label: `${selectedUser?.first_name} ${selectedUser?.last_name}`,
+						label: `${selectedUser.first_name} ${selectedUser.last_name}`,
 						portrait: selectedUser.portrait
 					}}
 				/>
 			)}
 			<Modal
-				isOpen={createRecord}
-				cancelButtonHandler={() => setCreateRecord(false)}
+				isOpen={userSelectOpen}
+				cancelButtonHandler={closeUserSelect}
 				confirmButtonHandler={() => {
-					setCreateRecord(false);
-					setEditRecordData(true);
+					if (isEditUserSelect) {
+						setEditRecord(false);
+						setRecordFlowMode("edit");
+					} else {
+						setCreateRecord(false);
+						setRecordFlowMode("create");
+					}
 				}}
-				header="Nutzer für Record auswählen"
+				header={
+					isEditUserSelect
+						? "Nutzer für Record-Bearbeitung auswählen"
+						: "Nutzer für Record auswählen"
+				}
 				buttonDisabled={[false, !selectedUser]}
 			>
 				<SelectUser

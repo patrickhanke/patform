@@ -167,6 +167,7 @@ const useTableColumns = ({
 					<EditDayTimes
 						type="create"
 						isWorkingDay={row.is_working_day}
+						hasRecordForDate={row.has_record}
 						initialTime={
 							findDefaultTimeForDate(row.date, records)
 								.default_time ?? undefined

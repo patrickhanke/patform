@@ -7,12 +7,14 @@ import styles from "../CreateRecord.module.scss";
 
 const CreateRecordEmployee: FC<CreateRecordEmployeeProps> = ({
 	person,
+	mode,
 	records,
-	currentYear,
 	nextYearStartDate,
 	nextYearRecord,
 	onEditRecord
 }) => {
+	const isEditMode = mode === "edit";
+
 	const sortedRecords = useMemo(
 		() =>
 			[...records].sort((a, b) =>
@@ -21,8 +23,14 @@ const CreateRecordEmployee: FC<CreateRecordEmployeeProps> = ({
 		[records]
 	);
 
+	const editableRecords = useMemo(
+		() => sortedRecords.filter((record) => isRecordEditable(record)),
+		[sortedRecords]
+	);
+
 	return (
 		<div className={styles.step_content}>
+			<h3>{isEditMode ? "Zeiterfassung auswählen" : "Mitarbeiter"}</h3>
 			<Divider showLine={false} />
 			<div className="horizontal_container">
 				<label>Mitarbeiter</label>
@@ -30,19 +38,25 @@ const CreateRecordEmployee: FC<CreateRecordEmployeeProps> = ({
 			</div>
 
 			<div className={styles.existing_records_section}>
-				<h4>Bestehende Zeiterfassungen</h4>
+				<h4>
+					{isEditMode
+						? "Aktuelle und kommende Zeiterfassungen"
+						: "Bestehende Zeiterfassungen"}
+				</h4>
 				{sortedRecords.length === 0 ? (
 					<p className={styles.step_description}>
 						Für diesen Mitarbeiter existiert noch keine
 						Zeiterfassung.
 					</p>
+				) : editableRecords.length === 0 ? (
+					<p className={styles.step_description}>
+						Es gibt keine aktuelle oder kommende Zeiterfassung, die
+						bearbeitet werden kann.
+					</p>
 				) : (
 					<div className={styles.existing_records_list}>
 						{sortedRecords.map((record) => {
-							const canEdit = isRecordEditable(
-								record,
-								currentYear
-							);
+							const canEdit = isRecordEditable(record);
 
 							return (
 								<div
@@ -60,9 +74,7 @@ const CreateRecordEmployee: FC<CreateRecordEmployeeProps> = ({
 										<button
 											type="button"
 											className="full_button sm secondary"
-											onClick={() =>
-												onEditRecord(record)
-											}
+											onClick={() => onEditRecord(record)}
 										>
 											Bearbeiten
 										</button>
@@ -82,7 +94,9 @@ const CreateRecordEmployee: FC<CreateRecordEmployeeProps> = ({
 				)}
 			</div>
 
-			{nextYearRecord ? (
+			{isEditMode ? (
+				<InfoBox text="Wähle eine aktuelle oder kommende Zeiterfassung aus und klicke auf Bearbeiten." />
+			) : nextYearRecord ? (
 				<InfoBox
 					text={`Für ${formatDate(nextYearStartDate)} existiert bereits eine Zeiterfassung. Eine neue Zeiterfassung zu diesem Startdatum ist nicht möglich – bitte die bestehende Zeiterfassung bearbeiten.`}
 				/>

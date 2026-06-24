@@ -42,7 +42,6 @@ const ShowAbsences: FC<ShowAbsencesProps> = ({
 			},
 			{
 				accessorFn: (row) => {
-					console.log({ row });
 					return (
 						<StateDisplay
 							label={
@@ -96,8 +95,6 @@ const ShowAbsences: FC<ShowAbsencesProps> = ({
 		],
 		[]
 	);
-
-	console.log({ absences, worker });
 
 	if (!absences?.length && !worker?.objectId) return null;
 

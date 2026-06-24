@@ -1,7 +1,6 @@
 import { FC, useCallback, useMemo } from "react";
-import { convertMillisecondsToString, getMonthData } from "@repo/provider";
+import { getMonthData } from "@repo/provider";
 import { MonthData, TimesSaldoProps } from "./types";
-import getMonthsSaldo from "./functions/getMonthsSaldo";
 
 const TimesSaldo: FC<TimesSaldoProps> = ({ days, month, year, records }) => {
 	const monthData = useMemo(() => {
@@ -11,13 +10,10 @@ const TimesSaldo: FC<TimesSaldoProps> = ({ days, month, year, records }) => {
 			records,
 			month
 		});
-	}, [days, year, records]);
-
-	console.log({ monthData });
+	}, [days, year, records, month]);
 
 	const findMonthData: () => MonthData | null = useCallback(() => {
 		const monthToFind = monthData.find((m) => m.id === month.id);
-		console.log({ monthToFind });
 		if (monthToFind) {
 			return monthToFind;
 		}
@@ -32,11 +28,7 @@ const TimesSaldo: FC<TimesSaldoProps> = ({ days, month, year, records }) => {
 			<div className="content_element">
 				<div className="horizontal_container">
 					<label>Saldo Vormonat</label>
-					<p>
-						{convertMillisecondsToString(
-							getMonthsSaldo(0, month.id - 1, monthData)
-						)}
-					</p>
+					<p>{findMonthData()?.previousMonthSaldo ?? "-"}</p>
 				</div>
 				<div className="horizontal_container">
 					<label>Sollzeit</label>
@@ -52,11 +44,7 @@ const TimesSaldo: FC<TimesSaldoProps> = ({ days, month, year, records }) => {
 				</div>
 				<div className="horizontal_container">
 					<label>Zeitkonto</label>
-					<p>
-						{convertMillisecondsToString(
-							getMonthsSaldo(0, month.id, monthData)
-						)}
-					</p>
+					<p>{findMonthData()?.runningSaldo ?? "-"}</p>
 				</div>
 			</div>
 		</div>

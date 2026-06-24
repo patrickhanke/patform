@@ -12,7 +12,6 @@ import { StaffSurcharges } from "./content/StaffSurcharges";
 import { StaffVacation } from "./content/StaffVacation";
 import { StaffWorkingTimes } from "./content/StaffWorkingTimes";
 import { PrintWorkerTimes } from "./content";
-import { cloneDeep } from "lodash-es";
 import ShowAbsences from "./components/ShowAbsences";
 
 const RecordsStaffOverview = ({
@@ -49,32 +48,13 @@ const RecordsStaffOverview = ({
 	const { workers } = useDataStore();
 
 	const currentRecords = useMemo(() => {
-		const rec: Record[] = [];
+		if (!recordData || !selectedUser) return [];
 
-		if (!recordData || !selectedUser) return rec;
-
-		recordData.forEach((record: Record) => {
-			if (
+		return recordData.filter(
+			(record: Record) =>
 				record.user.objectId === selectedUser.value &&
 				record.year === year
-			) {
-				const holidayTemplate = cloneDeep(record.holiday_template);
-
-				const holidayArray: string[] = holidayTemplate.holidays.map(
-					(holiday: string) => holiday as string
-				);
-
-				rec.push({
-					...record,
-					holiday_template: {
-						...holidayTemplate,
-						holidays: holidayArray
-					}
-				});
-			}
-		});
-
-		return rec;
+		);
 	}, [recordData, selectedUser, year]);
 
 	const siteHeaderContent = useMemo(

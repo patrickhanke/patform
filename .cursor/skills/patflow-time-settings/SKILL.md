@@ -50,7 +50,7 @@ Record = {
   year, user, start_date, end_date,
   time_settings: { hours, weekdays, pause, vacation, start },
   default_times, absence, absence_days, saldo,
-  holiday_template, former_record,
+  former_record,
   surcharges: string[]   // Surcharge objectIds
 }
 ```
@@ -115,7 +115,7 @@ When changing surcharge behavior, also check:
 4. Secondary panel (`RecordTimes`): adopt previous record OR enter new time_settings
 5. Submit → `createInitialTimes()` generates `default_times` → `createData({ className: "Record", ... })`
 
-Required for submit: `time_settings`, `start_date`, `end_date`, `holiday_template` (unless adopting)
+Required for submit: `time_settings`, `start_date`, `end_date`, (unless adopting)
 
 ## EditRecords table columns
 

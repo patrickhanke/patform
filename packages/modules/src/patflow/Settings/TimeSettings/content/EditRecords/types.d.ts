@@ -5,6 +5,8 @@ import { ColumnDef } from "@tanstack/react-table";
 export type EditRecordsProps = {
 	createRecord: boolean;
 	setCreateRecord: Dispatch<SetStateAction<boolean>>;
+	editRecord: boolean;
+	setEditRecord: Dispatch<SetStateAction<boolean>>;
 	projectId: string;
 };
 

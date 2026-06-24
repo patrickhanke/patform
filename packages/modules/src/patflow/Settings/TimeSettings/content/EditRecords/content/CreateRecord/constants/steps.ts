@@ -3,7 +3,7 @@ export const CREATE_RECORD_STEPS = [
 	{ value: "start_date", label: "Startdatum" },
 	{ value: "import", label: "Datenquelle" },
 	{ value: "time_settings", label: "Zeiteinstellungen" },
-	{ value: "surcharges", label: "Zuschläge & Feiertage" }
+	{ value: "surcharges", label: "Zuschläge" }
 ] as const;
 
 export const MONTH_NAMES = [

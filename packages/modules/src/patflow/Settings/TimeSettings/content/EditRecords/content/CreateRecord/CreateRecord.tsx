@@ -7,7 +7,7 @@ import {
 	useDataStore,
 	useFindData
 } from "@repo/provider";
-import { ErrorMessage, HolidayTemplate, Record } from "@repo/types";
+import { ErrorMessage, Record } from "@repo/types";
 import styles from "./CreateRecord.module.scss";
 import defaultRecord from "./constants/defaultRecord";
 import { CREATE_RECORD_STEPS } from "./constants/steps";
@@ -33,6 +33,7 @@ import {
 const CreateRecord: FC<CreateRecordProps> = ({
 	createRecord,
 	setCreateRecord,
+	mode,
 	userId,
 	refetch,
 	projectId,
@@ -55,6 +56,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 	>([]);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 
+	const isEditFlow = mode === "edit";
 	const isEditing = edit !== null;
 
 	const { createData, updateData } = useDataHandler();
@@ -68,7 +70,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 			"start_date",
 			"end_date",
 			"time_settings",
-			"holiday_template {objectId name}",
 			"surcharges",
 			"former_record {objectId}"
 		],
@@ -79,13 +80,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		() => (allUserRecords as Record[] | undefined) ?? [],
 		[allUserRecords]
 	);
-
-	const { data: holidayTemplateData } = useFindData({
-		objectName: "Template",
-		fields: ["objectId", "name", "type", "holidays"],
-		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
-		projectId: projectId
-	});
 
 	const { data: holidayData } = useFindData({
 		objectName: "Holiday",
@@ -129,15 +123,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		[surchargeData]
 	);
 
-	const holidayTemplateElements = useMemo(
-		() =>
-			holidayTemplateData?.map((t: HolidayTemplate) => ({
-				label: t.name,
-				value: t.objectId
-			})) ?? [],
-		[holidayTemplateData]
-	);
-
 	const resetFormState = useCallback(() => {
 		setStep(0);
 		setEdit(null);
@@ -149,22 +134,19 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		setNextRecord(defaultRecord(currentYear));
 	}, [currentYear]);
 
-	const handleEditRecord = useCallback(
-		(record: Record) => {
-			if (!isRecordEditable(record, currentYear)) return;
+	const handleEditRecord = useCallback((record: Record) => {
+		if (!isRecordEditable(record)) return;
 
-			const formState = applyRecordToFormState(record);
-			setEdit(record);
-			setYear(formState.year);
-			setStartDate(formState.startDate);
-			setNextRecord(formState.nextRecord);
-			setSurcharges(formState.surcharges);
-			setBreaks(formState.breaks);
-			setImportMode(record.former_record ? "import" : "new");
-			setStep(TIME_SETTINGS_STEP_INDEX);
-		},
-		[currentYear]
-	);
+		const formState = applyRecordToFormState(record);
+		setEdit(record);
+		setYear(formState.year);
+		setStartDate(formState.startDate);
+		setNextRecord(formState.nextRecord);
+		setSurcharges(formState.surcharges);
+		setBreaks(formState.breaks);
+		setImportMode(record.former_record ? "import" : "new");
+		setStep(TIME_SETTINGS_STEP_INDEX);
+	}, []);
 
 	const handleStartDateSelect = (date: string) => {
 		const y = parseInt(date.split("-")[0] ?? String(currentYear));
@@ -185,16 +167,14 @@ const CreateRecord: FC<CreateRecordProps> = ({
 			setBreaks(parseRecordBreaks(latestRecord));
 			setNextRecord((prev) => ({
 				...prev,
-				time_settings: latestRecord.time_settings,
-				holiday_template: latestRecord.holiday_template
+				time_settings: latestRecord.time_settings
 			}));
 			setSurcharges(latestRecord.surcharges ?? []);
 		} else {
 			setBreaks([]);
 			setNextRecord((prev) => ({
 				...prev,
-				time_settings: defaultRecord(year).time_settings,
-				holiday_template: undefined
+				time_settings: defaultRecord(year).time_settings
 			}));
 			setSurcharges([]);
 		}
@@ -204,11 +184,10 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		if (
 			!nextRecord?.time_settings ||
 			!nextRecord?.start_date ||
-			!nextRecord?.end_date ||
-			!nextRecord?.holiday_template
+			!nextRecord?.end_date
 		)
 			return;
-		console.log({ nextRecord });
+
 		if (conflictingRecord && startDate) {
 			await updateData({
 				className: "Record",
@@ -251,11 +230,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 				saldo: 0,
 				vacation: 0,
 				absence_days: 0,
-				holiday_template: {
-					__type: "Pointer",
-					className: "Template",
-					objectId: nextRecord.holiday_template.objectId
-				},
 				surcharges
 			}
 		});
@@ -317,22 +291,15 @@ const CreateRecord: FC<CreateRecordProps> = ({
 				id: "start_date"
 			});
 		}
-		if (!isEditing && step === 4 && !nextRecord.holiday_template) {
-			errorArray.push({
-				message: "Bitte ein Feiertag-Template auswählen",
-				key: "holiday_template",
-				id: "holiday_template"
-			});
-		}
 		setErrors(errorArray);
-	}, [step, startDate, nextRecord, isEditing]);
+	}, [step, startDate, isEditing]);
 
 	const canAdvance = useMemo(() => {
+		if (isEditFlow && step === 0 && !isEditing) return false;
 		if (isEditing) return true;
 		if (step === 1) return !!startDate;
-		if (step === 4) return !!nextRecord.holiday_template;
 		return true;
-	}, [step, startDate, nextRecord, isEditing]);
+	}, [step, startDate, isEditing, isEditFlow]);
 
 	const isLastStep = step === CREATE_RECORD_STEPS.length - 1;
 
@@ -359,8 +326,8 @@ const CreateRecord: FC<CreateRecordProps> = ({
 				return (
 					<CreateRecordEmployee
 						person={person}
+						mode={mode}
 						records={userRecords}
-						currentYear={currentYear}
 						nextYearStartDate={nextYearStartDate}
 						nextYearRecord={nextYearRecord}
 						onEditRecord={handleEditRecord}
@@ -404,9 +371,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 					<CreateRecordSurchargesAndHolidays
 						surcharges={surcharges}
 						surchargeElements={surchargeElements}
-						holidayTemplateElements={holidayTemplateElements}
-						holidayTemplateData={holidayTemplateData}
-						nextRecord={nextRecord}
 						setSurcharges={setSurcharges}
 						setNextRecord={setNextRecord}
 						isEditing={isEditing}
@@ -430,7 +394,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 					: "Weiter"
 			}
 			header={
-				isEditing
+				isEditFlow || isEditing
 					? "Zeiterfassung bearbeiten"
 					: "Neue Zeiterfassung anlegen"
 			}

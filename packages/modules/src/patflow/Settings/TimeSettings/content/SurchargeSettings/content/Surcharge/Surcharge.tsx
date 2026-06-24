@@ -4,14 +4,12 @@ import clsx from "clsx";
 import surcharge_types from "../CreateSurcharge/constants/surcharge_types";
 import { IconButton } from "@repo/ui";
 import { getDateString } from "@repo/provider";
-import RecordSelect from "./components/RecordSelect";
 import "./styles.scss";
 
 const Surcharge: React.FC<SurchargeComponentProps> = ({
 	surcharge,
 	setEditSurcharge,
-	setDeleteSurcharge,
-	refetch
+	setDeleteSurcharge
 }) => {
 	return (
 		<div className={clsx("content_element", "surcharge_element_container")}>
@@ -44,13 +42,6 @@ const Surcharge: React.FC<SurchargeComponentProps> = ({
 							? getDateString(new Date(surcharge.end_date)).date
 							: "-"}
 					</p>
-				</div>
-				<div>
-					<RecordSelect
-						initialSelectedRecords={surcharge.connected_records}
-						surchargeId={surcharge.objectId}
-						refetch={refetch}
-					/>
 				</div>
 				<div className="button_container">
 					<IconButton

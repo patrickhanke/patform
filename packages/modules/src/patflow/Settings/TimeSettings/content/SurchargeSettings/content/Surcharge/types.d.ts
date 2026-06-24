@@ -6,7 +6,6 @@ export type SurchargeComponentProps = {
 	updateSurchargeHandler: (surcharge: Surcharge) => Promise<void>;
 	setEditSurcharge: Dispatch<SetStateAction<Surcharge | null>>;
 	setDeleteSurcharge: Dispatch<SetStateAction<Surcharge | null>>;
-	refetch: ApolloRefetch;
 };
 
 export type SelectRecordElement = {

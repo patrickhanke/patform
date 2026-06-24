@@ -5,7 +5,11 @@ import { eachDayOfInterval, formatISO9075, isWeekend } from "date-fns";
 import useTableColumns from "./hooks/useTableColumns";
 import { Row } from "@tanstack/react-table";
 import { Day, Holiday } from "@repo/types";
-import { findDefaultTimeForDate, useDataStore } from "@repo/provider";
+import {
+	dateHasRecord,
+	findDefaultTimeForDate,
+	useDataStore
+} from "@repo/provider";
 import { set, get, cloneDeep, isArray } from "lodash-es";
 
 const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
@@ -16,47 +20,50 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	selectedUser,
 	records
 }) => {
-	const { holidays } = useDataStore();
+	const { holidays, surcharges } = useDataStore();
 
 	const currentHolidays = useMemo(() => {
-		if (!year) {
+		if (!year || !records.length) {
 			return [];
 		}
 
 		const recordHolidays: Holiday[] = [];
+		const addedHolidayIds = new Set<string>();
 
 		holidays.forEach((holiday) => {
 			const date = holiday.dates.find(
 				(dt) => new Date(dt).getFullYear() === year
 			);
 			if (!date) {
-				return [];
+				return;
 			}
 
-			const recordForHoliday = records.find((record) =>
-				record.start_date <= record.end_date &&
-				new Date(record.start_date).getTime() <=
-					new Date(record.end_date).getTime()
-					? new Date(record.start_date).getTime() <=
-							new Date(date).getTime() &&
-						new Date(record.end_date).getTime() >=
-							new Date(date).getTime()
-					: false
-			);
-
-			if (recordForHoliday) {
-				if (
-					recordForHoliday?.holiday_template?.holidays?.includes(
-						holiday.objectId
-					)
-				) {
-					recordHolidays.push(holiday);
+			const isRecordHoliday = records.some((record) => {
+				if (!record.surcharges?.length) {
+					return false;
 				}
+
+				return record.surcharges.some((surchargeId: string) => {
+					const surcharge = surcharges.find(
+						(s) => s.objectId === surchargeId
+					);
+
+					if (!surcharge?.day_value?.length) {
+						return false;
+					}
+
+					return surcharge.day_value.includes(holiday.objectId);
+				});
+			});
+
+			if (isRecordHoliday && !addedHolidayIds.has(holiday.objectId)) {
+				addedHolidayIds.add(holiday.objectId);
+				recordHolidays.push(holiday);
 			}
 		});
 
 		return recordHolidays;
-	}, [holidays, year, records]);
+	}, [holidays, year, records, surcharges]);
 
 	const { columns, secondaryRow } = useTableColumns({
 		refetch,
@@ -110,14 +117,13 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		};
 
 		dayInterval.forEach((element: Date) => {
-			const def = findDefaultTimeForDate(
-				formatISO9075(element, { representation: "date" }),
-				records
-			);
+			const dateString = formatISO9075(element, {
+				representation: "date"
+			});
+			const def = findDefaultTimeForDate(dateString, records);
+			const hasRecord = dateHasRecord(dateString, records);
 			const daysToFind: Day[] | undefined = days.filter(
-				(day) =>
-					day.date ===
-					formatISO9075(element, { representation: "date" })
+				(day) => day.date === dateString
 			);
 
 			if (isArray(daysToFind) && daysToFind.length > 0) {
@@ -146,15 +152,17 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					date: daysToFind[0].date,
 					is_working_day: def.is_working_day,
 					default_time: def.default_time,
+					has_record: hasRecord,
 					times: timeArray,
 					surcharges: getSurchagesFromDays(daysToFind),
 					comment: allComments
 				});
 			} else {
 				interval.push({
-					date: formatISO9075(element, { representation: "date" }),
+					date: dateString,
 					is_working_day: def.is_working_day,
 					default_time: def.default_time,
+					has_record: hasRecord,
 					times: [],
 					time: undefined,
 					absence: null,
@@ -166,7 +174,7 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		});
 
 		return interval;
-	}, [days, month, year]);
+	}, [days, month, year, records]);
 
 	const rowStyles = useCallback(
 		(row: Row<DayData>) => {

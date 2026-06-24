@@ -1,9 +1,10 @@
-import { HolidayTemplate, Record, StaffMember } from "@repo/types";
+import { Record, StaffMember } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type CreateRecordProps = {
 	createRecord: boolean;
 	setCreateRecord: Dispatch<SetStateAction<boolean>>;
+	mode: "create" | "edit";
 	userId: string;
 	timeSettings: StaffMember["time_settings"];
 	refetch: () => void;
@@ -13,8 +14,8 @@ export type CreateRecordProps = {
 
 export type CreateRecordEmployeeProps = {
 	person: CreateRecordProps["person"];
+	mode: CreateRecordProps["mode"];
 	records: Record[];
-	currentYear: number;
 	nextYearStartDate: string;
 	nextYearRecord: Record | null;
 	onEditRecord: (record: Record) => void;
@@ -56,9 +57,6 @@ export type CreateRecordTimeSettingsProps = {
 export type CreateRecordSurchargesAndHolidaysProps = {
 	surcharges: string[];
 	surchargeElements: { label: string; value: string }[];
-	holidayTemplateElements: { label: string; value: string }[];
-	holidayTemplateData?: HolidayTemplate[];
-	nextRecord: Partial<Record>;
 	setSurcharges: Dispatch<SetStateAction<string[]>>;
 	setNextRecord: Dispatch<SetStateAction<Partial<Record>>>;
 	isEditing?: boolean;

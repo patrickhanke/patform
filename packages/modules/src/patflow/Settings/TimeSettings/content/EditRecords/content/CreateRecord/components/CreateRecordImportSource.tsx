@@ -79,12 +79,6 @@ const CreateRecordImportSource: FC<CreateRecordImportSourceProps> = ({
 								{latestRecord.time_settings?.vacation} Tage
 							</span>
 						</div>
-						<div className={styles.record_info_row}>
-							<span className="label">Feiertag-Template</span>
-							<span>
-								{latestRecord.holiday_template?.name ?? "–"}
-							</span>
-						</div>
 					</div>
 				)}
 			</>

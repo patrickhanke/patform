@@ -116,7 +116,8 @@ const PatflowAppContextProvider = ({
 			"start_date",
 			"end_date",
 			"time_settings",
-			"holiday_template { objectId name holidays { ... on Element { value } } }",
+			"saldo",
+			"surcharges",
 			"updatedAt"
 		],
 		projectId,
@@ -226,12 +227,6 @@ const PatflowAppContextProvider = ({
 
 			const recordsCopy: RecordDataStore[] = recordData.map((r) => ({
 				...r,
-				holiday_template: {
-					...r.holiday_template,
-					holidays: r.holiday_template.holidays.map(
-						(h: { value: string }) => h.value as string
-					)
-				},
 				value: r.objectId,
 				label: r.user.first_name + " " + r.user.last_name + " " + r.year
 			}));
@@ -317,12 +312,6 @@ const PatflowAppContextProvider = ({
 			const recordsCopy: RecordDataStore[] = queryData.map(
 				(r: Record) => ({
 					...r,
-					holiday_template: {
-						...r.holiday_template,
-						holidays: r.holiday_template.holidays.map(
-							(h: { value: string }) => h.value as string
-						)
-					},
 					value: r.objectId,
 					label:
 						r.user.first_name +

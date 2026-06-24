@@ -37,7 +37,6 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({
 			"value",
 			"start_date",
 			"end_date",
-			"connected_records",
 			"color",
 			"short",
 			"description"
@@ -134,7 +133,6 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({
 							updateSurchargeHandler={updateSurchargeHandler}
 							setEditSurcharge={setEditSurcharge}
 							setDeleteSurcharge={setDeleteSurcharge}
-							refetch={refetch}
 						/>
 					))}
 				</div>
@@ -160,7 +158,6 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({
 								updateSurchargeHandler={updateSurchargeHandler}
 								setEditSurcharge={setEditSurcharge}
 								setDeleteSurcharge={setDeleteSurcharge}
-								refetch={refetch}
 							/>
 						))}
 					</div>

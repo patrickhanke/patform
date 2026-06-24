@@ -210,6 +210,42 @@ export const createDateIntervalForMonth: (
 	);
 };
 
+export const dateHasRecord = (
+	date: string,
+	records: Record[]
+): boolean => {
+	const currentDate = new Date(date);
+	return records.some((record) => {
+		const start = new Date(record.start_date);
+		const end = new Date(record.end_date);
+		return currentDate >= start && currentDate <= end;
+	});
+};
+
+export const getRecordStartingSaldo = (
+	record: Record | null | undefined
+): number => {
+	if (!record || record.saldo == null) {
+		return 0;
+	}
+
+	return record.saldo;
+};
+
+export const monthHasRecord = (
+	records: Record[],
+	year: number,
+	monthId: number
+): boolean => {
+	const monthStart = new Date(year, monthId, 1);
+	const monthEnd = new Date(year, monthId + 1, 0, 23, 59, 59, 999);
+	return records.some((record) => {
+		const start = new Date(record.start_date);
+		const end = new Date(record.end_date);
+		return start <= monthEnd && end >= monthStart;
+	});
+};
+
 export const findDefaultTimeForDate: (
 	date: string,
 	records: Record[]

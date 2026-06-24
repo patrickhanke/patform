@@ -1,4 +1,4 @@
-import { months } from "@repo/provider";
+import { MonthData as ProviderMonthData, months } from "@repo/provider";
 import { StaffMember } from "@repo/types";
 import { Record } from "@repo/types";
 
@@ -10,11 +10,4 @@ export type TimesSaldoProps = {
 	records: Record[];
 };
 
-export type MonthData = {
-	id: number;
-	month: string;
-	monthSaldoInt: number;
-	monthSaldo: string;
-	target: string;
-	monthTimes: string;
-};
+export type MonthData = ProviderMonthData;

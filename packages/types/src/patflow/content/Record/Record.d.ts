@@ -3,13 +3,6 @@ import { Absence, AbsenceType } from "./Absence";
 import { DayTime, TimeObject } from "./Times";
 import { AbsenceStateOptions, Surcharge } from "@repo/types";
 
-export type HolidayTemplate = {
-  objectId: string;
-  name: string;
-  holidays: string[];
-  type: "holiday"
-}
-
 export type RecordTimeSettings = {
   hours: number;
   weekdays: number;
@@ -32,6 +25,5 @@ export type Record = {
   absence_days: number;
   saldo: number;
   former_record: Record | undefined;
-  holiday_template: HolidayTemplate;
   surcharges: string[]
 };

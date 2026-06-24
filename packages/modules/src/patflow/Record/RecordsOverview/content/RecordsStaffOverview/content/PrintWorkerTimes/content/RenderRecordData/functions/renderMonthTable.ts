@@ -1,10 +1,4 @@
-import {
-	getMonthSaldo,
-	getMonthData,
-	MonthData,
-	months,
-	convertMillisecondsToString
-} from "@repo/provider";
+import { getMonthData, MonthData, months } from "@repo/provider";
 import autoTable from "jspdf-autotable";
 import { jsPDF } from "jspdf";
 import { Day, Record } from "@repo/types";
@@ -44,21 +38,11 @@ const renderMonthTabel = ({
 			}
 
 			return [
-				[
-					"Saldo Vormonat",
-					convertMillisecondsToString(
-						getMonthSaldo(0, month.id - 1, monthData)
-					)
-				],
+				["Saldo Vormonat", currentMonth.previousMonthSaldo],
 				["Sollzeit", currentMonth.target],
 				["Arbeitszeit", currentMonth.monthTimes],
 				["Saldo", currentMonth.monthSaldo],
-				[
-					"Zeitkonto",
-					convertMillisecondsToString(
-						getMonthSaldo(0, month.id, monthData)
-					)
-				]
+				["Zeitkonto", currentMonth.runningSaldo]
 			];
 		})(),
 

@@ -26,10 +26,10 @@ export const applyRecordToFormState = (record: Record) => ({
 	breaks: parseRecordBreaks(record)
 });
 
-export const isRecordEditable = (
-	record: Record,
-	currentYear: number
-): boolean => record.year >= currentYear && record.year <= currentYear + 1;
+export const isRecordEditable = (record: Record): boolean => {
+	const today = new Date().toISOString().split("T")[0] ?? "";
+	return record.end_date >= today;
+};
 
 export const TIME_SETTINGS_STEP_INDEX = 3;
 

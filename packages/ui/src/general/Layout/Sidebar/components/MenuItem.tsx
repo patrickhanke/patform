@@ -55,8 +55,6 @@ const MenuItem = ({
 		return false;
 	};
 
-	console.log({ badge });
-
 	return (
 		<>
 			{divider && <SidebarDivider text={divider} />}

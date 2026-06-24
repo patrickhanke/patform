@@ -1,5 +1,5 @@
 import { ColumnWorkingTimeProps, DayDataTime } from "../types";
-import { absence_type_options, getDateString } from "@repo/provider";
+import { absence_type_options, dateHasRecord, getDateString } from "@repo/provider";
 import { FC } from "react";
 import EditDayTimes from "../../EditDayTimes";
 import { StateDisplay } from "@repo/ui";
@@ -14,6 +14,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 	records
 }) => {
 	const isEditable = true;
+	const hasRecordForDate = dateHasRecord(date, records);
 
 	const sortedTime = times
 		? times.sort(
@@ -64,6 +65,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 										type="edit"
 										date={date}
 										isWorkingDay={isWorkingDay}
+										hasRecordForDate={hasRecordForDate}
 										dayId={timeValue.day_id}
 										initialTime={timeValue.time}
 										times={times || []}
@@ -97,6 +99,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 										days={days}
 										type="edit"
 										isWorkingDay={isWorkingDay}
+										hasRecordForDate={hasRecordForDate}
 										date={date}
 										dayId={timeValue.day_id}
 										initialTime={timeValue.time}

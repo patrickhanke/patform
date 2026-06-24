@@ -22,6 +22,7 @@ export type EditDayTimesProps = {
 	color?: string;
 	label?: string;
 	isWorkingDay: boolean;
+	hasRecordForDate: boolean;
 };
 
 export type EditTimeProps = {
