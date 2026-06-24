@@ -11,33 +11,235 @@
   overflow: hidden;
 }
 
-.create_record_switch_buttons {
+.steps_container {
+  flex-shrink: 0;
+  padding-bottom: constants.$md;
+  border-bottom: 1px solid constants.$border_color;
+}
+
+.step_body {
   @include constants.flexbox(
     $direction: column,
     $justify: flex-start,
     $align: stretch,
-    $gap: constants.$lg
+    $gap: constants.$md
   );
-}
-
-.create_record_form_container {
   flex: 1;
-  overflow: auto;
+  overflow-y: auto;
 }
 
-.record_settings_container {
+.step_content {
   @include constants.flexbox(
     $direction: column,
-    $justify: space-between,
-    $align: stretch
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$md
   );
-  width: 100%;
 }
 
-.record_settings_info {
+.step_description {
+  color: constants.$grey_shaded;
+  font-size: map-get(constants.$font_size, "sm");
+}
+
+.existing_records_section {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$sm
+  );
+
+  h4 {
+    margin: 0;
+  }
+}
+
+.existing_records_list {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$sm
+  );
+}
+
+.existing_record_row {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center,
+    $gap: constants.$md
+  );
+  padding: constants.$sm constants.$md;
+  border: 1px solid constants.$border_color;
+  border-radius: map-get(constants.$border_radius, "sm");
+  background: constants.$light;
+}
+
+.record_not_editable {
+  color: constants.$grey_shaded;
+  font-size: map-get(constants.$font_size, "sm");
+  white-space: nowrap;
+}
+
+.date_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: constants.$sm;
+}
+
+.date_button {
+  padding: constants.$sm constants.$md;
+  border: 1px solid constants.$border_color;
+  border-radius: map-get(constants.$border_radius, "sm");
+  background: constants.$light;
+  cursor: pointer;
+  font-size: map-get(constants.$font_size, "sm");
+  text-align: center;
+  transition: all 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: constants.$grey_tinted;
+    border-color: constants.$primary;
+  }
+}
+
+.date_button_selected {
+  background: constants.$primary;
+  border-color: constants.$primary;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: constants.$primary;
+    border-color: constants.$primary;
+  }
+}
+
+.date_button_disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.import_buttons {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$md
+  );
+}
+
+.import_record_info {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$sm
+  );
+  padding: constants.$md;
+  border: 1px solid constants.$border_color;
+  border-radius: map-get(constants.$border_radius, "sm");
+  background: constants.$light;
+
+  h4 {
+    margin: 0 0 constants.$sm;
+  }
+}
+
+.record_info_row {
   @include constants.flexbox(
     $direction: row,
     $justify: space-between,
     $align: center
   );
+}
+
+.breaks_section {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$sm
+  );
+}
+
+.breaks_header {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: center
+  );
+
+  h4 {
+    margin: 0;
+  }
+}
+
+.breaks_empty {
+  color: constants.$grey_shaded;
+  font-size: map-get(constants.$font_size, "sm");
+}
+
+.break_item {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$md
+  );
+  padding: constants.$sm constants.$md;
+  border: 1px solid constants.$border_color;
+  border-radius: map-get(constants.$border_radius, "sm");
+  background: constants.$light;
+}
+
+.break_field {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$sm
+  );
+
+  label {
+    font-size: map-get(constants.$font_size, "sm");
+    color: constants.$grey_shaded;
+    min-width: 28px;
+  }
+}
+
+.time_input {
+  padding: 2px constants.$sm;
+  border: 1px solid constants.$border_color;
+  border-radius: map-get(constants.$border_radius, "sm");
+  font-size: map-get(constants.$font_size, "sm");
+  background: constants.$white;
+}
+
+.select_section {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$sm
+  );
+
+  h4 {
+    margin: 0;
+  }
+}
+
+.validation_hint {
+  color: constants.$red;
+  font-size: map-get(constants.$font_size, "sm");
+}
+
+.back_button_row {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center
+  );
+  padding-top: constants.$sm;
 }

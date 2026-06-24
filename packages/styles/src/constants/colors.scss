@@ -52,6 +52,8 @@ $tertiary: $yellow;
 $tertiary_shaded: $yellow_shaded;
 $tertiary_light: $yellow_tinted;
 
+$border_color: $grey;
+
 @mixin colorgroup($color: "primary") {
   @if $color == "primary" {
     background-color: lighten($primary, 30%);

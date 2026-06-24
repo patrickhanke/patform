@@ -13,7 +13,7 @@ export type HolidayTemplate = {
 export type RecordTimeSettings = {
   hours: number;
   weekdays: number;
-  pause: number;
+  breaks: DayTime["breaks"];
   vacation: number;
   start: string;
 };

@@ -74,6 +74,7 @@ export const createInitialTimes: (
 	timeSettings,
 	holidays
 }) => {
+	console.log({ start_date, end_date, timeSettings, holidays });
 	const times: TimeObject[] = [];
 
 	const createTimeObject: (day: string) => TimeObject = (day) => {
@@ -96,47 +97,28 @@ export const createInitialTimes: (
 			console.log({ day });
 			const startTime = `${day}T${timeSettings.start || "08:00"}`;
 			console.log({ timeSettings });
+			const pauseDuration = (timeSettings.breaks ?? []).reduce(
+				(acc, curr) => {
+					const pauseStart = `${day}T${curr.start}:00`;
+					const pauseEnd = `${day}T${curr.end}:00`;
+					return (
+						acc +
+						(new Date(pauseEnd).getTime() -
+							new Date(pauseStart).getTime())
+					);
+				},
+				0
+			);
+			console.log({ pauseDuration });
 			const durationMs =
 				hoursToMilliseconds(
 					timeSettings.hours / timeSettings.weekdays
-				) + minutesToMilliseconds(timeSettings.pause);
+				) + pauseDuration;
 			console.log({ durationMs });
 			console.log({ startTime: new Date(startTime).getTime() });
 			const endTime = new Date(
 				new Date(startTime).getTime() + durationMs
 			);
-			const calculateBreaks: (
-				startTime: string,
-				pauseDuration: number
-			) => { start: string; end: string; id: string }[] = (
-				startTime,
-				pauseDuration
-			) => {
-				const startDateTime = new Date(startTime);
-				const breakStart = new Date(
-					startDateTime.getTime() + hoursToMilliseconds(6)
-				);
-
-				const breakEnd = new Date(
-					breakStart.getTime() + minutesToMilliseconds(pauseDuration)
-				);
-
-				console.log(breakStart, breakEnd);
-
-				return [
-					{
-						start: `${formatISO9075(breakStart, { representation: "date" })}T${formatISO9075(
-							breakStart,
-							{ representation: "time" }
-						)}`,
-						end: `${formatISO9075(breakEnd, { representation: "date" })}T${formatISO9075(
-							breakEnd,
-							{ representation: "time" }
-						)}`,
-						id: v4()
-					}
-				];
-			};
 
 			console.log(endTime);
 
@@ -144,14 +126,14 @@ export const createInitialTimes: (
 				type: "regular",
 				start: startTime,
 				end: `${formatISO9075(endTime, { representation: "date" })}T${formatISO9075(endTime, { representation: "time" })}`,
-				pause: minutesToMilliseconds(timeSettings.pause),
+				pause: pauseDuration,
 				duration:
 					hoursToMilliseconds(
 						timeSettings.hours / timeSettings.weekdays
-					) + minutesToMilliseconds(timeSettings.pause),
+					) + pauseDuration,
 				comment: "",
 				state: "initial",
-				breaks: calculateBreaks(startTime, timeSettings.pause)
+				breaks: timeSettings.breaks ?? []
 			};
 		}
 		return timeObject;

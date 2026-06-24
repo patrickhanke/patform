@@ -1,8 +1,10 @@
+import { RecordTimeSettings } from "./Record";
+
 export class CreateInitialTime {
   props: {
     start_date: string;
     end_date: string;
-    timeSettings: User["time_settings"];
+    timeSettings: RecordTimeSettings;
     holidays: string[];
   };
   return: {

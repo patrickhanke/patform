@@ -10,9 +10,9 @@ const defaultRecord: (year: number) => Partial<Record> = (year) => {
 		time_settings: {
 			hours: 40,
 			weekdays: 5,
-			pause: 30,
+			breaks: [],
 			vacation: 30,
-			start: "8:00"
+			start: "08:00"
 		},
 		absence_days: 0,
 		saldo: 0,
