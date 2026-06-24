@@ -19,6 +19,10 @@ const getListMembers = (
 		);
 	}
 
+	if (list.settings?.include_all_users) {
+		return users;
+	}
+
 	if (filters.length === 0) {
 		return [];
 	}
