@@ -47,7 +47,7 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({
 	const tableData: TableData[] = useMemo(() => {
 		return recipients
 			.map((recipient) => {
-				const emailRecipient = emailRecipients.find(
+				const emailRecipient = emailRecipients?.find(
 					(emailRecipient) =>
 						emailRecipient.userId === recipient.userId
 				);

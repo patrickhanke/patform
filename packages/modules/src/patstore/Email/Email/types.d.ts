@@ -28,4 +28,5 @@ export type BulkEmailSenderProps = {
 	emailContent: ContentBlock[];
 	emailId: string;
 	recipients: EmailRecipient[];
+	onSendSuccess?: () => void | Promise<void>;
 };

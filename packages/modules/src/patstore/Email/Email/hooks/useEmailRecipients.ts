@@ -14,10 +14,7 @@ const normalizeList = (fetchedList: EmailList): EmailList => ({
 	title: fetchedList.title || "",
 	data: fetchedList.data,
 	settings: fetchedList.settings || { static_list: true },
-	filters:
-		fetchedList.filters ||
-		fetchedList.settings?.filters ||
-		[]
+	filters: fetchedList.filters || fetchedList.settings?.filters || []
 });
 
 const toFetchSignature = (listId: string, list: EmailList) =>

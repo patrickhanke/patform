@@ -2,7 +2,12 @@
 
 import { FC, useCallback, useEffect, useState } from "react";
 import { Modal, ProgressBar, Select } from "@repo/ui";
-import { axiosclient, compileAxiosError, useAppContext } from "@repo/provider";
+import {
+	axiosclient,
+	compileAxiosError,
+	useAppContext,
+	useDataHandler
+} from "@repo/provider";
 import { transformToEmail } from "@repo/ui";
 import { BulkEmailSenderProps } from "../types";
 
@@ -11,9 +16,11 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 	setIsOpen,
 	emailContent,
 	emailId,
-	recipients
+	recipients,
+	onSendSuccess
 }) => {
 	const { project } = useAppContext();
+	const { updateData } = useDataHandler();
 	const [loading, setLoading] = useState(false);
 	const [progress, setProgress] = useState(0);
 	const [totalEmails, setTotalEmails] = useState(0);
@@ -91,6 +98,13 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 				}
 			}
 
+			await updateData({
+				className: "Email",
+				objectId: emailId,
+				updateObject: { state: "sent" }
+			});
+			await onSendSuccess?.();
+
 			// Success - close modal after a brief delay
 			setTimeout(() => {
 				setIsOpen(false);
@@ -114,7 +128,9 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 		sendBroadcast,
 		startBatch,
 		endBatch,
-		totalBatches
+		totalBatches,
+		updateData,
+		onSendSuccess
 	]);
 
 	const handleClose = () => {

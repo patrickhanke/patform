@@ -97,8 +97,9 @@ const AddListFilterSlideIn: FC<AddListFilterSlideInProps> = ({
 					id="key"
 					options={keyOptions}
 					value={
-						keyOptions.find((option) => option.value === form.key) ||
-						null
+						keyOptions.find(
+							(option) => option.value === form.key
+						) || null
 					}
 					errors={errors}
 					onChange={(option) => {
@@ -122,7 +123,9 @@ const AddListFilterSlideIn: FC<AddListFilterSlideInProps> = ({
 						<label htmlFor="filter-value">Wert</label>
 						<StatelessToggle
 							value={
-								typeof form.value === "boolean" ? form.value : false
+								typeof form.value === "boolean"
+									? form.value
+									: false
 							}
 							onChange={(value) =>
 								setForm((prev) => ({ ...prev, value }))
@@ -141,7 +144,8 @@ const AddListFilterSlideIn: FC<AddListFilterSlideInProps> = ({
 							value={
 								typeof form.value === "string"
 									? selectedDefinition.options.find(
-											(option) => option.value === form.value
+											(option) =>
+												option.value === form.value
 										) || null
 									: null
 							}
@@ -149,7 +153,9 @@ const AddListFilterSlideIn: FC<AddListFilterSlideInProps> = ({
 							onChange={(option) =>
 								setForm((prev) => ({
 									...prev,
-									value: option?.value ? String(option.value) : ""
+									value: option?.value
+										? String(option.value)
+										: ""
 								}))
 							}
 							isDisabled={disabled || !form.key}

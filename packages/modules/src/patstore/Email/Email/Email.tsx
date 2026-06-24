@@ -210,7 +210,7 @@ const Email = ({ params }: { params: Params }) => {
 						<EmailRecipients
 							email={email}
 							recipients={recipients}
-							emailRecipients={email.recipients}
+							emailRecipients={email.recipients || []}
 						/>
 					)}
 					{siteState.value === "content" && (
@@ -276,6 +276,9 @@ const Email = ({ params }: { params: Params }) => {
 				emailContent={emailContent}
 				emailId={emailId}
 				recipients={recipients}
+				onSendSuccess={async () => {
+					await refetch();
+				}}
 			/>
 			<RecipientEmailSender
 				recipientEmailOpen={recipientEmailOpen}
