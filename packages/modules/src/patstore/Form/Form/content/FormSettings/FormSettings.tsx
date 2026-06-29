@@ -21,7 +21,7 @@ const FormSettings = ({ formId }: { formId: string }) => {
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		if (data) {
+		if (data && !settings) {
 			setSettings(data.settings);
 		}
 	}, [data]);

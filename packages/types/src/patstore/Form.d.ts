@@ -27,7 +27,6 @@ export type FormClass = ClassProperties & {
             requireTLS: boolean;
             auth: boolean;
             from: string;
-
         }
     };
 };
