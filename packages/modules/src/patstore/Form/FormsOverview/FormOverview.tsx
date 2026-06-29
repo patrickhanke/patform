@@ -9,6 +9,7 @@ import {
 import { useContext, useState } from "react";
 import { Filter, FormClass } from "@repo/types";
 import { PatstoreAppContext, useFindModuleData } from "@repo/provider";
+import initial_data from "./constants/initial_data";
 
 const FormsOverview = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
@@ -43,7 +44,8 @@ const FormsOverview = () => {
 				className: "Form",
 				text: "Neues Formular erstellen",
 				fields: currentModule.fields,
-				refetch: refetch
+				refetch: refetch,
+				initialData: initial_data
 			}}
 			refetch={refetch}
 		>
