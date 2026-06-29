@@ -5,8 +5,3 @@ type GeneralTemplate = {
   name: string;
   project: Project;
 };
-
-export type HolidayTemplate = GeneralTemplate & {
-  type: "holiday";
-  holidays: string[];
-};

@@ -55,7 +55,7 @@ Module: `packages/modules/src/patflow/Settings/TimeSettings/`
 
 - **EditRecords** — record templates (work time types)
 - **SurchargeSettings** — surcharge rules
-- **Holidays** / **HolidayTemplates** — public holidays
+- **Holidays** — public holidays
 
 Types: `packages/types/src/patflow/content/Record/`
 

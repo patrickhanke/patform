@@ -49,6 +49,11 @@ const useNetlifyHooks = () => {
 					);
 				}
 			}
+			if (project.objectId === "JwPcBkuLDi") {
+				axios.post(
+					"https://api.netlify.com/build_hooks/6a425999f5c9e23580ef3d53"
+				);
+			}
 			if (project.objectId === "JRxDkaxCoI") {
 				axios.post(
 					"https://api.netlify.com/build_hooks/68a58efad44d4e2b1c6cb0d7"

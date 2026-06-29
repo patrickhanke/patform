@@ -230,7 +230,12 @@ const CreateRecord: FC<CreateRecordProps> = ({
 				saldo: 0,
 				vacation: 0,
 				absence_days: 0,
-				surcharges
+				surcharges,
+				project: {
+					__type: "Pointer",
+					className: "Project",
+					objectId: projectId
+				}
 			}
 		});
 
