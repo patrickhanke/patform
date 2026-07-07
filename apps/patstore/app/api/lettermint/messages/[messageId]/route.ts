@@ -16,8 +16,7 @@ export async function GET(
 	}
 
 	const apiKey =
-		process.env.LETTERMINT_API_KEY ||
-		process.env.NEXT_PUBLIC_LETTERMINT_KEY;
+		process.env.PATSTORE_NEXT_LETTERMINT_KEY
 
 	if (!apiKey) {
 		return NextResponse.json(

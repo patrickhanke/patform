@@ -74,7 +74,7 @@ const useFirebaseMessaging = ({
 			}
 		};
 
-		if (token) {
+		if (token && messaging) {
 			const unsubscribe = onMessage(messaging, (payload) => {
 				if (payload.notification) {
 					saveNotification({

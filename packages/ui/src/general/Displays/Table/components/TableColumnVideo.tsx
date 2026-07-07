@@ -53,7 +53,7 @@ const TableColumnVideo = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const options: UploadDropzoneConfig = useMemo(
 		() => ({
-			apiKey: process.env.BYTESCALE_PUBLIC_KEY as string,
+			apiKey: process.env.NEXT_PUBLIC_BYTESCALE_PUBLIC_KEY as string,
 			// accountId: process.env.BYTESCALE_ACCOUNT_ID as string,
 			locale: myCustomLocale, // EN_US by default. (See "Localization" section below.)
 			maxFileCount: 1,

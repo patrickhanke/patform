@@ -133,14 +133,17 @@ npx turbo build --filter=patstore
 
 Configuration is loaded from a **`.env`** file at the repo root (referenced in `turbo.json` as a global dependency).
 
+App-specific values use a **`PATFLOW_`** or **`PATSTORE_`** prefix in `.env`. Each app's `next.config.js` maps these to runtime names (e.g. `PATFLOW_SASHIDO_API_URL` → `process.env.SASHIDO_API_URL` inside patflow).
+
 | Group | Variables | Used for |
 |-------|-----------|----------|
-| Sashido / Parse | `SASHIDO_APP_ID`, `SASHIDO_API_URL`, `SASHIDO_GQL_URL`, `SASHIDO_REST_KEY`, `SASHIDO_MASTER_KEY`, … | Backend API & GraphQL |
-| Auth | `SESSION_TOKEN` | Parse session cookie name |
-| Firebase | `FIREBASE_*` | Push notifications (patflow) |
-| Bytescale | `BYTESCALE_*` | File uploads (patstore) |
+| Sashido / Parse | `PATFLOW_SASHIDO_*`, `PATSTORE_SASHIDO_*` | Backend API & GraphQL (separate Parse apps) |
+| Auth | `PATFLOW_SESSION_TOKEN`, `PATSTORE_SESSION_TOKEN` | Parse session cookie names |
+| Firebase | `PATFLOW_FIREBASE_*`, `PATSTORE_FIREBASE_*` | Push notifications |
+| Bytescale | `BYTESCALE_*`, `NEXT_PUBLIC_BYTESCALE_PUBLIC_KEY` | File uploads (patstore; loaded from `.env`, not `next.config`) |
+| Lettermint | `PATSTORE_NEXT_PUBLIC_LETTERMINT_*` | Email delivery (patstore) |
 
-The full list is defined in [`turbo.json`](turbo.json) under `globalEnv`. Do not commit `.env` or expose `SASHIDO_MASTER_KEY` in client code.
+See [`.env.example`](.env.example) for the full list. Do not commit `.env` or expose master keys in client code.
 
 For secure data access patterns, see [`packages/provider/src/general/data/README_SECURE_DATA_HANDLER.md`](packages/provider/src/general/data/README_SECURE_DATA_HANDLER.md).
 
@@ -177,6 +180,29 @@ Route groups:
 - Never use the master key in client-side code
 
 More detail for contributors and AI agents: [AGENTS.md](AGENTS.md)
+
+## CI and quality gates
+
+GitHub Actions runs on every push/PR (`.github/workflows/ci.yml`):
+
+| Job | Status |
+|-----|--------|
+| Test (Vitest) | Required |
+| Typecheck (scoped) | Required — `@repo/provider` functions (expand via migration doc) |
+| Lint | Advisory until Prettier warnings are resolved |
+| Build | Advisory — uses `.env.ci` placeholders |
+| Typecheck (full) | Advisory until migration complete |
+| Dependency hygiene | Advisory — `manypkg` + `syncpack` |
+
+See [docs/MIGRATION_TYPECHECK.md](docs/MIGRATION_TYPECHECK.md) for the checklist to remove `ignoreBuildErrors`.
+
+```bash
+npm run test           # Vitest unit tests
+npm run typecheck:ci   # Enforced typecheck subset (matches CI)
+npm run typecheck      # Full repo typecheck
+npm run check-deps     # manypkg check
+npm run syncpack:check # Version mismatch report
+```
 
 ---
 

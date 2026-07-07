@@ -1,0 +1,18 @@
+{
+	"extends": "@repo/typescript/react-library.json",
+	"compilerOptions": {
+		"rootDir": "src",
+		"noEmit": true,
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"composite": false,
+		"declaration": false,
+		"declarationMap": false,
+		"paths": {
+			"@/types/General": ["./src/patflow/General/index.ts"],
+			"@repo/types": ["./src/index.ts"]
+		}
+	},
+	"include": ["src/**/*.ts", "src/**/*.d.ts"],
+	"exclude": ["node_modules"]
+}

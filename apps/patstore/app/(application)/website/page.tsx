@@ -1,1 +1,1 @@
-export { Website as default } from "@repo/modules";
+export { WebsitesOverview as default } from "@repo/modules";

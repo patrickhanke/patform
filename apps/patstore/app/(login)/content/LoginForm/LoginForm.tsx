@@ -59,9 +59,11 @@ const LoginForm = () => {
           });
           if (error.message === "Invalid username/password.") {
             setError("Falsche E-Mail / Passwort Kombination");
+            setLoading(false);
             setDisabled(false);
           } else {
             setError("Das Einloggen ist leider fehlgeschlagen");
+            setLoading(false);
             setDisabled(false);
           }
         });

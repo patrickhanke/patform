@@ -8,6 +8,12 @@
     "dev:patstore": "dotenv -- turbo dev --filter=patstore",
     "dev:patflow": "dotenv -- turbo dev --filter=patflow",
     "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "typecheck:ci": "turbo typecheck --filter=@repo/provider",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check-deps": "manypkg check",
+    "syncpack:check": "syncpack list-mismatches",
     "gen": "turbo gen",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -16,7 +22,9 @@
     "@types/lodash-es": "^4.17.12",
     "react-email": "4.2.11",
     "syncpack": "^13.0.0",
-    "turbo": "latest"
+    "turbo": "latest",
+    "typescript": "^5.4.3",
+    "vitest": "^3.2.4"
   },
   "engines": {
     "node": ">=18"
