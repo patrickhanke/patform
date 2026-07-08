@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { Ticket } from "@repo/types";
-import Parse from "../../../../general/data/parse";
+import Parse from "./parse";
 import useDataStore from "./useDataStore";
 
 const TICKET_PAGE_SIZE = 100;

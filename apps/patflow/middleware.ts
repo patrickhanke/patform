@@ -44,8 +44,6 @@ export async function middleware(request: NextRequest) {
     })
       .then((response) => response.json())
       .then((actualData) => {
-        console.log(actualData);
-        console.log(token);
         if (actualData.sessionToken === token) {
           loggedIn = true;
         }
@@ -56,9 +54,6 @@ export async function middleware(request: NextRequest) {
       });
   }
   const response = NextResponse.next();
-
-  console.log({ loggedIn });
-  console.log({ url: request.nextUrl.pathname });
 
   if (!token && request.nextUrl.pathname !== "/login") {
     return NextResponse.rewrite(new URL("/login", request.url));

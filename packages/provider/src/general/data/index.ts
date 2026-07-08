@@ -6,5 +6,4 @@ export { default as useFindModuleData } from "./useFindModuleData";
 export { default as vercelHook } from "./vercelHook";
 export { default as compileAxiosError } from "./compileAxiosError";
 export { default as useUploadAlgoliaData } from "./algolia/useUploadAlgoliaData";
-export { default as Parse } from "./parse";
 export * from "./DataContext";

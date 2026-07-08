@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect } from "react";
 import { Service, Task, TaskState } from "@repo/types";
-import Parse from "../../../../general/data/parse";
+import Parse from "./parse";
 import useDataStore from "./useDataStore";
 
 const TASK_PAGE_SIZE = 100;
