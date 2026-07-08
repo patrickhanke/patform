@@ -6,13 +6,13 @@ self.importScripts(
 );
 
 const firebaseConfig = {
-  apiKey: "AIzaSyARUPJePB7XFzxliXn8QoBFT79lnJ4u8Ko",
-  authDomain: "hgs-app-d35b1.firebaseapp.com",
-  projectId: "hgs-app-d35b1",
-  storageBucket: "hgs-app-d35b1.firebasestorage.app",
-  messagingSenderId: "641842391250",
-  appId: "1:641842391250:web:af88774f5d9e0aac01250b",
-  measurementId: "G-32QEKHD6FM",
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
 
 console.log("fb messaging");
