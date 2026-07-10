@@ -53,7 +53,6 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
   }, [selectedProject, project]);
 
 const selectElements = useMemo(() => {
-  console.log({data});
   if (data) {
     return data.map( (project: PatstoreProject) => ({
       value: project.objectId,

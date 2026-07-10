@@ -11,6 +11,7 @@ function ApolloAppProvider({
 	restKey,
 	masterKey
 }: ApolloAppProviderProps) {
+	console.log({ uri, appId, restKey, masterKey });
 	return (
 		<ApolloNextAppProvider
 			makeClient={() => makeClient(uri, appId, restKey, masterKey)}

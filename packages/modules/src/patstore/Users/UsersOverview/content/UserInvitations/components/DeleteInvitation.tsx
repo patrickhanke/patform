@@ -33,7 +33,6 @@ const DeleteInvitation: FC<DeleteInvitationProps> = ({
 				confirmButtonHandler={async () => {
 					setLoading(true);
 					const invitationsCopy = cloneDeep(invitations);
-
 					const invitationIndex = invitationsCopy.findIndex(
 						(invitation) => invitation.key === id
 					);

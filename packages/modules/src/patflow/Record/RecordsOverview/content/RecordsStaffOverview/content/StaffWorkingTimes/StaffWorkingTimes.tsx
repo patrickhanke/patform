@@ -126,6 +126,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 				(day) => day.date === dateString
 			);
 
+			console.log({ daysToFind });
+
 			if (isArray(daysToFind) && daysToFind.length > 0) {
 				const timeArray: DayData["times"] = [];
 				daysToFind.forEach((day) => {

@@ -84,7 +84,6 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		useMasterKey: true
 	});
 
-	console.log(users);
 	const columns = useCreateColumns<PatstoreUser>({
 		data: generateColumnsFromFields(currentModule.fields),
 		fields: currentModule.data_fields,
@@ -160,19 +159,23 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 				is_add_button: false
 			});
 		}
+		if (project?.settings?.user_creation) {
+			buttonArray.push({
+				text: "Neuen Nutzer erstellen",
+				onClick: () => setCreateUser(true),
+				is_add_button: true,
+				disabled: false
+			});
+		}
 
-		buttonArray.push({
-			text: "Neuen Nutzer erstellen",
-			onClick: () => setCreateUser(true),
-			is_add_button: true,
-			disabled: false
-		});
+		if (project?.settings?.user_invitations) {
+			buttonArray.push({
+				text: "Neuen Nutzer einladen",
+				onClick: () => setInviteUser(true),
+				is_add_button: true
+			});
+		}
 
-		buttonArray.push({
-			text: "Neuen Nutzer einladen",
-			onClick: () => setInviteUser(true),
-			is_add_button: true
-		});
 		return buttonArray;
 	}, [createUserFields]);
 
@@ -180,7 +183,11 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		<Page
 			title="Nutzerübersicht"
 			pageHeaderButtons={pageHeaderButtons}
-			pageStates={[...page_states]}
+			pageStates={
+				project?.settings?.user_invitations
+					? [...page_states]
+					: undefined
+			}
 			pageState={pageState}
 			setPageState={setPageState}
 		>

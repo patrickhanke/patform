@@ -18,13 +18,13 @@ const UserInvitations = () => {
 
 	const columns = useInvitationColumns({
 		refetch,
-		invitations: data ? data?.objects?.getProject?.invitations : [],
+		invitations: data ? data?.invitations : [],
 		projectId: project?.objectId || ""
 	});
 
 	if (!data) return <div>Loading</div>;
 
-	const projectData = data.objects.getProject;
+	const projectData = data;
 
 	return (
 		<Table

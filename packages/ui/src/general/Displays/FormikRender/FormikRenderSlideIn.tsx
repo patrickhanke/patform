@@ -24,18 +24,19 @@ const FormikRenderSlideIn: FC<FormikRenderSlideInProps> = ({
 	isHorizontal = false,
 	highlightChanges = false
 }) => {
+	const [errors, setErrors] = useState<ErrorMessage[]>([]);
+	const [isValid, setIsValid] = useState<boolean>(false);
 	const [secondaryContent, setSecondaryContent] =
 		useState<React.ReactNode | null>(null);
-	const ref = useRef<FormikProps<FormikValues>>(null);
 	const [loading, setLoading] = useState(false);
+
+	const ref = useRef<FormikProps<FormikValues>>(null);
 
 	useEffect(() => {
 		if (setSecondaryContent) {
 			setSecondaryContent(null);
 		}
 	}, []);
-	const [errors, setErrors] = useState<ErrorMessage[]>([]);
-	const [isValid, setIsValid] = useState<boolean>(false);
 
 	return (
 		<SlideIn

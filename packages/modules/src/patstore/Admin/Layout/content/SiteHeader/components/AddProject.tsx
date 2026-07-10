@@ -4,8 +4,16 @@ import { useDataHandler } from "@repo/provider";
 import { AddProjectProps } from "../types";
 import { FormikValues } from "formik";
 
+const PROJECT_SETTINGS = {
+	email: "",
+	lettermint_key: "",
+	lettermint_project_id: "",
+	user_invitations: false,
+	user_creation: false
+};
+
 const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
-	const { createData } = useDataHandler(true, false);;
+	const { createData } = useDataHandler(true, false);
 
 	const formFields = useMemo(
 		() => [
@@ -14,7 +22,22 @@ const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
 				id: "name",
 				name: "name",
 				type: "input",
-				placeholder: "Projektname"
+				placeholder: "Projektname",
+				validation: {
+					validate: true,
+					required: "Pflichtfeld"
+				}
+			} as Field,
+			{
+				label: `Pfad`,
+				id: "path",
+				name: "path",
+				type: "input",
+				placeholder: "Projektpfad",
+				validation: {
+					validate: true,
+					required: "Pflichtfeld"
+				}
 			} as Field,
 			{
 				label: `Beschreibung`,
@@ -41,7 +64,10 @@ const AddProject: FC<AddProjectProps> = ({ addProject, setAddProject }) => {
 		if (data.name) {
 			await createData({
 				className: "Project",
-				updateObject: data
+				updateObject: {
+					...data,
+					settings: PROJECT_SETTINGS
+				}
 			});
 		}
 

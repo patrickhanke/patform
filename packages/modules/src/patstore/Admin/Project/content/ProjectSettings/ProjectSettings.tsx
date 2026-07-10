@@ -47,6 +47,24 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 					label: "E-Mail",
 					value: project?.settings?.email
 					// options: { max_file_count: 1, return_type: "string" }
+				},
+				{
+					id: "user_invitations",
+					position: 3,
+					name: "settings.user_invitations",
+					type: "toggle",
+					label: "Nutzereinladungen aktivieren",
+					value: project?.settings?.user_invitations
+					// options: { max_file_count: 1, return_type: "string" }
+				},
+				{
+					id: "user_creation",
+					position: 3,
+					name: "settings.user_creation",
+					type: "toggle",
+					label: "Nutzer erstellen aktivieren",
+					value: project?.settings?.user_creation
+					// options: { max_file_count: 1, return_type: "string" }
 				}
 			];
 		} else {
@@ -66,7 +84,7 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 			formSubmitHandler={async (values) => {
 				await updateData({
 					className: "Project",
-					objectId: project?.objectId,
+					objectId: projectId,
 					updateObject: {
 						name: values.name,
 						logo: values?.logo,
