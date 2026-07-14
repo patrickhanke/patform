@@ -9,7 +9,6 @@ import CreateCategory from "./components/CreateCategory";
 
 const Categories = () => {
 	const { currentModule } = useContext(PatstoreAppContext);
-	console.log({ currentModule });
 	const pageStates = useMemo(
 		() => currentModule?.settings?.categories,
 		[currentModule]
@@ -65,8 +64,6 @@ const Categories = () => {
 		categories: currentModule?.categories
 	});
 
-	console.log({ categories });
-
 	const pageHeaderContent = useMemo(
 		() =>
 			activeState ? (
@@ -79,9 +76,6 @@ const Categories = () => {
 			) : null,
 		[activeState]
 	);
-
-	console.log({ pageStates, activeState });
-	console.log({ categories });
 
 	return (
 		<Page

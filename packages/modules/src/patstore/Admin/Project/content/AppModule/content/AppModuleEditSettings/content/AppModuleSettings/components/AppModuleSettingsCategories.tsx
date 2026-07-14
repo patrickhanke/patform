@@ -6,7 +6,10 @@ const AppModuleSettingsCategories = ({
 }: AppModuleSettingsCategoriesProps) => {
 	return (
 		<div>
-			<button onClick={() => setActiveSetting(setting)}>
+			<button
+				className="full_button sm secondary"
+				onClick={() => setActiveSetting(setting)}
+			>
 				Kategorien
 			</button>
 		</div>

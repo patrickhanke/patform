@@ -1,20 +1,18 @@
 import { AppModuleEditSettingProps } from "./types";
-import AppModuleEditSettingsCategories from "./components/AppModuleEditSettingsCategories";
+import AppModuleEditCategory from "./components/AppModuleEditCategory";
 
-const AppModuleEditSetting = ({
+const AppModuleEditCategories = ({
 	settingKey,
 	settings,
 	setSettings
 }: AppModuleEditSettingProps) => {
-	console.log(settingKey);
-
 	if (!settings || !settingKey) {
 		return null;
 	}
 
 	if (settingKey === "categories") {
 		return (
-			<AppModuleEditSettingsCategories
+			<AppModuleEditCategory
 				categories={settings.categories}
 				setSettings={setSettings}
 			/>
@@ -24,4 +22,4 @@ const AppModuleEditSetting = ({
 	return null;
 };
 
-export default AppModuleEditSetting;
+export default AppModuleEditCategories;

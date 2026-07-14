@@ -1,11 +1,10 @@
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState } from "react";
 import { SlideIn } from "@repo/ui";
 import { useImmer } from "use-immer";
 import { ModuleSettings } from "@repo/types";
 import { useDataHandler } from "@repo/provider";
-import AppModuleEditSetting from "./content/AppModuleEditSetting";
 import { AppModuleEditSettingsProps } from "./types";
-import AppModuleSettings from "./content/AppModuleSettings";
+import { AppModuleEditCategories } from "./content";
 
 const AppModuleEditSettings = ({
 	moduleId,
@@ -41,17 +40,6 @@ const AppModuleEditSettings = ({
 		setLoading(false);
 	}, [settings, activeSetting]);
 
-	const editSettingsComponent = useMemo(
-		() => (
-			<AppModuleEditSetting
-				settingKey={activeSetting}
-				setSettings={setSettings}
-				settings={settings}
-			/>
-		),
-		[activeSetting, settings, setSettings]
-	);
-
 	return (
 		<>
 			<button
@@ -70,15 +58,13 @@ const AppModuleEditSettings = ({
 				isOpen={editSettings}
 				header="Einstellungen"
 				showSecondaryContent={!!activeSetting}
-				secondaryContent={editSettingsComponent}
 				disabled={[loading, loading]}
 			>
-				<div>
-					<AppModuleSettings
-						settings={settings}
-						setActiveSetting={setActiveSetting}
-					/>
-				</div>
+				<AppModuleEditCategories
+					settingKey={"categories"}
+					setSettings={setSettings}
+					settings={settings}
+				/>
 			</SlideIn>
 		</>
 	);

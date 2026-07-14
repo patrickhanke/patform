@@ -13,7 +13,7 @@ export const filterModuleCategories = (categories: ModuleCategory[]) => {
 		const categoryIds: string[] = [];
 		const categoryModuleId = filteredCategories[0]?.moduleId;
 		filteredCategories.forEach((category) => {
-			category.category_ids.forEach((categoryId) => {
+			category?.category_ids?.forEach((categoryId) => {
 				categoryIds.push(categoryId);
 			});
 		});
