@@ -12,7 +12,8 @@ import {
 	PageClass,
 	PatstoreUser,
 	ModuleFieldType,
-	ModuleFilter
+	ModuleFilter,
+	DatabaseFile
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -49,7 +50,7 @@ export type TableTypes = {
 export type ColumnDef<TData> = ColumnDef<TData>;
 
 export type TableColumnImageProps = {
-	file?: File;
+	file?: DatabaseFile;
 };
 
 export type TableColumnImagesProps = {

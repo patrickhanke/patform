@@ -1,6 +1,8 @@
 import { Filter, FilterOperator, ModuleFilter } from "@repo/types";
 import { ColumnDataTypes } from "../../../../types";
 
+type FilterValue = ModuleFilter["value"];
+
 export type FilterProps = {
 	id: ModuleFilter["id"];
 	type: ModuleFilter["type"];
@@ -9,13 +11,11 @@ export type FilterProps = {
 	isActive: boolean;
 	activeFilter?: Filter;
 	toggleFilter: (id: string) => void;
-	updateFilterValue: (id: string, value: ModuleFilter["value"]) => void;
+	updateFilterValue: (id: string, value: FilterValue) => void;
 	options: ModuleFilter["options"];
 };
 
-export type OnValueChange = (
-	value: string | string[] | object | boolean
-) => void;
+export type OnValueChange = (value: FilterValue) => void;
 
 export type IdFilterProps = {
 	label: string;
@@ -55,7 +55,7 @@ export type FilterInputProps = {
 };
 
 export type StringFilterProps = {
-	onValueChange: (value: ModuleFilter["value"]) => void;
+	onValueChange: OnValueChange;
 };
 
 export type SelectFilterProps = {

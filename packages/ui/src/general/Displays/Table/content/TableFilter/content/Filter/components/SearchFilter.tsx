@@ -1,5 +1,5 @@
 import { FC, useCallback } from "react";
-import { SearchFilterProps } from "../types";
+import { FilterValue, SearchFilterProps } from "../types";
 import StringFilter from "./StringFilter";
 import { StatelessToggle } from "../../../../../../../Buttons";
 import SelectFilter from "./SelectFilter";
@@ -13,13 +13,12 @@ const SearchFilter: FC<SearchFilterProps> = ({
 	selectOptions = []
 }) => {
 	const valueChangeHandler = useCallback(
-		(value: boolean | string) => {
+		(value: FilterValue) => {
 			const returnValue = `${path}:${value}`;
 			onValueChange(returnValue);
 		},
 		[onValueChange, path]
 	);
-
 
 	if (!type) {
 		return null;

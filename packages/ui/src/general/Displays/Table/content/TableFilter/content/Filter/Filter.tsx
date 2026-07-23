@@ -26,13 +26,9 @@ const Filter: FC<FilterProps> = ({
 	console.log({ type });
 	const onValueChange: OnValueChange = useCallback(
 		(value) => {
-			const transformedValue = transformOperatorValueToObject({
-				type,
-				operator,
-				value
-			});
-			if (transformedValue) {
-				updateFilterValue(id, transformedValue);
+
+			if (value) {
+				updateFilterValue(id, value);
 			} else {
 				updateFilterValue(id, null);
 			}

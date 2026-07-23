@@ -8,6 +8,25 @@ import {
 } from "react-icons/md";
 import { Select } from "@repo/ui";
 
+const OPTIONS = [
+	{
+		value: 10,
+		label: "10"
+	},
+	{
+		value: 20,
+		label: "20"
+	},
+	{
+		value: 50,
+		label: "50"
+	},
+	{
+		value: 100,
+		label: "100"
+	}
+];
+
 const PaginationHandlers: FC<PaginationHandlersProps> = ({
 	rowCount,
 	pagination,
@@ -29,28 +48,6 @@ const PaginationHandlers: FC<PaginationHandlersProps> = ({
 		}
 	}, [pageCount, pageNumber]);
 
-	const options = useMemo(
-		() => [
-			{
-				value: 10,
-				label: "10"
-			},
-			{
-				value: 20,
-				label: "20"
-			},
-			{
-				value: 50,
-				label: "50"
-			},
-			{
-				value: 100,
-				label: "100"
-			}
-		],
-		[]
-	);
-
 	return (
 		<div className="w-100 flex row a-ce gap-sm j-fe">
 			<div className="flex row a-ce gap-xs">
@@ -61,8 +58,8 @@ const PaginationHandlers: FC<PaginationHandlersProps> = ({
 					</>
 				)}
 				<Select
-					options={options}
-					value={options.find(
+					options={OPTIONS}
+					value={OPTIONS.find(
 						(option) => option.value === pagination.pageSize
 					)}
 					isClearable={false}
