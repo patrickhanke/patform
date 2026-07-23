@@ -27,7 +27,12 @@ const ImagesOverview = ({ module }: { module: Module }) => {
 
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<ImageClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading
+	} = useFindModuleData<ImageClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,

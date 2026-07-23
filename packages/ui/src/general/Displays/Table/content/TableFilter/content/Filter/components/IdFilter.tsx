@@ -55,7 +55,7 @@ const IdFilter: FC<IdFilterProps> = ({
 	}, [data]);
 
 	const getElementsFromValue = useCallback((): SelectElement[] => {
-		if (isMulti) {
+		if (isMulti && isArray(value)) {
 			if (value && value.length === 0) {
 				return [];
 			}
@@ -63,7 +63,7 @@ const IdFilter: FC<IdFilterProps> = ({
 				value.includes(element.value)
 			);
 		}
-		if (value) {
+		if (value && !isArray(value)) {
 			const element = selectElements.find(
 				(element) => element.value === getValue()
 			);
@@ -91,26 +91,24 @@ const IdFilter: FC<IdFilterProps> = ({
 					style={{ marginTop: 12 }}
 				>
 					{isMulti && Array.isArray(value) ? (
-						value.map((value) => (
+						value.map((element_value) => (
 							<div
-								key={value}
+								key={element_value}
 								className="content_element flex row a-ce j-sb w-100"
 							>
 								<p>
 									{
 										selectElements.find(
-											(element) => element.value === value
+											(element) =>
+												element.value === element_value
 										)?.label
 									}
 								</p>
 								<IconButton
 									icon="delete"
 									onClick={() => {
-										if (!isArray(value)) {
-											return;
-										}
 										const newValues = value.filter(
-											(v) => v !== value
+											(v) => v !== element_value
 										);
 										if (newValues.length === 0) {
 											onValueChange("");

@@ -17,8 +17,11 @@ import site_states from "./constants/site_states";
 import AppUsers from "./content/AppUsers";
 import ProjectSettings from "./content/ProjectSettings";
 import ProjectRoles from "./content/ProjectRoles";
+import { useParams } from "next/navigation";
 
-const Project = ({ params }: { params: { project_id: string } }) => {
+const Project = () => {
+	const { project_id: projectId } = useParams<{ project_id: string }>();
+	console.log(projectId);
 	const { data: projectData } = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "get",
@@ -33,7 +36,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 			]
 		}),
 		{
-			variables: { id: params.project_id }
+			variables: { id: projectId }
 		}
 	);
 	const [createModule, setCreateModule] = useState(false);
@@ -55,7 +58,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 			"path",
 			"connected_class"
 		],
-		projectId: params.project_id
+		projectId
 	});
 
 	const pageHeaderButtons = useMemo(() => {
@@ -86,7 +89,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 					is_add_button: true
 				}
 			];
-	}, [params.project_id, siteState]);
+	}, [projectId, siteState]);
 
 	const createModuleHandler = useCallback(
 		async (module: SelectModule["fields"]) => {
@@ -98,13 +101,13 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 					project: {
 						__type: "Pointer",
 						className: "Project",
-						objectId: params.project_id
+						objectId: projectId
 					}
 				},
 				afterSaveHandler: async (data) => {
 					await updateData({
 						className: "Project",
-						objectId: params.project_id,
+						objectId: projectId,
 						updateObject: {
 							modules: {
 								__op: "AddRelation",
@@ -152,7 +155,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 						ItemComponent={({ item }) => (
 							<AppModule
 								id={item.id}
-								projectId={params.project_id}
+								projectId={projectId}
 								modules={modules}
 							/>
 						)}
@@ -169,7 +172,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 			{siteState?.value === "users" && (
 				<>
 					<AppUsers
-						projectId={params.project_id}
+						projectId={projectId}
 						createUser={createUser}
 						setCreateUser={setCreateUser}
 						addUser={addUser}
@@ -180,7 +183,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 			{siteState?.value === "roles" && (
 				<>
 					<ProjectRoles
-						projectId={params.project_id}
+						projectId={projectId}
 						projectPath={projectData?.project?.path}
 						createRole={createRole}
 						setCreateRole={setCreateRole}
@@ -190,7 +193,7 @@ const Project = ({ params }: { params: { project_id: string } }) => {
 			)}
 			{siteState?.value === "settings" && (
 				<>
-					<ProjectSettings projectId={params.project_id} />
+					<ProjectSettings projectId={projectId} />
 				</>
 			)}
 		</AdminPage>

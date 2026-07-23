@@ -127,10 +127,12 @@
 }
 
 .table_columns_image_container {
+  position: relative;
   width: 54px;
   height: 30px;
   overflow: hidden;
   border-radius: 3px;
+  display: flex;
 }
 
 .table_columns_image_placeholder {
