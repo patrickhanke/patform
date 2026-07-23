@@ -1,1 +1,8 @@
-export { UsersOverview as default } from "@repo/modules";
+import { UsersOverview } from "@repo/modules";
+import { createModuleOverviewPage } from "../createModuleOverviewPage";
+
+export default createModuleOverviewPage({
+	modulePath: "/users",
+	fallbackTitle: "Nutzer",
+	Overview: UsersOverview
+});

@@ -1,28 +1,28 @@
 "use client";
 
-import {
-	ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo,
-	useState
-} from "react";
+import { ReactNode, useCallback, useContext, useEffect, useMemo } from "react";
 import { AppContext } from "./AppContext";
-import { Module, PatstoreProject } from "@repo/types";
-import { generateGraphQLQuery_4_1, sanitizeGraphQlNode } from "@repo/provider";
-import { useQuery } from "@apollo/client";
-import ProjectLoader from "./components/ProjectLoader";
-import useFindRoles from "./hooks/useFindRoles";
+import { ContextValues } from "./types";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { cloneDeep } from "lodash-es";
 
+// `project` and `roles` are now fetched server-side (in the app's layout)
+// and handed down as props, instead of being loaded here via a client-side
+// Apollo query. That removes the window where `project`/`roles` are
+// undefined on first render. Switching the active project still goes
+// through this provider (`loadProject`), it just triggers a server refetch
+// via `router.refresh()` instead of an in-place Apollo refetch.
+//
+// Kept loosely typed: patstore and patflow pass their own project/role
+// shapes (`PatstoreProject`/`PatflowProject`, `PatstoreRoleClass`/
+// `PatflowUserRole`) into this shared provider.
 const ProjectContextProvider = ({
-	projects,
+	project,
+	roles = [],
 	children
 }: {
-	projects: string[];
+	project?: Record<string, any>;
+	roles?: Record<string, any>[];
 	children: ReactNode;
 }) => {
 	const appId = process.env.APP_NAME as string;
@@ -30,132 +30,38 @@ const ProjectContextProvider = ({
 	const project_path = `${appId}_project_path`;
 	const router = useRouter();
 
-	const [currentProject, setCurrentProject] = useState<PatstoreProject>();
-	const initialProjectId = useMemo(() => {
-		if (typeof window !== "undefined") {
-			const localId = Cookies.get(project_id);
-			if (localId && projects.includes(localId)) {
-				return localId;
-			} else {
-				return projects[0];
-			}
+	// Keep the cookie in sync so middleware and the next server render pick
+	// up the same project (e.g. after a fresh login with no cookie yet).
+	useEffect(() => {
+		if (project?.objectId) {
+			Cookies.set(project_id, project.objectId);
+			Cookies.set(project_path, `${project.path}`);
 		}
-		return projects[0];
-	}, [projects]);
+	}, [project, project_id, project_path]);
 
-	const [projectId, setProjectId] = useState<string | null | undefined>(
-		initialProjectId
+	const loadProject = useCallback(
+		(projectId: string) => {
+			Cookies.set(project_id, projectId);
+			router.push("/");
+			router.refresh();
+		},
+		[project_id, router]
 	);
 
-	const projectFields = useMemo(() => {
-		if (appId === "patstore") {
-			return [
-				"objectId",
-				"name",
-				"path",
-				"logo {url name}",
-				"data",
-				"settings",
-				"modules {edges {node {objectId name path icon settings fields {...on Element {value}} categories {...on Element {value}} connected_class sub_menu {...on Element {value}} position data_fields {...on Element {value}} setting_fields {...on Element {value}}  filters {...on Element {value}}}}}"
-			];
-		} else if (appId === "patflow") {
-			return [
-				"name",
-				"objectId",
-				"path",
-				"time_settings",
-				"record_settings",
-				"logo {name url}",
-				"data"
-			];
-		} else return [];
-	}, []);
-
-	const { data, loading, error } = useQuery(
-		appId === "patstore"
-			? generateGraphQLQuery_4_1({
-					type: "get",
-					objectName: "Project",
-					queryName: "project",
-					fields: projectFields
-				})
-			: generateGraphQLQuery_4_1({
-					type: "get",
-					objectName: "Project",
-					queryName: "project",
-					fields: projectFields
-				}),
-		{
-			variables: {
-				id: projectId
-			},
-			skip: !projectId
-		}
-	);
-
-	const { roles } = useFindRoles({
-		appId,
-		projectId: currentProject?.objectId
-	});
-
-	useEffect(() => {
-		if (data) {
-			let project;
-
-			if (appId === "patstore") {
-				project = cloneDeep(data.project);
-
-				const modules =
-					project?.modules?.edges?.map((edge: { node: Module }) =>
-						sanitizeGraphQlNode(edge.node)
-					) || undefined;
-				if (modules) {
-					project["modules"] = modules;
-				}
-			} else {
-				project = data.project;
-			}
-			setCurrentProject(project);
-		}
-	}, [data]);
-
-	useEffect(() => {
-		if (currentProject) {
-			Cookies.set(project_id, currentProject.objectId);
-			Cookies.set(project_path, `${currentProject.path}`);
-		}
-	}, [currentProject]);
-
-	const loadProject = useCallback((projectId: string, initial?: boolean) => {
-		router.push("/");
-		if (initial) {
-			const localId = Cookies.get(project_id);
-			if (localId) {
-				setProjectId(localId);
-			} else {
-				setProjectId(projectId);
-			}
-		}
-		setProjectId(projectId);
-	}, []);
-
+	// `project` is genuinely undefined for a user with no projects (rare);
+	// cast rather than widen `ContextValues.project` (see its definition).
 	const projectContextObject = useMemo(
-		() => ({
-			project: currentProject,
-			loadProject,
-			roles
-		}),
-		[currentProject, roles]
+		() =>
+			({
+				project,
+				loadProject,
+				roles
+			}) as ContextValues,
+		[project, roles, loadProject]
 	);
 
 	return (
 		<AppContext.Provider value={projectContextObject}>
-			<ProjectLoader
-				loading={loading}
-				error={error}
-				project={currentProject}
-				appId={appId}
-			/>
 			{children}
 		</AppContext.Provider>
 	);

@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 @import "../../Task.module.scss";
 
@@ -29,11 +30,11 @@
   border: 1px dotted constants.$primary;
   color: constants.$primary;
   background-color: transparent;
-  font-size: map-get($map: constants.$font_size, $key: "sm");
+  font-size: map.get(constants.$font_size, "sm");
   cursor: pointer;
   font-weight: 500;
-  padding: map-get($map: constants.$padding, $key: "xs");
-  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  padding: map.get(constants.$padding, "xs");
+  border-radius: map.get(constants.$border_radius, "md");
   &:hover {
     background-color: constants.$primary;
     color: constants.$white;

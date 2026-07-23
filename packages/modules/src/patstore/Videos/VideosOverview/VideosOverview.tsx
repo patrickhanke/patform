@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
@@ -8,16 +8,11 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, VideoClass } from "@repo/types";
-import {
-	PatstoreAppContext,
-	useDataHandler,
-	useFindModuleData
-} from "@repo/provider";
+import { Filter, Module, VideoClass } from "@repo/types";
+import { useDataHandler, useFindModuleData } from "@repo/provider";
 
-const VideosOverview = () => {
+const VideosOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler(false);
-	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -26,8 +21,8 @@ const VideosOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<VideoClass>({
-		module: currentModule,
+	const { data, refetch, count, loading: dataLoading } = useFindModuleData<VideoClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -37,11 +32,11 @@ const VideosOverview = () => {
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
 	const columns = useCreateColumns<VideoClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Video",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	const pageHeaderButtons = useMemo(
@@ -60,13 +55,12 @@ const VideosOverview = () => {
 
 	return (
 		<Page
-			title={currentModule.name}
-			// pageHeaderContent={<CreatePerson refetch={refetch} />}
+			title={module.name}
 			pageHeaderButtons={pageHeaderButtons}
 			createClass={{
 				className: "Video",
 				text: "Neue Video erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			emptyContent={true}
@@ -75,6 +69,7 @@ const VideosOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
@@ -84,7 +79,7 @@ const VideosOverview = () => {
 				setOrder={setOrder}
 				filters={filters}
 				setFilters={setFilters}
-				filterColumns={currentModule.filters || []}
+				filterColumns={module.filters || []}
 			/>
 			<Modal
 				isOpen={deleteModal}

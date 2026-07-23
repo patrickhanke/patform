@@ -1,17 +1,21 @@
 "use client";
 
-import { ApolloAppProvider, AppContext, AppContextProvider } from "@repo/provider";
-import { PatstoreUser } from "@repo/types";
+import { ApolloAppProvider, AppContextProvider } from "@repo/provider";
+import { PatstoreProject, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import {
   PatstoreAppContextProvider,
-  DataContextProvider
+  DataContextProvider,
 } from "@repo/provider";
 
 const LayoutContext = ({
   user,
+  project,
+  roles,
   children,
 }: {
   user: PatstoreUser;
+  project?: PatstoreProject;
+  roles?: PatstoreRoleClass[];
   children: React.ReactNode;
 }) => {
   return (
@@ -20,21 +24,12 @@ const LayoutContext = ({
       appId={process.env.SASHIDO_APP_ID as string}
       restKey={process.env.SASHIDO_REST_KEY as string}
     >
-      <AppContextProvider projects={user.projects}>
-        <AppContext.Consumer>
-          {({ project, roles }) => {
-            if (!project || !project.objectId) {
-              return null;
-            }
-            return (
-              <PatstoreAppContextProvider project={project} roles={roles}>
-                <DataContextProvider>
-                    {children}
-                </DataContextProvider>
-              </PatstoreAppContextProvider>
-            );
-          }}
-        </AppContext.Consumer>
+      <AppContextProvider project={project} roles={roles}>
+        {project?.objectId ? (
+          <PatstoreAppContextProvider project={project} roles={roles || []}>
+            <DataContextProvider>{children}</DataContextProvider>
+          </PatstoreAppContextProvider>
+        ) : null}
       </AppContextProvider>
     </ApolloAppProvider>
   );

@@ -1,3 +1,5 @@
+"use client";
+
 import { getWeek } from "date-fns";
 import React from "react";
 import styles from "../SiteHeader.module.scss";

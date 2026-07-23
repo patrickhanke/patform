@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import "@repo/styles/typography";
 import "@repo/styles/global";
 import Framework from "./content/Framework";
-import './styles.scss';
+import "./styles.scss";
 
 export const metadata = {
   title: "patflow",
@@ -17,7 +17,7 @@ export default async function RootLayout({
   return (
     <html lang="de">
       <body className={"patflow_login_layout"}>
-        <Framework />
+          <Framework />
         <div className="patflow_login_content">{children}</div>
       </body>
     </html>

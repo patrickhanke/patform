@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .create_record_content {
   @include constants.flexbox(
@@ -39,7 +40,7 @@
 
 .step_description {
   color: constants.$grey_shaded;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
 }
 
 .existing_records_section {
@@ -73,13 +74,13 @@
   );
   padding: constants.$sm constants.$md;
   border: 1px solid constants.$border_color;
-  border-radius: map-get(constants.$border_radius, "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
   background: constants.$light;
 }
 
 .record_not_editable {
   color: constants.$grey_shaded;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
   white-space: nowrap;
 }
 
@@ -92,10 +93,10 @@
 .date_button {
   padding: constants.$sm constants.$md;
   border: 1px solid constants.$border_color;
-  border-radius: map-get(constants.$border_radius, "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
   background: constants.$light;
   cursor: pointer;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
   text-align: center;
   transition: all 0.15s ease;
 
@@ -139,7 +140,7 @@
   );
   padding: constants.$md;
   border: 1px solid constants.$border_color;
-  border-radius: map-get(constants.$border_radius, "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
   background: constants.$light;
 
   h4 {
@@ -178,7 +179,7 @@
 
 .breaks_empty {
   color: constants.$grey_shaded;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
 }
 
 .break_item {
@@ -190,7 +191,7 @@
   );
   padding: constants.$sm constants.$md;
   border: 1px solid constants.$border_color;
-  border-radius: map-get(constants.$border_radius, "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
   background: constants.$light;
 }
 
@@ -203,7 +204,7 @@
   );
 
   label {
-    font-size: map-get(constants.$font_size, "sm");
+    font-size: map.get(constants.$font_size, "sm");
     color: constants.$grey_shaded;
     min-width: 28px;
   }
@@ -212,8 +213,8 @@
 .time_input {
   padding: 2px constants.$sm;
   border: 1px solid constants.$border_color;
-  border-radius: map-get(constants.$border_radius, "sm");
-  font-size: map-get(constants.$font_size, "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
+  font-size: map.get(constants.$font_size, "sm");
   background: constants.$white;
 }
 
@@ -232,7 +233,7 @@
 
 .validation_hint {
   color: constants.$red;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
 }
 
 .back_button_row {

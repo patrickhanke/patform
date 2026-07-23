@@ -1,5 +1,4 @@
-"use server";
-
+import { Suspense } from "react";
 import { compileAxiosError } from "@repo/provider";
 import { DisplayProject, RegisterForm } from "../../content";
 import axios from "axios";
@@ -23,18 +22,19 @@ const fetchProject = async (path: string) => {
 };
 
 interface InviteProps {
-  searchParams: {
+  searchParams: Promise<{
     email: string;
     key: string;
-  };
-  params: {
+  }>;
+  params: Promise<{
     project_path: string;
-  };
+  }>;
 }
 
-const Invite: React.FC<InviteProps> = async ({ searchParams, params }) => {
-  const response = await fetchProject(`${params.project_path}`);
-  const { email, key } = searchParams;
+async function InviteContent({ searchParams, params }: InviteProps) {
+  const { project_path } = await params;
+  const response = await fetchProject(`${project_path}`);
+  const { email, key } = await searchParams;
 
   if (response.success === false) {
     return (
@@ -72,6 +72,14 @@ const Invite: React.FC<InviteProps> = async ({ searchParams, params }) => {
         )}
       </div>
     </>
+  );
+}
+
+const Invite = ({ searchParams, params }: InviteProps) => {
+  return (
+    <Suspense fallback={<p>Laden...</p>}>
+      <InviteContent searchParams={searchParams} params={params} />
+    </Suspense>
   );
 };
 

@@ -6,21 +6,20 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { useContext, useState } from "react";
-import { Filter, FormClass } from "@repo/types";
-import { PatstoreAppContext, useFindModuleData } from "@repo/provider";
+import { useState } from "react";
+import { Filter, FormClass, Module } from "@repo/types";
+import { useFindModuleData } from "@repo/provider";
 import initial_data from "./constants/initial_data";
 
-const FormsOverview = () => {
-	const { currentModule } = useContext(PatstoreAppContext);
+const FormsOverview = ({ module }: { module: Module }) => {
 	const [filters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<FormClass>({
-		module: currentModule,
+	const { data, refetch, count, loading: dataLoading } = useFindModuleData<FormClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -28,22 +27,22 @@ const FormsOverview = () => {
 	});
 
 	const columns = useCreateColumns<FormClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Form",
 		editLink: "forms",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			emptyContent={true}
 			createClass={{
 				className: "Form",
 				text: "Neues Formular erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch,
 				initialData: initial_data
 			}}
@@ -52,6 +51,7 @@ const FormsOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}

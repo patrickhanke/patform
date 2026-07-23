@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .patflow_user_container {
   @include constants.flexbox(
@@ -53,5 +54,5 @@
 
 .patflow_display_user_no_image_character {
   position: relative;
-  font-size: map-get($map: constants.$font_size, $key: "xs");
+  font-size: map.get(constants.$font_size, "xs");
 }

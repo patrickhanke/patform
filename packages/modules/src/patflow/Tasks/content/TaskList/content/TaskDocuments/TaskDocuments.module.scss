@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 @import "../../Task.module.scss";
 
@@ -34,6 +35,6 @@
     $gap: constants.$xs
   );
   background-color: constants.$lightest;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   height: 100%;
 }

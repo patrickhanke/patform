@@ -1,6 +1,4 @@
-"use server";
-
-import React from "react";
+import React, { Suspense } from "react";
 import axios from "axios";
 import { PasswordForm, DisplayProject } from "../../content";
 import { compileAxiosError } from "@repo/provider";
@@ -26,17 +24,17 @@ const fetchUserData = async (email: string, key: string) => {
 };
 
 interface PasswordProps {
-  searchParams: {
+  searchParams: Promise<{
     email: string;
-  };
-  params: {
+  }>;
+  params: Promise<{
     key: string;
-  };
+  }>;
 }
 
-const Password = async ({ searchParams, params }: PasswordProps) => {
-  const { email } = searchParams;
-  const { key } = params;
+async function PasswordContent({ searchParams, params }: PasswordProps) {
+  const { email } = await searchParams;
+  const { key } = await params;
 
   const response = await fetchUserData(email, key);
 
@@ -59,6 +57,14 @@ const Password = async ({ searchParams, params }: PasswordProps) => {
         />
       )}
     </>
+  );
+}
+
+const Password = ({ searchParams, params }: PasswordProps) => {
+  return (
+    <Suspense fallback={<p>Laden...</p>}>
+      <PasswordContent searchParams={searchParams} params={params} />
+    </Suspense>
   );
 };
 

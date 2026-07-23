@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export const runtime = "edge";
-
 // Note: File uploads using Parse SDK need to remain client-side
 // as they require the Parse SDK's File handling capabilities.
 // This endpoint can be used for other file operations if needed.

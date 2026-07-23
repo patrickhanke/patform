@@ -16,7 +16,7 @@ const useGetData: UseGetDataHook<Classes> = ({
 	afterSaveHandler
 }) => {
 	const cleanObjectName = objectName.replace(/_/g, "");
-	const { loading, data, refetch, error } = useQuery(
+	const { data, refetch, error } = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "get",
 			objectName: cleanObjectName,
@@ -42,7 +42,7 @@ const useGetData: UseGetDataHook<Classes> = ({
 	}, [data]);
 
 	return {
-		loading,
+		loading: false,
 		data: sanitizeGraphQlNode<Classes>(
 			get(data, `${cleanObjectName.toLowerCase()}`, null)
 		),

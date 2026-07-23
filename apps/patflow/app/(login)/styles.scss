@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .patflow_login_layout {
   @include constants.flexbox(
@@ -24,15 +25,15 @@
     $gap: 12px
   );
   max-width: 840px;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   overflow: auto;
   h1 {
-    font-size: map-get($map: constants.$font_size, $key: "xxl");
+    font-size: map.get(constants.$font_size, "xxl");
     font-weight: 600;
     margin-bottom: 30px;
   }
   h2 {
-    font-size: map-get($map: constants.$font_size, $key: "lg");
+    font-size: map.get(constants.$font_size, "lg");
     font-weight: 500;
     margin-bottom: 9px;
     margin-top: 18px;
@@ -66,7 +67,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
 }
 
 .patflow_login_form_container {

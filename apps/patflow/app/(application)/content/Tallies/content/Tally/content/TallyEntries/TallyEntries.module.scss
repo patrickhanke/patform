@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 @import "../../Tally.module.scss";
 
@@ -39,7 +40,7 @@
 
 .entry_content_text {
   flex: 1 1 calc(100% - 24px);
-  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
 }
 
 .create_entry_container {
@@ -50,6 +51,6 @@
     $gap: constants.$xs
   );
   background-color: constants.$lightest;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   height: 100%;
 }

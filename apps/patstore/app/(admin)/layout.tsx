@@ -1,12 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import "@repo/styles/global";
 import "@repo/styles/layout";
 import { PatstoreProject } from "@repo/types";
 import { cookies } from "next/headers";
-import {AdminRenderSidebar, AdminLayoutContext, AdminSiteHeader} from "@repo/modules";
+import {
+  AdminRenderSidebar,
+  AdminLayoutContext,
+  AdminSiteHeader,
+} from "@repo/modules";
 
 const getData = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get(process.env.SESSION_TOKEN as string)?.value;
 
   const httpHeaders = {
@@ -17,54 +21,57 @@ const getData = async () => {
 
   const headers = new Headers(httpHeaders);
 
-  const response = await fetch(`${process.env.SASHIDO_API_URL}classes/Project`, {
-    method: "GET",
-    headers,
-  }).then((response) => response.json());
+  const response = await fetch(
+    `${process.env.SASHIDO_API_URL}classes/Project`,
+    {
+      method: "GET",
+      headers,
+    }
+  ).then((response) => response.json());
 
   return response.results;
 };
 
-export default async function RootLayout({
-	children
+async function AdminShell({ children }: { children: React.ReactNode }) {
+  const projects: PatstoreProject[] = await getData();
+
+  return (
+    <div className={"layout"}>
+      <AdminLayoutContext projects={[]}>
+        <AdminRenderSidebar
+          menuItems={projects.map((project: PatstoreProject) => ({
+            label: project.name,
+            icon: undefined,
+            value: `/admin/projects/${project.objectId}`,
+            sub_menu: [],
+          }))}
+        />
+
+        <div className={"main_content"} id="main_content">
+          <div className={"content_container"} id="page_content">
+            <AdminSiteHeader />
+            <div className={"content"} id="content">
+              {children}
+            </div>
+          </div>
+        </div>
+      </AdminLayoutContext>
+    </div>
+  );
+}
+
+export default function RootLayout({
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-
-	const projects: PatstoreProject[] = await getData();
-
-	return (
-		<html lang="de">
-			<body>
-				<div className={"layout"}>
-					<AdminLayoutContext
-						projects={[]}
-					>
-						<AdminRenderSidebar
-							menuItems={projects.map(
-								(project: PatstoreProject) => ({
-									label: project.name,
-									icon: undefined,
-									value: `/admin/projects/${project.objectId}`,
-									sub_menu: []
-								})
-							)}
-						/>
-
-						<div className={"main_content"} id="main_content">
-							<div
-								className={"content_container"}
-								id="page_content"
-							>
-								<AdminSiteHeader />
-								<div className={"content"} id="content">
-									{children}
-								</div>
-							</div>
-						</div>
-					</AdminLayoutContext>
-				</div>
-			</body>
-		</html>
-	);
+  return (
+    <html lang="de">
+      <body>
+        <Suspense fallback={<div className={"layout"} />}>
+          <AdminShell>{children}</AdminShell>
+        </Suspense>
+      </body>
+    </html>
+  );
 }

@@ -10,7 +10,7 @@ function useFindModuleData<T extends Classes>({
 	order,
 	additionalFields = []
 }: {
-	module: Module;
+	module?: Module;
 	filters: Filter[];
 	limit: number;
 	skip: number;
@@ -23,27 +23,28 @@ function useFindModuleData<T extends Classes>({
 	count: number;
 } {
 	const { loading, data, refetch, count } = useFindData({
-		objectName: module.connected_class,
+		objectName: (module?.connected_class || "_User") as string,
 		fields: [
-			...generateQueryFromFields(module.fields),
+			...generateQueryFromFields(module?.fields ?? []),
 			...additionalFields,
 			"data"
 		],
-		moduleId: module.objectId,
+		moduleId: module?.objectId,
 		filters,
 		limit,
 		skip,
-		order
+		order,
+		skipQuery: !module?.connected_class
 	});
 
 	const returnValue = useMemo(
 		() => ({
-			loading,
+			loading: !module || loading,
 			data,
 			refetch,
 			count
 		}),
-		[data, loading]
+		[data, loading, module]
 	);
 
 	return returnValue;

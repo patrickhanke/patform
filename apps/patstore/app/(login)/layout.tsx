@@ -1,8 +1,7 @@
-import React from "react";
+import React, { Suspense } from "react";
 import "@repo/styles/global";
 import "./styles.scss";
 import Framework from "./content/Framework";
-
 
 export const metadata = {
   title: "Patstore Login",
@@ -17,7 +16,9 @@ export default async function RootLayout({
   return (
     <html lang="de">
       <body className={"login_layout"}>
-        <Framework>{children}</Framework>
+        <Suspense fallback={<div className={"login_layout"} />}>
+          <Framework>{children}</Framework>
+        </Suspense>
       </body>
     </html>
   );

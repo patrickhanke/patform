@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .create_worker_container {
   @include constants.flexbox(
@@ -6,7 +7,7 @@
     $justify: space-between,
     $align: stretch
   );
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   width: 100%;
   height: 100%;
 }

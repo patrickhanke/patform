@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export const runtime = "edge";
-
 // Note: File uploads using Parse SDK need to remain client-side
 // as they require the Parse SDK's File handling capabilities.
 // This endpoint can be used for other file operations if needed.
@@ -22,7 +20,7 @@ export async function POST(request: NextRequest) {
 
 		const cookieStore = await cookies();
 		const sessionToken = cookieStore.get(
-			process.env.SESSION_TOKEN || "patstore_token"
+			process.env.SESSION_TOKEN || "patflow_session_token"
 		)?.value;
 
 		// Convert file to base64 for Parse

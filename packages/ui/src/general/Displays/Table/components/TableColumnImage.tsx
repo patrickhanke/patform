@@ -18,7 +18,11 @@ const TableColumnImage = ({ file }: TableColumnImageProps) => {
 									fileName: file.name,
 									height: 128
 								})}
-								style={{ objectFit: "contain" }}
+								style={{
+									objectFit: "contain",
+									width: "auto",
+									height: "auto"
+								}}
 								height={36}
 								width={64}
 							/>

@@ -22,6 +22,8 @@ import { ColorValues } from "@repo/ui";
 export type TableTypes = {
 	data: TData[];
 	columns: ColumnDef<TData>[];
+	/** When true, renders placeholder rows with skeleton loaders until data is available. */
+	loading?: boolean;
 	/** Optional extra table row rendered directly under each data row (e.g. merged detail cells). */
 	secondaryRow?: (row: Row<TData>) => ReactNode | null;
 	rowStyles?: (row: Row<TData>) => React.StyleHTMLAttributes;

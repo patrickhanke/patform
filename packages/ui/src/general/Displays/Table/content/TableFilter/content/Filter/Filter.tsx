@@ -22,6 +22,8 @@ const Filter: FC<FilterProps> = ({
 	updateFilterValue,
 	options
 }) => {
+	console.log(activeFilter, id, type, operator, isActive, options);
+	console.log({ type });
 	const onValueChange: OnValueChange = useCallback(
 		(value) => {
 			const transformedValue = transformOperatorValueToObject({
@@ -71,7 +73,10 @@ const Filter: FC<FilterProps> = ({
 			);
 		}
 
-		if (isActive && (type === "id" || type === "pointer")) {
+		if (
+			isActive &&
+			(type === "id" || type === "ids" || type === "pointer")
+		) {
 			return (
 				<IdFilter
 					label={label || ""}

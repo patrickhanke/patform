@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { cookies } from "next/headers";
 
-export const runtime = "edge";
-
 // Helper to create axios client with proper headers
 const createAxiosClient = (useMasterKey: boolean, sessionToken?: string) => {
 	const headers: Record<string, string> = {

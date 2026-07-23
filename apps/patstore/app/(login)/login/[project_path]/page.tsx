@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { compileAxiosError } from "@repo/provider";
 import { DisplayProject, LoginForm } from "../../content";
 import axios from "axios";
@@ -20,9 +21,13 @@ const fetchProject = async (path: string) => {
   }
 };
 
-
-const Login = async ({ params }: { params: { project_path: string } }) => {
-  const response = await fetchProject(`${params.project_path}`);
+async function LoginContent({
+  params,
+}: {
+  params: Promise<{ project_path: string }>;
+}) {
+  const { project_path } = await params;
+  const response = await fetchProject(`${project_path}`);
 
   if (response.success === false) {
     return (
@@ -39,6 +44,18 @@ const Login = async ({ params }: { params: { project_path: string } }) => {
       <DisplayProject project={response.project} />
       <LoginForm />
     </>
+  );
+}
+
+const Login = ({
+  params,
+}: {
+  params: Promise<{ project_path: string }>;
+}) => {
+  return (
+    <Suspense fallback={<p>Laden...</p>}>
+      <LoginContent params={params} />
+    </Suspense>
   );
 };
 

@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .create_document_container {
   @include constants.flexbox(
@@ -8,6 +9,6 @@
     $gap: constants.$xs
   );
   background-color: constants.$lightest;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   height: 100%;
 }

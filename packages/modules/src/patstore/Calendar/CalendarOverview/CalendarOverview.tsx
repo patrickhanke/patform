@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
@@ -10,16 +10,11 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import {
-	PatstoreAppContext,
-	useDataHandler,
-	useFindModuleData
-} from "@repo/provider";
-import { AppointmentClass, Filter } from "@repo/types";
+import { useDataHandler, useFindModuleData } from "@repo/provider";
+import { AppointmentClass, Filter, Module } from "@repo/types";
 
-const CalendarOverview = () => {
+const CalendarOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler();
-	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [pagination, setPagination] = useState({
@@ -28,8 +23,13 @@ const CalendarOverview = () => {
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 
-	const { data, refetch, count } = useFindModuleData<AppointmentClass>({
-		module: currentModule,
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading
+	} = useFindModuleData<AppointmentClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -47,12 +47,12 @@ const CalendarOverview = () => {
 				type: "edit_date",
 				label: "Datum"
 			},
-			...generateColumnsFromFields(currentModule.fields)
+			...generateColumnsFromFields(module.fields)
 		],
-		fields: currentModule.data_fields,
+		fields: module.data_fields,
 		className: "Appointment",
 		refetch,
-		categories: currentModule?.categories,
+		categories: module?.categories,
 		constants: {}
 	});
 
@@ -92,13 +92,13 @@ const CalendarOverview = () => {
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
 			createClass={{
 				className: "Appointment",
 				text: "Neuen Kalendereintrag erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			refetch={refetch}
@@ -107,6 +107,7 @@ const CalendarOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}

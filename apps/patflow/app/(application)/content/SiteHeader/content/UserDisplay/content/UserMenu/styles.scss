@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .user_menu_container {
   position: fixed;
@@ -17,7 +18,7 @@
 
 .user_menu_item {
   font-family: "Geist";
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-size: map.get(constants.$font_size, "md");
   padding: constants.$md;
   cursor: pointer;
   display: flex;

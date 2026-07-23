@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
@@ -8,16 +8,11 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, PersonClass } from "@repo/types";
-import {
-	PatstoreAppContext,
-	useDataHandler,
-	useFindModuleData
-} from "@repo/provider";
+import { Filter, Module, PersonClass } from "@repo/types";
+import { useDataHandler, useFindModuleData } from "@repo/provider";
 
-const PersonsOverview = () => {
+const PersonsOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler(false);
-	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -26,8 +21,8 @@ const PersonsOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<PersonClass>({
-		module: currentModule,
+	const { data, refetch, count, loading: dataLoading } = useFindModuleData<PersonClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -37,11 +32,11 @@ const PersonsOverview = () => {
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
 	const columns = useCreateColumns<PersonClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Person",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	const pageHeaderButtons = useMemo(
@@ -60,13 +55,12 @@ const PersonsOverview = () => {
 
 	return (
 		<Page
-			title={currentModule.name}
-			// pageHeaderContent={<CreatePerson refetch={refetch} />}
+			title={module.name}
 			pageHeaderButtons={pageHeaderButtons}
 			createClass={{
 				className: "Person",
 				text: "Neue Person erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			emptyContent={true}
@@ -75,6 +69,7 @@ const PersonsOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
@@ -84,9 +79,9 @@ const PersonsOverview = () => {
 				setOrder={setOrder}
 				filters={filters}
 				setFilters={setFilters}
-				filterColumns={currentModule.filters || []}
+				filterColumns={module.filters || []}
 				rowIdResolver={(row) => (row as PersonClass).objectId}
-				exportColumns={generateColumnsFromFields(currentModule.fields)}
+				exportColumns={generateColumnsFromFields(module.fields)}
 			/>
 			<Modal
 				isOpen={deleteModal}
