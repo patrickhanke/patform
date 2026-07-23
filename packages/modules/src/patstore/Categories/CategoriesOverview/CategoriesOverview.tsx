@@ -1,17 +1,16 @@
 "use client";
 
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
-import { CategoryClass } from "@repo/types";
-import { PatstoreAppContext, useFindData } from "@repo/provider";
+import { CategoryClass, Module } from "@repo/types";
+import { useFindData } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import CreateCategory from "./components/CreateCategory";
 
-const Categories = () => {
-	const { currentModule } = useContext(PatstoreAppContext);
+const CategoriesOverview = ({ module }: { module: Module }) => {
 	const pageStates = useMemo(
-		() => currentModule?.settings?.categories,
-		[currentModule]
+		() => module.settings?.categories,
+		[module]
 	);
 	const [activeState, setActiveState] = useState(
 		pageStates ? pageStates[0] : undefined
@@ -58,10 +57,10 @@ const Categories = () => {
 			},
 			{ id: "color", type: "edit_color", label: "Farbe" }
 		],
-		fields: currentModule.data_fields,
+		fields: module.data_fields,
 		className: "Category",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	const pageHeaderContent = useMemo(
@@ -74,14 +73,13 @@ const Categories = () => {
 					type={activeState?.value}
 				/>
 			) : null,
-		[activeState]
+		[activeState, refetch]
 	);
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			pageHeaderContent={pageHeaderContent}
-			// emptyContent={true}
 			pageStates={pageStates}
 			pageState={activeState}
 			setPageState={setActiveState}
@@ -104,4 +102,4 @@ const Categories = () => {
 	);
 };
 
-export default Categories;
+export default CategoriesOverview;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
@@ -11,15 +11,10 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, ImageClass } from "@repo/types";
-import {
-	PatstoreAppContext,
-	useDataHandler,
-	useFindModuleData
-} from "@repo/provider";
+import { Filter, ImageClass, Module } from "@repo/types";
+import { useDataHandler, useFindModuleData } from "@repo/provider";
 
-const ImagesOverview = () => {
-	const { currentModule } = useContext(PatstoreAppContext);
+const ImagesOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler(false);
 
 	const [uploadImages, setUploadImages] = useState(false);
@@ -32,8 +27,8 @@ const ImagesOverview = () => {
 
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<ImageClass>({
-		module: currentModule,
+	const { data, refetch, count, loading: dataLoading } = useFindModuleData<ImageClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -43,11 +38,11 @@ const ImagesOverview = () => {
 	const [deleteModal, setDeleteModal] = useState(false);
 
 	const columns = useCreateColumns<ImageClass>({
-		data: [...generateColumnsFromFields(currentModule.fields)],
-		fields: currentModule.data_fields,
+		data: [...generateColumnsFromFields(module.fields)],
+		fields: module.data_fields,
 		className: "Image",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	const renderFilters = useMemo(() => {
@@ -68,7 +63,7 @@ const ImagesOverview = () => {
 				initialFilters={[]}
 			/>
 		);
-	}, []);
+	}, [filters]);
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -90,13 +85,13 @@ const ImagesOverview = () => {
 
 	return (
 		<Page
-			title="Bilder"
+			title={module.name}
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
 			createClass={{
 				className: "Image",
 				text: "Neue Bilder erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 		>
@@ -104,6 +99,7 @@ const ImagesOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}

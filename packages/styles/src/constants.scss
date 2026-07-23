@@ -1,5 +1,5 @@
-@forward "constants/sizes";
-@forward "constants/colors";
-@forward "constants/breakpoints";
-@forward "constants/elements";
-@forward "constants/styles";
+@forward "./constants/sizes.scss";
+@forward "./constants/colors.scss";
+@forward "./constants/breakpoints.scss";
+@forward "./constants/elements.scss";
+@forward "./constants/styles.scss";

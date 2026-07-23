@@ -1,8 +1,7 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
-	PatstoreAppContext,
 	useDataHandler,
 	useFindModuleData
 } from "@repo/provider";
@@ -13,10 +12,9 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, LocationClass } from "@repo/types";
+import { Filter, LocationClass, Module } from "@repo/types";
 
-const LocationOverview = () => {
-	const { currentModule } = useContext(PatstoreAppContext);
+const LocationOverview = ({ module }: { module: Module }) => {
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [loading, setLoading] = useState(false);
 	const { deleteData } = useDataHandler();
@@ -29,8 +27,8 @@ const LocationOverview = () => {
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<LocationClass>({
-		module: currentModule,
+	const { data, refetch, count, loading: dataLoading } = useFindModuleData<LocationClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -38,11 +36,11 @@ const LocationOverview = () => {
 	});
 
 	const columns = useCreateColumns<LocationClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Location",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	const pageHeaderButtons = useMemo(
@@ -61,12 +59,12 @@ const LocationOverview = () => {
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			emptyContent={true}
 			createClass={{
 				className: "Location",
 				text: "Neuen Ort erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			refetch={refetch}
@@ -75,16 +73,16 @@ const LocationOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
-				// filterContent={renderFilters}
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				setOrder={setOrder}
 				filters={filters}
 				setFilters={setFilters}
-				filterColumns={currentModule.filters}
+				filterColumns={module.filters}
 				enableRowSelection
 			/>
 			<Modal

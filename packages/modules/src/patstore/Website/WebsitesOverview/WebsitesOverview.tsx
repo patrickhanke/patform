@@ -3,11 +3,11 @@
 import { useContext } from "react";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { Page, Table, useCreateColumns } from "@repo/ui";
-import { WebpageClass } from "@repo/types";
+import { Module, WebpageClass } from "@repo/types";
 import createClass from "./constants/createWebpageClass";
 
-const WebsitesOverview = () => {
-	const { currentModule, user } = useContext(PatstoreAppContext);
+const WebsitesOverview = ({ module }: { module: Module }) => {
+	const { user } = useContext(PatstoreAppContext);
 
 	const { data, refetch } = useFindData({
 		objectName: "Webpage",
@@ -19,7 +19,7 @@ const WebsitesOverview = () => {
 			"created_by { objectId label portrait { name url } }",
 			"createdAt"
 		],
-		moduleId: currentModule.objectId
+		moduleId: module.objectId
 	});
 
 	const columns = useCreateColumns<WebpageClass>({
@@ -42,18 +42,17 @@ const WebsitesOverview = () => {
 				label: "Erstellt am"
 			}
 		],
-		fields: currentModule.data_fields,
+		fields: module.data_fields,
 		className: "Webpage",
 		refetch,
-		categories: currentModule?.categories,
+		categories: module.categories,
 		editLink: "website/pages"
 	});
 
 	return (
 		<Page
-			title={`${currentModule.name} - Seiten`}
+			title={`${module.name} - Seiten`}
 			description="Übersicht über alle Seiten"
-			// pageHeaderButtons={pageHeaderButtons}
 			createClass={createClass}
 			refetch={refetch}
 		>

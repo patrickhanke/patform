@@ -3,8 +3,8 @@
   "version": "0.6.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3002",
-    "build": "next build",
+    "dev": "next dev --webpack --port 3002",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
@@ -23,7 +23,7 @@
     "immer": "^10.0.4",
     "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
-    "next": "^14.1.4",
+    "next": "^16.3.0-preview.7",
     "rc-image": "^7.11.0",
     "rc-slider": "^10.5.0",
     "sharp": "^0.33.5",

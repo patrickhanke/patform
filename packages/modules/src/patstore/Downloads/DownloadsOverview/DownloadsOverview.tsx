@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
@@ -10,27 +10,24 @@ import {
 	useCreateColumns
 } from "@repo/ui";
 import {
-	PatstoreAppContext,
 	useDataHandler,
 	useFindCategoryPageStates,
 	useFindModuleData,
 	filterModuleCategories
 } from "@repo/provider";
-import { DownloadClass, Filter } from "@repo/types";
+import { DownloadClass, Filter, Module } from "@repo/types";
 
-const DownloadsOverview = () => {
+const DownloadsOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler(false);
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [loading, setLoading] = useState(false);
-	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
 
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
 		{
 			categories:
-				filterModuleCategories(currentModule.categories).categoryIds ||
-				[],
-			categoryModuleId: filterModuleCategories(currentModule.categories)
+				filterModuleCategories(module.categories).categoryIds || [],
+			categoryModuleId: filterModuleCategories(module.categories)
 				.categoryModuleId,
 			filters,
 			setFilters
@@ -43,8 +40,8 @@ const DownloadsOverview = () => {
 	});
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<DownloadClass>({
-		module: currentModule,
+	const { data, refetch, count, loading: dataLoading } = useFindModuleData<DownloadClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -52,11 +49,11 @@ const DownloadsOverview = () => {
 	});
 
 	const columns = useCreateColumns<DownloadClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Download",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	const renderFilters = useMemo(() => {
@@ -77,7 +74,7 @@ const DownloadsOverview = () => {
 				initialFilters={[]}
 			/>
 		);
-	}, []);
+	}, [filters]);
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -95,12 +92,12 @@ const DownloadsOverview = () => {
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			emptyContent={true}
 			createClass={{
 				className: "Download",
 				text: "Neuen Download erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			refetch={refetch}
@@ -112,6 +109,7 @@ const DownloadsOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}

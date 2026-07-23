@@ -2,7 +2,7 @@
 @forward "./layout/buttons.scss";
 @forward "./layout/layout.scss";
 @forward "./layout/inputs.scss";
-@use "constants.scss" as *;
+@use "./constants.scss" as *;
 
 .flex {
   display: flex;

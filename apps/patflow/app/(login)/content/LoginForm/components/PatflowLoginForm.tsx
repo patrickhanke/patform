@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { axiosclient, useFirebaseMessaging } from "@repo/provider";
+import { axiosclient } from "@repo/provider";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import clsx from "clsx";
@@ -18,7 +18,6 @@ const LoginSchema = Yup.object().shape({
 const PatflowLoginForm = () => {
 	const [disabled, setDisabled] = useState(false);
 	const [error, setError] = useState("");
-	const { token } = useFirebaseMessaging({ initialize: false });
 
 	const formik = useFormik({
 		validationSchema: LoginSchema,
@@ -67,10 +66,6 @@ const PatflowLoginForm = () => {
 			setDisabled(false);
 		}
 	});
-
-	if (!token) {
-		return null;
-	}
 
 	return (
 		<div>

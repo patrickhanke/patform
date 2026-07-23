@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
@@ -10,26 +10,23 @@ import {
 } from "@repo/ui";
 import {
 	filterModuleCategories,
-	PatstoreAppContext,
 	useDataHandler,
 	useFindCategoryPageStates,
 	useFindModuleData
 } from "@repo/provider";
 
-import { ArticleClass, Filter } from "@repo/types";
+import { ArticleClass, Filter, Module } from "@repo/types";
 import state from "./constants/articleState";
 
-const ArticlesOverview = () => {
-	const { currentModule } = useContext(PatstoreAppContext);
+const ArticlesOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler();
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
 		{
 			categories:
-				filterModuleCategories(currentModule.categories).categoryIds ||
-				[],
-			categoryModuleId: filterModuleCategories(currentModule.categories)
+				filterModuleCategories(module.categories || []).categoryIds || [],
+			categoryModuleId: filterModuleCategories(module.categories || [])
 				.categoryModuleId,
 			filters,
 			setFilters
@@ -40,8 +37,8 @@ const ArticlesOverview = () => {
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<ArticleClass>({
-		module: currentModule,
+	const { data, refetch, count, loading: dataLoading } = useFindModuleData<ArticleClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -52,11 +49,11 @@ const ArticlesOverview = () => {
 	const [loading, setLoading] = useState(false);
 
 	const columns = useCreateColumns<ArticleClass>({
-		data: generateColumnsFromFields(currentModule?.fields),
-		fields: currentModule?.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Article",
 		refetch,
-		categories: currentModule?.categories,
+		categories: module.categories ?? [],
 		constants: { state }
 	});
 
@@ -76,13 +73,13 @@ const ArticlesOverview = () => {
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
 			createClass={{
 				className: "Article",
 				text: "Neuen Bericht erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			refetch={refetch}
@@ -93,6 +90,7 @@ const ArticlesOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
@@ -101,7 +99,7 @@ const ArticlesOverview = () => {
 				setSelectedRows={setSelectedRows}
 				filters={filters}
 				setFilters={setFilters}
-				filterColumns={currentModule.filters || []}
+				filterColumns={module.filters || []}
 				setOrder={setOrder}
 			/>
 			<Modal

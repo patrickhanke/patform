@@ -1,7 +1,15 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Framework = () => {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <>
       <div className="patflow_login_logo_container">
@@ -15,7 +23,7 @@ const Framework = () => {
         <Link href="/login">Login</Link>
         <Link href="/impressum">Impressum</Link>
         <Link href="/datenschutz">Datenschutz</Link>
-        <p>patwork @{new Date().getFullYear()}</p>
+        <p>patwork @{year}</p>
       </div>
     </>
   );

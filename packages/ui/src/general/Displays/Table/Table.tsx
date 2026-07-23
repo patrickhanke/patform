@@ -14,10 +14,14 @@ import clsx from "clsx";
 import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
 import { PaginationHandlers, TableExport, TableFilter } from "./content";
 import { isArray } from "lodash";
+import { createPlaceholderRows } from "./hooks/useCreateColumns";
+
+const DEFAULT_PLACEHOLDER_ROW_COUNT = 10;
 
 const Table: React.FC<TableTypes> = ({
 	data,
 	columns,
+	loading = false,
 	rowStyles,
 	secondaryRow,
 	cellBorders = false,
@@ -36,7 +40,13 @@ const Table: React.FC<TableTypes> = ({
 	exportColumns = [],
 	rowIdResolver
 }) => {
-	const tableData = useMemo(() => data, [data]);
+	const tableData = useMemo(() => {
+		if (loading) {
+			const count = pagination?.pageSize ?? DEFAULT_PLACEHOLDER_ROW_COUNT;
+			return createPlaceholderRows(count);
+		}
+		return data;
+	}, [data, loading, pagination?.pageSize]);
 	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const resolveRowId = useCallback(
@@ -244,11 +254,12 @@ const Table: React.FC<TableTypes> = ({
 													minWidth: "30px !important"
 												}}
 												type="checkbox"
+												disabled={loading}
 												onChange={() =>
 													handleSelectAll()
 												}
 												checked={
-													selectedRows
+													!loading && selectedRows
 														? selectedRows.length ===
 															table.getRowModel()
 																.rows.length
@@ -301,7 +312,8 @@ const Table: React.FC<TableTypes> = ({
 										)
 									: false;
 
-								const subRowContent = secondaryRow?.(row);
+								const subRowContent =
+									!loading && secondaryRow?.(row);
 								const colspanRest = Math.max(
 									1,
 									row.getVisibleCells().length - 1
@@ -325,7 +337,11 @@ const Table: React.FC<TableTypes> = ({
 																"30px !important"
 														}}
 														type="checkbox"
-														checked={isSelected}
+														disabled={loading}
+														checked={
+															!loading &&
+															isSelected
+														}
 														onChange={() =>
 															handleRowSelection(
 																resolveRowId(

@@ -5,7 +5,7 @@ import {
 	SelectElement,
 	SlideIn
 } from "@repo/ui";
-import { useContext, useMemo, useState } from "react";
+import { Suspense, useContext, useMemo, useState } from "react";
 import { PatstoreAppContext } from "@repo/provider";
 import { useFindData } from "@repo/provider";
 import { PersonClass } from "@repo/types";
@@ -22,7 +22,7 @@ const TableColumnPersons = ({
 
 	const { data: personData } = useFindData({
 		objectName: "Person",
-		fields: ["objectId", "label", "portrait"],
+		fields: ["objectId", "label", "portrait", "image"],
 		moduleId: modules.find((module) => module.path === "/persons")?.objectId
 	});
 

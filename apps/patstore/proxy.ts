@@ -4,7 +4,7 @@ import { PatstoreUser } from "@repo/types";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 
   // exclude paths
   const { pathname } = request.nextUrl;

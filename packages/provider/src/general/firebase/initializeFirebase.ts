@@ -3,6 +3,9 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { getMessaging, getToken, Messaging } from "firebase/messaging";
 
+const SERVICE_WORKER_PATH = "/firebase-messaging-sw.js";
+const FIREBASE_SW_VERSION = "11.1.0";
+
 const firebaseConfig = {
 	apiKey: process.env.FIREBASE_API_KEY,
 	authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -24,6 +27,7 @@ const isFirebaseConfigured = Boolean(
 export let messaging: Messaging | undefined;
 
 let app: FirebaseApp | undefined;
+let serviceWorkerRegistration: ServiceWorkerRegistration | undefined;
 
 if (isFirebaseConfigured) {
 	app = initializeApp(firebaseConfig);
@@ -37,21 +41,68 @@ if (isFirebaseConfigured) {
 	);
 }
 
+export async function registerFirebaseServiceWorker(): Promise<
+	ServiceWorkerRegistration | undefined
+> {
+	if (typeof window === "undefined" || !("serviceWorker" in navigator)) {
+		return undefined;
+	}
+
+	if (serviceWorkerRegistration?.active) {
+		return serviceWorkerRegistration;
+	}
+
+	try {
+		const existingRegistrations =
+			await navigator.serviceWorker.getRegistrations();
+		const existing = existingRegistrations.find((registration) =>
+			registration.active?.scriptURL.includes("firebase-messaging-sw")
+		);
+
+		if (existing?.active) {
+			serviceWorkerRegistration = existing;
+			return existing;
+		}
+
+		serviceWorkerRegistration = await navigator.serviceWorker.register(
+			SERVICE_WORKER_PATH,
+			{ scope: "/" }
+		);
+
+		await navigator.serviceWorker.ready;
+		return serviceWorkerRegistration;
+	} catch (err) {
+		console.error("Service Worker registration failed:", err);
+		return undefined;
+	}
+}
+
 export const requestPermissionAndGetToken = async () => {
 	if (!messaging) {
 		return null;
 	}
 
 	try {
-		await Notification.requestPermission();
+		const permission = await Notification.requestPermission();
+		if (permission !== "granted") {
+			return null;
+		}
+
+		const registration = await registerFirebaseServiceWorker();
+		if (!registration) {
+			return null;
+		}
 
 		const token = await getToken(messaging, {
 			vapidKey: firebaseConfig.vapidKey,
+			serviceWorkerRegistration: registration,
 		});
 
-		return token;
+		return token || null;
 	} catch (err) {
 		console.error("Error getting messaging token:", err);
 		return null;
 	}
 };
+
+export { SERVICE_WORKER_PATH, FIREBASE_SW_VERSION, firebaseConfig };

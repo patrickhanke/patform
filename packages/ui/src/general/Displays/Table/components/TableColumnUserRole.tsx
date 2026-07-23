@@ -26,7 +26,11 @@ const TableColumnUserRole = ({
 	user: PatstoreUser;
 	refetch: ApolloRefetch;
 }) => {
-	const { roles } = useAppContext();
+	// `AppContext` is shared with patflow (whose roles have a different
+	// shape), so `useAppContext()` types `roles` loosely. This component is
+	// patstore-only and relies on the concrete PatstoreRoleClass shape.
+	const { roles: contextRoles } = useAppContext();
+	const roles = contextRoles as PatstoreRoleClass[];
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [initialRole, setInitialRole] = useState<string | undefined>(

@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .ticket_details_container {
   @include constants.flexbox(
@@ -8,7 +9,7 @@
     $justify: flex-start,
     $gap: 0
   );
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
 }
 
 .ticket_slidein_content {
@@ -47,7 +48,7 @@
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: map-get(constants.$padding, "sm");
+  padding: map.get(constants.$padding, "sm");
 }
 
 .ticket_slidein_footer {

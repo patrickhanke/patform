@@ -1,34 +1,30 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
 	Page,
-	RenderFilters,
 	Separator,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
 import {
-	PatstoreAppContext,
 	useDataHandler,
 	useFindCategoryPageStates,
 	useFindModuleData,
 	filterModuleCategories
 } from "@repo/provider";
-import { Filter, GroupClass } from "@repo/types";
+import { Filter, GroupClass, Module } from "@repo/types";
 
-const GroupOverview = () => {
+const GroupOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler();
-	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
 		{
 			categories:
-				filterModuleCategories(currentModule.categories).categoryIds ||
-				[],
-			categoryModuleId: filterModuleCategories(currentModule.categories)
+				filterModuleCategories(module.categories).categoryIds || [],
+			categoryModuleId: filterModuleCategories(module.categories)
 				.categoryModuleId,
 			filters,
 			setFilters
@@ -44,8 +40,13 @@ const GroupOverview = () => {
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<GroupClass>({
-		module: currentModule,
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading
+	} = useFindModuleData<GroupClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -53,32 +54,12 @@ const GroupOverview = () => {
 	});
 
 	const columns = useCreateColumns<GroupClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Group",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
-
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, []);
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -96,13 +77,13 @@ const GroupOverview = () => {
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			emptyContent={true}
 			pageHeaderButtons={pageHeaderButtons}
 			createClass={{
 				className: "Group",
 				text: "Neue Gruppe erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			refetch={refetch}
@@ -114,10 +95,13 @@ const GroupOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
-				filterContent={renderFilters}
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={module.filters}
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				setOrder={setOrder}

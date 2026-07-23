@@ -1,36 +1,29 @@
 "use client";
 
-import { useContext, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
 	generateColumnsFromFields,
 	Modal,
 	Page,
-	RenderFilters,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, NewsClass } from "@repo/types";
+import { Filter, Module, NewsClass } from "@repo/types";
 import {
-	PatstoreAppContext,
 	useDataHandler,
-	useFindModuleData
-} from "@repo/provider";
-import {
+	useFindModuleData,
 	filterModuleCategories,
 	useFindCategoryPageStates
 } from "@repo/provider";
 
-const NewsOverview = () => {
-	const { currentModule } = useContext(PatstoreAppContext);
+const NewsOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler();
-
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
 		{
 			categories:
-				filterModuleCategories(currentModule.categories).categoryIds ||
-				[],
-			categoryModuleId: filterModuleCategories(currentModule.categories)
+				filterModuleCategories(module.categories).categoryIds || [],
+			categoryModuleId: filterModuleCategories(module.categories)
 				.categoryModuleId,
 			filters,
 			setFilters
@@ -42,8 +35,13 @@ const NewsOverview = () => {
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<NewsClass>({
-		module: currentModule,
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading
+	} = useFindModuleData<NewsClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -53,37 +51,17 @@ const NewsOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const columns = useCreateColumns<NewsClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Entry",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
-
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, []);
 
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
-				text: `${selectedRows.length} ${currentModule.name} löschen`,
+				text: `${selectedRows.length} ${module.name} löschen`,
 				onClick: () => {
 					setDeleteModal(true);
 				},
@@ -91,18 +69,18 @@ const NewsOverview = () => {
 				disabled: selectedRows.length === 0
 			}
 		],
-		[selectedRows]
+		[selectedRows, module.name]
 	);
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
 			createClass={{
 				className: "Entry",
-				text: `Neue ${currentModule.name} erstellen`,
-				fields: currentModule.fields,
+				text: `Neue ${module.name} erstellen`,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			pageStates={pageStates}
@@ -113,10 +91,13 @@ const NewsOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
-				filterContent={renderFilters}
+				filterColumns={module.filters}
+				filters={filters}
+				setFilters={setFilters}
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				setOrder={setOrder}

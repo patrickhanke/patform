@@ -1,19 +1,17 @@
 "use client";
 
 import { Page, Table, useCreateColumns } from "@repo/ui";
-import { useContext, useState } from "react";
-import { Filter, TemplateClass } from "@repo/types";
-import { PatstoreAppContext, useFindData } from "@repo/provider";
+import { useState } from "react";
+import { Filter, Module, TemplateClass } from "@repo/types";
+import { useFindData } from "@repo/provider";
 
-const EmailsOverview = () => {
-	const { currentModule } = useContext(PatstoreAppContext);
+const EmailTemplatesOverview = ({ module }: { module: Module }) => {
 	const [filters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
 	});
 
-	console.log({ currentModule });
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 	const { data, refetch, count } = useFindData({
 		objectName: "Template",
@@ -30,11 +28,11 @@ const EmailsOverview = () => {
 			{ id: "description", type: "textfield", label: "Beschreibung" },
 			{ id: "createdAt", type: "date", label: "Erstellt am" }
 		],
-		fields: currentModule.data_fields,
+		fields: module.data_fields,
 		className: "Template",
 		editLink: `emails/templates`,
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	return (
@@ -75,4 +73,4 @@ const EmailsOverview = () => {
 	);
 };
 
-export default EmailsOverview;
+export default EmailTemplatesOverview;

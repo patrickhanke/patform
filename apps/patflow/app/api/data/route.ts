@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { cookies } from "next/headers";
 
-export const runtime = "edge";
-
 // Helper to create axios client with proper headers
 const createAxiosClient = (useMasterKey: boolean, sessionToken?: string) => {
 	const headers: Record<string, string> = {
@@ -41,7 +39,7 @@ export async function GET(request: NextRequest) {
 
 		const cookieStore = await cookies();
 		const sessionToken = cookieStore.get(
-			process.env.SESSION_TOKEN || "patstore_token"
+			process.env.SESSION_TOKEN || "patflow_session_token"
 		)?.value;
 
 		const client = createAxiosClient(useMasterKey, sessionToken);
@@ -82,7 +80,7 @@ export async function POST(request: NextRequest) {
 
 		const cookieStore = await cookies();
 		const sessionToken = cookieStore.get(
-			process.env.SESSION_TOKEN || "patstore_token"
+			process.env.SESSION_TOKEN || "patflow_session_token"
 		)?.value;
 
 		const client = createAxiosClient(useMasterKey, sessionToken);
@@ -139,7 +137,7 @@ export async function PUT(request: NextRequest) {
 
 		const cookieStore = await cookies();
 		const sessionToken = cookieStore.get(
-			process.env.SESSION_TOKEN || "patstore_token"
+			process.env.SESSION_TOKEN || "patflow_session_token"
 		)?.value;
 
 		const client = createAxiosClient(useMasterKey, sessionToken);
@@ -194,7 +192,7 @@ export async function DELETE(request: NextRequest) {
 
 		const cookieStore = await cookies();
 		const sessionToken = cookieStore.get(
-			process.env.SESSION_TOKEN || "patstore_token"
+			process.env.SESSION_TOKEN || "patflow_session_token"
 		)?.value;
 
 		const client = createAxiosClient(useMasterKey, sessionToken);

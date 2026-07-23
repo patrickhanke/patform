@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export const runtime = "edge";
-
 interface GraphQLRequest {
 	query: string;
 	variables?: Record<string, any>;

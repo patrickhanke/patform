@@ -1,29 +1,26 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
 	generateColumnsFromFields,
 	Page,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { EventClass, Filter } from "@repo/types";
+import { EventClass, Filter, Module } from "@repo/types";
 import {
 	filterModuleCategories,
-	PatstoreAppContext,
 	useFindCategoryPageStates,
 	useFindModuleData
 } from "@repo/provider";
 
-const EventOverview = () => {
-	const { currentModule } = useContext(PatstoreAppContext);
+const EventOverview = ({ module }: { module: Module }) => {
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
 		{
 			categories:
-				filterModuleCategories(currentModule.categories).categoryIds ||
-				[],
-			categoryModuleId: filterModuleCategories(currentModule.categories)
+				filterModuleCategories(module.categories).categoryIds || [],
+			categoryModuleId: filterModuleCategories(module.categories)
 				.categoryModuleId,
 			filters,
 			setFilters
@@ -37,8 +34,8 @@ const EventOverview = () => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count } = useFindModuleData<EventClass>({
-		module: currentModule,
+	const { data, refetch, count, loading: dataLoading } = useFindModuleData<EventClass>({
+		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -46,21 +43,21 @@ const EventOverview = () => {
 	});
 
 	const columns = useCreateColumns<EventClass>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
 		className: "Event",
 		refetch,
-		categories: currentModule?.categories
+		categories: module.categories
 	});
 
 	return (
 		<Page
-			title={currentModule.name}
+			title={module.name}
 			emptyContent={true}
 			createClass={{
 				className: "Event",
 				text: "Neue Veranstaltung erstellen",
-				fields: currentModule.fields,
+				fields: module.fields,
 				refetch: refetch
 			}}
 			refetch={refetch}
@@ -71,6 +68,7 @@ const EventOverview = () => {
 			<Table
 				columns={columns}
 				data={data || []}
+				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}
@@ -79,7 +77,7 @@ const EventOverview = () => {
 				setSelectedRows={setSelectedRows}
 				filters={filters}
 				setFilters={setFilters}
-				filterColumns={currentModule.filters}
+				filterColumns={module.filters}
 				setOrder={setOrder}
 			/>
 		</Page>

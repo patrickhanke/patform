@@ -95,14 +95,12 @@ const Sidebar: FC<SidebarProps> = ({
 			</div>
 			<ul className="menu_item_container">
 				{user?.is_superuser && (
-					<li>
-						<MenuItem
-							link="/admin"
-							label="Admin"
-							icon="admin"
-							subMenu={[]}
-						/>
-					</li>
+					<MenuItem
+						link="/admin"
+						label="Admin"
+						icon="admin"
+						subMenu={[]}
+					/>
 				)}
 
 				<li>

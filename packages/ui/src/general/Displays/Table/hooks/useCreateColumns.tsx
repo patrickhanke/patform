@@ -60,6 +60,43 @@ import {
 	TableColumnLocation,
 	TableColumnHiddenField
 } from "../components";
+import { Loader } from "../../../Overlays/Loader";
+
+export const PLACEHOLDER_ROW_PREFIX = "__placeholder_";
+
+export const createPlaceholderRows = <T extends { objectId?: string }>(
+	count: number
+): T[] =>
+	Array.from({ length: count }, (_, index) => ({
+		objectId: `${PLACEHOLDER_ROW_PREFIX}${index}`
+	})) as T[];
+
+const isPlaceholderRow = (row: unknown): boolean => {
+	const objectId = (row as { objectId?: string })?.objectId;
+	return (
+		typeof objectId === "string" &&
+		objectId.startsWith(PLACEHOLDER_ROW_PREFIX)
+	);
+};
+
+const PLACEHOLDER_CELL = <Loader width="100%" height="24px" />;
+
+const withPlaceholderCell = <T,>(column: ColumnDef<T>): ColumnDef<T> => {
+	const originalCell = column.cell;
+
+	return {
+		...column,
+		cell: (info) => {
+			if (isPlaceholderRow(info.row.original)) {
+				return PLACEHOLDER_CELL;
+			}
+			if (typeof originalCell === "function") {
+				return originalCell(info);
+			}
+			return info.getValue();
+		}
+	};
+};
 
 const useCreateColumns = <T extends ColumnClasses>({
 	data,
@@ -876,7 +913,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				});
 		}
 
-		return columnArray;
+		return columnArray.map(withPlaceholderCell);
 	}, [
 		data,
 		className,

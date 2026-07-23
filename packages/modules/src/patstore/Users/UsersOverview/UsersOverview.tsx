@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import {
 	axiosclient,
 	generateQueryFromFields,
-	PatstoreAppContext,
 	useAppContext,
 	useDataContext,
 	useFindDataSecure
@@ -16,9 +15,9 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { CreateUser, UsersOverviewProps } from "./types";
-import { FC, useState } from "react";
-import { Filter, PatstoreRoleClass, PatstoreUser } from "@repo/types";
+import { CreateUser } from "./types";
+import { useState } from "react";
+import { Filter, Module, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
 import create_user_fieds from "./constants/create_user_fields";
@@ -26,9 +25,8 @@ import useFindRoles from "./hooks/useFindRoles";
 import create_user from "./constants/create_user";
 import EmailSuppression from "./components/EmailSuppression";
 
-const UsersOverview: FC<UsersOverviewProps> = () => {
+const UsersOverview = ({ module }: { module: Module }) => {
 	const { project } = useAppContext();
-	const { currentModule } = useContext(PatstoreAppContext);
 	const { roles } = useFindRoles({ projectId: project.objectId });
 	const [order, setOrder] = useState<string>("name_ASC");
 
@@ -71,7 +69,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	} = useFindDataSecure({
 		objectName: "User",
 		fields: [
-			...generateQueryFromFields(currentModule.fields),
+			...generateQueryFromFields(module.fields),
 			"data",
 			"roles",
 			"settings",
@@ -85,16 +83,16 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 	});
 
 	const columns = useCreateColumns<PatstoreUser>({
-		data: generateColumnsFromFields(currentModule.fields),
-		fields: currentModule.data_fields,
-		settings: currentModule.setting_fields,
+		data: generateColumnsFromFields(module.fields),
+		fields: module.data_fields,
+		settings: module.setting_fields,
 		className: "User",
 		refetch,
-		categories: currentModule?.categories,
+		categories: module.categories,
 		useMasterKey: true,
 		hasEmailSettings:
-			currentModule.fields?.find((field) => field.id === "emails")
-				?.active || false
+			module.fields?.find((field) => field.id === "emails")?.active ||
+			false
 	});
 
 	const createUserFields: CreateUser[keyof CreateUser] | undefined =
@@ -125,7 +123,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 			await refetch();
 			setInviteUser(false);
 		},
-		[project]
+		[project, feedbackHandler, refetch]
 	);
 
 	const createUserHandler = useCallback(
@@ -145,14 +143,12 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 
 			await refetch();
 		},
-		[project]
+		[project, feedbackHandler, refetch]
 	);
 
 	const pageHeaderButtons = useMemo(() => {
 		const buttonArray = [];
-		if (
-			currentModule.fields?.find((field) => field.id === "emails")?.active
-		) {
+		if (module.fields?.find((field) => field.id === "emails")?.active) {
 			buttonArray.push({
 				text: "Email Adressen prüfen",
 				onClick: () => setEmailSuppression(true),
@@ -177,11 +173,11 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 		}
 
 		return buttonArray;
-	}, [createUserFields]);
+	}, [module.fields, project?.settings]);
 
 	return (
 		<Page
-			title="Nutzerübersicht"
+			title={module.name}
 			pageHeaderButtons={pageHeaderButtons}
 			pageStates={
 				project?.settings?.user_invitations
@@ -200,7 +196,7 @@ const UsersOverview: FC<UsersOverviewProps> = () => {
 					rowCount={count}
 					filters={filters}
 					setFilters={setFilters}
-					filterColumns={currentModule.filters}
+					filterColumns={module.filters}
 					setOrder={setOrder}
 				/>
 			)}

@@ -1,6 +1,6 @@
 import { DisplayProject, LoginForm } from "../content";
 
-const Login = async () => {
+const Login = () => {
   return (
     <>
       <DisplayProject />

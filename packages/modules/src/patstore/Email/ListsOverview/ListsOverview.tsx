@@ -1,13 +1,9 @@
 "use client";
 
-import { useState, useMemo, useContext } from "react";
-import {
-	PatstoreAppContext,
-	useDataHandler,
-	useFindData
-} from "@repo/provider";
+import { useState, useMemo } from "react";
+import { useDataHandler, useFindData } from "@repo/provider";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
-import { Filter } from "@repo/types";
+import { Filter, Module } from "@repo/types";
 
 interface ListData {
 	objectId: string;
@@ -23,9 +19,8 @@ interface ListData {
 	};
 }
 
-const ListsOverview = () => {
+const ListsOverview = ({ module }: { module: Module }) => {
 	const { deleteData } = useDataHandler();
-	const { currentModule } = useContext(PatstoreAppContext);
 	const [filters] = useState<Filter[]>([
 		{
 			key: "type",
@@ -52,7 +47,7 @@ const ListsOverview = () => {
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		moduleId: currentModule.objectId
+		moduleId: module.objectId
 	});
 
 	const columns = useCreateColumns<ListData>({
@@ -104,7 +99,7 @@ const ListsOverview = () => {
 			emptyContent={true}
 			createClass={{
 				initialData: {
-					reference_id: currentModule.objectId,
+					reference_id: module.objectId,
 					type: "email",
 					settings: {
 						unsubscribe: false,

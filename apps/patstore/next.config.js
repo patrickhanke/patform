@@ -1,3 +1,5 @@
+const path = require("path");
+
 /** @type {import('next').NextConfig} */
 const {
 	createAppEnv,
@@ -8,6 +10,7 @@ const {
 const APP_PREFIX = "PATSTORE";
 
 module.exports = {
+	cacheComponents: true,
 	transpilePackages: [
 		"@repo/ui",
 		"@repo/provider",
@@ -16,6 +19,9 @@ module.exports = {
 	],
 	typescript: {
 		ignoreBuildErrors: true,
+	},
+	sassOptions: {
+		includePaths: [path.join(__dirname, "../../packages/styles/src")],
 	},
 	env: createAppEnv(APP_PREFIX, {
 		PATSTORE_NEXT_LETTERMINT_KEY: getPrefixedEnv(

@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export const runtime = "edge";
-
 interface GraphQLRequest {
 	query: string;
 	variables?: Record<string, any>;
@@ -43,7 +41,7 @@ export async function POST(request: NextRequest) {
 		// Get session token from cookies
 		const cookieStore = await cookies();
 		const sessionToken = cookieStore.get(
-			process.env.SESSION_TOKEN || "patstore_token"
+			process.env.SESSION_TOKEN || "patflow_session_token"
 		)?.value;
 
 		// Prepare headers

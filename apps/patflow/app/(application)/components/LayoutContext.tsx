@@ -6,17 +6,27 @@ import {
   NotificationContextProvider,
   PatflowAppContextProvider,
 } from "@repo/provider";
-import { PatflowUser } from "@repo/types";
+import { PatflowProject, PatflowUser, PatflowUserRole } from "@repo/types";
 import React from "react";
 
-const LayoutContext = ({ user, children }: { user: PatflowUser, children: React.ReactNode }) => {
+const LayoutContext = ({
+  user,
+  project,
+  roles,
+  children,
+}: {
+  user: PatflowUser;
+  project?: PatflowProject;
+  roles?: PatflowUserRole[];
+  children: React.ReactNode;
+}) => {
   return (
     <ApolloAppProvider
       uri={process.env.SASHIDO_GQL_URL as string}
       appId={process.env.SASHIDO_APP_ID as string}
       restKey={process.env.SASHIDO_REST_KEY as string}
     >
-      <AppContextProvider projects={user.projects}>
+      <AppContextProvider project={project} roles={roles}>
         <UserContextProvider>
           <PatflowAppContextProvider>
             <NotificationContextProvider>

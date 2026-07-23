@@ -87,7 +87,7 @@ export const loginUser: LoginUser = async ({ email, password }) => {
 
 		if (sessionToken) {
 			const installationIdKey =
-				process.env.INSTALLATION_ID || "default_installation_id";
+				process.env.INSTALLATION_ID || "patflow_installation_id";
 			Cookies.set(installationIdKey, installationId, {
 				expires: 365,
 				sameSite: "strict"
@@ -95,17 +95,7 @@ export const loginUser: LoginUser = async ({ email, password }) => {
 
 			const token = await requestPermissionAndGetToken();
 
-			if (token === undefined) {
-				console.log("FcmToken could not be generated");
-
-				returnValue = {
-					error: true,
-					message: "Es konnte kein FCM Token generiert werden",
-					user: null
-				};
-			} else {
-				console.log("FcmToken: ", token);
-
+			if (token) {
 				await axiosclient().post("functions/create-installation", {
 					deviceType: "web",
 					deviceToken: token,
@@ -116,18 +106,24 @@ export const loginUser: LoginUser = async ({ email, password }) => {
 					parseVersion: "3.6.0",
 					localeIdentifier: "de-DE",
 					timeZone: "GMT",
-					user: response.data.result.objectId,
+					user: responseData.objectId,
 					GCMSenderId: process.env.GCMS_SENDER_ID,
 					pushType: "gcm",
 					installationId: installationId
 				});
-
-				returnValue = {
-					error: false,
-					message: "Erfolgreich eingeloggt und Token wurde generiert",
-					user: response.data
-				};
+			} else {
+				console.warn(
+					"FCM token could not be generated; push notifications will be registered after login."
+				);
 			}
+
+			returnValue = {
+				error: false,
+				message: token
+					? "Erfolgreich eingeloggt und Token wurde generiert"
+					: "Erfolgreich eingeloggt",
+				user: responseData
+			};
 		} else {
 			returnValue = {
 				error: true,

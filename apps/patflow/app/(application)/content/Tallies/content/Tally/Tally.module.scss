@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .tally_container {
   @include constants.flexbox(
@@ -7,7 +8,7 @@
     $align: center
   );
   width: 100%;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
 }
 
 .tally_content_container {
@@ -18,11 +19,11 @@
     $gap: constants.$md,
     $change_to_column: true
   );
-  padding: map-get($map: constants.$padding, $key: "sm");
+  padding: map.get(constants.$padding, "sm");
 }
 
 .tally_workers_container {
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   border-top: 1px solid constants.$grey;
   // background-color: constants.$lightest;
 }
@@ -34,7 +35,7 @@
     $align: stretch
   );
   flex: 1 1 50%;
-  padding: map-get($map: constants.$padding, $key: "sm");
+  padding: map.get(constants.$padding, "sm");
 }
 
 .tally_subheadline {
@@ -55,7 +56,7 @@
     $align: center
   );
   border-top: 1px solid constants.$grey;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   background-color: constants.$lightest;
 }
 
@@ -125,7 +126,7 @@
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: map-get(constants.$padding, "sm");
+  padding: map.get(constants.$padding, "sm");
 }
 
 .tally_slidein_footer {

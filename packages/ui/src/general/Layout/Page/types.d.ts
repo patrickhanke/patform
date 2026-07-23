@@ -39,3 +39,12 @@ export type PageProps = {
 	createClass?: PageCreateClassObject;
 	emptyContent?: boolean;
 };
+
+type PageSkeletonProps = {
+	title?: string;
+	pageHeaderButtons?: number;
+	description?: boolean;
+	pageHeaderContent?: React.ReactNode;
+	createClass?: boolean;
+	pageStates?: number;
+};
