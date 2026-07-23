@@ -3,14 +3,15 @@
 import siteStates from "./constants/siteStates";
 import { FormActionBar, Loader, Page } from "@repo/ui";
 import { useCallback, useMemo, useState } from "react";
-import { Params, ApolloRefetch } from "@repo/types";
+import { ApolloRefetch } from "@repo/types";
 import { useDataHandler } from "@repo/provider";
 import { isEqual } from "lodash-es";
 import { ListSettings, ListMembers, ListFilter } from "./content";
 import useListData from "./hooks/useListData";
+import { useParams } from "next/navigation";
 
-const List = ({ params }: { params: Params }) => {
-	const listId = params.list_id;
+const List = () => {
+	const { list_id: listId } = useParams<{ list_id: string }>();
 	const { updateData } = useDataHandler();
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as { value: string; label: string }

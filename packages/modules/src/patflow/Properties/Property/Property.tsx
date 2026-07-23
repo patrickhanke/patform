@@ -9,11 +9,12 @@ import PropertyServices from "./content/PropertyServices";
 import PropertyTallies from "./content/PropertyTallies";
 import PropertyDocuments from "./content/PropertyDocuments";
 import PropertyTickets from "./content/PropertyTickets";
-import { Params } from "@repo/types";
 import { Page, PageHeaderButton } from "@repo/ui";
 import { CreateTask } from "@repo/modules";
+import { useParams } from "next/navigation";
 
-const Property = ({ params }: { params: Params }) => {
+const Property = () => {
+	const { object_id: objectId } = useParams<{ object_id: string }>();
 	const siteStates = useSiteStates();
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as (typeof siteStates)[number]
@@ -30,10 +31,8 @@ const Property = ({ params }: { params: Params }) => {
 			"archived",
 			"services"
 		],
-		id: params.object_id
+		id: objectId
 	});
-
-	console.log(property);
 
 	const siteContent = useMemo(() => {
 		const content = {
@@ -80,32 +79,32 @@ const Property = ({ params }: { params: Params }) => {
 			pageHeaderButtons={pageHeaderButtons}
 		>
 			{siteState.value === "tasks" && (
-				<PropertyTasks objectId={params.object_id} />
+				<PropertyTasks objectId={objectId} />
 			)}
 			{siteState.value === "settings" && (
 				<PropertySettings
-					propertyId={params.object_id}
+					propertyId={objectId}
 					refetch={refetch}
 				/>
 			)}
 			{siteState.value === "services" && (
-				<PropertyServices objectId={params.object_id} />
+				<PropertyServices objectId={objectId} />
 			)}
 			{siteState.value === "tallies" && (
-				<PropertyTallies objectId={params.object_id} />
+				<PropertyTallies objectId={objectId} />
 			)}
 			{siteState.value === "documents" && (
-				<PropertyDocuments id={params.object_id} />
+				<PropertyDocuments id={objectId} />
 			)}
 			{siteState.value === "tickets" && (
-				<PropertyTickets id={params.object_id} />
+				<PropertyTickets id={objectId} />
 			)}
 			{addService && (
 				<CreateTask
 					isService={true}
 					openSlideIn={addService}
 					setOpenSlideIn={setAddService}
-					propertyId={params.object_id}
+					propertyId={objectId}
 				/>
 			)}
 		</Page>

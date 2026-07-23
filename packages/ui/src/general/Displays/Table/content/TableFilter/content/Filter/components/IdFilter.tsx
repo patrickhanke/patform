@@ -40,8 +40,6 @@ const IdFilter: FC<IdFilterProps> = ({
 		projectId: className !== "User" ? project?.objectId : undefined
 	});
 
-	console.log({ data });
-
 	const selectElements = useMemo(() => {
 		if (!data) {
 			return [];
@@ -164,7 +162,6 @@ const IdFilter: FC<IdFilterProps> = ({
 					elements={selectElements}
 					selectedElements={getElementsFromValue()}
 					onSelect={(elements) => {
-						console.log(elements);
 						if (type === "pointer") {
 							const value = elements[0]?.value;
 							if (value) {

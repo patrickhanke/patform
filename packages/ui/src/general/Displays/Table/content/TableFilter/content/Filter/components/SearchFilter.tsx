@@ -30,7 +30,6 @@ const SearchFilter: FC<SearchFilterProps> = ({
 		const toggleValue =
 			value?.length > 5 ? value?.slice(-4) === "true" : false;
 
-		console.log({ toggleValue });
 		return (
 			<div className="flex row a-ce j-sb gap-xs">
 				<label>{label}</label>

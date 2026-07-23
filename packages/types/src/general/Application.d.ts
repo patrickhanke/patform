@@ -1,12 +1,4 @@
 import { ApolloQueryResult } from "@apollo/client";
-export type Params = {
-	object_id: string;
-	form_id: string;
-	email_id: string;
-	code: string;
-	user_id: string;
-	list_id: string;
-};
 
 export type PageState = {
 	value: string;

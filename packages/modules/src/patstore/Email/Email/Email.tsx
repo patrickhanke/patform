@@ -9,7 +9,6 @@ import {
 	PageHeaderButton
 } from "@repo/ui";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Params } from "@repo/types";
 import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
 import TestEmail from "./components/TestEmail";
 import BulkEmailSender from "./components/BulkEmailSender";
@@ -25,11 +24,12 @@ import {
 import { isEqual } from "lodash-es";
 import EmailImport from "./components/EmailImport";
 import useEmailRecipients from "./hooks/useEmailRecipients";
+import { useParams } from "next/navigation";
 
-const Email = ({ params }: { params: Params }) => {
+const Email = () => {
+	const { email_id: emailId } = useParams<{ email_id: string }>();
 	const { deleteData } = useDataHandler();
 	const { project } = useAppContext();
-	const emailId = params.email_id;
 
 	const { data: email, refetch } = useGetData({
 		objectName: "Email",

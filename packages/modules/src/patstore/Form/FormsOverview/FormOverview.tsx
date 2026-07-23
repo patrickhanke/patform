@@ -18,7 +18,12 @@ const FormsOverview = ({ module }: { module: Module }) => {
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<FormClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading
+	} = useFindModuleData<FormClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,

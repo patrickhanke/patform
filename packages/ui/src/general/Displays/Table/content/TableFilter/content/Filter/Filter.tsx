@@ -22,11 +22,8 @@ const Filter: FC<FilterProps> = ({
 	updateFilterValue,
 	options
 }) => {
-	console.log(activeFilter, id, type, operator, isActive, options);
-	console.log({ type });
 	const onValueChange: OnValueChange = useCallback(
 		(value) => {
-
 			if (value) {
 				updateFilterValue(id, value);
 			} else {

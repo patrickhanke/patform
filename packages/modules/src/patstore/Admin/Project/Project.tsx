@@ -21,7 +21,6 @@ import { useParams } from "next/navigation";
 
 const Project = () => {
 	const { project_id: projectId } = useParams<{ project_id: string }>();
-	console.log(projectId);
 	const { data: projectData } = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "get",

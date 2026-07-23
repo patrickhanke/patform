@@ -7,13 +7,13 @@ import { useMemo, useState } from "react";
 import FormData from "./content/FormData";
 import FormSettings from "./content/FormSettings";
 import FormFields from "./content/FormFields";
-import { Params } from "@repo/types";
 import TestEmail from "./components/TestEmail";
+import { useParams } from "next/navigation";
 
-const Form = ({ params }: { params: Params }) => {
+const Form = () => {
+	const { form_id: formId } = useParams<{ form_id: string }>();
 	const [testEmail, setTestEmail] = useState<boolean>(false);
 
-	const formId = params.form_id;
 	const { form, refetch } = useGetForm({ formId });
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as { value: string; label: string }
