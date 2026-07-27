@@ -113,7 +113,6 @@ const LoginForm = () => {
             type="submit"
             className="full_button md primary"
             disabled={loading}
-            onClick={() => confirm()}
             loading={loading}
           >
             Anmelden

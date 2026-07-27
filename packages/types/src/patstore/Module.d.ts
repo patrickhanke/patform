@@ -56,7 +56,8 @@ export type ModuleFieldIds =
 	| "roles"
 	| "emails"
 	| "expires_at"
-	| "video";
+	| "video"
+	| "name";
 
 export type ModuleDataFieldsSpecific =
 	| "team"

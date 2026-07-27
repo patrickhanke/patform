@@ -323,7 +323,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 								/>
 							</>
 						)}
-						{!isHorizontal && <br />}
+						{!isHorizontal && field.type !== "checkbox" && <br />}
 						{getFieldMeta(field.name).touched &&
 						getFieldMeta(field.name).error ? (
 							<div className={"error_message"}>

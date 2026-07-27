@@ -19,7 +19,9 @@ describe("registerUser", () => {
 			email: "user@example.com",
 			projectId: "project-123",
 			invitationKey: "invite-key-abc",
-			values: { username: "Max Mustermann", password: "SecurePass123!" },
+			password: "SecurePass123!",
+			username: "user@example.com",
+			values: { first_name: "Max", last_name: "Mustermann" },
 		});
 
 		expect(result).toEqual({ status: "success" });
@@ -56,7 +58,9 @@ describe("registerUser", () => {
 			email: "user@example.com",
 			projectId: "project-123",
 			invitationKey: "invite-key-abc",
-			values: { username: "Max Mustermann", password: "SecurePass123!" },
+			password: "SecurePass123!",
+			username: "user@example.com",
+			values: { first_name: "Max", last_name: "Mustermann" },
 		});
 
 		expect(result).toEqual({
@@ -73,7 +77,9 @@ describe("registerUser", () => {
 			email: "user@example.com",
 			projectId: "project-123",
 			invitationKey: "invite-key-abc",
-			values: { username: "Max Mustermann", password: "SecurePass123!" },
+			password: "SecurePass123!",
+			username: "user@example.com",
+			values: { first_name: "Max", last_name: "Mustermann" },
 		});
 
 		expect(result).toEqual({
@@ -96,7 +102,9 @@ describe("registerUser", () => {
 			email: "user@example.com",
 			projectId: "project-123",
 			invitationKey: "invite-key-abc",
-			values: { username: "Max Mustermann", password: "SecurePass123!" },
+			password: "SecurePass123!",
+			username: "user@example.com",
+			values: { first_name: "Max", last_name: "Mustermann" },
 		});
 
 		expect(result).toEqual({
@@ -120,7 +128,9 @@ describe("registerUser", () => {
 			email: "user@example.com",
 			projectId: "project-123",
 			invitationKey: "invite-key-abc",
-			values: { username: "Max Mustermann", password: "SecurePass123!" },
+			password: "SecurePass123!",
+			username: "user@example.com",
+			values: { first_name: "Max", last_name: "Mustermann" },
 		});
 
 		expect(result).toEqual({

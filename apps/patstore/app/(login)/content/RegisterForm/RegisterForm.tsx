@@ -21,7 +21,7 @@ const RegisterForm = ({
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState(false);
-  const [formValues, setFormValues] = useState<FormikValues>({});
+  const [formValues, setFormValues] = useState<Record<string, string | boolean | number | null>>({});
 	const formContainerRef = useRef<HTMLDivElement>(null);
 
 	const axiosclient = axios.create({
@@ -78,19 +78,27 @@ const RegisterForm = ({
 
 	const submitHandler = useCallback(
 		async () => {
-      const values = formValues;
 			setLoading(true);
 			setError("");
 
-      if (!values) {
+      if (!formValues) {
         return null;
       }
+      const {
+        email: _email,
+        username,
+        password,
+        password_confirmation: _passwordConfirmation,
+        ...valuesCopy
+      } = formValues;
 
 			const result = await registerUser(axiosclient, {
 				email,
+        username: email,
 				projectId: project.objectId,
 				invitationKey,
-				values,
+				password: String(password),
+        values: valuesCopy,
 			});
 
 			if (result.status === "success") {
@@ -101,7 +109,7 @@ const RegisterForm = ({
 
 			setLoading(false);
 		},
-		[email, project.objectId, invitationKey, axiosclient],
+		[email, project.objectId, invitationKey, axiosclient, formValues],
 	);
 
 	const handleRegisterClick = () => {

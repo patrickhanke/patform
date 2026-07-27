@@ -1,8 +1,15 @@
 import type { AxiosInstance } from "axios";
 
+type RegisterUserReservedKey =
+	| "email"
+	| "username"
+	| "password"
+	| "password_confirmation";
+
+type RegisterUserFieldValue = string | boolean | number | null;
+
 export type RegisterUserValues = {
-	username: string;
-	password: string;
+	[K in string as K extends RegisterUserReservedKey ? never : K]: RegisterUserFieldValue;
 };
 
 export type RegisterUserResult =
@@ -20,6 +27,8 @@ export async function registerUser(
 		email: string;
 		projectId: string;
 		invitationKey: string;
+		password: string;
+		username: string;
 		values: RegisterUserValues;
 	},
 ): Promise<RegisterUserResult> {
@@ -43,14 +52,17 @@ export async function registerUser(
 	}
 
 	try {
+		const additionalValues = params.values;
+
 		await client.post("users", {
 			username: params.email,
-			name: params.values.username,
-			password: params.values.password,
+			name: params.username,
+			password: params.password,
 			email: params.email,
 			projects: [params.projectId],
 			is_superuser: false,
 			roles: inviteResponse.roles || [],
+			...additionalValues,
 		});
 
 		await client.post("functions/remove_invitation_key", {
