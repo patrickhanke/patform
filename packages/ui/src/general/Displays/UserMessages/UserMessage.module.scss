@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .user_messages_container {
   @include constants.flexbox(
@@ -40,7 +41,7 @@
     $justify: flex-start,
     $gap: constants.$md
   );
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   width: 100%;
 }
 
@@ -64,7 +65,7 @@
 .time {
   color: constants.$grey;
   // display: inline-block;
-  font-size: map-get($map: constants.$font_size, $key: "sm");
+  font-size: map.get(constants.$font_size, "sm");
   margin-left: constants.$sm;
 }
 

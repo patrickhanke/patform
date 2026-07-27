@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .layout {
   @include flexbox($direction: row, $align: stretch, $gap: 0);
@@ -30,7 +31,7 @@
   width: 100%;
   box-sizing: border-box;
   height: 42px;
-  padding: map-get(constants.$padding, "lg");
+  padding: map.get(constants.$padding, "lg");
   h1 {
     color: constants.$primary;
   }
@@ -44,7 +45,7 @@
   width: 100%;
   box-sizing: border-box;
   height: 42px;
-  padding: map-get(constants.$padding, "lg");
+  padding: map.get(constants.$padding, "lg");
 }
 
 .main_content {
@@ -91,7 +92,7 @@
   margin: 0;
   text-decoration: none;
   line-height: 1;
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-size: map.get(constants.$font_size, "md");
   color: constants.$dark;
   transition:
     text-decoration 0.2s ease,

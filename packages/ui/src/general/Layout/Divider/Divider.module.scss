@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .divider {
   position: relative;
@@ -37,7 +38,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  padding: map-get($map: constants.$padding, $key: "xs");
+  padding: map.get(constants.$padding, "xs");
   display: inline-block;
   z-index: 1;
   font-size: constants.$sm;
@@ -84,6 +85,6 @@
   );
   height: 100%;
   h4 : {
-    font-size: map-get($map: constants.$font_size, $key: "xs");
+    font-size: map.get(constants.$font_size, "xs");
   }
 }

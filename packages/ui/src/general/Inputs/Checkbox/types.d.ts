@@ -1,7 +1,9 @@
 export type CheckboxProps = {
 	checked: boolean;
 	onChange: (checked: boolean) => void;
-	label?: string;
+	label?: string | React.ReactNode;
+	name: string;
+	required?: string;
 };
 
 export type CheckboxGroupProps = {

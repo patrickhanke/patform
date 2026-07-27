@@ -1,8 +1,7 @@
 import {
 	CreateYupSchemaFunction,
 	StringValidation,
-	NumberValidation,
-	FileValidation
+	NumberValidation
 } from "../types";
 import * as Yup from "yup";
 
@@ -30,16 +29,6 @@ const isNumberValidation = (
 	);
 };
 
-const isFileValidation = (
-	validation: unknown
-): validation is FileValidation => {
-	return (
-		!!validation &&
-		typeof validation === "object" &&
-		"max_file_count" in validation
-	);
-};
-
 const createYupSchema: CreateYupSchemaFunction = (type, validation) => {
 	let method:
 		| Yup.StringSchema
@@ -58,7 +47,8 @@ const createYupSchema: CreateYupSchemaFunction = (type, validation) => {
 			type === "image" ||
 			type === "texteditor" ||
 			type === "datetime" ||
-			type === "datetime-local"
+			type === "datetime-local" ||
+			type === "checkbox"
 		) {
 			method = Yup.string();
 			if (validation?.required) {
@@ -78,7 +68,34 @@ const createYupSchema: CreateYupSchemaFunction = (type, validation) => {
 						`Die Höchstlänge beträgt ${validation.max_length}`
 					);
 				}
+				if (validation.matches) {
+					method = method.matches(
+						new RegExp(validation.matches.pattern),
+						validation.matches.message || "Das Format ist ungültig"
+					);
+				}
+				if (validation.ref) {
+					method = method.oneOf(
+						[validation.ref.value],
+						validation.ref.message || "Das Format ist ungültig"
+					);
+				}
 			}
+		} else if (type === "password") {
+			method = Yup.string()
+				.min(8, "Passwort muss mindestens 8 Zeichen lang sein")
+				.matches(
+					/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\w\W]{8,}$/,
+					"Passwort muss mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten"
+				)
+				.required("Passwort ist erforderlich");
+		} else if (type === "password_confirmation") {
+			method = Yup.string()
+				.oneOf(
+					[Yup.ref("password")],
+					"Passwörter müssen übereinstimmen"
+				)
+				.required("Passwort bestätigung ist erforderlich");
 		}
 
 		if (type === "number") {
@@ -111,13 +128,6 @@ const createYupSchema: CreateYupSchemaFunction = (type, validation) => {
 		}
 
 		if (type === "select") {
-			method = Yup.string();
-			if (validation?.required) {
-				method = method.required(validation.required);
-			}
-		}
-
-		if (type === "password") {
 			method = Yup.string();
 			if (validation?.required) {
 				method = method.required(validation.required);

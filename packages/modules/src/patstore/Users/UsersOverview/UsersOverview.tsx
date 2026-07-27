@@ -106,7 +106,6 @@ const UsersOverview = ({ module }: { module: Module }) => {
 	const updateUserHandler = useCallback(
 		async (values: Partial<PatstoreUser>) => {
 			axiosclient().post("/functions/send_user_invitation", {
-				username: values.username,
 				email: values.username,
 				name: values.name,
 				roles: [values.role],
@@ -203,6 +202,7 @@ const UsersOverview = ({ module }: { module: Module }) => {
 			{pageState.value === " invitations" && <UserInvitations />}
 			<SlideInForm
 				title="Neuen Benutzer einladen"
+				confirmButtonText="Einladung versenden"
 				isOpen={inviteUser}
 				setIsOpen={setInviteUser}
 				dataHandler={updateUserHandler}

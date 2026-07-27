@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .overlay_container {
   background-color: constants.$dark;
@@ -71,7 +72,7 @@
   box-sizing: border-box;
   height: 42px;
   border-bottom: 1px solid constants.$grey;
-  padding: map-get(constants.$padding, "sm");
+  padding: map.get(constants.$padding, "sm");
 }
 
 .slidein_content {
@@ -87,5 +88,5 @@
   width: 100%;
   height: calc(100% - 42px);
   overflow: auto;
-  padding: map-get(constants.$padding, "md");
+  padding: map.get(constants.$padding, "md");
 }

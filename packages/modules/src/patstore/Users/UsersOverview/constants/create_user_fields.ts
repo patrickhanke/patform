@@ -1,25 +1,8 @@
 import { Field } from "@repo/ui";
 
 const create_user_fieds = (
-	roles: { value: string; label: string }[],
-	useSeparateNames: boolean = false
+	roles: { value: string; label: string }[]
 ): Field[] => [
-	{
-		label: `Anrede`,
-		id: "salutation",
-		name: "salutation",
-		type: "input",
-		value: "",
-		placeholder: "Anrede auswählen"
-	},
-	{
-		label: `Titel`,
-		id: "title",
-		name: "title",
-		type: "input",
-		value: "",
-		placeholder: "Prof."
-	},
 	{
 		label: `E-Mail Adresse`,
 		id: "username",
@@ -33,50 +16,19 @@ const create_user_fieds = (
 			email: true
 		}
 	},
-	...(useSeparateNames
-		? [
-				{
-					label: `Vorname`,
-					id: "first_name",
-					name: "first_name",
-					type: "input" as const,
-					value: "",
-					dataType: "string" as const,
-					placeholder: "Vorname",
-					validation: {
-						validate: true,
-						required: "Bitte geben Sie einen Vornamen ein"
-					}
-				},
-				{
-					label: `Nachname`,
-					id: "last_name",
-					name: "last_name",
-					type: "input" as const,
-					value: "",
-					dataType: "string" as const,
-					placeholder: "Nachname",
-					validation: {
-						validate: true,
-						required: "Bitte geben Sie einen Nachnamen ein"
-					}
-				}
-			]
-		: [
-				{
-					label: `Benutzername`,
-					id: "name",
-					name: "name",
-					type: "input" as const,
-					value: "",
-					dataType: "string" as const,
-					placeholder: "Vor- und Nachname",
-					validation: {
-						validate: true,
-						required: "Bitte geben Sie einen Benutzernamen ein"
-					}
-				}
-			]),
+	{
+		label: `Name`,
+		id: "name",
+		name: "name",
+		type: "input" as const,
+		value: "",
+		dataType: "string" as const,
+		placeholder: "Vor- und Nachname",
+		validation: {
+			validate: true,
+			required: "Bitte geben Sie einen Benutzernamen ein"
+		}
+	},
 	{
 		label: `Rolle`,
 		id: "role",
@@ -89,18 +41,6 @@ const create_user_fieds = (
 		validation: {
 			validate: true,
 			required: "Bitte wählen Sie eine Rolle aus"
-		}
-	},
-	{
-		label: "Passwort",
-		id: "password",
-		name: "password",
-		type: "password",
-		value: "",
-		placeholder: "Passwort",
-		validation: {
-			validate: true,
-			required: "Bitte geben Sie ein Passwort ein"
 		}
 	}
 ];

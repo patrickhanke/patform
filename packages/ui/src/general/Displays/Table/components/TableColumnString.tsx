@@ -57,7 +57,7 @@ const TableColumnString = ({
 						? value.slice(0, 30) + "..."
 						: value
 					: "-"}
-				{value.length > 30 && (
+				{value && value.length > 30 && (
 					<IconButton icon="eye" onClick={() => setIsOpen(!isOpen)} />
 				)}
 

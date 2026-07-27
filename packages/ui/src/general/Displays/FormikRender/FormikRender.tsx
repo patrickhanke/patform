@@ -45,7 +45,6 @@ const FormikRender: FC<FormikRenderProps> = ({
 			}
 			onSubmit={(values) => {
 				const changedValues = getChangedValues(values, data);
-				console.log(changedValues);
 
 				if (formSubmitHandler && changedValues) {
 					formSubmitHandler(changedValues);

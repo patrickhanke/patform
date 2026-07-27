@@ -19,7 +19,13 @@
   },
   "devDependencies": {
     "@manypkg/cli": "^0.23.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/lodash-es": "^4.17.12",
+    "@vitejs/plugin-react": "^6.0.4",
+    "axios": "^1.18.1",
+    "jsdom": "^29.1.1",
     "react-email": "4.2.11",
     "syncpack": "^13.0.0",
     "turbo": "latest",

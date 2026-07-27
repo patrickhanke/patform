@@ -1,34 +1,72 @@
+import type { ModuleFieldType } from "@repo/types";
 import { Field } from "../types";
 
-const database_fields: Field[] = [
-	{
-		id: "title",
-		position: 1,
-		name: "title",
+/**
+ * ModuleFieldTypes used in module_fields.ts and special_fields.ts.
+ * Every key must have a Formik Field equivalent below.
+ */
+type UsedModuleFieldType = Extract<
+	ModuleFieldType,
+	| "edit_string"
+	| "string"
+	| "date"
+	| "edit_textfield"
+	| "texteditor"
+	| "edit_image"
+	| "edit_state"
+	| "gallery"
+	| "edit_color"
+	| "boolean"
+	| "file"
+	| "date_picker"
+	| "edit_dates"
+	| "edit_times"
+	| "files"
+	| "user"
+	| "location"
+	| "image_preview"
+	| "connected_elements"
+	| "edit_person"
+	| "edit_team"
+	| "edit_persons"
+	| "edit_geopoint"
+	| "edit_role"
+	| "emails"
+	| "video"
+>;
+
+/**
+ * Maps ModuleField.type → Formik Field template.
+ * Lookup key is ModuleFieldType; Field.type is the Formik input type.
+ */
+const database_fields = {
+	string: {
+		id: "string",
+		name: "string",
 		type: "input",
-		label: "Titel",
-		validation: {
-			required: "Pflichtfeld"
-		}
+		label: "Text"
 	},
-	{
-		id: "description",
-		position: 3,
-		name: "description",
+	edit_string: {
+		id: "edit_string",
+		name: "edit_string",
+		type: "input",
+		label: "Text"
+	},
+	edit_textfield: {
+		id: "edit_textfield",
+		name: "edit_textfield",
 		type: "textarea",
-		label: "Infotext"
+		label: "Textfeld"
 	},
-	{
-		id: "text",
-		position: 4,
-		name: "text",
+	texteditor: {
+		id: "texteditor",
+		name: "texteditor",
 		type: "texteditor",
 		label: "Text"
 	},
-	{
-		id: "image",
-		position: 5,
-		name: "image",
+	edit_image: {
+		id: "edit_image",
+		name: "edit_image",
 		type: "image",
 		label: "Bild",
 		options: {
@@ -36,16 +74,18 @@ const database_fields: Field[] = [
 			return_type: "string"
 		}
 	},
-	{
-		id: "date",
-		position: 6,
-		name: "date",
-		type: "date",
-		label: "Datum"
+	image_preview: {
+		id: "image_preview",
+		name: "image_preview",
+		type: "image",
+		label: "Vorschaubild",
+		options: {
+			max_file_count: 1,
+			return_type: "string"
+		}
 	},
-	{
+	gallery: {
 		id: "gallery",
-		position: 8,
 		name: "gallery",
 		type: "image_select",
 		label: "Galerie",
@@ -54,48 +94,134 @@ const database_fields: Field[] = [
 			return_type: "array"
 		}
 	},
-	{
-		id: "color",
-		position: 9,
-		name: "color",
+	edit_color: {
+		id: "edit_color",
+		name: "edit_color",
 		type: "color",
 		label: "Farbe"
 	},
-	{
+	boolean: {
+		id: "boolean",
+		name: "boolean",
+		type: "toggle",
+		label: "Aktiv"
+	},
+	file: {
 		id: "file",
-		position: 11,
 		name: "file",
 		type: "file",
 		label: "Datei"
 	},
-	{
-		id: "documents",
-		position: 12,
-		name: "documents",
+	files: {
+		id: "files",
+		name: "files",
 		type: "file",
 		label: "Dokumente"
 	},
-	{
-		id: "path",
-		position: 12,
-		name: "path",
-		type: "input",
-		label: "Pfad"
+	date: {
+		id: "date",
+		name: "date",
+		type: "date",
+		label: "Datum"
 	},
-	{
-		id: "subtitle",
-		position: 13,
-		name: "subtitle",
+	date_picker: {
+		id: "date_picker",
+		name: "date_picker",
+		type: "date",
+		label: "Datum"
+	},
+	edit_dates: {
+		id: "edit_dates",
+		name: "edit_dates",
+		type: "datetime",
+		label: "Termine"
+	},
+	edit_times: {
+		id: "edit_times",
+		name: "edit_times",
+		type: "time",
+		label: "Zeiten"
+	},
+	edit_state: {
+		id: "edit_state",
+		name: "edit_state",
+		type: "select",
+		label: "Status",
+		dataType: "string",
+		select_options: []
+	},
+	edit_role: {
+		id: "edit_role",
+		name: "edit_role",
+		type: "select",
+		label: "Rolle",
+		dataType: "string",
+		select_options: []
+	},
+	user: {
+		id: "user",
+		name: "user",
+		type: "pointer_select",
+		label: "Benutzer",
+		select_options: [],
+		options: {
+			pointer_class: "_User"
+		}
+	},
+	location: {
+		id: "location",
+		name: "location",
+		type: "pointer_select",
+		label: "Ort",
+		select_options: [],
+		options: {
+			pointer_class: "Location"
+		}
+	},
+	edit_person: {
+		id: "edit_person",
+		name: "edit_person",
+		type: "persons_select",
+		label: "Person"
+	},
+	edit_persons: {
+		id: "edit_persons",
+		name: "edit_persons",
+		type: "persons_select",
+		label: "Personen"
+	},
+	edit_team: {
+		id: "edit_team",
+		name: "edit_team",
+		type: "persons_select",
+		label: "Team"
+	},
+	edit_geopoint: {
+		id: "edit_geopoint",
+		name: "edit_geopoint",
+		type: "input",
+		label: "Standort"
+	},
+	connected_elements: {
+		id: "connected_elements",
+		name: "connected_elements",
+		type: "input",
+		label: "Verbundene Elemente"
+	},
+	emails: {
+		id: "emails",
+		name: "emails",
 		type: "textarea",
-		label: "Untertitel"
+		label: "E-Mail-Adressen"
 	},
-	{
-		id: "type",
-		position: 14,
-		name: "type",
+	video: {
+		id: "video",
+		name: "video",
 		type: "input",
-		label: "Typ"
+		label: "Video"
 	}
-];
+} as const satisfies Record<UsedModuleFieldType, Field>;
+
+export type DatabaseFieldType = keyof typeof database_fields;
 
 export default database_fields;

@@ -1,14 +1,15 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .state_display_container {
   position: relative;
   font-family: Geist, sans-serif;
-  padding: map-get($map: constants.$padding, $key: "sm");
+  padding: map.get(constants.$padding, "sm");
   width: fit-content;
   font-weight: 500;
   letter-spacing: 1.2px;
-  border-radius: map-get($map: constants.$border_radius, $key: "sm");
-  font-size: map-get($map: constants.$font_size, $key: "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
+  font-size: map.get(constants.$font_size, "sm");
   border: none;
   text-wrap: nowrap;
   white-space: nowrap;
@@ -131,7 +132,7 @@
   border: 1px solid constants.$grey_tinted;
   z-index: 3;
   // transform: translateY(100%) translateX(-50%);
-  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
   box-shadow: constants.$shadow_regular;
   width: fit-content;
   &__list {
@@ -141,7 +142,7 @@
 
   &__item {
     @extend .state_display_container;
-    // padding: map-get($map: constants.$padding, $key: 'xs');
+    // padding: map.get(constants.$padding, 'xs');
     width: 100%;
     border: none;
     cursor: pointer;

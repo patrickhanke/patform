@@ -1,190 +1,146 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import axios from "axios";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import clsx from "clsx";
-import { PatstoreProject } from "@repo/types";
-
-const SignupSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(2, "Name zu kurz")
-    .max(30, "Name zu lang")
-    .required("Pflichtfeld"),
-  password: Yup.string()
-    .min(8, "Passwort muss mindestens 8 Zeichen lang sein")
-    .matches(
-      /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&_*])/,
-      "Passwort muss einen Großbuchstaben, eine Zahl und ein Sonderzeichen enthalten",
-    )
-    .required("Pflichtfeld"),
-  passwordConfirmation: Yup.string().oneOf(
-    [Yup.ref("password"), undefined],
-    "Passwörter müssen übereinstimmen",
-  ),
-});
+import { Module, PatstoreProject } from "@repo/types";
+import { Form, getDatabaseDefaultFields, IconButton } from "@repo/ui";
+import { registerUser } from "./registerUser";
 
 const RegisterForm = ({
-  email,
-  project,
-  invitationKey,
+	email,
+	project,
+	module,
+	invitationKey,
 }: {
-  email: string;
-  project: PatstoreProject;
-  invitationKey: string;
+	email: string;
+	project: PatstoreProject;
+	invitationKey: string;
+	module: Module;
 }) => {
-  const [disabled, setDisabled] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+	const [disabled, setDisabled] = useState(true);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState("");
+	const [success, setSuccess] = useState(false);
+  const [formValues, setFormValues] = useState<FormikValues>({});
+	const formContainerRef = useRef<HTMLDivElement>(null);
 
-  const axiosclient = axios.create({
-    baseURL: process.env.SASHIDO_API_URL,
-    headers: {
-      "X-Parse-Application-Id": process.env.SASHIDO_APP_ID,
-      "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY,
-    },
-  });
+	const axiosclient = axios.create({
+		baseURL: process.env.SASHIDO_API_URL,
+		headers: {
+			"X-Parse-Application-Id": process.env.SASHIDO_APP_ID,
+			"X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY,
+		},
+	});
 
-  const formik = useFormik({
-    validationSchema: SignupSchema,
-    initialValues: {
-      username: "",
-      password: "",
-      passwordConfirmation: "",
-    },
-    onSubmit: async (values) => {
-      setDisabled(true);
-      const response = await axiosclient
-        .post("functions/check_for_invite", {
-          email,
-          project_id: project.objectId,
-        })
-        .then((response) => {
-          return response.data.result;
-        })
-        .catch(() => {
-          setDisabled(false);
-        });
+	const formFields = [
+		...getDatabaseDefaultFields(module.fields),
+		{
+			id: "password",
+			name: "password",
+			type: "password",
+			label: "Passwort *",
+			validation: {
+				validate: true,
+			},
+		},
+		{
+			id: "password_confirmation",
+			name: "password_confirmation",
+			type: "password_confirmation",
+			label: "Passwort bestätigen *",
+			validation: {
+				validate: true,
+			},
+		},
+		{
+			id: "accept_terms",
+			name: "accept_terms",
+			type: "checkbox",
+			label: (
+				<>
+					<span>
+						Ich akzeptiere die {" "}
+						<a
+							href="https://www.patwork.net/datenschutz"
+							target="_blank"
+						>
+							Datenschutzbestimmungen
+						</a>
+					</span>
+				</>
+			),
+			validation: {
+				validate: true,
+				required: "Die Nutzungsbedingungen müssen akzeptiert werden.",
+			},
+		},
+	];
 
-      if (response.key && invitationKey === response.key) {
-        await axiosclient
-          .post("users", {
-            username: email,
-            name: values.username,
-            password: values.password,
-            email: email,
-            projects: [project.objectId],
-            is_superuser: false,
-            roles: response.roles || []
-          })
-          .then(async () => {
-            await axiosclient
-            .post("functions/remove_invitation_key", {
-              key: response.key,
-              project_id: project.objectId,
-            });
+	const submitHandler = useCallback(
+		async () => {
+      const values = formValues;
+			setLoading(true);
+			setError("");
 
-            setSuccess(true);
-            setDisabled(false);
-          })
-          .catch((error) => {
-            if (error.response.data.code === 202) {
-              setError(
-                "Für diesen Nutzernamen besteht bereits ein Account. Bitte wählen Sie einen anderen.",
-              );
-              setDisabled(false);
-            }
-            if (error.response.data.code === 203) {
-              setError("Für diese E-Mail Adresse besteht bereits ein Account");
-              setDisabled(false);
-            }
-            setDisabled(false);
-          });
-      } else {
-        setError("Einladung ungültig");
-        setDisabled(false);
-        return;
+      if (!values) {
+        return null;
       }
 
-      setDisabled(false);
-    },
-  });
+			const result = await registerUser(axiosclient, {
+				email,
+				projectId: project.objectId,
+				invitationKey,
+				values,
+			});
 
-  return success ? (
-    <p>
-      Sie haben sich erfolgreich für das Projekt {project.name} registriert. Sie
-      können sich jetzt{" "}
-      <a href={`https://store.patwork.net/login/${project.path}`}>hier</a> einloggen.
-    </p>
-  ) : (
-    <div>
-      <form onSubmit={formik.handleSubmit} className={"login_form_container"}>
-        <div>
-          <label>E.Mail Adresse</label>
-          <p>{email}</p>
-        </div>
-        <div>
-          <label htmlFor="username">Nutzername</label>
-          <input
-            id="username"
-            name="username"
-            type="username"
-            onChange={formik.handleChange}
-            value={formik.values.username}
-            className={clsx(formik.errors.username && "error")}
-          />
-          <div>
-            {formik.errors.username && (
-              <div className="error_message">{formik.errors.username}</div>
-            )}
-          </div>
-        </div>
-        <div>
-          <label htmlFor="password">Passwort</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-            className={clsx(formik.errors.password && "error")}
-          />
-          <div>
-            {formik.errors.password && (
-              <div className="error_message">{formik.errors.password}</div>
-            )}
-          </div>
-        </div>
-        <div>
-          <label htmlFor="passwordConfirmation">Passwort bestätigen</label>
-          <input
-            id="passwordConfirmation"
-            name="passwordConfirmation"
-            type="password"
-            onChange={formik.handleChange}
-            value={formik.values.passwordConfirmation}
-            className={clsx(formik.errors.passwordConfirmation && "error")}
-          />
-          <div>
-            {formik.errors.passwordConfirmation && (
-              <div className="error_message">
-                {formik.errors.passwordConfirmation}
-              </div>
-            )}
-          </div>
-        </div>
-        <button
-          className="full_button primary md"
-          type="submit"
-          disabled={disabled}
-        >
-          Einladung annehmen
-        </button>
-        {error && <p className="error_message">{error}</p>}
-      </form>
-    </div>
-  );
+			if (result.status === "success") {
+				setSuccess(true);
+			} else {
+				setError(result.message);
+			}
+
+			setLoading(false);
+		},
+		[email, project.objectId, invitationKey, axiosclient],
+	);
+
+	const handleRegisterClick = () => {
+		formContainerRef.current?.querySelector("form")?.requestSubmit();
+	};
+
+	return success ? (
+		<p>
+			Sie haben sich erfolgreich für das Projekt {project.name}{" "}
+			registriert. Sie können sich jetzt{" "}
+			<a href={`https://store.patwork.net/login/${project.path}`}>
+				hier
+			</a>{" "}
+			einloggen.
+		</p>
+	) : (
+		<div>
+			<div>
+				<label>E-Mail Adresse</label>
+				<p>{email}</p>
+			</div>
+			<div ref={formContainerRef}>
+				<Form
+					fields={formFields}
+					formSubmitHandler={values => setFormValues(values)}
+					formValidationHandler={(isValid) => setDisabled(!isValid)}
+          useWithDebounce
+				/>
+			</div>
+			{error ? <p className="error_message">{error}</p> : null}
+			<IconButton
+				icon={"login"}
+				text="Registrieren"
+				onClick={submitHandler}
+				disabled={disabled}
+				loading={loading}
+			/>
+		</div>
+	);
 };
 
 export default RegisterForm;

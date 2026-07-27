@@ -29,6 +29,7 @@ export type FormikRenderProps = {
 
 export type FormikRenderSlideInProps = {
 	title: string;
+	confirmButtonText?: string;
 	isOpen: boolean;
 	setIsOpen: Dispatch<SetStateAction<boolean>>;
 	dataHandler: (values: FormikValues) => void | Promise<void>;
@@ -55,25 +56,6 @@ export type SlideInFormSubmitStoreProps = {
 	setErrors?: (errors: FormikErrors<FormikValues>) => void;
 };
 
-export type FieldTypes =
-	| "input"
-	| "url"
-	| "number"
-	| "password"
-	| "textarea"
-	| "select"
-	| "image"
-	| "file"
-	| "color"
-	| "toggle"
-	| "texteditor"
-	| "pointer_select"
-	| "persons_select"
-	| "downloads"
-	| "download"
-	| "image_select"
-	| "image_upload";
-
 // Base validation properties common to all fields
 export type BaseValidation = {
 	validate?: boolean;
@@ -88,6 +70,10 @@ export type StringValidation = BaseValidation & {
 	url?: boolean;
 	matches?: {
 		pattern: string;
+		message?: string;
+	};
+	ref?: {
+		value: string;
 		message?: string;
 	};
 };
@@ -113,7 +99,7 @@ export type ValidationTypes =
 export type BasicField = {
 	id: string;
 	name: string;
-	label: string;
+	label: string | React.ReactNode;
 	position?: number;
 	placeholder?: string;
 	initialValue?: any;
@@ -122,36 +108,24 @@ export type BasicField = {
 	width?: string | number;
 };
 
-export type FieldType = {
-	id: string;
-	name: string;
-	type: FieldTypes;
-	label: string;
-	position?: number;
-	placeholder?: string;
-	initialValue?: any;
-	validation?: ValidationTypes;
-	dataType?: "string" | "object" | "array";
-	path?: string;
-	options?: {
-		number_start_value?: number;
-		number_end_value?: number;
-		return_type?: "array" | "string";
-		max_file_count?: number;
-		pointer_type?: string;
-	};
-	select_options?: {
-		label: string;
-		value: string;
-	}[];
-};
-
 export type StringField = BasicField & {
-	type: "input" | "url" | "password" | "textarea" | "texteditor";
+	type:
+		| "input"
+		| "url"
+		| "password"
+		| "textarea"
+		| "texteditor"
+		| "password_confirmation";
 	dataType?: "string";
 	value?: string;
 	textAlign?: "left" | "center" | "right";
 	validation?: StringValidation;
+};
+
+export type CheckboxField = BasicField & {
+	type: "checkbox";
+	value?: boolean;
+	validation?: BaseValidation;
 };
 
 export type ToggleField = BasicField & {
@@ -267,7 +241,8 @@ export type Field =
 	| DownloadsField
 	// | FileUploadField
 	| ImageSelectField
-	| ImageUploadField;
+	| ImageUploadField
+	| CheckboxField;
 
 export type FieldValidationArray = Array<
 	Field & { validation?: ValidationTypes }

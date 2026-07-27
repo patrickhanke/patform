@@ -22,7 +22,6 @@ const FormSubmitStore = ({
 		resetForm
 	} = useFormikContext();
 	const [formValues, setFormValues] = useDebounceValue(initialValues, 1000);
-
 	useEffect(() => {
 		const dataHasChanged = !isEqual(values, initialValues);
 		if (formValidationHandler) {
@@ -43,7 +42,7 @@ const FormSubmitStore = ({
 		if (useWithDebounce) {
 			const dataHasChanged = !isEqual(initialValues, formValues);
 			if (dataHasChanged) {
-				if (!noSubmit) {
+				if (noSubmit === false) {
 					submitForm();
 				}
 			}

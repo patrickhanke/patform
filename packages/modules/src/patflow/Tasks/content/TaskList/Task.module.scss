@@ -31,7 +31,7 @@
     $change_to_column: true
   );
   flex: 1 1 100%;
-  // padding: map-get($map: constants.$padding, $key: 'sm' )
+  // padding: map.get(constants.$padding, 'sm')
 }
 
 .task_content_element_small {

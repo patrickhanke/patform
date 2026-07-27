@@ -13,12 +13,42 @@ const fetchProject = async (path: string) => {
       },
     });
 
-    const res = await axiosclient
+    const projectData = await axiosclient
       .post("functions/get_project_from_path", { path })
       .then((response) => response.data.result)
       .catch((err) => compileAxiosError(err.message));
-    return res;
+
+    const projectId = projectData.project.objectId;
+    console.log(projectId);
+
+    const moduleData = await axiosclient
+      .get("classes/Module", {
+        params: {
+          where: JSON.stringify({
+            project: {
+              __type: "Pointer",
+              className: "Project",
+              objectId: projectId,
+            },
+            path: "/users",
+          }),
+        },
+      })
+      .then((response) => response.data)
+      .catch((err) => compileAxiosError(err.message));
+
+    const module = moduleData.results?.[0];
+
+    console.log(module);
+    return  {
+      project: projectData.project,
+      module: module,
+    };
   }
+  return {
+    project: null,
+    module: null,
+  };
 };
 
 interface InviteProps {
@@ -36,7 +66,7 @@ async function InviteContent({ searchParams, params }: InviteProps) {
   const response = await fetchProject(`${project_path}`);
   const { email, key } = await searchParams;
 
-  if (response.success === false) {
+  if (response.project === null) {
     return (
       <p className="error_message">
         Dieses Projekt wurde nicht gefunden. Falls es sich um eine gültige
@@ -45,6 +75,8 @@ async function InviteContent({ searchParams, params }: InviteProps) {
       </p>
     );
   }
+
+  console.log(response.project);
 
   return (
     <>
@@ -61,6 +93,7 @@ async function InviteContent({ searchParams, params }: InviteProps) {
           <RegisterForm
             email={email}
             project={response.project}
+            module={response.module || null}
             invitationKey={key}
           />
         ) : (

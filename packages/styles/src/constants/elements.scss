@@ -1,6 +1,7 @@
 @use "./breakpoints" as *;
 @use "./colors" as *;
 @use "./sizes" as *;
+@use "sass:map";
 
 @mixin flexbox(
   $direction: row,
@@ -53,7 +54,7 @@
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
-  font-size: map-get($map: $font_size, $key: "md");
+  font-size: map.get($font_size, "md");
   font-family: "Geist";
   font-weight: 500;
   line-height: 1;
@@ -62,7 +63,7 @@
   height: 30px;
   font-size: 12px;
   border-radius: 50%;
-  border-radius: map-get($map: $border_radius, $key: "sm");
+  border-radius: map.get($border_radius, "sm");
   &:hover {
     background-color: $primary;
     color: white !important;
@@ -74,16 +75,16 @@
 }
 
 @mixin list_element {
-  padding: map-get($map: $padding, $key: "sm");
+  padding: map.get($padding, "sm");
   border-bottom: 1px solid $grey_shaded;
   position: relative;
-  font-size: map-get($map: $font_size, $key: "sm");
+  font-size: map.get($font_size, "sm");
 }
 
 @mixin elements_container {
   border: 1px solid $grey;
-  padding: map-get($map: $padding, $key: "md");
-  border-radius: map-get($map: $border_radius, $key: "md");
+  padding: map.get($padding, "md");
+  border-radius: map.get($border_radius, "md");
   position: relative;
   box-sizing: border-box;
 }
@@ -91,11 +92,11 @@
 @mixin label($size: "md", $color: "primary") {
   background-color: transparent;
   text-transform: uppercase;
-  border-radius: map-get($map: $border_radius, $key: "sm");
+  border-radius: map.get($border_radius, "sm");
   width: fit-content;
 
   @if $size == "sm" {
-    padding: map-get($padding, "xs");
+      padding: map.get($padding, "xs");
     font-size: map-get($font_size, "xs");
   }
   @if $size == "md" {

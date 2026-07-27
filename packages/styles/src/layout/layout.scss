@@ -164,6 +164,10 @@ label[data-is_horizontal="true"] {
   margin:0 !important;
 }
 
+label[data-display_none="true"] {
+  display: none;
+}
+
 label.no_margin {
   margin: 0;
 }

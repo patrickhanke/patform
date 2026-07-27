@@ -3,7 +3,7 @@ import { FastField, FastFieldProps } from "formik";
 import getSelectValue from "./functions/getSelectValue";
 import { RenderFieldsType } from "./types";
 import "./styles.scss";
-import { FileUploader, Select } from "@repo/ui";
+import { Checkbox, FileUploader, Select } from "@repo/ui";
 import { Field } from "../../types";
 import ColorPicker from "./components/ColorPicker";
 import ImageUpload from "./components/ImageUpload";
@@ -47,25 +47,29 @@ const RenderFields: FC<RenderFieldsType> = ({
 					key={field.id ? field.id : field.name}
 					className={isHorizontal ? "form_horizontal_container" : ""}
 				>
-					<label
-						htmlFor={field.name}
-						className={
-							highlightChanges &&
-							getFieldMeta(field.name).initialValue !==
-								field.value
-								? "highlight"
-								: ""
-						}
-						data-is_horizontal={isHorizontal}
-					>
-						{field.label || field.name}
-						{field?.validation?.validate &&
-							field.validation?.required && <span>*</span>}
-					</label>
+					{
+						<label
+							htmlFor={field.name}
+							className={
+								highlightChanges &&
+								getFieldMeta(field.name).initialValue !==
+									field.value
+									? "highlight"
+									: ""
+							}
+							data-is_horizontal={isHorizontal}
+							data-display_none={field.type === "checkbox"}
+						>
+							{field.label || field.name}
+							{field?.validation?.validate &&
+								field.validation?.required && <span>*</span>}
+						</label>
+					}
 					<div>
 						{(field.type === "input" ||
 							field.type === "url" ||
 							field.type === "password" ||
+							field.type === "password_confirmation" ||
 							field.type === "number") && (
 							<>
 								<input
@@ -73,7 +77,10 @@ const RenderFields: FC<RenderFieldsType> = ({
 									type={
 										field.dataType === "number"
 											? "number"
-											: field.type
+											: field.type ===
+												  "password_confirmation"
+												? "password"
+												: field.type
 									}
 									onChange={(e) => {
 										if (field.type === "number") {
@@ -128,6 +135,18 @@ const RenderFields: FC<RenderFieldsType> = ({
 								placeholder={field.placeholder}
 								key={field.name}
 								style={{ minWidth: "240px", minHeight: "80px" }}
+							/>
+						)}
+						{field.type === "checkbox" && (
+							<Checkbox
+								name={field.name}
+								label={field.label}
+								checked={values[field.name] || false}
+								onChange={(checked) =>
+									setFieldValue(field.name, checked, true)
+								}
+								key={field.name}
+								required={field.validation?.required}
 							/>
 						)}
 						{field.type === "image_select" && (
@@ -304,6 +323,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 								/>
 							</>
 						)}
+						{!isHorizontal && <br />}
 						{getFieldMeta(field.name).touched &&
 						getFieldMeta(field.name).error ? (
 							<div className={"error_message"}>
@@ -327,7 +347,6 @@ const RenderFields: FC<RenderFieldsType> = ({
 							</div>
 						) : null}
 					</div>
-					{!isHorizontal && <br />}
 				</div>
 			);
 		})}

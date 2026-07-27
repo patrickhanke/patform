@@ -22,7 +22,8 @@ const FormikRenderSlideIn: FC<FormikRenderSlideInProps> = ({
 	apiClass,
 	id,
 	isHorizontal = false,
-	highlightChanges = false
+	highlightChanges = false,
+	confirmButtonText = "Speichern"
 }) => {
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 	const [isValid, setIsValid] = useState<boolean>(false);
@@ -43,6 +44,7 @@ const FormikRenderSlideIn: FC<FormikRenderSlideInProps> = ({
 			errors={errors}
 			isOpen={isOpen}
 			header={title}
+			confirmText={confirmButtonText}
 			cancel={() => {
 				if (ref.current?.resetForm) {
 					ref.current.resetForm();

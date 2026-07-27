@@ -1,4 +1,3 @@
-import { FormField } from "./../../../modules/src/patstore/Form/Form/content/FormFields/content/CreateField/types.d";
 import { Module } from "./Module.d";
 import { Field, FilterOperator } from "@repo/ui";
 import { Project } from "./Classes";
@@ -22,20 +21,42 @@ export type ModulePath =
 
 export type ModuleFieldIds =
 	| "title"
+	| "createdAt"
+	| "updatedAt"
 	| "description"
 	| "text"
 	| "image"
-	| "date"
-	| "dates"
+	| "state"
 	| "gallery"
 	| "color"
-	| "data"
-	| "content"
+	| "active"
 	| "file"
-	| "documents"
+	| "date"
+	| "dates"
+	| "times"
 	| "link"
-	| "state"
-	| "active";
+	| "documents"
+	| "created_by"
+	| "updated_by"
+	| "location"
+	| "connected_elements"
+	| "author"
+	| "team"
+	| "persons"
+	| "coordinates"
+	| "address"
+	| "email"
+	| "label"
+	| "pre_title"
+	| "post_title"
+	| "salutation"
+	| "first_name"
+	| "last_name"
+	| "username"
+	| "roles"
+	| "emails"
+	| "expires_at"
+	| "video";
 
 export type ModuleDataFieldsSpecific =
 	| "team"
@@ -112,7 +133,7 @@ export type ModuleFieldType =
 	| "video";
 
 export type ModuleField = {
-	id: ModuleDataFields;
+	id: ModuleFieldIds;
 	label: string;
 	required: boolean;
 	type: ModuleFieldType;

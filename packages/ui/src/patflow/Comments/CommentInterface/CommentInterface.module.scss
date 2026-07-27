@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .comment_interface {
   @include constants.flexbox(
@@ -56,9 +57,9 @@
 
 .comment_content_text {
   background-color: constants.$light;
-  padding: map-get($map: constants.$padding, $key: "sm");
+  padding: map.get(constants.$padding, "sm");
   flex: 1 1 calc(100% - 24px);
-  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
 }
 
 .create_comment_container {
@@ -69,6 +70,6 @@
     $gap: constants.$xs
   );
   background-color: constants.$lightest;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get(constants.$padding, "md");
   height: 100%;
 }
