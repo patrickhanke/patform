@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { IconButton, SlideInForm } from "@repo/ui";
 import { useDataHandlerSecure, useGetData } from "@repo/provider";
 import {
@@ -30,18 +30,15 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		objectName: className,
 		fields: ["objectId", "data", "settings"],
 		id: objectId,
-		skip: !isOpen
-	});
-
-	useEffect(() => {
-		if (dataFromGetData && !data) {
+		skip: !isOpen,
+		afterSaveHandler: (serverData) => {
 			if (type === "data") {
-				setData(dataFromGetData.data);
+				setData(serverData.data);
 			} else {
-				setData(dataFromGetData.settings);
+				setData(serverData.settings);
 			}
 		}
-	}, [dataFromGetData, type]);
+	});
 
 	const dataHandler = useCallback(
 		async (values: FormikValues) => {

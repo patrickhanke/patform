@@ -65,7 +65,8 @@ const UsersOverview = ({ module }: { module: Module }) => {
 	const {
 		data: users,
 		refetch,
-		count
+		count,
+		loading
 	} = useFindDataSecure({
 		objectName: "User",
 		fields: [
@@ -197,6 +198,7 @@ const UsersOverview = ({ module }: { module: Module }) => {
 					setFilters={setFilters}
 					filterColumns={module.filters}
 					setOrder={setOrder}
+					loading={loading}
 				/>
 			)}
 			{pageState.value === " invitations" && <UserInvitations />}
