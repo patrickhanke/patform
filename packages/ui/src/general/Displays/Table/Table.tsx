@@ -47,8 +47,8 @@ const Table: React.FC<TableTypes> = ({
 		}
 		return data;
 	}, [data, loading, pagination?.pageSize]);
-	const [sorting, setSorting] = useState<SortingState>([]);
 
+	const [sorting, setSorting] = useState<SortingState>([]);
 	const resolveRowId = useCallback(
 		(row: unknown) => {
 			if (rowIdResolver) {

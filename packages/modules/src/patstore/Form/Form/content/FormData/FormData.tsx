@@ -47,8 +47,6 @@ const FormData: FC<FormDataProps> = ({
 		skip: pagination.pageIndex * pagination.pageSize
 	});
 
-	console.log(data);
-
 	const formExportColumnData = useMemo(
 		() => [
 			{ id: "createdAt" as const, type: "date" as const, label: "Datum" },
@@ -95,9 +93,6 @@ const FormData: FC<FormDataProps> = ({
 		}
 		return { data, date };
 	}, [selectedDataRows, formattedData]);
-
-	console.log(selectedRowData);
-	console.log(formattedData);
 
 	return (
 		<div>
