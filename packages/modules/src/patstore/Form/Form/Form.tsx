@@ -8,13 +8,18 @@ import FormData from "./content/FormData";
 import FormSettings from "./content/FormSettings";
 import FormFields from "./content/FormFields";
 import TestEmail from "./components/TestEmail";
-import { useParams } from "next/navigation";
+import { FormClass } from "@repo/types";
 
-const Form = () => {
-	const { form_id: formId } = useParams<{ form_id: string }>();
+type FormProps = {
+	formId: string;
+	initialForm: FormClass;
+};
+
+const Form = ({ formId, initialForm }: FormProps) => {
 	const [testEmail, setTestEmail] = useState<boolean>(false);
 
-	const { form, refetch } = useGetForm({ formId });
+	const { form: fetchedForm, refetch } = useGetForm({ formId, skip: true });
+	const form = fetchedForm ?? initialForm;
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as { value: string; label: string }
 	);
@@ -59,13 +64,9 @@ const Form = () => {
 		return [];
 	}, [siteState, selectedDataRows, form]);
 
-	if (!form) {
-		return <div>Lädt ...</div>;
-	}
-
 	return (
 		<Page
-			title={form ? form?.title : "Lädt ..."}
+			title={form.title}
 			emptyContent={true}
 			refetch={refetch}
 			pageStates={siteStates}
@@ -73,33 +74,25 @@ const Form = () => {
 			setPageState={setSiteState}
 			pageHeaderButtons={pageHeaderButtons}
 		>
-			{!form ? (
-				<p>Formular nicht gefunden</p>
-			) : (
-				<>
-					{siteState.value === "data" && (
-						<FormData
-							formTitle={form?.title}
-							formId={formId}
-							selectedDataRows={selectedDataRows}
-							setSelectedDataRows={setSelectedDataRows}
-							dataDeleteModal={dataDeleteModal}
-							setDataDeleteModal={setDataDeleteModal}
-							loading={loading}
-							setLoading={setLoading}
-						/>
-					)}
-					{siteState.value === "settings" && (
-						<FormSettings formId={formId} />
-					)}
-					{siteState.value === "fields" && (
-						<FormFields
-							formId={formId}
-							createField={createField}
-							setCreateField={setCreateField}
-						/>
-					)}
-				</>
+			{siteState.value === "data" && (
+				<FormData
+					formTitle={form.title}
+					formId={formId}
+					selectedDataRows={selectedDataRows}
+					setSelectedDataRows={setSelectedDataRows}
+					dataDeleteModal={dataDeleteModal}
+					setDataDeleteModal={setDataDeleteModal}
+					loading={loading}
+					setLoading={setLoading}
+				/>
+			)}
+			{siteState.value === "settings" && <FormSettings formId={formId} />}
+			{siteState.value === "fields" && (
+				<FormFields
+					formId={formId}
+					createField={createField}
+					setCreateField={setCreateField}
+				/>
 			)}
 
 			<TestEmail

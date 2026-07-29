@@ -34,13 +34,20 @@ const FormData: FC<FormDataProps> = ({
 		pageSize: 10
 	});
 
-	const { data, refetch, count } = useFindData({
+	const {
+		data,
+		refetch,
+		count,
+		loading: loadingData
+	} = useFindData({
 		objectName: "Item",
 		fields: ["objectId", "createdAt", "data"],
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize
 	});
+
+	console.log(data);
 
 	const formExportColumnData = useMemo(
 		() => [
@@ -89,6 +96,9 @@ const FormData: FC<FormDataProps> = ({
 		return { data, date };
 	}, [selectedDataRows, formattedData]);
 
+	console.log(selectedRowData);
+	console.log(formattedData);
+
 	return (
 		<div>
 			{data.length === 0 ? (
@@ -126,8 +136,9 @@ const FormData: FC<FormDataProps> = ({
 						setSelectedRows={setSelectedDataRows}
 						selectedRows={selectedDataRows}
 						enableRowSelection
-						rowIdResolver={(row) => (row as { id: string }).id}
+						// rowIdResolver={(row) => (row as { id: string }).id}
 						exportColumns={formExportColumnData}
+						loading={loadingData}
 					/>
 				</div>
 			)}

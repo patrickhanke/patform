@@ -17,8 +17,6 @@ export function createModuleOverviewPage({
 	Overview,
 	pageHeaderButtons = 2
 }: ModuleOverviewPageOptions) {
-
-	console.log("createModuleOverviewPage", modulePath);
 	async function ModuleOverviewContent() {
 		const cookieStore = await cookies();
 		const sessionToken = cookieStore.get("patstore_token")?.value;

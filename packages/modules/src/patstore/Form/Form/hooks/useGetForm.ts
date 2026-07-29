@@ -1,7 +1,13 @@
 import { useGetData } from "@repo/provider";
 import { FormClass, ApolloRefetch } from "@repo/types";
 
-export const useGetForm = ({ formId }: { formId: string }) => {
+export const useGetForm = ({
+	formId,
+	skip
+}: {
+	formId: string;
+	skip?: boolean;
+}) => {
 	const { data, loading, refetch } = useGetData({
 		objectName: "Form",
 		fields: [
@@ -12,7 +18,8 @@ export const useGetForm = ({ formId }: { formId: string }) => {
 			"categories",
 			"settings"
 		],
-		id: formId
+		id: formId,
+		skip
 	});
 
 	return {

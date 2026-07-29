@@ -19,16 +19,14 @@ const FormField: FC<FormFieldProps> = ({ formId, field, refetch, fields }) => {
 					onClick={() => setDeleteField(true)}
 				/>
 			</div>
-			{editField && (
-				<CreateField
-					field={field}
-					createField={editField}
-					setCreateField={setEditField}
-					formId={formId}
-					fields={fields}
-					refetch={refetch}
-				/>
-			)}
+			<CreateField
+				field={field}
+				createField={editField}
+				setCreateField={setEditField}
+				formId={formId}
+				fields={fields}
+				refetch={refetch}
+			/>
 			<Modal
 				isOpen={deleteField}
 				cancelButtonHandler={() => setDeleteField(false)}

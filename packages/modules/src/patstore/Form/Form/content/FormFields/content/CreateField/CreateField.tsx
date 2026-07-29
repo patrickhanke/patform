@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { v4 as generateUuid } from "uuid";
 import { SlideIn, TextInput } from "@repo/ui";
 import { CreateFieldProps, FormField } from "./types";
 import SelectType from "./components/SelectType";
@@ -9,6 +10,11 @@ import { useDataHandler } from "@repo/provider";
 import { ErrorMessage } from "@repo/types";
 import default_field_data from "./constants/default_field_data";
 
+const createEmptyField = (): FormField => ({
+	...default_field_data,
+	id: generateUuid()
+});
+
 const CreateField: FC<CreateFieldProps> = ({
 	formId,
 	fields,
@@ -18,19 +24,39 @@ const CreateField: FC<CreateFieldProps> = ({
 	field
 }) => {
 	const { updateData } = useDataHandler();
+	const isEditMode = Boolean(field);
 	const [loading, setLoading] = useState(false);
-	const [data, setData] = useState<FormField>(
-		field ? field : default_field_data
+	const [data, setData] = useState<FormField>(() =>
+		field ? { ...field } : createEmptyField()
 	);
 
 	const [secContent, setSecContent] = useState<string | null>(null);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
+	const formKey = `${data.id}-${createField ? "open" : "closed"}`;
+
+	useEffect(() => {
+		if (!createField) return;
+
+		setSecContent(null);
+
+		if (field) {
+			setData((prev) => (prev.id === field.id ? prev : { ...field }));
+			return;
+		}
+
+		setData((prev) => {
+			const isCreateDraft = !fields.some((f) => f.id === prev.id);
+			return isCreateDraft ? prev : createEmptyField();
+		});
+	}, [createField, field, fields]);
 
 	const secondaryContent = useMemo(() => {
 		if (secContent === "type") {
 			return (
 				<SelectType
-					setType={(value) => setData({ ...data, type: value })}
+					setType={(value) =>
+						setData((prev) => ({ ...prev, type: value }))
+					}
 					type={data.type}
 				/>
 			);
@@ -39,7 +65,9 @@ const CreateField: FC<CreateFieldProps> = ({
 		if (secContent === "options") {
 			return (
 				<CreateOptions
-					setOptions={(value) => setData({ ...data, options: value })}
+					setOptions={(value) =>
+						setData((prev) => ({ ...prev, options: value }))
+					}
 					options={data.options || []}
 				/>
 			);
@@ -49,7 +77,7 @@ const CreateField: FC<CreateFieldProps> = ({
 			return (
 				<CheckboxDescription
 					setDescription={(value) =>
-						setData({ ...data, description: value })
+						setData((prev) => ({ ...prev, description: value }))
 					}
 					description={data.description}
 				/>
@@ -61,36 +89,45 @@ const CreateField: FC<CreateFieldProps> = ({
 
 	const dataChangeHandler = useCallback(
 		(key: string, value: string | number | boolean) => {
-			const dataCopy = { ...data, [key]: value };
-			// set(dataCopy, key, value)
-			setData(dataCopy);
+			setData((prev) => ({ ...prev, [key]: value }));
 		},
-		[data]
+		[]
 	);
+
+	const closeSlideIn = useCallback(() => {
+		setSecContent(null);
+		setCreateField(false);
+	}, [setCreateField]);
 
 	const dataSaveHandler = useCallback(async () => {
 		setLoading(true);
-		const fieldsCopy = [...fields];
-		if (!field) {
-			fieldsCopy.push(data);
-		} else {
-			const index = fields.findIndex((f) => f.id === data.id);
-			if (index !== -1) {
-				fieldsCopy[index] = data;
+		try {
+			const fieldsCopy = [...fields];
+			if (!field) {
+				fieldsCopy.push(data);
+			} else {
+				const index = fields.findIndex((f) => f.id === data.id);
+				if (index !== -1) {
+					fieldsCopy[index] = data;
+				}
 			}
+			await updateData({
+				className: "Form",
+				objectId: formId,
+				updateObject: {
+					fields: fieldsCopy
+				}
+			});
+			await refetch();
+			if (!field) {
+				setData(createEmptyField());
+			}
+			setSecContent(null);
+			setCreateField(false);
+		} finally {
+			setLoading(false);
 		}
-		await updateData({
-			className: "Form",
-			objectId: formId,
-			updateObject: {
-				fields: fieldsCopy
-			}
-		});
-		await refetch();
-		setData(default_field_data);
-		setLoading(false);
-		setCreateField(false);
-	}, [data]);
+	}, [data, field, fields, formId, refetch, setCreateField, updateData]);
 
 	useEffect(() => {
 		const errorArray: ErrorMessage[] = [];
@@ -103,7 +140,7 @@ const CreateField: FC<CreateFieldProps> = ({
 		}
 		if (data.name) {
 			const fieldWithName = fields.find(
-				(field) => field.name === data.name
+				(existingField) => existingField.name === data.name
 			);
 			const exists = fieldWithName && fieldWithName.id !== data.id;
 
@@ -145,13 +182,13 @@ const CreateField: FC<CreateFieldProps> = ({
 		}
 
 		setErrors(errorArray);
-	}, [data]);
+	}, [data, fields]);
 
 	return (
 		<SlideIn
 			isOpen={createField}
-			header="Feld erstellen"
-			cancel={() => setCreateField(false)}
+			header={isEditMode ? "Feld bearbeiten" : "Feld erstellen"}
+			cancel={closeSlideIn}
 			confirm={() => dataSaveHandler()}
 			secondaryContent={secondaryContent}
 			showSecondaryContent={secondaryContent ? true : false}
@@ -162,18 +199,24 @@ const CreateField: FC<CreateFieldProps> = ({
 			<div className="flex col gap-sm">
 				<div>
 					<TextInput
+						key={`${formKey}-name`}
 						label="Name"
 						id="name"
 						defaultValue={data.name}
-						onChange={(value) => setData({ ...data, name: value })}
+						onChange={(value) =>
+							setData((prev) => ({ ...prev, name: value }))
+						}
 					/>
 				</div>
 				<div>
 					<TextInput
+						key={`${formKey}-label`}
 						label="Label"
 						id="label"
 						defaultValue={data.label}
-						onChange={(value) => setData({ ...data, label: value })}
+						onChange={(value) =>
+							setData((prev) => ({ ...prev, label: value }))
+						}
 					/>
 				</div>
 				<div>
@@ -245,6 +288,7 @@ const CreateField: FC<CreateFieldProps> = ({
 					{(data.type === "text" || data.type === "textarea") && (
 						<div>
 							<TextInput
+								key={`${formKey}-placeholder`}
 								label="Platzhalter"
 								id="placeholder"
 								defaultValue={data.placeholder}
@@ -258,9 +302,12 @@ const CreateField: FC<CreateFieldProps> = ({
 				<div>
 					<label>Zusätzliche Informationen (Optional)</label>
 					<TextInput
+						key={`${formKey}-info`}
 						id="info"
 						width="100%"
-						onChange={(value) => setData({ ...data, info: value })}
+						onChange={(value) =>
+							setData((prev) => ({ ...prev, info: value }))
+						}
 						isTextArea
 						defaultValue={data.info}
 					/>
