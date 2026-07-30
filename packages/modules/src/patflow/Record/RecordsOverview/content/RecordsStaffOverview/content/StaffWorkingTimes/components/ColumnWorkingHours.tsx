@@ -11,8 +11,6 @@ const ColumnWorkingHours = ({ times }: { times: DayDataTime[] }) => {
 		return hoursInt;
 	}, [times]);
 
-	console.log(times);
-
 	if (hours) {
 		return (
 			<div style={{ float: "right" }}>

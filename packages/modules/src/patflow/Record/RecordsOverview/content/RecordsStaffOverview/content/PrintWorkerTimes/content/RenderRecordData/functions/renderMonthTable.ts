@@ -33,6 +33,7 @@ const renderMonthTabel = ({
 				records
 			});
 			const currentMonth = monthData.find((m) => m.id === month.id);
+
 			if (!currentMonth) {
 				return [];
 			}

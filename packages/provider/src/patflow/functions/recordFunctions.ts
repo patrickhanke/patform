@@ -10,7 +10,6 @@ import {
 	formatISO9075,
 	hoursToMilliseconds,
 	isWeekend,
-	minutesToMilliseconds,
 	isSunday,
 	isFriday,
 	isThursday,
@@ -74,7 +73,6 @@ export const createInitialTimes: (
 	timeSettings,
 	holidays
 }) => {
-	console.log({ start_date, end_date, timeSettings, holidays });
 	const times: TimeObject[] = [];
 
 	const createTimeObject: (day: string) => TimeObject = (day) => {
@@ -94,9 +92,7 @@ export const createInitialTimes: (
 		};
 
 		if (isWorkingDay) {
-			console.log({ day });
 			const startTime = `${day}T${timeSettings.start || "08:00"}`;
-			console.log({ timeSettings });
 			const pauseDuration = (timeSettings.breaks ?? []).reduce(
 				(acc, curr) => {
 					const pauseStart = `${day}T${curr.start}:00`;
@@ -109,18 +105,13 @@ export const createInitialTimes: (
 				},
 				0
 			);
-			console.log({ pauseDuration });
 			const durationMs =
 				hoursToMilliseconds(
 					timeSettings.hours / timeSettings.weekdays
 				) + pauseDuration;
-			console.log({ durationMs });
-			console.log({ startTime: new Date(startTime).getTime() });
 			const endTime = new Date(
 				new Date(startTime).getTime() + durationMs
 			);
-
-			console.log(endTime);
 
 			timeObject.default_time = {
 				type: "regular",
@@ -171,6 +162,7 @@ export const getDefaultTime: (date: string) => DefaultWorkingDay = (date) => {
 		absence: null,
 		saldo: 0,
 		type: "work",
+		worktime: 0,
 		default_time: null,
 		surcharges: [],
 		time: {
@@ -210,10 +202,7 @@ export const createDateIntervalForMonth: (
 	);
 };
 
-export const dateHasRecord = (
-	date: string,
-	records: Record[]
-): boolean => {
+export const dateHasRecord = (date: string, records: Record[]): boolean => {
 	const currentDate = new Date(date);
 	return records.some((record) => {
 		const start = new Date(record.start_date);
