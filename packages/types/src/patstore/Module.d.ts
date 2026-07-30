@@ -162,26 +162,125 @@ export type ModuleClass =
 	| "Dates"
 	| "TrainingGroup";
 
-export type Module = {
+export type ModuleSubMenuItem = {
+	label: string;
+	value: string;
+	icon: string;
+};
+
+export type ModuleCommon = {
 	objectId: string;
 	name: string;
-	path: ModulePath;
 	icon: string;
 	fields: ModuleField[];
 	data_fields: Field[];
 	setting_fields: Field[];
 	position: number;
 	project: PatstoreProject;
-	connected_class: ModuleClass;
 	categories: ModuleCategory[];
 	settings: ModuleSettings;
-	default_fields: ModuleFieldIds[];
-	sub_menu: {
-		label: string;
-		value: string;
-		icon: string;
-	}[];
 	filters?: ModuleFilter[];
+};
+
+/** Path-specific defaults and connected_class for each module type */
+export type ModulePathConfig = {
+	"/website": {
+		connected_class: "Webpage";
+		default_fields: [];
+		sub_menu: [
+			{ label: "Inhalte"; value: "/content"; icon: "content" },
+			{ label: "Seiten"; value: "/pages"; icon: "pages" },
+			{ label: "Einstellungen"; value: "/settings"; icon: "settings" }
+		];
+	};
+	"/articles": {
+		connected_class: "Article";
+		default_fields: ["title", "text", "image"];
+		sub_menu: [];
+	};
+	"/events": {
+		connected_class: "Event";
+		default_fields: ["title", "dates"];
+		sub_menu: [];
+	};
+	"/entries": {
+		connected_class: "Entry";
+		default_fields: ["title", "text"];
+		sub_menu: [];
+	};
+	"/categories": {
+		connected_class: "Category";
+		default_fields: ["title"];
+		sub_menu: [];
+	};
+	"/people": {
+		connected_class: "Person";
+		default_fields: ["title", "image"];
+		sub_menu: [];
+	};
+	"/images": {
+		connected_class: "Image";
+		default_fields: ["title", "file"];
+		sub_menu: [];
+	};
+	"/groups": {
+		connected_class: "Group";
+		default_fields: ["title"];
+		sub_menu: [];
+	};
+	"/downloads": {
+		connected_class: "Download";
+		default_fields: ["title", "file"];
+		sub_menu: [];
+	};
+	"/forms": {
+		connected_class: "Form";
+		default_fields: ["title", "text"];
+		sub_menu: [];
+	};
+	"/users": {
+		connected_class: "User";
+		default_fields: [];
+		sub_menu: [];
+	};
+	"/locations": {
+		connected_class: "Location";
+		default_fields: ["title"];
+		sub_menu: [];
+	};
+	"/calendar": {
+		connected_class: "Dates";
+		default_fields: [];
+		sub_menu: [];
+	};
+	"/emails": {
+		connected_class: "Email";
+		default_fields: [];
+		sub_menu: [
+			{ label: "E-Mails"; value: "/emails"; icon: "email" },
+			{ label: "E-Mail-Vorlagen"; value: "/templates"; icon: "templates" }
+		];
+	};
+	"/videos": {
+		connected_class: "Video";
+		default_fields: ["title", "video"];
+		sub_menu: [];
+	};
+};
+
+export type ModuleForPath<P extends ModulePath = ModulePath> = ModuleCommon & {
+	path: P;
+} & ModulePathConfig[P];
+
+/** Discriminated union of all module variants, keyed by `path` */
+export type Module = ModuleForPath;
+
+/** Extract a single module variant by path */
+export type ModuleByPath<P extends ModulePath> = ModuleForPath<P>;
+
+/** Map each path to its Parse class name */
+export type ModulePathToClass = {
+	[P in ModulePath]: ModulePathConfig[P]["connected_class"];
 };
 
 export type ModuleFilterType =
