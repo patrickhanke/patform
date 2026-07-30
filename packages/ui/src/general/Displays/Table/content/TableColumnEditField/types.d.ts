@@ -1,4 +1,4 @@
-import { Field } from "@repo/types";
+import { Field } from "@repo/ui";
 
 export type TableColumnEditFieldProps = {
 	objectId: string;

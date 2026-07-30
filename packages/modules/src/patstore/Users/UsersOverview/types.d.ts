@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { ApolloRefetch, PatstoreUser } from "@repo/types";
+import { Field } from "@repo/ui";
 
 export type UsersOverviewProps = {
 	projectId: string;
@@ -10,16 +11,8 @@ export type UsersOverviewProps = {
 };
 
 export type CreateUserProps = {
-	user: UserObject;
-	setUser: Dispatch<SetStateAction<UserObject | undefined>>;
-};
-
-export type UserObject = {
-	username: string;
-	projects: string[];
-	value: string;
-	name: string;
-	role: string;
+	user: PatstoreUser;
+	setUser: Dispatch<SetStateAction<PatstoreUser | undefined>>;
 };
 
 export type DeleteUserProps = {
@@ -36,17 +29,6 @@ export type AddUserProps = {
 };
 
 export type FilterArray = Filter[];
-
-export type UseFindUser = ({
-	filters: FilterArray,
-	skip: number,
-	limit: number
-}) => {
-	loading: boolean;
-	users?: PatstoreUser[];
-	refetch: ApolloRefetch;
-	count: number;
-};
 
 export type CreateUser = {
 	[key: string]: {

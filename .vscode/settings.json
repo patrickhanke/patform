@@ -3,7 +3,8 @@
   "editor.insertSpaces": false,
   // "files.autoSave": "onFocusChange",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "files.eol": "\n"
+  "files.eol": "\n",
+  "references.preferredLocation": "view"
   // "editor.codeActionsOnSave": {
   //   "source.fixAll": "explicit"
   // }

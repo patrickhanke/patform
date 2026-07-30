@@ -2,7 +2,7 @@
 
 import { PageHeader } from "./content/PageHeader";
 import { PageProps } from "./types";
-import "./styles.scss";
+import styles from "./page_skeleton.module.scss";
 
 const Page = ({
 	title,
@@ -19,7 +19,7 @@ const Page = ({
 }: PageProps) => {
 	return (
 		<>
-			<div className="page_header_container">
+			<div className={styles.page_header_container}>
 				<PageHeader
 					title={title}
 					description={description}

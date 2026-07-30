@@ -1,7 +1,7 @@
 "use client";
 
+import styles from "./page_skeleton.module.scss";
 import { PageSkeletonProps } from "./types";
-import "./styles.scss";
 import { PageHeaderSkeleton } from "./content";
 
 const PageSkeleton = ({
@@ -14,7 +14,7 @@ const PageSkeleton = ({
 }: PageSkeletonProps) => {
 	return (
 		<>
-			<div className="page_header_container">
+			<div className={styles.page_header_container}>
 				<PageHeaderSkeleton
 					title={title}
 					description={description}
@@ -24,7 +24,7 @@ const PageSkeleton = ({
 					createClass={createClass}
 				/>
 			</div>
-			<div className="page-content" id="content">
+			<div className={styles.page_content} id="content">
 				<div />
 			</div>
 		</>

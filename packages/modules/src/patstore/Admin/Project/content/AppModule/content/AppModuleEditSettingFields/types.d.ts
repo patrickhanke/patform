@@ -1,5 +1,5 @@
 import { Updater } from "use-immer";
-import { Field } from "@repo/types";
+import { Field } from "@repo/ui";
 
 export type AppModuleEditFieldsProps = {
 	initialFields: Field[];

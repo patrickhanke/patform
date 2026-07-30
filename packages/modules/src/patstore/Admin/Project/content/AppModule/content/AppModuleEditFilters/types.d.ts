@@ -1,6 +1,7 @@
 import { Updater } from "use-immer";
-import { Field, ModuleFilter, ModuleFilterPath } from "@repo/types";
+import { ModuleFilter, ModuleFilterPath, ModulePath } from "@repo/types";
 import { AdditionalField } from "../../types";
+import { Field } from "@repo/ui";
 
 export type { ModuleFilter, ModuleFilterPath };
 
@@ -8,7 +9,7 @@ export type AppModuleEditFiltersProps = {
 	moduleName: string;
 	initialFilters: ModuleFilter[];
 	moduleId: string;
-	modulePath: Module["path"];
+	modulePath: ModulePath;
 	modules: { value: string; label: string; connected_class: string }[];
 	settingsFields: Field[];
 	dataFields: Field[];

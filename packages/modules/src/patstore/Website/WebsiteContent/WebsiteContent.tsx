@@ -64,7 +64,7 @@ const WebsiteContent = () => {
 
 	const columns = useCreateColumns<ContentClass>({
 		data: [
-			{ id: "name", type: "edit_string", label: "Name" },
+			{ id: "title", type: "edit_string", label: "Name" },
 			{
 				id: "content_id",
 				type: user.is_superuser ? "edit_string" : "string",

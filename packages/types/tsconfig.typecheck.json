@@ -8,6 +8,9 @@
 		"composite": false,
 		"declaration": false,
 		"declarationMap": false,
+		"noUncheckedSideEffectImports": true,
+		"noUnusedLocals": true,
+		"skipLibCheck": false,
 		"paths": {
 			"@/types/General": ["./src/patflow/General/index.ts"],
 			"@repo/types": ["./src/index.ts"]

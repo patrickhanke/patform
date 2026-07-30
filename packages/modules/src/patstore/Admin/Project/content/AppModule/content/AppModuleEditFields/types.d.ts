@@ -1,5 +1,5 @@
 import { Updater } from "use-immer";
-import { Field, ApolloRefetch, ModuleField, Module } from "@repo/types";
+import { ApolloRefetch, ModuleField, Module } from "@repo/types";
 
 export type ModuleFieldsPartial = ModuleField[];
 
@@ -18,6 +18,6 @@ export type AppModuleFieldProps = {
 };
 
 export type AppModuleEditFieldProps = {
-	field?: Field;
-	setFields: Updater<Field[]>;
+	field?: ModuleField;
+	setFields: Updater<ModuleField[]>;
 };

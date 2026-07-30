@@ -1,6 +1,6 @@
-import { Module } from "./Module.d";
-import { Field, FilterOperator } from "@repo/ui";
-import { Project } from "./Classes";
+import { FilterOperator } from "@repo/ui";
+import { Field } from "@repo/types";
+import { PatstoreProject } from "./Project";
 
 export type ModulePath =
 	| "/articles"
@@ -87,7 +87,7 @@ export type ModuleSettingsCategory = {
 };
 
 export type ModuleSettings = {
-	[key: string]: any;
+	[key: string]: unknown;
 	categories?: ModuleSettingsCategory[];
 };
 
@@ -171,7 +171,7 @@ export type Module = {
 	data_fields: Field[];
 	setting_fields: Field[];
 	position: number;
-	project: Project;
+	project: PatstoreProject;
 	connected_class: ModuleClass;
 	categories: ModuleCategory[];
 	settings: ModuleSettings;

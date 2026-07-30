@@ -2,7 +2,10 @@
   "extends": "@repo/typescript/react-library.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "noUnusedLocals": true,
+    "noUncheckedSideEffectImports": true,
+    "skipLibCheck": false
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

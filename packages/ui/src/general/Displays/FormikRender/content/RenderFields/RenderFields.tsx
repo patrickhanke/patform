@@ -4,7 +4,7 @@ import getSelectValue from "./functions/getSelectValue";
 import { RenderFieldsType } from "./types";
 import "./styles.scss";
 import { Checkbox, FileUploader, Select } from "@repo/ui";
-import { Field } from "../../types";
+import { Field } from "@repo/types";
 import ColorPicker from "./components/ColorPicker";
 import ImageUpload from "./components/ImageUpload";
 import TextEditor from "./components/TextEditor";
@@ -185,7 +185,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 						{field.type === "file" && (
 							<FileUploader
 								type={field.type}
-								value={values[field.name]}
+								value={get(values, field.name, "")}
 								returnType={
 									field.type === "file" ? "string" : "array"
 								}

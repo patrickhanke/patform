@@ -1,6 +1,7 @@
 import { FC, useMemo } from "react";
-import { Field, Form } from "@repo/ui";
-import { CreateUserProps, UserObject } from "../types";
+import { Form } from "@repo/ui";
+import { CreateUserProps } from "../types";
+import { PatstoreUser, Field } from "@repo/types";
 
 const CreateUser: FC<CreateUserProps> = ({ user, setUser }) => {
 	const formFields = useMemo(
@@ -37,7 +38,7 @@ const CreateUser: FC<CreateUserProps> = ({ user, setUser }) => {
 			fields={formFields as Field[]}
 			data={user}
 			formSubmitHandler={(data) => {
-				setUser(data as UserObject);
+				setUser(data as PatstoreUser);
 			}}
 			useWithDebounce={true}
 		/>

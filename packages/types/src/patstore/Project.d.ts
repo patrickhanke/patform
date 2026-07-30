@@ -1,3 +1,5 @@
+import { Module } from "./Module";
+
 export type PatstoreProjectInvitation = {
 	email: string;
 	name: string;

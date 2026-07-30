@@ -18,11 +18,6 @@ export const module_option_fields: ModuleOptionsField = {
 		connected_class: "Webpage",
 		sub_menu: [
 			{
-				label: "Komponenten",
-				value: "/components",
-				icon: "tasks"
-			},
-			{
 				label: "Inhalte",
 				value: "/content",
 				icon: "content"
@@ -158,10 +153,9 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: []
 		},
-		data_fields: [],
-		fields: [
+		data_fields: [
 			{
-				id: generateUuid(),
+				id: "start_age",
 				label: "Startalter",
 				type: "number",
 				name: "data.start_age",
@@ -183,6 +177,7 @@ export const module_option_fields: ModuleOptionsField = {
 				}
 			}
 		],
+		fields: [],
 		position: 2,
 		categories: [],
 		connected_class: "Group",

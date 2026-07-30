@@ -3,11 +3,11 @@ import { weekdays } from "@repo/provider";
 import { EventLocation } from "../patstore";
 
 export interface Date {
-  /**
-   * Give a more precise return type to the method `toISOString()`:
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
-   */
-  toISOString(): TDateISO;
+	/**
+	 * Give a more precise return type to the method `toISOString()`:
+	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
+	 */
+	toISOString(): TDateISO;
 }
 
 type TYear = `${number}${number}${number}${number}`;
@@ -27,38 +27,38 @@ export type TDateISO = string;
 export type Weekdays = typeof weekdays;
 
 export type DateInterval = {
-  value: string;
-  label: string;
-  disabled?: boolean;
+	value: string;
+	label: string;
+	disabled?: boolean;
 };
 
 export type TaskTimeCategory =
-  | { value: "single"; label: "Single" }
-  | { value: "multi"; label: "Multi" }
-  | { value: "interval"; label: "Interval" };
+	| { value: "single"; label: "Single" }
+	| { value: "multi"; label: "Multi" }
+	| { value: "interval"; label: "Interval" };
 
 export type DateObject = {
-  type: DateInterval;
-  category: typeof date_category_options[number];
-  interval: {
-    number: number;
-    unit: string;
-  };
-  dates: string[];
-  start_date: string;
-  end_date: string;
-  weekday: string;
-  time: string;
+	type: DateInterval;
+	category: (typeof date_category_options)[number];
+	interval: {
+		number: number;
+		unit: string;
+	};
+	dates: string[];
+	start_date: string;
+	end_date: string;
+	weekday: string;
+	time: string;
 };
 
 export type CalendarDateObject = {
-  label: string;
-  time: DateObject;
-  place: EventLocation;
-  full_day: boolean;
-  id: string;
-  text: string;
-  assigned_users: string[];
+	label: string;
+	time: DateObject;
+	place: EventLocation;
+	full_day: boolean;
+	id: string;
+	text: string;
+	assigned_users: string[];
 };
 
 export type DateObjectWithNextDates = DateObject & { next_dates?: string[] };

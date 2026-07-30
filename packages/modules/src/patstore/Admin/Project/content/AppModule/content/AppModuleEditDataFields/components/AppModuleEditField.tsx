@@ -2,10 +2,10 @@ import { useCallback } from "react";
 import { AppModuleEditFieldProps } from "../types";
 import { CreateButton, InfoBox, Select, StatelessToggle } from "@repo/ui";
 import fieldTypes from "../constants/fieldTypes";
-import { Field } from "@repo/ui";
+import { Field } from "@repo/types";
 import { useDebounceCallback } from "usehooks-ts";
 import { cloneDeep, set, get } from "lodash-es";
-import "../styles.scss";
+import styles from "../AppModuleEditDataFields.module.scss";
 
 const AppModuleEditField = ({ field, setFields }: AppModuleEditFieldProps) => {
 	if (!field) {
@@ -29,8 +29,6 @@ const AppModuleEditField = ({ field, setFields }: AppModuleEditFieldProps) => {
 		},
 		[field, setFields]
 	);
-
-	console.log({ field });
 
 	const changeHandler = useDebounceCallback(fieldChangeHandler, 1000);
 
@@ -111,9 +109,11 @@ const AppModuleEditField = ({ field, setFields }: AppModuleEditFieldProps) => {
 							) => (
 								<div
 									key={option.value}
-									className="app_module_option_container"
+									className={
+										styles.app_module_option_container
+									}
 								>
-									<div className="app_module_option">
+									<div className={styles.app_module_option}>
 										<label>Label</label>
 										<input
 											key={get(
@@ -135,7 +135,7 @@ const AppModuleEditField = ({ field, setFields }: AppModuleEditFieldProps) => {
 											}
 										/>
 									</div>
-									<div className="app_module_option">
+									<div className={styles.app_module_option}>
 										<label>Wert</label>
 										<input
 											key={get(

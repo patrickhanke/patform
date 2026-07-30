@@ -8,7 +8,7 @@ import {
 import { useImmer } from "use-immer";
 import AppModuleField from "./components/AppModuleField";
 import { AppModuleEditFieldsProps } from "./types";
-import { Field } from "@repo/ui";
+import { Field } from "@repo/types";
 import { v4 } from "uuid";
 import { useDataHandler } from "@repo/provider";
 import AppModuleEditField from "./components/AppModuleEditField";

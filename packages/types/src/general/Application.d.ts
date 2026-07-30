@@ -56,7 +56,7 @@ export type Document = {
 	type: "task" | "object";
 };
 
-export type Pointer<T> = {
+export type Pointer<T extends Class> = {
 	__type: "Pointer";
 	className: T;
 	objectId: string;
@@ -99,9 +99,7 @@ export type Response = {
 
 export type DatabaseFile = { name: string; url: string };
 
-export type Pointer = { __type: string; className: string; objectId: string };
-
-export type Relation = { __op: string; objects: Array<Pointer> };
+export type Relation = { __op: string; objects: Array<Pointer<unknown>> };
 
 export type UploadedFile = {
 	file: {

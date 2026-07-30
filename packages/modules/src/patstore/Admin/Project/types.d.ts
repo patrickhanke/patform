@@ -18,7 +18,7 @@ export type CreateModuleProps = {
 
 export type ModuleOptionsKeys =
 	| "/website"
-	| "/persons"
+	| "/people"
 	| "/website"
 	| "/articles"
 	| "/events"
