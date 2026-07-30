@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./page_skeleton.module.scss";
+import styles from "./Page.module.scss";
 import { PageSkeletonProps } from "./types";
 import { PageHeaderSkeleton } from "./content";
 

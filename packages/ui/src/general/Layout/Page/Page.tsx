@@ -2,7 +2,7 @@
 
 import { PageHeader } from "./content/PageHeader";
 import { PageProps } from "./types";
-import styles from "./page_skeleton.module.scss";
+import styles from "./Page.module.scss";
 
 const Page = ({
 	title,
@@ -33,7 +33,7 @@ const Page = ({
 					emptyContent={emptyContent}
 				/>
 			</div>
-			<div className="page-content" id="content">
+			<div className={styles.page_content} id="content">
 				{children}
 			</div>
 		</>
