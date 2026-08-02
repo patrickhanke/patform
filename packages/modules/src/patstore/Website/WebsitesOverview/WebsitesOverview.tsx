@@ -49,6 +49,8 @@ const WebsitesOverview = ({ module }: { module: Module }) => {
 		editLink: "website/pages"
 	});
 
+	console.log("createClass", createClass);
+
 	return (
 		<Page
 			title={`${module.name} - Seiten`}

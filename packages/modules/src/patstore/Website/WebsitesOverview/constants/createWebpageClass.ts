@@ -16,7 +16,7 @@ const createClass: PageCreateClassObject<WebpageClass> = {
 			id: "path",
 			position: 1,
 			name: "path",
-			type: "input",
+			type: "edit_string",
 			label: "Pfad (die URL der Seite im Format /...)",
 			required: true,
 			active: true
@@ -25,7 +25,7 @@ const createClass: PageCreateClassObject<WebpageClass> = {
 			id: "title",
 			position: 1,
 			name: "title",
-			type: "input",
+			type: "edit_string",
 			label: "Titel (Der Titel der Seite)",
 			required: true,
 			active: true
@@ -34,7 +34,7 @@ const createClass: PageCreateClassObject<WebpageClass> = {
 			id: "subtitle",
 			position: 3,
 			name: "subtitle",
-			type: "textarea",
+			type: "edit_textfield",
 			label: "Untertitel (Der Untertitel der Seite)",
 			required: true,
 			active: true
@@ -43,9 +43,9 @@ const createClass: PageCreateClassObject<WebpageClass> = {
 			id: "type",
 			position: 1,
 			name: "type",
-			type: "input",
+			type: "edit_string",
 			label: "Typ (Optional, um die Seite zu kategorisieren)",
-			required: true,
+			required: false,
 			active: true
 		}
 	]

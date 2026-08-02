@@ -24,6 +24,8 @@ const PatstoreAppContextProvider = ({
 	const [user, setUser] = useState<PatstoreUser>({} as PatstoreUser);
 	const pathname = usePathname();
 
+	console.log(project);
+
 	const currentModule = useMemo(() => {
 		const modules: Module[] = project.modules;
 

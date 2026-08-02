@@ -2,7 +2,7 @@ import { ModuleField } from "@repo/types";
 import database_fields, {
 	DatabaseFieldType
 } from "../constants/database_fields";
-import { Field } from "../types";
+import { Field } from "@repo/types";
 
 const getDatabaseDefaultFields = (fields: ModuleField[]): Field[] => {
 	const formFields: Field[] = [];

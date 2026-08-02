@@ -30,6 +30,8 @@ const ProjectContextProvider = ({
 	const project_path = `${appId}_project_path`;
 	const router = useRouter();
 
+	console.log("project", project);
+
 	// Keep the cookie in sync so middleware and the next server render pick
 	// up the same project (e.g. after a fresh login with no cookie yet).
 	useEffect(() => {
