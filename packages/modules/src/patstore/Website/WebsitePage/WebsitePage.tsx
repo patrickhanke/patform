@@ -21,9 +21,7 @@ import "./styles.scss";
 import WebsitePageCategories from "./components/WebsitePageCategories";
 import WebsitePageDocuments from "./components/WebsitePageDocuments";
 
-const WebsitePage = ({ params }: { params: { webpage_id: string } }) => {
-	const websiteId = params.webpage_id;
-
+const WebsitePage = ({ websiteId }: { websiteId: string }) => {
 	const { updateData } = useDataHandler();
 	const { user, currentModule } = useContext(PatstoreAppContext);
 	const [content, setContent] = useState<WebpageContent[]>([]);

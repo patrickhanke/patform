@@ -1,5 +1,5 @@
 import { cloneDeep } from "lodash-es";
-import { FormClass, Module } from "@repo/types";
+import { FormClass, Module, WebpageClass } from "@repo/types";
 import { sanitizeGraphQlNode } from "../../Apollo/functions/helpers";
 
 // Plain server-side helpers (no "use client", no React) so layouts and pages
@@ -285,4 +285,50 @@ export async function fetchFormById({
 
 	const node = data?.form;
 	return node ? (sanitizeGraphQlNode(node) as FormClass) : undefined;
+}
+
+const WEBPAGE_FIELDS = `
+	objectId
+	title
+	description
+	path
+	data
+	title
+	subtitle
+	type
+	categories { ...on Element { value } }
+	documents { ...on Element { value } }
+	content { ...on Element { value } }
+	settings { ...on Element { value } }
+	createdAt
+	updatedAt
+`;
+
+export async function fetchWebpageById({
+	id,
+	sessionToken
+}: {
+	id: string;
+	sessionToken?: string;
+}): Promise<WebpageClass | undefined> {
+	if (!id) {
+		return undefined;
+	}
+
+	const query = `
+		query getWebpage($id: ID!) {
+			webpage(id: $id) {
+				${WEBPAGE_FIELDS}
+			}
+		}
+	`;
+
+	const data = await graphqlFetch({
+		query,
+		variables: { id },
+		sessionToken
+	});
+
+	const node = data?.webpage;
+	return node ? (sanitizeGraphQlNode(node) as WebpageClass) : undefined;
 }
