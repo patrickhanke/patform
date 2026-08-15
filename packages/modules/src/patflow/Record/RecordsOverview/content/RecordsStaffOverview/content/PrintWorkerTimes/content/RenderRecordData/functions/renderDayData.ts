@@ -16,10 +16,10 @@ const renderDayData: RenderDayData = ({ year, month, days, records }) => {
 		{ step: 1 }
 	);
 
-	const getSurchagesFromDays = (days: Day[]) => {
+	const getSurchagesFromDays = (dayList: Day[]) => {
 		let surcharges: Day["surcharges"] = [];
 
-		days.forEach((day) => {
+		dayList.forEach((day) => {
 			const surchargesCopy = cloneDeep(surcharges);
 			if (day.surcharges && day.surcharges.length > 0) {
 				day.surcharges.forEach((surcharge) => {
@@ -48,47 +48,55 @@ const renderDayData: RenderDayData = ({ year, month, days, records }) => {
 	};
 
 	dayInterval.forEach((element: Date) => {
-		const daysToFind: Day[] | undefined = days.filter(
-			(day) =>
-				day.date === formatISO9075(element, { representation: "date" })
-		);
+		const dateString = formatISO9075(element, {
+			representation: "date"
+		});
+		const def = findDefaultTimeForDate(dateString, records);
+		const daysToFind: Day[] = days.filter((day) => day.date === dateString);
 
 		if (isArray(daysToFind) && daysToFind.length > 0) {
-			const timeArray: DayData["time"] = [];
+			const timeArray: DayData["times"] = [];
 			daysToFind.forEach((day) => {
 				if (day.time) {
 					timeArray.push({
-						...day.time,
-						day_id: day.objectId
+						saldo: day.saldo,
+						time: day.time,
+						day_id: day.objectId,
+						absence: day.absence,
+						type: day.type,
+						worktime: day.worktime || 0
 					});
 				}
 			});
+
 			if (!daysToFind[0]) {
 				return;
 			}
 
+			const allComments = daysToFind
+				.map((day) => day.comment)
+				.join(" - ");
+
 			interval.push({
 				date: daysToFind[0].date,
-				is_working_day: daysToFind[0].is_working_day,
-				default_time: daysToFind[0].default_time,
-				time: timeArray,
-				absence: daysToFind[0].absence,
-				type: daysToFind[0].type,
-				surcharges: getSurchagesFromDays(daysToFind)
-			});
-		} else {
-			const def = findDefaultTimeForDate(
-				formatISO9075(element, { representation: "date" }),
-				records
-			);
-			interval.push({
-				date: formatISO9075(element, { representation: "date" }),
 				is_working_day: def.is_working_day,
 				default_time: def.default_time,
-				time: undefined,
+				times: timeArray,
+				surcharges: getSurchagesFromDays(daysToFind),
+				comment: allComments,
+				absence: daysToFind[0].absence,
+				type: daysToFind[0].type
+			});
+		} else {
+			interval.push({
+				date: dateString,
+				is_working_day: def.is_working_day,
+				default_time: def.default_time,
+				times: [],
+				surcharges: [],
+				comment: undefined,
 				absence: null,
-				type: "initial",
-				surcharges: []
+				type: "initial"
 			});
 		}
 	});

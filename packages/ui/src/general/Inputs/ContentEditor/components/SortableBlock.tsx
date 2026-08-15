@@ -10,6 +10,9 @@ import ButtonBlock from "../content/ButtonBlock/ButtonBlock";
 import ImageBlock from "../content/ImageBlock/ImageBlock";
 import DividerBlock from "../content/DividerBlock/DividerBlock";
 import LayoutBlock from "../content/LayoutBlock/LayoutBlock";
+import SectionBlock from "../content/SectionBlock/SectionBlock";
+import ContentReferenceBlock from "../content/ContentReferenceBlock/ContentReferenceBlock";
+import StyleTags from "./StyleTags";
 
 interface SortableBlockProps {
 	block: ContentBlock;
@@ -20,6 +23,7 @@ interface SortableBlockProps {
 	onDelete: (id: string) => void;
 	onDuplicate: (id: string) => void;
 	onBlockSelect?: (block: ContentBlock | null) => void;
+	disableDelete?: boolean;
 }
 
 export default function SortableBlock({
@@ -30,7 +34,8 @@ export default function SortableBlock({
 	onUpdate,
 	onDelete,
 	onDuplicate,
-	onBlockSelect
+	onBlockSelect,
+	disableDelete = false
 }: SortableBlockProps) {
 	const [isHovered, setIsHovered] = useState(false);
 
@@ -86,6 +91,19 @@ export default function SortableBlock({
 						selectedBlock={selectedBlock}
 					/>
 				);
+			case "section":
+				return (
+					<SectionBlock
+						block={block}
+						onBlockSelect={onBlockSelect}
+						onBlockUpdate={onUpdate}
+						onBlockDelete={onDelete}
+						onBlockDuplicate={onDuplicate}
+						selectedBlock={selectedBlock}
+					/>
+				);
+			case "content":
+				return <ContentReferenceBlock block={block} />;
 			default:
 				return <div>Unknown block type</div>;
 		}
@@ -98,7 +116,10 @@ export default function SortableBlock({
 			className={`sortable-block ${isSelected ? "selected" : ""} ${isHovered ? "hovered" : ""}`}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
-			onClick={onSelect}
+			onClick={(e) => {
+				e.stopPropagation();
+				onSelect();
+			}}
 		>
 			{(isHovered || isSelected) && (
 				<div className="block-toolbar">
@@ -125,21 +146,28 @@ export default function SortableBlock({
 						>
 							⧉
 						</button>
-						<button
-							type="button"
-							className="block-action-btn"
-							onClick={(e) => {
-								e.stopPropagation();
-								onDelete(block.id);
-							}}
-							title="Delete"
-						>
-							🗑
-						</button>
+						{!disableDelete && (
+							<button
+								type="button"
+								className="block-action-btn"
+								onClick={(e) => {
+									e.stopPropagation();
+									onDelete(block.id);
+								}}
+								title="Delete"
+							>
+								🗑
+							</button>
+						)}
 					</div>
 				</div>
 			)}
-			<div className="block-content">{renderBlock()}</div>
+			<div className="block-content">
+				{block.type !== "section" && (
+					<StyleTags style={block.style} />
+				)}
+				{renderBlock()}
+			</div>
 		</div>
 	);
 }

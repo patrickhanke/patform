@@ -1,6 +1,6 @@
 import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
 import { ApolloClient, ApolloQueryResult } from "@apollo/client";
-import { Classes, Filter } from "@repo/types";
+import { Classes, Filter, LanguageValue } from "@repo/types";
 import React from "react";
 
 type type = "find" | "get";
@@ -17,6 +17,7 @@ type QueryProps = {
 };
 
 type ParamsHandlerProps = {
+	language?: LanguageValue;
 	projectId?: string;
 	moduleId?: string;
 	userId?: string;
@@ -75,6 +76,7 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	propertyId?: string;
 	userIds?: string[];
 	absenceId?: string;
+	language?: LanguageValue;
 }) => {
 	loading: boolean;
 	data: T[];

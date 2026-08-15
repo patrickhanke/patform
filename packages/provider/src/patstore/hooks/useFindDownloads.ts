@@ -1,6 +1,7 @@
 import { generateQueryFromFields, useFindData } from "@repo/provider";
 import { useMemo } from "react";
 import { Module, Filter, DownloadClass, ApolloRefetch } from "@repo/types";
+import { NetworkStatus } from "@apollo/client";
 
 export type UseFindDownloadHook = (T: {
 	module: Module;
@@ -20,6 +21,19 @@ const useFindDownload: UseFindDownloadHook = ({
 	limit,
 	skip
 }) => {
+	if (!module || !module.objectId)
+		return {
+			loading: false,
+			downloads: [],
+			refetch: () =>
+				Promise.resolve({
+					data: [],
+					loading: false,
+					networkStatus: NetworkStatus.ready
+				}),
+			count: 0
+		};
+
 	const { loading, data, refetch } = useFindData({
 		objectName: "Download",
 		fields: generateQueryFromFields(module.fields),

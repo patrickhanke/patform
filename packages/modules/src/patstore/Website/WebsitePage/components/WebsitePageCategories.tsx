@@ -2,7 +2,6 @@
 
 import { FC } from "react";
 import { useFindData } from "@repo/provider";
-import "../styles.scss";
 import { useMemo, useState } from "react";
 import {
 	ElementSelectInterface,

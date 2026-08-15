@@ -13,7 +13,7 @@ const LayoutPanel = ({
 			<select
 				className="property-select"
 				value={selectedBlock.config?.columns || "50/50"}
-				onChange={(e) => onChange("value", e.target.value)}
+				onChange={(e) => onChange("config.columns", e.target.value)}
 			>
 				<option value="50/50">50% / 50%</option>
 				<option value="33/66">33% / 66%</option>

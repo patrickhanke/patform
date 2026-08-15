@@ -3,7 +3,7 @@ import { FastField, FastFieldProps } from "formik";
 import getSelectValue from "./functions/getSelectValue";
 import { RenderFieldsType } from "./types";
 import "./styles.scss";
-import { Checkbox, FileUploader, Select } from "@repo/ui";
+import { Checkbox, FileUploader, InfoBox, Select } from "@repo/ui";
 import { Field } from "@repo/types";
 import ColorPicker from "./components/ColorPicker";
 import ImageUpload from "./components/ImageUpload";
@@ -222,18 +222,47 @@ const RenderFields: FC<RenderFieldsType> = ({
 						)}
 						{field.type === "select" && (
 							<Select
-								onChange={(value) =>
-									setFieldValue(
-										field.name,
+								onChange={(value) => {
+									console.log(value);
+									if (
+										field.isMulti &&
 										field.dataType === "string"
-											? value.value
-											: value,
-										true
-									)
-								}
+									) {
+										setFieldValue(
+											field.name,
+											value.map(
+												(item: { value: string }) =>
+													item.value
+											),
+											true
+										);
+									} else if (
+										field.isMulti &&
+										field.dataType !== "string"
+									) {
+										setFieldValue(
+											field.name,
+											value.map(
+												(item: { value: string }) =>
+													item.value
+											),
+											true
+										);
+									} else {
+										setFieldValue(
+											field.name,
+											field.dataType === "string"
+												? value.value
+												: value,
+											true
+										);
+									}
+								}}
 								value={getSelectValue(values, field)}
 								options={field.select_options}
 								key={field.name}
+								isMulti={field.isMulti}
+								width={field.width}
 							/>
 						)}
 						{field.type === "pointer_select" && (
@@ -304,6 +333,7 @@ const RenderFields: FC<RenderFieldsType> = ({
 									setFieldValue(field.name, value, true)
 								}
 								values={values[field.name]}
+								isMulti={field.type === "downloads"}
 								setSecondaryContent={setSecondaryContent}
 							/>
 						)}
@@ -322,6 +352,9 @@ const RenderFields: FC<RenderFieldsType> = ({
 									type={field.type}
 								/>
 							</>
+						)}
+						{field.description && (
+							<InfoBox text={field.description} />
 						)}
 						{!isHorizontal && field.type !== "checkbox" && <br />}
 						{getFieldMeta(field.name).touched &&

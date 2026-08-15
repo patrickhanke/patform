@@ -2,17 +2,28 @@
 
 import { set } from "lodash";
 import { ContentBlock } from "../../ContentEditor";
-import { ImagePanel, TextPanel, ButtonPanel, LayoutPanel } from "./components";
+import type { ContentBlockStyle } from "../../styles";
+import {
+	ImagePanel,
+	TextPanel,
+	ButtonPanel,
+	LayoutPanel,
+	SectionPanel,
+	StylePanel,
+	ContentPanel
+} from "./components";
 import { useCallback } from "react";
 
 interface PropertiesPanelProps {
 	selectedBlock: ContentBlock | null;
 	onBlockUpdate: (id: string, updates: Partial<ContentBlock>) => void;
+	multipleSections?: boolean;
 }
 
 export default function PropertiesPanel({
 	selectedBlock,
-	onBlockUpdate
+	onBlockUpdate,
+	multipleSections = false
 }: PropertiesPanelProps) {
 	if (!selectedBlock) {
 		return (
@@ -36,6 +47,13 @@ export default function PropertiesPanel({
 			}
 		},
 		[selectedBlock, onBlockUpdate]
+	);
+
+	const handleStyleChange = useCallback(
+		(style: ContentBlockStyle) => {
+			onBlockUpdate(selectedBlock.id, { style });
+		},
+		[selectedBlock.id, onBlockUpdate]
 	);
 
 	return (
@@ -107,6 +125,34 @@ export default function PropertiesPanel({
 						}
 					/>
 				)}
+
+				{selectedBlock.type === "section" && multipleSections && (
+					<SectionPanel
+						selectedBlock={selectedBlock}
+						onChange={(key: string, value: string) =>
+							handleUpdate(key, value)
+						}
+					/>
+				)}
+
+				{selectedBlock.type === "content" && (
+					<ContentPanel
+						selectedBlock={selectedBlock}
+						onChange={(updates) =>
+							onBlockUpdate(selectedBlock.id, updates)
+						}
+					/>
+				)}
+
+				<div className="properties-section-divider">
+					<h4>Stil</h4>
+				</div>
+
+				<StylePanel
+					key={`style-${selectedBlock.id}`}
+					selectedBlock={selectedBlock}
+					onStyleChange={handleStyleChange}
+				/>
 			</div>
 		</div>
 	);

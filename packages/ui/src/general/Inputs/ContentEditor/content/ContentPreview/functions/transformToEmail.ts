@@ -1,5 +1,10 @@
 import { ContentBlock } from "../../../ContentEditor";
 import {
+	resolveBlockStyleString,
+	resolveColor,
+	resolveSpacing
+} from "../../../styles";
+import {
 	buttonPaddingAndFontSize,
 	DEFAULT_BUTTON_BACKGROUND,
 	DEFAULT_BUTTON_FONT_COLOR
@@ -69,20 +74,52 @@ const renderEmailBlock = (block: ContentBlock): string => {
 		case "button":
 			return renderEmailButtonBlock(block);
 		case "divider":
-			return renderEmailDividerBlock();
+			return renderEmailDividerBlock(block);
 		case "image":
 			return renderEmailImageBlock(block);
 		case "layout":
 			return renderEmailLayoutBlock(block);
+		case "section":
+			// Email clients ignore semantic section tags — render inner blocks only
+			return renderEmailSectionBlock(block);
+		case "content":
+			// Content references are website-only; skip in email HTML
+			return "";
 		default:
 			return "";
 	}
+};
+
+const mergeStyle = (base: string, extra?: string) =>
+	[base, extra].filter(Boolean).join("; ");
+
+const renderEmailSectionBlock = (block: ContentBlock): string => {
+	if (!block.children?.length) return "";
+
+	const inner = block.children
+		.flatMap((column) => column.map((child) => renderEmailBlock(child)))
+		.filter(Boolean)
+		.join("\n");
+
+	const styleStr = resolveBlockStyleString(block.style, {
+		includeSizing: true,
+		includeColors: true
+	});
+
+	if (!styleStr) return inner;
+
+	return `<div style="${styleStr}">${inner}</div>`;
 };
 
 const renderEmailTextBlock = (block: ContentBlock): string => {
 	const textType = block.config?.textType || "paragraph";
 	const headingLevel = block.config?.headingLevel || "h2";
 	const content = block.value || "";
+	const styleStr = resolveBlockStyleString(block.style, {
+		includeSizing: true,
+		includeColors: true
+	});
+	const color = resolveColor(block.style?.color);
 
 	if (textType === "heading") {
 		const headingSizes: Record<string, string> = {
@@ -96,14 +133,20 @@ const renderEmailTextBlock = (block: ContentBlock): string => {
 		const fontSize = headingSizes[headingLevel] || "28px";
 
 		return `
-			<${headingLevel} style="margin: 0 0 16px 0; font-size: ${fontSize}; font-weight: bold; color: #333333; line-height: 1.3;">
+			<${headingLevel} style="${mergeStyle(
+				`margin: 0 0 16px 0; font-size: ${fontSize}; font-weight: bold; color: ${color || "#333333"}; line-height: 1.3`,
+				styleStr
+			)}">
 				${content}
 			</${headingLevel}>
 		`;
 	}
 
 	return `
-		<div style="margin: 0 0 16px 0; font-size: 16px; color: #555555; line-height: 1.6;">
+		<div style="${mergeStyle(
+			`margin: 0 0 16px 0; font-size: 16px; color: ${color || "#555555"}; line-height: 1.6`,
+			styleStr
+		)}">
 			${content}
 		</div>
 	`;
@@ -113,21 +156,31 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 	const alignment = block.config?.alignment || "center";
 	const buttonText = block.config?.buttonText || "Click me";
 	const buttonUrl = block.config?.buttonUrl || "#";
-	const bg = block.config?.buttonBackgroundColor || DEFAULT_BUTTON_BACKGROUND;
+	const styleBg = resolveColor(block.style?.backgroundColor);
+	const styleColor = resolveColor(block.style?.color);
+	const bg =
+		styleBg ||
+		block.config?.buttonBackgroundColor ||
+		DEFAULT_BUTTON_BACKGROUND;
 	const fontColor =
-		block.config?.buttonFontColor || DEFAULT_BUTTON_FONT_COLOR;
+		styleColor ||
+		block.config?.buttonFontColor ||
+		DEFAULT_BUTTON_FONT_COLOR;
 	const { padding, fontSize } = buttonPaddingAndFontSize(
 		block.config?.buttonSize
 	);
+	const wrapperStyle = resolveBlockStyleString(block.style, {
+		includeSizing: true,
+		includeColors: false
+	});
 
 	// Parse padding values for MSO-specific rendering
-	// padding format is typically "10px 24px" or "12px 28px"
 	const paddingParts = padding.split(" ");
 	const verticalPadding = paddingParts[0] || "10px";
 	const horizontalPadding = paddingParts[1] || paddingParts[0] || "24px";
 
 	return `
-		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0;">
+		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${mergeStyle("margin: 24px 0", wrapperStyle)}">
 			<tr>
 				<td align="${alignment}" style="padding: 0;">
 					<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="display: inline-block;">
@@ -145,11 +198,18 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 	`;
 };
 
-const renderEmailDividerBlock = (): string => {
+const renderEmailDividerBlock = (block: ContentBlock): string => {
+	const color = resolveColor(block.style?.color) || "#e0e0e0";
+	const bg = resolveColor(block.style?.backgroundColor);
+	const styleStr = resolveBlockStyleString(block.style, {
+		includeSizing: false,
+		includeColors: true
+	});
+
 	return `
-		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 32px 0;">
+		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${mergeStyle("margin: 32px 0", styleStr)}">
 			<tr>
-				<td style="border-top: 1px solid #e0e0e0;"></td>
+				<td style="border-top: 1px solid ${color};${bg ? ` background-color: ${bg};` : ""}"></td>
 			</tr>
 		</table>
 	`;
@@ -161,20 +221,21 @@ const renderEmailImageBlock = (block: ContentBlock): string => {
 	const imageAlt = block.config?.imageAlt || "Image";
 	const configWidth = block.config?.width || "600px";
 	const height = block.config?.height || "auto";
+	const wrapperStyle = resolveBlockStyleString(block.style, {
+		includeSizing: true,
+		includeColors: true
+	});
 
 	if (!imageUrl) return "";
 
-	// Parse width and ensure it doesn't exceed container (540px = 600px - 60px padding)
 	const maxContainerWidth = 540;
 	let widthValue = parseInt(configWidth);
 	if (isNaN(widthValue) || widthValue > maxContainerWidth) {
 		widthValue = maxContainerWidth;
 	}
 
-	// For Outlook Classic: width attribute needs numeric value only (no "px")
-	// For other clients: use both width and max-width in styles
 	return `
-		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin: 24px 0;">
+		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${mergeStyle("margin: 24px 0", wrapperStyle)}">
 			<tr>
 				<td align="${alignment}">
 					<img src="${imageUrl}" alt="${imageAlt}" width="${widthValue}" style="width: ${widthValue}px; max-width: 100%; height: ${height}; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;" />
@@ -190,6 +251,16 @@ const renderEmailLayoutBlock = (block: ContentBlock): string => {
 	const columns = block.config?.columns || "50/50";
 	const columnWidths = columns.split("/").map((w) => parseInt(w));
 	const totalWidth = 540; // 600px container - 60px padding
+	const gap = resolveSpacing(block.style?.flex?.gap) || "10px";
+	const gapPx = parseInt(gap) || 10;
+	const bg = resolveColor(block.style?.backgroundColor);
+	const color = resolveColor(block.style?.color);
+	const layoutExtras = [
+		bg ? `background-color: ${bg}` : "",
+		color ? `color: ${color}` : ""
+	]
+		.filter(Boolean)
+		.join("; ");
 
 	const columnCells = block.children
 		.map((column, index) => {
@@ -199,10 +270,10 @@ const renderEmailLayoutBlock = (block: ContentBlock): string => {
 				.map((childBlock) => renderEmailBlock(childBlock))
 				.filter(Boolean)
 				.join("\n");
+			const isLast = index >= block.children!.length - 1;
 
-			// For Outlook Classic: use width attribute with numeric value and width style
 			return `
-				<td width="${width}" valign="top" style="width: ${width}px; padding: 0 ${index < block.children!.length - 1 ? "10px" : "0"} 0 0;">
+				<td width="${width}" valign="top" style="width: ${width}px; padding: 0 ${isLast ? "0" : `${gapPx}px`} 0 0;">
 					${columnHtml}
 				</td>
 			`;
@@ -210,7 +281,7 @@ const renderEmailLayoutBlock = (block: ContentBlock): string => {
 		.join("\n");
 
 	return `
-		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width: 100%; margin: 24px 0;">
+		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${mergeStyle("width: 100%; margin: 24px 0", layoutExtras)}">
 			<tr>
 				${columnCells}
 			</tr>

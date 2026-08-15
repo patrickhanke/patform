@@ -23,7 +23,8 @@ const FormikRender: FC<FormikRenderProps> = ({
 	isHorizontal = false,
 	setSecondaryContent,
 	highlightChanges = false,
-	showRequired = true
+	showRequired = true,
+	submitButton = false
 }) => {
 	useEffect(() => {
 		if (setSecondaryContent) {
@@ -86,7 +87,9 @@ const FormikRender: FC<FormikRenderProps> = ({
 					<FormSubmitStore
 						formValidationHandler={formValidationHandler}
 						useWithDebounce={useWithDebounce}
+						submitButton={submitButton}
 					/>
+
 					{showRequired && (
 						<div className="form_required">
 							<Divider size="small" showLine={false} />

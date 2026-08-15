@@ -2,7 +2,7 @@
 
 import { useQuery } from "@apollo/client";
 import { UseFindDataHook } from "../types";
-import { Classes } from "../../../../../types/src/patstore";
+import { Classes } from "@repo/types";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
 import { pluralize, sanitizeGraphQlNode } from "../functions/helpers";
@@ -23,7 +23,8 @@ const useFindData: UseFindDataHook<Classes> = ({
 	pollInterval = 0,
 	propertyId,
 	userIds,
-	absenceId
+	absenceId,
+	language
 }) => {
 	const queryName = pluralize(objectName);
 	const {
@@ -42,6 +43,7 @@ const useFindData: UseFindDataHook<Classes> = ({
 		{
 			variables: {
 				params: paramsHandler({
+					language,
 					moduleId,
 					projectId,
 					filters,

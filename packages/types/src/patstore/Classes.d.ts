@@ -12,6 +12,8 @@ import { GroupClass } from "./Group";
 import { AppointmentClass } from "./Date";
 import { TemplateClass } from "./Template";
 import { Module } from "./Module";
+import { ContentClass } from "./Content";
+import { LanguageValue } from "./Project";
 
 export type ClassCategories = string[];
 
@@ -31,6 +33,7 @@ export type ClassProperties = {
 	label: string;
 	created_by: PatstoreUser;
 	updated_by: PatstoreUser;
+	lang?: LanguageValue;
 };
 
 export type Classes =
@@ -45,4 +48,5 @@ export type Classes =
 	| AppointmentClass
 	| TemplateClass
 	| VideoClass
-	| ItemClass;
+	| ItemClass
+	| ContentClass;

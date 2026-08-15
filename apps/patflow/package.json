@@ -23,7 +23,7 @@
     "immer": "^10.0.4",
     "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
-    "next": "^16.3.0-preview.7",
+    "next": "^16.3.0",
     "rc-image": "^7.11.0",
     "rc-slider": "^10.5.0",
     "sharp": "^0.33.5",

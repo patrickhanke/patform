@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { FormSubmitStoreProps } from "../types";
 import { useDebounceValue } from "usehooks-ts";
 import FormActionBar from "./FormActionBar";
+import { IconButton } from "@repo/ui";
 
 const FormSubmitStore = ({
 	formValidationHandler,
 	useWithDebounce = false,
 	noSubmit = false,
-	setErrors
+	setErrors,
+	submitButton = false
 }: FormSubmitStoreProps) => {
 	const [open, setOpen] = useState(false);
 
@@ -54,7 +56,13 @@ const FormSubmitStore = ({
 		}
 	}, [formValues]);
 
-	return (
+	return submitButton ? (
+		<IconButton
+			text="Speichern"
+			disabled={!formIsValid || !isEqual(initialValues, formValues)}
+			type="submit"
+		/>
+	) : (
 		<FormActionBar
 			open={open}
 			setOpen={setOpen}

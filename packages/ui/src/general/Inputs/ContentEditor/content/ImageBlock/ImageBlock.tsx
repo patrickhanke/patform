@@ -9,7 +9,7 @@ interface ImageBlockProps {
 	onUpdate: (updates: Partial<ContentBlock>) => void;
 }
 
-export default function ImageBlock({ block, onUpdate }: ImageBlockProps) {
+export default function ImageBlock({ block }: ImageBlockProps) {
 	const { data: image } = useGetData({
 		objectName: "Image",
 		fields: ["objectId", "file {name url}", "title"],
@@ -17,9 +17,6 @@ export default function ImageBlock({ block, onUpdate }: ImageBlockProps) {
 		skip: !block.value
 	});
 	const alignment = block.config?.alignment || "center";
-	const imageUrl = block.config?.imageUrl || "";
-	const imageAlt = block.config?.imageAlt || "Image";
-	console.log({ block });
 
 	return (
 		<div className={`image-block alignment-${alignment}`}>

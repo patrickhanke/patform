@@ -40,13 +40,21 @@ const DownloadsOverview = ({ module }: { module: Module }) => {
 	});
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<DownloadClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading
+	} = useFindModuleData<DownloadClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order
 	});
+
+	console.log(module);
+	console.log(data);
 
 	const columns = useCreateColumns<DownloadClass>({
 		data: generateColumnsFromFields(module.fields),

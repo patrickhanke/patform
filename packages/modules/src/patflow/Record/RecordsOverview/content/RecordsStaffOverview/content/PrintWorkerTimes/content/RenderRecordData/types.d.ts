@@ -1,4 +1,5 @@
 import { Day, Record, Surcharge, Worker } from "@repo/types";
+import table_fields from "../../constants/table_fields";
 
 export type RenderRecordDataProps = {
 	worker: Worker;
@@ -17,14 +18,22 @@ export type RenderDayData = (P: {
 	records: Record[];
 }) => DayData[];
 
+export type DayDataTime = {
+	saldo: number;
+	time: NonNullable<Day["time"]>;
+	day_id?: string;
+	absence?: Day["absence"];
+	type?: Day["type"];
+	worktime: number;
+};
+
 export type DayData = {
-	type: Day["type"];
 	date: Day["date"];
 	is_working_day: Day["is_working_day"];
 	default_time: Day["default_time"];
-	absence: Day["absence"];
-	time?: Array<DayDataTime> | null;
+	times: DayDataTime[];
 	surcharges: Day["surcharges"];
+	comment?: Day["comment"];
+	absence?: Day["absence"];
+	type?: Day["type"];
 };
-
-export type DayDataTime = DayTime & { day_id?: string };

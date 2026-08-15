@@ -7,7 +7,7 @@ import { Module, WebpageClass } from "@repo/types";
 import createClass from "./constants/createWebpageClass";
 
 const WebsitesOverview = ({ module }: { module: Module }) => {
-	const { user } = useContext(PatstoreAppContext);
+	const { user, language } = useContext(PatstoreAppContext);
 
 	const { data, refetch } = useFindData({
 		objectName: "Webpage",
@@ -19,7 +19,8 @@ const WebsitesOverview = ({ module }: { module: Module }) => {
 			"created_by { objectId label portrait { name url } }",
 			"createdAt"
 		],
-		moduleId: module.objectId
+		moduleId: module.objectId,
+		language
 	});
 
 	const columns = useCreateColumns<WebpageClass>({

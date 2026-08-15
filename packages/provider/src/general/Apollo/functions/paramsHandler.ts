@@ -1,11 +1,16 @@
 import { Filter } from "@repo/types";
 import { ParamsHandlerType } from "../types";
 
-type FilterObject = {
+type FilterCondition = {
 	[key: string]: { [key: string]: string | number | boolean | object | null };
 };
 
+type FilterObject = {
+	[key: string]: FilterCondition | FilterCondition[];
+};
+
 const paramsHandler: ParamsHandlerType = ({
+	language,
 	projectId,
 	moduleId,
 	filters,
@@ -15,6 +20,13 @@ const paramsHandler: ParamsHandlerType = ({
 	absenceId
 }) => {
 	const filterObject: FilterObject = {};
+
+	if (language) {
+		filterObject.OR = [
+			{ lang: { equalTo: language } },
+			{ lang: { exists: false } }
+		];
+	}
 
 	if (propertyId) {
 		filterObject.property = {

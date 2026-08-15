@@ -1,5 +1,9 @@
-import { generateQueryFromFields, useFindData } from "@repo/provider";
-import { useMemo } from "react";
+import {
+	generateQueryFromFields,
+	PatstoreAppContext,
+	useFindData
+} from "@repo/provider";
+import { useContext, useMemo } from "react";
 import { ApolloRefetch, Classes, Filter, Module } from "@repo/types";
 
 function useFindModuleData<T extends Classes>({
@@ -22,6 +26,7 @@ function useFindModuleData<T extends Classes>({
 	refetch: ApolloRefetch;
 	count: number;
 } {
+	const { language, project } = useContext(PatstoreAppContext);
 	const { loading, data, refetch, count } = useFindData({
 		objectName: (module?.connected_class || "_User") as string,
 		fields: [
@@ -34,7 +39,9 @@ function useFindModuleData<T extends Classes>({
 		limit,
 		skip,
 		order,
-		skipQuery: !module?.connected_class
+		skipQuery: !module?.connected_class,
+		language:
+			project?.settings.languages?.length === 1 ? undefined : language
 	});
 
 	const returnValue = useMemo(

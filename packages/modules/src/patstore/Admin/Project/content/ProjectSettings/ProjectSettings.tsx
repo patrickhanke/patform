@@ -1,6 +1,7 @@
 "use client";
 
-import { Field, Form } from "@repo/ui";
+import { Form } from "@repo/ui";
+import { Field } from "@repo/types";
 import { useDataHandler, useGetData } from "@repo/provider";
 import { useMemo } from "react";
 
@@ -95,7 +96,7 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 
 				refetch();
 			}}
-			useWithDebounce
+			// useWithDebounce
 			enableReinitialize
 			isHorizontal
 		/>

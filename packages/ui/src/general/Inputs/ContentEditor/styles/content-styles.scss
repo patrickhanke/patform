@@ -1,0 +1,14 @@
+.ce-flex {
+	display: flex;
+
+	&--column-mobile {
+		@media (max-width: 720px) {
+			flex-direction: column;
+
+			> * {
+				flex: 1 1 100%;
+				max-width: 100%;
+			}
+		}
+	}
+}

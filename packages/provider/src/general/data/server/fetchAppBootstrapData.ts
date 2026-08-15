@@ -290,18 +290,6 @@ export async function fetchFormById({
 const WEBPAGE_FIELDS = `
 	objectId
 	title
-	description
-	path
-	data
-	title
-	subtitle
-	type
-	categories { ...on Element { value } }
-	documents { ...on Element { value } }
-	content { ...on Element { value } }
-	settings { ...on Element { value } }
-	createdAt
-	updatedAt
 `;
 
 export async function fetchWebpageById({

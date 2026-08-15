@@ -10,13 +10,13 @@ import {
 	axiosclient,
 	months,
 	useDataContext,
+	useDataStore,
 	useFindData,
 	useFindDays
 } from "@repo/provider";
-import { Day } from "@repo/types";
+import { Day, Record } from "@repo/types";
 import SelectFields from "./components/SelectFields";
 import { RenderRecordData } from "./content";
-import useFindRecord from "./hooks/useFindRecord";
 import useFindSurcharges from "./hooks/useFindSurcharges";
 import table_fields from "./constants/table_fields";
 
@@ -40,15 +40,30 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 		Array<(typeof table_fields)[number]["value"]>
 	>(table_fields.map((field) => field.value));
 
-	const { data: days } = useFindDays({
+	const workerIds = useMemo(
+		() => selectedWorker.map((worker) => worker.value as string),
+		[selectedWorker]
+	);
+
+	const { data: days, refetch: refetchDays } = useFindDays({
 		year: selectedTimes.year,
-		userIds: selectedWorker.map((worker) => worker.value as string)
+		userIds: workerIds,
+		skipQuery: !printWorkerTimes || workerIds.length === 0,
+		limit: Math.max(2000, workerIds.length * 800)
 	});
 
-	const { records } = useFindRecord({
-		year: selectedTimes.year,
-		users: selectedWorker.map((worker) => worker.value as string)
-	});
+	const { records: recordData } = useDataStore();
+	const records = useMemo(() => {
+		if (!recordData.length || workerIds.length === 0) {
+			return [];
+		}
+
+		return recordData.filter(
+			(record: Record) =>
+				record.year === selectedTimes.year &&
+				workerIds.includes(record.user.objectId)
+		);
+	}, [recordData, selectedTimes.year, workerIds]);
 
 	const { surcharges } = useFindSurcharges();
 
@@ -59,7 +74,8 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 		filters: [
 			{ key: "year", value: selectedTimes.year, operator: "equalTo" }
 		],
-		userId: selectedWorker[0]?.value as string
+		userId: selectedWorker[0]?.value as string,
+		skipQuery: !printWorkerTimes || !selectedWorker[0]?.value
 	});
 
 	const closeModal = () => {
@@ -116,7 +132,7 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 				text: "Weiter",
 				onClick: async () => {
 					setLoading(true);
-					await refetch();
+					await refetchDays();
 					setLoading(false);
 					setPageState(modal_steps[2]);
 				},
@@ -127,7 +143,7 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 				text: "Weiter",
 				onClick: async () => {
 					setLoading(true);
-					await refetch();
+					await refetchDays();
 					setLoading(false);
 					setPageState(modal_steps[3]);
 				},
@@ -150,7 +166,7 @@ const PrintWorkerTimes: FC<PrintWorkerTimesProps> = ({
 				disabled: [false, false]
 			};
 		}
-	}, [pageState, selectedWorker, loading]);
+	}, [pageState, selectedWorker, loading, refetchDays, updateUserHandler]);
 
 	if (!printWorkerTimes) return null;
 

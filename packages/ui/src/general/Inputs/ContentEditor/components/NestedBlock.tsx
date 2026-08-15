@@ -9,6 +9,8 @@ import TextBlock from "../content/TextBlock/TextBlock";
 import ButtonBlock from "../content/ButtonBlock/ButtonBlock";
 import ImageBlock from "../content/ImageBlock/ImageBlock";
 import DividerBlock from "../content/DividerBlock/DividerBlock";
+import ContentReferenceBlock from "../content/ContentReferenceBlock/ContentReferenceBlock";
+import StyleTags from "./StyleTags";
 
 interface NestedBlockProps {
 	block: ContentBlock;
@@ -69,6 +71,8 @@ export default function NestedBlock({
 				);
 			case "divider":
 				return <DividerBlock block={block} />;
+			case "content":
+				return <ContentReferenceBlock block={block} />;
 			default:
 				return <div>Unknown block type</div>;
 		}
@@ -125,7 +129,10 @@ export default function NestedBlock({
 					</div>
 				</div>
 			)}
-			<div className="block-content">{renderBlock()}</div>
+			<div className="block-content">
+				<StyleTags style={block.style} />
+				{renderBlock()}
+			</div>
 		</div>
 	);
 }

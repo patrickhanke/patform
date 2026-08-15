@@ -50,11 +50,12 @@ export type BasicField = {
 	id: string;
 	name: string;
 	label: string | React.ReactNode;
+	description?: string;
 	position?: number;
 	placeholder?: string;
 	initialValue?: "string" | "number" | "boolean" | "object" | "array";
 	options?: object;
-	disabled?: (values: FormikValues) => boolean | boolean;
+	disabled?: boolean | ((values: FormikValues) => boolean);
 	width?: string | number;
 };
 
@@ -133,6 +134,7 @@ export type SelectField = BasicField & {
 	value?: string | object;
 	dataType: "string" | "object";
 	select_options: { label: string; value: string }[];
+	isMulti?: boolean;
 	validation?: BaseValidation;
 };
 

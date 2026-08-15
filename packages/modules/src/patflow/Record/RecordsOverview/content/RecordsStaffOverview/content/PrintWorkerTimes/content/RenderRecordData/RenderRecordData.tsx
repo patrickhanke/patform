@@ -31,7 +31,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 			year,
 			month,
 			days: workerDays,
-			records: []
+			records
 		});
 
 		const doc = new jsPDF();
@@ -78,7 +78,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 				doc.text(`Zeitübersicht ${currentMonth.label} ${year}`, 20, 20);
 				renderMonthTabel({
 					doc,
-					days,
+					days: workerDays,
 					month: currentMonth,
 					year,
 					records,
@@ -94,7 +94,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 				);
 				renderSurchargeTable({
 					doc,
-					days,
+					days: workerDays,
 					month: currentMonth,
 					year,
 					surcharges: surcharges,

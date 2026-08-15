@@ -110,8 +110,6 @@ export type UploadedFile = {
 	};
 };
 
-export type Image = string; // filePath to Image
-
 export type StateColors =
 	| "primary"
 	| "secondary"

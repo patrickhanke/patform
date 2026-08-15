@@ -26,8 +26,17 @@ function SidebarItem({ id, label, icon }: SidebarItemProps) {
 	);
 }
 
-export default function Sidebar() {
+export default function Sidebar({
+	multipleSections = false,
+	onImportContent
+}: {
+	multipleSections?: boolean;
+	onImportContent?: () => void;
+}) {
 	const items = [
+		...(multipleSections
+			? [{ id: "section", label: "Abschnitt", icon: "§" }]
+			: []),
 		{ id: "text", label: "Text", icon: "T" },
 		{ id: "button", label: "Button", icon: "B" },
 		{ id: "image", label: "Bild", icon: "🖼" },
@@ -50,6 +59,18 @@ export default function Sidebar() {
 						icon={item.icon}
 					/>
 				))}
+				{onImportContent && (
+					<button
+						type="button"
+						className="sidebar-item sidebar-item--action"
+						onClick={onImportContent}
+					>
+						<div className="sidebar-item-icon">⧉</div>
+						<div className="sidebar-item-label">
+							Inhalt importieren
+						</div>
+					</button>
+				)}
 			</div>
 		</div>
 	);

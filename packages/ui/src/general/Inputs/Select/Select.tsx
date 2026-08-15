@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import ReactSelect from "react-select";
 import { SelectType } from "./types";
 import "./styles.scss";
@@ -20,6 +21,13 @@ const Select = ({
 	errors,
 	width = 150
 }: SelectType) => {
+	const [menuPortalTarget, setMenuPortalTarget] =
+		useState<HTMLElement | null>(null);
+
+	useEffect(() => {
+		setMenuPortalTarget(document.body);
+	}, []);
+
 	const valueBoundryHandler = (value: object | string | null) => {
 		if (isArray(value)) {
 			return value.map(
@@ -53,9 +61,7 @@ const Select = ({
 				className={"react_select_container"}
 				classNamePrefix="react-select"
 				styles={customStyles({ width })}
-				menuPortalTarget={
-					typeof window !== "undefined" ? document.body : undefined
-				}
+				menuPortalTarget={menuPortalTarget}
 				menuPosition="fixed"
 				menuPlacement="auto"
 			/>

@@ -1,264 +1,37 @@
 "use client";
 
-import { PatstoreAppContext, useDataHandler, useGetData } from "@repo/provider";
-import { WebpageClass, WebpageContent } from "@repo/types";
-import {
-	CreateButton,
-	Divider,
-	DnDDisplay,
-	InfoBox,
-	Page,
-	PatstoreSelectImages,
-	sortItemsByPosition,
-	TextInput
-} from "@repo/ui";
-import { useState, useContext, useCallback } from "react";
-import initial_content_element from "./constants/initial_content_element";
-import { v4 } from "uuid";
-import { cloneDeep } from "lodash-es";
-import { EditContentField } from "./content/EditContentField";
-import "./styles.scss";
-import WebsitePageCategories from "./components/WebsitePageCategories";
-import WebsitePageDocuments from "./components/WebsitePageDocuments";
+import { PageState } from "@repo/types";
+import { Page } from "@repo/ui";
+import { useState } from "react";
+import { WebpageSettings, WebpageContent } from "./content";
+import page_states from "./constants/page_states";
 
-const WebsitePage = ({ websiteId }: { websiteId: string }) => {
-	const { updateData } = useDataHandler();
-	const { user, currentModule } = useContext(PatstoreAppContext);
-	const [content, setContent] = useState<WebpageContent[]>([]);
-
-	const { data: pageData, refetch } = useGetData({
-		objectName: "Webpage",
-		id: websiteId,
-		fields: [
-			"objectId",
-			"path",
-			"data",
-			"title",
-			"subtitle",
-			"categories",
-			"image",
-			"documents",
-			"content"
-		],
-		afterSaveHandler(data) {
-			setContent(data.content);
-		}
-	});
-
-	const removeContentHandler = useCallback(
-		async (contentId: string) => {
-			await updateData({
-				className: "Webpage",
-				objectId: websiteId,
-				updateObject: {
-					content: content.filter((item) => item.id !== contentId)
-				}
-			});
-			await refetch();
-		},
-		[content, refetch, updateData, websiteId]
+const WebsitePage = ({
+	websiteId,
+	title
+}: {
+	websiteId: string;
+	title: string;
+}) => {
+	const [pageState, setPageState] = useState<PageState>(
+		page_states[0] as PageState
 	);
-
-	if (!pageData) {
-		return null;
-	}
-
-	const webPage: WebpageClass = pageData;
 
 	return (
 		<Page
-			title={`${webPage.title} - Inhalte`}
-			description="Bearbeitung der Webseiten Inhalte"
+			title={`${title} - Inhalte`}
+			description="Bearbeitung der Inhalte der Webseite"
 			pageHeaderButtons={[]}
+			pageStates={[...page_states]}
+			pageState={pageState}
+			setPageState={setPageState}
 		>
-			<div className="flex row a-fs j-sb gap-sm w-100">
-				<div className="w-66">
-					<CreateButton
-						text="Inhaltselement hinzufügen"
-						size="small"
-						onClick={async () => {
-							const contentCopy = cloneDeep(content);
-							contentCopy.push({
-								...initial_content_element,
-								position: contentCopy.length + 1,
-								id: v4() as string
-							});
-
-							await updateData({
-								className: "Webpage",
-								objectId: websiteId,
-								updateObject: {
-									content: contentCopy
-								}
-							});
-							await refetch();
-							return setContent(contentCopy);
-						}}
-					/>
-					<DnDDisplay<WebpageContent[]>
-						key={JSON.stringify(content)}
-						items={
-							(sortItemsByPosition(
-								content
-							) as WebpageContent[]) || []
-						}
-						ItemComponent={({ item, id }) => (
-							<EditContentField
-								initialField={item as WebpageContent}
-								content={content}
-								pageId={websiteId}
-								refetch={refetch}
-								key={id}
-								removeContentHandler={removeContentHandler}
-							/>
-						)}
-						onChange={async (items) => {
-							await updateData({
-								className: "Webpage",
-								objectId: websiteId,
-								updateObject: {
-									content: items.map((item, index) => ({
-										...item,
-										position: index + 1
-									}))
-								}
-							});
-							refetch();
-						}}
-						// subField={{ id: moduleId, field: "categories" }}
-					/>
-				</div>
-				<div className="head_container flex col a-st j-sb gap-sm w-33">
-					<h3>Inhalte</h3>
-					<div>
-						<label>Pfad der Seite</label>
-						<TextInput
-							id="name"
-							width={"100%"}
-							type="text"
-							defaultValue={webPage.path}
-							onChange={async (value) => {
-								await updateData({
-									className: "Webpage",
-									objectId: websiteId,
-									updateObject: {
-										path: value
-									}
-								});
-								await refetch();
-							}}
-							disabled={!user?.is_superuser}
-							placeholder="Name der Seite"
-						/>
-						<InfoBox text="Änderungen am Pfad können dazu führen, dass die Inhalte auf der Webseite nicht mehr angezeigt werden." />
-						<Divider size="small" />
-						<label>Titel der Seite</label>
-						<TextInput
-							id="text"
-							width={"100%"}
-							type="text"
-							defaultValue={webPage.title}
-							onChange={async (value) => {
-								await updateData({
-									className: "Webpage",
-									objectId: websiteId,
-									updateObject: {
-										title: value
-									}
-								});
-								await refetch();
-							}}
-							placeholder="Titel der Seite"
-						/>
-					</div>
-					<Divider size="small" />
-					<div>
-						<label>Untertitel der Seite</label>
-						<TextInput
-							id="name"
-							width={"100%"}
-							type="textarea"
-							isTextArea
-							defaultValue={webPage.subtitle}
-							onChange={async (value) => {
-								await updateData({
-									className: "Webpage",
-									objectId: websiteId,
-									updateObject: {
-										subtitle: value
-									}
-								});
-								await refetch();
-							}}
-							placeholder="Untertitel der Seite"
-						/>
-					</div>
-					<Divider size="small" />
-					<div>
-						<label>Titelbild</label>
-						<PatstoreSelectImages
-							image={webPage.image}
-							onChange={async (value) => {
-								await updateData({
-									className: "Webpage",
-									objectId: websiteId,
-									updateObject: {
-										image: value
-									}
-								});
-								await refetch();
-							}}
-							maxFileCount={1}
-						/>
-					</div>
-					<Divider size="small" />
-					<div>
-						<label>Dokumente</label>
-						<WebsitePageDocuments
-							documents={webPage.documents}
-							onChange={async (value) => {
-								await updateData({
-									className: "Webpage",
-									objectId: websiteId,
-									updateObject: {
-										documents: value
-									}
-								});
-								await refetch();
-							}}
-							isEditable
-						/>
-					</div>
-					<Divider size="small" />
-					<div>
-						<h3>Kategorien</h3>
-						<div className="flex col gap-sm">
-							{pageData &&
-								currentModule.categories.length > 0 &&
-								currentModule.categories.map(
-									(moduleCategory) => (
-										<WebsitePageCategories
-											key={moduleCategory.id}
-											categories={webPage.categories}
-											category={moduleCategory}
-											isEditable
-											onChange={async (categories) => {
-												await updateData({
-													className: "Webpage",
-													objectId: websiteId,
-													updateObject: {
-														categories: categories
-													}
-												});
-												await refetch();
-											}}
-										/>
-									)
-								)}
-						</div>
-					</div>
-				</div>
-			</div>
+			{pageState.value === "settings" && (
+				<WebpageSettings websiteId={websiteId} />
+			)}
+			{pageState.value === "content" && (
+				<WebpageContent websiteId={websiteId} />
+			)}
 		</Page>
 	);
 };

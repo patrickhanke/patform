@@ -1,7 +1,0 @@
-@use "@repo/styles/constants";
-
-
-.head_container {
-	padding: map-get($map: constants.$padding, $key: 'md' );
-	background-color: constants.$light;
-}

@@ -1,6 +1,7 @@
 import React from "react";
 import { ContentBlock } from "../../../ContentEditor";
 import { transformToWeb } from "../functions/transformToWeb";
+import "../../../styles/content-styles.scss";
 import "./WebPreview.scss";
 
 interface WebPreviewProps {

@@ -9,6 +9,32 @@ import { getDay } from "date-fns";
 import jsPDF from "jspdf";
 import { DayData, DayDataTime } from "../types";
 
+const getTarget = (day: DayData) => {
+	if (
+		day.is_working_day &&
+		day.default_time?.duration &&
+		day.default_time?.pause
+	) {
+		return day.default_time.duration - day.default_time.pause;
+	}
+
+	return 0;
+};
+
+const getHours = (times: DayDataTime[]) =>
+	times.reduce((acc, time) => acc + time.worktime, 0);
+
+const getSaldo = (day: DayData) => {
+	const defaultTimeSpan =
+		(day.default_time?.duration || 0) - (day.default_time?.pause || 0);
+
+	if (day.times.length === 0 && day.is_working_day) {
+		return -defaultTimeSpan;
+	}
+
+	return day.times.reduce((acc, time) => acc + time.saldo, 0);
+};
+
 const renderDayTable = ({
 	doc,
 	dayData
@@ -25,122 +51,71 @@ const renderDayTable = ({
 		body: dayData.map((day) => {
 			let start = "";
 			let end = "";
-			let saldoInt = 0;
-			let hoursInt = 0;
 			let breaks = "";
 
 			let weekday =
-				weekdays.find((weekday) => weekday.day === getDay(day.date))
+				weekdays.find((weekdayOption) => weekdayOption.day === getDay(day.date))
 					?.short || "";
 
-			const isCompensationTimes = day?.time?.find(
-				(time) => time.type === "compensation_times"
+			const absenceTimes = day.times.filter(
+				(time) => time.type === "absence"
 			);
-			if (day) {
-				// has absence
-				if (day.absence && day.absence.type && day.default_time) {
-					const absenceLabel =
-						absence_type_options.find(
-							(option) => option.value === day?.absence?.type
-						)?.label || "frei";
-					weekday += " - " + absenceLabel;
-
-					// check for compensation_times
-
-					if (isCompensationTimes) {
-						hoursInt = 0;
-						saldoInt =
-							day.default_time.duration - day.default_time.pause;
-					} else {
-						hoursInt =
-							day.default_time.duration - day.default_time.pause;
-
-						saldoInt = 0;
-					}
-				} else if (
-					day &&
-					day.default_time &&
-					day.default_time.duration &&
-					day.default_time.pause
-				) {
-					saldoInt =
-						day.default_time.duration - day.default_time.pause;
-					day?.time?.forEach((timeValue: DayDataTime) => {
-						if (timeValue) {
-							timeValue.breaks.forEach(
-								(
-									breakValue: DayDataTime["breaks"][number],
-									index: number
-								) => {
-									if (index > 0) {
-										breaks += " \n";
-									}
-									if (breakValue) {
-										breaks += `${getDateString(breakValue.start).time} - ${getDateString(breakValue.end).time}`;
-									} else {
-										breaks += "-";
-									}
-								}
-							);
-							saldoInt -= timeValue.duration - timeValue.pause;
-						}
-					});
-				} else if (
-					day.time &&
-					day.time.length > 0 &&
-					!day.default_time
-				) {
-					day?.time?.forEach((timeValue: DayDataTime) => {
-						if (timeValue) {
-							timeValue.breaks.forEach(
-								(
-									breakValue: DayDataTime["breaks"][number],
-									index: number
-								) => {
-									if (index > 0) {
-										breaks += " / ";
-									}
-									if (breakValue) {
-										breaks += `${getDateString(breakValue.start).time} - ${getDateString(breakValue.end).time}`;
-									}
-								}
-							);
-							saldoInt -= timeValue.duration - timeValue.pause;
-						}
-					});
-				} else if (day && !day.default_time) {
-					start = "FREI";
+			if (absenceTimes.length > 0) {
+				const absenceLabels = absenceTimes
+					.map(
+						(timeValue) =>
+							absence_type_options.find(
+								(option) =>
+									option.value === timeValue.absence?.type
+							)?.label
+					)
+					.filter(Boolean);
+				if (absenceLabels.length > 0) {
+					weekday += " - " + absenceLabels.join(" / ");
 				}
 			}
 
-			if (day.time && day.time.length > 0 && !isCompensationTimes) {
-				day.time.forEach((time: DayDataTime, index: number) => {
-					if (time && time?.start && time?.end) {
-						if (index > 0) {
-							start += " \n";
-						}
-						start += `${getDateString(time.start).time}`;
-						if (index > 0) {
-							end += " \n";
-						}
-						end += `${getDateString(time.end).time}`;
-						hoursInt += time.duration - time.pause;
+			day.times.forEach((timeValue: DayDataTime, index: number) => {
+				if (!timeValue.time?.start || !timeValue.time?.end) {
+					return;
+				}
+
+				if (index > 0) {
+					start += " \n";
+					end += " \n";
+				}
+				start += getDateString(timeValue.time.start).time;
+				end += getDateString(timeValue.time.end).time;
+
+				timeValue.time.breaks?.forEach((breakValue, breakIndex) => {
+					if (index > 0 || breakIndex > 0) {
+						breaks += " \n";
+					}
+					if (breakValue) {
+						breaks += `${getDateString(breakValue.start).time} - ${getDateString(breakValue.end).time}`;
+					} else {
+						breaks += "-";
 					}
 				});
-			}
-			const target = day.default_time?.duration
-				? day.default_time?.duration - day.default_time?.pause
-				: 0;
+			});
+
+			const hoursInt = getHours(day.times);
+			const target = getTarget(day);
+			const saldo = getSaldo(day);
 
 			return [
 				getDateString(day.date).date,
-				weekday ? weekday : "",
+				weekday,
 				start,
 				breaks,
 				end,
 				hoursInt ? convertMillisecondsToString(hoursInt) : "",
-				target ? convertMillisecondsToString(target) : "",
-				saldoInt ? convertMillisecondsToString(-saldoInt) : ""
+				day.is_working_day
+					? convertMillisecondsToString(target || 0)
+					: "",
+				day.is_working_day || saldo !== 0
+					? convertMillisecondsToString(saldo)
+					: ""
 			];
 		}),
 

@@ -78,7 +78,6 @@ const WebsiteContent = () => {
 		fields: [],
 		className: "Content",
 		refetch,
-
 		categories: []
 	});
 

@@ -49,6 +49,9 @@
 			border-radius: 8px;
 			cursor: grab;
 			transition: all 0.2s ease;
+			width: 100%;
+			text-align: left;
+			font: inherit;
 
 			&:hover {
 				background-color: #ffffff;
@@ -60,6 +63,15 @@
 			&.dragging {
 				opacity: 0.5;
 				cursor: grabbing;
+			}
+
+			&--action {
+				cursor: pointer;
+				border-style: dashed;
+
+				.sidebar-item-icon {
+					background-color: #24292e;
+				}
 			}
 
 			&-icon {
@@ -204,6 +216,101 @@
 			height: 20px;
 			cursor: pointer;
 		}
+
+		.properties-section-divider {
+			margin: 24px 0 16px;
+			padding-top: 16px;
+			border-top: 1px solid #e1e4e8;
+
+			h4 {
+				margin: 0;
+				font-size: 14px;
+				font-weight: 600;
+				color: #24292e;
+			}
+		}
+
+		.property-clear-btn {
+			margin-top: 8px;
+			padding: 4px 0;
+			background: none;
+			border: none;
+			color: #0366d6;
+			font-size: 12px;
+			cursor: pointer;
+			text-decoration: underline;
+
+			&:hover {
+				color: #024ea4;
+			}
+		}
+
+		.style-panel {
+			.property-label {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+		}
+
+		.style-color-trigger {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 4px;
+		}
+
+		.style-color-button {
+			text-align: left;
+			cursor: pointer;
+		}
+
+		.style-color-button-inner {
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+		}
+
+		.style-color-swatch {
+			display: inline-block;
+			width: 14px;
+			height: 14px;
+			border-radius: 3px;
+			border: 1px solid rgba(0, 0, 0, 0.15);
+			flex-shrink: 0;
+
+			&--lg {
+				width: 20px;
+				height: 20px;
+			}
+		}
+
+		.content-panel-summary {
+			padding: 10px 12px;
+			background: #f6f8fa;
+			border-radius: 6px;
+			margin-bottom: 8px;
+
+			p {
+				margin: 0 0 4px;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+
+		.content-panel-meta {
+			font-size: 12px;
+			color: #6a737d;
+			font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+				monospace;
+		}
+
+		.content-panel-button {
+			cursor: pointer;
+			text-align: left;
+		}
 	}
 
 	// Sortable blocks
@@ -315,6 +422,44 @@
 		font-size: 14px;
 		box-shadow: 0 4px 16px rgba(3, 102, 214, 0.4);
 		cursor: grabbing;
+	}
+}
+
+// Modal content (Modal renders outside .content-editor)
+.style-color-modal {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+
+	&-hint {
+		margin: 0;
+		font-size: 13px;
+		color: #6a737d;
+	}
+
+	&-preview {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 12px;
+		background: #f6f8fa;
+		border-radius: 6px;
+		font-size: 14px;
+		font-weight: 500;
+	}
+}
+
+.style-color-swatch {
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	border-radius: 3px;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	flex-shrink: 0;
+
+	&--lg {
+		width: 20px;
+		height: 20px;
 	}
 }
 

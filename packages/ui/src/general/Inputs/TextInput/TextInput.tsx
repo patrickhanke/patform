@@ -64,7 +64,7 @@ const TextInput = ({
 					defaultValue={defaultValue}
 					id={id}
 					onChange={(e) => setValue(e.target.value)}
-					style={{ width }}
+					style={{ width, maxWidth: "240px" }}
 					onBlur={onBlur}
 					placeholder={placeholder ? placeholder : ""}
 					disabled={disabled}
@@ -76,7 +76,7 @@ const TextInput = ({
 					id={id}
 					onChange={(e) => setValue(e.target.value)}
 					type={type ? type : "text"}
-					style={{ width, minWidth: width }}
+					style={{ width, minWidth: width, maxWidth: "240px" }}
 					onBlur={onBlur}
 					min={min}
 					max={max}

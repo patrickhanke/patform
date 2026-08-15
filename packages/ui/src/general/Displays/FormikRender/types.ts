@@ -23,6 +23,7 @@ export type FormikRenderProps = {
 	setSecondaryContent?: Dispatch<SetStateAction<React.ReactNode | null>>;
 	highlightChanges?: boolean;
 	showRequired?: boolean;
+	submitButton?: boolean;
 };
 
 export type FormikRenderSlideInProps = {
@@ -45,6 +46,7 @@ export type FormSubmitStoreProps = {
 	useWithDebounce?: boolean;
 	noSubmit?: boolean;
 	setErrors?: (errors: FormikErrors<FormikValues>) => void;
+	submitButton?: boolean;
 };
 
 export type SlideInFormSubmitStoreProps = {

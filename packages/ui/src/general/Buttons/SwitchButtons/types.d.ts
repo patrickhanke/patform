@@ -9,7 +9,7 @@ export type SwitchButton = {
 
 export type SwitchButtonProps = {
 	buttonStates: Array<SwitchButton>;
-	currentStates: SwitchButton;
+	currentStates?: SwitchButton;
 	changeHandler: Dispatch<SetStateAction<SiteState>>;
 	underlineButtons?: boolean;
 	useFragment?: boolean;

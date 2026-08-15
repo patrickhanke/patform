@@ -12,12 +12,18 @@ import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
 import { ClientParseError } from "@apollo/client";
 import Parse from "./parse";
+import { LanguageValue } from "@repo/types";
 
-const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
+const useDataHandler = (
+	useMasterKey = false,
+	useProjectKey = true,
+	useLanguageKey = false
+) => {
 	const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
 	const [loading, setLoading] = useState(false);
 	const { feedbackHandler } = useDataContext();
-	const { user, userLoading, project } = useContext(PatstoreAppContext);
+	const { user, userLoading, project, language } =
+		useContext(PatstoreAppContext);
 	const netlifyHookHandler = useNetlifyHooks();
 	const updateData = useCallback(
 		async ({
@@ -38,7 +44,8 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 					| object
 					| Array<any>
 					| undefined
-					| null;
+					| null
+					| LanguageValue;
 			};
 			afterSaveHandler?: (objectId: string) => void;
 			feedback?: string;
@@ -47,7 +54,9 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 			let data: Array<any> = [];
 			setLoading(true);
 			const updateObjectCopy = cloneDeep(updateObject);
-
+			if (language && useLanguageKey) {
+				set(updateObjectCopy, "lang", language);
+			}
 			if (user?.objectId) {
 				set(updateObjectCopy, "updated_by", {
 					__type: "Pointer",
@@ -164,7 +173,9 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 					objectId: userId
 				});
 			}
-
+			if (language && useLanguageKey) {
+				set(updateObjectCopy, "lang", language);
+			}
 			if (project) {
 				set(updateObjectCopy, "project", {
 					__type: "Pointer",
