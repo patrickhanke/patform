@@ -78,7 +78,7 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 				operator: "equalTo",
 				id: "state"
 			});
-		}
+		} 
 		if (searchParams.get("ticket")) {
 			filterArray.push({
 				key: "objectId",
