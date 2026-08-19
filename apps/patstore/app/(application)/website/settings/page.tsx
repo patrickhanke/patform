@@ -1,1 +1,0 @@
-export {WebsiteSettings as default} from '@repo/modules';
