@@ -20,3 +20,5 @@ export * from "./Steps";
 export * from "./ActionBar";
 export * from "./HtmlContent";
 export * from "./Card";
+export * from "./Tooltip";
+
