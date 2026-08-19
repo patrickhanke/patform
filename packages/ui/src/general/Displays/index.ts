@@ -19,3 +19,4 @@ export * from "./Feedback";
 export * from "./Steps";
 export * from "./ActionBar";
 export * from "./HtmlContent";
+export * from "./Card";

@@ -27,7 +27,7 @@ const PageHeaderSkeleton = ({
 							{title ? (
 								<h2>{title}</h2>
 							) : (
-								<Loader width="170px" height="34px" />
+								<Loader width="240px" height="42px" />
 							)}
 							{description && (
 								<Loader width="240px" height="18px" />
@@ -41,7 +41,7 @@ const PageHeaderSkeleton = ({
 										(_value: number, index: number) => (
 											<Loader
 												width="120px"
-												height="12px"
+												height="24px"
 												key={index.toString()}
 											/>
 										)
@@ -50,11 +50,11 @@ const PageHeaderSkeleton = ({
 							)}
 							{pageHeaderContent && (
 								<>
-									<Loader width="120px" height="12px" />
+									<Loader width="120px" height="24px" />
 								</>
 							)}
 							{createClass && (
-								<Loader width="120px" height="12px" />
+								<Loader width="120px" height="24px" />
 							)}
 						</div>
 					</div>

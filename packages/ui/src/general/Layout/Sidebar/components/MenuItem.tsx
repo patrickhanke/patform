@@ -9,6 +9,7 @@ import { MenuItemProps, MenuItem as MenuItemType } from "../types";
 import Icons from "../constants/Icons";
 import "../styles.scss";
 import SidebarDivider from "./SidebarDivider";
+import { PatstoreLink } from "@repo/provider";
 
 const MenuItem = ({
 	link,
@@ -96,7 +97,7 @@ const MenuItem = ({
 						)}
 					</button>
 				) : (
-					<Link
+					<PatstoreLink
 						aria-disabled={disabled}
 						as={link}
 						className={clsx(
@@ -116,7 +117,7 @@ const MenuItem = ({
 								<p className="badge_label">{badge.label}</p>
 							</div>
 						)}
-					</Link>
+					</PatstoreLink>
 				)}
 			</li>
 			<div className={"submenu_container"} data-showsubmenu={showSubMenu}>

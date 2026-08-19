@@ -8,6 +8,5 @@ export * from "./TableColumnEditDate";
 export * from "./TableColumnEditTeam";
 export * from "./TableColumnTimesField";
 export * from "./TableColumnEditContent";
-export * from "./TableColumnEditWebpageComponents";
 export * from "./TableFilter";
 export * from "./TableColumnEmailSettings";

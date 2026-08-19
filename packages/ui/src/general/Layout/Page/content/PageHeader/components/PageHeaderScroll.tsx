@@ -1,11 +1,13 @@
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { PageNavigation } from "../../PageNavigation";
 import { Plus, RotateCcw } from "lucide-react";
 import clsx from "clsx";
 import { isArray } from "lodash-es";
 import CreateClass from "../content/CreateClass";
-import { PageHeaderScrollProps } from "../types";
+import { PageHeaderButton, PageHeaderScrollProps } from "../types";
 import "../styles.scss";
+import { useUnsavedChangesGuard } from "@repo/provider";
+import { PageState } from "@repo/types";
 
 const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 	title,
@@ -18,6 +20,24 @@ const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 	pageState,
 	setPageState
 }) => {
+	const { guard, unsavedChangesModal } = useUnsavedChangesGuard();
+
+	const handleButtonClick = (button: PageHeaderButton) => {
+		guard(() => button.onClick());
+	};
+
+	const handlePageStateChange: Dispatch<SetStateAction<PageState>> = (
+		nextState
+	) => {
+		if (!setPageState) return;
+		const resolved =
+			typeof nextState === "function"
+				? nextState(pageState as PageState)
+				: nextState;
+		if (pageState && resolved.value === pageState.value) return;
+		guard(() => setPageState(resolved));
+	};
+
 	return (
 		<div className="pageheader_scroll_content">
 			<div className={"pageheader_scroll_content_container"}>
@@ -38,12 +58,17 @@ const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 											"primary",
 											"pageheader_createbutton"
 										)}
-										onClick={() => button.onClick()}
+										onClick={() =>
+											handleButtonClick(button)
+										}
 										disabled={button.disabled}
 									>
 										{button.is_add_button && (
 											<div className={"add_icon"}>
-												<Plus strokeWidth={1} size={12} />
+												<Plus
+													strokeWidth={1}
+													size={12}
+												/>
 											</div>
 										)}
 										{button.is_reset_button && (
@@ -93,10 +118,11 @@ const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 					<PageNavigation
 						siteStates={pageStates}
 						activeState={pageState}
-						onClick={setPageState}
+						onClick={handlePageStateChange}
 					/>
 				</div>
 			)}
+			{unsavedChangesModal}
 		</div>
 	);
 };

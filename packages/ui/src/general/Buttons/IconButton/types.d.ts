@@ -1,4 +1,12 @@
-import { ButtonProps } from "@chakra-ui/react";
+export type IconButtonColor =
+	| "default"
+	| "active"
+	| "light"
+	| "dark"
+	| "primary"
+	| "secondary"
+	| "danger"
+	| "whiteAlpha.900";
 
 export type IconTypes =
 	| "delete"
@@ -60,7 +68,12 @@ export type IconTypes =
 	| "eye-off"
 	| "eye"
 	| "property"
-	| "color";
+	| "color"
+	| "align-left"
+	| "align-right"
+	| "align-center"
+	| "undo"
+	| "redo";
 
 export type IconProps = {
 	icon: IconTypes;
@@ -79,7 +92,8 @@ export type IconButtonProps = {
 	text?: string;
 	noBorder?: boolean;
 	size?: number;
-	color?: ButtonProps["color"];
+	color?: IconButtonColor | (string & {});
 	loading?: boolean;
 	type?: "button" | "submit" | "reset";
+	tooltip?: string;
 };

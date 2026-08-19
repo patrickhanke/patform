@@ -61,3 +61,19 @@ button {
 .whitespace-nowrap {
   white-space: nowrap;
 }
+
+.bg-light {
+  background-color: $lightest;
+}
+
+.bg-lightest {
+  background-color: $lightest;
+}
+
+.border-bottom {
+  border-bottom: 0.6px solid $grey;
+}
+
+.border-right {
+  border-right: 0.6px solid $grey;
+}

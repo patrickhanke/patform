@@ -15,7 +15,6 @@ import {
 	PatstoreUser,
 	PersonClass,
 	Team,
-	WebpageComponents,
 	WebpageContent
 } from "@repo/types";
 import {
@@ -40,7 +39,7 @@ import {
 	LatLng
 } from "@repo/ui";
 import { get } from "lodash-es";
-import { IconButton } from "../../../Buttons";
+import { IconButton } from "@repo/ui";
 import {
 	TableColumnDatesField,
 	TableColumnDeleteField,
@@ -48,7 +47,6 @@ import {
 	TableColumnEditDate,
 	TableColumnEditField,
 	TableColumnTimesField,
-	TableColumnEditWebpageComponents,
 	TableColumnEmailSettings
 } from "../content";
 import {
@@ -764,31 +762,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 					enableSorting: false
 				} as ColumnDef<T>);
 			}
-			if (columnElement.type === "edit_webpage_components") {
-				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnEditWebpageComponents
-							type={row.type as "table" | "faq"}
-							initialData={
-								row[columnElement.id] as WebpageComponents
-							}
-							onChange={(value: WebpageComponents) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Inhalt aktualisiert"
-								})
-							}
-						/>
-					),
-					header: () => <span>{columnElement.label}</span>,
-					id: columnElement.id as string,
-					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id,
-					enableSorting: false
-				} as ColumnDef<T>);
-			}
-
 			if (columnElement.type === "connected_elements") {
 				columnArray.push({
 					accessorFn: (row) => (
