@@ -178,24 +178,6 @@ const database_fields = {
 			pointer_class: "Location"
 		}
 	},
-	edit_person: {
-		id: "edit_person",
-		name: "edit_person",
-		type: "persons_select",
-		label: "Person"
-	},
-	edit_persons: {
-		id: "edit_persons",
-		name: "edit_persons",
-		type: "persons_select",
-		label: "Personen"
-	},
-	edit_team: {
-		id: "edit_team",
-		name: "edit_team",
-		type: "persons_select",
-		label: "Team"
-	},
 	edit_geopoint: {
 		id: "edit_geopoint",
 		name: "edit_geopoint",

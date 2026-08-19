@@ -75,7 +75,6 @@ const ComponentSettings: FC<ComponentSettingsProps> = ({
 				fields={fields}
 				data={data ?? undefined}
 				formSubmitHandler={(value) => {
-					console.log(value);
 					if (typeof value === "object") {
 						Object.entries(value).forEach(([key, value]) => {
 							setData(key, value);

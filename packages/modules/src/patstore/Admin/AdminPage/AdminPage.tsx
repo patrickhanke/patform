@@ -2,7 +2,6 @@
 
 import { PageHeader } from "./content/PageHeader";
 import { AdminPageProps } from "./types";
-import "./styles.scss";
 import { PageNavigation } from "./content/PageNavigation";
 
 const AdminPage = ({
@@ -36,7 +35,7 @@ const AdminPage = ({
 					onClick={navOnClick}
 				/>
 			)}
-			<div className="admin_page-content">{children}</div>
+			<div className="w-100">{children}</div>
 		</>
 	);
 };

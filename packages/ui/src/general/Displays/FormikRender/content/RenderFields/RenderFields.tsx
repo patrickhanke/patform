@@ -9,7 +9,6 @@ import ColorPicker from "./components/ColorPicker";
 import ImageUpload from "./components/ImageUpload";
 import TextEditor from "./components/TextEditor";
 import getPointerValue from "./functions/getPointerValue";
-import PersonSelect from "./components/PersonSelect";
 import { get } from "lodash-es";
 import SelectToggle from "./components/SelectToggle";
 import DatePickerField from "./components/DatePickerField";
@@ -312,18 +311,6 @@ const RenderFields: FC<RenderFieldsType> = ({
 								placeholder={field.placeholder}
 								isHorizontal={isHorizontal}
 								setSecondaryContent={setSecondaryContent}
-							/>
-						)}
-						{field.type === "persons_select" && (
-							<PersonSelect
-								name={field.name}
-								label={field.label}
-								onChange={(value) =>
-									setFieldValue(field.name, value, true)
-								}
-								values={values}
-								placeholder={field.placeholder}
-								isHorizontal={isHorizontal}
 							/>
 						)}
 						{(field.type === "download" ||

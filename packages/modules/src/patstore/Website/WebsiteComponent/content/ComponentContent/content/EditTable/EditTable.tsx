@@ -25,7 +25,6 @@ const EditTable: FC<EditTableProps> = ({ initialData, objectId }) => {
 		colIdx: number,
 		value: string
 	) => {
-		console.log(rowIdx, colIdx, value);
 		setData(`rows.${rowIdx}.data.${colIdx}`, value, 1000);
 	};
 
