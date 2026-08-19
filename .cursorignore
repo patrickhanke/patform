@@ -1,0 +1,49 @@
+﻿# Cursor ignore — excludes folders from indexing and AI context
+# Syntax matches .gitignore
+
+# Dependencies
+**/node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+**/.next/
+**/out/
+**/build/
+**/dist/
+
+# Turbo & bundler cache
+**/.turbo/
+**/.vite/
+**/.cache/
+
+# Environment & secrets
+.env*
+!.env.example
+
+# Testing
+**/coverage/
+
+# Deployment
+**/.vercel/
+
+# Debug logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+*.pem
+
+# TypeScript generated
+*.tsbuildinfo
+next-env.d.ts
+
+# Dev-only playground (local scripts & data)
+packages/modules/src/patstore/Admin/Playground/
+
+# Git metadata
+.git/

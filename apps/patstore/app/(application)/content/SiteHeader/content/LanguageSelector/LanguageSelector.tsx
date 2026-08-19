@@ -13,7 +13,6 @@ const LanguageSelector = () => {
 	const { language, setLanguage, project } = useContext(PatstoreAppContext);
 
 	const handleLanguageChange = (language: typeof languages_short[number]) => {
-		console.log(language);
 		setLanguage(language.value);
 	}
 	const languagesSelect  = useMemo(() => {
@@ -28,7 +27,6 @@ const LanguageSelector = () => {
 		return languagesArray;
 	}, [language]);
 
-	console.log(languagesSelect);
 	if (languagesSelect && languagesSelect.length === 1) {
 		return <div className="label">{languagesSelect[0].label}</div>;
 	}

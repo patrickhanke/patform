@@ -54,7 +54,7 @@ const WebsiteComponents = () => {
 
 	const columns = useCreateColumns<ContentClass>({
 		data: [
-			{ id: "title", type: "edit_string", label: "Name" },
+			{ id: "title", type: "string", label: "Name" },
 			{
 				id: "content_id",
 				type: user.is_superuser ? "edit_string" : "string",
@@ -62,18 +62,16 @@ const WebsiteComponents = () => {
 			},
 			{ id: "type", type: "string", label: "Typ" },
 			{ id: "createdAt", type: "date", label: "Erstellt am" },
-			{ id: "active", type: "boolean", label: "Aktiv" },
-			{
-				id: "data",
-				type: "edit_webpage_components",
-				label: "Inhalt bearbeiten"
-			}
+			{ id: "active", type: "boolean", label: "Aktiv" }
 		],
 		fields: [],
 		className: "Content",
 		refetch,
-		categories: []
+		categories: [],
+		editLink: "website/components"
 	});
+
+	console.log(content);
 
 	const renderFilters = useMemo(() => {
 		return (

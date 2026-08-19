@@ -99,50 +99,6 @@ const FormSettings = ({ formId }: { formId: string }) => {
 							// useWithDebounce
 							isHorizontal
 						/>
-
-						// 	<div key={key} className="flex col a-st gap-sm w-100">
-						// 		<div
-						// 			key={key}
-						// 			className="flex row a-ce j-sb gap-sm"
-						// 		>
-						// 			<div className="flex col a-st">
-						// 				<label>{setting.label}</label>
-						// 				<p>{setting.description}</p>
-						// 			</div>
-						// 			<FormSettingToggle
-						// 				settingsKey={
-						// 					key as keyof FormClass["settings"]
-						// 				}
-						// 				loading={loading}
-						// 				settings={settings}
-						// 				updateSettings={updateSettingsHandler}
-						// 			/>
-						// 		</div>
-						// 		<div
-						// 			key={key}
-						// 			className="flex row a-ce j-sb gap-sm"
-						// 		>
-						// 			<div className="flex col a-st">
-						// 				<label>Absender E-Mail</label>
-						// 				<p>
-						// 					Geben Sie die Absender E-Mail Adresse
-						// 					für das Formular an. Diese muss auf die
-						// 					Domain Ihrer Webseite enden.
-						// 				</p>
-						// 			</div>
-
-						// 			<FormSettingsInput
-						// 				settings={settings}
-						// 				updateSettings={updateSettingsHandler}
-						// 			/>
-						// 		</div>
-
-						// 		<FormSettingsText
-						// 			settings={settings}
-						// 			updateSettings={updateSettingsHandler}
-						// 		/>
-						// 	</div>
-						// </Formik>
 					);
 				} else {
 					return (

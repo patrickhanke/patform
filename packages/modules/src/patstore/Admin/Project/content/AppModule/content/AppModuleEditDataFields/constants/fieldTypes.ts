@@ -32,14 +32,6 @@ const fieldTypes = [
 		label: "Texteditor"
 	},
 	{
-		value: "persons_select",
-		label: "Personen wählen"
-	},
-	{
-		value: "person_select",
-		label: "Person wählen"
-	},
-	{
 		value: "image",
 		label: "Bild wählen"
 	},

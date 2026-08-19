@@ -1,11 +1,13 @@
-import { forwardRef } from "react";
+import { Dispatch, forwardRef, SetStateAction } from "react";
 import { PageNavigation } from "../../PageNavigation";
 import { Plus, RotateCcw } from "lucide-react";
 import clsx from "clsx";
 import { isArray } from "lodash-es";
 import CreateClass from "../content/CreateClass";
-import { PageHeaderRegularProps } from "../types";
+import { PageHeaderButton, PageHeaderRegularProps } from "../types";
 import "../styles.scss";
+import { useUnsavedChangesGuard } from "@repo/provider";
+import { PageState } from "@repo/types";
 
 const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 	(
@@ -23,6 +25,24 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 		},
 		ref
 	) => {
+		const { guard, unsavedChangesModal } = useUnsavedChangesGuard();
+
+		const handleButtonClick = (button: PageHeaderButton) => {
+			guard(() => button.onClick());
+		};
+
+		const handlePageStateChange: Dispatch<SetStateAction<PageState>> = (
+			nextState
+		) => {
+			if (!setPageState) return;
+			const resolved =
+				typeof nextState === "function"
+					? nextState(pageState as PageState)
+					: nextState;
+			if (pageState && resolved.value === pageState.value) return;
+			guard(() => setPageState(resolved));
+		};
+
 		return (
 			<div ref={ref} className="pageheader_content">
 				<div className={"pageheader_content_container"}>
@@ -49,7 +69,9 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 													"primary",
 													"pageheader_createbutton"
 												)}
-												onClick={() => button.onClick()}
+												onClick={() =>
+													handleButtonClick(button)
+												}
 												disabled={button.disabled}
 											>
 												{button.is_add_button && (
@@ -95,9 +117,10 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 					<PageNavigation
 						siteStates={pageStates}
 						activeState={pageState}
-						onClick={setPageState}
+						onClick={handlePageStateChange}
 					/>
 				)}
+				{unsavedChangesModal}
 			</div>
 		);
 	}

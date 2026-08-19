@@ -123,7 +123,6 @@ export type ModuleFieldType =
 	| "connected_elements"
 	| "updated_by"
 	| "created_by"
-	| "edit_webpage_components"
 	| "files"
 	| "image_preview"
 	| "user"

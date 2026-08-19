@@ -1,6 +1,9 @@
 import React from "react";
 import {
 	AiFillCopy,
+	AiOutlineAlignCenter,
+	AiOutlineAlignLeft,
+	AiOutlineAlignRight,
 	AiOutlineMinus,
 	AiOutlineSearch,
 	AiOutlineShoppingCart,
@@ -59,39 +62,48 @@ import { LuArchive, LuRefreshCcw } from "react-icons/lu";
 import { TfiList, TfiViewList } from "react-icons/tfi";
 import { IoIosTimer } from "react-icons/io";
 import { IconProps } from "./types";
+import { CiRedo, CiUndo } from "react-icons/ci";
 
 const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "color") {
 		return (
 			<MdOutlineColorLens
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "property") {
 		return (
-			<FaRegBuilding color={color || "inherit"} fontSize={size || 12} />
+			<FaRegBuilding
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "delete") {
-		return <FaTrash color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<FaTrash color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "edit") {
-		return <MdEdit color={color || "inherit"} fontSize={size || 12} />;
+		return <MdEdit color={color || "currentColor"} fontSize={size || 12} />;
 	}
 	if (icon === "cancel") {
 		return (
-			<MdOutlineCancel color={color || "inherit"} fontSize={size || 12} />
+			<MdOutlineCancel
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "save") {
-		return <FaSave color={color || "inherit"} fontSize={size || 12} />;
+		return <FaSave color={color || "currentColor"} fontSize={size || 12} />;
 	}
 	if (icon === "arrow") {
 		return (
 			<AiOutlineArrowRight
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -99,48 +111,63 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "download") {
 		return (
 			<AiOutlineDownload
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "view") {
-		return <FaRegEye color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<FaRegEye color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "email") {
 		return (
-			<AiOutlineMail color={color || "inherit"} fontSize={size || 12} />
+			<AiOutlineMail
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "message") {
-		return <TbMessage color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<TbMessage color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "settings") {
 		return (
 			<IoSettingsOutline
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "check") {
-		return <GiCheckMark color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<GiCheckMark
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "copy") {
-		return <RxCopy color={color || "inherit"} fontSize={size || 12} />;
+		return <RxCopy color={color || "currentColor"} fontSize={size || 12} />;
 	}
 	if (icon === "info") {
-		return <FaInfo color={color || "inherit"} fontSize={size || 12} />;
+		return <FaInfo color={color || "currentColor"} fontSize={size || 12} />;
 	}
 	if (icon === "link") {
 		return (
-			<RxExternalLink color={color || "inherit"} fontSize={size || 12} />
+			<RxExternalLink
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "change") {
 		return (
 			<MdOutlineChangeCircle
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -148,7 +175,7 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "chart") {
 		return (
 			<HiOutlineChartBarSquare
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -156,21 +183,23 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "page") {
 		return (
 			<AiOutlineFileText
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "text") {
-		return <BsCardText color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<BsCardText color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "grid") {
-		return <GrGrid color={color || "inherit"} fontSize={size || 12} />;
+		return <GrGrid color={color || "currentColor"} fontSize={size || 12} />;
 	}
 	if (icon === "documents") {
 		return (
 			<IoDocumentsOutline
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -178,7 +207,7 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "comments") {
 		return (
 			<LiaCommentsSolid
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -186,43 +215,59 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "password") {
 		return (
 			<MdOutlinePassword
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "images") {
 		return (
-			<IoImagesOutline color={color || "inherit"} fontSize={size || 12} />
+			<IoImagesOutline
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "projects") {
-		return <GrProjects color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<GrProjects color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "participants") {
-		return <BsPeople color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<BsPeople color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "users") {
-		return <FaUsers color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<FaUsers color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "project") {
 		return (
 			<RiListSettingsLine
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "admin") {
-		return <RiAdminLine color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<RiAdminLine
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "templates") {
-		return <AiFillCopy color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<AiFillCopy color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "dashboard") {
 		return (
 			<BsFillBarChartFill
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -230,7 +275,7 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "products") {
 		return (
 			<HiOutlineShoppingBag
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -238,7 +283,7 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "contact") {
 		return (
 			<MdOutlineContactPage
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -246,7 +291,7 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "orders") {
 		return (
 			<IoReceiptOutline
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -254,7 +299,7 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "content") {
 		return (
 			<BsLayoutTextWindowReverse
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
@@ -262,107 +307,184 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	if (icon === "shop") {
 		return (
 			<AiOutlineShoppingCart
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "profile") {
-		return <CgProfile color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<CgProfile color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "waste") {
 		return (
-			<BiSolidTrashAlt color={color || "inherit"} fontSize={size || 12} />
+			<BiSolidTrashAlt
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "tasks") {
-		return <GrTask color={color || "inherit"} fontSize={size || 12} />;
+		return <GrTask color={color || "currentColor"} fontSize={size || 12} />;
 	}
 	if (icon === "tickets") {
 		return (
 			<BiMessageSquareError
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "objects") {
 		return (
-			<BsHousesFill color={color || "inherit"} fontSize={size || 12} />
+			<BsHousesFill
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "tours") {
 		return (
-			<FaShuttleVan color={color || "inherit"} fontSize={size || 12} />
+			<FaShuttleVan
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "workers") {
-		return <CgProfile color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<CgProfile color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "staff") {
-		return <CgProfile color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<CgProfile color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "services") {
 		return (
 			<MdOutlineCleaningServices
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "extended_list") {
-		return <TfiViewList color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<TfiViewList
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
+		);
 	}
 	if (icon === "small_list") {
-		return <TfiList color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<TfiList color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "calendar") {
 		return (
 			<MdOutlineEditCalendar
-				color={color || "inherit"}
+				color={color || "currentColor"}
 				fontSize={size || 12}
 			/>
 		);
 	}
 	if (icon === "close") {
-		return <GrClose color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<GrClose color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "archive") {
-		return <LuArchive color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<LuArchive color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "time") {
-		return <IoIosTimer color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<IoIosTimer color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "plus") {
-		return <BsPlusLg color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<BsPlusLg color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	if (icon === "minus") {
 		return (
-			<AiOutlineMinus color={color || "inherit"} fontSize={size || 12} />
+			<AiOutlineMinus
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "upload") {
 		return (
-			<AiOutlineUpload color={color || "inherit"} fontSize={size || 12} />
+			<AiOutlineUpload
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "refresh") {
 		return (
-			<LuRefreshCcw color={color || "inherit"} fontSize={size || 12} />
+			<LuRefreshCcw
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "search") {
 		return (
-			<AiOutlineSearch color={color || "inherit"} fontSize={size || 12} />
+			<AiOutlineSearch
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "eye-off") {
 		return (
-			<FaRegEyeSlash color={color || "inherit"} fontSize={size || 12} />
+			<FaRegEyeSlash
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
 		);
 	}
 	if (icon === "eye") {
-		return <FaRegEye color={color || "inherit"} fontSize={size || 12} />;
+		return (
+			<FaRegEye color={color || "currentColor"} fontSize={size || 12} />
+		);
+	}
+	if (icon === "align-left") {
+		return (
+			<AiOutlineAlignLeft
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
+		);
+	}
+	if (icon === "align-right") {
+		return (
+			<AiOutlineAlignRight
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
+		);
+	}
+	if (icon === "align-center") {
+		return (
+			<AiOutlineAlignCenter
+				color={color || "currentColor"}
+				fontSize={size || 12}
+			/>
+		);
+	}
+	if (icon === "undo") {
+		return <CiUndo color={color || "currentColor"} fontSize={size || 12} />;
+	}
+	if (icon === "redo") {
+		return <CiRedo color={color || "currentColor"} fontSize={size || 12} />;
 	}
 	return null;
 };

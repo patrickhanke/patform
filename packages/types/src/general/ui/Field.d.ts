@@ -148,12 +148,6 @@ export type PointerSelectField = BasicField & {
 	validation?: BaseValidation;
 };
 
-export type PersonsSelectField = BasicField & {
-	value?: object;
-	type: "persons_select";
-	validation?: BaseValidation;
-};
-
 export type DownloadField = BasicField & {
 	value?: string;
 	type: "download";
@@ -187,7 +181,6 @@ export type Field =
 	| SelectField
 	| PointerSelectField
 	| ColorField
-	| PersonsSelectField
 	| DateField
 	| DownloadField
 	| DownloadsField

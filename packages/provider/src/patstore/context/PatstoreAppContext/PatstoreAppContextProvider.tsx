@@ -27,8 +27,6 @@ const PatstoreAppContextProvider = ({
 		project?.settings?.default_language || "de"
 	);
 
-	console.log(project);
-
 	const currentModule = useMemo(() => {
 		const modules: Module[] = project.modules;
 
