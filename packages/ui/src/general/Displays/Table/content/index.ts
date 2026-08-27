@@ -10,3 +10,4 @@ export * from "./TableColumnTimesField";
 export * from "./TableColumnEditContent";
 export * from "./TableFilter";
 export * from "./TableColumnEmailSettings";
+export { TableColumnConnectedElements } from "./TableColumnConnectedElements";

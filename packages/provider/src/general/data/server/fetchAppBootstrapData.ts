@@ -37,6 +37,7 @@ const PROJECT_FIELDS: Record<string, string> = {
 				}
 			}
 		}
+		connected_images
 	`,
 	patflow: `
 		name

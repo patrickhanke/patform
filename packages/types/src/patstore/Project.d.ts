@@ -42,4 +42,12 @@ export type PatstoreProject = {
 		languages: LanguageValue[];
 		default_language: LanguageValue;
 	};
+	connected_images: {
+		[key: string]: {
+			images: string[];
+			module_id: string;
+			object_id: string;
+			class_name: string;
+		};
+	};
 };

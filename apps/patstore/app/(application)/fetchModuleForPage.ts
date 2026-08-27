@@ -13,7 +13,7 @@ export async function fetchModuleForPage({
 	sessionToken?: string;
 	cookieProjectId?: string;
 	path: string;
-}): Promise<Module | undefined> {
+}): Promise<{ module?: Module, projectId?: string }> {
 	"use cache";
 	cacheLife("hours");
 
@@ -22,9 +22,15 @@ export async function fetchModuleForPage({
 		cookieProjectId
 	});
 
-	return fetchModuleByPath({
+	const module = await fetchModuleByPath({
 		projectId,
 		path,
 		sessionToken
 	});
+
+	if (!module || !projectId) {
+		return { module: undefined, projectId: undefined };
+	}
+
+	return { module, projectId };
 }

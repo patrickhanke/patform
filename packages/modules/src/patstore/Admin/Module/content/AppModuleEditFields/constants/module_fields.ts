@@ -198,7 +198,7 @@ const module_fields: ModuleField[] = [
 		type: "string",
 		active: false,
 		position: 20,
-		default: false,
+		default: false,	
 		hidden: false
 	}
 ] as const;
