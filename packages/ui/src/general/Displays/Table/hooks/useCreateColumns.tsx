@@ -766,7 +766,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => (
 						<TableColumnConnectedElements
-							value={row[columnElement.id] as Array<object>}
+							value={row["objectId"] as string}
 						/>
 					),
 					header: () => <span>{columnElement.label}</span>,

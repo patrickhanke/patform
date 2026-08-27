@@ -25,7 +25,8 @@ const ArticlesOverview = ({ module }: { module: Module }) => {
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
 		{
 			categories:
-				filterModuleCategories(module.categories || []).categoryIds || [],
+				filterModuleCategories(module.categories || []).categoryIds ||
+				[],
 			categoryModuleId: filterModuleCategories(module.categories || [])
 				.categoryModuleId,
 			filters,
@@ -37,7 +38,12 @@ const ArticlesOverview = ({ module }: { module: Module }) => {
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<ArticleClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading
+	} = useFindModuleData<ArticleClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,

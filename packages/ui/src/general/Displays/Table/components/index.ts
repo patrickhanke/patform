@@ -5,7 +5,6 @@ export { default as TableColumnImage } from "./TableColumnImage";
 export { default as TableColumnTextfield } from "./TableColumnTextfield";
 export { default as TableColumnCategory } from "./TableColumnCategory";
 export { default as TableCheckbox } from "./TableCheckbox";
-export { default as TableColumnConnectedElements } from "./TableColumnConnectedElements";
 export { default as TableColumnEditBoolean } from "./TableColumnEditBoolean";
 export { default as TableColumnEditColor } from "./TableColumnEditColor";
 export { default as TableColumnEditState } from "./TableColumnEditState";

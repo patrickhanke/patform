@@ -6,17 +6,21 @@ import {
 	Modal,
 	Page,
 	PatstoreImageUploader,
-	RenderFilters,
 	Separator,
 	Table,
 	useCreateColumns
 } from "@repo/ui";
 import { Filter, ImageClass, Module } from "@repo/types";
-import { useDataHandler, useFindModuleData } from "@repo/provider";
+import { useDataHandler, useFindModuleData, useGetData } from "@repo/provider";
 
-const ImagesOverview = ({ module }: { module: Module }) => {
+const ImagesOverview = ({
+	module,
+	projectId
+}: {
+	module: Module;
+	projectId: string;
+}) => {
 	const { deleteData } = useDataHandler(false);
-
 	const [uploadImages, setUploadImages] = useState(false);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
@@ -24,6 +28,24 @@ const ImagesOverview = ({ module }: { module: Module }) => {
 		pageSize: 10
 	});
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
+	const { data: project } = useGetData({
+		objectName: "Project",
+		fields: ["name", "objectId", "connected_images"],
+		id: projectId
+	});
+
+	const connectedImages = useMemo(() => {
+		const imageArray: string[] = [];
+		Object.keys(project?.connected_images || {}).forEach((key) => {
+			const images: string[] = project?.connected_images[key].images;
+			images.forEach((image) => {
+				if (!imageArray.includes(image)) {
+					imageArray.push(image);
+				}
+			});
+		});
+		return imageArray;
+	}, [project]);
 
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
@@ -50,26 +72,6 @@ const ImagesOverview = ({ module }: { module: Module }) => {
 		categories: module.categories
 	});
 
-	const renderFilters = useMemo(() => {
-		return (
-			<RenderFilters
-				filters={filters}
-				setFilters={setFilters}
-				fields={[
-					{
-						type: "input",
-						key: "title",
-						operator: "_regex",
-						value: "",
-						placeholder: "Suchwort"
-					}
-				]}
-				categories={[]}
-				initialFilters={[]}
-			/>
-		);
-	}, [filters]);
-
 	const pageHeaderButtons = useMemo(
 		() => [
 			{
@@ -81,11 +83,38 @@ const ImagesOverview = ({ module }: { module: Module }) => {
 				disabled: selectedRows.length === 0
 			},
 			{
-				text: "Mehrere Bilder hochladen",
+				text: "Bilder hochladen",
 				onClick: () => setUploadImages(true)
+			},
+			{
+				text: filters.find((filter) => filter.id === "objectId")
+					? "Alle Bilder einblenden"
+					: "Unbenutzte Bilder anzeigen",
+				onClick: () => {
+					const filterActive = filters.find(
+						(filter) => filter.id === "objectId"
+					);
+
+					if (filterActive) {
+						setFilters(
+							filters.filter((filter) => filter.id !== "objectId")
+						);
+					} else {
+						setFilters([
+							...filters,
+							{
+								id: "objectId",
+								key: "objectId",
+								operator: "notIn",
+								value: connectedImages
+							}
+						]);
+					}
+				}
 			}
 		],
-		[selectedRows]
+
+		[selectedRows, filters, connectedImages]
 	);
 
 	return (
@@ -93,12 +122,6 @@ const ImagesOverview = ({ module }: { module: Module }) => {
 			title={module.name}
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
-			createClass={{
-				className: "Image",
-				text: "Neue Bilder erstellen",
-				fields: module.fields,
-				refetch: refetch
-			}}
 		>
 			<Separator size="xs" noLine />
 			<Table
@@ -111,7 +134,9 @@ const ImagesOverview = ({ module }: { module: Module }) => {
 				enableRowSelection
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
-				filterContent={renderFilters}
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={module.filters}
 				setOrder={setOrder}
 			/>
 			<Modal
@@ -127,6 +152,7 @@ const ImagesOverview = ({ module }: { module: Module }) => {
 					maxFileCount={20}
 					afterUploadHandler={async () => {
 						await refetch();
+						setUploadImages(false);
 					}}
 				/>
 			</Modal>

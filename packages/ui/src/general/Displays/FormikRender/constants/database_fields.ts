@@ -1,5 +1,5 @@
 import type { ModuleFieldType } from "@repo/types";
-import { Field } from "../types";
+import { Field } from "@repo/types";
 
 /**
  * ModuleFieldTypes used in module_fields.ts and special_fields.ts.

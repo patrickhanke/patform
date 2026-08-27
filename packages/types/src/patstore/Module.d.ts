@@ -57,7 +57,8 @@ export type ModuleFieldIds =
 	| "emails"
 	| "expires_at"
 	| "video"
-	| "name";
+	| "name"
+	| "slug";
 
 export type ModuleDataFieldsSpecific =
 	| "team"
@@ -130,7 +131,8 @@ export type ModuleFieldType =
 	| "location"
 	| "custom"
 	| "emails"
-	| "video";
+	| "video"
+	| "slug";
 
 export type ModuleField = {
 	id: ModuleFieldIds;
@@ -140,6 +142,7 @@ export type ModuleField = {
 	active: boolean;
 	position: number;
 	default: boolean;
+	hidden: boolean;
 };
 
 export type ModuleClass =

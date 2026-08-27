@@ -7,7 +7,7 @@ const generateColumnsFromFields = <T extends ColumnClasses>(
 	const fieldArray: ColumnData<T>[] = [];
 
 	fields.forEach((field) => {
-		if (field.active && field.id) {
+		if (field.active && field.id && !field.hidden) {
 			fieldArray.push({
 				id: field.id,
 				label: field.label,
