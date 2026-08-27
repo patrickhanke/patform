@@ -1,0 +1,23 @@
+import { ModuleFieldIds, Module } from "@repo/types";
+
+const default_fields: {
+	[key in Module["path"]]: ModuleFieldIds[];
+} = {
+	"/articles": ["title", "text", "image", "date"],
+	"/events": ["title", "description", "dates"],
+	"/groups": ["title", "description", "text", "image"],
+	"/locations": ["title"],
+	"/people": ["title", "description", "text", "image"],
+	"/downloads": ["title", "description", "file"],
+	"/forms": ["title"],
+	"/images": ["title", "description"],
+	"/entries": ["title"],
+	"/categories": ["title"],
+	"/emails": ["title"],
+	"/calendar": ["title"],
+	"/website": ["title"],
+	"/users": ["title"],
+	"/videos": ["title"]
+};
+
+export default default_fields;
