@@ -8,7 +8,8 @@ const module_fields: ModuleField[] = [
 		type: "edit_string",
 		active: true,
 		position: 1,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "createdAt",
@@ -17,7 +18,8 @@ const module_fields: ModuleField[] = [
 		type: "date",
 		active: false,
 		position: 2,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "updatedAt",
@@ -26,7 +28,8 @@ const module_fields: ModuleField[] = [
 		type: "date",
 		active: false,
 		position: 2,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "description",
@@ -35,7 +38,8 @@ const module_fields: ModuleField[] = [
 		type: "edit_textfield",
 		active: false,
 		position: 2,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "text",
@@ -44,7 +48,8 @@ const module_fields: ModuleField[] = [
 		type: "texteditor",
 		active: false,
 		position: 3,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "image",
@@ -53,7 +58,8 @@ const module_fields: ModuleField[] = [
 		type: "edit_image",
 		active: false,
 		position: 4,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "state",
@@ -62,7 +68,8 @@ const module_fields: ModuleField[] = [
 		type: "edit_state",
 		active: false,
 		position: 5,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "gallery",
@@ -71,7 +78,8 @@ const module_fields: ModuleField[] = [
 		type: "gallery",
 		active: false,
 		position: 6,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "color",
@@ -80,7 +88,8 @@ const module_fields: ModuleField[] = [
 		type: "edit_color",
 		active: false,
 		position: 9,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "active",
@@ -89,7 +98,8 @@ const module_fields: ModuleField[] = [
 		type: "boolean",
 		active: false,
 		position: 10,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "file",
@@ -98,7 +108,8 @@ const module_fields: ModuleField[] = [
 		required: false,
 		active: false,
 		position: 12,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "date",
@@ -107,7 +118,8 @@ const module_fields: ModuleField[] = [
 		type: "date_picker",
 		active: false,
 		position: 13,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "dates",
@@ -116,7 +128,8 @@ const module_fields: ModuleField[] = [
 		type: "edit_dates",
 		active: false,
 		position: 14,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "times",
@@ -125,7 +138,8 @@ const module_fields: ModuleField[] = [
 		type: "edit_times",
 		active: false,
 		position: 15,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "link",
@@ -134,7 +148,8 @@ const module_fields: ModuleField[] = [
 		type: "edit_string",
 		active: false,
 		position: 16,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "documents",
@@ -143,7 +158,8 @@ const module_fields: ModuleField[] = [
 		type: "files",
 		active: false,
 		position: 17,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "created_by",
@@ -152,7 +168,8 @@ const module_fields: ModuleField[] = [
 		type: "user",
 		active: false,
 		position: 5,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "updated_by",
@@ -161,7 +178,8 @@ const module_fields: ModuleField[] = [
 		type: "user",
 		active: false,
 		position: 18,
-		default: false
+		default: false,
+		hidden: false
 	},
 	{
 		id: "location",
@@ -170,7 +188,18 @@ const module_fields: ModuleField[] = [
 		type: "location",
 		active: false,
 		position: 19,
-		default: false
+		default: false,
+		hidden: false
+	},
+	{
+		id: "slug",
+		label: "Slug",
+		required: false,
+		type: "string",
+		active: false,
+		position: 20,
+		default: false,
+		hidden: false
 	}
 ] as const;
 

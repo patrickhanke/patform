@@ -42,7 +42,8 @@ const generateInitialFields = (
 				required: initialField.required,
 				position: initialField.position,
 				default: isDefault,
-				disabled: isDefault
+				disabled: isDefault,
+				hidden: initialField.hidden
 			};
 		} else {
 			return field;

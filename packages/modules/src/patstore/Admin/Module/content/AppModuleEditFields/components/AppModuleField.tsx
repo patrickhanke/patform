@@ -7,6 +7,8 @@ import { useMemo } from "react";
 const readOnlyFields = ["createdAt", "updatedAt", "slug"];
 
 const AppModuleField = ({ field, changeField }: AppModuleFieldProps) => {
+	console.log(field);
+	
 	const formFields = useMemo(
 		() => [
 			{
@@ -24,6 +26,14 @@ const AppModuleField = ({ field, changeField }: AppModuleFieldProps) => {
 				type: "toggle" as const,
 				value: field.required,
 				disabled: readOnlyFields.includes(field.id)
+			},
+			{
+				id: "hidden",
+				label: "Versteckt",
+				name: "hidden",
+				type: "toggle" as const,
+				value: field.hidden,
+				disabled: !readOnlyFields.includes(field.id)
 			},
 			{
 				id: "label",
