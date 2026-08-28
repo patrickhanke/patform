@@ -1,30 +1,20 @@
-import AppModuleSettingsCategories from "./components/AppModuleSettingsCategories";
-import "./styles.scss";
-import { AppModuleSettingsProps } from "./types";
+import { ModuleSettings } from "@repo/types";
+import { Dispatch, SetStateAction } from "react";
+import LanguageSettings from "./components/LanguageSettings";
+import { SetPageData } from "@repo/ui";
 
-const AppModuleField = ({
-	settings,
-	setActiveSetting
-}: AppModuleSettingsProps) => {
-	if (!settings) return null;
-
+const AppModuleSettings = ({
+	setData,
+	settings
+}: {
+	setData: SetPageData<ModuleSettings>;
+	settings: ModuleSettings;
+}) => {
 	return (
-		Object.keys(settings).length > 0 &&
-		Object.keys(settings).map((settingKey: string) => {
-			if (settingKey === "categories") {
-				console.log("categories", settings[settingKey]);
-				return (
-					<AppModuleSettingsCategories
-						key={settingKey}
-						setting={settingKey}
-						setActiveSetting={setActiveSetting}
-					/>
-				);
-			}
-
-			return null;
-		})
+		<>
+			<LanguageSettings setData={setData} settings={settings} />
+		</>
 	);
 };
 
-export default AppModuleField;
+export default AppModuleSettings;

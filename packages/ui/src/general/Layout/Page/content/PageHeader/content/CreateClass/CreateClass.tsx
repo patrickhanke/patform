@@ -12,7 +12,8 @@ const CreateClass = <T extends Classes>({
 	fields,
 	text,
 	className,
-	refetch
+	refetch,
+	languages = []
 }: CreateClassProps<T>) => {
 	const { createData } = useDataHandler();
 	const { currentModule, user } = useContext(PatstoreAppContext);
@@ -53,7 +54,7 @@ const CreateClass = <T extends Classes>({
 				isOpen={isOpen}
 				title={text}
 				setIsOpen={setIsOpen}
-				fields={getDatabaseDefaultFields(fields)}
+				fields={getDatabaseDefaultFields(fields, languages)}
 				data={initialData}
 				dataHandler={(values) => dataHandler(values)}
 			/>

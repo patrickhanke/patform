@@ -8,4 +8,5 @@ export type CreateClassProps<T> = {
 	text: string;
 	className: string;
 	refetch?: ApolloRefetch;
+	languages?: LanguageValue[];
 };

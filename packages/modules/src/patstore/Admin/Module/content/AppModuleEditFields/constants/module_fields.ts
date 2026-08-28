@@ -198,7 +198,17 @@ const module_fields: ModuleField[] = [
 		type: "string",
 		active: false,
 		position: 20,
-		default: false,	
+		default: false,
+		hidden: false
+	},
+	{
+		id: "lang",
+		label: "Sprache",
+		required: false,
+		type: "string",
+		active: false,
+		position: 21,
+		default: false,
 		hidden: false
 	}
 ] as const;

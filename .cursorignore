@@ -47,3 +47,6 @@ packages/modules/src/patstore/Admin/Playground/
 
 # Git metadata
 .git/
+
+# patflow
+packages/modules/src/patflow/

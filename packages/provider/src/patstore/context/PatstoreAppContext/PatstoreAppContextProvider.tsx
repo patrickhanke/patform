@@ -23,9 +23,6 @@ const PatstoreAppContextProvider = ({
 	const [pageTitle, setPageTitle] = useState();
 	const [user, setUser] = useState<PatstoreUser>({} as PatstoreUser);
 	const pathname = usePathname();
-	const [language, setLanguage] = useState<string>(
-		project?.settings?.default_language || "de"
-	);
 
 	const currentModule = useMemo(() => {
 		const modules: Module[] = project.modules;
@@ -64,10 +61,10 @@ const PatstoreAppContextProvider = ({
 			user,
 			userLoading: !user.objectId ? true : false,
 			modules: project.modules,
-			language,
-			setLanguage
+			defaultLanguage: project?.settings?.default_language || "de",
+			languages: project?.settings?.languages || ["de"]
 		}),
-		[pageTitle, project, currentModule, user, userRole, language]
+		[pageTitle, project, currentModule, user, userRole]
 	);
 
 	return (

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { Field, Module as ModuleType, PageState } from "@repo/types";
+import { Field, ModuleSettings, Module as ModuleType, PageState } from "@repo/types";
 import { Loader, Page, type PageDataUpdateOptions } from "@repo/ui";
 import { useFindData, useGetData } from "@repo/provider";
 import page_states from "./constants/page_states";
@@ -17,7 +17,6 @@ import { AdditionalField } from "./types";
 import { ModuleCategoriesPageData } from "./content/AppModuleEditCategories/types";
 import { ModuleFieldsPageData } from "./content/AppModuleEditFields/types";
 import { ModuleDataFieldsPageData } from "./content/AppModuleEditDataFields/types";
-import { ModuleSettingsPageData } from "./content/AppModuleEditSettings/types";
 import { ModuleFiltersPageData } from "./content/AppModuleEditFilters/types";
 
 const categoriesUpdateOptions: PageDataUpdateOptions<ModuleCategoriesPageData> =
@@ -46,7 +45,9 @@ const dataFieldsUpdateOptions: PageDataUpdateOptions<ModuleDataFieldsPageData> =
 		message: "Datenfelder gespeichert"
 	};
 
-const settingsUpdateOptions: PageDataUpdateOptions<ModuleSettingsPageData> = {
+const settingsUpdateOptions: PageDataUpdateOptions<{
+	settings: ModuleSettings;
+}> = {
 	className: "Module",
 	updateObject: (data) => ({
 		settings: data.settings

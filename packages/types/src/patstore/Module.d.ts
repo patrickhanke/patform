@@ -1,6 +1,6 @@
 import { FilterOperator } from "@repo/ui";
 import { Field } from "@repo/types";
-import { PatstoreProject } from "./Project";
+import { LanguageValue, PatstoreProject } from "./Project";
 
 export type ModulePath =
 	| "/articles"
@@ -58,7 +58,8 @@ export type ModuleFieldIds =
 	| "expires_at"
 	| "video"
 	| "name"
-	| "slug";
+	| "slug"
+	| "lang";
 
 export type ModuleDataFieldsSpecific =
 	| "team"
@@ -90,6 +91,8 @@ export type ModuleSettingsCategory = {
 export type ModuleSettings = {
 	[key: string]: unknown;
 	categories?: ModuleSettingsCategory[];
+	languages: LanguageValue[];
+	default_language: LanguageValue;
 };
 
 export type ModuleFieldType =
@@ -132,7 +135,8 @@ export type ModuleFieldType =
 	| "custom"
 	| "emails"
 	| "video"
-	| "slug";
+	| "slug"
+	| "lang";
 
 export type ModuleField = {
 	id: ModuleFieldIds;

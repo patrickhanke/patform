@@ -13,7 +13,8 @@ import {
 	PatstoreUser,
 	ModuleFieldType,
 	ModuleFilter,
-	DatabaseFile
+	DatabaseFile,
+	LanguageValue
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -45,6 +46,10 @@ export type TableTypes = {
 	rowIdResolver?: (row: unknown) => string;
 	/** Columns to export when row selection is enabled. */
 	exportColumns?: ColumnData<TData>[];
+	languages?: LanguageValue[];
+	language?: LanguageValue;
+	changeLanguage?: (language: LanguageValue) => void;
+	languages?: LanguageValue[];
 };
 
 export type ColumnDef<TData> = ColumnDef<TData>;

@@ -1,15 +1,11 @@
 import { ModuleSettings } from "@repo/types";
 import { SetPageData, type PageDataUpdateOptions } from "@repo/ui";
 
-export type ModuleSettingsPageData = {
-	settings: ModuleSettings;
-};
-
 export type AppModuleEditSettingsProps = {
 	objectId: string;
 	initialSettings: ModuleSettings;
 	modulePath: string;
-	updateOptions: PageDataUpdateOptions<ModuleSettingsPageData>;
+	updateOptions: PageDataUpdateOptions<{ settings: ModuleSettings }>;
 };
 
 export type AppModuleEditSettingProps = {

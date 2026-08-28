@@ -22,3 +22,4 @@ export { default as TableColumnUserRole } from "./TableColumnUserRole";
 export { default as TableColumnVideo } from "./TableColumnVideo";
 export { default as TableColumnHiddenField } from "./TableColumnHiddenField";
 export { default as TableColumnLocation } from "./TableColumnLocation";
+export { default as LanguageSelector } from "./LanguageSelector";

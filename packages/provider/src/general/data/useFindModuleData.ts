@@ -1,10 +1,14 @@
+"use client";
+
+import { generateQueryFromFields, useFindData } from "@repo/provider";
+import { useMemo, useState } from "react";
 import {
-	generateQueryFromFields,
-	PatstoreAppContext,
-	useFindData
-} from "@repo/provider";
-import { useContext, useMemo } from "react";
-import { ApolloRefetch, Classes, Filter, Module } from "@repo/types";
+	ApolloRefetch,
+	Classes,
+	Filter,
+	LanguageValue,
+	Module
+} from "@repo/types";
 
 function useFindModuleData<T extends Classes>({
 	module,
@@ -12,7 +16,8 @@ function useFindModuleData<T extends Classes>({
 	limit,
 	skip,
 	order,
-	additionalFields = []
+	additionalFields = [],
+	defaultLanguage
 }: {
 	module?: Module;
 	filters: Filter[];
@@ -20,13 +25,18 @@ function useFindModuleData<T extends Classes>({
 	skip: number;
 	order?: string;
 	additionalFields?: string[];
+	defaultLanguage?: LanguageValue;
 }): {
 	loading: boolean;
 	data?: T[];
 	refetch: ApolloRefetch;
 	count: number;
+	language: LanguageValue | undefined;
+	changeLanguage: (language: LanguageValue) => void;
 } {
-	const { language, project } = useContext(PatstoreAppContext);
+	const [language, setLanguage] = useState<LanguageValue | undefined>(
+		defaultLanguage
+	);
 	const { loading, data, refetch, count } = useFindData({
 		objectName: (module?.connected_class || "_User") as string,
 		fields: [
@@ -40,18 +50,24 @@ function useFindModuleData<T extends Classes>({
 		skip,
 		order,
 		skipQuery: !module?.connected_class,
-		language:
-			project?.settings.languages?.length === 1 ? undefined : language
+		language
 	});
+
+	const changeLanguage = (language: LanguageValue) => {
+		setLanguage(language);
+		refetch();
+	};
 
 	const returnValue = useMemo(
 		() => ({
 			loading: !module || loading,
 			data,
 			refetch,
-			count
+			count,
+			language,
+			changeLanguage
 		}),
-		[data, loading, module]
+		[data, loading, module, language]
 	);
 
 	return returnValue;

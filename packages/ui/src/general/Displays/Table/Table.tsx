@@ -15,6 +15,7 @@ import { ChevronsUpDown, ChevronUp, ChevronDown } from "lucide-react";
 import { PaginationHandlers, TableExport, TableFilter } from "./content";
 import { isArray } from "lodash";
 import { createPlaceholderRows } from "./hooks/useCreateColumns";
+import { LanguageSelector } from "./components";
 
 const DEFAULT_PLACEHOLDER_ROW_COUNT = 10;
 
@@ -38,7 +39,10 @@ const Table: React.FC<TableTypes> = ({
 	setFilters,
 	filterColumns,
 	exportColumns = [],
-	rowIdResolver
+	rowIdResolver,
+	language = "de",
+	changeLanguage,
+	languages
 }) => {
 	const tableData = useMemo(() => {
 		if (loading) {
@@ -200,6 +204,11 @@ const Table: React.FC<TableTypes> = ({
 									: "flex"
 						}}
 					>
+						<LanguageSelector
+							language={language}
+							changeLanguage={changeLanguage}
+							languages={languages}
+						/>
 						{filters &&
 							setFilters &&
 							columns &&

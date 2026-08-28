@@ -109,6 +109,7 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 								}
 								className={createClass.className}
 								refetch={refetch}
+								languages={createClass.languages}
 							/>
 						)}
 					</div>

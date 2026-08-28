@@ -2,12 +2,12 @@ import { Suspense, type ComponentType } from "react";
 import { cookies } from "next/headers";
 import { fetchModuleForPage } from "./fetchModuleForPage";
 import { PageSkeleton } from "@repo/ui";
-import { Module } from "@repo/types";
+import { LanguageValue, Module } from "@repo/types";
 
 type ModuleOverviewPageOptions = {
 	modulePath: string;
 	fallbackTitle: string;
-	Overview: ComponentType<{ module: Module, projectId: string }>;
+	Overview: ComponentType<{ module: Module, projectId: string, languages: LanguageValue[], defaultLanguage: LanguageValue }>;
 	pageHeaderButtons?: number;
 };
 
@@ -34,7 +34,7 @@ export function createModuleOverviewPage({
 			return <PageSkeleton title={fallbackTitle} />;
 		}
 
-		return <Overview module={module} projectId={projectId} />;
+		return <Overview module={module} projectId={projectId} languages={module.settings.languages} defaultLanguage={module.settings.default_language} />;
 	}
 
 	return function ModuleOverviewPage() {

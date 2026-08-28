@@ -9,6 +9,7 @@ export type CreateClassProps = {
 	text: string;
 	className: string;
 	refetch?: () => void;
+	languages?: LanguageValue[];
 };
 
 export type PageHeaderButton = {

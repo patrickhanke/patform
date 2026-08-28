@@ -8,7 +8,7 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, Module, NewsClass } from "@repo/types";
+import { Filter, LanguageValue, Module, NewsClass } from "@repo/types";
 import {
 	useDataHandler,
 	useFindModuleData,
@@ -16,7 +16,16 @@ import {
 	useFindCategoryPageStates
 } from "@repo/provider";
 
-const NewsOverview = ({ module }: { module: Module }) => {
+const NewsOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: {
+	module: Module;
+	languages: LanguageValue[];
+	defaultLanguage: LanguageValue;
+}) => {
+	console.log(module);
 	const { deleteData } = useDataHandler();
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
@@ -39,13 +48,16 @@ const NewsOverview = ({ module }: { module: Module }) => {
 		data,
 		refetch,
 		count,
-		loading: dataLoading
+		loading: dataLoading,
+		language,
+		changeLanguage
 	} = useFindModuleData<NewsClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -81,7 +93,8 @@ const NewsOverview = ({ module }: { module: Module }) => {
 				className: "Entry",
 				text: `Neue ${module.name} erstellen`,
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages
 			}}
 			pageStates={pageStates}
 			setPageState={setActivePage}
@@ -101,6 +114,9 @@ const NewsOverview = ({ module }: { module: Module }) => {
 				selectedRows={selectedRows}
 				setSelectedRows={setSelectedRows}
 				setOrder={setOrder}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 				enableRowSelection
 			/>
 			<Modal
