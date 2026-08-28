@@ -205,7 +205,7 @@ const module_fields: ModuleField[] = [
 		id: "lang",
 		label: "Sprache",
 		required: false,
-		type: "string",
+		type: "lang",
 		active: false,
 		position: 21,
 		default: false,

@@ -2,14 +2,12 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { UplaoderProps } from "../types";
-import { useDataHandler, PatstoreAppContext, useDataHandlerSecure } from "@repo/provider";
+import { useDataHandler, PatstoreAppContext } from "@repo/provider";
 import { ErrorMessage } from "@repo/types";
 import { Alert, Box, FileUpload, Icon, Input } from "@chakra-ui/react";
 import { LuUpload } from "react-icons/lu";
 import { ErrorDisplay, IconButton } from "@repo/ui";
 import getAcceptedFiles from "../constants/getAcceptedFiles";
-
-console.log(process.env.APP_NAME);
 
 const Uploader: React.FC<UplaoderProps> = ({
 	type = "image",

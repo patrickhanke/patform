@@ -67,7 +67,8 @@ const NewsOverview = ({
 		fields: module.data_fields,
 		className: "Entry",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		currentModule: module
 	});
 
 	const pageHeaderButtons = useMemo(

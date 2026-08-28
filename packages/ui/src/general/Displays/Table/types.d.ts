@@ -148,6 +148,7 @@ export type CreateColumnHookProps<Class> = {
 	useMasterKey?: boolean;
 	editDisabled?: boolean;
 	hasEmailSettings?: boolean;
+	currentModule?: Module;
 };
 
 export type ColumnClasses =

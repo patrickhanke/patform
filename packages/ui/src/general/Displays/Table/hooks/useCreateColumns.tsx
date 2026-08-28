@@ -12,6 +12,7 @@ import {
 	ClassState,
 	EventDate,
 	EventTime,
+	LanguageValue,
 	PatstoreUser,
 	PersonClass,
 	Team,
@@ -47,7 +48,8 @@ import {
 	TableColumnEditDate,
 	TableColumnEditField,
 	TableColumnTimesField,
-	TableColumnEmailSettings
+	TableColumnEmailSettings,
+	TableColumnLang
 } from "../content";
 import {
 	TableColumnFile,
@@ -108,8 +110,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 	disableCategory,
 	useMasterKey = false,
 	editDisabled = false,
-	hasEmailSettings = false
+	hasEmailSettings = false,
+	currentModule
 }: CreateColumnHookProps<T>) => {
+	console.log("currentModule", currentModule);
 	const { updateData } = useDataHandlerSecure(useMasterKey);
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
@@ -747,6 +751,28 @@ const useCreateColumns = <T extends ColumnClasses>({
 								row[columnElement.id] as WebpageContent[]
 							}
 							onChange={(value: WebpageContent[]) =>
+								updateColumnData({
+									objectId: row.objectId,
+									updateObject: { [columnElement.id]: value },
+									feedback: "Inhalt aktualisiert"
+								})
+							}
+						/>
+					),
+					header: () => <span>{columnElement.label}</span>,
+					id: columnElement.id as string,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id,
+					enableSorting: false
+				} as ColumnDef<T>);
+			}
+			if (columnElement.type === "lang") {
+				columnArray.push({
+					accessorFn: (row) => (
+						<TableColumnLang
+							value={row[columnElement.id] as LanguageValue}
+							languages={currentModule?.settings?.languages || []}
+							onChange={(value: string) =>
 								updateColumnData({
 									objectId: row.objectId,
 									updateObject: { [columnElement.id]: value },

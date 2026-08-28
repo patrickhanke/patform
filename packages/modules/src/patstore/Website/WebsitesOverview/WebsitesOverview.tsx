@@ -1,13 +1,16 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { Page, Table, useCreateColumns } from "@repo/ui";
-import { Module, WebpageClass } from "@repo/types";
+import { LanguageValue, Module, WebpageClass } from "@repo/types";
 import createClass from "./constants/createWebpageClass";
 
 const WebsitesOverview = ({ module }: { module: Module }) => {
-	const { user, language } = useContext(PatstoreAppContext);
+	const { user } = useContext(PatstoreAppContext);
+	const [language, setLanguage] = useState<LanguageValue>(
+		module.settings?.language as LanguageValue
+	);
 
 	const { data, refetch } = useFindData({
 		objectName: "Webpage",
@@ -19,14 +22,15 @@ const WebsitesOverview = ({ module }: { module: Module }) => {
 			"created_by { objectId label portrait { name url } }",
 			"createdAt"
 		],
-		moduleId: module.objectId,
-		language
+
+		order: "path_DESC",
+		moduleId: module.objectId
 	});
 
 	const columns = useCreateColumns<WebpageClass>({
 		data: [
-			{ id: "title", type: "string", label: "Titel" },
 			{ id: "path", type: "string", label: "Pfad" },
+			{ id: "title", type: "string", label: "Titel" },
 			{
 				id: "created_by",
 				type: "created_by",
@@ -59,7 +63,15 @@ const WebsitesOverview = ({ module }: { module: Module }) => {
 			createClass={createClass}
 			refetch={refetch}
 		>
-			{user && <Table data={data ?? []} columns={columns} />}
+			{user && (
+				<Table
+					data={data ?? []}
+					columns={columns}
+					language={language}
+					languages={module.settings?.languages || []}
+					changeLanguage={setLanguage}
+				/>
+			)}
 		</Page>
 	);
 };

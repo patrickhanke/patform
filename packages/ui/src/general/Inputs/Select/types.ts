@@ -1,30 +1,30 @@
 import { ErrorMessage } from "@repo/types";
-import {
-  ActionMeta,
-  GroupBase,
-  MultiValue,
-  OptionsOrGroups,
-  SingleValue,
-} from "react-select";
 
-type Option =
-  | ({ value: string | boolean | object | any; label: string } & any)
-  | null;
+export type SelectOption = {
+	value: string | number | boolean | object | null;
+	label: string;
+	isDisabled?: boolean;
+	[key: string]: unknown;
+};
+
+export type SelectOptionGroup = {
+	label: string;
+	options: SelectOption[];
+};
 
 export type SelectType = {
-  onChange: (
-    values: MultiValue<Option> | SingleValue<Option>,
-    action?: ActionMeta<Option>,
-  ) => void;
-  value?: MultiValue<Option> | SingleValue<Option>;
-  placeholder?: string;
-  options: OptionsOrGroups<Option, GroupBase<Option>> | undefined;
-  isMulti?: boolean;
-  isDisabled?: boolean;
-  isClearable?: boolean;
-  menuPosition?: "fixed" | "absolute";
-  label?: string;
-  errors?: ErrorMessage[];
-  id?: string;
-  width?: number | string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	onChange: (values: any) => void;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	value?: any;
+	placeholder?: string;
+	options: ReadonlyArray<SelectOption | SelectOptionGroup> | undefined;
+	isMulti?: boolean;
+	isDisabled?: boolean;
+	isClearable?: boolean;
+	menuPosition?: "fixed" | "absolute";
+	label?: string;
+	errors?: ErrorMessage[];
+	id?: string;
+	width?: number | string;
 };
