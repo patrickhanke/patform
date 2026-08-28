@@ -15,19 +15,14 @@ import {
 	useFindModuleData
 } from "@repo/provider";
 
-import { ArticleClass, Filter, LanguageValue, Module } from "@repo/types";
+import { ArticleClass, Filter, ModuleOverviewProps } from "@repo/types";
 import state from "./constants/articleState";
 
 const ArticlesOverview = ({
 	module,
 	languages,
 	defaultLanguage
-}: {
-	module: Module;
-	languages: LanguageValue[];
-	defaultLanguage: LanguageValue;
-}) => {
-	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
+}: ModuleOverviewProps<"/articles">) => {
 	const { deleteData } = useDataHandler();
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [filters, setFilters] = useState<Filter[]>([]);
@@ -51,14 +46,16 @@ const ArticlesOverview = ({
 		data,
 		refetch,
 		count,
-		loading: dataLoading
+		loading: dataLoading,
+		language,
+		changeLanguage
 	} = useFindModuleData<ArticleClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		language
+		defaultLanguage
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -118,7 +115,7 @@ const ArticlesOverview = ({
 				filterColumns={module.filters || []}
 				setOrder={setOrder}
 				language={language}
-				setLanguage={setLanguage}
+				changeLanguage={changeLanguage}
 				languages={languages}
 			/>
 			<Modal

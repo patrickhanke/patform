@@ -2,21 +2,21 @@ import { Suspense, type ComponentType } from "react";
 import { cookies } from "next/headers";
 import { fetchModuleForPage } from "./fetchModuleForPage";
 import { PageSkeleton } from "@repo/ui";
-import { LanguageValue, Module } from "@repo/types";
+import { ModuleOverviewProps, ModulePath } from "@repo/types";
 
-type ModuleOverviewPageOptions = {
-	modulePath: string;
+type ModuleOverviewPageOptions<P extends ModulePath> = {
+	modulePath: P;
 	fallbackTitle: string;
-	Overview: ComponentType<{ module: Module, projectId: string, languages: LanguageValue[], defaultLanguage: LanguageValue }>;
+	Overview: ComponentType<ModuleOverviewProps<P> & { projectId: string }>;
 	pageHeaderButtons?: number;
 };
 
-export function createModuleOverviewPage({
+export function createModuleOverviewPage<P extends ModulePath>({
 	modulePath,
 	fallbackTitle,
 	Overview,
 	pageHeaderButtons = 2
-}: ModuleOverviewPageOptions) {
+}: ModuleOverviewPageOptions<P>) {
 	async function ModuleOverviewContent() {
 		const cookieStore = await cookies();
 		const sessionToken = cookieStore.get("patstore_token")?.value;
@@ -34,7 +34,14 @@ export function createModuleOverviewPage({
 			return <PageSkeleton title={fallbackTitle} />;
 		}
 
-		return <Overview module={module} projectId={projectId} languages={module.settings.languages} defaultLanguage={module.settings.default_language} />;
+		return (
+			<Overview
+				module={module}
+				projectId={projectId}
+				languages={module.settings.languages}
+				defaultLanguage={module.settings.default_language}
+			/>
+		);
 	}
 
 	return function ModuleOverviewPage() {

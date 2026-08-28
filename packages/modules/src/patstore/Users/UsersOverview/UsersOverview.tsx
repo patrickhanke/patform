@@ -17,7 +17,7 @@ import {
 } from "@repo/ui";
 import { CreateUser } from "./types";
 import { useState } from "react";
-import { Filter, Module, PatstoreRoleClass, PatstoreUser } from "@repo/types";
+import { Filter, ModuleOverviewProps, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
 import create_user_fieds from "./constants/create_user_fields";
@@ -25,7 +25,11 @@ import useFindRoles from "./hooks/useFindRoles";
 import create_user from "./constants/create_user";
 import EmailSuppression from "./components/EmailSuppression";
 
-const UsersOverview = ({ module }: { module: Module }) => {
+const UsersOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/users">) => {
 	const { project } = useAppContext();
 	const { roles } = useFindRoles({ projectId: project.objectId });
 	const [order, setOrder] = useState<string>("name_ASC");
@@ -80,7 +84,8 @@ const UsersOverview = ({ module }: { module: Module }) => {
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order: order,
-		useMasterKey: true
+		useMasterKey: true,
+		defaultLanguage
 	});
 
 	const columns = useCreateColumns<PatstoreUser>({
@@ -199,6 +204,7 @@ const UsersOverview = ({ module }: { module: Module }) => {
 					filterColumns={module.filters}
 					setOrder={setOrder}
 					loading={loading}
+					languages={languages}
 				/>
 			)}
 			{pageState.value === " invitations" && <UserInvitations />}

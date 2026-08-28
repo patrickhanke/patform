@@ -7,10 +7,11 @@ import { v4 } from "uuid";
 import { WebpageComponentTable } from "@repo/types";
 import EditTableColumn from "./components/EditTableColumn";
 import EditTableCell from "./components/EditTableCell";
+import createInitialTableData from "../../functions/createInitialTableData";
 
 const EditTable: FC<EditTableProps> = ({ initialData, objectId }) => {
 	const { data: table, setData } = usePageData<WebpageComponentTable>(
-		{ initialData, objectId },
+		{ initialData: createInitialTableData(initialData), objectId },
 		{
 			className: "Content",
 			updateObject: (data) => ({ data }),

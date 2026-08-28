@@ -12,9 +12,13 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, LocationClass, Module } from "@repo/types";
+import { Filter, LocationClass, ModuleOverviewProps } from "@repo/types";
 
-const LocationOverview = ({ module }: { module: Module }) => {
+const LocationOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/locations">) => {
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [loading, setLoading] = useState(false);
 	const { deleteData } = useDataHandler();
@@ -27,12 +31,20 @@ const LocationOverview = ({ module }: { module: Module }) => {
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<LocationClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading,
+		language,
+		changeLanguage
+	} = useFindModuleData<LocationClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 
 	const columns = useCreateColumns<LocationClass>({
@@ -84,6 +96,9 @@ const LocationOverview = ({ module }: { module: Module }) => {
 				setFilters={setFilters}
 				filterColumns={module.filters}
 				enableRowSelection
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 			<Modal
 				isOpen={deleteModal}

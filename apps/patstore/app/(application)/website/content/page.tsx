@@ -1,1 +1,0 @@
-export { WebsiteContent as default } from "@repo/modules";

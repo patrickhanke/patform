@@ -113,7 +113,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	hasEmailSettings = false,
 	currentModule
 }: CreateColumnHookProps<T>) => {
-	console.log("currentModule", currentModule);
 	const { updateData } = useDataHandlerSecure(useMasterKey);
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {

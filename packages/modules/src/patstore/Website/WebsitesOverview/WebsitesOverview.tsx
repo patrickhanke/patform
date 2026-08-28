@@ -1,18 +1,16 @@
 "use client";
 
-import { useContext, useState } from "react";
-import { PatstoreAppContext, useFindData } from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { Page, Table, useCreateColumns } from "@repo/ui";
-import { LanguageValue, Module, WebpageClass } from "@repo/types";
+import { ModuleOverviewProps, WebpageClass } from "@repo/types";
 import createClass from "./constants/createWebpageClass";
 
-const WebsitesOverview = ({ module }: { module: Module }) => {
-	const { user } = useContext(PatstoreAppContext);
-	const [language, setLanguage] = useState<LanguageValue>(
-		module.settings?.language as LanguageValue
-	);
-
-	const { data, refetch } = useFindData({
+const WebsitesOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/website">) => {
+	const { data, refetch, language, changeLanguage } = useFindData({
 		objectName: "Webpage",
 		fields: [
 			"objectId",
@@ -22,9 +20,9 @@ const WebsitesOverview = ({ module }: { module: Module }) => {
 			"created_by { objectId label portrait { name url } }",
 			"createdAt"
 		],
-
 		order: "path_DESC",
-		moduleId: module.objectId
+		moduleId: module.objectId,
+		defaultLanguage
 	});
 
 	const columns = useCreateColumns<WebpageClass>({
@@ -54,24 +52,20 @@ const WebsitesOverview = ({ module }: { module: Module }) => {
 		editLink: "website/pages"
 	});
 
-	console.log("createClass", createClass);
-
 	return (
 		<Page
 			title={`${module.name} - Seiten`}
 			description="Übersicht über alle Seiten"
-			createClass={createClass}
+			createClass={{ ...createClass, languages }}
 			refetch={refetch}
 		>
-			{user && (
-				<Table
-					data={data ?? []}
-					columns={columns}
-					language={language}
-					languages={module.settings?.languages || []}
-					changeLanguage={setLanguage}
-				/>
-			)}
+			<Table
+				data={data ?? []}
+				columns={columns}
+				language={language}
+				languages={languages}
+				changeLanguage={changeLanguage}
+			/>
 		</Page>
 	);
 };

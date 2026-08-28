@@ -2,12 +2,16 @@
 
 import { useMemo, useState } from "react";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
-import { CategoryClass, Module } from "@repo/types";
+import { CategoryClass, ModuleOverviewProps } from "@repo/types";
 import { useFindData } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import CreateCategory from "./components/CreateCategory";
 
-const CategoriesOverview = ({ module }: { module: Module }) => {
+const CategoriesOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/categories">) => {
 	const pageStates = useMemo(
 		() => module.settings?.categories,
 		[module]
@@ -16,7 +20,7 @@ const CategoriesOverview = ({ module }: { module: Module }) => {
 		pageStates ? pageStates[0] : undefined
 	);
 
-	const { data: categories, refetch } = useFindData({
+	const { data: categories, refetch, language, changeLanguage } = useFindData({
 		objectName: "Category",
 		fields: [
 			"objectId",
@@ -40,7 +44,8 @@ const CategoriesOverview = ({ module }: { module: Module }) => {
 			: [],
 		limit: 10,
 		skip: 0,
-		order: "createdAt_DESC"
+		order: "createdAt_DESC",
+		defaultLanguage
 	});
 
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
@@ -84,7 +89,13 @@ const CategoriesOverview = ({ module }: { module: Module }) => {
 			pageState={activeState}
 			setPageState={setActiveState}
 		>
-			<Table columns={columns} data={categories || []} />
+			<Table
+				columns={columns}
+				data={categories || []}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
+			/>
 			<Modal
 				isOpen={deleteModal.isOpen}
 				cancelButtonHandler={() =>

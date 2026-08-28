@@ -59,9 +59,16 @@ const PageHeaderSkeleton = ({
 						</div>
 					</div>
 					{pageStates &&
-						Array.from({ length: pageStates }, (value: number) => (
-							<Loader width="180px" height="48px" key={value} />
-						))}
+						Array.from(
+							{ length: pageStates },
+							(_value: number, index: number) => (
+								<Loader
+									width="180px"
+									height="48px"
+									key={index.toString()}
+								/>
+							)
+						)}
 				</div>
 			</div>
 		</>

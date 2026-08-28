@@ -7,22 +7,34 @@ import {
 	useCreateColumns
 } from "@repo/ui";
 import { useState } from "react";
-import { Filter, FormClass, Module } from "@repo/types";
+import { Filter, FormClass, ModuleOverviewProps } from "@repo/types";
 import { useFindModuleData } from "@repo/provider";
 
-const EmailsOverview = ({ module }: { module: Module }) => {
+const EmailsOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/emails">) => {
 	const [filters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<FormClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading,
+		language,
+		changeLanguage
+	} = useFindModuleData<FormClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 
 	const columns = useCreateColumns<FormClass>({
@@ -61,6 +73,9 @@ const EmailsOverview = ({ module }: { module: Module }) => {
 				pagination={pagination}
 				setPagination={setPagination}
 				setOrder={setOrder}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 		</Page>
 	);

@@ -238,7 +238,11 @@ const Select = ({
 					</ChakraSelect.IndicatorGroup>
 				</ChakraSelect.Control>
 				<Portal>
-					<ChakraSelect.Positioner>
+					<ChakraSelect.Positioner
+						onMouseDown={(event) => event.stopPropagation()}
+						onPointerDown={(event) => event.stopPropagation()}
+						onTouchStart={(event) => event.stopPropagation()}
+					>
 						<ChakraSelect.Content fontSize="12px" fontWeight="500">
 							{menuItems}
 						</ChakraSelect.Content>

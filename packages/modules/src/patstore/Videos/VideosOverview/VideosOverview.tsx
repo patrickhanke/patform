@@ -8,10 +8,14 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, Module, VideoClass } from "@repo/types";
+import { Filter, ModuleOverviewProps, VideoClass } from "@repo/types";
 import { useDataHandler, useFindModuleData } from "@repo/provider";
 
-const VideosOverview = ({ module }: { module: Module }) => {
+const VideosOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/videos">) => {
 	const { deleteData } = useDataHandler(false);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
@@ -21,12 +25,20 @@ const VideosOverview = ({ module }: { module: Module }) => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<VideoClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading,
+		language,
+		changeLanguage
+	} = useFindModuleData<VideoClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -80,6 +92,9 @@ const VideosOverview = ({ module }: { module: Module }) => {
 				filters={filters}
 				setFilters={setFilters}
 				filterColumns={module.filters || []}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 			<Modal
 				isOpen={deleteModal}

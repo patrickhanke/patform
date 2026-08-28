@@ -15,9 +15,13 @@ import {
 	useFindModuleData,
 	filterModuleCategories
 } from "@repo/provider";
-import { DownloadClass, Filter, Module } from "@repo/types";
+import { DownloadClass, Filter, ModuleOverviewProps } from "@repo/types";
 
-const DownloadsOverview = ({ module }: { module: Module }) => {
+const DownloadsOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/downloads">) => {
 	const { deleteData } = useDataHandler(false);
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [loading, setLoading] = useState(false);
@@ -44,13 +48,16 @@ const DownloadsOverview = ({ module }: { module: Module }) => {
 		data,
 		refetch,
 		count,
-		loading: dataLoading
+		loading: dataLoading,
+		language,
+		changeLanguage
 	} = useFindModuleData<DownloadClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 
 	console.log(module);
@@ -126,6 +133,9 @@ const DownloadsOverview = ({ module }: { module: Module }) => {
 				setSelectedRows={setSelectedRows}
 				filterContent={renderFilters}
 				setOrder={setOrder}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 			<Modal
 				isOpen={deleteModal}

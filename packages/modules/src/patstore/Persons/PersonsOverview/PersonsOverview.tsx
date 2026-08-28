@@ -8,10 +8,14 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, Module, PersonClass } from "@repo/types";
+import { Filter, ModuleOverviewProps, PersonClass } from "@repo/types";
 import { useDataHandler, useFindModuleData } from "@repo/provider";
 
-const PersonsOverview = ({ module }: { module: Module }) => {
+const PersonsOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/people">) => {
 	const { deleteData } = useDataHandler(false);
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
@@ -21,12 +25,20 @@ const PersonsOverview = ({ module }: { module: Module }) => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<PersonClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading,
+		language,
+		changeLanguage
+	} = useFindModuleData<PersonClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -82,6 +94,9 @@ const PersonsOverview = ({ module }: { module: Module }) => {
 				filterColumns={module.filters || []}
 				rowIdResolver={(row) => (row as PersonClass).objectId}
 				exportColumns={generateColumnsFromFields(module.fields)}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 			<Modal
 				isOpen={deleteModal}

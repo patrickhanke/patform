@@ -193,48 +193,46 @@ const Table: React.FC<TableTypes> = ({
 
 	return (
 		<>
-			{pagination && setPagination && (
-				<div className="table_header">
-					<div
-						className="table_header__filter_actions"
-						style={{
-							display:
-								!filters && !exportColumns.length
-									? "none"
-									: "flex"
-						}}
-					>
-						<LanguageSelector
-							language={language}
-							changeLanguage={changeLanguage}
-							languages={languages}
-						/>
-						{filters &&
-							setFilters &&
-							columns &&
-							filterColumns &&
-							filterColumns.length > 0 && (
-								<TableFilter
-									filterColumns={filterColumns}
-									filters={filters}
-									setFilters={setFilters}
-								/>
-							)}
-						{exportColumns.length > 0 &&
-							enableRowSelection &&
-							selectedRows &&
-							setSelectedRows && (
-								<TableExport
-									columns={exportColumns}
-									selectedRowData={selectedRowData}
-								/>
-							)}
-					</div>
-					{filterContent ? (
-						<div className="filter_content">{filterContent}</div>
-					) : (
-						<div />
-					)}
+			<div className="table_header">
+				<div
+					className="table_header__filter_actions"
+					style={{
+						display:
+							!filters && !exportColumns.length ? "none" : "flex"
+					}}
+				>
+					{filters &&
+						setFilters &&
+						columns &&
+						filterColumns &&
+						filterColumns.length > 0 && (
+							<TableFilter
+								filterColumns={filterColumns}
+								filters={filters}
+								setFilters={setFilters}
+							/>
+						)}
+					{exportColumns.length > 0 &&
+						enableRowSelection &&
+						selectedRows &&
+						setSelectedRows && (
+							<TableExport
+								columns={exportColumns}
+								selectedRowData={selectedRowData}
+							/>
+						)}
+				</div>
+				<LanguageSelector
+					language={language}
+					changeLanguage={changeLanguage}
+					languages={languages}
+				/>
+				{filterContent ? (
+					<div className="filter_content">{filterContent}</div>
+				) : (
+					<div />
+				)}
+				{pagination && setPagination && (
 					<PaginationHandlers
 						rowCount={rowCount}
 						pagination={pagination}
@@ -248,8 +246,8 @@ const Table: React.FC<TableTypes> = ({
 						canGetPreviousPage={table.getCanPreviousPage()}
 						canGetNextPage={table.getCanNextPage()}
 					/>
-				</div>
-			)}
+				)}
+			</div>
 			<div className="content_element no_padding">
 				<div className={clsx("table_container")}>
 					<table>

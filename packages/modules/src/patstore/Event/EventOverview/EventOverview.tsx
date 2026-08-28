@@ -7,14 +7,18 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { EventClass, Filter, Module } from "@repo/types";
+import { EventClass, Filter, ModuleOverviewProps } from "@repo/types";
 import {
 	filterModuleCategories,
 	useFindCategoryPageStates,
 	useFindModuleData
 } from "@repo/provider";
 
-const EventOverview = ({ module }: { module: Module }) => {
+const EventOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/events">) => {
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
 		{
@@ -34,12 +38,20 @@ const EventOverview = ({ module }: { module: Module }) => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
 	const [order, setOrder] = useState<string>("createdAt_DESC");
-	const { data, refetch, count, loading: dataLoading } = useFindModuleData<EventClass>({
+	const {
+		data,
+		refetch,
+		count,
+		loading: dataLoading,
+		language,
+		changeLanguage
+	} = useFindModuleData<EventClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 
 	const columns = useCreateColumns<EventClass>({
@@ -79,6 +91,9 @@ const EventOverview = ({ module }: { module: Module }) => {
 				setFilters={setFilters}
 				filterColumns={module.filters}
 				setOrder={setOrder}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 		</Page>
 	);

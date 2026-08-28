@@ -7,11 +7,15 @@ import {
 	useCreateColumns
 } from "@repo/ui";
 import { useState } from "react";
-import { Filter, FormClass, Module } from "@repo/types";
+import { Filter, FormClass, ModuleOverviewProps } from "@repo/types";
 import { useFindModuleData } from "@repo/provider";
 import initial_data from "./constants/initial_data";
 
-const FormsOverview = ({ module }: { module: Module }) => {
+const FormsOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/forms">) => {
 	const [filters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
@@ -22,13 +26,16 @@ const FormsOverview = ({ module }: { module: Module }) => {
 		data,
 		refetch,
 		count,
-		loading: dataLoading
+		loading: dataLoading,
+		language,
+		changeLanguage
 	} = useFindModuleData<FormClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 
 	const columns = useCreateColumns<FormClass>({
@@ -61,6 +68,9 @@ const FormsOverview = ({ module }: { module: Module }) => {
 				pagination={pagination}
 				setPagination={setPagination}
 				setOrder={setOrder}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 		</Page>
 	);

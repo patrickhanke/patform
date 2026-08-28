@@ -28,7 +28,6 @@ const LanguageSelector = ({
 
 	const languagesSelect = useMemo(() => {
 		const languagesArray: LanguageSelect[] = [];
-
 		languages?.forEach((lng) => {
 			const findLng = languages_short.find((lang) => lang.value === lng);
 			if (findLng) {
@@ -43,6 +42,7 @@ const LanguageSelector = ({
 	}, [language, languages]);
 
 	if (!language || changeLanguage === undefined || languages?.length < 2) {
+		console.log("returning null");
 		return null;
 	}
 

@@ -1,56 +1,45 @@
 "use client";
 
-import {
-	Page,
-	PageHeaderButton,
-	RenderFilters,
-	Table,
-	useCreateColumns
-} from "@repo/ui";
+import { Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
 
-import { ContentClass, Filter } from "@repo/types";
-import { PatstoreAppContext } from "@repo/provider";
-import useFindContent from "./hooks/useFindContent";
-import CreateContent from "./components/CreateContent";
+import { ContentClass, Filter, ModuleOverviewProps } from "@repo/types";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
+import createWebpageContenClass from "./constant/createWebpageContentClass";
 
-const WebsiteComponents = () => {
+const WebsiteComponents = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/website">) => {
 	const { currentModule, user } = useContext(PatstoreAppContext);
-	const [addContent, setAddContent] = useState(false);
-	const [filters, setFilters] = useState<Filter[]>([
-		{
-			key: "type",
-			operator: "in",
-			value: ["table", "faq"]
-		}
-	]);
-
+	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
 	});
 
-	const { content, refetch, count } = useFindContent({
-		moduleId: currentModule.objectId,
-		filters,
-		limit: pagination.pageSize,
-		skip: pagination.pageIndex * pagination.pageSize
-	});
-
-	const pageHeaderButtons: PageHeaderButton[] = useMemo(
-		() => [
-			{
-				text: "Komponente hinzufügen",
-				onClick: () => {
-					setAddContent(true);
-				},
-				icon: "add",
-				is_add_button: true,
-				disabled: !user?.is_superuser
-			}
-		],
-		[user]
-	);
+	const { loading, data, refetch, count, language, changeLanguage } =
+		useFindData({
+			objectName: "Content",
+			fields: [
+				"objectId",
+				"title",
+				"content_id",
+				"type",
+				"createdAt",
+				"active",
+				"data",
+				"created_by {objectId username}",
+				"updated_by {objectId username}",
+				"categories"
+			],
+			moduleId: module.objectId,
+			filters: filters,
+			skip: pagination.pageIndex * pagination.pageSize,
+			limit: pagination.pageSize,
+			defaultLanguage
+		});
 
 	const columns = useCreateColumns<ContentClass>({
 		data: [
@@ -70,8 +59,6 @@ const WebsiteComponents = () => {
 		categories: [],
 		editLink: "website/components"
 	});
-
-	console.log(content);
 
 	const renderFilters = useMemo(() => {
 		return (
@@ -98,21 +85,20 @@ const WebsiteComponents = () => {
 			title={`${currentModule.name} - Komponenten`}
 			description="Hier können Komponenten erstellt werden, die auf den Seiten eingebunden werden können."
 			emptyContent={true}
-			pageHeaderButtons={user?.is_superuser ? pageHeaderButtons : []}
+			createClass={{ ...createWebpageContenClass, languages }}
+			refetch={refetch}
 		>
 			<Table
 				columns={columns}
-				data={content || []}
+				data={data || []}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}
 				filterContent={renderFilters}
-			/>
-			<CreateContent
-				createContent={addContent}
-				setCreateContent={setAddContent}
-				allContent={content || []}
-				refetch={refetch}
+				loading={loading}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 		</Page>
 	);

@@ -1,1 +1,8 @@
-export { WebsiteComponents as default } from "@repo/modules";
+import { WebsiteComponents } from "@repo/modules";
+import { createModuleOverviewPage } from "../../createModuleOverviewPage";
+
+export default createModuleOverviewPage({
+	modulePath: "/website",
+	fallbackTitle: "Webseite - Komponenten",
+	Overview: WebsiteComponents
+});

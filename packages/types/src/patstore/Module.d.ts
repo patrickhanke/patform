@@ -136,7 +136,8 @@ export type ModuleFieldType =
 	| "emails"
 	| "video"
 	| "slug"
-	| "lang";
+	| "lang"
+	| "content_type";
 
 export type ModuleField = {
 	id: ModuleFieldIds;
@@ -333,3 +334,9 @@ export type ModuleFilterPath =
 	| `options.select_options[${number}]`
 	| `options.select_options[${number}].label`
 	| `options.select_options[${number}].value`;
+
+export type ModuleOverviewProps<P extends ModulePath> = {
+	module: ModuleForPath<P>;
+	languages: LanguageValue[];
+	defaultLanguage: LanguageValue;
+};

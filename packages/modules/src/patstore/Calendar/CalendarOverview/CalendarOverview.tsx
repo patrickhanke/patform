@@ -11,9 +11,13 @@ import {
 	useCreateColumns
 } from "@repo/ui";
 import { useDataHandler, useFindModuleData } from "@repo/provider";
-import { AppointmentClass, Filter, Module } from "@repo/types";
+import { AppointmentClass, Filter, ModuleOverviewProps } from "@repo/types";
 
-const CalendarOverview = ({ module }: { module: Module }) => {
+const CalendarOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/calendar">) => {
 	const { deleteData } = useDataHandler();
 	const [filters, setFilters] = useState<Filter[]>([]);
 	const [loading, setLoading] = useState(false);
@@ -27,14 +31,17 @@ const CalendarOverview = ({ module }: { module: Module }) => {
 		data,
 		refetch,
 		count,
-		loading: dataLoading
+		loading: dataLoading,
+		language,
+		changeLanguage
 	} = useFindModuleData<AppointmentClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		additionalFields: ["date"]
+		additionalFields: ["date"],
+		defaultLanguage
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -116,6 +123,9 @@ const CalendarOverview = ({ module }: { module: Module }) => {
 				setSelectedRows={setSelectedRows}
 				setOrder={setOrder}
 				enableRowSelection
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 			<Modal
 				isOpen={deleteModal}

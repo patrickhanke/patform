@@ -26,13 +26,11 @@ type UsedModuleFieldType = Extract<
 	| "location"
 	| "image_preview"
 	| "connected_elements"
-	| "edit_person"
-	| "edit_team"
-	| "edit_persons"
 	| "edit_geopoint"
 	| "edit_role"
 	| "emails"
 	| "video"
+	| "content_type"
 >;
 
 /**
@@ -201,6 +199,35 @@ const database_fields = {
 		name: "video",
 		type: "input",
 		label: "Video"
+	},
+	content_type: {
+		id: "type",
+		name: "type",
+		type: "select",
+		label: "Typ",
+		dataType: "string",
+		select_options: [
+			{
+				label: "Text",
+				value: "text"
+			},
+			{
+				label: "Bild",
+				value: "image"
+			},
+			{
+				label: "Video",
+				value: "video"
+			},
+			{
+				label: "Tabelle",
+				value: "table"
+			},
+			{
+				label: "FAQ",
+				value: "faq"
+			}
+		]
 	}
 } as const satisfies Record<UsedModuleFieldType, Field>;
 

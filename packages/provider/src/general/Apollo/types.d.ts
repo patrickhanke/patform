@@ -76,13 +76,15 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	propertyId?: string;
 	userIds?: string[];
 	absenceId?: string;
-	language?: LanguageValue;
+	defaultLanguage?: LanguageValue;
 }) => {
 	loading: boolean;
 	data: T[];
 	refetch: ApolloRefetch;
 	count: number;
-	error: ApolloError;
+	error: ApolloError | undefined;
+	language: LanguageValue | undefined;
+	changeLanguage: (language: LanguageValue) => void;
 };
 
 export type UseGetDataHook<T extends Classes> = (P: {

@@ -1,5 +1,12 @@
 import { cloneDeep } from "lodash-es";
-import { ContentClass, FormClass, Module, WebpageClass } from "@repo/types";
+import {
+	ContentClass,
+	FormClass,
+	Module,
+	ModuleForPath,
+	ModulePath,
+	WebpageClass
+} from "@repo/types";
 import { sanitizeGraphQlNode } from "../../Apollo/functions/helpers";
 
 // Plain server-side helpers (no "use client", no React) so layouts and pages
@@ -214,15 +221,15 @@ export async function fetchAppBootstrapData<
 // Fetches a single module by its route path for the active project. Lets a
 // page fetch just the module it needs, server-side, instead of reading
 // `currentModule` off `PatstoreAppContext`.
-export async function fetchModuleByPath({
+export async function fetchModuleByPath<P extends ModulePath>({
 	projectId,
 	path,
 	sessionToken
 }: {
 	projectId?: string;
-	path: string;
+	path: P;
 	sessionToken?: string;
-}): Promise<Module | undefined> {
+}): Promise<ModuleForPath<P> | undefined> {
 	if (!projectId) {
 		return undefined;
 	}
@@ -247,7 +254,7 @@ export async function fetchModuleByPath({
 	});
 
 	const node = data?.modules?.edges?.[0]?.node;
-	return node ? (sanitizeGraphQlNode(node) as Module) : undefined;
+	return node ? (sanitizeGraphQlNode(node) as ModuleForPath<P>) : undefined;
 }
 
 const FORM_FIELDS = `

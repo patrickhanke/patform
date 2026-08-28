@@ -1,4 +1,4 @@
-import { WebpageComponentTable } from "@repo/types";
+import { ContentClass, WebpageComponentTable } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type WebpageTable = WebpageComponentTable;
@@ -16,7 +16,7 @@ export type TableType = {
 };
 
 export type EditTableProps = {
-	initialData?: WebpageClass["data"];
+	initialData?: ContentClass["data"];
 	objectId: string;
 };
 

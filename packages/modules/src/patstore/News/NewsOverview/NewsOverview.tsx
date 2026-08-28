@@ -8,7 +8,7 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, LanguageValue, Module, NewsClass } from "@repo/types";
+import { Filter, ModuleOverviewProps, NewsClass } from "@repo/types";
 import {
 	useDataHandler,
 	useFindModuleData,
@@ -20,11 +20,7 @@ const NewsOverview = ({
 	module,
 	languages,
 	defaultLanguage
-}: {
-	module: Module;
-	languages: LanguageValue[];
-	defaultLanguage: LanguageValue;
-}) => {
+}: ModuleOverviewProps<"/entries">) => {
 	console.log(module);
 	const { deleteData } = useDataHandler();
 	const [filters, setFilters] = useState<Filter[]>([]);

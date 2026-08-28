@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { useDataHandler, useFindData } from "@repo/provider";
 import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
-import { Filter, Module } from "@repo/types";
+import { Filter, ModuleOverviewProps } from "@repo/types";
 
 interface ListData {
 	objectId: string;
@@ -19,7 +19,11 @@ interface ListData {
 	};
 }
 
-const ListsOverview = ({ module }: { module: Module }) => {
+const ListsOverview = ({
+	module,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/emails">) => {
 	const { deleteData } = useDataHandler();
 	const [filters] = useState<Filter[]>([
 		{
@@ -40,14 +44,15 @@ const ListsOverview = ({ module }: { module: Module }) => {
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 
-	const { data, refetch, count } = useFindData({
+	const { data, refetch, count, language, changeLanguage } = useFindData({
 		objectName: "List",
 		fields: ["objectId", "title", "createdAt", "updatedAt", "data"],
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		moduleId: module.objectId
+		moduleId: module.objectId,
+		defaultLanguage
 	});
 
 	const columns = useCreateColumns<ListData>({
@@ -132,6 +137,9 @@ const ListsOverview = ({ module }: { module: Module }) => {
 				pagination={pagination}
 				rowCount={count}
 				setOrder={setOrder}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 			<Modal
 				isOpen={deleteModal}

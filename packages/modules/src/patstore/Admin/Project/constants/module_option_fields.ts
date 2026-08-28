@@ -7,7 +7,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Webseite",
 		icon: "website",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -39,7 +41,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Beiträge",
 		icon: "article",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -55,7 +59,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Events",
 		icon: "events",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -71,7 +77,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "News",
 		icon: "news",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -87,7 +95,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Kategorien",
 		icon: "categories",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -103,7 +113,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Personen",
 		icon: "persons",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -119,7 +131,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Bilder",
 		icon: "images",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -135,7 +149,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Trainingsgruppe",
 		icon: "group",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -151,7 +167,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Trainingsgruppe",
 		icon: "group",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		data_fields: [
 			{
@@ -190,7 +208,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Downloads",
 		icon: "downloads",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -206,7 +226,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Formulare",
 		icon: "forms",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -222,7 +244,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Nutzer",
 		icon: "users",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -238,7 +262,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Orte",
 		icon: "location",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -254,7 +280,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Kalender",
 		icon: "calendar",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -270,7 +298,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "E-Mails",
 		icon: "email",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],
@@ -297,7 +327,9 @@ export const module_option_fields: ModuleOptionsField = {
 		name: "Videos",
 		icon: "video",
 		settings: {
-			categories: []
+			categories: [],
+			languages: [],
+			default_language: "de"
 		},
 		fields: [],
 		data_fields: [],

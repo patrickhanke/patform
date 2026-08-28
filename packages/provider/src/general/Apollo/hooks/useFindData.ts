@@ -2,12 +2,12 @@
 
 import { useQuery } from "@apollo/client";
 import { UseFindDataHook } from "../types";
-import { Classes } from "@repo/types";
+import { Classes, LanguageValue } from "@repo/types";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
 import { pluralize, sanitizeGraphQlNode } from "../functions/helpers";
 import paramsHandler from "../functions/paramsHandler";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 const useFindData: UseFindDataHook<Classes> = ({
 	objectName,
@@ -24,8 +24,11 @@ const useFindData: UseFindDataHook<Classes> = ({
 	propertyId,
 	userIds,
 	absenceId,
-	language
+	defaultLanguage
 }) => {
+	const [language, setLanguage] = useState<LanguageValue | undefined>(
+		defaultLanguage
+	);
 	const queryName = pluralize(objectName);
 	const {
 		loading,
@@ -62,9 +65,16 @@ const useFindData: UseFindDataHook<Classes> = ({
 	);
 
 	const refetch = useCallback(async () => {
-		console.log("refetch called");
 		return await apolloRefetch();
 	}, [apolloRefetch]);
+
+	const changeLanguage = useCallback(
+		(language: LanguageValue) => {
+			setLanguage(language);
+			refetch();
+		},
+		[setLanguage]
+	);
 
 	return {
 		loading,
@@ -73,7 +83,9 @@ const useFindData: UseFindDataHook<Classes> = ({
 		),
 		refetch,
 		count: get(data, `${queryName}.count`, 0),
-		error
+		error,
+		changeLanguage,
+		language
 	};
 };
 

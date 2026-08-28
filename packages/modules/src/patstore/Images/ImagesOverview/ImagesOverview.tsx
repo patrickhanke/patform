@@ -10,16 +10,15 @@ import {
 	Table,
 	useCreateColumns
 } from "@repo/ui";
-import { Filter, ImageClass, Module } from "@repo/types";
+import { Filter, ImageClass, ModuleOverviewProps } from "@repo/types";
 import { useDataHandler, useFindModuleData, useGetData } from "@repo/provider";
 
 const ImagesOverview = ({
 	module,
-	projectId
-}: {
-	module: Module;
-	projectId: string;
-}) => {
+	projectId,
+	languages,
+	defaultLanguage
+}: ModuleOverviewProps<"/images"> & { projectId: string }) => {
 	const { deleteData } = useDataHandler(false);
 	const [uploadImages, setUploadImages] = useState(false);
 	const [filters, setFilters] = useState<Filter[]>([]);
@@ -53,13 +52,16 @@ const ImagesOverview = ({
 		data,
 		refetch,
 		count,
-		loading: dataLoading
+		loading: dataLoading,
+		language,
+		changeLanguage
 	} = useFindModuleData<ImageClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
-		order
+		order,
+		defaultLanguage
 	});
 
 	const [deleteModal, setDeleteModal] = useState(false);
@@ -138,6 +140,9 @@ const ImagesOverview = ({
 				setFilters={setFilters}
 				filterColumns={module.filters}
 				setOrder={setOrder}
+				language={language}
+				changeLanguage={changeLanguage}
+				languages={languages}
 			/>
 			<Modal
 				isOpen={uploadImages}

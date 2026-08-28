@@ -1,18 +1,23 @@
-import { WebpageComponentTable } from "@repo/types";
+import { ContentClass, WebpageComponentTable } from "@repo/types";
 
 const createInitialTableData = (
-	initialData: WebpageComponentTable
+	initialData?: ContentClass["data"]
 ): WebpageComponentTable => {
+	const table =
+		initialData && typeof initialData === "object"
+			? (initialData as Partial<WebpageComponentTable>)
+			: {};
+
 	return {
-		columns: initialData?.columns || [],
-		rows: initialData?.rows || [],
-		settings: initialData?.settings || {
+		columns: table.columns || [],
+		rows: table.rows || [],
+		settings: table.settings || {
 			title: "Neue Tabelle",
 			description: "",
 			footer: "",
 			showHeader: false
 		}
-	} as WebpageComponentTable;
+	};
 };
 
 export default createInitialTableData;
