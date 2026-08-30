@@ -23,3 +23,4 @@ export type * from "./Email";
 export type * from "./Video";
 export type * from "./Item";
 export type * from "./Championship";
+export type * from "./Club";

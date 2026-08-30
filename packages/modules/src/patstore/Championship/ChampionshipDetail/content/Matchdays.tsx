@@ -26,9 +26,9 @@ const Matchdays: FC<ChampionshipTabProps> = ({
 		value: event.objectId,
 		label: event.title
 	}));
-	const entryOptions = related.entries.map((entry) => ({
-		value: entry.objectId,
-		label: entry.title
+	const clubOptions = related.clubs.map((club) => ({
+		value: club.objectId,
+		label: club.title
 	}));
 
 	const columns: ColumnDef<ChampionshipMatchday>[] = useMemo(
@@ -59,8 +59,8 @@ const Matchdays: FC<ChampionshipTabProps> = ({
 			},
 			{
 				accessorFn: (row) =>
-					related.entries.find(
-						(entry) => entry.objectId === row.hostEntryId
+					related.clubs.find(
+						(club) => club.objectId === row.hostEntryId
 					)?.title || "—",
 				header: () => <span>Ausrichter</span>,
 				id: "hostEntryId",
@@ -94,7 +94,7 @@ const Matchdays: FC<ChampionshipTabProps> = ({
 			championship.matchdays,
 			loading,
 			onUpdate,
-			related.entries,
+			related.clubs,
 			related.events
 		]
 	);
@@ -128,7 +128,7 @@ const Matchdays: FC<ChampionshipTabProps> = ({
 		<div className="flex col a-st gap-sm">
 			<p>
 				Spieltage verweisen auf bestehende Events. Spieltag-Nummer,
-				Felder und Ausrichter (Entry) liegen auf der Meisterschaft.
+				Felder und Ausrichter (Verein) liegen auf der Meisterschaft.
 			</p>
 			<div className="flex row a-ce gap-sm" style={{ flexWrap: "wrap" }}>
 				<TextInput
@@ -175,9 +175,9 @@ const Matchdays: FC<ChampionshipTabProps> = ({
 					id="hostEntryId"
 					label="Ausrichter"
 					isClearable
-					options={entryOptions}
+					options={clubOptions}
 					value={
-						entryOptions.find(
+						clubOptions.find(
 							(option) => option.value === draft.hostEntryId
 						) || null
 					}

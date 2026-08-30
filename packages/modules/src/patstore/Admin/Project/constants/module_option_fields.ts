@@ -357,5 +357,23 @@ export const module_option_fields: ModuleOptionsField = {
 		sub_menu: [],
 		setting_fields: [],
 		default_fields: ["title"]
+	},
+	"/clubs": {
+		path: "/clubs",
+		name: "Vereine",
+		icon: "users",
+		settings: {
+			categories: [],
+			languages: [],
+			default_language: "de"
+		},
+		fields: [],
+		data_fields: [],
+		position: 16,
+		categories: [],
+		connected_class: "Club",
+		sub_menu: [],
+		setting_fields: [],
+		default_fields: ["title"]
 	}
 };

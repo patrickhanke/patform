@@ -38,7 +38,7 @@ const Players: FC<ChampionshipTabProps> = ({
 					signupId: signup.id,
 					team: signupLabel(
 						signup,
-						related.entries,
+						related.clubs,
 						championship.show_class
 					),
 					personId: "",
@@ -56,7 +56,7 @@ const Players: FC<ChampionshipTabProps> = ({
 				signupId: signup.id,
 				team: signupLabel(
 					signup,
-					related.entries,
+					related.clubs,
 					championship.show_class
 				),
 				personId,
@@ -115,7 +115,7 @@ const Players: FC<ChampionshipTabProps> = ({
 					<strong>
 						{signupLabel(
 							signup,
-							related.entries,
+							related.clubs,
 							championship.show_class
 						)}
 					</strong>

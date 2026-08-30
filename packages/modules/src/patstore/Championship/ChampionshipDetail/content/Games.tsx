@@ -84,7 +84,7 @@ const Games: FC<ChampionshipTabProps> = ({
 						championship.games,
 						championship.groups,
 						championship.signups,
-						related.entries,
+						related.clubs,
 						championship.show_class
 					);
 					return labels.team1.label;
@@ -101,7 +101,7 @@ const Games: FC<ChampionshipTabProps> = ({
 						championship.games,
 						championship.groups,
 						championship.signups,
-						related.entries,
+						related.clubs,
 						championship.show_class
 					);
 					return labels.team2.label;
@@ -163,7 +163,7 @@ const Games: FC<ChampionshipTabProps> = ({
 			championship.signups,
 			loading,
 			onUpdate,
-			related.entries
+			related.clubs
 		]
 	);
 

@@ -23,9 +23,9 @@ const Teams: FC<ChampionshipTabProps> = ({
 	const [entryId, setEntryId] = useState("");
 	const [teamClass, setTeamClass] = useState(championship.classes[0] || "");
 
-	const entryOptions = related.entries.map((entry) => ({
-		value: entry.objectId,
-		label: entry.title
+	const clubOptions = related.clubs.map((club) => ({
+		value: club.objectId,
+		label: club.title
 	}));
 	const classOptions = championship.classes.map((item) => ({
 		value: item,
@@ -43,7 +43,7 @@ const Teams: FC<ChampionshipTabProps> = ({
 		() => [
 			{
 				accessorFn: (row) =>
-					signupLabel(row, related.entries, championship.show_class),
+					signupLabel(row, related.clubs, championship.show_class),
 				header: () => <span>Mannschaft</span>,
 				id: "team",
 				cell: (info) => info.getValue(),
@@ -98,7 +98,7 @@ const Teams: FC<ChampionshipTabProps> = ({
 			championship.signups,
 			loading,
 			onUpdate,
-			related.entries
+			related.clubs
 		]
 	);
 
@@ -123,14 +123,14 @@ const Teams: FC<ChampionshipTabProps> = ({
 
 	return (
 		<div className="flex col a-st gap-sm">
-			<p>Meldungen sind Vereine aus dem Entry-Modul (News/Entries).</p>
+			<p>Meldungen sind Vereine aus dem Vereine-Modul.</p>
 			<div className="flex row a-ce gap-sm" style={{ flexWrap: "wrap" }}>
 				<Select
 					id="entryId"
-					label="Verein (Entry)"
-					options={entryOptions}
+					label="Verein"
+					options={clubOptions}
 					value={
-						entryOptions.find(
+						clubOptions.find(
 							(option) => option.value === entryId
 						) || null
 					}

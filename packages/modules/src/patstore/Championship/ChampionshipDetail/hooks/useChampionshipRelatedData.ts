@@ -1,15 +1,15 @@
 "use client";
 
 import { useFindData } from "@repo/provider";
-import { EventClass, NewsClass, PersonClass } from "@repo/types";
+import { ClubClass, EventClass, PersonClass } from "@repo/types";
 import { ChampionshipRelatedData } from "../types";
 
 const useChampionshipRelatedData = (
 	projectId?: string
 ): ChampionshipRelatedData => {
-	const { data: entries } = useFindData<NewsClass>({
-		objectName: "Entry",
-		fields: ["objectId", "title", "image"],
+	const { data: clubs } = useFindData<ClubClass>({
+		objectName: "Club",
+		fields: ["objectId", "title", "short", "logo"],
 		projectId,
 		limit: 500,
 		skipQuery: !projectId
@@ -30,7 +30,7 @@ const useChampionshipRelatedData = (
 	});
 
 	return {
-		entries: entries || [],
+		clubs: clubs || [],
 		events: events || [],
 		people: people || []
 	};

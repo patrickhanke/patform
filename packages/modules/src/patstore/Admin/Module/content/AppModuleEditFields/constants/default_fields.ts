@@ -18,7 +18,8 @@ const default_fields: {
 	"/website": ["title"],
 	"/users": ["title"],
 	"/videos": ["title"],
-	"/championships": ["title"]
+	"/championships": ["title"],
+	"/clubs": ["title"]
 };
 
 export default default_fields;

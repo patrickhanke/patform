@@ -57,6 +57,8 @@ export const createSignup = (
 	entryId: "",
 	number: 1,
 	personIds: [],
+	coachIds: [],
+	refereeIds: [],
 	active: true,
 	...partial
 });

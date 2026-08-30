@@ -23,7 +23,7 @@ const Groups: FC<ChampionshipTabProps> = ({
 
 	const signupOptions = championship.signups.map((signup) => ({
 		value: signup.id,
-		label: signupLabel(signup, related.entries, championship.show_class)
+		label: signupLabel(signup, related.clubs, championship.show_class)
 	}));
 
 	const saveGroups = (

@@ -18,7 +18,8 @@ export type ModulePath =
 	| "/website"
 	| "/users"
 	| "/videos"
-	| "/championships";
+	| "/championships"
+	| "/clubs";
 
 export type ModuleFieldIds =
 	| "title"
@@ -169,7 +170,8 @@ export type ModuleClass =
 	| "Location"
 	| "Dates"
 	| "TrainingGroup"
-	| "Championship";
+	| "Championship"
+	| "Club";
 
 export type ModuleSubMenuItem = {
 	label: string;
@@ -277,6 +279,11 @@ export type ModulePathConfig = {
 	};
 	"/championships": {
 		connected_class: "Championship";
+		default_fields: ["title"];
+		sub_menu: [];
+	};
+	"/clubs": {
+		connected_class: "Club";
 		default_fields: ["title"];
 		sub_menu: [];
 	};

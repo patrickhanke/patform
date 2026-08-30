@@ -3,7 +3,7 @@ import {
 	ChampionshipGroup,
 	ChampionshipSignup,
 	ChampionshipStanding,
-	NewsClass
+	ClubClass
 } from "@repo/types";
 import { getTeamLabel, signupLabel } from "./getTeamLabel";
 
@@ -17,12 +17,12 @@ export const recalcGroupStandings = ({
 	group,
 	games,
 	signups,
-	entries
+	clubs
 }: {
 	group: ChampionshipGroup;
 	games: ChampionshipGame[];
 	signups: ChampionshipSignup[];
-	entries: NewsClass[];
+	clubs: Pick<ClubClass, "objectId" | "title">[];
 }): ChampionshipGroup => {
 	const groupGames = games.filter((game) => game.groupId === group.id);
 	let allClosed = true;
@@ -35,7 +35,7 @@ export const recalcGroupStandings = ({
 		const standings: ChampionshipStanding[] = subgroupSignups.map(
 			(signup, index) => ({
 				signupId: signup.id,
-				label: signupLabel(signup, entries),
+				label: signupLabel(signup, clubs),
 				place: index + 1,
 				pointsFor: 0,
 				pointsAgainst: 0,
@@ -47,7 +47,7 @@ export const recalcGroupStandings = ({
 		);
 
 		const relevantGames = groupGames.filter((game) => {
-			const labels = getTeamLabel(game, games, [group], signups, entries);
+			const labels = getTeamLabel(game, games, [group], signups, clubs);
 			return (
 				subgroup.signupIds.includes(labels.team1.signupId || "") &&
 				subgroup.signupIds.includes(labels.team2.signupId || "")
@@ -58,7 +58,7 @@ export const recalcGroupStandings = ({
 			if (game.type === "ent" || !hasScore(game)) {
 				return;
 			}
-			const labels = getTeamLabel(game, games, [group], signups, entries);
+			const labels = getTeamLabel(game, games, [group], signups, clubs);
 			standings.forEach((row) => {
 				if (row.signupId === labels.team1.signupId) {
 					row.ballsFor += game.score1 || 0;
@@ -93,7 +93,7 @@ export const recalcGroupStandings = ({
 			if (game.type !== "ent" || !hasScore(game)) {
 				return;
 			}
-			const labels = getTeamLabel(game, games, [group], signups, entries);
+			const labels = getTeamLabel(game, games, [group], signups, clubs);
 			standings.forEach((row) => {
 				if (row.signupId === labels.team1.signupId) {
 					row.decider +=
@@ -154,13 +154,13 @@ export const recalcChampionshipStandings = ({
 	groups,
 	games,
 	signups,
-	entries
+	clubs
 }: {
 	groups: ChampionshipGroup[];
 	games: ChampionshipGame[];
 	signups: ChampionshipSignup[];
-	entries: NewsClass[];
+	clubs: Pick<ClubClass, "objectId" | "title">[];
 }): ChampionshipGroup[] =>
 	groups.map((group) =>
-		recalcGroupStandings({ group, games, signups, entries })
+		recalcGroupStandings({ group, games, signups, clubs })
 	);

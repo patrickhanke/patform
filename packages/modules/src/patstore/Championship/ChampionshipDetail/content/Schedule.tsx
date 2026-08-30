@@ -58,7 +58,7 @@ const Schedule: FC<ChampionshipTabProps> = ({ championship, related }) => {
 						championship.games,
 						championship.groups,
 						championship.signups,
-						related.entries,
+						related.clubs,
 						championship.show_class
 					).team1.label,
 				header: () => <span>Team 1</span>,
@@ -73,7 +73,7 @@ const Schedule: FC<ChampionshipTabProps> = ({ championship, related }) => {
 						championship.games,
 						championship.groups,
 						championship.signups,
-						related.entries,
+						related.clubs,
 						championship.show_class
 					).team2.label,
 				header: () => <span>Team 2</span>,
@@ -88,7 +88,7 @@ const Schedule: FC<ChampionshipTabProps> = ({ championship, related }) => {
 						championship.games,
 						championship.groups,
 						championship.signups,
-						related.entries,
+						related.clubs,
 						championship.show_class
 					).referee.label,
 				header: () => <span>Schiedsgericht</span>,
@@ -103,7 +103,7 @@ const Schedule: FC<ChampionshipTabProps> = ({ championship, related }) => {
 			championship.matchdays,
 			championship.show_class,
 			championship.signups,
-			related.entries
+			related.clubs
 		]
 	);
 

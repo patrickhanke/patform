@@ -80,7 +80,7 @@ const Results: FC<ChampionshipTabProps> = ({
 			championship.games,
 			championship.groups,
 			championship.signups,
-			related.entries
+			related.clubs
 		);
 		const nextGame: ChampionshipGame = {
 			...current,
@@ -101,7 +101,7 @@ const Results: FC<ChampionshipTabProps> = ({
 			groups: championship.groups,
 			games,
 			signups: championship.signups,
-			entries: related.entries
+			clubs: related.clubs
 		});
 		await onUpdate({ games, groups }, "Ergebnis gespeichert");
 	};
@@ -129,7 +129,7 @@ const Results: FC<ChampionshipTabProps> = ({
 						championship.games,
 						championship.groups,
 						championship.signups,
-						related.entries,
+						related.clubs,
 						championship.show_class
 					).team1.label,
 				header: () => <span>Team 1</span>,
@@ -159,7 +159,7 @@ const Results: FC<ChampionshipTabProps> = ({
 						championship.games,
 						championship.groups,
 						championship.signups,
-						related.entries,
+						related.clubs,
 						championship.show_class
 					).team2.label,
 				header: () => <span>Team 2</span>,
@@ -174,7 +174,7 @@ const Results: FC<ChampionshipTabProps> = ({
 			championship.show_class,
 			championship.signups,
 			loading,
-			related.entries
+			related.clubs
 		]
 	);
 

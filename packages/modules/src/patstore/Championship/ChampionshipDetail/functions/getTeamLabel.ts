@@ -3,7 +3,7 @@ import {
 	ChampionshipGroup,
 	ChampionshipSignup,
 	ChampionshipTeamLabel,
-	NewsClass
+	ClubClass
 } from "@repo/types";
 
 const findSubgroup = (groups: ChampionshipGroup[], subgroupId?: string) => {
@@ -21,14 +21,14 @@ const findSubgroup = (groups: ChampionshipGroup[], subgroupId?: string) => {
 
 export const signupLabel = (
 	signup: ChampionshipSignup | undefined,
-	entries: NewsClass[],
+	clubs: Pick<ClubClass, "objectId" | "title">[],
 	showClass?: boolean
 ): string => {
 	if (!signup) {
 		return "Unbestimmt";
 	}
-	const entry = entries.find((item) => item.objectId === signup.entryId);
-	const name = entry?.title || "Mannschaft";
+	const club = clubs.find((item) => item.objectId === signup.entryId);
+	const name = club?.title || "Mannschaft";
 	const numbered = signup.number > 1 ? `${name} ${signup.number}` : name;
 	if (showClass && signup.class) {
 		return `${numbered} — ${signup.class}`;
@@ -41,7 +41,7 @@ export const getTeamLabel = (
 	games: ChampionshipGame[],
 	groups: ChampionshipGroup[],
 	signups: ChampionshipSignup[],
-	entries: NewsClass[],
+	clubs: Pick<ClubClass, "objectId" | "title">[],
 	showClass = false
 ): {
 	team1: ChampionshipTeamLabel;
@@ -64,7 +64,7 @@ export const getTeamLabel = (
 						(item) => item.id === linked.winnerSignupId
 					);
 					return {
-						label: signupLabel(signup, entries, showClass),
+						label: signupLabel(signup, clubs, showClass),
 						signupId: linked.winnerSignupId,
 						entryId: signup?.entryId
 					};
@@ -77,7 +77,7 @@ export const getTeamLabel = (
 						(item) => item.id === linked.loserSignupId
 					);
 					return {
-						label: signupLabel(signup, entries, showClass),
+						label: signupLabel(signup, clubs, showClass),
 						signupId: linked.loserSignupId,
 						entryId: signup?.entryId
 					};
@@ -100,7 +100,7 @@ export const getTeamLabel = (
 				return {
 					label:
 						standing.label ||
-						signupLabel(signup, entries, showClass),
+						signupLabel(signup, clubs, showClass),
 					signupId: standing.signupId,
 					entryId: signup?.entryId
 				};
@@ -111,7 +111,7 @@ export const getTeamLabel = (
 		const signupId = subgroup.signupIds[index - 1];
 		const signup = signups.find((item) => item.id === signupId);
 		return {
-			label: signupLabel(signup, entries, showClass),
+			label: signupLabel(signup, clubs, showClass),
 			signupId,
 			entryId: signup?.entryId
 		};

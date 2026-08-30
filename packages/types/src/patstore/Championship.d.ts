@@ -29,8 +29,12 @@ export type ChampionshipSignup = {
 	groupId?: string;
 	subgroupId?: string;
 	personIds: string[];
+	coachIds?: string[];
+	refereeIds?: string[];
+	captainId?: string;
 	comment?: string;
 	active?: boolean;
+	openSignup?: boolean;
 };
 
 export type ChampionshipStanding = {

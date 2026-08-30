@@ -18,3 +18,4 @@ export * from "./Email";
 export * from "./Videos";
 export * from "./Log";
 export * from "./Championship";
+export * from "./Club";

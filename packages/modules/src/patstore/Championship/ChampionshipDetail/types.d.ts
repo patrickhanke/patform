@@ -3,13 +3,13 @@ import {
 	ChampionshipGame,
 	ChampionshipGroup,
 	ChampionshipSignup,
+	ClubClass,
 	EventClass,
-	NewsClass,
 	PersonClass
 } from "@repo/types";
 
 export type ChampionshipRelatedData = {
-	entries: NewsClass[];
+	clubs: ClubClass[];
 	events: EventClass[];
 	people: PersonClass[];
 };

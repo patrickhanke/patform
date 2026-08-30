@@ -15,6 +15,7 @@ import { Module } from "./Module";
 import { ContentClass } from "./Content";
 import { LanguageValue } from "./Project";
 import { ChampionshipClass } from "./Championship";
+import { ClubClass } from "./Club";
 
 export type ClassCategories = string[];
 
@@ -51,4 +52,5 @@ export type Classes =
 	| VideoClass
 	| ItemClass
 	| ContentClass
-	| ChampionshipClass;
+	| ChampionshipClass
+	| ClubClass;
