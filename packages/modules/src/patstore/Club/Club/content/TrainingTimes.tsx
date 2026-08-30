@@ -1,10 +1,7 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import {
-	ClubClass,
-	ClubTrainingTime
-} from "@repo/types";
+import { ClubClass, ClubTrainingTime } from "@repo/types";
 import {
 	ColumnDef,
 	CreateButton,
@@ -128,7 +125,9 @@ const TrainingTimes: FC<ClubTabProps> = ({ related }) => {
 							onClick={() =>
 								setData(
 									"training",
-									training.filter((item) => item.id !== row.id)
+									training.filter(
+										(item) => item.id !== row.id
+									)
 								)
 							}
 						/>
@@ -177,7 +176,10 @@ const TrainingTimes: FC<ClubTabProps> = ({ related }) => {
 						label="Titel der Trainingsgruppe"
 						defaultValue={draft.title}
 						onChange={(value) =>
-							setDraft((current) => ({ ...current, title: value }))
+							setDraft((current) => ({
+								...current,
+								title: value
+							}))
 						}
 					/>
 					<Select
@@ -242,6 +244,7 @@ const TrainingTimes: FC<ClubTabProps> = ({ related }) => {
 										: null
 								}));
 							}}
+						/>
 					</div>
 					<Select
 						id="training-gym"
