@@ -1,0 +1,119 @@
+import { ClassProperties } from "./Classes";
+
+export type ChampionshipGameType = "grp" | "krz" | "plz" | "ent" | "akk";
+
+export type ChampionshipGroupMode = "gruppe" | "kreuz";
+
+export type ChampionshipMatchdayBreak = {
+	pass: number;
+	duration: number;
+};
+
+export type ChampionshipMatchday = {
+	id: string;
+	eventId: string;
+	spieltagNr: number;
+	felder: number;
+	pausen: ChampionshipMatchdayBreak[];
+	durchgaenge: number;
+	hostEntryId?: string;
+	contact?: string;
+};
+
+export type ChampionshipSignup = {
+	id: string;
+	entryId: string;
+	class?: string;
+	number: number;
+	status?: string;
+	groupId?: string;
+	subgroupId?: string;
+	personIds: string[];
+	comment?: string;
+	active?: boolean;
+};
+
+export type ChampionshipStanding = {
+	signupId: string;
+	label: string;
+	place: number;
+	pointsFor: number;
+	pointsAgainst: number;
+	ballsFor: number;
+	ballsAgainst: number;
+	games: number;
+	decider: number;
+};
+
+export type ChampionshipSubgroup = {
+	id: string;
+	label: string;
+	signupIds: string[];
+	standings: ChampionshipStanding[];
+	closed?: boolean;
+};
+
+export type ChampionshipGroup = {
+	id: string;
+	name: string;
+	mode: ChampionshipGroupMode;
+	color?: string;
+	closed: boolean;
+	signupIds: string[];
+	subgroups: ChampionshipSubgroup[];
+};
+
+export type ChampionshipGame = {
+	id: string;
+	type: ChampionshipGameType;
+	gameNr: number;
+	round: number;
+	field: number;
+	pass: number;
+	placement?: number[];
+	groupId?: string;
+	eventId?: string;
+	team1_group?: string;
+	team1_index?: number;
+	team1_gameId?: string;
+	team2_group?: string;
+	team2_index?: number;
+	team2_gameId?: string;
+	referee_group?: string;
+	referee_index?: number;
+	referee_gameId?: string;
+	hz1?: number | null;
+	hz2?: number | null;
+	score1?: number | null;
+	score2?: number | null;
+	winnerSignupId?: string | null;
+	loserSignupId?: string | null;
+};
+
+export type ChampionshipTeamLabel = {
+	label: string;
+	signupId?: string;
+	entryId?: string;
+};
+
+export type ChampionshipClass = ClassProperties & {
+	title: string;
+	season?: string;
+	deadline?: string;
+	show_class: boolean;
+	ak_games: boolean;
+	info?: string;
+	director?: string;
+	email?: string;
+	open_signup: boolean;
+	free_signup: boolean;
+	secondary_teams: boolean;
+	group_mode: boolean;
+	classes: string[];
+	gallery: string[];
+	article_id?: string;
+	matchdays: ChampionshipMatchday[];
+	signups: ChampionshipSignup[];
+	groups: ChampionshipGroup[];
+	games: ChampionshipGame[];
+};

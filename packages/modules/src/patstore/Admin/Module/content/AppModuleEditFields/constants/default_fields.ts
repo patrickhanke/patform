@@ -17,7 +17,8 @@ const default_fields: {
 	"/calendar": ["title"],
 	"/website": ["title"],
 	"/users": ["title"],
-	"/videos": ["title"]
+	"/videos": ["title"],
+	"/championships": ["title"]
 };
 
 export default default_fields;

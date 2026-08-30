@@ -1,11 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
+	Combobox,
 	createListCollection,
 	Field,
 	Portal,
-	Select as ChakraSelect
+	Span,
+	useFilter
 } from "@chakra-ui/react";
 import { isArray } from "lodash-es";
 import { ErrorDisplay } from "../../Displays";
@@ -110,16 +112,23 @@ const Select = ({
 		() => flattenOptions(options),
 		[options]
 	);
+	const { contains } = useFilter({ sensitivity: "base" });
+	const [filterText, setFilterText] = useState("");
+
+	const filteredItems = useMemo(() => {
+		if (!filterText) return items;
+		return items.filter((item) => contains(item.label, filterText));
+	}, [contains, filterText, items]);
 
 	const collection = useMemo(
 		() =>
 			createListCollection({
-				items,
+				items: filteredItems,
 				itemToString: (item) => item.label,
 				itemToValue: (item) => item.value,
 				isItemDisabled: (item) => !!item.disabled
 			}),
-		[items]
+		[filteredItems]
 	);
 
 	const groupedItems = useMemo(() => {
@@ -147,11 +156,20 @@ const Select = ({
 		return key ? [key] : [];
 	}, [value, items]);
 
+	const selectedItems = useMemo(
+		() =>
+			selectedValues
+				.map((key) => items.find((item) => item.value === key))
+				.filter((item): item is CollectionItem => !!item),
+		[items, selectedValues]
+	);
+	const selectedLabel = isMulti ? "" : (selectedItems[0]?.label ?? "");
+
 	const hasErrors = !!errors?.some((error) => (id ? error.id === id : true));
 	const cssWidth = typeof width === "number" ? `${width}px` : width;
 
 	const renderItem = (item: CollectionItem) => (
-		<ChakraSelect.Item
+		<Combobox.Item
 			item={item}
 			key={item.value}
 			fontSize="12px"
@@ -159,19 +177,19 @@ const Select = ({
 			px="12px"
 			py="6px"
 		>
-			<ChakraSelect.ItemText>{item.label}</ChakraSelect.ItemText>
-			<ChakraSelect.ItemIndicator />
-		</ChakraSelect.Item>
+			<Combobox.ItemText>{item.label}</Combobox.ItemText>
+			<Combobox.ItemIndicator />
+		</Combobox.Item>
 	);
 
 	const menuItems = hasGroups
 		? groupedItems.map(([groupLabel, groupItems]) => (
-				<ChakraSelect.ItemGroup key={groupLabel}>
-					<ChakraSelect.ItemGroupLabel>
+				<Combobox.ItemGroup key={groupLabel}>
+					<Combobox.ItemGroupLabel>
 						{groupLabel}
-					</ChakraSelect.ItemGroupLabel>
+					</Combobox.ItemGroupLabel>
 					{groupItems.map(renderItem)}
-				</ChakraSelect.ItemGroup>
+				</Combobox.ItemGroup>
 			))
 		: collection.items.map(renderItem);
 
@@ -182,7 +200,7 @@ const Select = ({
 			width={cssWidth}
 			position="relative"
 		>
-			<ChakraSelect.Root
+			<Combobox.Root
 				collection={collection}
 				value={selectedValues}
 				onValueChange={(details) => {
@@ -201,6 +219,18 @@ const Select = ({
 
 					onChange(selected[0] ?? null);
 				}}
+				onInputValueChange={(details) => {
+					if (!isMulti && details.inputValue === selectedLabel) {
+						setFilterText("");
+						return;
+					}
+					setFilterText(details.inputValue);
+				}}
+				onOpenChange={(details) => {
+					if (details.open) {
+						setFilterText("");
+					}
+				}}
 				multiple={isMulti}
 				closeOnSelect={!isMulti}
 				disabled={isDisabled}
@@ -208,20 +238,41 @@ const Select = ({
 				id={id}
 				size="xs"
 				width="full"
+				openOnClick
 				positioning={{
 					strategy: menuPosition,
 					hideWhenDetached: true,
 					placement: "bottom-start"
 				}}
 			>
-				<ChakraSelect.HiddenSelect />
 				{label && (
-					<ChakraSelect.Label fontSize="12px" fontWeight="500">
+					<Combobox.Label fontSize="12px" fontWeight="500">
 						{label}
-					</ChakraSelect.Label>
+					</Combobox.Label>
 				)}
-				<ChakraSelect.Control>
-					<ChakraSelect.Trigger
+				<Combobox.Control minH="26px" h="auto" flexWrap="wrap">
+					{isMulti &&
+						selectedItems.map((item) => (
+							<Span
+								key={item.value}
+								fontSize="12px"
+								fontWeight="500"
+								lineHeight="1.2"
+								px="6px"
+								py="2px"
+								ml="4px"
+								bg="bg.muted"
+								rounded="sm"
+							>
+								{item.label}
+							</Span>
+						))}
+					<Combobox.Input
+						placeholder={
+							isMulti && selectedItems.length > 0
+								? ""
+								: placeholder
+						}
 						h="auto"
 						minH="26px"
 						px="12px"
@@ -229,26 +280,28 @@ const Select = ({
 						fontSize="12px"
 						fontWeight="500"
 						letterSpacing="0.6px"
-					>
-						<ChakraSelect.ValueText placeholder={placeholder} />
-					</ChakraSelect.Trigger>
-					<ChakraSelect.IndicatorGroup p="4px">
-						{isClearable && <ChakraSelect.ClearTrigger />}
-						<ChakraSelect.Indicator scale="0.8" />
-					</ChakraSelect.IndicatorGroup>
-				</ChakraSelect.Control>
+						flex="1"
+						minW="40px"
+						onFocus={(event) => event.currentTarget.select()}
+					/>
+					<Combobox.IndicatorGroup p="4px">
+						{isClearable && <Combobox.ClearTrigger />}
+						<Combobox.Trigger scale="0.8" />
+					</Combobox.IndicatorGroup>
+				</Combobox.Control>
 				<Portal>
-					<ChakraSelect.Positioner
+					<Combobox.Positioner
 						onMouseDown={(event) => event.stopPropagation()}
 						onPointerDown={(event) => event.stopPropagation()}
 						onTouchStart={(event) => event.stopPropagation()}
 					>
-						<ChakraSelect.Content fontSize="12px" fontWeight="500">
+						<Combobox.Content fontSize="12px" fontWeight="500">
+							<Combobox.Empty>Keine Ergebnisse</Combobox.Empty>
 							{menuItems}
-						</ChakraSelect.Content>
-					</ChakraSelect.Positioner>
+						</Combobox.Content>
+					</Combobox.Positioner>
 				</Portal>
-			</ChakraSelect.Root>
+			</Combobox.Root>
 			<ErrorDisplay errors={errors} id={id} />
 		</Field.Root>
 	);

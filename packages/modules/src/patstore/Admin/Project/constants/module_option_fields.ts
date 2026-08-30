@@ -339,5 +339,23 @@ export const module_option_fields: ModuleOptionsField = {
 		sub_menu: [],
 		setting_fields: [],
 		default_fields: ["title", "video"]
+	},
+	"/championships": {
+		path: "/championships",
+		name: "Meisterschaften",
+		icon: "events",
+		settings: {
+			categories: [],
+			languages: [],
+			default_language: "de"
+		},
+		fields: [],
+		data_fields: [],
+		position: 15,
+		categories: [],
+		connected_class: "Championship",
+		sub_menu: [],
+		setting_fields: [],
+		default_fields: ["title"]
 	}
 };

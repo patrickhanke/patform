@@ -17,7 +17,8 @@ export type ModulePath =
 	| "/calendar"
 	| "/website"
 	| "/users"
-	| "/videos";
+	| "/videos"
+	| "/championships";
 
 export type ModuleFieldIds =
 	| "title"
@@ -167,7 +168,8 @@ export type ModuleClass =
 	| "Video"
 	| "Location"
 	| "Dates"
-	| "TrainingGroup";
+	| "TrainingGroup"
+	| "Championship";
 
 export type ModuleSubMenuItem = {
 	label: string;
@@ -271,6 +273,11 @@ export type ModulePathConfig = {
 	"/videos": {
 		connected_class: "Video";
 		default_fields: ["title", "video"];
+		sub_menu: [];
+	};
+	"/championships": {
+		connected_class: "Championship";
+		default_fields: ["title"];
 		sub_menu: [];
 	};
 };

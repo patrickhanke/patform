@@ -17,7 +17,8 @@ const disabled_fields: {
 	"/calendar": [],
 	"/website": [],
 	"/users": [],
-	"/videos": []
+	"/videos": [],
+	"/championships": []
 };
 
 export default disabled_fields;
