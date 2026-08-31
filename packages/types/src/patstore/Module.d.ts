@@ -1,4 +1,4 @@
-import { FilterOperator } from "@repo/ui";
+﻿import { FilterOperator } from "@repo/ui";
 import { Field } from "@repo/types";
 import { LanguageValue, PatstoreProject } from "./Project";
 
@@ -18,7 +18,7 @@ export type ModulePath =
 	| "/website"
 	| "/users"
 	| "/videos"
-	| "/championships"
+	| "/competitions"
 	| "/clubs";
 
 export type ModuleFieldIds =
@@ -170,7 +170,7 @@ export type ModuleClass =
 	| "Location"
 	| "Dates"
 	| "TrainingGroup"
-	| "Championship"
+	| "Competition"
 	| "Club";
 
 export type ModuleSubMenuItem = {
@@ -277,8 +277,8 @@ export type ModulePathConfig = {
 		default_fields: ["title", "video"];
 		sub_menu: [];
 	};
-	"/championships": {
-		connected_class: "Championship";
+	"/competitions": {
+		connected_class: "Competition";
 		default_fields: ["title"];
 		sub_menu: [];
 	};

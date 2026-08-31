@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useFindData } from "@repo/provider";
 import {
-	ChampionshipClass,
+	CompetitionClass,
 	ClubClass,
 	GroupClass,
 	LocationClass,
@@ -39,8 +39,8 @@ const useClubRelatedData = (projectId?: string): ClubRelatedData => {
 		limit: 500,
 		skipQuery: !projectId
 	});
-	const { data: championships, refetch: refetchChampionships } = useFindData({
-		objectName: "Championship",
+	const { data: competitions, refetch: refetchCompetitions } = useFindData({
+		objectName: "Competition",
 		fields: [
 			"objectId",
 			"title",
@@ -61,8 +61,8 @@ const useClubRelatedData = (projectId?: string): ClubRelatedData => {
 		people: (people || []) as PersonClass[],
 		locations: (locations || []) as LocationClass[],
 		groups: (groups || []) as GroupClass[],
-		championships: (championships || []) as ChampionshipClass[],
-		refetchChampionships,
+		competitions: (competitions || []) as CompetitionClass[],
+		refetchCompetitions,
 		refetchPeople
 	};
 };

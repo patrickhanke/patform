@@ -1,19 +1,19 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useMemo } from "react";
 import { useDataHandlerSecure } from "@repo/provider";
 import {
-	ChampionshipClass,
-	ChampionshipSignup,
+	CompetitionClass,
+	CompetitionSignup,
 	ClubClass
 } from "@repo/types";
-import { createSignup } from "../../../Championship/ChampionshipDetail/functions/factories";
+import { createSignup } from "../../../Competition/CompetitionDetail/functions/factories";
 import { ClubSignupRow } from "../types";
 
 const useClubSignups = (
 	club: ClubClass | null,
-	championships: ChampionshipClass[],
-	refetchChampionships: () => Promise<unknown>
+	competitions: CompetitionClass[],
+	refetchCompetitions: () => Promise<unknown>
 ) => {
 	const { updateData, loading } = useDataHandlerSecure();
 
@@ -21,76 +21,76 @@ const useClubSignups = (
 		if (!club) {
 			return [];
 		}
-		return championships.flatMap((championship) =>
-			(championship.signups || [])
+		return competitions.flatMap((competition) =>
+			(competition.signups || [])
 				.filter((signup) => signup.entryId === club.objectId)
 				.map((signup) => ({
 					...signup,
 					objectId: signup.id,
-					championshipId: championship.objectId,
-					championshipTitle: championship.title,
-					championshipSeason: championship.season,
-					championshipDeadline: championship.deadline,
-					championshipOpenSignup: championship.open_signup,
-					championshipFreeSignup: championship.free_signup,
-					championshipClasses: championship.classes || []
+					competitionId: competition.objectId,
+					competitionTitle: competition.title,
+					competitionSeason: competition.season,
+					competitionDeadline: competition.deadline,
+					competitionOpenSignup: competition.open_signup,
+					competitionFreeSignup: competition.free_signup,
+					competitionClasses: competition.classes || []
 				}))
 		);
-	}, [championships, club]);
+	}, [competitions, club]);
 
 	const writeSignups = useCallback(
 		async (
-			championshipId: string,
-			signups: ChampionshipSignup[],
+			competitionId: string,
+			signups: CompetitionSignup[],
 			feedback: string
 		) => {
 			await updateData({
-				className: "Championship",
-				objectId: championshipId,
+				className: "Competition",
+				objectId: competitionId,
 				updateObject: { signups },
 				feedback
 			});
-			await refetchChampionships();
+			await refetchCompetitions();
 		},
-		[refetchChampionships, updateData]
+		[refetchCompetitions, updateData]
 	);
 
 	const patchSignup = useCallback(
 		async (
-			championshipId: string,
+			competitionId: string,
 			signupId: string,
-			patch: Partial<ChampionshipSignup>,
+			patch: Partial<CompetitionSignup>,
 			feedback: string
 		) => {
-			const championship = championships.find(
-				(item) => item.objectId === championshipId
+			const competition = competitions.find(
+				(item) => item.objectId === competitionId
 			);
-			if (!championship) {
+			if (!competition) {
 				return;
 			}
 			await writeSignups(
-				championshipId,
-				(championship.signups || []).map((signup) =>
+				competitionId,
+				(competition.signups || []).map((signup) =>
 					signup.id === signupId ? { ...signup, ...patch } : signup
 				),
 				feedback
 			);
 		},
-		[championships, writeSignups]
+		[competitions, writeSignups]
 	);
 
 	const createOpenSignup = useCallback(
-		async (championshipId: string, classValue: string) => {
+		async (competitionId: string, classValue: string) => {
 			if (!club) {
 				return;
 			}
-			const championship = championships.find(
-				(item) => item.objectId === championshipId
+			const competition = competitions.find(
+				(item) => item.objectId === competitionId
 			);
-			if (!championship) {
+			if (!competition) {
 				return;
 			}
-			const sameClub = (championship.signups || []).filter(
+			const sameClub = (competition.signups || []).filter(
 				(signup) =>
 					signup.entryId === club.objectId &&
 					signup.class === classValue
@@ -104,39 +104,36 @@ const useClubSignups = (
 				openSignup: true
 			});
 			await writeSignups(
-				championshipId,
-				[...(championship.signups || []), signup],
+				competitionId,
+				[...(competition.signups || []), signup],
 				"Offene Meldung hinzugefügt"
 			);
 		},
-		[championships, club, writeSignups]
+		[competitions, club, writeSignups]
 	);
 
 	const deleteSignup = useCallback(
-		async (championshipId: string, signupId: string) => {
-			const championship = championships.find(
-				(item) => item.objectId === championshipId
+		async (competitionId: string, signupId: string) => {
+			const competition = competitions.find(
+				(item) => item.objectId === competitionId
 			);
-			if (!championship) {
+			if (!competition) {
 				return;
 			}
 			await writeSignups(
-				championshipId,
-				(championship.signups || []).filter(
+				competitionId,
+				(competition.signups || []).filter(
 					(signup) => signup.id !== signupId
 				),
 				"Meldung gelöscht"
 			);
 		},
-		[championships, writeSignups]
+		[competitions, writeSignups]
 	);
 
-	const openChampionships = useMemo(
-		() =>
-			championships.filter(
-				(championship) => championship.open_signup
-			),
-		[championships]
+	const openCompetitions = useMemo(
+		() => competitions.filter((competition) => competition.open_signup),
+		[competitions]
 	);
 
 	return {
@@ -145,7 +142,7 @@ const useClubSignups = (
 		patchSignup,
 		createOpenSignup,
 		deleteSignup,
-		openChampionships
+		openCompetitions
 	};
 };
 

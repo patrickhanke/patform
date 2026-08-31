@@ -1,4 +1,4 @@
-import { FormDataElement } from "@repo/ui";
+﻿import { FormDataElement } from "@repo/ui";
 import { CategoryClass } from "./Category";
 import { PatstoreUser } from "./User";
 import { VideoClass } from "./Video";
@@ -14,7 +14,7 @@ import { TemplateClass } from "./Template";
 import { Module } from "./Module";
 import { ContentClass } from "./Content";
 import { LanguageValue } from "./Project";
-import { ChampionshipClass } from "./Championship";
+import { CompetitionClass } from "./Competition";
 import { ClubClass } from "./Club";
 
 export type ClassCategories = string[];
@@ -52,5 +52,5 @@ export type Classes =
 	| VideoClass
 	| ItemClass
 	| ContentClass
-	| ChampionshipClass
+	| CompetitionClass
 	| ClubClass;

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { FC, useMemo, useState } from "react";
 import { ClubClass, ClubTrainingTime } from "@repo/types";
@@ -16,7 +16,7 @@ import { ClubTabProps } from "../types";
 import { createTrainingTime } from "../functions/factories";
 import { formatTime, timeSelectValue } from "../functions/formatTime";
 import { dayTimes, weekdays } from "../constants/trainingTimes";
-import { selectString } from "../../../Championship/ChampionshipDetail/functions/selectValue";
+import { selectString } from "../../../Competition/CompetitionDetail/functions/selectValue";
 
 const TrainingTimes: FC<ClubTabProps> = ({ related }) => {
 	const { data: club, setData } = usePageData<ClubClass>();

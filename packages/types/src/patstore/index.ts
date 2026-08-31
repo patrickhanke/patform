@@ -1,4 +1,4 @@
-export type * from "./Classes";
+﻿export type * from "./Classes";
 export type * from "./Category";
 export type * from "./News";
 export type * from "./Person";
@@ -22,5 +22,5 @@ export type * from "./Template";
 export type * from "./Email";
 export type * from "./Video";
 export type * from "./Item";
-export type * from "./Championship";
+export type * from "./Competition";
 export type * from "./Club";

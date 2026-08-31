@@ -1,17 +1,17 @@
-"use client";
+﻿"use client";
 
 import { FC, useState } from "react";
-import { ChampionshipSignup, PersonClass } from "@repo/types";
+import { CompetitionSignup, PersonClass } from "@repo/types";
 import { CreateButton, Divider, Select, TextInput } from "@repo/ui";
 import { personOptions } from "../functions/personName";
 import { isFemaleClass, isSignupLocked } from "../functions/signupStatus";
-import { selectString } from "../../../Championship/ChampionshipDetail/functions/selectValue";
+import { selectString } from "../../../Competition/CompetitionDetail/functions/selectValue";
 
 type EditTeamProps = {
-	signup: ChampionshipSignup;
+	signup: CompetitionSignup;
 	people: PersonClass[];
 	clubPlayerIds: string[];
-	onSave: (patch: Partial<ChampionshipSignup>) => Promise<void>;
+	onSave: (patch: Partial<CompetitionSignup>) => Promise<void>;
 	onClose: () => void;
 };
 

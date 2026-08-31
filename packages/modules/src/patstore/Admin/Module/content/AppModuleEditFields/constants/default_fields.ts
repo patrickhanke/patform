@@ -1,4 +1,4 @@
-import { ModuleFieldIds, Module } from "@repo/types";
+﻿import { ModuleFieldIds, Module } from "@repo/types";
 
 const default_fields: {
 	[key in Module["path"]]: ModuleFieldIds[];
@@ -18,7 +18,7 @@ const default_fields: {
 	"/website": ["title"],
 	"/users": ["title"],
 	"/videos": ["title"],
-	"/championships": ["title"],
+	"/competitions": ["title"],
 	"/clubs": ["title"]
 };
 

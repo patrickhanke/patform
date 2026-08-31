@@ -8,6 +8,17 @@ export * from "./indexedDb";
 export { default as getIsoFromDate } from "./getIsoFromDate";
 export { sortArrayForDivider } from "./sortArrayForDivider";
 export { default as filterChangeHandler } from "./filterChangeHandler";
-export { default as dataTransporter } from "./dataTransporter";
+export {
+	default as dataTransporter,
+	defineDataMapping,
+	transformMappedData
+} from "./dataTransporter";
+export type {
+	DataMapping,
+	DataTransporterOptions,
+	DataTransporterResult,
+	DotPaths,
+	PathValue
+} from "./dataTransporter";
 export { default as convertDateToString } from "./convertDateToString";
 export { default as generateQueryFromFields } from "./generateQueryFromFields";

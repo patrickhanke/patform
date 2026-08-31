@@ -1,4 +1,4 @@
-import { Module } from "@repo/types";
+﻿import { Module } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 import { module_option_fields } from "./constants/module_option_fields";
 
@@ -34,7 +34,7 @@ export type ModuleOptionsKeys =
 	| "/calendar"
 	| "/emails"
 	| "/videos"
-	| "/championships"
+	| "/competitions"
 	| "/clubs";
 
 export type ModuleOptionsField = {

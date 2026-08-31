@@ -1,4 +1,4 @@
-import { ModuleFieldIds, Module } from "@repo/types";
+﻿import { ModuleFieldIds, Module } from "@repo/types";
 
 const disabled_fields: {
 	[key in Module["path"]]: ModuleFieldIds[];
@@ -18,7 +18,7 @@ const disabled_fields: {
 	"/website": [],
 	"/users": [],
 	"/videos": [],
-	"/championships": [],
+	"/competitions": [],
 	"/clubs": []
 };
 

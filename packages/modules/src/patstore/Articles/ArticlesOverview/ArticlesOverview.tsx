@@ -6,7 +6,8 @@ import {
 	Modal,
 	Page,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import {
 	filterModuleCategories,

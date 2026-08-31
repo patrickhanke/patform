@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { FC, useMemo, useState } from "react";
 import { ClubClass } from "@repo/types";
@@ -21,7 +21,7 @@ import {
 	isSignupLocked,
 	signupStatusLabel
 } from "../functions/signupStatus";
-import { selectString } from "../../../Championship/ChampionshipDetail/functions/selectValue";
+import { selectString } from "../../../Competition/CompetitionDetail/functions/selectValue";
 import EditTeam from "./EditTeam";
 
 const SignUps: FC<ClubTabProps> = ({ related }) => {
@@ -32,12 +32,12 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 		patchSignup,
 		createOpenSignup,
 		deleteSignup,
-		openChampionships
-	} = useClubSignups(club, related.championships, related.refetchChampionships);
+		openCompetitions
+	} = useClubSignups(club, related.competitions, related.refetchCompetitions);
 
 	const [season, setSeason] = useState("");
 	const [createOpen, setCreateOpen] = useState(false);
-	const [selectedChampionshipId, setSelectedChampionshipId] = useState("");
+	const [selectedCompetitionId, setSelectedCompetitionId] = useState("");
 	const [selectedClass, setSelectedClass] = useState("");
 	const [editRow, setEditRow] = useState<ClubSignupRow | null>(null);
 	const [infoRow, setInfoRow] = useState<ClubSignupRow | null>(null);
@@ -48,27 +48,27 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 	const seasonOptions = useMemo(() => {
 		const values = Array.from(
 			new Set(
-				related.championships
+				related.competitions
 					.map((item) => item.season)
 					.filter((item): item is string => Boolean(item))
 			)
 		);
 		return values.map((value) => ({ value, label: value }));
-	}, [related.championships]);
+	}, [related.competitions]);
 
 	const filteredRows = season
-		? rows.filter((row) => row.championshipSeason === season)
+		? rows.filter((row) => row.competitionSeason === season)
 		: rows;
 
-	const championshipOptions = openChampionships.map((item) => ({
+	const CompetitionOptions = openCompetitions.map((item) => ({
 		value: item.objectId,
 		label: item.title,
 		classes: item.classes || []
 	}));
-	const selectedChampionship = openChampionships.find(
-		(item) => item.objectId === selectedChampionshipId
+	const selectedCompetition = openCompetitions.find(
+		(item) => item.objectId === selectedCompetitionId
 	);
-	const classOptions = (selectedChampionship?.classes || []).map((item) => ({
+	const classOptions = (selectedCompetition?.classes || []).map((item) => ({
 		value: item,
 		label: item
 	}));
@@ -79,9 +79,9 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 	const columns: ColumnDef<ClubSignupRow>[] = useMemo(
 		() => [
 			{
-				accessorFn: (row) => row.championshipTitle,
+				accessorFn: (row) => row.competitionTitle,
 				header: () => <span>Wettkampf</span>,
-				id: "championship",
+				id: "Competition",
 				cell: (info) => info.getValue(),
 				footer: (info) => info.column.id
 			},
@@ -114,8 +114,8 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 			},
 			{
 				accessorFn: (row) =>
-					row.championshipDeadline
-						? new Date(row.championshipDeadline).toLocaleDateString(
+					row.competitionDeadline
+						? new Date(row.competitionDeadline).toLocaleDateString(
 								"de-DE"
 							)
 						: "Keine Meldefrist angegeben",
@@ -131,7 +131,7 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 							<div className="flex col a-st gap-sm">
 								<span>{signupStatusLabel(row.status)}</span>
 								{row.status === "gemeldet" &&
-									!row.championshipFreeSignup && (
+									!row.competitionFreeSignup && (
 										<Button
 											text="Nachträglich bearbeiten"
 											maxWidth={220}
@@ -210,9 +210,9 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 						onChange={(option) => setSeason(selectString(option))}
 					/>
 				) : null}
-				{openChampionships.length > 0 ? (
+				{openCompetitions.length > 0 ? (
 					<CreateButton
-						text={`Offene Meldungen (${openChampionships.length})`}
+						text={`Offene Meldungen (${openCompetitions.length})`}
 						size="small"
 						onClick={() => setCreateOpen(true)}
 					/>
@@ -224,37 +224,37 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 				isOpen={createOpen}
 				cancel={() => setCreateOpen(false)}
 				confirm={async () => {
-					if (!selectedChampionshipId || !selectedClass) {
+					if (!selectedCompetitionId || !selectedClass) {
 						return;
 					}
-					await createOpenSignup(selectedChampionshipId, selectedClass);
+					await createOpenSignup(selectedCompetitionId, selectedClass);
 					setCreateOpen(false);
-					setSelectedChampionshipId("");
+					setSelectedCompetitionId("");
 					setSelectedClass("");
 				}}
 				confirmText="Hinzufügen"
-				disabled={[false, !selectedChampionshipId || !selectedClass]}
+				disabled={[false, !selectedCompetitionId || !selectedClass]}
 			>
 				<div className="flex col a-st gap-sm">
 					<Select
-						id="open-championship"
+						id="open-Competition"
 						label="Wettkampf"
-						options={championshipOptions}
+						options={CompetitionOptions}
 						value={
-							championshipOptions.find(
+							CompetitionOptions.find(
 								(option) =>
-									option.value === selectedChampionshipId
+									option.value === selectedCompetitionId
 							) || null
 						}
 						onChange={(option) => {
-							setSelectedChampionshipId(selectString(option));
+							setSelectedCompetitionId(selectString(option));
 							setSelectedClass("");
 						}}
 					/>
 					<Select
 						id="open-class"
 						label="Spielklasse"
-						isDisabled={!selectedChampionshipId}
+						isDisabled={!selectedCompetitionId}
 						options={classOptions}
 						value={
 							classOptions.find(
@@ -270,7 +270,7 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 			<SlideIn
 				header={
 					editRow
-						? `${editRow.championshipTitle} — Mannschaft-Nr: ${editRow.number}`
+						? `${editRow.competitionTitle} — Mannschaft-Nr: ${editRow.number}`
 						: "Mannschaft bearbeiten"
 				}
 				isOpen={Boolean(editRow)}
@@ -286,7 +286,7 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 						onClose={() => setEditRow(null)}
 						onSave={(patch) =>
 							patchSignup(
-								editRow.championshipId,
+								editRow.competitionId,
 								editRow.id,
 								patch,
 								"Meldung aktualisiert"
@@ -304,14 +304,14 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 			>
 				{infoRow ? (
 					<div className="flex col a-st gap-sm">
-						<h3>{infoRow.championshipTitle}</h3>
-						<p>Saison: {infoRow.championshipSeason || "—"}</p>
+						<h3>{infoRow.competitionTitle}</h3>
+						<p>Saison: {infoRow.competitionSeason || "—"}</p>
 						<p>Spielklasse: {infoRow.class || "—"}</p>
 						<p>
 							Meldefrist:{" "}
-							{infoRow.championshipDeadline
+							{infoRow.competitionDeadline
 								? new Date(
-										infoRow.championshipDeadline
+										infoRow.competitionDeadline
 									).toLocaleDateString("de-DE")
 								: "—"}
 						</p>
@@ -353,7 +353,7 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 						return;
 					}
 					await patchSignup(
-						submitRow.championshipId,
+						submitRow.competitionId,
 						submitRow.id,
 						{ status: "eingereicht" },
 						"Meldung eingereicht"
@@ -377,7 +377,7 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 						return;
 					}
 					await patchSignup(
-						reeditRow.championshipId,
+						reeditRow.competitionId,
 						reeditRow.id,
 						{ status: "eingeladen" },
 						"Meldungsstatus aktualisiert"
@@ -400,7 +400,7 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 						return;
 					}
 					await deleteSignup(
-						deleteRow.championshipId,
+						deleteRow.competitionId,
 						deleteRow.id
 					);
 					setDeleteRow(null);
@@ -408,7 +408,7 @@ const SignUps: FC<ClubTabProps> = ({ related }) => {
 			>
 				<p>
 					Sind Sie sicher, dass Sie die Meldung für den Wettkampf{" "}
-					{deleteRow?.championshipTitle} löschen möchten?
+					{deleteRow?.competitionTitle} löschen möchten?
 				</p>
 			</Modal>
 			{loading ? <p>Speichert ...</p> : null}

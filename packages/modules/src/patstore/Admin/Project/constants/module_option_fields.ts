@@ -1,4 +1,4 @@
-import { ModuleOptionsField } from "../types";
+﻿import { ModuleOptionsField } from "../types";
 import { v4 as generateUuid } from "uuid";
 
 export const module_option_fields: ModuleOptionsField = {
@@ -340,8 +340,8 @@ export const module_option_fields: ModuleOptionsField = {
 		setting_fields: [],
 		default_fields: ["title", "video"]
 	},
-	"/championships": {
-		path: "/championships",
+	"/competitions": {
+		path: "/competitions",
 		name: "Meisterschaften",
 		icon: "events",
 		settings: {
@@ -353,7 +353,7 @@ export const module_option_fields: ModuleOptionsField = {
 		data_fields: [],
 		position: 15,
 		categories: [],
-		connected_class: "Championship",
+		connected_class: "Competition",
 		sub_menu: [],
 		setting_fields: [],
 		default_fields: ["title"]

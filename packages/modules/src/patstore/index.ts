@@ -1,4 +1,4 @@
-export * from "./Form";
+﻿export * from "./Form";
 export * from "./Images";
 export * from "./Persons";
 export * from "./Categories";
@@ -17,5 +17,5 @@ export * from "./Project";
 export * from "./Email";
 export * from "./Videos";
 export * from "./Log";
-export * from "./Championship";
+export * from "./Competition";
 export * from "./Club";

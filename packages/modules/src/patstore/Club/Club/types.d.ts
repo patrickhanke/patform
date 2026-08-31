@@ -1,6 +1,6 @@
-import {
-	ChampionshipClass,
-	ChampionshipSignup,
+﻿import {
+	CompetitionClass,
+	CompetitionSignup,
 	ClubClass,
 	GroupClass,
 	LocationClass,
@@ -12,8 +12,8 @@ export type ClubRelatedData = {
 	people: PersonClass[];
 	locations: LocationClass[];
 	groups: GroupClass[];
-	championships: ChampionshipClass[];
-	refetchChampionships: () => Promise<unknown>;
+	competitions: CompetitionClass[];
+	refetchCompetitions: () => Promise<unknown>;
 	refetchPeople: () => Promise<unknown>;
 };
 
@@ -21,13 +21,13 @@ export type ClubTabProps = {
 	related: ClubRelatedData;
 };
 
-export type ClubSignupRow = ChampionshipSignup & {
+export type ClubSignupRow = CompetitionSignup & {
 	objectId: string;
-	championshipId: string;
-	championshipTitle: string;
-	championshipSeason?: string;
-	championshipDeadline?: string;
-	championshipOpenSignup: boolean;
-	championshipFreeSignup: boolean;
-	championshipClasses: string[];
+	competitionId: string;
+	competitionTitle: string;
+	competitionSeason?: string;
+	competitionDeadline?: string;
+	competitionOpenSignup: boolean;
+	competitionFreeSignup: boolean;
+	competitionClasses: string[];
 };
