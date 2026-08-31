@@ -8,7 +8,8 @@ import {
 	RenderFilters,
 	Separator,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { useDataHandler, useFindModuleData } from "@repo/provider";
 import { AppointmentClass, Filter, ModuleOverviewProps } from "@repo/types";
@@ -60,8 +61,10 @@ const CalendarOverview = ({
 		className: "Appointment",
 		refetch,
 		categories: module?.categories,
-		constants: {}
+		constants: {},
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<AppointmentClass[]>();
 
 	const renderFilters = useMemo(() => {
 		return (
@@ -106,14 +109,16 @@ const CalendarOverview = ({
 				className: "Appointment",
 				text: "Neuen Kalendereintrag erstellen",
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages: languages,
+				initialState: "draft"
 			}}
 			refetch={refetch}
 		>
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				setPagination={setPagination}
 				pagination={pagination}

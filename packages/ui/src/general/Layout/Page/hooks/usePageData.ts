@@ -69,11 +69,47 @@ export type PageDataUpdateObject<T> = (data: T) => {
 		| undefined;
 };
 
+export type PageDataUpdatePayload = {
+	[key: string]:
+		| string
+		| number
+		| boolean
+		| object
+		| Array<unknown>
+		| undefined;
+};
+
 export type PageDataUpdateOptions<T> = {
 	className: string;
 	updateObject: PageDataUpdateObject<T>;
 	message?: string;
+	collection?: boolean;
+	useMasterKey?: boolean;
 };
+
+export type PageDataCollectionUpdate = {
+	objectId: string;
+	updateObject: PageDataUpdatePayload;
+};
+
+type CollectionRow = { objectId?: string };
+
+export type SetPageRowData<T> =
+	T extends ReadonlyArray<infer R>
+		? <K extends PageDataPaths<R> | string>(
+				objectId: string,
+				key: K,
+				value: K extends PageDataPaths<R>
+					? PageDataPathValue<R, K>
+					: unknown,
+				debounce?: number
+			) => void
+		: (
+				objectId: string,
+				key: string,
+				value: unknown,
+				debounce?: number
+			) => void;
 
 type PageDataOptions<T> = {
 	initialData?: T;
@@ -86,6 +122,79 @@ type PageDataState = {
 	setData: (data: unknown) => void;
 	resetData: () => void;
 	initialize: (data: unknown) => void;
+	replaceCollection: (data: unknown, initialData: unknown) => void;
+};
+
+const PARSE_META_KEYS = new Set([
+	"objectId",
+	"createdAt",
+	"updatedAt",
+	"ACL",
+	"__type",
+	"className"
+]);
+
+const isCollectionRowArray = (value: unknown): value is CollectionRow[] =>
+	Array.isArray(value);
+
+const getRowObjectId = (row: unknown): string | undefined => {
+	if (row && typeof row === "object" && "objectId" in row) {
+		const objectId = (row as CollectionRow).objectId;
+		return typeof objectId === "string" ? objectId : undefined;
+	}
+	return undefined;
+};
+
+const mergeCollectionRows = (
+	incoming: CollectionRow[],
+	current: CollectionRow[],
+	storedInitial: CollectionRow[]
+): CollectionRow[] => {
+	const currentById = new Map(
+		current
+			.map((row) => [getRowObjectId(row), row] as const)
+			.filter((entry): entry is readonly [string, CollectionRow] =>
+				Boolean(entry[0])
+			)
+	);
+	const initialById = new Map(
+		storedInitial
+			.map((row) => [getRowObjectId(row), row] as const)
+			.filter((entry): entry is readonly [string, CollectionRow] =>
+				Boolean(entry[0])
+			)
+	);
+
+	return incoming.map((serverRow) => {
+		const objectId = getRowObjectId(serverRow);
+		if (!objectId) return serverRow;
+		const currentRow = currentById.get(objectId);
+		const initialRow = initialById.get(objectId);
+		if (currentRow && initialRow && !isEqual(currentRow, initialRow)) {
+			return currentRow;
+		}
+		return serverRow;
+	});
+};
+
+const diffCollectionRow = (
+	current: Record<string, unknown>,
+	initial: Record<string, unknown> | undefined
+): PageDataUpdatePayload => {
+	const payload: PageDataUpdatePayload = {};
+	const keys = new Set([
+		...Object.keys(current),
+		...(initial ? Object.keys(initial) : [])
+	]);
+
+	keys.forEach((key) => {
+		if (PARSE_META_KEYS.has(key)) return;
+		if (!isEqual(current[key], initial?.[key])) {
+			payload[key] = current[key] as PageDataUpdatePayload[string];
+		}
+	});
+
+	return payload;
 };
 
 const applyPathValue = <T>(data: T, key: string, value: unknown): T => {
@@ -113,6 +222,14 @@ const usePageDataStore = create<PageDataState>()(
 					usePageDataStore.temporal.getState();
 				pause();
 				setState({ data, initialData: data });
+				clear();
+				resume();
+			},
+			replaceCollection: (data, initialData) => {
+				const { pause, resume, clear } =
+					usePageDataStore.temporal.getState();
+				pause();
+				setState({ data, initialData });
 				clear();
 				resume();
 			}
@@ -167,14 +284,41 @@ const usePageData = <T = unknown>(
 	}, []);
 
 	const initialData = options?.initialData;
-	const storeNeedsInitialData =
+	const incomingDiffersFromStore =
 		initialData !== undefined && !isEqual(storedInitialData, initialData);
+	const dataIsDirty = !isEqual(data, storedInitialData);
+	const shouldMergeCollection =
+		incomingDiffersFromStore &&
+		dataIsDirty &&
+		isCollectionRowArray(initialData) &&
+		isCollectionRowArray(data) &&
+		isCollectionRowArray(storedInitialData);
 
 	useLayoutEffect(() => {
-		if (!storeNeedsInitialData) return;
+		if (!incomingDiffersFromStore || initialData === undefined) return;
 		cancelPendingSetData();
+
+		const current = usePageDataStore.getState().data;
+		const storedInitial = usePageDataStore.getState().initialData;
+		const isDirty = !isEqual(current, storedInitial);
+
+		if (
+			isDirty &&
+			isCollectionRowArray(initialData) &&
+			isCollectionRowArray(current) &&
+			isCollectionRowArray(storedInitial)
+		) {
+			usePageDataStore
+				.getState()
+				.replaceCollection(
+					mergeCollectionRows(initialData, current, storedInitial),
+					initialData
+				);
+			return;
+		}
+
 		usePageDataStore.getState().initialize(initialData);
-	}, [storeNeedsInitialData, initialData, cancelPendingSetData]);
+	}, [incomingDiffersFromStore, initialData, cancelPendingSetData]);
 
 	const flushPendingPatches = useCallback(() => {
 		const patches = pendingPatchesRef.current;
@@ -212,7 +356,7 @@ const usePageData = <T = unknown>(
 		flushPendingPatches();
 	});
 
-	const setData = useCallback(
+	const setDataInternal = useCallback(
 		(key: string, value: unknown, debounce?: number) => {
 			if (!debounce) {
 				pendingPatchesRef.current.delete(key);
@@ -232,7 +376,8 @@ const usePageData = <T = unknown>(
 			);
 		},
 		[flushPendingPatches, setStoreData]
-	) as SetPageData<T>;
+	);
+	const setData = setDataInternal as SetPageData<T>;
 
 	const resetData = useCallback(() => {
 		cancelPendingSetData();
@@ -255,10 +400,61 @@ const usePageData = <T = unknown>(
 		[cancelPendingSetData]
 	);
 
+	const setRowData = useCallback(
+		(objectId: string, key: string, value: unknown, debounce?: number) => {
+			const current = usePageDataStore.getState().data;
+			if (isCollectionRowArray(current)) {
+				const index = current.findIndex(
+					(row) => getRowObjectId(row) === objectId
+				);
+				if (index < 0) return;
+				setDataInternal(`${index}.${key}`, value, debounce);
+				return;
+			}
+
+			if (objectIdRef.current === objectId) {
+				setDataInternal(key, value, debounce);
+			}
+		},
+		[setDataInternal]
+	) as SetPageRowData<T>;
+
 	const prepareData = useCallback(() => {
 		flushPendingSetData();
 		return usePageDataStore.getState().data as T | null;
 	}, [flushPendingSetData]);
+
+	const prepareCollectionUpdates =
+		useCallback((): PageDataCollectionUpdate[] => {
+			flushPendingSetData();
+			const current = usePageDataStore.getState().data;
+			const storedInitial = usePageDataStore.getState().initialData;
+			if (!isCollectionRowArray(current)) return [];
+
+			const initialById = new Map<string, CollectionRow>();
+			if (isCollectionRowArray(storedInitial)) {
+				storedInitial.forEach((row) => {
+					const objectId = getRowObjectId(row);
+					if (objectId) initialById.set(objectId, row);
+				});
+			}
+
+			const updates: PageDataCollectionUpdate[] = [];
+			current.forEach((row) => {
+				const objectId = getRowObjectId(row);
+				if (!objectId) return;
+				const initialRow = initialById.get(objectId);
+				if (isEqual(row, initialRow)) return;
+				const updateObject = diffCollectionRow(
+					row as Record<string, unknown>,
+					initialRow as Record<string, unknown> | undefined
+				);
+				if (Object.keys(updateObject).length === 0) return;
+				updates.push({ objectId, updateObject });
+			});
+
+			return updates;
+		}, [flushPendingSetData]);
 
 	const commitData = useCallback(() => {
 		const current = usePageDataStore.getState().data;
@@ -267,21 +463,33 @@ const usePageData = <T = unknown>(
 		}
 	}, []);
 
+	const displayedData = (
+		shouldMergeCollection
+			? mergeCollectionRows(initialData, data, storedInitialData)
+			: incomingDiffersFromStore
+				? initialData
+				: data
+	) as T | null;
+
 	return {
-		data: ((storeNeedsInitialData ? initialData : data) ??
-			initialData ??
-			null) as T | null,
+		data: (displayedData ?? initialData ?? null) as T | null,
 		setData,
+		setRowData,
 		updateOptions:
 			updateOptionsRef.current as PageDataUpdateOptions<T> | null,
 		objectId: objectIdRef.current,
 		prepareData,
+		prepareCollectionUpdates,
 		commitData,
 		undo,
 		redo,
-		dataHasChanged: storeNeedsInitialData
-			? false
-			: !isEqual(data, storedInitialData),
+		dataHasChanged:
+			incomingDiffersFromStore && !shouldMergeCollection
+				? false
+				: !isEqual(
+						shouldMergeCollection ? displayedData : data,
+						shouldMergeCollection ? initialData : storedInitialData
+					),
 		resetData
 	};
 };

@@ -5,7 +5,10 @@ export type {
 	PageDataPathValue,
 	PageDataPaths,
 	SetPageData,
+	SetPageRowData,
 	PageDataUpdateObject,
-	PageDataUpdateOptions
+	PageDataUpdateOptions,
+	PageDataCollectionUpdate,
+	PageDataUpdatePayload
 } from "./hooks/usePageData";
 export type * from "./types";

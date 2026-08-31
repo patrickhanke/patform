@@ -2,7 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { Field, ModuleSettings, Module as ModuleType, PageState } from "@repo/types";
+import {
+	Field,
+	ModuleSettings,
+	Module as ModuleType,
+	PageState
+} from "@repo/types";
 import { Loader, Page, type PageDataUpdateOptions } from "@repo/ui";
 import { useFindData, useGetData } from "@repo/provider";
 import page_states from "./constants/page_states";

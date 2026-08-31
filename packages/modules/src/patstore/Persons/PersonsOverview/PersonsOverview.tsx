@@ -6,7 +6,8 @@ import {
 	Modal,
 	Page,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { Filter, ModuleOverviewProps, PersonClass } from "@repo/types";
 import { useDataHandler, useFindModuleData } from "@repo/provider";
@@ -48,8 +49,10 @@ const PersonsOverview = ({
 		fields: module.data_fields,
 		className: "Person",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<PersonClass[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -73,14 +76,16 @@ const PersonsOverview = ({
 				className: "Person",
 				text: "Neue Person erstellen",
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages: languages,
+				initialState: "draft"
 			}}
 			emptyContent={true}
 			refetch={refetch}
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}

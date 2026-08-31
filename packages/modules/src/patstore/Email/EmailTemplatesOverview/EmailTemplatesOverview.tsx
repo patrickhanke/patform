@@ -1,6 +1,6 @@
 "use client";
 
-import { Page, Table, useCreateColumns } from "@repo/ui";
+import { Page, Table, useCreateColumns, usePageData } from "@repo/ui";
 import { useState } from "react";
 import { Filter, ModuleOverviewProps, TemplateClass } from "@repo/types";
 import { useFindData } from "@repo/provider";
@@ -37,8 +37,10 @@ const EmailTemplatesOverview = ({
 		className: "Template",
 		editLink: `emails/templates`,
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<TemplateClass[]>();
 
 	return (
 		<Page
@@ -68,7 +70,7 @@ const EmailTemplatesOverview = ({
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				rowCount={count}
 				pagination={pagination}
 				setPagination={setPagination}

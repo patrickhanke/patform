@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useDataHandler, useFindData } from "@repo/provider";
-import { Modal, Page, Table, useCreateColumns } from "@repo/ui";
+import { Modal, Page, Table, useCreateColumns, usePageData } from "@repo/ui";
 import { Filter, ModuleOverviewProps } from "@repo/types";
 
 interface ListData {
@@ -81,8 +81,10 @@ const ListsOverview = ({
 		categories: [],
 		className: "Item",
 		refetch,
-		editLink: "emails/lists"
+		editLink: "emails/lists",
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<ListData[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -132,7 +134,7 @@ const ListsOverview = ({
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}

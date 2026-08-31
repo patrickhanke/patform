@@ -11,7 +11,7 @@ const Sidebar: FC<SidebarProps> = ({
 	menuItems,
 	user,
 	children,
-	appVersion = "1.0.0"
+	appVersion = "1.1.1"
 }) => {
 	return (
 		<div className="sidebar_container" id="sidebar">

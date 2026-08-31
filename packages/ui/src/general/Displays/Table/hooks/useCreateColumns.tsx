@@ -37,7 +37,8 @@ import {
 	TableColumnTextfield,
 	TableColumnDate,
 	TableColumnImages,
-	LatLng
+	LatLng,
+	usePageData
 } from "@repo/ui";
 import { get } from "lodash-es";
 import { IconButton } from "@repo/ui";
@@ -81,6 +82,16 @@ const isPlaceholderRow = (row: unknown): boolean => {
 
 const PLACEHOLDER_CELL = <Loader width="100%" height="24px" />;
 
+const TEXT_DEBOUNCE_MS = 300;
+
+const getLiveRow = <T extends { objectId?: string }>(
+	rows: T[] | null | undefined,
+	row: T
+): T => {
+	if (!Array.isArray(rows) || !row.objectId) return row;
+	return rows.find((item) => item.objectId === row.objectId) ?? row;
+};
+
 const withPlaceholderCell = <T,>(column: ColumnDef<T>): ColumnDef<T> => {
 	const originalCell = column.cell;
 
@@ -111,7 +122,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 	useMasterKey = false,
 	editDisabled = false,
 	hasEmailSettings = false,
-	currentModule
+	currentModule,
+	initialData
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandlerSecure(useMasterKey);
 	const updateColumnData: UpdateColumnData = useCallback(
@@ -119,7 +131,15 @@ const useCreateColumns = <T extends ColumnClasses>({
 			await updateData({
 				className,
 				objectId,
-				updateObject,
+				updateObject: updateObject as {
+					[key: string]:
+						| string
+						| number
+						| boolean
+						| object
+						| Array<unknown>
+						| undefined;
+				},
 				feedback
 			});
 			if (refetch) {
@@ -129,15 +149,57 @@ const useCreateColumns = <T extends ColumnClasses>({
 		[className, refetch]
 	);
 
+	const { data: pageRows, setRowData } = usePageData<T[]>(
+		{ initialData },
+		initialData !== undefined
+			? {
+					className,
+					collection: true,
+					useMasterKey,
+					updateObject: () => ({}),
+					message: "Gespeichert"
+				}
+			: undefined
+	);
+
+	const persistRow = useCallback(
+		async (
+			objectId: string,
+			fieldId: string,
+			value:
+				| object
+				| string
+				| number
+				| string[]
+				| boolean
+				| null
+				| undefined,
+			feedback: string,
+			debounce?: number
+		) => {
+			if (initialData !== undefined) {
+				setRowData(objectId, fieldId, value as never, debounce);
+				return;
+			}
+			await updateColumnData({
+				objectId,
+				updateObject: { [fieldId]: value },
+				feedback
+			});
+		},
+		[initialData, setRowData, updateColumnData]
+	);
+
 	const handleImageChange = useCallback(
 		(objectId: string, columnId: string | number) =>
 			(value: string | object | number) =>
-				updateColumnData({
+				persistRow(
 					objectId,
-					updateObject: { [columnId]: value },
-					feedback: "Bilder aktualisiert"
-				}),
-		[updateColumnData]
+					String(columnId),
+					value,
+					"Bilder aktualisiert"
+				),
+		[persistRow]
 	);
 
 	const columns = useMemo(() => {
@@ -148,16 +210,18 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_string"
 			) {
 				columnArray.push({
-					accessorFn: (row) =>
-						columnElement.id === "email" && className === "User" ? (
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return columnElement.id === "email" &&
+							className === "User" ? (
 							<TableColumnHiddenField
-								id={row.objectId}
+								id={live.objectId}
 								className={className}
 								field={columnElement.id}
 							/>
 						) : (
 							<TableColumnString
-								value={row[columnElement.id] as string}
+								value={live[columnElement.id] as string}
 								isLink={columnElement.id === "link"}
 								isEditable={
 									columnElement.type === "edit_string"
@@ -165,16 +229,17 @@ const useCreateColumns = <T extends ColumnClasses>({
 										: false
 								}
 								onChange={(value: string) =>
-									updateColumnData({
-										objectId: row.objectId,
-										updateObject: {
-											[columnElement.id]: value
-										},
-										feedback: "Text aktualisiert"
-									})
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Text aktualisiert",
+										TEXT_DEBOUNCE_MS
+									)
 								}
 							/>
-						),
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -187,19 +252,24 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "gallery"
 			) {
 				columnArray.push({
-					accessorFn: (row) => (
-						<PatstoreSelectImages
-							key={row.objectId}
-							image={row[columnElement.id] as string | string[]}
-							maxFileCount={
-								columnElement.type === "gallery" ? 60 : 1
-							}
-							onChange={handleImageChange(
-								row.objectId,
-								columnElement.id as string
-							)}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<PatstoreSelectImages
+								key={live.objectId}
+								image={
+									live[columnElement.id] as string | string[]
+								}
+								maxFileCount={
+									columnElement.type === "gallery" ? 60 : 1
+								}
+								onChange={handleImageChange(
+									live.objectId,
+									columnElement.id as string
+								)}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -211,23 +281,28 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_textfield"
 			) {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnTextfield
-							value={row[columnElement.id] as string}
-							isEditable={
-								columnElement.type === "edit_textfield"
-									? true
-									: false
-							}
-							onChange={(value: string) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Text aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnTextfield
+								value={live[columnElement.id] as string}
+								isEditable={
+									columnElement.type === "edit_textfield"
+										? true
+										: false
+								}
+								onChange={(value: string) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Text aktualisiert",
+										TEXT_DEBOUNCE_MS
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -237,19 +312,24 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "texteditor") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnTexteditor
-							value={row[columnElement.id] as string}
-							isEditable={true}
-							onChange={(value: string) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Text aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnTexteditor
+								value={live[columnElement.id] as string}
+								isEditable={true}
+								onChange={(value: string) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Text aktualisiert",
+										TEXT_DEBOUNCE_MS
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -259,18 +339,24 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "edit_dates") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnDatesField
-							initialDates={row[columnElement.id] as EventDate[]}
-							onChange={(value: EventDate[]) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Termin aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnDatesField
+								initialDates={
+									live[columnElement.id] as EventDate[]
+								}
+								onChange={(value: EventDate[]) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Termin aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -282,23 +368,27 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "date_picker"
 			) {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnDate
-							date={row[columnElement.id] as string}
-							onChange={(value: string) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Datum aktualisiert"
-								})
-							}
-							isEditable={
-								columnElement.type === "date_picker"
-									? true
-									: false
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnDate
+								date={live[columnElement.id] as string}
+								onChange={(value: string) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Datum aktualisiert"
+									)
+								}
+								isEditable={
+									columnElement.type === "date_picker"
+										? true
+										: false
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -308,21 +398,23 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "video") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnVideo
-							value={row[columnElement.id] as string}
-							onChange={(filePath: string) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: {
-										[columnElement.id]: filePath
-									},
-									feedback: "Video aktualisiert"
-								})
-							}
-							id={row.objectId}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnVideo
+								value={live[columnElement.id] as string}
+								onChange={(filePath: string) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										filePath,
+										"Video aktualisiert"
+									)
+								}
+								id={live.objectId}
+							/>
+						);
+					},
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
@@ -334,29 +426,33 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_geopoint"
 			) {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnGeopoint
-							value={row[columnElement.id] as LatitudeLongitude}
-							isEditable={
-								columnElement.type === "edit_geopoint"
-									? true
-									: false
-							}
-							onChange={(value: LatLng) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: {
-										[columnElement.id]: {
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnGeopoint
+								value={
+									live[columnElement.id] as LatitudeLongitude
+								}
+								isEditable={
+									columnElement.type === "edit_geopoint"
+										? true
+										: false
+								}
+								onChange={(value: LatLng) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										{
 											__type: "GeoPoint",
 											latitude: value.lat,
 											longitude: value.lng
-										}
-									},
-									feedback: "GeoPoint aktualisiert"
-								})
-							}
-						/>
-					),
+										},
+										"GeoPoint aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -369,37 +465,39 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_state"
 			) {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnEditState
-							value={row[columnElement.id] as string}
-							isEditable={
-								columnElement.disabled
-									? columnElement.disabled(row)
-									: true
-							}
-							options={get(constants, columnElement.id, [
-								{
-									value: "published",
-									label: "Veröffentlicht",
-									color: "green"
-								},
-								{
-									value: "draft",
-									label: "Entwurf",
-									color: "yellow"
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnEditState
+								value={live[columnElement.id] as string}
+								isEditable={
+									columnElement.disabled
+										? columnElement.disabled(live)
+										: true
 								}
-							])}
-							onChange={(value: ClassState) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: {
-										[columnElement.id]: value.value
+								options={get(constants, columnElement.id, [
+									{
+										value: "published",
+										label: "Veröffentlicht",
+										color: "green"
 									},
-									feedback: "Status aktualisiert"
-								})
-							}
-						/>
-					),
+									{
+										value: "draft",
+										label: "Entwurf",
+										color: "yellow"
+									}
+								])}
+								onChange={(value: ClassState) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value.value,
+										"Status aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -413,7 +511,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 			) {
 				columnArray.push({
 					accessorFn: (row) => (
-						<TableColumnImage file={row["file"]} />
+						<TableColumnImage
+							file={getLiveRow(pageRows, row)["file"]}
+						/>
 					),
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
@@ -427,29 +527,31 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_person"
 			) {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnPerson
-							isEditable={
-								columnElement.type === "edit_person"
-									? true
-									: false
-							}
-							value={row[columnElement.id] as PersonClass}
-							onChange={(value: string) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: {
-										[columnElement.id]: {
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnPerson
+								isEditable={
+									columnElement.type === "edit_person"
+										? true
+										: false
+								}
+								value={live[columnElement.id] as PersonClass}
+								onChange={(value: string) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										{
 											__type: "Pointer",
 											className: "Person",
 											objectId: value
-										}
-									},
-									feedback: "Person aktualisiert"
-								})
-							}
-						/>
-					),
+										},
+										"Person aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -459,21 +561,23 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "location") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnLocation
-							isEditable={true}
-							value={row[columnElement.id] as string}
-							onChange={(value: string | null) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: {
-										[columnElement.id]: value
-									},
-									feedback: "Ort aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnLocation
+								isEditable={true}
+								value={live[columnElement.id] as string}
+								onChange={(value: string | null) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Ort aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -483,29 +587,31 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "edit_persons") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnPersons
-							isEditable={
-								columnElement.type === "edit_person" ||
-								columnElement.type === "edit_persons"
-									? true
-									: false
-							}
-							value={
-								(row[columnElement.id] as string[]) ||
-								([] as string[])
-							}
-							onChange={(values: string[]) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: {
-										[columnElement.id]: values
-									},
-									feedback: "Personen aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnPersons
+								isEditable={
+									columnElement.type === "edit_person" ||
+									columnElement.type === "edit_persons"
+										? true
+										: false
+								}
+								value={
+									(live[columnElement.id] as string[]) ||
+									([] as string[])
+								}
+								onChange={(values: string[]) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										values,
+										"Personen aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -515,18 +621,24 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "edit_times") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnTimesField
-							initialTimes={row[columnElement.id] as EventTime[]}
-							onChange={(value: EventTime[]) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Zeiten aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnTimesField
+								initialTimes={
+									live[columnElement.id] as EventTime[]
+								}
+								onChange={(value: EventTime[]) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Zeiten aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -536,18 +648,22 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "edit_color") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnEditColor
-							value={row[columnElement.id] as ColorValues}
-							onChange={(value: string) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Farbe geändert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnEditColor
+								value={live[columnElement.id] as ColorValues}
+								onChange={(value: string) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Farbe geändert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -557,18 +673,22 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "edit_team") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnEditTeam
-							initialData={row[columnElement.id] as Team}
-							onChange={(value: Team) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Team aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnEditTeam
+								initialData={live[columnElement.id] as Team}
+								onChange={(value: Team) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Team aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -597,18 +717,24 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "files") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnDocuments
-							value={row[columnElement.id] || ([] as string[])}
-							onChange={(value: string[]) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Dokumente aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnDocuments
+								value={
+									live[columnElement.id] || ([] as string[])
+								}
+								onChange={(value: string[]) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Dokumente aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -660,20 +786,22 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "boolean") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnEditBoolean
-							value={row[columnElement.id] as boolean}
-							onChange={(value: boolean) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: {
-										[columnElement.id]: value
-									},
-									feedback: "Wert aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnEditBoolean
+								value={live[columnElement.id] as boolean}
+								onChange={(value: boolean) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Wert aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -695,46 +823,47 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "content") {
 				columnArray.push({
-					accessorFn: (row) =>
-						row?.type === "text" ? (
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return live?.type === "text" ? (
 							<TableColumnTexteditor
-								value={row[columnElement.id]?.value as string}
+								value={live[columnElement.id]?.value as string}
 								isEditable={true}
 								onChange={(value: string) =>
-									updateColumnData({
-										objectId: row.objectId,
-										updateObject: {
-											[columnElement.id]: {
-												type: row.type,
-												value
-											}
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										{
+											type: live.type,
+											value
 										},
-										feedback: "Text aktualisiert"
-									})
+										"Text aktualisiert",
+										TEXT_DEBOUNCE_MS
+									)
 								}
 							/>
 						) : (
 							<TableColumnImages
 								value={
-									row[columnElement.id] as string | string[]
+									live[columnElement.id] as string | string[]
 								}
 								maxFileCount={
 									columnElement.type === "gallery" ? 20 : 1
 								}
 								onChange={(value: string | string[]) =>
-									updateColumnData({
-										objectId: row.objectId,
-										updateObject: {
-											[columnElement.id]: {
-												type: row.type,
-												value: value
-											}
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										{
+											type: live.type,
+											value: value
 										},
-										feedback: "Bilder aktualisiert"
-									})
+										"Bilder aktualisiert"
+									)
 								}
 							/>
-						),
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -744,20 +873,24 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "edit_content") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnEditContent
-							initialData={
-								row[columnElement.id] as WebpageContent[]
-							}
-							onChange={(value: WebpageContent[]) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Inhalt aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnEditContent
+								initialData={
+									live[columnElement.id] as WebpageContent[]
+								}
+								onChange={(value: WebpageContent[]) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Inhalt aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -767,19 +900,25 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "lang") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnLang
-							value={row[columnElement.id] as LanguageValue}
-							languages={currentModule?.settings?.languages || []}
-							onChange={(value: string) =>
-								updateColumnData({
-									objectId: row.objectId,
-									updateObject: { [columnElement.id]: value },
-									feedback: "Inhalt aktualisiert"
-								})
-							}
-						/>
-					),
+					accessorFn: (row) => {
+						const live = getLiveRow(pageRows, row);
+						return (
+							<TableColumnLang
+								value={live[columnElement.id] as LanguageValue}
+								languages={
+									currentModule?.settings?.languages || []
+								}
+								onChange={(value: string) =>
+									persistRow(
+										live.objectId,
+										columnElement.id as string,
+										value,
+										"Inhalt aktualisiert"
+									)
+								}
+							/>
+						);
+					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),
@@ -815,24 +954,28 @@ const useCreateColumns = <T extends ColumnClasses>({
 
 		categories.map((category) => {
 			columnArray.push({
-				accessorFn: (row) => (
-					<TableColumnCategory
-						category={category}
-						isEditable={
-							disableCategory
-								? !disableCategory(row, category.label)
-								: true
-						}
-						categories={row.categories || []}
-						onChange={(categories: string[]) =>
-							updateColumnData({
-								objectId: row.objectId,
-								updateObject: { categories },
-								feedback: "Kategorie aktualisiert"
-							})
-						}
-					/>
-				),
+				accessorFn: (row) => {
+					const live = getLiveRow(pageRows, row);
+					return (
+						<TableColumnCategory
+							category={category}
+							isEditable={
+								disableCategory
+									? !disableCategory(live, category.label)
+									: true
+							}
+							categories={live.categories || []}
+							onChange={(nextCategories: string[]) =>
+								persistRow(
+									live.objectId,
+									"categories",
+									nextCategories,
+									"Kategorie aktualisiert"
+								)
+							}
+						/>
+					);
+				},
 				header: () => <span>{category.label}</span>,
 				id: category.id,
 				cell: (info) => info.getValue(),
@@ -923,7 +1066,14 @@ const useCreateColumns = <T extends ColumnClasses>({
 		disableCategory,
 		updateColumnData,
 		handleImageChange,
-		settings
+		persistRow,
+		pageRows,
+		settings,
+		currentModule,
+		editDisabled,
+		hasEmailSettings,
+		useMasterKey,
+		updateData
 	]);
 
 	return columns;

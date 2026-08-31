@@ -13,7 +13,8 @@ import {
 	Page,
 	SlideInForm,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { CreateUser } from "./types";
 import { useState } from "react";
@@ -98,8 +99,10 @@ const UsersOverview = ({
 		useMasterKey: true,
 		hasEmailSettings:
 			module.fields?.find((field) => field.id === "emails")?.active ||
-			false
+			false,
+		initialData: users ?? []
 	});
+	const { data: pageRows } = usePageData<PatstoreUser[]>();
 
 	const createUserFields: CreateUser[keyof CreateUser] | undefined =
 		create_user(
@@ -195,7 +198,7 @@ const UsersOverview = ({
 			{pageState.value === "user" && (
 				<Table
 					columns={columns}
-					data={users || []}
+					data={pageRows ?? users ?? []}
 					setPagination={setPagination}
 					pagination={pagination}
 					rowCount={count}

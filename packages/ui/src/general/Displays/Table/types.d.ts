@@ -149,6 +149,8 @@ export type CreateColumnHookProps<Class> = {
 	editDisabled?: boolean;
 	hasEmailSettings?: boolean;
 	currentModule?: Module;
+	/** Query rows. When set, cell edits go through usePageData and save as a collection. */
+	initialData?: Class[];
 };
 
 export type ColumnClasses =

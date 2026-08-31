@@ -1,6 +1,6 @@
 "use client";
 
-import { Page, RenderFilters, Table, useCreateColumns } from "@repo/ui";
+import { Page, RenderFilters, Table, useCreateColumns, usePageData } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
 
 import { ContentClass, Filter, ModuleOverviewProps } from "@repo/types";
@@ -57,8 +57,10 @@ const WebsiteComponents = ({
 		className: "Content",
 		refetch,
 		categories: [],
-		editLink: "website/components"
+		editLink: "website/components",
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<ContentClass[]>();
 
 	const renderFilters = useMemo(() => {
 		return (
@@ -90,7 +92,7 @@ const WebsiteComponents = ({
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				setPagination={setPagination}
 				pagination={pagination}
 				rowCount={count}

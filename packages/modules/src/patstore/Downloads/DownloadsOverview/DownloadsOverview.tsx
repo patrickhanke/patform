@@ -7,7 +7,8 @@ import {
 	Page,
 	RenderFilters,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import {
 	useDataHandler,
@@ -68,8 +69,10 @@ const DownloadsOverview = ({
 		fields: module.data_fields,
 		className: "Download",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<DownloadClass[]>();
 
 	const renderFilters = useMemo(() => {
 		return (
@@ -113,7 +116,9 @@ const DownloadsOverview = ({
 				className: "Download",
 				text: "Neuen Download erstellen",
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages: languages,
+				initialState: "draft"
 			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
@@ -123,7 +128,7 @@ const DownloadsOverview = ({
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}

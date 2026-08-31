@@ -17,23 +17,49 @@ const PageActionBar: FC<PageActionBarProps> = ({
 	refetch
 }) => {
 	const [isSaving, setIsSaving] = useState(false);
-	const { updateData } = useDataHandlerSecure();
-	const { prepareData, commitData } = usePageData();
+	const { updateData } = useDataHandlerSecure(
+		updateOptions?.useMasterKey ?? false
+	);
+	const { prepareData, prepareCollectionUpdates, commitData } = usePageData();
+
+	const canSave = Boolean(
+		updateOptions && (objectId || updateOptions.collection)
+	);
 
 	const handleSave = useCallback(async () => {
-		if (!updateOptions || !objectId) return;
-
-		const currentData = prepareData();
-		if (currentData == null) return;
+		if (!updateOptions) return;
+		if (!updateOptions.collection && !objectId) return;
 
 		setIsSaving(true);
 		try {
-			await updateData({
-				className: updateOptions.className,
-				objectId,
-				updateObject: updateOptions.updateObject(currentData),
-				feedback: updateOptions.message
-			});
+			if (updateOptions.collection) {
+				const updates = prepareCollectionUpdates();
+				if (updates.length > 0) {
+					await Promise.all(
+						updates.map((item, index) =>
+							updateData({
+								className: updateOptions.className,
+								objectId: item.objectId,
+								updateObject: item.updateObject,
+								feedback:
+									index === 0
+										? updateOptions.message
+										: undefined
+							})
+						)
+					);
+				}
+			} else {
+				const currentData = prepareData();
+				if (currentData == null || !objectId) return;
+
+				await updateData({
+					className: updateOptions.className,
+					objectId,
+					updateObject: updateOptions.updateObject(currentData),
+					feedback: updateOptions.message
+				});
+			}
 			commitData();
 			if (refetch) {
 				await refetch();
@@ -41,7 +67,15 @@ const PageActionBar: FC<PageActionBarProps> = ({
 		} finally {
 			setIsSaving(false);
 		}
-	}, [commitData, objectId, prepareData, updateData, updateOptions]);
+	}, [
+		commitData,
+		objectId,
+		prepareCollectionUpdates,
+		prepareData,
+		updateData,
+		updateOptions,
+		refetch
+	]);
 
 	const resetHandler = () => {
 		resetData();
@@ -62,7 +96,7 @@ const PageActionBar: FC<PageActionBarProps> = ({
 							color="dark"
 							onClick={handleSave}
 							loading={isSaving}
-							disabled={!updateOptions || !objectId}
+							disabled={!canSave}
 						/>
 
 						<ActionBar.Separator />

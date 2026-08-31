@@ -5,7 +5,8 @@ import {
 	generateColumnsFromFields,
 	Page,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { EventClass, Filter, ModuleOverviewProps } from "@repo/types";
 import {
@@ -59,8 +60,10 @@ const EventOverview = ({
 		fields: module.data_fields,
 		className: "Event",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<EventClass[]>();
 
 	return (
 		<Page
@@ -70,7 +73,9 @@ const EventOverview = ({
 				className: "Event",
 				text: "Neue Veranstaltung erstellen",
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages: languages,
+				initialState: "draft"
 			}}
 			refetch={refetch}
 			pageStates={pageStates}
@@ -79,7 +84,7 @@ const EventOverview = ({
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}

@@ -6,7 +6,8 @@ import {
 	Modal,
 	Page,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { Filter, ModuleOverviewProps, NewsClass } from "@repo/types";
 import {
@@ -64,8 +65,10 @@ const NewsOverview = ({
 		className: "Entry",
 		refetch,
 		categories: module.categories,
-		currentModule: module
+		currentModule: module,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<NewsClass[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -91,7 +94,8 @@ const NewsOverview = ({
 				text: `Neue ${module.name} erstellen`,
 				fields: module.fields,
 				refetch: refetch,
-				languages
+				languages: languages,
+				initialState: "draft"
 			}}
 			pageStates={pageStates}
 			setPageState={setActivePage}
@@ -100,7 +104,7 @@ const NewsOverview = ({
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				setPagination={setPagination}
 				pagination={pagination}
