@@ -10,7 +10,7 @@ const disabled_fields: {
 	"/people": [],
 	"/downloads": [],
 	"/forms": [],
-	"/images": ["image"],
+	"/images": ["image", "state"],
 	"/entries": [],
 	"/categories": [],
 	"/emails": [],

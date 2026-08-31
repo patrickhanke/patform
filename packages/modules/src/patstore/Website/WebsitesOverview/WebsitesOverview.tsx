@@ -1,7 +1,7 @@
 "use client";
 
 import { useFindData } from "@repo/provider";
-import { Page, Table, useCreateColumns } from "@repo/ui";
+import { Page, Table, useCreateColumns, usePageData } from "@repo/ui";
 import { ModuleOverviewProps, WebpageClass } from "@repo/types";
 import createClass from "./constants/createWebpageClass";
 
@@ -49,18 +49,24 @@ const WebsitesOverview = ({
 		className: "Webpage",
 		refetch,
 		categories: module.categories,
-		editLink: "website/pages"
+		editLink: "website/pages",
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<WebpageClass[]>();
 
 	return (
 		<Page
 			title={`${module.name} - Seiten`}
 			description="Übersicht über alle Seiten"
-			createClass={{ ...createClass, languages }}
+			createClass={{
+				...createClass,
+				languages,
+				initialState: "published"
+			}}
 			refetch={refetch}
 		>
 			<Table
-				data={data ?? []}
+				data={pageRows ?? data ?? []}
 				columns={columns}
 				language={language}
 				languages={languages}

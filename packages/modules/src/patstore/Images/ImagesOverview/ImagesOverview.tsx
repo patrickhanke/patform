@@ -8,7 +8,8 @@ import {
 	PatstoreImageUploader,
 	Separator,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { Filter, ImageClass, ModuleOverviewProps } from "@repo/types";
 import { useDataHandler, useFindModuleData, useGetData } from "@repo/provider";
@@ -71,8 +72,10 @@ const ImagesOverview = ({
 		fields: module.data_fields,
 		className: "Image",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<ImageClass[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -128,7 +131,7 @@ const ImagesOverview = ({
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}

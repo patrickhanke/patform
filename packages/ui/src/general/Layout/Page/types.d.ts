@@ -10,6 +10,7 @@ export type CreateClassProps = {
 	className: string;
 	refetch?: () => void;
 	languages?: LanguageValue[];
+	initialState?: "draft" | "published";
 };
 
 export type PageHeaderButton = {

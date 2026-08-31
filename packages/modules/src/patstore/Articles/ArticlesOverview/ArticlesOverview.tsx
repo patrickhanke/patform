@@ -68,8 +68,10 @@ const ArticlesOverview = ({
 		className: "Article",
 		refetch,
 		categories: module.categories ?? [],
-		constants: { state }
+		constants: { state },
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<ArticleClass[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -94,7 +96,9 @@ const ArticlesOverview = ({
 				className: "Article",
 				text: "Neuen Bericht erstellen",
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages: languages,
+				initialState: "draft"
 			}}
 			refetch={refetch}
 			pageStates={pageStates}
@@ -103,7 +107,7 @@ const ArticlesOverview = ({
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}

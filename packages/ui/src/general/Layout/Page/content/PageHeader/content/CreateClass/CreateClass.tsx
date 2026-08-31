@@ -13,7 +13,8 @@ const CreateClass = <T extends Classes>({
 	text,
 	className,
 	refetch,
-	languages = []
+	languages = [],
+	initialState = "published"
 }: CreateClassProps<T>) => {
 	const { createData } = useDataHandler();
 	const { currentModule, user } = useContext(PatstoreAppContext);
@@ -29,7 +30,8 @@ const CreateClass = <T extends Classes>({
 						className: "Module",
 						objectId: currentModule.objectId
 					},
-					...data
+					...data,
+					state: initialState
 				},
 				feedback: "Neue Daten erstellt",
 				userId: user?.objectId

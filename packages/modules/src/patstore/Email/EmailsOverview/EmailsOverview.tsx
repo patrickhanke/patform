@@ -4,7 +4,8 @@ import {
 	generateColumnsFromFields,
 	Page,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { useState } from "react";
 import { Filter, FormClass, ModuleOverviewProps } from "@repo/types";
@@ -43,8 +44,10 @@ const EmailsOverview = ({
 		className: "Email",
 		editLink: "emails",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<FormClass[]>();
 
 	return (
 		<Page
@@ -67,7 +70,7 @@ const EmailsOverview = ({
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}

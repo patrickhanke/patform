@@ -6,7 +6,8 @@ import {
 	Modal,
 	Page,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { Filter, ModuleOverviewProps, VideoClass } from "@repo/types";
 import { useDataHandler, useFindModuleData } from "@repo/provider";
@@ -48,8 +49,10 @@ const VideosOverview = ({
 		fields: module.data_fields,
 		className: "Video",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<VideoClass[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -73,14 +76,16 @@ const VideosOverview = ({
 				className: "Video",
 				text: "Neue Video erstellen",
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages: languages,
+				initialState: "draft"
 			}}
 			emptyContent={true}
 			refetch={refetch}
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}

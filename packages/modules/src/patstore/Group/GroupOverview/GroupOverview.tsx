@@ -7,7 +7,8 @@ import {
 	Page,
 	Separator,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import {
 	useDataHandler,
@@ -65,8 +66,10 @@ const GroupOverview = ({
 		fields: module.data_fields,
 		className: "Group",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<GroupClass[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -91,7 +94,9 @@ const GroupOverview = ({
 				className: "Group",
 				text: "Neue Gruppe erstellen",
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages: languages,
+				initialState: "draft"
 			}}
 			refetch={refetch}
 			pageStates={pageStates}
@@ -101,7 +106,7 @@ const GroupOverview = ({
 			<Separator size="xs" noLine />
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				setPagination={setPagination}
 				pagination={pagination}

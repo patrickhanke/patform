@@ -1,16 +1,14 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import {
-	useDataHandler,
-	useFindModuleData
-} from "@repo/provider";
+import { useDataHandler, useFindModuleData } from "@repo/provider";
 import {
 	generateColumnsFromFields,
 	Modal,
 	Page,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { Filter, LocationClass, ModuleOverviewProps } from "@repo/types";
 
@@ -52,8 +50,10 @@ const LocationOverview = ({
 		fields: module.data_fields,
 		className: "Location",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<LocationClass[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -77,14 +77,16 @@ const LocationOverview = ({
 				className: "Location",
 				text: "Neuen Ort erstellen",
 				fields: module.fields,
-				refetch: refetch
+				refetch: refetch,
+				languages: languages,
+				initialState: "draft"
 			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				setPagination={setPagination}
 				pagination={pagination}

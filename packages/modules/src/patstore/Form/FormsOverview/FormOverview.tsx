@@ -4,7 +4,8 @@ import {
 	generateColumnsFromFields,
 	Page,
 	Table,
-	useCreateColumns
+	useCreateColumns,
+	usePageData
 } from "@repo/ui";
 import { useState } from "react";
 import { Filter, FormClass, ModuleOverviewProps } from "@repo/types";
@@ -44,8 +45,10 @@ const FormsOverview = ({
 		className: "Form",
 		editLink: "forms",
 		refetch,
-		categories: module.categories
+		categories: module.categories,
+		initialData: data ?? []
 	});
+	const { data: pageRows } = usePageData<FormClass[]>();
 
 	return (
 		<Page
@@ -56,13 +59,15 @@ const FormsOverview = ({
 				text: "Neues Formular erstellen",
 				fields: module.fields,
 				refetch: refetch,
+				languages: languages,
+				initialState: "draft",
 				initialData: initial_data
 			}}
 			refetch={refetch}
 		>
 			<Table
 				columns={columns}
-				data={data || []}
+				data={pageRows ?? data ?? []}
 				loading={dataLoading}
 				rowCount={count}
 				pagination={pagination}
