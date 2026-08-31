@@ -13,7 +13,6 @@ const Dashboard = () => {
 				<InfoBox
 					status="info"
 					maxWidth="100%"
-					text="Wegen eines Updates ist das System gerade nicht verfügbar."
 					content={() => (
 						<div>
 							<h3>Update 1.1.1</h3>
@@ -30,21 +29,34 @@ const Dashboard = () => {
 							</p>
 							<p>
 								Der Status eines neu erstellten Eintrages ist
-								jetzt in der Regel immer "Entwurf". Dieser wird
-								erst dann auf der Webseite angezeigt, wenn er
-								veröffentlicht wird.
+								jetzt in der Regel immer &quot;Entwurf&quot;.
+								Dieser wird erst dann auf der Webseite
+								angezeigt, wenn er veröffentlicht wird.
 							</p>
-							<h3>1. Änderung der Speicherung von Einträgen</h3>
+							<Divider />
+							<h3>2. Änderung der Speicherung von Einträgen</h3>
 							<p>
 								Das Speichern von Einträgen erfolgt jetzt nicht
 								mehr mit der Änderung des entsprechenden Feldes
-								in der Taballe, sondern erfolgt über eine
-								entsprechende Aktiosleiste.
+								in der Tabelle, sondern erfolgt über eine
+								entsprechende Aktiosleiste. Über diese kann
+								können die Eingaben rückgängig gemacht,
+								verworfern oder gespeichert werden.
 							</p>
+							<Divider showLine />
+							<video
+								src={"/patstore_tutorial.mp4"}
+								loop
+								controls
+								autoPlay
+							/>
 						</div>
 					)}
 				/>
-				<InfoBox text="Nach dem Speichern eines Eintrages, dauert es einige Minuten bis die Änderungen auf der Webseite erscheinen." />
+				<InfoBox
+					maxWidth="100%"
+					text="Nach dem Speichern eines Eintrages, dauert es einige Minuten bis die Änderungen auf der Webseite erscheinen."
+				/>
 			</div>
 			<Divider />
 			{dashboardContent && <HtmlContent content={dashboardContent} />}
