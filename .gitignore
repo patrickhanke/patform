@@ -11,6 +11,7 @@ node_modules
 
 # Local admin playground (dev-only scripts and data)
 packages/modules/src/patstore/Admin/Playground/
+apps/patstore/app/(admin)/admin/playground/
 
 # Testing
 coverage
