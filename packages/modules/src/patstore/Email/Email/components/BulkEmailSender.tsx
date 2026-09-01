@@ -101,7 +101,13 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 			await updateData({
 				className: "Email",
 				objectId: emailId,
-				updateObject: { state: "sent" }
+				updateObject: {
+					state: "sent",
+					sendingDate: {
+						__type: "Date",
+						iso: new Date().toISOString()
+					}
+				}
 			});
 			await onSendSuccess?.();
 

@@ -47,7 +47,8 @@ const Email = () => {
 			"content",
 			"attachments",
 			"recipients",
-			"settings"
+			"settings",
+			"sendingDate"
 		],
 		id: emailId
 	});

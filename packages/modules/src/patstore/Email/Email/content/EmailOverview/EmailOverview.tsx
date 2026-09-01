@@ -21,8 +21,8 @@ const EmailOverview: FC<EmailOverviewProps> = ({
 	}, [email]);
 
 	const sendDate = useMemo(() => {
-		if (email?.date) {
-			return new Date(email.date).toLocaleString("de-DE", {
+		if (email?.sendingDate) {
+			return new Date(email.sendingDate).toLocaleString("de-DE", {
 				year: "numeric",
 				month: "long",
 				day: "numeric",
