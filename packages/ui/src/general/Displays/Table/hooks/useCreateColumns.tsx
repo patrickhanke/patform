@@ -902,6 +902,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => {
 						const live = getLiveRow(pageRows, row);
+						console.log("live", live);
 						return (
 							<TableColumnLang
 								value={live[columnElement.id] as LanguageValue}

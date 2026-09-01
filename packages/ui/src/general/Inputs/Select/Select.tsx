@@ -164,6 +164,7 @@ const Select = ({
 		[items, selectedValues]
 	);
 	const selectedLabel = isMulti ? "" : (selectedItems[0]?.label ?? "");
+	const inputValue = isMulti ? filterText : filterText || selectedLabel;
 
 	const hasErrors = !!errors?.some((error) => (id ? error.id === id : true));
 	const cssWidth = typeof width === "number" ? `${width}px` : width;
@@ -203,6 +204,8 @@ const Select = ({
 			<Combobox.Root
 				collection={collection}
 				value={selectedValues}
+				inputValue={inputValue}
+				selectionBehavior={isMulti ? "clear" : "replace"}
 				onValueChange={(details) => {
 					const selected = details.value
 						.map(
@@ -226,10 +229,8 @@ const Select = ({
 					}
 					setFilterText(details.inputValue);
 				}}
-				onOpenChange={(details) => {
-					if (details.open) {
-						setFilterText("");
-					}
+				onOpenChange={() => {
+					setFilterText("");
 				}}
 				multiple={isMulti}
 				closeOnSelect={!isMulti}

@@ -1,7 +1,7 @@
 "use client";
 
 import { generateQueryFromFields, useFindData } from "@repo/provider";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
 	ApolloRefetch,
 	Classes,
@@ -34,29 +34,23 @@ function useFindModuleData<T extends Classes>({
 	language: LanguageValue | undefined;
 	changeLanguage: (language: LanguageValue) => void;
 } {
-	const [language, setLanguage] = useState<LanguageValue | undefined>(
-		defaultLanguage
-	);
-	const { loading, data, refetch, count } = useFindData({
-		objectName: (module?.connected_class || "_User") as string,
-		fields: [
-			...generateQueryFromFields(module?.fields ?? []),
-			...additionalFields,
-			"data"
-		],
-		moduleId: module?.objectId,
-		filters,
-		limit,
-		skip,
-		order,
-		skipQuery: !module?.connected_class,
-		language
-	});
-
-	const changeLanguage = (language: LanguageValue) => {
-		setLanguage(language);
-		refetch();
-	};
+	console.log("filters", filters);
+	const { loading, data, refetch, count, changeLanguage, language } =
+		useFindData({
+			objectName: (module?.connected_class || "_User") as string,
+			fields: [
+				...generateQueryFromFields(module?.fields ?? []),
+				...additionalFields,
+				"data"
+			],
+			moduleId: module?.objectId,
+			filters,
+			limit,
+			skip,
+			order,
+			skipQuery: !module?.connected_class,
+			defaultLanguage
+		});
 
 	const returnValue = useMemo(
 		() => ({
