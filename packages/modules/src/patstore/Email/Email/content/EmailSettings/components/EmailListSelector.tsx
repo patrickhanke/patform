@@ -4,29 +4,26 @@ import { FC, useContext, useMemo, useState } from "react";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
 import { EmailListSelectorProps } from "../types";
+import { resolveRecipientListId } from "../../../functions/resolveRecipientListId";
 
 const EmailListSelector: FC<EmailListSelectorProps> = ({
 	settings,
-	updateSettings,
-	loading,
-	recipients,
-	suppressedRecipients
+	updateSettings
 }) => {
 	const { currentModule } = useContext(PatstoreAppContext);
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedListId, setSelectedListId] = useState<string | undefined>(
-		settings.recipient_list
+		resolveRecipientListId(settings.recipient_list)
 	);
 
 	const { data: lists } = useFindData({
-		objectName: "List",
+		objectName: "Email",
 		fields: ["objectId", "title"],
 		filters: [
 			{
 				key: "type",
-				value: "email",
-				operator: "equalTo",
-				id: "type_filter"
+				value: "list",
+				operator: "equalTo"
 			}
 		],
 		limit: 1000,
@@ -93,19 +90,11 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 							Ausgewählt: {selectedListName}
 						</p>
 					)}
-					{settings.recipient_list && (
-						<p style={{ marginTop: "0.5rem" }}>
-							Empfänger: {recipients.length}
-							{suppressedRecipients.length > 0 &&
-								` (${suppressedRecipients.length} unterdrückt)`}
-						</p>
-					)}
 				</div>
 				<button
 					className="full_button sm light"
 					onClick={() => setIsOpen(true)}
 					type="button"
-					disabled={loading}
 				>
 					<span>Liste auswählen</span>
 				</button>
@@ -115,7 +104,9 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 				isOpen={isOpen}
 				cancel={() => {
 					setIsOpen(false);
-					setSelectedListId(settings.recipient_list);
+					setSelectedListId(
+						resolveRecipientListId(settings.recipient_list)
+					);
 				}}
 				confirm={async () => {
 					await updateSettings({
@@ -124,7 +115,6 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 					});
 					setIsOpen(false);
 				}}
-				disabled={[loading, loading]}
 				header="Empfängerliste auswählen"
 			>
 				{selectListInterface}

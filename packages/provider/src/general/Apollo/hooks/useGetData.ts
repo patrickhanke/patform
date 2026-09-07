@@ -1,22 +1,22 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import { UseGetDataHook } from "../types";
-import { Classes } from "../../../../../types/src/patstore";
+import { UseGetDataParams, UseGetDataResult } from "../types";
+import { Classes } from "@repo/types";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
 import { sanitizeGraphQlNode } from "../functions/helpers";
 import { useEffect } from "react";
 
-const useGetData: UseGetDataHook<Classes> = ({
+const useGetData = <T extends Classes = Classes>({
 	objectName,
 	fields,
 	id,
 	skip,
 	afterSaveHandler
-}) => {
+}: UseGetDataParams<T>): UseGetDataResult<T> => {
 	const cleanObjectName = objectName.replace(/_/g, "");
-	const { data, refetch, error } = useQuery(
+	const { data, refetch, error, loading } = useQuery(
 		generateGraphQLQuery_4_1({
 			type: "get",
 			objectName: cleanObjectName,
@@ -31,21 +31,19 @@ const useGetData: UseGetDataHook<Classes> = ({
 		}
 	);
 
+	const sanitizedData = sanitizeGraphQlNode<T>(
+		get(data, `${cleanObjectName.toLowerCase()}`, null)
+	);
+
 	useEffect(() => {
-		if (afterSaveHandler && data) {
-			afterSaveHandler(
-				sanitizeGraphQlNode<Classes>(
-					get(data, `${cleanObjectName.toLowerCase()}`, null)
-				)
-			);
+		if (afterSaveHandler && data && sanitizedData) {
+			afterSaveHandler(sanitizedData);
 		}
 	}, [data]);
 
 	return {
-		loading: false,
-		data: sanitizeGraphQlNode<Classes>(
-			get(data, `${cleanObjectName.toLowerCase()}`, null)
-		),
+		loading: skip || !id ? false : loading,
+		data: sanitizedData,
 		refetch,
 		error
 	};

@@ -1,120 +1,154 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
-import { Table, TextInput, useCreateColumns } from "@repo/ui";
-import { ApolloRefetch, PatstoreUser } from "@repo/types";
-import getListMembers from "../../functions/getListMembers";
-import { EmailList } from "../../types";
+import { FC, useCallback, useMemo, useState } from "react";
+import { IconButton, Table, usePageData } from "@repo/ui";
+import { EmailList, Filter, Module, PatstoreUser } from "@repo/types";
+import { useFindDataSecure } from "@repo/provider";
 
 export interface ListMembersProps {
 	list: EmailList;
-	users: PatstoreUser[];
-	refetchUsers: () => Promise<unknown>;
-	disabled?: boolean;
+	userModule: Module;
 }
 
-export interface RecipientData {
-	name: string;
-	email: string;
-	key: string;
-}
-
-const ListMembers: FC<ListMembersProps> = ({
-	list,
-	users,
-	refetchUsers,
-	disabled = false
-}) => {
-	const listId = list.objectId;
-	const [order, setOrder] = useState<string>("label_ASC");
-	const [searchTerm, setSearchTerm] = useState("");
-
-	const listMembers = useMemo(
-		() => getListMembers(list, users, listId),
-		[list, users, listId]
+const ListMembers: FC<ListMembersProps> = ({ list, userModule }) => {
+	console.log(list.settings);
+	const { data, setData } = usePageData<EmailList["settings"]>(
+		{
+			objectId: list.objectId,
+			initialData: {
+				...list.settings,
+				recipients: list.settings.recipients || []
+			}
+		},
+		{
+			className: "Email",
+			updateObject: (data) => {
+				return {
+					settings: {
+						...data,
+						recipients: data.recipients || []
+					}
+				};
+			}
+		}
 	);
 
-	const filteredUsers = useMemo(() => {
-		if (!searchTerm.trim()) {
-			return listMembers;
-		}
-
-		const term = searchTerm.trim().toLowerCase();
-		return listMembers.filter((user) => {
-			const label = user.label?.toLowerCase() || "";
-			const firstName = user.first_name?.toLowerCase() || "";
-			const lastName = user.last_name?.toLowerCase() || "";
-
-			return (
-				label.includes(term) ||
-				firstName.includes(term) ||
-				lastName.includes(term)
-			);
-		});
-	}, [listMembers, searchTerm]);
-
-	const sortedUsers = useMemo(() => {
-		const [field, direction] = order.split("_");
-		const sorted = [...filteredUsers];
-
-		sorted.sort((a, b) => {
-			const aValue = String(a[field as keyof PatstoreUser] ?? "");
-			const bValue = String(b[field as keyof PatstoreUser] ?? "");
-			const comparison = aValue.localeCompare(bValue, "de");
-
-			return direction === "DESC" ? -comparison : comparison;
-		});
-
-		return sorted;
-	}, [filteredUsers, order]);
-
-	const columns = useCreateColumns<PatstoreUser>({
-		data: [
+	const initialFilters: Filter[] = useMemo(
+		() => [
 			{
-				id: "title",
-				label: "Anrede",
-				type: "string"
+				key: "projects",
+				value: [list.project.objectId],
+				operator: "in"
 			},
 			{
-				id: "first_name",
-				label: "Vorname",
-				type: "string"
-			},
-			{
-				id: "last_name",
-				label: "Nachname",
-				type: "string"
+				key: "is_superuser",
+				value: true,
+				operator: "notEqualTo"
 			}
 		],
-		categories: [],
-		className: "User",
-		refetch: refetchUsers as ApolloRefetch,
-		useMasterKey: true,
-		editDisabled: true
+		[]
+	);
+
+	const [filters, setFilters] = useState<Filter[]>([]);
+
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 10
 	});
 
+	const {
+		data: users,
+		count,
+		loading
+	} = useFindDataSecure({
+		objectName: "User",
+		fields: ["objectId", "first_name", "last_name", "email"],
+		filters: [...initialFilters, ...filters] as Filter[],
+		limit: pagination.pageSize,
+		skip: pagination.pageIndex * pagination.pageSize,
+		order: "label_ASC",
+		useMasterKey: true
+	});
+
+	const columns = useMemo(
+		() => [
+			{
+				header: "Vorname",
+				accessorKey: "first_name",
+				cell: ({ row }: { row: { original: PatstoreUser } }) =>
+					row.original.first_name
+			},
+			{
+				header: "Nachname",
+				accessorKey: "last_name",
+				cell: ({ row }: { row: { original: PatstoreUser } }) =>
+					row.original.last_name
+			},
+			{
+				header: "Email",
+				accessorKey: "email",
+				cell: ({ row }: { row: { original: PatstoreUser } }) =>
+					row.original.email
+			}
+		],
+		[]
+	);
+
+	const viewAllFilterHandler = useCallback(() => {
+		if (filters.find((filter) => filter.key === "objectId")) {
+			const newFilters = filters.filter(
+				(filter) => filter.key !== "objectId"
+			);
+			setFilters(newFilters);
+		} else {
+			setFilters([
+				...filters,
+				{
+					key: "objectId",
+					value: data?.recipients || [],
+					operator: "in"
+				}
+			]);
+		}
+	}, [data?.recipients, filters]);
+
 	return (
-		<div>
-			<div className="flex row a-ce j-sb gap-sm w-100">
-				<div className="flex col a-st w-100">
-					<p>Mitglieder: {listMembers.length}</p>
-				</div>
-				<div className="flex col a-st gap-sm">
-					<TextInput
-						label="Nach Vor- oder Nachname filtern"
-						id="search-filter"
-						defaultValue={searchTerm}
-						onChange={(value) => setSearchTerm(String(value))}
-						placeholder="Name eingeben..."
-						disabled={disabled}
-					/>
-				</div>
+		<div className="flex col a-st gap-md">
+			<div className="flex row gap-sm w-100 j-sb">
+				<p>
+					Die Liste enthält{" "}
+					<strong>{data?.recipients?.length}</strong> Nutzer.
+				</p>
+				<IconButton
+					text={
+						filters.find((filter) => filter.key === "objectId")
+							? "Alle anzeigen"
+							: "Ausgewählte anzeigen"
+					}
+					icon={
+						filters.find((filter) => filter.key === "objectId")
+							? "eye"
+							: "eye-off"
+					}
+					onClick={() => viewAllFilterHandler()}
+				/>
 			</div>
+
 			<Table
 				columns={columns}
-				data={sortedUsers}
-				rowCount={sortedUsers.length}
-				setOrder={setOrder}
+				data={users ?? []}
+				setPagination={setPagination}
+				pagination={pagination}
+				rowCount={count}
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={userModule.filters}
+				loading={loading}
+				selectedRows={data?.recipients || []}
+				setSelectedRows={(recipients) =>
+					setData("recipients", recipients as string[])
+				}
+				enableRowSelection
 			/>
 		</div>
 	);

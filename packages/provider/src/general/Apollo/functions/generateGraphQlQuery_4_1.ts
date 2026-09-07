@@ -50,8 +50,19 @@ const getQueryStringFromFields = (fields: string[]) => {
 				field === "matchdays" ||
 				field === "classes" ||
 				field === "training" ||
-				field === "playerIds"
+				field === "playerIds" ||
+				field === "person"
 			) {
+				if (field === "person") {
+					return `
+                person {
+                    objectId
+                    name
+                    email
+                    data
+                }
+            `;
+				}
 				return `
                 ${field} {
                     ... on Element {

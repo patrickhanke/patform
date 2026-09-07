@@ -13,9 +13,11 @@ import { AppointmentClass } from "./Date";
 import { TemplateClass } from "./Template";
 import { Module } from "./Module";
 import { ContentClass } from "./Content";
-import { LanguageValue } from "./Project";
+import { LanguageValue, PatstoreProject } from "./Project";
 import { CompetitionClass } from "./Competition";
 import { ClubClass } from "./Club";
+import { EmailClass } from "./Email";
+import { BookingClass } from "./Booking";
 
 export type ClassCategories = string[];
 
@@ -36,6 +38,7 @@ export type ClassProperties = {
 	created_by: PatstoreUser;
 	updated_by: PatstoreUser;
 	lang?: LanguageValue;
+	project: PatstoreProject;
 };
 
 export type Classes =
@@ -53,4 +56,6 @@ export type Classes =
 	| ItemClass
 	| ContentClass
 	| CompetitionClass
-	| ClubClass;
+	| ClubClass
+	| EmailClass
+	| BookingClass;

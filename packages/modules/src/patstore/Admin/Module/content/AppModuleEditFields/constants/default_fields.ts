@@ -19,7 +19,8 @@ const default_fields: {
 	"/users": ["title"],
 	"/videos": ["title"],
 	"/competitions": ["title"],
-	"/clubs": ["title"]
+	"/clubs": ["title"],
+	"/savings-group": []
 };
 
 export default default_fields;

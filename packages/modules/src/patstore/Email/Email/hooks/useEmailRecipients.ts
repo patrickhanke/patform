@@ -1,32 +1,26 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import { useAppContext, useFindDataSecure, useGetData } from "@repo/provider";
-import { Filter, PatstoreUser } from "@repo/types";
-import { isEqual } from "lodash-es";
-import { USER_QUERY_FIELDS } from "../../List/constants/user_fields";
-import { EmailList } from "../../List/types";
+import { EmailList, Filter } from "@repo/types";
 import { buildEmailRecipientsFromUsers } from "../functions/buildEmailRecipientsFromUsers";
+import { buildUserFiltersFromList } from "../functions/buildUserFiltersFromList";
+import { resolveRecipientListId } from "../functions/resolveRecipientListId";
 import { EmailRecipient } from "../types";
 
-const normalizeList = (fetchedList: EmailList): EmailList => ({
-	objectId: fetchedList.objectId,
-	title: fetchedList.title || "",
-	data: fetchedList.data,
-	settings: fetchedList.settings || { static_list: true },
-	filters: fetchedList.filters || fetchedList.settings?.filters || []
-});
+const EMPTY_RECIPIENTS: {
+	recipients: EmailRecipient[];
+	suppressedRecipients: EmailRecipient[];
+} = {
+	recipients: [],
+	suppressedRecipients: []
+};
 
-const toFetchSignature = (listId: string, list: EmailList) =>
-	`${listId}:${JSON.stringify(list)}`;
-
-export const useEmailRecipients = (recipientListId?: string) => {
+export const useEmailRecipients = (recipientListId?: unknown) => {
 	const { project } = useAppContext();
-	const [users, setUsers] = useState<PatstoreUser[]>([]);
-	const [list, setList] = useState<EmailList | null>(null);
-	const lastListFetchSignatureRef = useRef<string | null>(null);
+	const listId = resolveRecipientListId(recipientListId);
 
-	const initialUserFilters: Filter[] = useMemo(
+	const baseFilters = useMemo<Filter[]>(
 		() => [
 			{
 				key: "projects",
@@ -44,85 +38,67 @@ export const useEmailRecipients = (recipientListId?: string) => {
 		[project.objectId]
 	);
 
-	const {
-		data: fetchedUsers,
-		loading: usersLoading,
-		refetch: refetchUsers
-	} = useFindDataSecure({
+	const { data: list, loading: listLoading } = useGetData<EmailList>({
+		objectName: "Email",
+		fields: ["objectId", "title", "data", "settings"],
+		id: listId,
+		skip: !listId
+	});
+
+	const listReady = Boolean(listId && list?.objectId === listId);
+
+	const userFilters = useMemo(() => {
+		if (!listReady || !list) {
+			return null;
+		}
+
+		return buildUserFiltersFromList(list, baseFilters);
+	}, [baseFilters, list, listReady]);
+
+	const skipUsersQuery = !listReady || userFilters === null;
+
+	const { data: users, loading: usersLoading } = useFindDataSecure({
 		objectName: "User",
-		fields: USER_QUERY_FIELDS,
-		filters: initialUserFilters,
+		fields: [
+			"objectId",
+			"type",
+			"label",
+			"email",
+			"data",
+			"first_name",
+			"last_name",
+			"title",
+			"emails",
+			"settings"
+		],
+		filters: userFilters ?? baseFilters,
 		limit: 5000,
 		skip: 0,
 		order: "label_ASC",
-		useMasterKey: true
+		useMasterKey: true,
+		skipQuery: skipUsersQuery
 	});
-
-	const {
-		data: fetchedList,
-		loading: listLoading,
-		refetch: refetchList
-	} = useGetData({
-		objectName: "List",
-		fields: ["objectId", "title", "data", "settings", "filters"],
-		id: recipientListId,
-		skip: !recipientListId
-	});
-
-	useEffect(() => {
-		if (!fetchedUsers) {
-			return;
-		}
-
-		setUsers((prev) => (isEqual(prev, fetchedUsers) ? prev : fetchedUsers));
-	}, [fetchedUsers]);
-
-	useEffect(() => {
-		lastListFetchSignatureRef.current = null;
-		setList(null);
-	}, [recipientListId]);
-
-	useEffect(() => {
-		if (!fetchedList || !recipientListId) {
-			return;
-		}
-
-		const normalized = normalizeList(fetchedList as EmailList);
-		const signature = toFetchSignature(recipientListId, normalized);
-
-		if (lastListFetchSignatureRef.current === signature) {
-			return;
-		}
-
-		lastListFetchSignatureRef.current = signature;
-		setList(normalized);
-	}, [fetchedList, recipientListId]);
 
 	const { recipients, suppressedRecipients } = useMemo((): {
 		recipients: EmailRecipient[];
 		suppressedRecipients: EmailRecipient[];
 	} => {
-		if (!list || !recipientListId) {
-			return { recipients: [], suppressedRecipients: [] };
+		if (!listReady || !list || userFilters === null || usersLoading) {
+			return EMPTY_RECIPIENTS;
 		}
 
-		return buildEmailRecipientsFromUsers(list, users);
-	}, [list, users, recipientListId]);
-
-	const refetch = async () => {
-		await refetchUsers();
-		if (recipientListId) {
-			await refetchList();
-		}
-	};
+		return buildEmailRecipientsFromUsers(list, users || []);
+	}, [list, listReady, userFilters, users, usersLoading]);
 
 	return {
 		recipients,
 		suppressedRecipients,
 		list,
-		users,
-		loading: usersLoading || (!!recipientListId && listLoading),
-		refetch
+		loading:
+			!!listId &&
+			(listLoading ||
+				!listReady ||
+				(userFilters !== null && usersLoading))
 	};
 };
 

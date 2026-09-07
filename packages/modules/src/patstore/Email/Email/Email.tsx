@@ -1,37 +1,34 @@
 "use client";
 
 import siteStates from "./constants/siteStates";
-import {
-	ContentBlock,
-	ContentPreview,
-	Modal,
-	Page,
-	PageHeaderButton
-} from "@repo/ui";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
+import { ContentBlock, ContentPreview, Page, PageHeaderButton } from "@repo/ui";
+import { useEffect, useMemo, useState } from "react";
+import { useAppContext, useGetData } from "@repo/provider";
 import TestEmail from "./components/TestEmail";
 import BulkEmailSender from "./components/BulkEmailSender";
 import RecipientEmailSender from "./components/RecipientEmailSender";
 import {
 	EmailContent,
-	EmailData,
 	EmailAttachments,
 	EmailRecipients,
 	EmailSettings,
 	EmailOverview
 } from "./content";
-import { isEqual } from "lodash-es";
 import EmailImport from "./components/EmailImport";
 import useEmailRecipients from "./hooks/useEmailRecipients";
 import { useParams } from "next/navigation";
+import { resolveRecipientListId } from "./functions/resolveRecipientListId";
+import { EmailTemplate } from "@repo/types";
 
 const Email = () => {
 	const { email_id: emailId } = useParams<{ email_id: string }>();
-	const { deleteData } = useDataHandler();
 	const { project } = useAppContext();
 
-	const { data: email, refetch } = useGetData({
+	const {
+		data: email,
+		refetch,
+		loading
+	} = useGetData<EmailTemplate>({
 		objectName: "Email",
 		fields: [
 			"objectId",
@@ -48,27 +45,25 @@ const Email = () => {
 			"attachments",
 			"recipients",
 			"settings",
-			"sendingDate"
+			"sendAt"
 		],
 		id: emailId
 	});
 
-	const recipientListId = email?.settings?.recipient_list;
+	const recipientListId = useMemo(
+		() => resolveRecipientListId(email?.settings?.recipient_list),
+		[email]
+	);
 
 	const {
 		recipients,
 		suppressedRecipients,
-		loading: recipientsLoading,
-		refetch: refetchRecipients
+		loading: recipientsLoading
 	} = useEmailRecipients(recipientListId);
 
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as { value: string; label: string }
 	);
-	const [selectedDataRows, setSelectedDataRows] = useState<string[]>([]);
-	const [dataDeleteModal, setDataDeleteModal] = useState<boolean>(false);
-	const [loading, setLoading] = useState(false);
-	const { updateData } = useDataHandler();
 	const [emailContent, setEmailContent] = useState<ContentBlock[]>(
 		email?.content || []
 	);
@@ -78,11 +73,6 @@ const Email = () => {
 	const [recipientEmailOpen, setRecipientEmailOpen] =
 		useState<boolean>(false);
 	const [importModalOpen, setImportModalOpen] = useState<boolean>(false);
-
-	const handleSettingsSaved = useCallback(async () => {
-		await refetch();
-		await refetchRecipients();
-	}, [refetch, refetchRecipients]);
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
@@ -138,36 +128,12 @@ const Email = () => {
 					},
 					icon: "save",
 					disabled: loading
-				},
-				{
-					text: "Inhalte speichern",
-					onClick: async () => {
-						await updateData({
-							className: "Email",
-							objectId: emailId,
-							updateObject: {
-								content: emailContent
-							},
-							feedback: "Inhalte erfolgreich aktualisiert"
-						});
-						await refetch();
-					},
-					icon: "save",
-					disabled:
-						isEqual(emailContent, email?.content || []) || loading
 				}
 			];
 		}
 
 		return [];
-	}, [
-		siteState,
-		selectedDataRows,
-		email,
-		emailContent,
-		loading,
-		recipientsLoading
-	]);
+	}, [siteState, email, emailContent, loading, recipientsLoading]);
 
 	useEffect(() => {
 		if (email && emailContent?.length === 0) {
@@ -194,30 +160,25 @@ const Email = () => {
 			) : (
 				<>
 					{siteState.value === "overview" && (
-						<EmailOverview
-							email={email}
-							recipients={recipients}
-							suppressedRecipients={suppressedRecipients}
-						/>
-					)}
-					{siteState.value === "data" && (
-						<EmailData
-							emailId={emailId}
-							selectedDataRows={selectedDataRows}
-							setSelectedDataRows={setSelectedDataRows}
-						/>
+						<div className="flex col a-st gap-sm">
+							<EmailOverview email={email} />
+							<EmailSettings
+								email={email}
+								recipients={recipients}
+								suppressedRecipients={suppressedRecipients}
+								settings={email?.settings}
+								recipientsLoading={recipientsLoading}
+							/>
+						</div>
 					)}
 					{siteState.value === "recipients" && (
-						<EmailRecipients
-							email={email}
-							recipients={recipients}
-							emailRecipients={email.recipients || []}
-						/>
+						<EmailRecipients emailTemplateId={email.objectId} />
 					)}
 					{siteState.value === "content" && (
 						<EmailContent
+							emailId={emailId}
 							emailContent={emailContent}
-							setEmailContent={setEmailContent}
+							refetch={refetch}
 						/>
 					)}
 					{siteState.value === "attachments" && (
@@ -226,40 +187,9 @@ const Email = () => {
 							refetchEmail={refetch}
 						/>
 					)}
-					{siteState.value === "settings" && (
-						<EmailSettings
-							emailId={emailId}
-							recipients={recipients}
-							suppressedRecipients={suppressedRecipients}
-							onSettingsSaved={handleSettingsSaved}
-						/>
-					)}
 				</>
 			)}
-			<Modal
-				isOpen={dataDeleteModal}
-				cancelButtonHandler={() => setDataDeleteModal(false)}
-				buttonDisabled={[loading, loading]}
-				confirmButtonHandler={async () => {
-					setLoading(true);
-					await Promise.all(
-						selectedDataRows.map(async (objectId) => {
-							await deleteData({
-								className: "Data",
-								objectId
-							});
-						})
-					);
-					await refetch();
-					setLoading(false);
-					setDataDeleteModal(false);
-				}}
-				header={"Datensätze löschen"}
-			>
-				<p>
-					Sind sich Sicher, dass sie die Datensätze löschen möchten?
-				</p>
-			</Modal>
+
 			<ContentPreview
 				content={emailContent}
 				isOpen={previewOpen}
@@ -269,7 +199,7 @@ const Email = () => {
 				testEmail={testEmailOpen}
 				setTestEmail={setTestEmailOpen}
 				emailContent={emailContent}
-				listId={email?.settings?.recipient_list}
+				listId={recipientListId}
 			/>
 			<BulkEmailSender
 				isOpen={bulkEmailOpen}

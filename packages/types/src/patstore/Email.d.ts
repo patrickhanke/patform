@@ -1,3 +1,5 @@
+import { ContentBlock } from "@repo/ui";
+import { Filter } from "../general";
 import { ClassProperties } from "./Classes";
 
 export type EmailStatus =
@@ -13,40 +15,76 @@ export type EmailStatus =
 	| "unknown";
 
 export type EmailRecipient = {
+	label: string;
+	first_name: string;
+	last_name: string;
+	title: string;
+	pre_title: string;
+	name: string;
 	email: string;
-	userId: string;
-	unsubscribeLink?: string;
-	listName?: string;
-	data: {
-		label: string;
-		first_name: string;
-		last_name: string;
-		title: string;
-		pre_title: string;
-		name: string;
-	};
-	message_id?: string;
-	status?: EmailStatus;
-	delivered_at?: string;
+	objectId: string;
 };
 
-export type EmailClass = ClassProperties & {
+export type EmailTemplate = ClassProperties & {
 	title: string;
-	from: string;
-	to: string;
-	subject: string;
-	body: string;
-	attachments: string[];
-	recipients: EmailRecipient[];
+	type: "template";
+	state?: "draft" | "sent";
+	data: {
+		from: string;
+		to: string;
+		subject: string;
+		body: string;
+		attachments: string[];
+	};
+	content: ContentBlock[];
+	sendAt?: string;
 	createdAt: string;
 	updatedAt: string;
-	state?: "draft" | "sent";
-	date?: string;
-	sendingDate?: Date;
 	settings: {
-		unsubscribe_link: boolean;
-		unsubscribe_url?: string;
-		email_subject?: string;
+		attachments?: string[];
+		subject?: string;
 		recipient_list?: string;
 	};
 };
+
+export type EmailList = ClassProperties & {
+	objectId: string;
+	title: string;
+	createdAt: string;
+	updatedAt: string;
+	type: "list";
+	settings: {
+		unsubscribe: boolean;
+		unsubscribe_link: string;
+		static_list: boolean;
+		include_all_users: boolean;
+		filters: Filter[];
+		recipients: string[];
+	};
+};
+
+export type Email = ClassProperties & {
+	reference_id: string;
+	message_id: string;
+	type: "email";
+	title: string;
+	state: EmailStatus;
+	sendAt?: string;
+	data: {
+		from: string;
+		to: {
+			email: string;
+			name: string;
+		};
+		subject: string;
+		content: string;
+		attachments: string[];
+		recipient: EmailRecipient;
+		unsubscribeLink: string;
+		listName: string;
+		metadata: object;
+		tag: string;
+	};
+};
+
+export type EmailClass = EmailList | EmailTemplate | Email;

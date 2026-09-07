@@ -1,32 +1,34 @@
-import { EmailClass } from "@repo/types";
+import { EmailTemplate } from "@repo/types";
 import { EmailRecipient } from "../../types";
 
 export type EmailSettingsProps = {
-	emailId: string;
+	email: EmailTemplate;
 	recipients: EmailRecipient[];
 	suppressedRecipients: EmailRecipient[];
-	onSettingsSaved: () => Promise<void>;
-};
-
-export type EmailSettingsToggleProps = {
-	settingsKey: keyof EmailClass["settings"];
-	loading: boolean;
-	settings: EmailClass["settings"];
-	updateSettings: (settings: EmailClass["settings"]) => Promise<void>;
+	settings: EmailTemplate["settings"];
+	recipientsLoading?: boolean;
 };
 
 export type EmailSettingsInputProps = {
-	settingsKey: keyof EmailClass["settings"];
-	loading: boolean;
-	settings: EmailClass["settings"];
-	updateSettings: (settings: EmailClass["settings"]) => Promise<void>;
-	disabled?: boolean;
+	settingsKey: keyof EmailTemplate["settings"];
+	settings: EmailTemplate["settings"];
+	updateSettings: (settings: EmailTemplate["settings"]) => void;
 };
 
-export interface EmailListSelectorProps {
-	settings: EmailClass["settings"];
-	updateSettings: (settings: EmailClass["settings"]) => Promise<void>;
-	loading: boolean;
+export type EmailListSelectorProps = {
+	settings: EmailTemplate["settings"];
+	updateSettings: (settings: EmailTemplate["settings"]) => void;
+};
+
+export type EmailSettingsToggleProps = {
+	settingsKey: keyof EmailTemplate["settings"];
+	settings: EmailTemplate["settings"];
+	updateSettings: (settings: EmailTemplate["settings"]) => void;
+};
+
+export type RecipientCountProps = {
+	email: EmailTemplate;
 	recipients: EmailRecipient[];
 	suppressedRecipients: EmailRecipient[];
-}
+	loading?: boolean;
+};

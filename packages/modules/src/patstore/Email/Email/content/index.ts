@@ -1,4 +1,3 @@
-export { EmailData } from "./EmailData";
 export { EmailContent } from "./EmailContent";
 export type { EmailContentRef } from "./EmailContent";
 export { EmailAttachments } from "./EmailAttachments";

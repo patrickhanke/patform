@@ -2,10 +2,8 @@
 
 import { EmailStatus } from "@repo/types";
 import { FC } from "react";
-import { StateDisplay } from "../../../../../../../../ui/src/general";
+import { StateDisplay } from "@repo/ui";
 // Use same-origin API proxy to avoid CORS (browser -> our API -> LetterMint)
-const getMessageUrl = (messageId: string) =>
-	`/api/lettermint/messages/${messageId}`;
 
 const NORMALIZED_STATUSES: readonly EmailStatus[] = [
 	"sent",
@@ -50,7 +48,6 @@ interface EmailRecipientStateProps {
 const EmailRecipientState: FC<EmailRecipientStateProps> = ({
 	status = "unknown"
 }) => {
-
 	const state = mapLettermintStatus(status);
 
 	const getColor = (colorState: EmailStatus) => {

@@ -1,0 +1,14 @@
+[
+    {
+        "einwurf_min": 500,
+        "id": 1,
+        "lotto": 100,
+        "lotto_min": 600,
+        "lotto_vg": 1,
+        "name": "Sparregeln 1",
+        "sparclub": 50,
+        "sparclub_min": 600,
+        "sparclub_vg": 1,
+        "strafgeld": 0
+    }
+]

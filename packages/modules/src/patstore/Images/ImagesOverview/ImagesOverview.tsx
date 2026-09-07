@@ -127,6 +127,7 @@ const ImagesOverview = ({
 			title={module.name}
 			pageHeaderButtons={pageHeaderButtons}
 			emptyContent={true}
+			refetch={refetch}
 		>
 			<Separator size="xs" noLine />
 			<Table

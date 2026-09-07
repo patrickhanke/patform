@@ -63,18 +63,6 @@ const Editrecord: React.FC<EditRecordProps> = ({ record }) => {
 					</div>
 				</div>
 				<Divider showLine />
-				{Object.keys(record.time_settings).map((key) => (
-					<div key={key} className="horizontal_container">
-						<label htmlFor={key}>{getTimeSettingLabel(key)}</label>
-						<p>
-							{
-								record.time_settings[
-									key as keyof RecordTimeSettings
-								]
-							}
-						</p>
-					</div>
-				))}
 			</SlideIn>
 		</div>
 	);

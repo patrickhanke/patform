@@ -1,18 +1,9 @@
 "use client";
 
 import { FC, useMemo } from "react";
-import { RecipientCount } from "./components";
 import { EmailOverviewProps } from "./types";
 
-const EmailOverview: FC<EmailOverviewProps> = ({
-	email,
-	recipients,
-	suppressedRecipients
-}) => {
-	const attachmentCount = useMemo(() => {
-		return email?.attachments?.length || 0;
-	}, [email]);
-
+const EmailOverview: FC<EmailOverviewProps> = ({ email }) => {
 	const emailState = useMemo(() => {
 		if (email?.state) {
 			return email.state === "sent" ? "Versendet" : "Entwurf";
@@ -21,8 +12,8 @@ const EmailOverview: FC<EmailOverviewProps> = ({
 	}, [email]);
 
 	const sendDate = useMemo(() => {
-		if (email?.sendingDate) {
-			return new Date(email.sendingDate).toLocaleString("de-DE", {
+		if (email?.sendAt) {
+			return new Date(email.sendAt).toLocaleString("de-DE", {
 				year: "numeric",
 				month: "long",
 				day: "numeric",
@@ -39,53 +30,9 @@ const EmailOverview: FC<EmailOverviewProps> = ({
 
 	return (
 		<div className="flex col gap-lg">
-			<div className="flex col gap-md">
-				<div className="flex col gap-sm">
-					<div className="flex row gap-md ai-ce">
-						<div style={{ minWidth: "180px", fontWeight: "600" }}>
-							Anzahl Empfänger:
-						</div>
-						<div>
-							<RecipientCount
-								email={email}
-								recipients={recipients}
-								suppressedRecipients={suppressedRecipients}
-							/>
-						</div>
-					</div>
-
-					<div className="flex row gap-md ai-ce">
-						<div style={{ minWidth: "180px", fontWeight: "600" }}>
-							Anzahl Anhänge:
-						</div>
-						<div>{attachmentCount}</div>
-					</div>
-
-					<div className="flex row gap-md	 ai-ce">
-						<div style={{ minWidth: "180px", fontWeight: "600" }}>
-							Status:
-						</div>
-						<div>
-							<span
-								className={`badge ${emailState === "Versendet" ? "success" : "warning"}`}
-							>
-								{emailState}
-							</span>
-						</div>
-					</div>
-
-					<div className="flex row gap-md ai-ce">
-						<div style={{ minWidth: "180px", fontWeight: "600" }}>
-							Versanddatum:
-						</div>
-						<div>{sendDate}</div>
-					</div>
-				</div>
-			</div>
-
 			<div className="flex col gap-sm">
-				<h3>Weitere Informationen</h3>
-				<div className="flex row gap-md ai-ce">
+				<h3>Informationen</h3>
+				<div className="flex row gap-md a-ce j-sb">
 					<div style={{ minWidth: "180px", fontWeight: "600" }}>
 						Erstellt am:
 					</div>
@@ -105,7 +52,7 @@ const EmailOverview: FC<EmailOverviewProps> = ({
 					</div>
 				</div>
 
-				<div className="flex row gap-md ai-ce">
+				<div className="flex row gap-md a-ce j-sb">
 					<div style={{ minWidth: "180px", fontWeight: "600" }}>
 						Zuletzt aktualisiert:
 					</div>
@@ -123,6 +70,25 @@ const EmailOverview: FC<EmailOverviewProps> = ({
 								)
 							: "-"}
 					</div>
+				</div>
+				<div className="flex row gap-md	 a-ce j-sb">
+					<div style={{ minWidth: "180px", fontWeight: "600" }}>
+						Status:
+					</div>
+					<div>
+						<span
+							className={`badge ${emailState === "Versendet" ? "success" : "warning"}`}
+						>
+							{emailState}
+						</span>
+					</div>
+				</div>
+
+				<div className="flex row gap-md a-ce j-sb">
+					<div style={{ minWidth: "180px", fontWeight: "600" }}>
+						Versanddatum:
+					</div>
+					<div>{sendDate}</div>
 				</div>
 			</div>
 		</div>

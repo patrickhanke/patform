@@ -1,3 +1,5 @@
+import { Filter, Module } from "@repo/types";
+
 export type ListFilterValue = string | boolean;
 
 export type ListFilterItem = {
@@ -13,6 +15,12 @@ export type FilterFieldDefinition = {
 	label: string;
 	inputType: FilterFieldInputType;
 	options?: { label: string; value: string }[];
+};
+
+export type EditFilterProps = {
+	filters: Filter[];
+	onSave: (filters: Filter[]) => void;
+	userModule: Module;
 };
 
 export type { ListFilterProps } from "./ListFilter";

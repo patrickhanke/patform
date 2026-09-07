@@ -1,6 +1,7 @@
 ﻿import { FilterOperator } from "@repo/ui";
 import { Field } from "@repo/types";
 import { LanguageValue, PatstoreProject } from "./Project";
+import { SavingsGroupModuleData } from "./SavingsGroup";
 
 export type ModulePath =
 	| "/articles"
@@ -19,7 +20,8 @@ export type ModulePath =
 	| "/users"
 	| "/videos"
 	| "/competitions"
-	| "/clubs";
+	| "/clubs"
+	| "/savings-group";
 
 export type ModuleFieldIds =
 	| "title"
@@ -95,6 +97,7 @@ export type ModuleSettings = {
 	categories?: ModuleSettingsCategory[];
 	languages: LanguageValue[];
 	default_language: LanguageValue;
+	savingsGroup?: SavingsGroupModuleData;
 };
 
 export type ModuleFieldType =
@@ -171,7 +174,8 @@ export type ModuleClass =
 	| "Dates"
 	| "TrainingGroup"
 	| "Competition"
-	| "Club";
+	| "Club"
+	| "Booking";
 
 export type ModuleSubMenuItem = {
 	label: string;
@@ -191,6 +195,7 @@ export type ModuleCommon = {
 	categories: ModuleCategory[];
 	settings: ModuleSettings;
 	filters?: ModuleFilter[];
+	data?: SavingsGroupModuleData | Record<string, unknown>;
 };
 
 /** Path-specific defaults and connected_class for each module type */
@@ -286,6 +291,59 @@ export type ModulePathConfig = {
 		connected_class: "Club";
 		default_fields: ["title"];
 		sub_menu: [];
+	};
+	"/savings-group": {
+		connected_class: "Booking";
+		default_fields: [];
+		sub_menu: [
+			{ label: "Pinnwand"; value: "/pinnwand"; icon: "dashboard" },
+			{ label: "Verein"; value: "/verein"; icon: "contact" },
+			{ label: "Sparregeln"; value: "/sparregeln"; icon: "settings" },
+			{
+				label: "Sparfachbelegung";
+				value: "/sparfachbelegung";
+				icon: "persons";
+			},
+			{
+				label: "Sparkastenleerungen";
+				value: "/leerungen";
+				icon: "orders";
+			},
+			{ label: "Lottogewinne"; value: "/lotto"; icon: "products" },
+			{
+				label: "Sonderbuchungen";
+				value: "/sonderbuchungen";
+				icon: "content";
+			},
+			{ label: "Auszahlungen"; value: "/auszahlungen"; icon: "orders" },
+			{
+				label: "Gemeinschaftskasse";
+				value: "/gemeinschaftskasse";
+				icon: "shop";
+			},
+			{ label: "Sparer-Kontoauszüge"; value: "/konto"; icon: "lists" },
+			{ label: "Kassenbericht"; value: "/kassenbericht"; icon: "forms" },
+			{
+				label: "Sparkönig – Auszahlung";
+				value: "/sparkoenig-auszahlung";
+				icon: "users";
+			},
+			{
+				label: "Sparkönig – Einwurf";
+				value: "/sparkoenig-einwurf";
+				icon: "users";
+			},
+			{
+				label: "Sparkönig – Lottogewinn";
+				value: "/sparkoenig-lottogewinn";
+				icon: "users";
+			},
+			{
+				label: "Sparkönig – Strafgeld";
+				value: "/sparkoenig-strafgeld";
+				icon: "users";
+			}
+		];
 	};
 };
 

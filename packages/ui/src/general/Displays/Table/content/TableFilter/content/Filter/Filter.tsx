@@ -7,7 +7,6 @@ import {
 	SearchFilter,
 	StringFilter
 } from "./components";
-import transformOperatorValueToObject from "./functions/transformOperatorValueToString";
 import SelectFilter from "./components/SelectFilter";
 import { StatelessToggle } from "@repo/ui";
 

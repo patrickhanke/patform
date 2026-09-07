@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import { UseFindDataHook } from "../types";
+import { UseFindDataParams, UseFindDataResult } from "../types";
 import { Classes, LanguageValue } from "@repo/types";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
@@ -9,7 +9,7 @@ import { pluralize, sanitizeGraphQlNode } from "../functions/helpers";
 import paramsHandler from "../functions/paramsHandler";
 import { useCallback, useState } from "react";
 
-const useFindData: UseFindDataHook<Classes> = ({
+const useFindData = <T extends Classes = Classes>({
 	objectName,
 	fields,
 	filters = [],
@@ -25,7 +25,7 @@ const useFindData: UseFindDataHook<Classes> = ({
 	userIds,
 	absenceId,
 	defaultLanguage
-}) => {
+}: UseFindDataParams): UseFindDataResult<T> => {
 	const [language, setLanguage] = useState<LanguageValue | undefined>(
 		defaultLanguage
 	);
@@ -78,9 +78,9 @@ const useFindData: UseFindDataHook<Classes> = ({
 
 	return {
 		loading,
-		data: get(data, `${queryName}.edges`, []).map(
-			(edge: { node: Classes }) => sanitizeGraphQlNode<Classes>(edge.node)
-		),
+		data: get(data, `${queryName}.edges`, [])
+			.map((edge: { node: T }) => sanitizeGraphQlNode<T>(edge.node))
+			.filter((node: T | null): node is T => node !== null),
 		refetch,
 		count: get(data, `${queryName}.count`, 0),
 		error,

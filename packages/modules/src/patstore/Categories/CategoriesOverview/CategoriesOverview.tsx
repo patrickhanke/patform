@@ -99,6 +99,10 @@ const CategoriesOverview = ({
 				language={language}
 				changeLanguage={changeLanguage}
 				languages={languages}
+				pagination={{
+					pageIndex: 0,
+					pageSize: 30
+				}}
 			/>
 			<Modal
 				isOpen={deleteModal.isOpen}

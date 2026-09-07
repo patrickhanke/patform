@@ -12,10 +12,6 @@ const siteStates: { value: string; label: string }[] = [
 		label: "Anhänge"
 	},
 	{
-		value: "settings",
-		label: "Einstellungen"
-	},
-	{
 		value: "recipients",
 		label: "Empfänger"
 	}

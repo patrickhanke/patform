@@ -1,25 +1,21 @@
 import { FC } from "react";
-import { TextInput } from "@repo/ui";
 import { EmailSettingsInputProps } from "../types";
 
 const EmailSettingInput: FC<EmailSettingsInputProps> = ({
 	settingsKey,
-	loading,
 	settings,
-	updateSettings,
-	disabled
+	updateSettings
 }) => {
 	return (
-		<TextInput
+		<input
 			id={settingsKey}
-			defaultValue={settings[settingsKey] as string}
-			onChange={(value) =>
+			value={settings[settingsKey] as string}
+			onChange={(e) =>
 				updateSettings({
 					...settings,
-					[settingsKey]: value
+					[settingsKey]: e.target.value
 				})
 			}
-			disabled={loading || disabled}
 			placeholder=""
 		/>
 	);

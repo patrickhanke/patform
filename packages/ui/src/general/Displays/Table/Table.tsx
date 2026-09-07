@@ -155,7 +155,7 @@ const Table: React.FC<TableTypes> = ({
 						onRowSelection(newSelectedRows);
 					}
 				} else {
-					setSelectedRows((prev) => [...prev, rowId]);
+					setSelectedRows([...selectedRows, rowId]);
 					if (onRowSelection) {
 						onRowSelection([...selectedRows, rowId]);
 					}

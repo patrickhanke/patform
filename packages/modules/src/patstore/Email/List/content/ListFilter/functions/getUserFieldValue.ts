@@ -16,10 +16,7 @@ const TOP_LEVEL_KEYS = new Set([
 	"newsletter_email"
 ]);
 
-export const getUserFieldValue = (
-	user: PatstoreUser,
-	key: string
-): unknown => {
+export const getUserFieldValue = (user: PatstoreUser, key: string): unknown => {
 	if (TOP_LEVEL_KEYS.has(key) && key in user) {
 		return user[key as keyof PatstoreUser];
 	}

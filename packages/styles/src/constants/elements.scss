@@ -1,6 +1,6 @@
-@use "./breakpoints" as *;
-@use "./colors" as *;
-@use "./sizes" as *;
+@use "@repo/styles/breakpoints";
+@use "@repo/styles/colors" as *;
+@use "@repo/styles/sizes" as *;
 @use "sass:map";
 
 @mixin flexbox(

@@ -3,21 +3,7 @@
 import { useState, useMemo } from "react";
 import { useDataHandler, useFindData } from "@repo/provider";
 import { Modal, Page, Table, useCreateColumns, usePageData } from "@repo/ui";
-import { Filter, ModuleOverviewProps } from "@repo/types";
-
-interface ListData {
-	objectId: string;
-	title: string;
-	createdAt: string;
-	updatedAt: string;
-	data?: {
-		recipients?: Array<{
-			email: string;
-			name: string;
-			key: string;
-		}>;
-	};
-}
+import { EmailList, Filter, ModuleOverviewProps } from "@repo/types";
 
 const ListsOverview = ({
 	module,
@@ -28,7 +14,7 @@ const ListsOverview = ({
 	const [filters] = useState<Filter[]>([
 		{
 			key: "type",
-			value: "email",
+			value: "list",
 			operator: "equalTo",
 			id: "type_filter"
 		}
@@ -45,7 +31,7 @@ const ListsOverview = ({
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 
 	const { data, refetch, count, language, changeLanguage } = useFindData({
-		objectName: "List",
+		objectName: "Email",
 		fields: ["objectId", "title", "createdAt", "updatedAt", "data"],
 		filters,
 		limit: pagination.pageSize,
@@ -55,7 +41,7 @@ const ListsOverview = ({
 		defaultLanguage
 	});
 
-	const columns = useCreateColumns<ListData>({
+	const columns = useCreateColumns<EmailList>({
 		data: [
 			{
 				id: "title",
@@ -79,12 +65,12 @@ const ListsOverview = ({
 			}
 		],
 		categories: [],
-		className: "Item",
+		className: "Email",
 		refetch,
 		editLink: "emails/lists",
 		initialData: data ?? []
 	});
-	const { data: pageRows } = usePageData<ListData[]>();
+	const { data: pageRows } = usePageData<EmailList[]>();
 
 	const pageHeaderButtons = useMemo(
 		() => [
@@ -106,15 +92,20 @@ const ListsOverview = ({
 			emptyContent={true}
 			createClass={{
 				initialData: {
-					reference_id: module.objectId,
-					type: "email",
+					type: "list",
 					settings: {
 						unsubscribe: false,
-						unsubscribe_link: ""
+						unsubscribe_link: "",
+						static_list: false,
+						include_all_users: false,
+						filters: []
+					},
+					data: {
+						recipients: []
 					},
 					filters: []
 				},
-				className: "List",
+				className: "Email",
 				text: "Neue Liste erstellen",
 				fields: [
 					{
@@ -126,8 +117,7 @@ const ListsOverview = ({
 						default: true
 					}
 				],
-				refetch,
-				additionalData: { type: "email" }
+				refetch
 			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}

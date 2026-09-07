@@ -1,21 +1,39 @@
 "use client";
 
-import { FC } from "react";
-import { TextInput as Input, StatelessToggle } from "@repo/ui";
-import { EmailList, ListChangeHandler } from "../../types";
+import { FC, useCallback } from "react";
+import { TextInput as Input, StatelessToggle, usePageData } from "@repo/ui";
+import { EmailList } from "@repo/types";
 
 export interface ListSettingsProps {
 	list: EmailList;
-	onListChange: ListChangeHandler;
 	disabled?: boolean;
 }
 
-const ListSettings: FC<ListSettingsProps> = ({
-	list,
-	onListChange,
-	disabled = false
-}) => {
-	const settings = list.settings || { static_list: true };
+const ListSettings: FC<ListSettingsProps> = ({ list, disabled = false }) => {
+	const { data, setData } = usePageData(
+		{
+			objectId: list.objectId,
+			initialData: {
+				title: list.title,
+				settings: list.settings
+			}
+		},
+		{
+			className: "Email",
+			message: "Liste aktualisiert",
+			updateObject: (data) => ({
+				title: data.title,
+				settings: data.settings
+			})
+		}
+	);
+
+	const onListChange = useCallback(
+		(key: string, value: string | boolean) => {
+			setData(key, value);
+		},
+		[setData]
+	);
 
 	return (
 		<div className="flex col a-st gap-md">
@@ -23,15 +41,26 @@ const ListSettings: FC<ListSettingsProps> = ({
 				<label>Titel der Liste</label>
 				<Input
 					id="title"
-					defaultValue={list.title}
-					onChange={(value) =>
-						onListChange({ title: value as string })
-					}
+					defaultValue={data?.title ?? list.title}
+					onChange={(value) => onListChange("title", value as string)}
 					disabled={disabled}
 					placeholder="Listen-Titel eingeben"
 				/>
 			</div>
 
+			<div className="flex row a-ce j-sb gap-sm">
+				<div className="flex col a-st">
+					<label>Statische Liste</label>
+					<p>Nutzer werden der Liste manuell hinzugefügt.</p>
+				</div>
+				<StatelessToggle
+					value={data?.settings?.static_list ?? false}
+					onChange={(value) =>
+						onListChange("settings.static_list", value)
+					}
+					disabled={disabled}
+				/>
+			</div>
 			<div className="flex row a-ce j-sb gap-sm">
 				<div className="flex col a-st">
 					<label>Abmeldelink</label>
@@ -41,38 +70,44 @@ const ListSettings: FC<ListSettingsProps> = ({
 					</p>
 				</div>
 				<StatelessToggle
-					value={settings.unsubscribe ?? false}
+					value={data?.settings?.unsubscribe ?? false}
 					onChange={(value) =>
-						onListChange({
-							settings: {
-								...settings,
-								unsubscribe: value
-							}
-						})
+						onListChange("settings.unsubscribe", value)
 					}
 					disabled={disabled}
 				/>
 			</div>
 
-			{settings.unsubscribe && (
+			{data?.settings?.unsubscribe && (
 				<div className="flex col gap-sm">
 					<label>Abmeldelink URL</label>
 					<Input
 						id="unsubscribe_link"
-						defaultValue={settings.unsubscribe_link || ""}
+						defaultValue={data?.settings?.unsubscribe_link || ""}
 						onChange={(value) =>
-							onListChange({
-								settings: {
-									...settings,
-									unsubscribe_link: value as string
-								}
-							})
+							onListChange(
+								"settings.unsubscribe_link",
+								value as string
+							)
 						}
 						disabled={disabled}
 						placeholder="https://example.com/unsubscribe"
 					/>
 				</div>
 			)}
+			<div className="flex row a-ce j-sb gap-sm">
+				<div className="flex col a-st">
+					<label>Alle Nutzer</label>
+					<p>Alle Nutzer des Projekts erhalten die E-Mail.</p>
+				</div>
+				<StatelessToggle
+					value={data?.settings?.include_all_users ?? false}
+					onChange={(value) =>
+						onListChange("settings.include_all_users", value)
+					}
+					disabled={disabled || data?.settings?.static_list}
+				/>
+			</div>
 		</div>
 	);
 };

@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import ContentEditorActionBar from "./components/ContentEditorActionBar";
+import { useContentEditorState } from "./hooks/useContentEditorState";
 import {
 	DndContext,
 	DragOverlay,
@@ -31,7 +33,6 @@ import ImportContentModal, {
 import {
 	createSectionBlock,
 	findBlockById,
-	flattenSections,
 	getSectionInnerBlocks,
 	normalizeToSections
 } from "./utils/sections";
@@ -106,15 +107,26 @@ export interface ContentEditorProps {
 	multipleSections?: boolean;
 }
 
+const EMPTY_CONTENT: ContentBlock[] = [];
+
 export default function ContentEditor({
-	content = [],
+	content = EMPTY_CONTENT,
 	onChange,
 	className = "",
 	multipleSections = false
 }: ContentEditorProps) {
-	const [blocks, setBlocks] = useState<ContentBlock[]>(() =>
-		normalizeToSections(content)
-	);
+	const {
+		blocks,
+		hasChanged,
+		canUndo,
+		canRedo,
+		updateBlocks,
+		undo,
+		redo,
+		reset,
+		commit
+	} = useContentEditorState(content, multipleSections, onChange);
+
 	const [activeId, setActiveId] = useState<string | null>(null);
 	const [selectedBlock, setSelectedBlock] = useState<ContentBlock | null>(
 		null
@@ -131,23 +143,6 @@ export default function ContentEditor({
 		useSensor(KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates
 		})
-	);
-
-	const updateBlocks = useCallback(
-		(newBlocks: ContentBlock[]) => {
-			const blocksWithPositions = newBlocks.map((block, index) => ({
-				...block,
-				position: index + 1
-			}));
-			setBlocks(blocksWithPositions);
-			// Single-section mode keeps the stored document flat for email compatibility
-			onChange?.(
-				multipleSections
-					? blocksWithPositions
-					: flattenSections(blocksWithPositions)
-			);
-		},
-		[onChange, multipleSections]
 	);
 
 	const createBlock = useCallback(
@@ -513,7 +508,9 @@ export default function ContentEditor({
 				if (overLocation && overLocation.list !== newBlocks) {
 					overLocation.list.splice(overLocation.index, 0, newBlock);
 				} else {
-					const sectionOver = newBlocks.find((b) => b.id === overIdStr);
+					const sectionOver = newBlocks.find(
+						(b) => b.id === overIdStr
+					);
 					if (sectionOver?.type === "section") {
 						ensureSectionChildren(sectionOver);
 						sectionOver.children![0]!.push(newBlock);
@@ -567,7 +564,9 @@ export default function ContentEditor({
 					const oldIndex = column.findIndex(
 						(b) => b.id === activeIdStr
 					);
-					const newIndex = column.findIndex((b) => b.id === overIdStr);
+					const newIndex = column.findIndex(
+						(b) => b.id === overIdStr
+					);
 
 					if (oldIndex !== -1 && newIndex !== -1) {
 						const [movedBlock] = column.splice(oldIndex, 1);
@@ -781,6 +780,18 @@ export default function ContentEditor({
 		return ids;
 	};
 
+	useEffect(() => {
+		setSelectedBlock((current) => {
+			if (!current) return null;
+			return findBlockById(blocks, current.id);
+		});
+	}, [blocks]);
+
+	const handleReset = () => {
+		reset();
+		setSelectedBlock(null);
+	};
+
 	const sortableItems = multipleSections
 		? blocks.map((b) => b.id)
 		: getSectionInnerBlocks(blocks[0]).map((b) => b.id);
@@ -847,6 +858,16 @@ export default function ContentEditor({
 				onImport={(content) => {
 					insertBlock(createContentReferenceBlock(content));
 				}}
+			/>
+
+			<ContentEditorActionBar
+				open={hasChanged}
+				onSave={commit}
+				onReset={handleReset}
+				onUndo={undo}
+				onRedo={redo}
+				canUndo={canUndo}
+				canRedo={canRedo}
 			/>
 		</div>
 	);

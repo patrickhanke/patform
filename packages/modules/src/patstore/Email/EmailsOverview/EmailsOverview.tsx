@@ -8,7 +8,7 @@ import {
 	usePageData
 } from "@repo/ui";
 import { useState } from "react";
-import { Filter, FormClass, ModuleOverviewProps } from "@repo/types";
+import { Filter, EmailTemplate, ModuleOverviewProps } from "@repo/types";
 import { useFindModuleData } from "@repo/provider";
 
 const EmailsOverview = ({
@@ -16,7 +16,13 @@ const EmailsOverview = ({
 	languages,
 	defaultLanguage
 }: ModuleOverviewProps<"/emails">) => {
-	const [filters] = useState<Filter[]>([]);
+	const [filters] = useState<Filter[]>([
+		{
+			key: "type",
+			operator: "equalTo",
+			value: "template"
+		}
+	]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
@@ -29,7 +35,7 @@ const EmailsOverview = ({
 		loading: dataLoading,
 		language,
 		changeLanguage
-	} = useFindModuleData<FormClass>({
+	} = useFindModuleData<EmailTemplate>({
 		module,
 		filters,
 		limit: pagination.pageSize,
@@ -38,7 +44,7 @@ const EmailsOverview = ({
 		defaultLanguage
 	});
 
-	const columns = useCreateColumns<FormClass>({
+	const columns = useCreateColumns<EmailTemplate>({
 		data: generateColumnsFromFields(module.fields),
 		fields: module.data_fields,
 		className: "Email",
@@ -47,7 +53,7 @@ const EmailsOverview = ({
 		categories: module.categories,
 		initialData: data ?? []
 	});
-	const { data: pageRows } = usePageData<FormClass[]>();
+	const { data: pageRows } = usePageData<EmailTemplate[]>();
 
 	return (
 		<Page
@@ -59,6 +65,7 @@ const EmailsOverview = ({
 				fields: module.fields,
 				refetch: refetch,
 				initialData: {
+					type: "template",
 					state: "draft",
 					settings: {
 						recipient_list: "",

@@ -1,23 +1,23 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { UseGetDataHook } from "../types";
-import { Classes } from "../../../../../types/src/patstore";
+import { UseGetDataParams, UseGetDataResult } from "../types";
+import { Classes } from "@repo/types";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
 import { sanitizeGraphQlNode } from "../functions/helpers";
 import { print } from "graphql";
 
-const useGetDataSecure: UseGetDataHook<Classes> = ({
+const useGetDataSecure = <T extends Classes = Classes>({
 	objectName,
 	fields,
 	id,
 	skip = false,
 	afterSaveHandler,
 	useMasterKey = false
-}) => {
+}: UseGetDataParams<T>): UseGetDataResult<T> => {
 	const [loading, setLoading] = useState(!skip && !!id);
-	const [data, setData] = useState<Classes | null>(null);
+	const [data, setData] = useState<T | null>(null);
 	const [error, setError] = useState<any>(null);
 	
 	const isMountedRef = useRef(true);
@@ -67,7 +67,7 @@ const useGetDataSecure: UseGetDataHook<Classes> = ({
 				return;
 			}
 
-			const newData = sanitizeGraphQlNode<Classes>(
+			const newData = sanitizeGraphQlNode<T>(
 				get(result.data, `${cleanObjectName.toLowerCase()}`, null)
 			);
 

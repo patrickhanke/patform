@@ -1,0 +1,46 @@
+[
+    {
+        "key": "VERSION",
+        "value": "F989E023"
+    },
+    {
+        "key": "CREATE",
+        "value": "1527525306"
+    },
+    {
+        "key": "NAME",
+        "value": "Bauernstube"
+    },
+    {
+        "key": "STRASSE",
+        "value": "Waldorferstrasse"
+    },
+    {
+        "key": "HAUSNUMMER",
+        "value": "16a"
+    },
+    {
+        "key": "PLZ",
+        "value": "50389"
+    },
+    {
+        "key": "ORT",
+        "value": "Wesseling"
+    },
+    {
+        "key": "LAND",
+        "value": "DE"
+    },
+    {
+        "key": "WAEHRUNG",
+        "value": "EUR"
+    },
+    {
+        "key": "E-MAIL",
+        "value": "tfuwe@gmx.de"
+    },
+    {
+        "key": "STUECKELUNG_MAX",
+        "value": "0"
+    }
+]

@@ -1,7 +1,7 @@
 import { Filter, FilterOperator, ModuleFilter } from "@repo/types";
 import { ColumnDataTypes } from "../../../../types";
 
-type FilterValue = ModuleFilter["value"];
+export type FilterValue = ModuleFilter["value"];
 
 export type FilterProps = {
 	id: ModuleFilter["id"];
@@ -56,13 +56,22 @@ export type FilterInputProps = {
 
 export type StringFilterProps = {
 	onValueChange: OnValueChange;
+	value?: string;
+	label?: string;
+};
+
+export type NumberFilterProps = {
+	onValueChange: OnValueChange;
+	value?: number | string;
+	label?: string;
 };
 
 export type SelectFilterProps = {
 	label: string;
 	selectOptions: { label: string; value: string }[];
-	value?: string;
-	onChange: (value: string) => void;
+	value?: string | string[];
+	onChange: (value: string | string[]) => void;
+	isMulti?: boolean;
 };
 
 export type BooleanFilterProps = {

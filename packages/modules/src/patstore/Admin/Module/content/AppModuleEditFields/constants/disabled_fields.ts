@@ -19,7 +19,8 @@ const disabled_fields: {
 	"/users": [],
 	"/videos": [],
 	"/competitions": [],
-	"/clubs": []
+	"/clubs": [],
+	"/savings-group": []
 };
 
 export default disabled_fields;

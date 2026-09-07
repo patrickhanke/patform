@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { UseFindDataHook } from "../types";
-import { Classes } from "../../../../../types/src/patstore";
+import { UseFindDataParams, UseFindDataResult } from "../types";
+import { Classes } from "@repo/types";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
 import { pluralize, sanitizeGraphQlNode } from "../functions/helpers";
 import paramsHandler from "../functions/paramsHandler";
 import { print } from "graphql";
 
-const useFindDataSecure: UseFindDataHook<Classes> = ({
+const useFindDataSecure = <T extends Classes = Classes>({
 	objectName,
 	fields,
 	filters = [],
@@ -22,14 +22,21 @@ const useFindDataSecure: UseFindDataHook<Classes> = ({
 	skipQuery = false,
 	pollInterval = 0,
 	useMasterKey = false
-}) => {
+}: UseFindDataParams): Omit<
+	UseFindDataResult<T>,
+	"language" | "changeLanguage"
+> => {
 	const [loading, setLoading] = useState(!skipQuery);
-	const [data, setData] = useState<Classes[]>([]);
+	const [data, setData] = useState<T[]>([]);
 	const [count, setCount] = useState(0);
-	const [error, setError] = useState<any>(null);
+	const [error, setError] = useState<Error | null>(null);
+	const [fetchedFiltersKey, setFetchedFiltersKey] = useState<string | null>(
+		null
+	);
 
 	const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 	const isMountedRef = useRef(true);
+	const requestIdRef = useRef(0);
 
 	const queryName = pluralize(objectName);
 
@@ -39,9 +46,17 @@ const useFindDataSecure: UseFindDataHook<Classes> = ({
 
 	const fetchData = useCallback(async () => {
 		if (skipQuery) {
+			requestIdRef.current += 1;
 			setLoading(false);
+			setFetchedFiltersKey(null);
 			return;
 		}
+
+		const requestKey = filtersKey;
+		requestIdRef.current += 1;
+		const requestId = requestIdRef.current;
+		const isLatestRequest = () =>
+			isMountedRef.current && requestId === requestIdRef.current;
 
 		try {
 			setLoading(true);
@@ -79,26 +94,31 @@ const useFindDataSecure: UseFindDataHook<Classes> = ({
 
 			const result = await response.json();
 
-			if (!isMountedRef.current) return;
+			if (!isLatestRequest()) return;
 
 			if (result.errors) {
 				setError(result.errors[0]);
+				setData([]);
+				setCount(0);
+				setFetchedFiltersKey(requestKey);
 				setLoading(false);
 				return;
 			}
 
 			const edges = get(result.data, `${queryName}.edges`, []);
-			const newData = edges.map((edge: { node: Classes }) =>
-				sanitizeGraphQlNode<Classes>(edge.node)
-			);
+			const newData = edges
+				.map((edge: { node: T }) => sanitizeGraphQlNode<T>(edge.node))
+				.filter((node: T | null): node is T => node !== null);
 			const newCount = get(result.data, `${queryName}.count`, 0);
 
 			setData(newData);
 			setCount(newCount);
+			setFetchedFiltersKey(requestKey);
 			setLoading(false);
 		} catch (err: any) {
-			if (!isMountedRef.current) return;
+			if (!isLatestRequest()) return;
 			setError(err);
+			setFetchedFiltersKey(requestKey);
 			setLoading(false);
 		}
 	}, [
@@ -145,11 +165,13 @@ const useFindDataSecure: UseFindDataHook<Classes> = ({
 		}
 	}, [pollInterval, skipQuery, fetchData]);
 
+	const stale = skipQuery || fetchedFiltersKey !== filtersKey;
+
 	return {
-		loading,
-		data,
+		loading: skipQuery ? false : loading || stale,
+		data: stale ? [] : data,
 		refetch,
-		count,
+		count: stale ? 0 : count,
 		error
 	};
 };

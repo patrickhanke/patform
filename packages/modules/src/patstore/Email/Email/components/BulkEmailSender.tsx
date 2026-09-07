@@ -103,7 +103,7 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 				objectId: emailId,
 				updateObject: {
 					state: "sent",
-					sendingDate: {
+					sendAt: {
 						__type: "Date",
 						iso: new Date().toISOString()
 					}

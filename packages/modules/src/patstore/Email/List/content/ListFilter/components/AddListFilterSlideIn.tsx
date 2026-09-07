@@ -50,6 +50,10 @@ const AddListFilterSlideIn: FC<AddListFilterSlideInProps> = ({
 			fieldDefinitions.find((definition) => definition.key === form.key),
 		[fieldDefinitions, form.key]
 	);
+	console.log(fieldDefinitions);
+	console.log(keyOptions);
+	console.log(form);
+	console.log(selectedDefinition);
 
 	useEffect(() => {
 		setErrors(

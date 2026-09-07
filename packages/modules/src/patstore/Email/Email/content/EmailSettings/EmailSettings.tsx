@@ -1,111 +1,85 @@
-import { FC, useCallback, useEffect, useState } from "react";
-import { useDataHandler, useGetData } from "@repo/provider";
-import { EmailClass } from "@repo/types";
-import email_settings from "./constants/email_settings";
-import EmailSettingToggle from "./components/EmailSettingToggle";
+import { FC } from "react";
+import { EmailTemplate } from "@repo/types";
 import EmailSettingInput from "./components/EmailSettingInput";
 import EmailListSelector from "./components/EmailListSelector";
-import initial_settings from "./constants/initial_settings";
+import RecipientCount from "./components/RecipientCount";
 import { EmailSettingsProps } from "./types";
+import { Divider, usePageData } from "@repo/ui";
+
+const INITIAL_SETTINGS = {
+	subject: "",
+	recipient_list: undefined
+} as const;
 
 const EmailSettings: FC<EmailSettingsProps> = ({
-	emailId,
+	email,
 	recipients,
 	suppressedRecipients,
-	onSettingsSaved
+	settings,
+	recipientsLoading
 }) => {
-	const { updateData } = useDataHandler();
-	const [settings, setSettings] = useState<EmailClass["settings"]>();
-	const { data, refetch } = useGetData({
-		objectName: "Email",
-		fields: ["settings", "objectId"],
-		id: emailId
-	});
-
-	const [loading, setLoading] = useState(false);
-
-	useEffect(() => {
-		if (data && !settings) {
-			setSettings(data.settings || initial_settings);
-		}
-	}, [data, settings]);
-
-	const updateSettingsHandler = useCallback(
-		async (st: EmailClass["settings"]) => {
-			setLoading(true);
-			const updateObject = {
-				settings: {
-					...settings,
-					...st
-				}
-			};
-
-			await updateData({
-				className: "Email",
-				objectId: emailId,
-				updateObject,
-				feedback: "E-Mail Einstellungen aktualisiert"
-			});
-
-			await refetch();
-			await onSettingsSaved();
-			setLoading(false);
+	const { data, setData } = usePageData<EmailTemplate["settings"]>(
+		{
+			objectId: email?.objectId,
+			initialData: {
+				...(settings ?? INITIAL_SETTINGS)
+			}
 		},
-		[settings, emailId, updateData, refetch, onSettingsSaved]
+		{
+			className: "Email",
+			message: "E-Mail Einstellungen aktualisiert",
+			updateObject: (currentData) => ({
+				settings: {
+					...currentData
+				}
+			})
+		}
 	);
-
-	if (!settings) {
-		return null;
-	}
 
 	return (
 		<div className="flex col a-st gap-sm">
+			<Divider showLine />
+			<h3>Einstellungen</h3>
 			<EmailListSelector
-				settings={settings}
-				updateSettings={updateSettingsHandler}
-				loading={loading}
-				recipients={recipients}
-				suppressedRecipients={suppressedRecipients}
+				settings={data || settings}
+				updateSettings={(value) =>
+					setData("recipient_list", value.recipient_list)
+				}
 			/>
-
-			{(
-				Object.keys(email_settings) as Array<
-					keyof typeof email_settings
-				>
-			).map((key) => {
-				const setting = email_settings[key];
-				const isBoolean = typeof setting.value === "boolean";
-				const isDisabled = false;
-
-				return (
-					<div key={key} className="flex row a-ce j-sb gap-sm">
-						<div className="flex col a-st">
-							<label>{setting.label}</label>
-							<p>{setting.description}</p>
-						</div>
-						{isBoolean ? (
-							<EmailSettingToggle
-								settingsKey={
-									key as keyof EmailClass["settings"]
-								}
-								loading={loading}
-								settings={settings}
-								updateSettings={updateSettingsHandler}
-							/>
-						) : (
-							<EmailSettingInput
-								settingsKey={
-									key as keyof EmailClass["settings"]
-								}
-								loading={loading}
-								settings={settings}
-								updateSettings={updateSettingsHandler}
-								disabled={isDisabled}
-							/>
-						)}
-					</div>
-				);
-			})}
+			<div className="flex row gap-md a-ce j-sb">
+				<div style={{ minWidth: "180px", fontWeight: "600" }}>
+					Anzahl Empfänger:
+				</div>
+				<div>
+					<RecipientCount
+						email={email}
+						recipients={recipients}
+						suppressedRecipients={suppressedRecipients}
+						loading={recipientsLoading}
+					/>
+				</div>
+			</div>
+			<div className="flex row a-ce j-sb gap-sm">
+				<div className="flex col a-st">
+					<label>Betreff</label>
+					<p>Der Betreff der E-Mail.</p>
+				</div>
+				<EmailSettingInput
+					settingsKey="subject"
+					settings={data || settings}
+					updateSettings={(value) =>
+						setData("subject", value.subject)
+					}
+				/>
+			</div>
+			<div className="flex row gap-md a-ce j-sb">
+				<div style={{ minWidth: "180px", fontWeight: "600" }}>
+					<label>Anhänge:</label>
+				</div>
+				<div>
+					<p>{email?.data?.attachments?.length || 0}</p>
+				</div>
+			</div>
 		</div>
 	);
 };

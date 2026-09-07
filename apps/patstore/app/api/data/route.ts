@@ -28,6 +28,7 @@ export async function GET(request: NextRequest) {
 		const searchParams = request.nextUrl.searchParams;
 		const className = searchParams.get("className");
 		const query = searchParams.get("query");
+		const limit = searchParams.get("limit");
 		const useMasterKey = searchParams.get("useMasterKey") === "true";
 
 		if (!className) {
@@ -44,9 +45,15 @@ export async function GET(request: NextRequest) {
 
 		const client = createAxiosClient(useMasterKey, sessionToken);
 
-		const url = query
-			? `classes/${className}?where={${query}}`
-			: `classes/${className}`;
+		const params = new URLSearchParams();
+		if (query) {
+			params.set("where", `{${query}}`);
+		}
+		if (limit) {
+			params.set("limit", limit);
+		}
+		const qs = params.toString();
+		const url = qs ? `classes/${className}?${qs}` : `classes/${className}`;
 
 		const response = await client.get(url);
 

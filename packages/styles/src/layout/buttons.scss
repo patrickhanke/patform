@@ -1,4 +1,4 @@
-@use "../constants" as *;
+@use "@repo/styles/constants" as *;
 
 .full_button {
   @include flexbox(

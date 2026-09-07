@@ -1,12 +1,20 @@
 "use client";
 
 import { FC, useMemo, useState } from "react";
-import { EmailStatus } from "@repo/types";
+import { Email, EmailStatus, Filter } from "@repo/types";
 import { EmailRecipientsProps, TableData } from "./types";
-import { Select, StateDisplay, Table, useCreateColumns } from "@repo/ui";
+import {
+	Divider,
+	PaginationState,
+	Select,
+	StateDisplay,
+	Table,
+	useCreateColumns
+} from "@repo/ui";
 import EmailRecipientState, {
 	mapLettermintStatus
 } from "./components/EmailRecipientState";
+import { useFindData } from "@repo/provider";
 
 type SuppressedFilter = "all" | "yes" | "no";
 
@@ -33,50 +41,64 @@ const SUPPRESSED_FILTER_OPTIONS: {
 	{ value: "no", label: "Nicht unterdrückt" }
 ];
 
-const EmailRecipients: FC<EmailRecipientsProps> = ({
-	email,
-	recipients = [],
-	emailRecipients = []
-}) => {
+const EmailRecipients: FC<EmailRecipientsProps> = ({ emailTemplateId }) => {
 	const [suppressedFilter, setSuppressedFilter] =
 		useState<SuppressedFilter>("all");
 	const [statusFilter, setStatusFilter] = useState<EmailStatus | "all">(
 		"all"
 	);
+	const [pagination, setPagination] = useState<PaginationState>({
+		pageIndex: 0,
+		pageSize: 10
+	});
+
+	const DEFAULT_FILTERS: Filter[] = [
+		{
+			key: "reference_id",
+			operator: "equalTo",
+			value: emailTemplateId
+		}
+	];
+
+	const { data: emailData } = useFindData<Email>({
+		objectName: "Email",
+		fields: ["objectId", "state", "data", "sendAt"],
+		filters: DEFAULT_FILTERS,
+		pollInterval: 10000
+	});
 
 	const tableData: TableData[] = useMemo(() => {
-		return recipients
-			.map((recipient) => {
-				const emailRecipient = emailRecipients?.find(
-					(emailRecipient) =>
-						emailRecipient.userId === recipient.userId
-				);
+		if (!emailData) return [];
+		return emailData
+			.map((email) => {
 				return {
-					last_name: recipient.data?.last_name ?? "",
-					first_name: recipient.data?.first_name ?? "",
-					title: recipient.data?.title ?? "",
-					email: recipient.email,
-					suppressed: recipient.suppressed,
-					status: emailRecipient?.status ?? undefined
+					last_name: email.data?.recipient?.last_name ?? "",
+					first_name: email.data?.recipient?.first_name ?? "",
+					title: email.data?.recipient?.title ?? "",
+					email: email.data?.recipient?.email ?? "",
+					suppressed: email.data?.suppressed ?? false,
+					state: email.state ?? undefined,
+					sendAt: email.sendAt ?? undefined
 				};
 			})
 			.filter((data) => data !== null)
 			.sort((a, b) => {
 				return (a.last_name ?? "").localeCompare(b.last_name ?? "");
 			});
-	}, [recipients, emailRecipients]);
+	}, [emailData]);
 
 	const filteredTableData = useMemo(() => {
 		return tableData.filter((row) => {
 			if (suppressedFilter === "yes" && !row.suppressed) return false;
 			if (suppressedFilter === "no" && row.suppressed) return false;
 			if (statusFilter !== "all") {
-				const normalized = mapLettermintStatus(row.status ?? "unknown");
+				const normalized = mapLettermintStatus(row.state ?? "unknown");
 				if (normalized !== statusFilter) return false;
 			}
 			return true;
 		});
 	}, [tableData, suppressedFilter, statusFilter]);
+
 	const columns = useCreateColumns<TableData>({
 		data: [
 			{
@@ -113,15 +135,31 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({
 				}
 			},
 			{
-				id: "status",
+				id: "state",
 				label: "Status",
 				type: "custom",
 				render: (row: TableData) => {
-					return row.status ? (
-						<EmailRecipientState status={row.status} />
+					return row.state ? (
+						<EmailRecipientState status={row.state} />
 					) : (
 						"Nicht verfügbar"
 					);
+				}
+			},
+			{
+				id: "sendAt",
+				label: "Versanddatum",
+				type: "string",
+				render: (row: TableData) => {
+					return row.sendAt
+						? new Date(row.sendAt).toLocaleString("de-DE", {
+								year: "numeric",
+								month: "long",
+								day: "numeric",
+								hour: "2-digit",
+								minute: "2-digit"
+							})
+						: "-";
 				}
 			}
 		],
@@ -132,7 +170,7 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({
 		editDisabled: true
 	});
 
-	if (!email || !recipients.length) {
+	if (!emailData || !emailData.length) {
 		return (
 			<div className="flex col gap-md">
 				<h3>Empfänger</h3>
@@ -175,11 +213,14 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({
 				/>
 				<h3>Empfänger ({headingCount})</h3>
 			</div>
+			<Divider showLine />
 
 			<Table
 				columns={columns}
 				data={filteredTableData}
 				rowCount={filteredTableData.length}
+				pagination={pagination}
+				setPagination={setPagination}
 			/>
 		</div>
 	);

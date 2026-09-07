@@ -18,7 +18,12 @@ import {
 } from "@repo/ui";
 import { CreateUser } from "./types";
 import { useState } from "react";
-import { Filter, ModuleOverviewProps, PatstoreRoleClass, PatstoreUser } from "@repo/types";
+import {
+	Filter,
+	ModuleOverviewProps,
+	PatstoreRoleClass,
+	PatstoreUser
+} from "@repo/types";
 import page_states from "./constants/page_states";
 import UserInvitations from "./content/UserInvitations";
 import create_user_fieds from "./constants/create_user_fields";

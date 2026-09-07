@@ -23,8 +23,6 @@ const TestEmail: FC<TestEmailProps> = ({
 	const [email, setEmail] = useState<string>("");
 	const { project, user } = useContext(PatstoreAppContext);
 
-	console.log("user", user.objectId);
-
 	return (
 		<Modal
 			header="Test E-Mail"
@@ -35,7 +33,6 @@ const TestEmail: FC<TestEmailProps> = ({
 					return;
 				}
 
-				console.log("emailContent", transformToEmail(emailContent));
 				await axiosclient()
 					.post("functions/send_test_email", {
 						email,

@@ -3,13 +3,15 @@ import disabled_fields from "../constants/disabled_fields";
 import module_fields from "../constants/module_fields";
 import special_fields from "../constants/special_fields";
 import { ModuleFieldsPartial } from "../types";
-import { Module, ModuleField } from "@repo/types";
+import { ModuleField, ModulePath } from "@repo/types";
 
 const generateInitialFields = (
 	initialFields: ModuleFieldsPartial,
-	modulePath: Module["path"]
+	modulePath: ModulePath
 ) => {
 	const generateFields = () => {
+		console.log(modulePath);
+		console.log(special_fields(modulePath));
 		const allFieldsArray = [
 			...special_fields(modulePath),
 			...module_fields

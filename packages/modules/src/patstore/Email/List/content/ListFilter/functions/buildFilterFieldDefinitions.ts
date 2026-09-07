@@ -1,5 +1,10 @@
-import { Field } from "@repo/ui";
-import { Module, ModuleField, ModuleFieldType, PatstoreUser } from "@repo/types";
+import { Field } from "@repo/types";
+import {
+	Module,
+	ModuleField,
+	ModuleFieldType,
+	PatstoreUser
+} from "@repo/types";
 import {
 	FilterFieldDefinition,
 	FilterFieldInputType,
@@ -218,9 +223,7 @@ export const buildFilterFieldDefinitions = (
 	});
 
 	const nestedSettingsDefinitions = extractNestedFieldPaths(
-		users.map(
-			(user) => (user.settings || {}) as Record<string, unknown>
-		)
+		users.map((user) => (user.settings || {}) as Record<string, unknown>)
 	).map((definition) => {
 		const settingsKey = `settings.${definition.key}`;
 		const uniqueValues = collectUniqueStringValues(users, settingsKey);

@@ -1,6 +1,6 @@
-import { ModuleField } from "@repo/types";
+import { ModuleField, ModulePath } from "@repo/types";
 
-const special_fields = (modulePath: string): ModuleField[] => {
+const special_fields = (modulePath: ModulePath): ModuleField[] => {
 	if (modulePath === "/images") {
 		return [
 			{
@@ -10,7 +10,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "image_preview",
 				active: true,
 				position: 1,
-				default: true
+				default: true,
+				hidden: false
 			},
 			{
 				id: "connected_elements",
@@ -19,11 +20,12 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "connected_elements",
 				active: true,
 				position: 10,
-				default: true
+				default: true,
+				hidden: false
 			}
 		];
 	}
-	if (modulePath === "/arcticles") {
+	if (modulePath === "/articles") {
 		return [
 			{
 				id: "author",
@@ -32,7 +34,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_person",
 				active: true,
 				position: 1,
-				default: true
+				default: true,
+				hidden: false
 			}
 		];
 	}
@@ -45,7 +48,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "location",
 				active: true,
 				position: 1,
-				default: true
+				default: true,
+				hidden: false
 			}
 		];
 	}
@@ -58,7 +62,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_team",
 				active: false,
 				position: 8,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "persons",
@@ -67,7 +72,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_persons",
 				active: false,
 				position: 8,
-				default: false
+				default: false,
+				hidden: false
 			}
 		];
 	}
@@ -80,7 +86,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_geopoint",
 				active: true,
 				position: 6,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "address",
@@ -89,11 +96,12 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_textfield",
 				active: false,
 				position: 6,
-				default: false
+				default: false,
+				hidden: false
 			}
 		];
 	}
-	if (modulePath === "/persons") {
+	if (modulePath === "/people") {
 		return [
 			{
 				id: "email",
@@ -102,7 +110,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_string",
 				active: true,
 				position: 6,
-				default: false
+				default: false,
+				hidden: false
 			}
 		];
 	}
@@ -115,7 +124,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "string",
 				active: true,
 				position: 1,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "pre_title",
@@ -124,7 +134,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_string",
 				active: false,
 				position: 1,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "post_title",
@@ -133,7 +144,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_string",
 				active: false,
 				position: 1,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "salutation",
@@ -142,7 +154,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_string",
 				active: false,
 				position: 1,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "first_name",
@@ -151,7 +164,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_string",
 				active: false,
 				position: 1,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "last_name",
@@ -160,7 +174,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_string",
 				active: false,
 				position: 1,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "username",
@@ -169,7 +184,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "string",
 				active: true,
 				position: 2,
-				default: true
+				default: true,
+				hidden: false
 			},
 			{
 				id: "email",
@@ -178,7 +194,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_string",
 				active: true,
 				position: 3,
-				default: true
+				default: true,
+				hidden: false
 			},
 			{
 				id: "roles",
@@ -187,7 +204,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "edit_role",
 				active: true,
 				position: 4,
-				default: true
+				default: true,
+				hidden: false
 			},
 			{
 				id: "emails",
@@ -196,7 +214,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "emails",
 				active: false,
 				position: 22,
-				default: false
+				default: false,
+				hidden: false
 			},
 			{
 				id: "expires_at",
@@ -205,7 +224,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "date",
 				active: false,
 				position: 25,
-				default: false
+				default: false,
+				hidden: false
 			}
 		];
 	}
@@ -218,7 +238,8 @@ const special_fields = (modulePath: string): ModuleField[] => {
 				type: "video",
 				active: true,
 				position: 2,
-				default: true
+				default: true,
+				hidden: false
 			}
 		];
 	}

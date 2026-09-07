@@ -24,7 +24,18 @@ const SearchFilter: FC<SearchFilterProps> = ({
 		return null;
 	}
 	if (type === "input") {
-		return <StringFilter onValueChange={valueChangeHandler} />;
+		return (
+			<StringFilter
+				value={
+					typeof value === "string" &&
+					path &&
+					value.startsWith(`${path}:`)
+						? value.slice(path.length + 1)
+						: value
+				}
+				onValueChange={valueChangeHandler}
+			/>
+		);
 	}
 	if (type === "toggle") {
 		const toggleValue =

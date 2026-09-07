@@ -48,5 +48,9 @@ next-env.d.ts
 # Git metadata
 .git/
 
-# patflow
-apps/patflow/
+# ── patflow (exclude when working on patstore only) ──
+# apps/patflow/
+# packages/modules/src/patflow/
+# packages/ui/src/patflow/
+# packages/provider/src/patflow/
+# packages/types/src/patflow/

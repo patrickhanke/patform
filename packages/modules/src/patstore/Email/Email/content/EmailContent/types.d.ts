@@ -21,6 +21,7 @@ export type CreateContentProps = {
 };
 
 export type EmailContentProps = {
+	emailId: string;
 	emailContent: ContentBlock[];
-	setEmailContent: Dispatch<SetStateAction<ContentBlock[]>>;
+	refetch: ApolloRefetch;
 };

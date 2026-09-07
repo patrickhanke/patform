@@ -1,77 +1,72 @@
 "use client";
 
-import siteStates from "./constants/siteStates";
-import { FormActionBar, Loader, Page } from "@repo/ui";
-import { useCallback, useMemo, useState } from "react";
-import { ApolloRefetch } from "@repo/types";
-import { useDataHandler } from "@repo/provider";
-import { isEqual } from "lodash-es";
+import { Loader, Page } from "@repo/ui";
+import { useContext, useMemo, useState } from "react";
+import { PatstoreAppContext, useGetData } from "@repo/provider";
 import { ListSettings, ListMembers, ListFilter } from "./content";
-import useListData from "./hooks/useListData";
 import { useParams } from "next/navigation";
+import { EmailList, Module, PageState } from "@repo/types";
 
 const List = () => {
+	const { modules } = useContext(PatstoreAppContext);
+
 	const { list_id: listId } = useParams<{ list_id: string }>();
-	const { updateData } = useDataHandler();
-	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
-		siteStates[0] as { value: string; label: string }
-	);
-	const [saving, setSaving] = useState(false);
 
 	const {
-		list,
-		savedList,
-		onListChange,
-		resetList,
-		commitList,
-		users,
-		refetchList,
-		refetchUsers,
-		userModule,
+		data: list,
+		refetch,
 		loading
-	} = useListData(listId);
-
-	const hasUnsavedChanges = useMemo(() => {
-		if (!list || !savedList) {
-			return false;
-		}
-
-		return !isEqual(list, savedList);
-	}, [list, savedList]);
-
-	const handleSave = useCallback(async () => {
-		if (!list) {
-			return;
-		}
-
-		setSaving(true);
-
-		await updateData({
-			className: "List",
-			objectId: listId,
-			updateObject: {
-				title: list.title,
-				settings: list.settings,
-				filters: list.settings?.filters ?? list.filters ?? []
-			},
-			feedback: "Liste erfolgreich gespeichert"
-		});
-
-		commitList(list);
-		await refetchList();
-		setSaving(false);
-	}, [list, listId, updateData, commitList, refetchList]);
-
-	const handleReset = useCallback(() => {
-		resetList();
-	}, [resetList]);
-
-	const refetch = useCallback(async () => {
-		await refetchList();
-		await refetchUsers();
-	}, [refetchList, refetchUsers]);
+	} = useGetData<EmailList>({
+		objectName: "Email",
+		fields: [
+			"objectId",
+			"title",
+			"data",
+			"settings",
+			"filters",
+			"type",
+			"project { objectId name }"
+		],
+		id: listId
+	});
 
 	const pageTitle = useMemo(() => list?.title || "Lädt ...", [list?.title]);
+
+	const userModule = useMemo(
+		() =>
+			modules.find((module) => module.path === "/users") as
+				| Module
+				| undefined,
+		[modules]
+	);
+
+	const pageStates: PageState[] = useMemo(
+		() => [
+			{
+				value: "settings",
+				label: "Einstellungen"
+			},
+			{
+				value: "filter",
+				label: "Filter",
+				disabled:
+					list?.settings?.static_list ||
+					list?.settings?.include_all_users
+			},
+			{
+				value: "members",
+				label: "Mitglieder",
+				disabled:
+					!list?.settings?.static_list ||
+					list?.settings?.include_all_users
+			}
+		],
+		[list]
+	);
+
+	const [siteState, setSiteState] = useState<PageState>(
+		pageStates[0] as { value: string; label: string }
+	);
 
 	if (loading || !list) {
 		return <Loader width="100%" height="100%" />;
@@ -79,47 +74,21 @@ const List = () => {
 
 	return (
 		<Page
-			title={pageTitle}
+			title={`${pageTitle} - ${siteState.label}`}
+			description={""}
 			emptyContent={true}
-			refetch={refetch as unknown as ApolloRefetch}
-			pageStates={siteStates}
+			refetch={refetch}
+			pageStates={pageStates}
 			pageState={siteState}
 			setPageState={setSiteState}
 		>
-			{siteState.value === "settings" && (
-				<ListSettings
-					list={list}
-					onListChange={onListChange}
-					disabled={saving}
-				/>
-			)}
+			{siteState.value === "settings" && <ListSettings list={list} />}
 			{siteState.value === "filter" && (
-				<ListFilter
-					list={list}
-					users={users}
-					userModule={userModule}
-					onListChange={onListChange}
-					disabled={saving}
-				/>
+				<ListFilter list={list} userModule={userModule} />
 			)}
-			{siteState.value === "members" && (
-				<ListMembers
-					list={list}
-					users={users}
-					refetchUsers={refetchUsers}
-					disabled={saving}
-				/>
+			{siteState.value === "members" && userModule && (
+				<ListMembers list={list} userModule={userModule} />
 			)}
-			<FormActionBar
-				open={hasUnsavedChanges}
-				setOpen={() => undefined}
-				handleSubmit={() => {
-					void handleSave();
-				}}
-				resetForm={() => {
-					handleReset();
-				}}
-			/>
 		</Page>
 	);
 };

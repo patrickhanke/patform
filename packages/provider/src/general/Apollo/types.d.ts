@@ -1,5 +1,5 @@
 import { generateGraphQLQuery, paramsHandler } from "@repo/provider";
-import { ApolloClient, ApolloQueryResult } from "@apollo/client";
+import { ApolloClient, ApolloError, ApolloQueryResult } from "@apollo/client";
 import { Classes, Filter, LanguageValue } from "@repo/types";
 import React from "react";
 
@@ -60,7 +60,7 @@ export type ClientHeaders = {
 
 export type ApolloRefetch = () => Promise<ApolloQueryResult<Classes>>;
 
-export type UseFindDataHook<T extends Classes> = (P: {
+export type UseFindDataParams = {
 	objectName: string;
 	fields: string[];
 	filters?: Filter[];
@@ -77,7 +77,9 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	userIds?: string[];
 	absenceId?: string;
 	defaultLanguage?: LanguageValue;
-}) => {
+};
+
+export type UseFindDataResult<T extends Classes = Classes> = {
 	loading: boolean;
 	data: T[];
 	refetch: ApolloRefetch;
@@ -87,16 +89,26 @@ export type UseFindDataHook<T extends Classes> = (P: {
 	changeLanguage: (language: LanguageValue) => void;
 };
 
-export type UseGetDataHook<T extends Classes> = (P: {
+export type UseFindDataHook<T extends Classes = Classes> = (
+	P: UseFindDataParams
+) => UseFindDataResult<T>;
+
+export type UseGetDataParams<T extends Classes = Classes> = {
 	objectName: string;
 	fields: string[];
 	id?: string;
 	skip?: boolean;
 	afterSaveHandler?: (data: T) => void;
 	useMasterKey?: boolean;
-}) => {
+};
+
+export type UseGetDataResult<T extends Classes = Classes> = {
 	loading: boolean;
 	data: T | null;
 	refetch: ApolloRefetch;
-	error: ApolloError;
+	error: ApolloError | undefined;
 };
+
+export type UseGetDataHook<T extends Classes = Classes> = (
+	P: UseGetDataParams<T>
+) => UseGetDataResult<T>;

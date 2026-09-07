@@ -1,5 +1,5 @@
 import { FC, useCallback, useMemo, useState } from "react";
-import { useAppContext, useFindData, useFindDataSecure } from "@repo/provider";
+import { useAppContext, useFindData } from "@repo/provider";
 import {
 	Button,
 	ElementSelectInterface,
@@ -9,6 +9,9 @@ import {
 } from "@repo/ui";
 import { IdFilterProps } from "../types";
 import { get, isArray } from "lodash-es";
+
+const normalizeClassName = (className?: string) =>
+	className === "_User" ? "User" : className;
 
 const IdFilter: FC<IdFilterProps> = ({
 	label,
@@ -20,12 +23,13 @@ const IdFilter: FC<IdFilterProps> = ({
 }) => {
 	const { project } = useAppContext();
 	const [isOpen, setIsOpen] = useState(false);
+	const objectName = normalizeClassName(className);
 
 	const { data, loading } = useFindData({
-		objectName: className || "",
+		objectName: objectName || "",
 		fields: ["objectId", "label"],
 		filters:
-			className === "User"
+			objectName === "User"
 				? [
 						{
 							key: "projects",
@@ -36,8 +40,8 @@ const IdFilter: FC<IdFilterProps> = ({
 				: [],
 		limit: 1000,
 		order: "label_ASC",
-		skipQuery: !className,
-		projectId: className !== "User" ? project?.objectId : undefined
+		skipQuery: !objectName,
+		projectId: objectName !== "User" ? project?.objectId : undefined
 	});
 
 	const selectElements = useMemo(() => {
@@ -52,13 +56,20 @@ const IdFilter: FC<IdFilterProps> = ({
 		return dataElements.filter((element) => element.label);
 	}, [data]);
 
+	const getValue = useCallback(() => {
+		if (type === "pointer") {
+			return get(value, "id.equalTo");
+		}
+		return value;
+	}, [value, type]);
+
 	const getElementsFromValue = useCallback((): SelectElement[] => {
 		if (isMulti && isArray(value)) {
 			if (value && value.length === 0) {
 				return [];
 			}
 			return selectElements.filter((element) =>
-				value.includes(element.value)
+				value.includes(element.value as string)
 			);
 		}
 		if (value && !isArray(value)) {
@@ -68,16 +79,9 @@ const IdFilter: FC<IdFilterProps> = ({
 			return element ? [element] : [];
 		}
 		return [];
-	}, [value, isMulti, selectElements]);
+	}, [value, isMulti, selectElements, getValue]);
 
-	const getValue = useCallback(() => {
-		if (type === "pointer") {
-			return get(value, "id.equalTo");
-		}
-		return value;
-	}, [value, type]);
-
-	if (!className) {
+	if (!objectName) {
 		return null;
 	}
 
@@ -91,7 +95,7 @@ const IdFilter: FC<IdFilterProps> = ({
 					{isMulti && Array.isArray(value) ? (
 						value.map((element_value) => (
 							<div
-								key={element_value}
+								key={String(element_value)}
 								className="content_element flex row a-ce j-sb w-100"
 							>
 								<p>
@@ -150,7 +154,6 @@ const IdFilter: FC<IdFilterProps> = ({
 				isOpen={isOpen}
 				cancelButtonHandler={() => {
 					setIsOpen(false);
-					onValueChange("");
 				}}
 				confirmButtonHandler={() => setIsOpen(false)}
 				header="Wert auswählen"
@@ -163,33 +166,23 @@ const IdFilter: FC<IdFilterProps> = ({
 					selectedElements={getElementsFromValue()}
 					onSelect={(elements) => {
 						if (type === "pointer") {
-							const value = elements[0]?.value;
-							if (value) {
+							const selectedValue = elements[0]?.value;
+							if (selectedValue) {
 								const pointerValue = {
-									id: { equalTo: `${value}` }
+									id: { equalTo: `${selectedValue}` }
 								};
 								onValueChange(pointerValue);
 							} else {
 								onValueChange("");
 							}
+						} else if (isMulti) {
+							const values = elements
+								.map((element) => element.value)
+								.filter((item): item is string => !!item);
+							onValueChange(values.length > 0 ? values : "");
 						} else {
-							if (isMulti) {
-								const values = elements.map(
-									(element) => element.value
-								);
-								if (values) {
-									onValueChange(values as string[]);
-								} else {
-									onValueChange("");
-								}
-							} else {
-								const value = elements[0]?.value;
-								if (value) {
-									onValueChange(value as string);
-								} else {
-									onValueChange("");
-								}
-							}
+							const selectedValue = elements[0]?.value;
+							onValueChange(selectedValue ? selectedValue : "");
 						}
 					}}
 					isSearchable

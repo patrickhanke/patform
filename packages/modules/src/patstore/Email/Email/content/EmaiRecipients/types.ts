@@ -1,10 +1,7 @@
-import { EmailClass, EmailStatus } from "@repo/types";
-import { EmailRecipient } from "../../types";
+import { EmailStatus } from "@repo/types";
 
 export interface EmailRecipientsProps {
-	email: EmailClass;
-	recipients: EmailRecipient[];
-	emailRecipients: EmailClass["recipients"];
+	emailTemplateId: string;
 }
 
 export type TableData = {
@@ -13,5 +10,6 @@ export type TableData = {
 	title: string;
 	email: string;
 	suppressed: boolean;
-	status?: EmailStatus;
+	state?: EmailStatus;
+	sendAt?: string;
 };

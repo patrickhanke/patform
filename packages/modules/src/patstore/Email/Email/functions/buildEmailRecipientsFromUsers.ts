@@ -1,6 +1,4 @@
-import { PatstoreUser } from "@repo/types";
-import getListMembers from "../../List/functions/getListMembers";
-import { EmailList } from "../../List/types";
+import { EmailList, PatstoreUser } from "@repo/types";
 import { EmailRecipient } from "../types";
 
 const resolveUserEmailForList = (
@@ -49,11 +47,10 @@ export const buildEmailRecipientsFromUsers = (
 	suppressedRecipients: EmailRecipient[];
 } => {
 	const listId = list.objectId;
-	const members = getListMembers(list, users, listId);
 	const recipients: EmailRecipient[] = [];
 	const suppressedRecipients: EmailRecipient[] = [];
 
-	members.forEach((user) => {
+	users.forEach((user) => {
 		const resolved = resolveUserEmailForList(user, listId);
 
 		if (!resolved) {

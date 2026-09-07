@@ -1,5 +1,10 @@
 import { ApolloRefetch, useDataHandler, useFindData } from "@repo/provider";
-import { ElementSelectInterface, Modal, SelectElement } from "@repo/ui";
+import {
+	Divider,
+	ElementSelectInterface,
+	Modal,
+	SelectElement
+} from "@repo/ui";
 import { useCallback, useMemo, useState } from "react";
 
 const EmailImport = ({
@@ -23,17 +28,27 @@ const EmailImport = ({
 	const { data: emails } = useFindData({
 		objectName: "Email",
 		fields: ["objectId", "title", "content"],
+		filters: [
+			{
+				key: "type",
+				operator: "equalTo",
+				value: "template"
+			}
+		],
 		projectId
 	});
+
 	const selectElements: SelectElement[] = useMemo(() => {
-		return emails?.map((email) => ({
-			value: email.objectId,
-			label: email.title
-		}));
+		return emails
+			?.filter((email) => email.objectId !== emailId)
+			.map((email) => ({
+				value: email.objectId,
+				label: email.title
+			}));
 	}, [emails]);
 
 	if (!emails) {
-		return <div>Email nicht gefunden</div>;
+		return <div>Keine E-Mail-Vorlagen gefunden</div>;
 	}
 
 	const updateEmail = useCallback(async () => {
@@ -66,7 +81,8 @@ const EmailImport = ({
 			header={"Importieren"}
 			buttonDisabled={[loading, !selectedEmail || loading]}
 		>
-			<p>Importieren Sie eine E-Mail aus einem anderen Projekt.</p>
+			<p>Importieren Sie eine E-Mail aus diesem Projekt.</p>
+			<Divider showLine={false} />
 			<ElementSelectInterface
 				elements={selectElements}
 				onSelect={(elements) => {
