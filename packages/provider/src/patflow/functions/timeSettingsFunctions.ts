@@ -7,15 +7,23 @@ const MS_PER_HOUR = 1000 * 60 * 60;
 /** A weekday setting before its derived `saldo` has been calculated */
 type WeekdayTimes = Omit<RecordWeekdaySetting, "saldo">;
 
-/** Legacy shape of `time_settings` before the per-weekday rework */
+/**
+ * Legacy shape of `time_settings` before the per-weekday rework. Older records
+ * kept their breaks under `pause`, while user defaults stored a plain number of
+ * minutes there.
+ */
 type LegacyTimeSettings = {
 	hours?: number;
 	weekdays?: number | RecordWeekdaySetting[];
 	start?: string;
 	breaks?: DayTime["breaks"];
-	pause?: DayTime["breaks"];
+	pause?: DayTime["breaks"] | number;
 	vacation?: number;
 };
+
+/** Anything that is not a list of break intervals is dropped */
+const toBreakList = (breaks: unknown): DayTime["breaks"] =>
+	Array.isArray(breaks) ? (breaks as DayTime["breaks"]) : [];
 
 /** Turns "HH:mm" into milliseconds since midnight */
 export const parseSettingTime = (time: string | undefined): number => {
@@ -47,7 +55,7 @@ export const formatSettingTime = (ms: number): string => {
 export const getWeekdayPause = (
 	breaks: DayTime["breaks"] | undefined
 ): number =>
-	(breaks ?? []).reduce((acc, current) => {
+	toBreakList(breaks).reduce((acc, current) => {
 		const span =
 			parseSettingTime(current?.end) - parseSettingTime(current?.start);
 		return acc + Math.max(0, span);
@@ -152,7 +160,9 @@ const convertLegacyWeekdays = (
 	settings: LegacyTimeSettings
 ): RecordWeekdaySetting[] => {
 	const workingDays = Number(settings.weekdays) || 0;
-	const breaks = settings.breaks ?? settings.pause ?? [];
+	const breaks = Array.isArray(settings.breaks)
+		? toBreakList(settings.breaks)
+		: toBreakList(settings.pause);
 	const pause = getWeekdayPause(breaks);
 	const start = settings.start || "08:00";
 	const dailyHours =
@@ -194,7 +204,7 @@ export const normalizeTimeSettings = (
 					index: weekday.index,
 					start: stored?.start || "00:00",
 					end: stored?.end || "00:00",
-					breaks: stored?.breaks ?? []
+					breaks: toBreakList(stored?.breaks)
 				});
 			})
 		: convertLegacyWeekdays(legacy);
