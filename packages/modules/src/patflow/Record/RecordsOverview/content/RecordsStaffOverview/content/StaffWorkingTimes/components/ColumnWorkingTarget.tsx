@@ -10,12 +10,8 @@ const ColumnWorkingTarget = ({
 	date: DayData;
 }) => {
 	const target = useMemo(() => {
-		if (
-			isWorkingDay &&
-			date?.default_time?.duration &&
-			date?.default_time?.pause
-		) {
-			return date.default_time?.duration - date.default_time?.pause;
+		if (isWorkingDay && date?.default_time?.duration) {
+			return date.default_time.duration - (date.default_time.pause || 0);
 		}
 
 		return 0;

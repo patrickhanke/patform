@@ -1,29 +1,14 @@
 import { Record, RecordTimeSettings } from "@repo/types";
-import { RecordBreak } from "../types";
-
-export const parseRecordBreaks = (record: Record): RecordBreak[] => {
-	const settings = record.time_settings as RecordTimeSettings & {
-		pause?: RecordBreak[];
-	};
-
-	if (Array.isArray(settings?.breaks)) {
-		return settings.breaks;
-	}
-
-	// Legacy records may still store breaks under `pause`
-	if (Array.isArray(settings?.pause)) {
-		return settings.pause;
-	}
-
-	return [];
-};
+import { normalizeTimeSettings } from "@repo/provider";
 
 export const applyRecordToFormState = (record: Record) => ({
 	year: record.year,
 	startDate: record.start_date,
-	nextRecord: { ...record } as Partial<Record>,
-	surcharges: record.surcharges ?? [],
-	breaks: parseRecordBreaks(record)
+	nextRecord: {
+		...record,
+		time_settings: normalizeTimeSettings(record.time_settings)
+	} as Partial<Record>,
+	surcharges: record.surcharges ?? []
 });
 
 export const isRecordEditable = (record: Record): boolean => {
@@ -53,17 +38,10 @@ export const getPreviousStepIndex = (
 	return currentStep - 1;
 };
 
+/**
+ * The weekly `hours` and the `saldo` of every weekday are derived values, so
+ * they are recalculated before the settings are written to the record.
+ */
 export const buildEditableTimeSettings = (
-	existing: RecordTimeSettings,
-	updated: RecordTimeSettings,
-	isEditing: boolean
-): RecordTimeSettings => {
-	if (!isEditing) {
-		return updated;
-	}
-	return {
-		...updated,
-		hours: existing.hours,
-		weekdays: existing.weekdays
-	};
-};
+	updated: RecordTimeSettings
+): RecordTimeSettings => normalizeTimeSettings(updated);

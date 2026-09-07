@@ -2,18 +2,24 @@ import { PatflowUser } from "@repo/types";
 import { Absence } from "./Absence";
 import { DayTime, TimeObject } from "./Times";
 
-export type RecordTimeSettings = {
-	hours: number;
-	weekdays: {
-		index: number;
-		start: string;
-		end: string;
-		breaks: DayTime["breaks"];
-		saldo: number;
-	}[];
-	breaks: DayTime["breaks"];
-	vacation: number;
+export type RecordWeekdaySetting = {
+	/** Index of the weekday, 0 = Monday ... 6 = Sunday */
+	index: number;
+	/** "HH:mm" */
 	start: string;
+	/** "HH:mm" */
+	end: string;
+	/** Break intervals as "HH:mm" */
+	breaks: DayTime["breaks"];
+	/** Derived: net working time of the day in milliseconds */
+	saldo: number;
+};
+
+export type RecordTimeSettings = {
+	/** Derived: sum of all weekday saldos in hours */
+	hours: number;
+	weekdays: RecordWeekdaySetting[];
+	vacation: number;
 };
 
 export type Record = {

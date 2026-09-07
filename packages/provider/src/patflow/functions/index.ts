@@ -7,6 +7,7 @@ export * from "./ticketHandlers";
 export * from "./dateTimeHelpers";
 export * from "./recordFunctions";
 export * from "./dayFunctions";
+export * from "./timeSettingsFunctions";
 
 export { default as getRecordSaldo } from "./getRecordSaldo";
 export { default as getRemainingVacation } from "./getRemainingVacation";

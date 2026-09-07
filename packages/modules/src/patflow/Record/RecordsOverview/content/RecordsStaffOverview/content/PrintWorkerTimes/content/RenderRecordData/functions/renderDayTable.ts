@@ -10,12 +10,8 @@ import jsPDF from "jspdf";
 import { DayData, DayDataTime } from "../types";
 
 const getTarget = (day: DayData) => {
-	if (
-		day.is_working_day &&
-		day.default_time?.duration &&
-		day.default_time?.pause
-	) {
-		return day.default_time.duration - day.default_time.pause;
+	if (day.is_working_day && day.default_time?.duration) {
+		return day.default_time.duration - (day.default_time.pause || 0);
 	}
 
 	return 0;

@@ -1,6 +1,9 @@
 import { Record } from "@repo/types";
+import { createDefaultWeekdaySettings, getWeeklyHours } from "@repo/provider";
 
 const defaultRecord: (year: number) => Partial<Record> = (year) => {
+	const weekdays = createDefaultWeekdaySettings();
+
 	return {
 		year,
 		absence: [],
@@ -8,11 +11,9 @@ const defaultRecord: (year: number) => Partial<Record> = (year) => {
 		start_date: `${year}-01-01`,
 		end_date: `${year}-12-31`,
 		time_settings: {
-			hours: 40,
-			weekdays: 5,
-			breaks: [],
-			vacation: 30,
-			start: "08:00"
+			hours: getWeeklyHours(weekdays),
+			weekdays,
+			vacation: 30
 		},
 		absence_days: 0,
 		saldo: 0,

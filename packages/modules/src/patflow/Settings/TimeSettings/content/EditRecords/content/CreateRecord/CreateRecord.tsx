@@ -3,6 +3,7 @@ import { CreateRecordProps } from "./types";
 import {
 	createInitialTimes,
 	getHolidayDates,
+	normalizeTimeSettings,
 	useDataHandler,
 	useDataStore,
 	useFindData
@@ -18,7 +19,6 @@ import {
 	getNextStepIndex,
 	getPreviousStepIndex,
 	isRecordEditable,
-	parseRecordBreaks,
 	TIME_SETTINGS_STEP_INDEX
 } from "./functions/recordFormState";
 import { Modal, Steps } from "@repo/ui";
@@ -51,9 +51,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		defaultRecord(currentYear)
 	);
 	const [surcharges, setSurcharges] = useState<string[]>([]);
-	const [breaks, setBreaks] = useState<
-		{ start: string; end: string; id: string }[]
-	>([]);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 
 	const isEditFlow = mode === "edit";
@@ -129,7 +126,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		setStartDate("");
 		setImportMode("new");
 		setSurcharges([]);
-		setBreaks([]);
 		setYear(currentYear);
 		setNextRecord(defaultRecord(currentYear));
 	}, [currentYear]);
@@ -143,7 +139,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		setStartDate(formState.startDate);
 		setNextRecord(formState.nextRecord);
 		setSurcharges(formState.surcharges);
-		setBreaks(formState.breaks);
 		setImportMode(record.former_record ? "import" : "new");
 		setStep(TIME_SETTINGS_STEP_INDEX);
 	}, []);
@@ -164,14 +159,12 @@ const CreateRecord: FC<CreateRecordProps> = ({
 	const handleImportModeSelect = (mode: "new" | "import") => {
 		setImportMode(mode);
 		if (mode === "import" && latestRecord) {
-			setBreaks(parseRecordBreaks(latestRecord));
 			setNextRecord((prev) => ({
 				...prev,
-				time_settings: latestRecord.time_settings
+				time_settings: normalizeTimeSettings(latestRecord.time_settings)
 			}));
 			setSurcharges(latestRecord.surcharges ?? []);
 		} else {
-			setBreaks([]);
 			setNextRecord((prev) => ({
 				...prev,
 				time_settings: defaultRecord(year).time_settings
@@ -197,11 +190,14 @@ const CreateRecord: FC<CreateRecordProps> = ({
 		}
 
 		const holidayDates = getHolidayDates(year, holidayData ?? []);
+		const timeSettings = buildEditableTimeSettings(
+			nextRecord.time_settings
+		);
 
 		const { default_times } = createInitialTimes({
 			start_date: nextRecord.start_date,
 			end_date: nextRecord.end_date,
-			timeSettings: nextRecord.time_settings,
+			timeSettings,
 			holidays: holidayDates || []
 		});
 
@@ -218,6 +214,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 				end_date: nextRecord.end_date,
 				default_times,
 				absence: [],
+				time_settings: timeSettings,
 				former_record:
 					importMode === "import" && latestRecord
 						? {
@@ -226,7 +223,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 								objectId: latestRecord.objectId
 							}
 						: null,
-				time_settings: nextRecord.time_settings,
 				saldo: 0,
 				vacation: 0,
 				absence_days: 0,
@@ -262,15 +258,26 @@ const CreateRecord: FC<CreateRecordProps> = ({
 	const updateRecordHandler = useCallback(async () => {
 		if (!edit?.objectId || !nextRecord?.time_settings) return;
 
+		const timeSettings = buildEditableTimeSettings(
+			nextRecord.time_settings
+		);
+		const holidayDates = getHolidayDates(edit.year, holidayData ?? []);
+
+		// The daily target times are derived from the weekday settings, so they
+		// have to be rebuilt whenever the settings change.
+		const { default_times } = createInitialTimes({
+			start_date: edit.start_date,
+			end_date: edit.end_date,
+			timeSettings,
+			holidays: holidayDates || []
+		});
+
 		await updateData({
 			className: "Record",
 			objectId: edit.objectId,
 			updateObject: {
-				time_settings: buildEditableTimeSettings(
-					edit.time_settings,
-					nextRecord.time_settings,
-					true
-				)
+				time_settings: timeSettings,
+				default_times
 			},
 			feedback: "Zeiterfassung aktualisiert"
 		});
@@ -281,6 +288,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 	}, [
 		edit,
 		nextRecord,
+		holidayData,
 		updateData,
 		resetFormState,
 		setCreateRecord,
@@ -366,9 +374,6 @@ const CreateRecord: FC<CreateRecordProps> = ({
 					<CreateRecordTimeSettings
 						nextRecord={nextRecord}
 						setNextRecord={setNextRecord}
-						breaks={breaks}
-						setBreaks={setBreaks}
-						isEditing={isEditing}
 					/>
 				);
 			case 4:

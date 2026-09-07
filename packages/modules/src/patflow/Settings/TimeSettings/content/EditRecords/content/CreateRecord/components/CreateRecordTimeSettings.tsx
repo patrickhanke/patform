@@ -1,73 +1,84 @@
-import { FC, useCallback, useMemo } from "react";
-import { Record, RecordTimeSettings } from "@repo/types";
+import { FC, useCallback, useMemo, useState } from "react";
+import { Record, RecordWeekdaySetting } from "@repo/types";
 import type { Field } from "@repo/ui";
 import { Divider, Form } from "@repo/ui";
-import generateId from "../functions/generateId";
+import {
+	convertMillisecondsToString,
+	getWeekdaySaldo,
+	getWeeklyHours,
+	getWorkingDaysPerWeek,
+	normalizeTimeSettings,
+	weekdays,
+	withWeekdaySaldo
+} from "@repo/provider";
+import CreateRecordWeekday from "./CreateRecordWeekday";
 import { CreateRecordTimeSettingsProps } from "../types";
 import styles from "../CreateRecord.module.scss";
 
 const CreateRecordTimeSettings: FC<CreateRecordTimeSettingsProps> = ({
 	nextRecord,
-	setNextRecord,
-	breaks,
-	setBreaks,
-	isEditing = false
+	setNextRecord
 }) => {
+	const [editIndex, setEditIndex] = useState<number | null>(null);
+
 	const extNextRecord = nextRecord as Record & {
 		initial_saldo?: number;
 		initial_vacation?: number;
 	};
 
-	const timeSettingsFields = useMemo(
+	const timeSettings = useMemo(
+		() => normalizeTimeSettings(nextRecord.time_settings),
+		[nextRecord.time_settings]
+	);
+
+	const weekdaySettings = timeSettings.weekdays;
+
+	const editSetting = useMemo(
+		() =>
+			weekdaySettings.find((setting) => setting.index === editIndex) ??
+			null,
+		[weekdaySettings, editIndex]
+	);
+
+	const updateWeekday = useCallback(
+		(updated: RecordWeekdaySetting) => {
+			setNextRecord((prev) => {
+				const settings = normalizeTimeSettings(prev.time_settings);
+				const nextWeekdays = settings.weekdays.map((setting) =>
+					setting.index === updated.index
+						? withWeekdaySaldo(updated)
+						: setting
+				);
+
+				return {
+					...prev,
+					time_settings: {
+						...settings,
+						weekdays: nextWeekdays,
+						hours: getWeeklyHours(nextWeekdays)
+					}
+				};
+			});
+		},
+		[setNextRecord]
+	);
+
+	const vacationFields = useMemo(
 		(): Field[] =>
 			[
-				{
-					id: "",
-					label: "Wochenstunden",
-					name: "hours",
-					type: "number" as const,
-					value: nextRecord.time_settings?.hours ?? 40,
-					dataType: "number" as const,
-					placeholder: "40",
-					width: "60px",
-					options: { number_start_value: 0, number_end_value: 999 },
-					disabled: isEditing
-				},
-				{
-					id: "",
-					label: "Tage pro Woche",
-					name: "weekdays",
-					type: "number" as const,
-					value: nextRecord.time_settings?.weekdays ?? 5,
-					dataType: "number" as const,
-					placeholder: "5",
-					width: "60px",
-					options: { number_start_value: 0, number_end_value: 7 },
-					disabled: isEditing
-				},
 				{
 					id: "",
 					label: "Urlaubstage pro Jahr",
 					name: "vacation",
 					type: "number" as const,
-					value: nextRecord.time_settings?.vacation ?? 30,
+					value: timeSettings.vacation,
 					dataType: "number" as const,
 					placeholder: "30",
 					width: "60px",
 					options: { number_start_value: 0, number_end_value: 365 }
-				},
-				{
-					id: "",
-					label: "Standard-Startzeit",
-					name: "start",
-					type: "time" as unknown as "input",
-					value: nextRecord.time_settings?.start ?? "08:00",
-					dataType: "string" as const,
-					placeholder: "08:00",
-					width: "80px"
 				}
 			] as unknown as Field[],
-		[nextRecord.time_settings, isEditing]
+		[timeSettings.vacation]
 	);
 
 	const initialValueFields = useMemo(
@@ -99,55 +110,59 @@ const CreateRecordTimeSettings: FC<CreateRecordTimeSettingsProps> = ({
 		[extNextRecord.initial_saldo, extNextRecord.initial_vacation]
 	);
 
-	const syncBreaksToRecord = useCallback(
-		(updated: { start: string; end: string; id: string }[]) => {
-			setBreaks(updated);
-			setNextRecord((prev) => ({
-				...prev,
-				time_settings: {
-					...prev.time_settings!,
-					breaks: updated
-				}
-			}));
-		},
-		[setBreaks, setNextRecord]
-	);
-
-	const addBreak = () => {
-		syncBreaksToRecord([
-			...breaks,
-			{ start: "12:00", end: "12:30", id: generateId() }
-		]);
-	};
-
-	const updateBreak = (
-		id: string,
-		field: "start" | "end",
-		value: string
-	) => {
-		syncBreaksToRecord(
-			breaks.map((b) => (b.id === id ? { ...b, [field]: value } : b))
-		);
-	};
-
-	const removeBreak = (id: string) => {
-		syncBreaksToRecord(breaks.filter((b) => b.id !== id));
-	};
-
 	return (
 		<div className={styles.step_content}>
 			<h3>Zeiteinstellungen</h3>
 			<Divider showLine={false} />
+			<div className={styles.weekdays_section}>
+				<div className={styles.breaks_header}>
+					<h4>Wochentage</h4>
+					<span className={styles.step_description}>
+						{getWeeklyHours(weekdaySettings)} Std. /{" "}
+						{getWorkingDaysPerWeek(weekdaySettings)} Tage pro Woche
+					</span>
+				</div>
+				<div className={styles.weekday_grid}>
+					{weekdays.map((weekday) => {
+						const setting = weekdaySettings.find(
+							(entry) => entry.index === weekday.index
+						);
+						const saldo = getWeekdaySaldo(setting);
+
+						return (
+							<button
+								key={weekday.value}
+								type="button"
+								className={styles.weekday_button}
+								onClick={() => setEditIndex(weekday.index)}
+							>
+								<span className={styles.weekday_button_label}>
+									{weekday.label}
+								</span>
+								<span className={styles.weekday_button_times}>
+									{saldo > 0
+										? `${setting?.start} – ${setting?.end}`
+										: "Kein Arbeitstag"}
+								</span>
+								<span className={styles.weekday_button_saldo}>
+									{convertMillisecondsToString(saldo)} Std.
+								</span>
+							</button>
+						);
+					})}
+				</div>
+			</div>
+			<Divider showLine />
 			<Form
-				fields={timeSettingsFields}
-				data={nextRecord.time_settings}
+				fields={vacationFields}
+				data={timeSettings}
 				isHorizontal
 				formSubmitHandler={(values) => {
 					setNextRecord((prev) => ({
 						...prev,
 						time_settings: {
-							...prev.time_settings!,
-							...(values as Partial<RecordTimeSettings>)
+							...normalizeTimeSettings(prev.time_settings),
+							vacation: (values as { vacation: number }).vacation
 						}
 					}));
 				}}
@@ -169,57 +184,19 @@ const CreateRecordTimeSettings: FC<CreateRecordTimeSettingsProps> = ({
 				}}
 				useWithDebounce
 			/>
-			<Divider showLine />
-			<div className={styles.breaks_section}>
-				<div className={styles.breaks_header}>
-					<h4>Pausen</h4>
-					<button
-						type="button"
-						className="sm primary"
-						onClick={addBreak}
-					>
-						+ Pause hinzufügen
-					</button>
-				</div>
-				{breaks.length === 0 && (
-					<p className={styles.breaks_empty}>
-						Keine Pausen definiert
-					</p>
-				)}
-				{breaks.map((b) => (
-					<div key={b.id} className={styles.break_item}>
-						<div className={styles.break_field}>
-							<label>Von</label>
-							<input
-								type="time"
-								value={b.start}
-								onChange={(e) =>
-									updateBreak(b.id, "start", e.target.value)
-								}
-								className={styles.time_input}
-							/>
-						</div>
-						<div className={styles.break_field}>
-							<label>Bis</label>
-							<input
-								type="time"
-								value={b.end}
-								onChange={(e) =>
-									updateBreak(b.id, "end", e.target.value)
-								}
-								className={styles.time_input}
-							/>
-						</div>
-						<button
-							type="button"
-							className="sm danger"
-							onClick={() => removeBreak(b.id)}
-						>
-							Entfernen
-						</button>
-					</div>
-				))}
-			</div>
+			{editSetting && (
+				<CreateRecordWeekday
+					setting={editSetting}
+					label={
+						weekdays.find(
+							(weekday) => weekday.index === editSetting.index
+						)?.label ?? ""
+					}
+					isOpen={editIndex !== null}
+					onClose={() => setEditIndex(null)}
+					onChange={updateWeekday}
+				/>
+			)}
 		</div>
 	);
 };

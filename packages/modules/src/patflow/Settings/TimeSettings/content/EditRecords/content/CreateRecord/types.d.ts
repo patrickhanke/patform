@@ -1,4 +1,4 @@
-import { Record, StaffMember } from "@repo/types";
+import { Record, RecordWeekdaySetting, StaffMember } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type CreateRecordProps = {
@@ -40,18 +40,17 @@ export type CreateRecordImportSourceProps = {
 	isEditing?: boolean;
 };
 
-export type RecordBreak = {
-	start: string;
-	end: string;
-	id: string;
-};
-
 export type CreateRecordTimeSettingsProps = {
 	nextRecord: Partial<Record>;
 	setNextRecord: Dispatch<SetStateAction<Partial<Record>>>;
-	breaks: RecordBreak[];
-	setBreaks: Dispatch<SetStateAction<RecordBreak[]>>;
-	isEditing?: boolean;
+};
+
+export type CreateRecordWeekdayProps = {
+	setting: RecordWeekdaySetting;
+	label: string;
+	isOpen: boolean;
+	onClose: () => void;
+	onChange: (setting: RecordWeekdaySetting) => void;
 };
 
 export type CreateRecordSurchargesAndHolidaysProps = {

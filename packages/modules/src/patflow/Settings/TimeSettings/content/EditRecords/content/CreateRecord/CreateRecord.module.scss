@@ -156,6 +156,69 @@
   );
 }
 
+.weekdays_section {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch,
+    $gap: constants.$sm
+  );
+
+  h4 {
+    margin: 0;
+  }
+}
+
+.weekday_grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: constants.$sm;
+}
+
+.weekday_button {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: flex-start,
+    $gap: 2px
+  );
+  padding: constants.$sm constants.$md;
+  border: 1px solid constants.$border_color;
+  border-radius: map.get(constants.$border_radius, "sm");
+  background: constants.$light;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: constants.$grey_tinted;
+    border-color: constants.$primary;
+  }
+}
+
+.weekday_button_label {
+  font-weight: 600;
+  font-size: map.get(constants.$font_size, "sm");
+}
+
+.weekday_button_times {
+  color: constants.$grey_shaded;
+  font-size: map.get(constants.$font_size, "sm");
+}
+
+.weekday_button_saldo {
+  font-size: map.get(constants.$font_size, "sm");
+}
+
+.weekday_times {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: flex-start,
+    $align: center,
+    $gap: constants.$lg
+  );
+}
+
 .breaks_section {
   @include constants.flexbox(
     $direction: column,

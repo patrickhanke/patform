@@ -3,66 +3,30 @@ import {
 	DefaultWorkingDay,
 	Holiday,
 	Record,
+	RecordWeekdaySetting,
 	TimeObject
 } from "@repo/types";
-import {
-	eachDayOfInterval,
-	formatISO9075,
-	hoursToMilliseconds,
-	isWeekend,
-	isSunday,
-	isFriday,
-	isThursday,
-	isWednesday,
-	isMonday
-} from "date-fns";
+import { eachDayOfInterval, formatISO9075 } from "date-fns";
 import { isArray } from "lodash-es";
 import { v4 } from "uuid";
+import {
+	getWeekdayPause,
+	getWeekdaySaldo,
+	getWeekdaySettingForDate,
+	getWeekdaySpan,
+	normalizeTimeSettings
+} from "./timeSettingsFunctions";
 
 const checkForWorkingDay: (
 	date: string,
-	weekdays: number,
+	setting: RecordWeekdaySetting | undefined,
 	holidays: string[]
-) => boolean = (date: string, weekdays, holidays) => {
+) => boolean = (date, setting, holidays) => {
 	if (holidays.includes(formatISO9075(date, { representation: "date" }))) {
 		return false;
 	}
-	if (weekdays === 6 && isSunday(date)) {
-		return false;
-	}
-	if (weekdays === 5 && isWeekend(date)) {
-		return false;
-	}
-	if (weekdays === 4 && (isWeekend(date) || isFriday(date))) {
-		return false;
-	}
-	if (
-		weekdays === 3 &&
-		(isWeekend(date) || isFriday(date) || isThursday(date))
-	) {
-		return false;
-	}
-	if (
-		weekdays === 2 &&
-		(isWeekend(date) ||
-			isFriday(date) ||
-			isThursday(date) ||
-			isWednesday(date))
-	) {
-		return false;
-	}
-	if (
-		weekdays === 1 &&
-		(isWeekend(date) ||
-			isFriday(date) ||
-			isThursday(date) ||
-			isWednesday(date) ||
-			isMonday(date))
-	) {
-		return false;
-	}
 
-	return true;
+	return getWeekdaySaldo(setting) > 0;
 };
 
 export const createInitialTimes: (
@@ -74,14 +38,11 @@ export const createInitialTimes: (
 	holidays
 }) => {
 	const times: TimeObject[] = [];
+	const settings = normalizeTimeSettings(timeSettings);
 
 	const createTimeObject: (day: string) => TimeObject = (day) => {
-		const isWorkingDay = checkForWorkingDay(
-			day,
-			timeSettings.weekdays,
-			holidays
-		);
-		// const isHoliday = holidays.includes(formatISO9075(day, {representation: 'date'}));
+		const setting = getWeekdaySettingForDate(settings.weekdays, day);
+		const isWorkingDay = checkForWorkingDay(day, setting, holidays);
 		const timeObject: TimeObject = {
 			date: formatISO9075(new Date(day), { representation: "date" }),
 			absence: null,
@@ -91,40 +52,20 @@ export const createInitialTimes: (
 			is_working_day: isWorkingDay
 		};
 
-		if (isWorkingDay) {
-			const startTime = `${day}T${timeSettings.start || "08:00"}`;
-			const pauseDuration = (timeSettings.breaks ?? []).reduce(
-				(acc, curr) => {
-					const pauseStart = `${day}T${curr.start}:00`;
-					const pauseEnd = `${day}T${curr.end}:00`;
-					return (
-						acc +
-						(new Date(pauseEnd).getTime() -
-							new Date(pauseStart).getTime())
-					);
-				},
-				0
-			);
-			const durationMs =
-				hoursToMilliseconds(
-					timeSettings.hours / timeSettings.weekdays
-				) + pauseDuration;
-			const endTime = new Date(
-				new Date(startTime).getTime() + durationMs
-			);
+		if (isWorkingDay && setting) {
+			const pauseDuration = getWeekdayPause(setting.breaks);
 
 			timeObject.default_time = {
 				type: "regular",
-				start: startTime,
-				end: `${formatISO9075(endTime, { representation: "date" })}T${formatISO9075(endTime, { representation: "time" })}`,
+				// `start` stays without seconds so it still matches the value of
+				// a datetime-local input (see `isFullDayAbsenceDay`)
+				start: `${day}T${setting.start}`,
+				end: `${day}T${setting.end}:00`,
 				pause: pauseDuration,
-				duration:
-					hoursToMilliseconds(
-						timeSettings.hours / timeSettings.weekdays
-					) + pauseDuration,
+				duration: getWeekdaySpan(setting),
 				comment: "",
 				state: "initial",
-				breaks: timeSettings.breaks ?? []
+				breaks: setting.breaks ?? []
 			};
 		}
 		return timeObject;
@@ -249,6 +190,12 @@ export const findDefaultTimeForDate: (
 	};
 
 	records.forEach((record) => {
+		if (
+			new Date(record.start_date) > new Date(date) ||
+			new Date(record.end_date) < new Date(date)
+		) {
+			return;
+		}
 		const rec_default_time = record.default_times?.find(
 			(day) => day.date === date
 		);
