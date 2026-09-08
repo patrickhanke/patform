@@ -203,12 +203,16 @@ const useCreateColumns = <T extends ColumnClasses>({
 		[persistRow]
 	);
 
-	const disableHandler = useCallback((field: string, row: T) => {
-		if (disabledObject?.[field]) {
-			return disabledObject[field](row);
-		}
-		return false;
-	}, [disabledObject]);
+	const disableHandler = useCallback(
+		(field: string, row: T) => {
+			if (disabledObject?.[field]) {
+				console.log(field, row);
+				return disabledObject[field](row);
+			}
+			return false;
+		},
+		[disabledObject]
+	);
 
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];

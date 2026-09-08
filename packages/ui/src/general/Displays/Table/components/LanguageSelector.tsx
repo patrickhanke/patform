@@ -42,7 +42,6 @@ const LanguageSelector = ({
 	}, [language, languages]);
 
 	if (!language || changeLanguage === undefined || languages?.length < 2) {
-		console.log("returning null");
 		return null;
 	}
 

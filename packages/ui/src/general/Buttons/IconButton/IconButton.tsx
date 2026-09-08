@@ -21,7 +21,6 @@ const IconButton: FC<IconButtonProps> = ({
 	tooltip
 }) => {
 	const colorProps = getIconButtonColorProps(color as IconButtonColor);
-
 	if (!isLink && onClick)
 		return (
 			<Tooltip
@@ -56,7 +55,15 @@ const IconButton: FC<IconButtonProps> = ({
 
 	if (isLink && link)
 		return (
-			<Tooltip showArrow portalled content={tooltip}>
+			<Tooltip
+				showArrow
+				portalled
+				content={tooltip}
+				disabled={disabled}
+				contentProps={{
+					display: tooltip ? "block" : "none"
+				}}
+			>
 				<Button
 					type="button"
 					onClick={() => null}

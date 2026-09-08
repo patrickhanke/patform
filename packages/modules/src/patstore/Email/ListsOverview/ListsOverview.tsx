@@ -2,7 +2,14 @@
 
 import { useState, useMemo } from "react";
 import { useDataHandler, useFindData } from "@repo/provider";
-import { Modal, Page, Table, useCreateColumns, usePageData } from "@repo/ui";
+import {
+	Modal,
+	Page,
+	StateDisplay,
+	Table,
+	useCreateColumns,
+	usePageData
+} from "@repo/ui";
 import { EmailList, Filter, ModuleOverviewProps } from "@repo/types";
 
 const ListsOverview = ({
@@ -32,7 +39,7 @@ const ListsOverview = ({
 
 	const { data, refetch, count, language, changeLanguage } = useFindData({
 		objectName: "Email",
-		fields: ["objectId", "title", "createdAt", "updatedAt", "data"],
+		fields: ["objectId", "title", "createdAt", "updatedAt", "data", "type"],
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
@@ -42,14 +49,22 @@ const ListsOverview = ({
 	});
 
 	const columns = useCreateColumns<EmailList>({
-		disabledObject: {
-			delete: (row) => row.type === "static_list"
-		},
 		data: [
 			{
 				id: "title",
 				label: "Titel",
 				type: "string"
+			},
+			{
+				id: "type",
+				label: "Typ",
+				type: "custom",
+				render: (row) =>
+					row.type === "static_list" ? (
+						<StateDisplay color="green" label="Statische Liste" />
+					) : (
+						<StateDisplay color="blue" label="Liste" />
+					)
 			},
 			{
 				id: "objectId",
@@ -71,7 +86,10 @@ const ListsOverview = ({
 		className: "Email",
 		refetch,
 		editLink: "emails/lists",
-		initialData: data ?? []
+		initialData: data ?? [],
+		disabledObject: {
+			delete: (row) => row.type === "static_list"
+		}
 	});
 	const { data: pageRows } = usePageData<EmailList[]>();
 
