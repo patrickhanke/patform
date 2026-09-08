@@ -19,11 +19,11 @@ const getDatabaseDefaultFields = (
 		if (!(field.type in database_fields)) {
 			return;
 		}
-
 		const databaseField = database_fields[
 			field.type as DatabaseFieldType
 		] as Field;
-		formFields.push({
+
+		const fieldObject: Field = {
 			...databaseField,
 			id: field.id,
 			name: field.id,
@@ -32,7 +32,13 @@ const getDatabaseDefaultFields = (
 				validate: field.required,
 				required: "Pflichtfeld"
 			}
-		});
+		};
+
+		if (fieldObject.type === "select" && field.select_options) {
+			fieldObject.select_options = field.select_options;
+		}
+
+		formFields.push(fieldObject);
 	});
 	if (languages.length > 1) {
 		formFields.push({

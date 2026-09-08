@@ -151,6 +151,7 @@ export type CreateColumnHookProps<Class> = {
 	currentModule?: Module;
 	/** Query rows. When set, cell edits go through usePageData and save as a collection. */
 	initialData?: Class[];
+	disabledObject?: { [key: string]: (row: Class) => boolean };
 };
 
 export type ColumnClasses =

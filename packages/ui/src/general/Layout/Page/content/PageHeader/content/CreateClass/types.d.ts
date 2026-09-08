@@ -9,4 +9,5 @@ export type CreateClassProps<T> = {
 	className: string;
 	refetch?: ApolloRefetch;
 	languages?: LanguageValue[];
+	initialState?: "draft" | "published";
 };

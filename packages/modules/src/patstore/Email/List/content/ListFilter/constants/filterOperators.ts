@@ -52,10 +52,6 @@ const filterOperators = (fieldType: string): FilterOperatorOption[] => {
 	}
 };
 
-export const ARRAY_OPERATORS: FilterOperator[] = [
-	"in",
-	"notIn",
-	"containedIn"
-];
+export const ARRAY_OPERATORS: FilterOperator[] = ["in", "notIn", "containedIn"];
 
 export default filterOperators;

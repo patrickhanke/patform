@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader, Page } from "@repo/ui";
+import { InfoBox, Loader, Page } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
 import { PatstoreAppContext, useGetData } from "@repo/provider";
 import { ListSettings, ListMembers, ListFilter } from "./content";
@@ -40,6 +40,29 @@ const List = () => {
 		[modules]
 	);
 
+	const disabledButton = useMemo(() => {
+		const buttons = {
+			settings: false,
+			filter: false,
+			members: false
+		};
+		if (list?.type === "static_list") {
+			buttons.filter = true;
+		} else {
+			if (list?.settings?.static_list) {
+				buttons.filter = true;
+			}
+			if (list?.settings?.include_all_users) {
+				buttons.members = true;
+				buttons.filter = true;
+			}
+			if (list?.settings?.filters) {
+				buttons.members = true;
+			}
+		}
+		return buttons;
+	}, [list]);
+
 	const pageStates: PageState[] = useMemo(
 		() => [
 			{
@@ -49,16 +72,12 @@ const List = () => {
 			{
 				value: "filter",
 				label: "Filter",
-				disabled:
-					list?.settings?.static_list ||
-					list?.settings?.include_all_users
+				disabled: disabledButton.filter
 			},
 			{
 				value: "members",
 				label: "Mitglieder",
-				disabled:
-					!list?.settings?.static_list ||
-					list?.settings?.include_all_users
+				disabled: disabledButton.members
 			}
 		],
 		[list]
@@ -82,12 +101,27 @@ const List = () => {
 			pageState={siteState}
 			setPageState={setSiteState}
 		>
-			{siteState.value === "settings" && <ListSettings list={list} />}
+			{list.type === "static_list" && (
+				<InfoBox
+					status="info"
+					text="Diese Liste ist statisch und kann nicht bearbeitet werden. Sie kann von Benutzern abonniert werden."
+				/>
+			)}
+			{siteState.value === "settings" && (
+				<ListSettings
+					list={list}
+					disabled={list.type === "static_list"}
+				/>
+			)}
 			{siteState.value === "filter" && (
 				<ListFilter list={list} userModule={userModule} />
 			)}
 			{siteState.value === "members" && userModule && (
-				<ListMembers list={list} userModule={userModule} />
+				<ListMembers
+					list={list}
+					userModule={userModule}
+					staticList={list.type === "static_list"}
+				/>
 			)}
 		</Page>
 	);

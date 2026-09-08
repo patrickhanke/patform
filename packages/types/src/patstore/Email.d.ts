@@ -52,7 +52,7 @@ export type EmailList = ClassProperties & {
 	title: string;
 	createdAt: string;
 	updatedAt: string;
-	type: "list";
+	type: "list" | "static_list";
 	settings: {
 		unsubscribe: boolean;
 		unsubscribe_link: string;

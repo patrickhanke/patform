@@ -12,7 +12,8 @@ const TableColumnDeleteField: TableColumnDeleteFieldComponent = ({
 	objectId,
 	className,
 	refetch,
-	useMasterKey
+	useMasterKey,
+	disabled = false
 }: TableColumnDeleteFieldProps) => {
 	const [deleteModal, setDeleteModal] = useState(false);
 	const { deleteData } = useDataHandler(useMasterKey);
@@ -28,7 +29,11 @@ const TableColumnDeleteField: TableColumnDeleteFieldComponent = ({
 
 	return (
 		<div>
-			<IconButton icon="delete" onClick={() => setDeleteModal(true)} />
+			<IconButton
+				icon="delete"
+				onClick={() => setDeleteModal(true)}
+				disabled={disabled}
+			/>
 			<Modal
 				isOpen={deleteModal}
 				cancelButtonHandler={() => setDeleteModal(false)}

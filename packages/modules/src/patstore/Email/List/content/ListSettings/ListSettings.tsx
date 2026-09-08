@@ -43,7 +43,6 @@ const ListSettings: FC<ListSettingsProps> = ({ list, disabled = false }) => {
 					id="title"
 					defaultValue={data?.title ?? list.title}
 					onChange={(value) => onListChange("title", value as string)}
-					disabled={disabled}
 					placeholder="Listen-Titel eingeben"
 				/>
 			</div>

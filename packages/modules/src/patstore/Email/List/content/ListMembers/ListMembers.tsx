@@ -8,10 +8,14 @@ import { useFindDataSecure } from "@repo/provider";
 export interface ListMembersProps {
 	list: EmailList;
 	userModule: Module;
+	staticList: boolean;
 }
 
-const ListMembers: FC<ListMembersProps> = ({ list, userModule }) => {
-	console.log(list.settings);
+const ListMembers: FC<ListMembersProps> = ({
+	list,
+	userModule,
+	staticList = false
+}) => {
 	const { data, setData } = usePageData<EmailList["settings"]>(
 		{
 			objectId: list.objectId,
@@ -63,7 +67,15 @@ const ListMembers: FC<ListMembersProps> = ({ list, userModule }) => {
 	} = useFindDataSecure({
 		objectName: "User",
 		fields: ["objectId", "first_name", "last_name", "email"],
-		filters: [...initialFilters, ...filters] as Filter[],
+		filters: staticList
+			? ([
+					{
+						key: "search",
+						value: `lists:${list.objectId}`,
+						operator: "in"
+					}
+				] as Filter[])
+			: ([...initialFilters, ...filters] as Filter[]),
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order: "label_ASC",
@@ -117,21 +129,26 @@ const ListMembers: FC<ListMembersProps> = ({ list, userModule }) => {
 			<div className="flex row gap-sm w-100 j-sb">
 				<p>
 					Die Liste enthält{" "}
-					<strong>{data?.recipients?.length}</strong> Nutzer.
+					<strong>
+						{staticList ? count : data?.recipients?.length}
+					</strong>{" "}
+					Nutzer.
 				</p>
-				<IconButton
-					text={
-						filters.find((filter) => filter.key === "objectId")
-							? "Alle anzeigen"
-							: "Ausgewählte anzeigen"
-					}
-					icon={
-						filters.find((filter) => filter.key === "objectId")
-							? "eye"
-							: "eye-off"
-					}
-					onClick={() => viewAllFilterHandler()}
-				/>
+				{!staticList && (
+					<IconButton
+						text={
+							filters.find((filter) => filter.key === "objectId")
+								? "Alle anzeigen"
+								: "Ausgewählte anzeigen"
+						}
+						icon={
+							filters.find((filter) => filter.key === "objectId")
+								? "eye"
+								: "eye-off"
+						}
+						onClick={() => viewAllFilterHandler()}
+					/>
+				)}
 			</div>
 
 			<Table
@@ -142,13 +159,13 @@ const ListMembers: FC<ListMembersProps> = ({ list, userModule }) => {
 				rowCount={count}
 				filters={filters}
 				setFilters={setFilters}
-				filterColumns={userModule.filters}
+				filterColumns={staticList ? undefined : userModule.filters}
 				loading={loading}
 				selectedRows={data?.recipients || []}
 				setSelectedRows={(recipients) =>
 					setData("recipients", recipients as string[])
 				}
-				enableRowSelection
+				enableRowSelection={!staticList}
 			/>
 		</div>
 	);

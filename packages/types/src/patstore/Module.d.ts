@@ -101,6 +101,7 @@ export type ModuleSettings = {
 };
 
 export type ModuleFieldType =
+	| "type"
 	| "string"
 	| "edit_string"
 	| "image"
@@ -153,6 +154,7 @@ export type ModuleField = {
 	position: number;
 	default: boolean;
 	hidden: boolean;
+	select_options?: { label: string; value: string }[];
 };
 
 export type ModuleClass =

@@ -123,7 +123,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 	editDisabled = false,
 	hasEmailSettings = false,
 	currentModule,
-	initialData
+	initialData,
+	disabledObject
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandlerSecure(useMasterKey);
 	const updateColumnData: UpdateColumnData = useCallback(
@@ -201,6 +202,13 @@ const useCreateColumns = <T extends ColumnClasses>({
 				),
 		[persistRow]
 	);
+
+	const disableHandler = useCallback((field: string, row: T) => {
+		if (disabledObject?.[field]) {
+			return disabledObject[field](row);
+		}
+		return false;
+	}, [disabledObject]);
 
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
@@ -902,7 +910,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnArray.push({
 					accessorFn: (row) => {
 						const live = getLiveRow(pageRows, row);
-						console.log("live", live);
 						return (
 							<TableColumnLang
 								value={live[columnElement.id] as LanguageValue}
@@ -1000,6 +1007,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 								objectId={row.objectId}
 								className={className}
 								refetch={refetch}
+								disabled={disableHandler("delete", row)}
 							/>
 						</div>
 					),

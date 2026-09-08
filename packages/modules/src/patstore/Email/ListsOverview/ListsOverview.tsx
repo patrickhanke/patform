@@ -14,8 +14,8 @@ const ListsOverview = ({
 	const [filters] = useState<Filter[]>([
 		{
 			key: "type",
-			value: "list",
-			operator: "equalTo",
+			value: ["list", "static_list"],
+			operator: "in",
 			id: "type_filter"
 		}
 	]);
@@ -42,6 +42,9 @@ const ListsOverview = ({
 	});
 
 	const columns = useCreateColumns<EmailList>({
+		disabledObject: {
+			delete: (row) => row.type === "static_list"
+		},
 		data: [
 			{
 				id: "title",
@@ -115,6 +118,18 @@ const ListsOverview = ({
 						required: true,
 						active: true,
 						default: true
+					},
+					{
+						id: "type",
+						label: "Typ",
+						type: "type",
+						required: true,
+						active: true,
+						default: true,
+						select_options: [
+							{ label: "Liste", value: "list" },
+							{ label: "Statische Liste", value: "static_list" }
+						]
 					}
 				],
 				refetch

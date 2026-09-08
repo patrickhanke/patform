@@ -7,6 +7,7 @@ import { Field } from "@repo/types";
  */
 type UsedModuleFieldType = Extract<
 	ModuleFieldType,
+	| "type"
 	| "edit_string"
 	| "string"
 	| "date"
@@ -153,6 +154,14 @@ const database_fields = {
 		name: "edit_role",
 		type: "select",
 		label: "Rolle",
+		dataType: "string",
+		select_options: []
+	},
+	type: {
+		id: "type",
+		name: "type",
+		type: "select",
+		label: "Typ",
 		dataType: "string",
 		select_options: []
 	},
