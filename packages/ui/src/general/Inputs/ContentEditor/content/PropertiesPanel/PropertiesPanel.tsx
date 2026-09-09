@@ -39,12 +39,10 @@ export default function PropertiesPanel({
 
 	const handleUpdate = useCallback(
 		(field: string, value: string) => {
-			if (field && value) {
-				set(selectedBlock, field, value) as Partial<ContentBlock>;
-				onBlockUpdate(selectedBlock.id, selectedBlock);
-			} else {
-				console.error("Invalid field or value", field, value);
-			}
+			// Empty values are valid — they clear a field such as the image link
+			if (!field) return;
+			set(selectedBlock, field, value) as Partial<ContentBlock>;
+			onBlockUpdate(selectedBlock.id, selectedBlock);
 		},
 		[selectedBlock, onBlockUpdate]
 	);

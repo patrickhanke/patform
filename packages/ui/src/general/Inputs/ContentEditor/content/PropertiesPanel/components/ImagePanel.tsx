@@ -47,6 +47,19 @@ const ImagePanel = ({
 			</div>
 
 			<div className="property-group">
+				<label className="property-label">Link URL (Verlinkung)</label>
+				<input
+					type="text"
+					className="property-input"
+					placeholder="https://..."
+					value={selectedBlock.config?.imageLink || ""}
+					onChange={(e) =>
+						onChange("config.imageLink", e.target.value)
+					}
+				/>
+			</div>
+
+			<div className="property-group">
 				<label className="property-label">Ausrichtung</label>
 				<select
 					className="property-select"

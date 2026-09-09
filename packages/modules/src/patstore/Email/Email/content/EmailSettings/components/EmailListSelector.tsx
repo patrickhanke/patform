@@ -22,8 +22,8 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 		filters: [
 			{
 				key: "type",
-				value: "list",
-				operator: "equalTo"
+				value: ["list", "static_list"],
+				operator: "in"
 			}
 		],
 		limit: 1000,
@@ -31,6 +31,9 @@ const EmailListSelector: FC<EmailListSelectorProps> = ({
 		order: "title_ASC",
 		moduleId: currentModule.objectId
 	});
+
+	console.log(lists);
+	console.log(currentModule);
 
 	const elements = useMemo(() => {
 		const listOptionsArray: SelectElement[] = [];

@@ -219,6 +219,7 @@ const renderEmailImageBlock = (block: ContentBlock): string => {
 	const imageUrl = block.config?.imageUrl || "";
 	const alignment = block.config?.alignment || "center";
 	const imageAlt = block.config?.imageAlt || "Image";
+	const imageLink = block.config?.imageLink || "";
 	const configWidth = block.config?.width || "600px";
 	const height = block.config?.height || "auto";
 	const wrapperStyle = resolveBlockStyleString(block.style, {
@@ -234,11 +235,16 @@ const renderEmailImageBlock = (block: ContentBlock): string => {
 		widthValue = maxContainerWidth;
 	}
 
+	const imageHtml = `<img src="${imageUrl}" alt="${imageAlt}" width="${widthValue}" style="width: ${widthValue}px; max-width: 100%; height: ${height}; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;" />`;
+	const linkedImageHtml = imageLink
+		? `<a href="${imageLink}" target="_blank" style="display: inline-block; border: 0; text-decoration: none;">${imageHtml}</a>`
+		: imageHtml;
+
 	return `
 		<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="${mergeStyle("margin: 24px 0", wrapperStyle)}">
 			<tr>
 				<td align="${alignment}">
-					<img src="${imageUrl}" alt="${imageAlt}" width="${widthValue}" style="width: ${widthValue}px; max-width: 100%; height: ${height}; display: block; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;" />
+					${linkedImageHtml}
 				</td>
 			</tr>
 		</table>

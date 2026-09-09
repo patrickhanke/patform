@@ -194,12 +194,24 @@ const renderImageBlock = (block: ContentBlock): React.ReactNode => {
 	const alignment = block.config?.alignment || "center";
 	const imageUrl = block.config?.imageUrl || "";
 	const imageAlt = block.config?.imageAlt || "Image";
+	const imageLink = block.config?.imageLink || "";
 	const { style, className } = resolveBlockStyle(block.style, {
 		includeSizing: true,
 		includeColors: true
 	});
 
 	if (!imageUrl) return null;
+
+	const image = (
+		<img
+			src={imageUrl}
+			alt={imageAlt}
+			style={{
+				maxWidth: "100%",
+				height: "auto"
+			}}
+		/>
+	);
 
 	return (
 		<div
@@ -210,14 +222,13 @@ const renderImageBlock = (block: ContentBlock): React.ReactNode => {
 				...style
 			}}
 		>
-			<img
-				src={imageUrl}
-				alt={imageAlt}
-				style={{
-					maxWidth: "100%",
-					height: "auto"
-				}}
-			/>
+			{imageLink ? (
+				<a href={imageLink} target="_blank" rel="noopener noreferrer">
+					{image}
+				</a>
+			) : (
+				image
+			)}
 		</div>
 	);
 };

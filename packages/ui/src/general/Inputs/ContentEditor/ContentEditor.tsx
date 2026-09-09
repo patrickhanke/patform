@@ -89,6 +89,8 @@ export interface ContentBlock {
 		buttonFontColor?: string;
 		imageUrl?: string;
 		imageAlt?: string;
+		/** Optional target the image links to */
+		imageLink?: string;
 		width?: string;
 		height?: string;
 		textType?: "heading" | "paragraph";
