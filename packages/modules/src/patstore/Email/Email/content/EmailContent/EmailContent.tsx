@@ -20,7 +20,8 @@ const EmailContent: FC<EmailContentProps> = ({
 				objectId: emailId,
 				updateObject: {
 					content: content
-				}
+				},
+				feedback: "Inhalte aktualisiert"
 			});
 			refetch();
 		},
