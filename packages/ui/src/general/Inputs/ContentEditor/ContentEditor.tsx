@@ -13,9 +13,10 @@ import {
 	PointerSensor,
 	useSensor,
 	useSensors,
+	Collision,
+	CollisionDetection,
 	DragStartEvent,
-	DragEndEvent,
-	DragOverEvent
+	DragEndEvent
 } from "@dnd-kit/core";
 import {
 	SortableContext,
@@ -23,6 +24,7 @@ import {
 	verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 import { v4 as uuidv4 } from "uuid";
+import { cloneDeep } from "lodash-es";
 
 import Sidebar from "./components/Sidebar";
 import Canvas from "./components/Canvas";
@@ -131,7 +133,6 @@ export default function ContentEditor({
 	const [selectedBlock, setSelectedBlock] = useState<ContentBlock | null>(
 		null
 	);
-	const [overId, setOverId] = useState<string | null>(null);
 	const [importContentOpen, setImportContentOpen] = useState(false);
 
 	const sensors = useSensors(
@@ -259,38 +260,39 @@ export default function ContentEditor({
 		setActiveId(event.active.id as string);
 	};
 
-	const handleDragOver = (event: DragOverEvent) => {
-		const { over } = event;
-		if (over) {
-			setOverId(over.id as string);
-		}
-	};
+	const isContainerId = (id: string) =>
+		id === "canvas" || id.startsWith("column-");
 
-	const customCollisionDetection = (args: any) => {
+	const customCollisionDetection: CollisionDetection = (args) => {
 		const pointerCollisions = pointerWithin(args);
+		const collisions = pointerCollisions.length
+			? pointerCollisions
+			: rectIntersection(args);
 
-		if (pointerCollisions.length > 0) {
-			const columnCollision = pointerCollisions.find((collision: any) =>
-				collision.id.toString().startsWith("column-")
-			);
-			if (columnCollision) {
-				return [columnCollision];
-			}
-			return pointerCollisions;
+		if (collisions.length === 0) {
+			return closestCenter(args);
 		}
 
-		const rectCollisions = rectIntersection(args);
-		if (rectCollisions.length > 0) {
-			const columnCollision = rectCollisions.find((collision: any) =>
-				collision.id.toString().startsWith("column-")
+		// Blocks win over the containers wrapping them, so sorting previews and
+		// drops between blocks stay possible. Smallest rect = deepest block.
+		const blockCollisions = collisions.filter(
+			(collision) => !isContainerId(collision.id.toString())
+		);
+		if (blockCollisions.length > 0) {
+			const rectArea = (collision: Collision) => {
+				const rect = args.droppableRects.get(collision.id);
+				return rect ? rect.width * rect.height : Infinity;
+			};
+			const deepest = blockCollisions.reduce((smallest, collision) =>
+				rectArea(collision) < rectArea(smallest) ? collision : smallest
 			);
-			if (columnCollision) {
-				return [columnCollision];
-			}
-			return rectCollisions;
+			return [deepest];
 		}
 
-		return closestCenter(args);
+		const columnCollision = collisions.find((collision) =>
+			collision.id.toString().startsWith("column-")
+		);
+		return columnCollision ? [columnCollision] : collisions;
 	};
 
 	const ensureSectionChildren = (layoutOrSection: ContentBlock) => {
@@ -342,14 +344,62 @@ export default function ContentEditor({
 		for (const block of blockList) {
 			if (!block.children) continue;
 			for (const column of block.children) {
-				const index = column.findIndex((b) => b.id === id);
-				if (index !== -1) {
-					return { list: column, index };
-				}
+				if (!column) continue;
+				const found = findListContaining(column, id);
+				if (found) return found;
 			}
 		}
 
 		return null;
+	};
+
+	/** Move a block to the position of `overIdStr`, across columns and sections. */
+	const moveBlockToOver = (
+		rootBlocks: ContentBlock[],
+		activeIdStr: string,
+		overIdStr: string
+	): boolean => {
+		const source = findListContaining(rootBlocks, activeIdStr);
+		if (!source) return false;
+
+		const moving = source.list[source.index]!;
+
+		// Dropping a container into itself would detach the subtree
+		if (moving.children && findBlockById([moving], overIdStr)) {
+			return false;
+		}
+
+		const target = findListContaining(rootBlocks, overIdStr);
+		if (!target) return false;
+
+		const overBlock = target.list[target.index]!;
+		const targetIsTopLevel = target.list === rootBlocks;
+
+		// Sections only live at the top level, so a section hovering the inside
+		// of another section is reordered next to that section
+		if (moving.type === "section" && !targetIsTopLevel) {
+			const sectionIndex = rootBlocks.findIndex((block) =>
+				findBlockById([block], overIdStr)
+			);
+			if (sectionIndex === -1) return false;
+			source.list.splice(source.index, 1);
+			rootBlocks.splice(sectionIndex, 0, moving);
+			return true;
+		}
+
+		// A block dropped on a section itself goes into that section's body
+		if (moving.type !== "section" && overBlock.type === "section") {
+			source.list.splice(source.index, 1);
+			ensureSectionChildren(overBlock);
+			overBlock.children![0]!.push(moving);
+			return true;
+		}
+
+		// Removing first, then inserting at the original index of the hovered
+		// block matches the preview shown while dragging.
+		source.list.splice(source.index, 1);
+		target.list.splice(target.index, 0, moving);
+		return true;
 	};
 
 	const insertIntoDefaultSection = (
@@ -374,7 +424,7 @@ export default function ContentEditor({
 
 	const insertBlock = useCallback(
 		(block: ContentBlock) => {
-			const newBlocks = [...blocks];
+			const newBlocks = cloneDeep(blocks);
 			if (multipleSections) {
 				const lastSection = newBlocks[newBlocks.length - 1];
 				if (lastSection?.type === "section") {
@@ -394,7 +444,7 @@ export default function ContentEditor({
 
 	const handleDropInColumn = useCallback(
 		(activeIdStr: string, layoutId: string, columnIndex: number) => {
-			const newBlocks = [...blocks];
+			const newBlocks = cloneDeep(blocks);
 			const layoutBlock = newBlocks.find((b) => b.id === layoutId);
 
 			// Layout/section may be nested inside a section
@@ -454,7 +504,6 @@ export default function ContentEditor({
 
 		if (!over) {
 			setActiveId(null);
-			setOverId(null);
 			return;
 		}
 
@@ -468,7 +517,6 @@ export default function ContentEditor({
 			const layoutId = parts.slice(1, -1).join("-");
 			handleDropInColumn(activeIdStr, layoutId, parseInt(columnIndex));
 			setActiveId(null);
-			setOverId(null);
 			return;
 		}
 
@@ -482,12 +530,13 @@ export default function ContentEditor({
 			if (type === "section") {
 				if (!multipleSections) {
 					setActiveId(null);
-					setOverId(null);
 					return;
 				}
 				const newSection = createBlock("section");
-				const newBlocks = [...blocks];
-				const overIndex = newBlocks.findIndex((b) => b.id === over.id);
+				const newBlocks = cloneDeep(blocks);
+				const overIndex = newBlocks.findIndex((block) =>
+					findBlockById([block], overIdStr)
+				);
 				if (overIndex === -1) {
 					newBlocks.push(newSection);
 				} else {
@@ -495,32 +544,27 @@ export default function ContentEditor({
 				}
 				updateBlocks(newBlocks);
 				setActiveId(null);
-				setOverId(null);
 				return;
 			}
 
 			const newBlock = createBlock(type);
-			const newBlocks = [...blocks];
+			const newBlocks = cloneDeep(blocks);
+			const overLocation = findListContaining(newBlocks, overIdStr);
+			const overBlock = overLocation
+				? overLocation.list[overLocation.index]!
+				: null;
 
-			if (multipleSections) {
-				// Insert into the section under the pointer, or the last section
-				const overLocation = findListContaining(newBlocks, overIdStr);
-				if (overLocation && overLocation.list !== newBlocks) {
-					overLocation.list.splice(overLocation.index, 0, newBlock);
-				} else {
-					const sectionOver = newBlocks.find(
-						(b) => b.id === overIdStr
-					);
-					if (sectionOver?.type === "section") {
-						ensureSectionChildren(sectionOver);
-						sectionOver.children![0]!.push(newBlock);
-					} else {
-						const lastSection = newBlocks[newBlocks.length - 1];
-						if (lastSection?.type === "section") {
-							ensureSectionChildren(lastSection);
-							lastSection.children![0]!.push(newBlock);
-						}
-					}
+			if (overBlock && overBlock.type !== "section") {
+				// Drop right where the placeholder was shown
+				overLocation!.list.splice(overLocation!.index, 0, newBlock);
+			} else if (overBlock?.type === "section") {
+				ensureSectionChildren(overBlock);
+				overBlock.children![0]!.push(newBlock);
+			} else if (multipleSections) {
+				const lastSection = newBlocks[newBlocks.length - 1];
+				if (lastSection?.type === "section") {
+					ensureSectionChildren(lastSection);
+					lastSection.children![0]!.push(newBlock);
 				}
 			} else {
 				insertIntoDefaultSection(newBlocks, newBlock, overIdStr);
@@ -528,93 +572,18 @@ export default function ContentEditor({
 
 			updateBlocks(newBlocks);
 			setActiveId(null);
-			setOverId(null);
 			return;
 		}
 
 		// Reordering existing blocks
 		if (active.id !== over.id) {
-			const newBlocks = [...blocks];
-
-			// Reorder top-level sections
-			if (multipleSections) {
-				const oldIndex = newBlocks.findIndex(
-					(b) => b.id === activeIdStr
-				);
-				const newIndex = newBlocks.findIndex((b) => b.id === overIdStr);
-				if (oldIndex !== -1 && newIndex !== -1) {
-					const [movedBlock] = newBlocks.splice(oldIndex, 1);
-					if (movedBlock) {
-						newBlocks.splice(newIndex, 0, movedBlock);
-						updateBlocks(newBlocks);
-						setActiveId(null);
-						setOverId(null);
-						return;
-					}
-				}
-			}
-
-			let reordered = false;
-
-			for (const block of newBlocks) {
-				if (!block.children) continue;
-				for (let i = 0; i < block.children.length; i++) {
-					const column = block.children[i];
-					if (!column) continue;
-					const oldIndex = column.findIndex(
-						(b) => b.id === activeIdStr
-					);
-					const newIndex = column.findIndex(
-						(b) => b.id === overIdStr
-					);
-
-					if (oldIndex !== -1 && newIndex !== -1) {
-						const [movedBlock] = column.splice(oldIndex, 1);
-						if (movedBlock) {
-							column.splice(newIndex, 0, movedBlock);
-							reordered = true;
-							break;
-						}
-					}
-
-					// Also reorder inside nested layout columns within a section
-					for (const child of column) {
-						if (!child.children) continue;
-						for (let j = 0; j < child.children.length; j++) {
-							const nestedCol = child.children[j];
-							if (!nestedCol) continue;
-							const nestedOld = nestedCol.findIndex(
-								(b) => b.id === activeIdStr
-							);
-							const nestedNew = nestedCol.findIndex(
-								(b) => b.id === overIdStr
-							);
-							if (nestedOld !== -1 && nestedNew !== -1) {
-								const [movedBlock] = nestedCol.splice(
-									nestedOld,
-									1
-								);
-								if (movedBlock) {
-									nestedCol.splice(nestedNew, 0, movedBlock);
-									reordered = true;
-									break;
-								}
-							}
-						}
-						if (reordered) break;
-					}
-					if (reordered) break;
-				}
-				if (reordered) break;
-			}
-
-			if (reordered) {
+			const newBlocks = cloneDeep(blocks);
+			if (moveBlockToOver(newBlocks, activeIdStr, overIdStr)) {
 				updateBlocks(newBlocks);
 			}
 		}
 
 		setActiveId(null);
-		setOverId(null);
 	};
 
 	const handleBlockUpdate = (id: string, updates: Partial<ContentBlock>) => {
@@ -734,7 +703,7 @@ export default function ContentEditor({
 			return true;
 		};
 
-		const newBlocks = [...blocks];
+		const newBlocks = cloneDeep(blocks);
 		if (duplicateInList(newBlocks)) {
 			updateBlocks(newBlocks);
 			return;
@@ -802,7 +771,6 @@ export default function ContentEditor({
 				sensors={sensors}
 				collisionDetection={customCollisionDetection}
 				onDragStart={handleDragStart}
-				onDragOver={handleDragOver}
 				onDragEnd={handleDragEnd}
 			>
 				<Sidebar

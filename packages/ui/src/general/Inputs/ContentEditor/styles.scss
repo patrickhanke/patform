@@ -335,6 +335,28 @@
 			border-color: #d1d5da;
 		}
 
+		// Insertion line marking where the dragged block will land
+		&.drop-before::before,
+		&.drop-after::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			height: 4px;
+			border-radius: 2px;
+			background-color: #0366d6;
+			box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.2);
+			z-index: 5;
+		}
+
+		&.drop-before::before {
+			top: -10px;
+		}
+
+		&.drop-after::after {
+			bottom: -10px;
+		}
+
 		.block-content {
 			background-color: #ffffff;
 			border-radius: 6px;

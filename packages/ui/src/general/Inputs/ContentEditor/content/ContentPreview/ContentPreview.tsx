@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ContentBlock, Modal } from "@repo/ui";
+import { ContentBlock, Modal, usePageData } from "@repo/ui";
 import WebPreview from "./components/WebPreview";
 import EmailPreview from "./components/EmailPreview";
 import "./ContentPreview.scss";

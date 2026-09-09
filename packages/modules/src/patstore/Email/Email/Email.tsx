@@ -1,8 +1,8 @@
 "use client";
 
 import siteStates from "./constants/siteStates";
-import { ContentBlock, ContentPreview, Page, PageHeaderButton } from "@repo/ui";
-import { useEffect, useMemo, useState } from "react";
+import { ContentPreview, Page, PageHeaderButton } from "@repo/ui";
+import { useMemo, useState } from "react";
 import { useAppContext, useGetData } from "@repo/provider";
 import TestEmail from "./components/TestEmail";
 import BulkEmailSender from "./components/BulkEmailSender";
@@ -64,15 +64,16 @@ const Email = () => {
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as { value: string; label: string }
 	);
-	const [emailContent, setEmailContent] = useState<ContentBlock[]>(
-		email?.content || []
-	);
 	const [previewOpen, setPreviewOpen] = useState<boolean>(false);
 	const [testEmailOpen, setTestEmailOpen] = useState<boolean>(false);
 	const [bulkEmailOpen, setBulkEmailOpen] = useState<boolean>(false);
 	const [recipientEmailOpen, setRecipientEmailOpen] =
 		useState<boolean>(false);
 	const [importModalOpen, setImportModalOpen] = useState<boolean>(false);
+
+	const emailContent = useMemo(() => {
+		return email?.content || [];
+	}, [email]);
 
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
@@ -134,12 +135,6 @@ const Email = () => {
 
 		return [];
 	}, [siteState, email, emailContent, loading, recipientsLoading]);
-
-	useEffect(() => {
-		if (email && emailContent?.length === 0) {
-			setEmailContent(email.content);
-		}
-	}, [email]);
 
 	if (!email) {
 		return <div>Lädt ...</div>;

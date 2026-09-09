@@ -23,11 +23,13 @@ const ContentEditorActionBar: FC<ContentEditorActionBarProps> = ({
 	canUndo,
 	canRedo
 }) => {
+	if (!open) return null;
+
 	return (
-		<ActionBar.Root open={open}>
+		<ActionBar.Root open closeOnInteractOutside={false}>
 			<Portal>
-				<ActionBar.Positioner zIndex={12}>
-					<ActionBar.Content>
+				<ActionBar.Positioner zIndex={12} pointerEvents="none">
+					<ActionBar.Content pointerEvents="auto">
 						<ActionBar.SelectionTrigger>
 							Daten geändert
 						</ActionBar.SelectionTrigger>

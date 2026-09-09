@@ -37,7 +37,10 @@ export default function NestedBlock({
 		setNodeRef,
 		transform,
 		transition,
-		isDragging
+		isDragging,
+		isOver,
+		index,
+		activeIndex
 	} = useSortable({ id: block.id });
 
 	const style = {
@@ -45,6 +48,13 @@ export default function NestedBlock({
 		transition,
 		opacity: isDragging ? 0.5 : 1
 	};
+
+	// New blocks and blocks from other columns land in front of this one
+	const dropPosition = !isOver
+		? ""
+		: activeIndex === -1 || activeIndex > index
+			? "drop-before"
+			: "drop-after";
 
 	const renderBlock = () => {
 		switch (block.type) {
@@ -82,7 +92,7 @@ export default function NestedBlock({
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`nested-block ${isSelected ? "selected" : ""} ${isHovered ? "hovered" : ""}`}
+			className={`nested-block ${isSelected ? "selected" : ""} ${isHovered ? "hovered" : ""} ${dropPosition}`}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 			onClick={(e) => {
