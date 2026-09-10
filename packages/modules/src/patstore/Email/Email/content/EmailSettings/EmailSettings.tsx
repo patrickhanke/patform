@@ -77,7 +77,7 @@ const EmailSettings: FC<EmailSettingsProps> = ({
 					<label>Anhänge:</label>
 				</div>
 				<div>
-					<p>{email?.data?.attachments?.length || 0}</p>
+					<p>{email?.attachments?.length || 0}</p>
 				</div>
 			</div>
 		</div>

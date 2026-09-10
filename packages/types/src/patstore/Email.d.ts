@@ -34,8 +34,9 @@ export type EmailTemplate = ClassProperties & {
 		to: string;
 		subject: string;
 		body: string;
-		attachments: string[];
 	};
+	attachments: string[];
+
 	content: ContentBlock[];
 	sendAt?: string;
 	createdAt: string;

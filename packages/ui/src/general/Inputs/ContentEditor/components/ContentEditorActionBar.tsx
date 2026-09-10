@@ -28,7 +28,7 @@ const ContentEditorActionBar: FC<ContentEditorActionBarProps> = ({
 	return (
 		<ActionBar.Root open closeOnInteractOutside={false}>
 			<Portal>
-				<ActionBar.Positioner zIndex={12} pointerEvents="none">
+				<ActionBar.Positioner zIndex={5} pointerEvents="none">
 					<ActionBar.Content pointerEvents="auto">
 						<ActionBar.SelectionTrigger>
 							Daten geändert
