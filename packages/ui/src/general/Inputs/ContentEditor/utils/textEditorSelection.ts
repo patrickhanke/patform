@@ -113,3 +113,115 @@ export const applyInlineFormat = (
 };
 
 export const hasTextEditor = (blockId: string) => editors.has(blockId);
+
+export const normalizeCssColor = (color: string): string => {
+	const value = color.trim();
+	if (!value) return value;
+	if (value.startsWith("#")) {
+		if (value.length === 4) {
+			return `#${value[1]}${value[1]}${value[2]}${value[2]}${value[3]}${value[3]}`;
+		}
+		return value;
+	}
+
+	const rgbMatch = value.match(
+		/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/i
+	);
+	if (rgbMatch) {
+		const r = Math.round(Number(rgbMatch[1]));
+		const g = Math.round(Number(rgbMatch[2]));
+		const b = Math.round(Number(rgbMatch[3]));
+		const a = rgbMatch[4] !== undefined ? Number(rgbMatch[4]) : 1;
+		const hex = `#${[r, g, b]
+			.map((channel) => channel.toString(16).padStart(2, "0"))
+			.join("")}`;
+		if (a < 1) return `rgba(${r}, ${g}, ${b}, ${a})`;
+		return hex;
+	}
+
+	return value;
+};
+
+const getActiveRange = (blockId: string): Range | undefined => {
+	const editor = editors.get(blockId);
+	if (!editor) return undefined;
+
+	const selection = window.getSelection();
+	if (selection?.rangeCount) {
+		const liveRange = selection.getRangeAt(0);
+		if (editor.root.contains(liveRange.commonAncestorContainer)) {
+			return liveRange;
+		}
+	}
+
+	return savedRanges.get(blockId);
+};
+
+const getElementAtRangeStart = (
+	range: Range,
+	root: HTMLElement
+): Element | null => {
+	const { startContainer, startOffset } = range;
+
+	if (startContainer.nodeType === Node.TEXT_NODE) {
+		const parent = startContainer.parentElement;
+		return parent && root.contains(parent) ? parent : null;
+	}
+
+	if (!(startContainer instanceof Element) || !root.contains(startContainer)) {
+		return null;
+	}
+
+	const child = startContainer.childNodes[startOffset];
+	if (child instanceof Element) return child;
+	if (child?.nodeType === Node.TEXT_NODE && child.parentElement) {
+		return child.parentElement;
+	}
+
+	const previous = startContainer.childNodes[startOffset - 1];
+	if (previous instanceof Element) return previous;
+	if (previous?.nodeType === Node.TEXT_NODE && previous.parentElement) {
+		return previous.parentElement;
+	}
+
+	return startContainer;
+};
+
+const findExplicitInlineColor = (
+	element: Element | null,
+	root: HTMLElement
+): string | null => {
+	let current: Element | null = element;
+	while (current && root.contains(current)) {
+		if (current instanceof HTMLElement) {
+			if (current.style.color) return current.style.color;
+			if (current.tagName === "FONT") {
+				const fontColor = current.getAttribute("color");
+				if (fontColor) return fontColor;
+			}
+		}
+		current = current.parentElement;
+	}
+	return null;
+};
+
+/** Color at the current (or last saved) selection/caret in a text block. */
+export const getTextEditorSelectionColor = (
+	blockId: string
+): string | null => {
+	const editor = editors.get(blockId);
+	if (!editor) return null;
+
+	const range = getActiveRange(blockId);
+	if (!range) return null;
+
+	const element = getElementAtRangeStart(range, editor.root);
+	const inlineColor = findExplicitInlineColor(element, editor.root);
+	if (inlineColor) return normalizeCssColor(inlineColor);
+
+	if (element) {
+		return normalizeCssColor(getComputedStyle(element).color);
+	}
+
+	return normalizeCssColor(getComputedStyle(editor.root).color);
+};

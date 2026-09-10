@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useState, type MouseEvent } from "react";
 import { ContentBlock } from "@repo/ui";
 import { ColorPicker } from "@repo/ui";
 import {
@@ -14,6 +14,7 @@ import {
 } from "../../../utils/textBlock";
 import {
 	applyInlineFormat,
+	getTextEditorSelectionColor,
 	saveTextEditorSelection
 } from "../../../utils/textEditorSelection";
 
@@ -32,10 +33,34 @@ const TextPanel = ({
 	const kind = getTextKind(selectedBlock);
 	const config = selectedBlock.config || {};
 	const [linkUrl, setLinkUrl] = useState("https://");
+	const defaultTextColor = kind === "heading" ? "#333333" : "#555555";
+	const [textColor, setTextColor] = useState(defaultTextColor);
+
+	const refreshTextColor = useCallback(() => {
+		setTextColor(
+			getTextEditorSelectionColor(selectedBlock.id) ?? defaultTextColor
+		);
+	}, [defaultTextColor, selectedBlock.id]);
+
+	useEffect(() => {
+		refreshTextColor();
+
+		const onSelectionChange = () => refreshTextColor();
+		document.addEventListener("selectionchange", onSelectionChange);
+
+		return () => {
+			document.removeEventListener("selectionchange", onSelectionChange);
+		};
+	}, [refreshTextColor, selectedBlock.value]);
 
 	const applyFormat = (action: Parameters<typeof applyInlineFormat>[1]) => {
 		saveTextEditorSelection(selectedBlock.id);
 		applyInlineFormat(selectedBlock.id, action);
+		if (action.type === "color") {
+			setTextColor(action.value);
+		} else {
+			refreshTextColor();
+		}
 	};
 
 	const patchConfig = (
@@ -94,12 +119,13 @@ const TextPanel = ({
 			<div className="property-group">
 				<label className="property-label">Textfarbe</label>
 				<div
-					onMouseDown={() =>
-						saveTextEditorSelection(selectedBlock.id)
-					}
+					onMouseDown={() => {
+						saveTextEditorSelection(selectedBlock.id);
+						refreshTextColor();
+					}}
 				>
 					<ColorPicker
-						value="#333333"
+						value={textColor}
 						isOverlay
 						onChange={(color) =>
 							applyFormat({ type: "color", value: color })
