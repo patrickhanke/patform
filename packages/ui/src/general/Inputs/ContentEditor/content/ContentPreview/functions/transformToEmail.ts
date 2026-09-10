@@ -12,8 +12,13 @@ import {
 import {
 	ensureTextMarkup,
 	getTextKind,
-	getTextTypographyStyleString
+	getTextTypographyStyleString,
+	type TextBlockKind
 } from "../../../utils/textBlock";
+
+/** Single-quoted stack — safe inside HTML style="..." attributes (no nested double quotes). */
+const EMAIL_FONT_FAMILY =
+	"-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif";
 
 /**
  * Transform ContentBlock[] into HTML string for email preview
@@ -41,7 +46,7 @@ export const transformToEmail = (blocks: ContentBlock[]): string => {
 			</xml>
 			<![endif]-->
 		</head>
-		<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+		<body style="margin: 0; padding: 0; font-family: ${EMAIL_FONT_FAMILY}; background-color: #f4f4f4;">
 			<!--[if mso | IE]>
 			<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" align="center" style="width: 600px;">
 				<tr>
@@ -52,7 +57,7 @@ export const transformToEmail = (blocks: ContentBlock[]): string => {
 					<td align="center" style="padding: 20px 10px;">
 						<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width: 600px; max-width: 600px; background-color: #ffffff;">
 							<tr>
-								<td style="padding: 40px 30px;">
+								<td style="padding: 40px 30px; font-family: ${EMAIL_FONT_FAMILY};">
 									${blocksHtml}
 								</td>
 							</tr>
@@ -119,34 +124,143 @@ const renderEmailSectionBlock = (block: ContentBlock): string => {
 };
 
 const HEADING_FONT_SIZES: Record<string, string> = {
-	h1: "28px",
-	h2: "24px",
-	h3: "22px",
-	h4: "20px",
-	h5: "18px",
-	h6: "16px"
+	h1: "24px",
+	h2: "20px",
+	h3: "18px",
+	h4: "15px",
+	h5: "14px",
+	h6: "12px"
 };
 
 const EMAIL_TEXT_LINE_HEIGHT = "1.2";
 const EMAIL_PARAGRAPH_GAP = "18px";
+const EMAIL_BODY_FONT_SIZE = "16px";
 
-const getEmailTextTagStyle = (tag: string) => {
-	const base = `margin: 0; line-height: ${EMAIL_TEXT_LINE_HEIGHT}`;
-	if (tag.toLowerCase() === "p") {
-		return `${base}; margin-block-end: ${EMAIL_PARAGRAPH_GAP}; margin-bottom: ${EMAIL_PARAGRAPH_GAP}`;
-	}
-	return base;
+type EmailTextNormalizeOptions = {
+	kind: TextBlockKind;
+	headingLevel: string;
+	fontSize?: string;
+	color: string;
 };
 
-/** Email clients apply default margins on semantic tags — reset inline. */
-const normalizeEmailTextHtml = (html: string): string =>
+const resolveEmailTagFontSize = (
+	tag: string,
+	options: EmailTextNormalizeOptions
+): string | undefined => {
+	if (options.fontSize) return options.fontSize;
+	const normalizedTag = tag.toLowerCase();
+	if (options.kind === "heading" && /^h[1-6]$/.test(normalizedTag)) {
+		return (
+			HEADING_FONT_SIZES[options.headingLevel] || HEADING_FONT_SIZES.h2
+		);
+	}
+	if (
+		options.kind === "paragraph" &&
+		(normalizedTag === "p" || normalizedTag === "li")
+	) {
+		return EMAIL_BODY_FONT_SIZE;
+	}
+	if (
+		options.kind === "list" &&
+		(normalizedTag === "ul" ||
+			normalizedTag === "ol" ||
+			normalizedTag === "li")
+	) {
+		return EMAIL_BODY_FONT_SIZE;
+	}
+	return undefined;
+};
+
+/** Inline styles on semantic tags so email clients render exact px sizes (no UA em scaling). */
+const getEmailTextTagStyle = (
+	tag: string,
+	options: EmailTextNormalizeOptions
+) => {
+	const normalizedTag = tag.toLowerCase();
+	const parts = [
+		`margin: 0`,
+		`font-family: ${EMAIL_FONT_FAMILY}`,
+		`line-height: ${EMAIL_TEXT_LINE_HEIGHT}`
+	];
+
+	if (normalizedTag === "p") {
+		parts.push(
+			`margin-block-end: ${EMAIL_PARAGRAPH_GAP}`,
+			`margin-bottom: ${EMAIL_PARAGRAPH_GAP}`
+		);
+	}
+
+	const fontSize = resolveEmailTagFontSize(tag, options);
+	if (fontSize) {
+		parts.push(`font-size: ${fontSize}`);
+	}
+
+	if (/^h[1-6]$/.test(normalizedTag)) {
+		parts.push("font-weight: bold", `color: ${options.color}`);
+	} else if (
+		normalizedTag === "p" ||
+		normalizedTag === "ul" ||
+		normalizedTag === "ol" ||
+		normalizedTag === "li"
+	) {
+		parts.push(`color: ${options.color}`);
+	}
+
+	return parts.join("; ");
+};
+
+const stripFontFamilyFromStyle = (style: string): string =>
+	style
+		.split(";")
+		.map((part) => part.trim())
+		.filter((part) => part && !/^font-family\s*:/i.test(part))
+		.join("; ");
+
+const cleanInlineStyleAttribute = (style: string): string | null => {
+	const cleaned = stripFontFamilyFromStyle(style);
+	return cleaned || null;
+};
+
+/** Remove pasted font-family / legacy <font face> so email output uses one stack. */
+const sanitizeEmailTextHtml = (html: string): string =>
+	html
+		.replace(/<font(\s[^>]*)?>/gi, (_match, attrs = "") => {
+			const cleanedAttrs = String(attrs)
+				.replace(/\sface=(["'])[^"']*\1/gi, "")
+				.replace(/\sface=[^\s>]+/gi, "");
+			return cleanedAttrs.trim() ? `<span${cleanedAttrs}>` : "<span>";
+		})
+		.replace(/<\/font>/gi, "</span>")
+		.replace(
+			/style=(["'])([\s\S]*?)\1/gi,
+			(_match, quote: string, style: string) => {
+				const cleaned = cleanInlineStyleAttribute(style);
+				return cleaned ? `style=${quote}${cleaned}${quote}` : "";
+			}
+		)
+		.replace(/\sstyle=(["'])\1/gi, "");
+
+const mergeInlineStyle = (...parts: string[]) =>
+	parts
+		.map((part) => part.trim())
+		.filter(Boolean)
+		.join("; ");
+
+/** Email clients apply default margins and heading sizes — reset inline on each tag. */
+const normalizeEmailTextHtml = (
+	html: string,
+	options: EmailTextNormalizeOptions
+): string =>
 	html.replace(
 		/<(p|h[1-6]|ul|ol|li)(?=\s|>)([^>]*)>/gi,
 		(_match, tag: string, attrs: string) => {
-			const tagStyle = getEmailTextTagStyle(tag);
+			const tagStyle = getEmailTextTagStyle(tag, options);
 			const styleMatch = attrs.match(/style="([^"]*)"/i);
 			if (styleMatch) {
-				const mergedStyle = `${styleMatch[1]}; ${tagStyle}`;
+				const mergedStyle = mergeInlineStyle(
+					stripFontFamilyFromStyle(styleMatch[1]),
+					tagStyle
+				);
 				const nextAttrs = attrs.replace(
 					/style="[^"]*"/i,
 					`style="${mergedStyle}"`
@@ -159,29 +273,29 @@ const normalizeEmailTextHtml = (html: string): string =>
 
 const renderEmailTextBlock = (block: ContentBlock): string => {
 	const kind = getTextKind(block);
-	const content = normalizeEmailTextHtml(ensureTextMarkup(block));
 	const headingLevel = block.config?.headingLevel || "h2";
+	const color = resolveColor(block.style?.color);
+	const textColor =
+		kind === "heading" ? color || "#333333" : color || "#555555";
+	const content = normalizeEmailTextHtml(
+		sanitizeEmailTextHtml(ensureTextMarkup(block)),
+		{
+			kind,
+			headingLevel,
+			fontSize: block.config?.fontSize,
+			color: textColor
+		}
+	);
 	const styleStr = resolveBlockStyleString(block.style, {
 		includeSizing: true,
 		includeColors: true
 	});
 	const typography = getTextTypographyStyleString(block.config);
-	const color = resolveColor(block.style?.color);
-	const defaultFontSize =
-		kind === "heading" && !block.config?.fontSize
-			? `font-size: ${HEADING_FONT_SIZES[headingLevel] || "24px"}`
-			: kind !== "heading" && !block.config?.fontSize
-				? "font-size: 16px"
-				: "";
-	const defaults =
-		kind === "heading"
-			? `margin: 0; font-weight: bold; color: ${color || "#333333"}; line-height: ${EMAIL_TEXT_LINE_HEIGHT}`
-			: `margin: 0; color: ${color || "#555555"}; line-height: ${EMAIL_TEXT_LINE_HEIGHT}`;
 
 	return `
 		<div style="${mergeStyle(
-			defaults,
-			[defaultFontSize, typography, styleStr].filter(Boolean).join("; ")
+			`margin: 0; font-family: ${EMAIL_FONT_FAMILY}`,
+			[typography, styleStr].filter(Boolean).join("; ")
 		)}">
 			${content}
 		</div>
@@ -237,7 +351,7 @@ const renderEmailButtonBlock = (block: ContentBlock): string => {
 					<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="display: inline-block;">
 						<tr>
 							<td align="center" style="border-radius: 4px; background-color: ${bg}; mso-padding-alt: ${verticalPadding} ${horizontalPadding}; padding: ${padding};">
-								<a href="${buttonUrl}" target="_blank" style="display: inline-block; mso-padding-alt: 0; padding: 0; font-family: Arial, sans-serif; font-size: ${fontSize}; color: ${fontColor}; text-decoration: none; font-weight: 500; line-height: 1.4; white-space: nowrap;">
+								<a href="${buttonUrl}" target="_blank" style="display: inline-block; mso-padding-alt: 0; padding: 0; font-family: ${EMAIL_FONT_FAMILY}; font-size: ${fontSize}; color: ${fontColor}; text-decoration: none; font-weight: 500; line-height: 1.4; white-space: nowrap;">
 									${buttonText}
 								</a>
 							</td>

@@ -33,6 +33,18 @@ export default function TextBlock({ block, onUpdate }: TextBlockProps) {
 		}
 	}, [block.value, onUpdate]);
 
+	const handlePaste = useCallback(
+		(event: React.ClipboardEvent<HTMLDivElement>) => {
+			event.preventDefault();
+			const text = event.clipboardData.getData("text/plain");
+			if (!text) return;
+
+			document.execCommand("insertText", false, text);
+			commitValue();
+		},
+		[commitValue]
+	);
+
 	useEffect(() => {
 		const root = contentRef.current;
 		if (!root) return;
@@ -105,6 +117,7 @@ export default function TextBlock({ block, onUpdate }: TextBlockProps) {
 					commitValue();
 				}}
 				onInput={commitValue}
+				onPaste={handlePaste}
 				onPointerDown={(event) => event.stopPropagation()}
 			/>
 		</div>

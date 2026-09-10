@@ -55,9 +55,6 @@ export default function PropertiesPanel({
 
 	return (
 		<div className="content-editor-properties">
-			<div className="properties-header">
-				<h3>Eigenschaften</h3>
-			</div>
 			<div className="properties-tabs-root">
 				<Tabs.Root
 					value={tab}
