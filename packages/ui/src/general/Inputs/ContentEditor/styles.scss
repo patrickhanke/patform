@@ -389,6 +389,55 @@
 			cursor: pointer;
 			text-align: left;
 		}
+
+		.text-format-toolbar {
+			display: flex;
+			gap: 6px;
+			flex-wrap: wrap;
+		}
+
+		.text-format-btn {
+			min-width: 32px;
+			height: 32px;
+			padding: 0 10px;
+			border: 1px solid #d1d5da;
+			border-radius: 6px;
+			background: #ffffff;
+			font-weight: 700;
+			font-size: 14px;
+			cursor: pointer;
+			flex: 0 0 auto;
+
+			&--italic {
+				font-style: italic;
+				font-weight: 600;
+			}
+
+			&:hover {
+				border-color: #0366d6;
+				background: #f6f8fa;
+			}
+		}
+
+		.text-format-link {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			width: 100%;
+		}
+
+		.text-format-link-actions {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.text-format-link-btn {
+			cursor: pointer;
+			width: auto;
+			flex: 0 0 auto;
+		}
 	}
 
 	// Sortable blocks

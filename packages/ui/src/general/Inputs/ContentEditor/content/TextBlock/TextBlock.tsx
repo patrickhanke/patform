@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { ContentBlock } from "../../ContentEditor";
 import { getTextKind, getTextTypographyStyle } from "../../utils/textBlock";
+import {
+	registerTextEditor,
+	saveTextEditorSelection
+} from "../../utils/textEditorSelection";
 import { resolveBlockStyle } from "../../styles";
 import "./styles.scss";
 
@@ -19,6 +23,52 @@ export default function TextBlock({ block, onUpdate }: TextBlockProps) {
 		includeSizing: false,
 		includeColors: true
 	});
+	const containerStyle = { ...resolvedStyle };
+	delete containerStyle.color;
+
+	const commitValue = useCallback(() => {
+		const html = contentRef.current?.innerHTML ?? "";
+		if (html !== block.value) {
+			onUpdate?.({ value: html });
+		}
+	}, [block.value, onUpdate]);
+
+	useEffect(() => {
+		const root = contentRef.current;
+		if (!root) return;
+
+		return registerTextEditor(block.id, root, (html) => {
+			onUpdate?.({ value: html });
+		});
+	}, [block.id, onUpdate]);
+
+	useEffect(() => {
+		const root = contentRef.current;
+		if (!root) return;
+
+		const saveSelection = () => {
+			if (!focusedRef.current) return;
+			saveTextEditorSelection(block.id);
+		};
+
+		const onSelectionChange = () => {
+			if (!focusedRef.current) return;
+			const selection = window.getSelection();
+			if (!selection || selection.rangeCount === 0) return;
+			if (!root.contains(selection.anchorNode)) return;
+			saveTextEditorSelection(block.id);
+		};
+
+		root.addEventListener("mouseup", saveSelection);
+		root.addEventListener("keyup", saveSelection);
+		document.addEventListener("selectionchange", onSelectionChange);
+
+		return () => {
+			root.removeEventListener("mouseup", saveSelection);
+			root.removeEventListener("keyup", saveSelection);
+			document.removeEventListener("selectionchange", onSelectionChange);
+		};
+	}, [block.id]);
 
 	useEffect(() => {
 		const node = contentRef.current;
@@ -29,14 +79,6 @@ export default function TextBlock({ block, onUpdate }: TextBlockProps) {
 		}
 	}, [block.value]);
 
-	const commitValue = () => {
-		focusedRef.current = false;
-		const html = contentRef.current?.innerHTML ?? "";
-		if (html !== block.value) {
-			onUpdate?.({ value: html });
-		}
-	};
-
 	return (
 		<div
 			className={`text-block text-block--${kind}${
@@ -44,7 +86,7 @@ export default function TextBlock({ block, onUpdate }: TextBlockProps) {
 			}`}
 			style={{
 				...getTextTypographyStyle(block.config),
-				...resolvedStyle
+				...containerStyle
 			}}
 		>
 			<div
@@ -57,7 +99,12 @@ export default function TextBlock({ block, onUpdate }: TextBlockProps) {
 				onFocus={() => {
 					focusedRef.current = true;
 				}}
-				onBlur={commitValue}
+				onBlur={() => {
+					saveTextEditorSelection(block.id);
+					focusedRef.current = false;
+					commitValue();
+				}}
+				onInput={commitValue}
 				onPointerDown={(event) => event.stopPropagation()}
 			/>
 		</div>

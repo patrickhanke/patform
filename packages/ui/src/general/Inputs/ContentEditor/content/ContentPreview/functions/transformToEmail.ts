@@ -127,9 +127,39 @@ const HEADING_FONT_SIZES: Record<string, string> = {
 	h6: "16px"
 };
 
+const EMAIL_TEXT_LINE_HEIGHT = "1.2";
+const EMAIL_PARAGRAPH_GAP = "18px";
+
+const getEmailTextTagStyle = (tag: string) => {
+	const base = `margin: 0; line-height: ${EMAIL_TEXT_LINE_HEIGHT}`;
+	if (tag.toLowerCase() === "p") {
+		return `${base}; margin-block-end: ${EMAIL_PARAGRAPH_GAP}; margin-bottom: ${EMAIL_PARAGRAPH_GAP}`;
+	}
+	return base;
+};
+
+/** Email clients apply default margins on semantic tags — reset inline. */
+const normalizeEmailTextHtml = (html: string): string =>
+	html.replace(
+		/<(p|h[1-6]|ul|ol|li)(?=\s|>)([^>]*)>/gi,
+		(_match, tag: string, attrs: string) => {
+			const tagStyle = getEmailTextTagStyle(tag);
+			const styleMatch = attrs.match(/style="([^"]*)"/i);
+			if (styleMatch) {
+				const mergedStyle = `${styleMatch[1]}; ${tagStyle}`;
+				const nextAttrs = attrs.replace(
+					/style="[^"]*"/i,
+					`style="${mergedStyle}"`
+				);
+				return `<${tag}${nextAttrs}>`;
+			}
+			return `<${tag}${attrs} style="${tagStyle}">`;
+		}
+	);
+
 const renderEmailTextBlock = (block: ContentBlock): string => {
 	const kind = getTextKind(block);
-	const content = ensureTextMarkup(block);
+	const content = normalizeEmailTextHtml(ensureTextMarkup(block));
 	const headingLevel = block.config?.headingLevel || "h2";
 	const styleStr = resolveBlockStyleString(block.style, {
 		includeSizing: true,
@@ -145,8 +175,8 @@ const renderEmailTextBlock = (block: ContentBlock): string => {
 				: "";
 	const defaults =
 		kind === "heading"
-			? `margin: 0 0 16px 0; font-weight: bold; color: ${color || "#333333"}; line-height: 1.3`
-			: `margin: 0 0 16px 0; color: ${color || "#555555"}; line-height: 1.6`;
+			? `margin: 0; font-weight: bold; color: ${color || "#333333"}; line-height: ${EMAIL_TEXT_LINE_HEIGHT}`
+			: `margin: 0; color: ${color || "#555555"}; line-height: ${EMAIL_TEXT_LINE_HEIGHT}`;
 
 	return `
 		<div style="${mergeStyle(

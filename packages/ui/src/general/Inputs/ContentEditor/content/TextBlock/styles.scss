@@ -61,6 +61,21 @@
 			color: inherit;
 		}
 
+		a {
+			color: inherit;
+			text-decoration: underline;
+		}
+
+		b,
+		strong {
+			font-weight: 700;
+		}
+
+		i,
+		em {
+			font-style: italic;
+		}
+
 		ul,
 		ol {
 			margin: 0.5em 0;

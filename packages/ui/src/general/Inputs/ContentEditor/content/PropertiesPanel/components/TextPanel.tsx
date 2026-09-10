@@ -1,4 +1,8 @@
+"use client";
+
+import { useState, type MouseEvent } from "react";
 import { ContentBlock } from "@repo/ui";
+import { ColorPicker } from "@repo/ui";
 import {
 	FONT_SIZE_OPTIONS,
 	getTextKind,
@@ -8,6 +12,15 @@ import {
 	wrapTextHtml,
 	type ListType
 } from "../../../utils/textBlock";
+import {
+	applyInlineFormat,
+	saveTextEditorSelection
+} from "../../../utils/textEditorSelection";
+
+const preventSelectionLoss = (blockId: string) => (event: MouseEvent) => {
+	saveTextEditorSelection(blockId);
+	event.preventDefault();
+};
 
 const TextPanel = ({
 	selectedBlock,
@@ -18,6 +31,12 @@ const TextPanel = ({
 }) => {
 	const kind = getTextKind(selectedBlock);
 	const config = selectedBlock.config || {};
+	const [linkUrl, setLinkUrl] = useState("https://");
+
+	const applyFormat = (action: Parameters<typeof applyInlineFormat>[1]) => {
+		saveTextEditorSelection(selectedBlock.id);
+		applyInlineFormat(selectedBlock.id, action);
+	};
 
 	const patchConfig = (
 		patch: Partial<NonNullable<ContentBlock["config"]>>,
@@ -43,6 +62,93 @@ const TextPanel = ({
 
 	return (
 		<>
+			<div className="properties-section-divider">
+				<h4>Textformatierung</h4>
+			</div>
+
+			<div className="property-group">
+				<label className="property-label">Stil</label>
+				<div
+					className="text-format-toolbar"
+					onMouseDown={preventSelectionLoss(selectedBlock.id)}
+				>
+					<button
+						type="button"
+						className="text-format-btn"
+						title="Fett"
+						onClick={() => applyFormat({ type: "bold" })}
+					>
+						B
+					</button>
+					<button
+						type="button"
+						className="text-format-btn text-format-btn--italic"
+						title="Kursiv"
+						onClick={() => applyFormat({ type: "italic" })}
+					>
+						I
+					</button>
+				</div>
+			</div>
+
+			<div className="property-group">
+				<label className="property-label">Textfarbe</label>
+				<div
+					onMouseDown={() =>
+						saveTextEditorSelection(selectedBlock.id)
+					}
+				>
+					<ColorPicker
+						value="#333333"
+						isOverlay
+						onChange={(color) =>
+							applyFormat({ type: "color", value: color })
+						}
+					/>
+				</div>
+			</div>
+
+			<div className="property-group property-group--stack">
+				<label className="property-label">Link</label>
+				<div className="text-format-link">
+					<input
+						type="url"
+						className="property-input"
+						placeholder="https://..."
+						value={linkUrl}
+						onFocus={() =>
+							saveTextEditorSelection(selectedBlock.id)
+						}
+						onChange={(e) => setLinkUrl(e.target.value)}
+					/>
+					<div
+						className="text-format-link-actions"
+						onMouseDown={preventSelectionLoss(selectedBlock.id)}
+					>
+						<button
+							type="button"
+							className="property-select text-format-link-btn"
+							onClick={() =>
+								applyFormat({ type: "link", url: linkUrl })
+							}
+						>
+							Link setzen
+						</button>
+						<button
+							type="button"
+							className="property-clear-btn"
+							onClick={() => applyFormat({ type: "unlink" })}
+						>
+							Link entfernen
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<div className="properties-section-divider">
+				<h4>Block</h4>
+			</div>
+
 			{kind === "heading" && (
 				<div className="property-group">
 					<label className="property-label">Ebene</label>

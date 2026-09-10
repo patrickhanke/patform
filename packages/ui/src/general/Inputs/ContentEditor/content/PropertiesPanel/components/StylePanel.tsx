@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { HexColorPicker, HexColorInput } from "react-colorful";
-import { useOnClickOutside } from "usehooks-ts";
+import { useState } from "react";
 import { Modal, ColorSelect } from "@repo/ui";
+import ColorPicker from "../../../../ColorPicker/ColorPicker";
 import colors from "../../../../ColorSelect/constants/colors";
 import type { ColorValues } from "../../../../ColorSelect/types";
 import type { ContentBlock } from "../../../ContentEditor";
@@ -138,35 +137,14 @@ function TextColorField({
 	onChange: (color: string) => void;
 	onClear: () => void;
 }) {
-	const [isOpen, setIsOpen] = useState(false);
-	const [popoverPos, setPopoverPos] = useState({ top: 0, left: 0 });
-	const ref = useRef<HTMLDivElement>(null);
-	const swatchRef = useRef<HTMLButtonElement>(null);
 	const cssColor = resolveColor(value) || "#333333";
-
-	useOnClickOutside(ref, () => setIsOpen(false));
-
-	const openPicker = () => {
-		const rect = swatchRef.current?.getBoundingClientRect();
-		if (rect) {
-			setPopoverPos({ top: rect.bottom + 6, left: rect.left });
-		}
-		setIsOpen(true);
-	};
 
 	return (
 		<div className="property-group">
 			<label className="property-label">{label}</label>
-			<div className="style-color-trigger" ref={ref}>
-				<button
-					type="button"
-					ref={swatchRef}
-					className="style-text-color-swatch"
-					style={{ backgroundColor: cssColor }}
-					aria-label={label}
-					onClick={() => (isOpen ? setIsOpen(false) : openPicker())}
-				/>
-				{value ? (
+			<div className="style-color-trigger">
+				<ColorPicker value={cssColor} onChange={onChange} isOverlay />
+				{value && (
 					<button
 						type="button"
 						className="property-clear-btn"
@@ -174,31 +152,6 @@ function TextColorField({
 					>
 						Entfernen
 					</button>
-				) : (
-					<button
-						type="button"
-						className="property-clear-btn"
-						onClick={openPicker}
-					>
-						Farbe wählen
-					</button>
-				)}
-				{isOpen && (
-					<div
-						className="style-text-color-popover"
-						style={{
-							top: popoverPos.top,
-							left: popoverPos.left
-						}}
-					>
-						<HexColorPicker color={cssColor} onChange={onChange} />
-						<HexColorInput
-							color={cssColor}
-							onChange={onChange}
-							className="style-text-color-input"
-							prefixed
-						/>
-					</div>
 				)}
 			</div>
 		</div>
@@ -239,12 +192,14 @@ const StylePanel = ({
 				onClear={() => clearKey("backgroundColor")}
 			/>
 
-			<TextColorField
-				label="Textfarbe"
-				value={style.color}
-				onChange={(color) => patch({ color })}
-				onClear={() => clearKey("color")}
-			/>
+			{selectedBlock.type !== "text" && (
+				<TextColorField
+					label="Textfarbe"
+					value={style.color}
+					onChange={(color) => patch({ color })}
+					onClear={() => clearKey("color")}
+				/>
+			)}
 
 			{showSizing && (
 				<>
