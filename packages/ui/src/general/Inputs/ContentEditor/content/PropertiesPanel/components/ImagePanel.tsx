@@ -10,7 +10,7 @@ const ImagePanel = ({
 }) => {
 	return (
 		<>
-			<div className="property-group">
+			<div className="property-group property-group--stack">
 				<label className="property-label">Bild URL</label>
 				<PatstoreSelectImages
 					image={selectedBlock.value || ""}
@@ -35,7 +35,9 @@ const ImagePanel = ({
 			</div>
 
 			<div className="property-group">
-				<label className="property-label">Alt Text (Bildbeschreibung)</label>
+				<label className="property-label">
+					Alt Text (Bildbeschreibung)
+				</label>
 				<input
 					type="text"
 					className="property-input"
@@ -81,9 +83,7 @@ const ImagePanel = ({
 					className="property-input"
 					placeholder="e.g., 100%, 500px, auto"
 					value={selectedBlock.config?.width || ""}
-					onChange={(e) =>
-						onChange("config.width", e.target.value)
-					}
+					onChange={(e) => onChange("config.width", e.target.value)}
 				/>
 			</div>
 
@@ -94,9 +94,7 @@ const ImagePanel = ({
 					className="property-input"
 					placeholder="e.g., 300px, auto"
 					value={selectedBlock.config?.height || ""}
-					onChange={(e) =>
-						onChange("config.height", e.target.value)
-					}
+					onChange={(e) => onChange("config.height", e.target.value)}
 				/>
 			</div>
 

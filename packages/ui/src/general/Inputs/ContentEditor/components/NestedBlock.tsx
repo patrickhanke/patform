@@ -9,6 +9,7 @@ import TextBlock from "../content/TextBlock/TextBlock";
 import ButtonBlock from "../content/ButtonBlock/ButtonBlock";
 import ImageBlock from "../content/ImageBlock/ImageBlock";
 import DividerBlock from "../content/DividerBlock/DividerBlock";
+import SpacerBlock from "../content/SpacerBlock/SpacerBlock";
 import ContentReferenceBlock from "../content/ContentReferenceBlock/ContentReferenceBlock";
 import StyleTags from "./StyleTags";
 
@@ -81,6 +82,8 @@ export default function NestedBlock({
 				);
 			case "divider":
 				return <DividerBlock block={block} />;
+			case "spacer":
+				return <SpacerBlock block={block} />;
 			case "content":
 				return <ContentReferenceBlock block={block} />;
 			default:

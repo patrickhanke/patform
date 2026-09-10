@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { HexColorPicker, HexColorInput } from "react-colorful";
+import { useOnClickOutside } from "usehooks-ts";
 import { Modal, ColorSelect } from "@repo/ui";
 import colors from "../../../../ColorSelect/constants/colors";
 import type { ColorValues } from "../../../../ColorSelect/types";
@@ -9,6 +11,7 @@ import {
 	SPACING_OPTIONS,
 	COLOR_HEX,
 	blockSupportsSizing,
+	resolveColor,
 	type ContentBlockStyle,
 	type FlexAlignItems,
 	type FlexJustifyContent,
@@ -57,37 +60,39 @@ function ColorField({
 	};
 
 	return (
-		<div className="property-group">
-			<label className="property-label">{label}</label>
-			<div className="style-color-trigger">
-				<button
-					type="button"
-					className="property-select style-color-button"
-					onClick={openModal}
-				>
-					{value ? (
-						<span className="style-color-button-inner">
-							<span
-								className="style-color-swatch"
-								style={{
-									backgroundColor: COLOR_HEX[value]
-								}}
-							/>
-							{colorLabel(value)}
-						</span>
-					) : (
-						"Farbe wählen"
-					)}
-				</button>
-				{value && (
+		<>
+			<div className="property-group">
+				<label className="property-label">{label}</label>
+				<div className="style-color-trigger">
 					<button
 						type="button"
-						className="property-clear-btn"
-						onClick={onClear}
+						className="property-select style-color-button"
+						onClick={openModal}
 					>
-						Entfernen
+						{value ? (
+							<span className="style-color-button-inner">
+								<span
+									className="style-color-swatch"
+									style={{
+										backgroundColor: COLOR_HEX[value]
+									}}
+								/>
+								{colorLabel(value)}
+							</span>
+						) : (
+							"Farbe wählen"
+						)}
 					</button>
-				)}
+					{value && (
+						<button
+							type="button"
+							className="property-clear-btn"
+							onClick={onClear}
+						>
+							Entfernen
+						</button>
+					)}
+				</div>
 			</div>
 
 			<Modal
@@ -118,6 +123,84 @@ function ColorField({
 					)}
 				</div>
 			</Modal>
+		</>
+	);
+}
+
+function TextColorField({
+	label,
+	value,
+	onChange,
+	onClear
+}: {
+	label: string;
+	value?: string;
+	onChange: (color: string) => void;
+	onClear: () => void;
+}) {
+	const [isOpen, setIsOpen] = useState(false);
+	const [popoverPos, setPopoverPos] = useState({ top: 0, left: 0 });
+	const ref = useRef<HTMLDivElement>(null);
+	const swatchRef = useRef<HTMLButtonElement>(null);
+	const cssColor = resolveColor(value) || "#333333";
+
+	useOnClickOutside(ref, () => setIsOpen(false));
+
+	const openPicker = () => {
+		const rect = swatchRef.current?.getBoundingClientRect();
+		if (rect) {
+			setPopoverPos({ top: rect.bottom + 6, left: rect.left });
+		}
+		setIsOpen(true);
+	};
+
+	return (
+		<div className="property-group">
+			<label className="property-label">{label}</label>
+			<div className="style-color-trigger" ref={ref}>
+				<button
+					type="button"
+					ref={swatchRef}
+					className="style-text-color-swatch"
+					style={{ backgroundColor: cssColor }}
+					aria-label={label}
+					onClick={() => (isOpen ? setIsOpen(false) : openPicker())}
+				/>
+				{value ? (
+					<button
+						type="button"
+						className="property-clear-btn"
+						onClick={onClear}
+					>
+						Entfernen
+					</button>
+				) : (
+					<button
+						type="button"
+						className="property-clear-btn"
+						onClick={openPicker}
+					>
+						Farbe wählen
+					</button>
+				)}
+				{isOpen && (
+					<div
+						className="style-text-color-popover"
+						style={{
+							top: popoverPos.top,
+							left: popoverPos.left
+						}}
+					>
+						<HexColorPicker color={cssColor} onChange={onChange} />
+						<HexColorInput
+							color={cssColor}
+							onChange={onChange}
+							className="style-text-color-input"
+							prefixed
+						/>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 }
@@ -137,9 +220,7 @@ const StylePanel = ({
 		onStyleChange({
 			...style,
 			...partial,
-			flex: partial.flex
-				? { ...style.flex, ...partial.flex }
-				: style.flex
+			flex: partial.flex ? { ...style.flex, ...partial.flex } : style.flex
 		});
 	};
 
@@ -158,7 +239,7 @@ const StylePanel = ({
 				onClear={() => clearKey("backgroundColor")}
 			/>
 
-			<ColorField
+			<TextColorField
 				label="Textfarbe"
 				value={style.color}
 				onChange={(color) => patch({ color })}
@@ -238,7 +319,9 @@ const StylePanel = ({
 					</div>
 
 					<div className="property-group">
-						<label className="property-label">Justify Content</label>
+						<label className="property-label">
+							Justify Content
+						</label>
 						<select
 							className="property-select"
 							value={style.flex?.justifyContent || "flex-start"}
@@ -281,37 +364,35 @@ const StylePanel = ({
 					</div>
 
 					<div className="property-group">
-						<label className="property-label">
-							<input
-								type="checkbox"
-								className="property-checkbox"
-								checked={Boolean(style.flex?.wrap)}
-								onChange={(e) =>
-									patch({
-										flex: { wrap: e.target.checked }
-									})
-								}
-							/>{" "}
-							Flex Wrap
-						</label>
+						<label className="property-label">Flex Wrap</label>
+						<input
+							type="checkbox"
+							className="property-checkbox"
+							checked={Boolean(style.flex?.wrap)}
+							onChange={(e) =>
+								patch({
+									flex: { wrap: e.target.checked }
+								})
+							}
+						/>
 					</div>
 
 					<div className="property-group">
 						<label className="property-label">
-							<input
-								type="checkbox"
-								className="property-checkbox"
-								checked={Boolean(style.flex?.changeToColumn)}
-								onChange={(e) =>
-									patch({
-										flex: {
-											changeToColumn: e.target.checked
-										}
-									})
-								}
-							/>{" "}
 							Auf Mobile als Spalte
 						</label>
+						<input
+							type="checkbox"
+							className="property-checkbox"
+							checked={Boolean(style.flex?.changeToColumn)}
+							onChange={(e) =>
+								patch({
+									flex: {
+										changeToColumn: e.target.checked
+									}
+								})
+							}
+						/>
 					</div>
 				</>
 			)}

@@ -30,13 +30,14 @@ export type ContentBlockFlexStyle = {
 /**
  * Declarative style key on every content block.
  * - padding / margin: text, button, image, section
- * - backgroundColor / color: all content elements (ColorSelect tokens)
+ * - backgroundColor: ColorSelect tokens
+ * - color: CSS color string (hex/rgb) or legacy ColorSelect tokens
  * - flex: layout blocks
  */
 export type ContentBlockStyle = {
 	padding?: SpacingScale;
 	margin?: SpacingScale;
 	backgroundColor?: ColorValues;
-	color?: ColorValues;
+	color?: ColorValues | string;
 	flex?: ContentBlockFlexStyle;
 };

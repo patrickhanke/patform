@@ -9,6 +9,11 @@ import {
 	DEFAULT_BUTTON_BACKGROUND,
 	DEFAULT_BUTTON_FONT_COLOR
 } from "../../ButtonBlock/buttonBlockStyles";
+import {
+	ensureTextMarkup,
+	getTextKind,
+	getTextTypographyStyleString
+} from "../../../utils/textBlock";
 
 /**
  * Transform ContentBlock[] into HTML string for email preview
@@ -75,6 +80,8 @@ const renderEmailBlock = (block: ContentBlock): string => {
 			return renderEmailButtonBlock(block);
 		case "divider":
 			return renderEmailDividerBlock(block);
+		case "spacer":
+			return renderEmailSpacerBlock(block);
 		case "image":
 			return renderEmailImageBlock(block);
 		case "layout":
@@ -111,44 +118,58 @@ const renderEmailSectionBlock = (block: ContentBlock): string => {
 	return `<div style="${styleStr}">${inner}</div>`;
 };
 
+const HEADING_FONT_SIZES: Record<string, string> = {
+	h1: "28px",
+	h2: "24px",
+	h3: "22px",
+	h4: "20px",
+	h5: "18px",
+	h6: "16px"
+};
+
 const renderEmailTextBlock = (block: ContentBlock): string => {
-	const textType = block.config?.textType || "paragraph";
+	const kind = getTextKind(block);
+	const content = ensureTextMarkup(block);
 	const headingLevel = block.config?.headingLevel || "h2";
-	const content = block.value || "";
 	const styleStr = resolveBlockStyleString(block.style, {
 		includeSizing: true,
 		includeColors: true
 	});
+	const typography = getTextTypographyStyleString(block.config);
 	const color = resolveColor(block.style?.color);
-
-	if (textType === "heading") {
-		const headingSizes: Record<string, string> = {
-			h1: "28px",
-			h2: "24px",
-			h3: "24px",
-			h4: "20px",
-			h5: "18px",
-			h6: "16px"
-		};
-		const fontSize = headingSizes[headingLevel] || "28px";
-
-		return `
-			<${headingLevel} style="${mergeStyle(
-				`margin: 0 0 16px 0; font-size: ${fontSize}; font-weight: bold; color: ${color || "#333333"}; line-height: 1.3`,
-				styleStr
-			)}">
-				${content}
-			</${headingLevel}>
-		`;
-	}
+	const defaultFontSize =
+		kind === "heading" && !block.config?.fontSize
+			? `font-size: ${HEADING_FONT_SIZES[headingLevel] || "24px"}`
+			: kind !== "heading" && !block.config?.fontSize
+				? "font-size: 16px"
+				: "";
+	const defaults =
+		kind === "heading"
+			? `margin: 0 0 16px 0; font-weight: bold; color: ${color || "#333333"}; line-height: 1.3`
+			: `margin: 0 0 16px 0; color: ${color || "#555555"}; line-height: 1.6`;
 
 	return `
 		<div style="${mergeStyle(
-			`margin: 0 0 16px 0; font-size: 16px; color: ${color || "#555555"}; line-height: 1.6`,
-			styleStr
+			defaults,
+			[defaultFontSize, typography, styleStr].filter(Boolean).join("; ")
 		)}">
 			${content}
 		</div>
+	`;
+};
+
+const renderEmailSpacerBlock = (block: ContentBlock): string => {
+	const height = block.config?.spacerHeight || "24px";
+	const styleStr = resolveBlockStyleString(block.style, {
+		includeSizing: true,
+		includeColors: true
+	});
+
+	return `
+		<div style="${mergeStyle(
+			`height: ${height}; line-height: ${height}; font-size: 0; mso-line-height-rule: exactly`,
+			styleStr
+		)}" aria-hidden="true">&nbsp;</div>
 	`;
 };
 
