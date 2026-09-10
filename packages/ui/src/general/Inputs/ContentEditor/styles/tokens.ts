@@ -59,10 +59,20 @@ export const COLOR_HEX: Record<ColorValues, string> = {
 	cyan_tintend: "#9DECF9"
 };
 
-export const resolveSpacing = (
-	scale?: SpacingScale
-): string | undefined => (scale ? SPACING_PX[scale] : undefined);
+export const resolveSpacing = (scale?: SpacingScale): string | undefined =>
+	scale ? SPACING_PX[scale] : undefined;
 
 export const resolveColor = (
-	token?: ColorValues
-): string | undefined => (token ? COLOR_HEX[token] : undefined);
+	token?: ColorValues | string
+): string | undefined => {
+	if (!token) return undefined;
+	if (token in COLOR_HEX) return COLOR_HEX[token as ColorValues];
+	if (
+		token.startsWith("#") ||
+		token.startsWith("rgb") ||
+		token.startsWith("hsl")
+	) {
+		return token;
+	}
+	return undefined;
+};

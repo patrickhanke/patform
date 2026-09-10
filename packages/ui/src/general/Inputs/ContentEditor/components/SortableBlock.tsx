@@ -9,6 +9,7 @@ import TextBlock from "../content/TextBlock/TextBlock";
 import ButtonBlock from "../content/ButtonBlock/ButtonBlock";
 import ImageBlock from "../content/ImageBlock/ImageBlock";
 import DividerBlock from "../content/DividerBlock/DividerBlock";
+import SpacerBlock from "../content/SpacerBlock/SpacerBlock";
 import LayoutBlock from "../content/LayoutBlock/LayoutBlock";
 import SectionBlock from "../content/SectionBlock/SectionBlock";
 import ContentReferenceBlock from "../content/ContentReferenceBlock/ContentReferenceBlock";
@@ -89,6 +90,8 @@ export default function SortableBlock({
 				);
 			case "divider":
 				return <DividerBlock block={block} />;
+			case "spacer":
+				return <SpacerBlock block={block} />;
 			case "layout":
 				return (
 					<LayoutBlock
@@ -173,9 +176,7 @@ export default function SortableBlock({
 				</div>
 			)}
 			<div className="block-content">
-				{block.type !== "section" && (
-					<StyleTags style={block.style} />
-				)}
+				{block.type !== "section" && <StyleTags style={block.style} />}
 				{renderBlock()}
 			</div>
 		</div>

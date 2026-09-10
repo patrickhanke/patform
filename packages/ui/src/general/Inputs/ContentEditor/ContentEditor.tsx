@@ -26,9 +26,10 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { cloneDeep } from "lodash-es";
 
-import Sidebar from "./components/Sidebar";
 import Canvas from "./components/Canvas";
 import { PropertiesPanel } from "./content";
+import type { PropertiesTab } from "./content/PropertiesPanel/PropertiesPanel";
+import { PALETTE_LABELS } from "./components/Sidebar";
 import ImportContentModal, {
 	type ImportedContentRef
 } from "./content/ImportContentModal/ImportContentModal";
@@ -71,7 +72,8 @@ export interface ContentBlock {
 		| "image"
 		| "layout"
 		| "section"
-		| "content";
+		| "content"
+		| "spacer";
 	position: number;
 	value: string | any;
 	active: boolean;
@@ -93,8 +95,14 @@ export interface ContentBlock {
 		imageLink?: string;
 		width?: string;
 		height?: string;
-		textType?: "heading" | "paragraph";
+		objectFit?: string;
+		textType?: "heading" | "paragraph" | "list";
 		headingLevel?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+		listType?: "ul" | "ol";
+		fontSize?: string;
+		textAlign?: "left" | "center" | "right" | "justify";
+		textDirection?: "ltr" | "rtl";
+		spacerHeight?: string;
 		htmlTag?: SectionHtmlTag;
 		/** Content class reference metadata (type === "content") */
 		contentTitle?: string;
@@ -136,6 +144,8 @@ export default function ContentEditor({
 		null
 	);
 	const [importContentOpen, setImportContentOpen] = useState(false);
+	const [propertiesTab, setPropertiesTab] =
+		useState<PropertiesTab>("components");
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -148,98 +158,136 @@ export default function ContentEditor({
 		})
 	);
 
-	const createBlock = useCallback(
-		(type: ContentBlock["type"]): ContentBlock => {
-			const id = uuidv4();
-			const baseBlock = {
-				id,
-				position: 1,
-				active: true
-			};
+	const createBlock = useCallback((paletteId: string): ContentBlock => {
+		const id = uuidv4();
+		const baseBlock = {
+			id,
+			position: 1,
+			active: true
+		};
 
-			switch (type) {
-				case "text":
-					return {
-						...baseBlock,
-						name: "Text Block",
-						type: "text",
-						value: "<p>Enter your text here...</p>",
-						config: {
-							textType: "paragraph"
-						}
-					};
-				case "button":
-					return {
-						...baseBlock,
-						name: "Button",
-						type: "button",
-						value: "",
-						config: {
-							buttonText: "Click me",
-							buttonUrl: "#",
-							alignment: "center",
-							buttonSize: "large",
-							buttonBackgroundColor: "#007bff",
-							buttonFontColor: "#ffffff"
-						}
-					};
-				case "divider":
-					return {
-						...baseBlock,
-						name: "Divider",
-						type: "divider",
-						value: ""
-					};
-				case "image":
-					return {
-						...baseBlock,
-						name: "Image",
-						type: "image",
-						value: "",
-						config: {
-							imageUrl: "",
-							imageAlt: "Image",
-							alignment: "center"
-						}
-					};
-				case "layout": {
-					const columnCount = 2;
-					return {
-						...baseBlock,
-						name: "Layout",
-						type: "layout",
-						value: "",
-						children: Array.from({ length: columnCount }, () => []),
-						config: {
-							columns: "50/50"
-						}
-					};
-				}
-				case "section":
-					return createSectionBlock("section");
-				case "content":
-					return {
-						...baseBlock,
-						name: "Inhaltselement",
-						type: "content",
-						value: "",
-						config: {
-							contentTitle: "",
-							contentType: "",
-							contentId: ""
-						}
-					};
-				default:
-					return {
-						...baseBlock,
-						name: "Block",
-						type: "text",
-						value: ""
-					};
+		switch (paletteId) {
+			case "heading":
+				return {
+					...baseBlock,
+					name: "Titel",
+					type: "text",
+					value: "<h2>Titel</h2>",
+					config: {
+						textType: "heading",
+						headingLevel: "h2",
+						textAlign: "left",
+						textDirection: "ltr"
+					}
+				};
+			case "text":
+				return {
+					...baseBlock,
+					name: "Text",
+					type: "text",
+					value: "<p>Text eingeben…</p>",
+					config: {
+						textType: "paragraph",
+						textAlign: "left",
+						textDirection: "ltr"
+					}
+				};
+			case "list":
+				return {
+					...baseBlock,
+					name: "Liste",
+					type: "text",
+					value: "<ul><li>Listeneintrag</li></ul>",
+					config: {
+						textType: "list",
+						listType: "ul",
+						textAlign: "left",
+						textDirection: "ltr"
+					}
+				};
+			case "button":
+				return {
+					...baseBlock,
+					name: "Button",
+					type: "button",
+					value: "",
+					config: {
+						buttonText: "Click me",
+						buttonUrl: "#",
+						alignment: "center",
+						buttonSize: "large",
+						buttonBackgroundColor: "#007bff",
+						buttonFontColor: "#ffffff"
+					}
+				};
+			case "divider":
+				return {
+					...baseBlock,
+					name: "Trennlinie",
+					type: "divider",
+					value: ""
+				};
+			case "spacer":
+				return {
+					...baseBlock,
+					name: "Abstand",
+					type: "spacer",
+					value: "",
+					config: {
+						spacerHeight: "24px"
+					}
+				};
+			case "image":
+				return {
+					...baseBlock,
+					name: "Bild",
+					type: "image",
+					value: "",
+					config: {
+						imageUrl: "",
+						imageAlt: "Image",
+						alignment: "center"
+					}
+				};
+			case "layout": {
+				const columnCount = 2;
+				return {
+					...baseBlock,
+					name: "Layout",
+					type: "layout",
+					value: "",
+					children: Array.from({ length: columnCount }, () => []),
+					config: {
+						columns: "50/50"
+					}
+				};
 			}
-		},
-		[]
-	);
+			case "section":
+				return createSectionBlock("section");
+			case "content":
+				return {
+					...baseBlock,
+					name: "Inhaltselement",
+					type: "content",
+					value: "",
+					config: {
+						contentTitle: "",
+						contentType: "",
+						contentId: ""
+					}
+				};
+			default:
+				return {
+					...baseBlock,
+					name: "Text",
+					type: "text",
+					value: "<p>Text eingeben…</p>",
+					config: {
+						textType: "paragraph"
+					}
+				};
+		}
+	}, []);
 
 	const createContentReferenceBlock = useCallback(
 		(content: ImportedContentRef): ContentBlock => ({
@@ -440,6 +488,7 @@ export default function ContentEditor({
 			}
 			updateBlocks(newBlocks);
 			setSelectedBlock(block);
+			setPropertiesTab("settings");
 		},
 		[blocks, multipleSections, updateBlocks]
 	);
@@ -482,12 +531,9 @@ export default function ContentEditor({
 			}
 
 			if (activeIdStr.startsWith("sidebar-")) {
-				const type = activeIdStr.replace(
-					"sidebar-",
-					""
-				) as ContentBlock["type"];
-				if (type === "section") return;
-				const newBlock = createBlock(type);
+				const paletteId = activeIdStr.replace("sidebar-", "");
+				if (paletteId === "section") return;
+				const newBlock = createBlock(paletteId);
 				target.children![columnIndex]!.push(newBlock);
 			} else {
 				const movedBlock = removeBlockById(newBlocks, activeIdStr);
@@ -524,12 +570,9 @@ export default function ContentEditor({
 
 		// Creating from sidebar
 		if (activeIdStr.startsWith("sidebar-")) {
-			const type = activeIdStr.replace(
-				"sidebar-",
-				""
-			) as ContentBlock["type"];
+			const paletteId = activeIdStr.replace("sidebar-", "");
 
-			if (type === "section") {
+			if (paletteId === "section") {
 				if (!multipleSections) {
 					setActiveId(null);
 					return;
@@ -549,7 +592,7 @@ export default function ContentEditor({
 				return;
 			}
 
-			const newBlock = createBlock(type);
+			const newBlock = createBlock(paletteId);
 			const newBlocks = cloneDeep(blocks);
 			const overLocation = findListContaining(newBlocks, overIdStr);
 			const overBlock = overLocation
@@ -733,6 +776,9 @@ export default function ContentEditor({
 
 	const handleBlockSelect = (block: ContentBlock | null) => {
 		setSelectedBlock(block);
+		if (block) {
+			setPropertiesTab("settings");
+		}
 	};
 
 	const getAllBlockIds = (blockList: ContentBlock[]): string[] => {
@@ -775,46 +821,47 @@ export default function ContentEditor({
 				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
 			>
-				<Sidebar
-					multipleSections={multipleSections}
-					onImportContent={() => setImportContentOpen(true)}
-				/>
+				<div className="content-editor-body">
+					<div className="content-editor-main">
+						<SortableContext
+							items={
+								sortableItems.length
+									? sortableItems
+									: getAllBlockIds(blocks)
+							}
+							strategy={verticalListSortingStrategy}
+						>
+							<Canvas
+								blocks={blocks}
+								multipleSections={multipleSections}
+								selectedBlock={selectedBlock}
+								onBlockSelect={handleBlockSelect}
+								onBlockUpdate={handleBlockUpdate}
+								onBlockDelete={handleBlockDelete}
+								onBlockDuplicate={handleBlockDuplicate}
+							/>
+						</SortableContext>
+					</div>
 
-				<div className="content-editor-main">
-					<SortableContext
-						items={
-							sortableItems.length
-								? sortableItems
-								: getAllBlockIds(blocks)
-						}
-						strategy={verticalListSortingStrategy}
-					>
-						<Canvas
-							blocks={blocks}
-							multipleSections={multipleSections}
-							selectedBlock={selectedBlock}
-							onBlockSelect={handleBlockSelect}
-							onBlockUpdate={handleBlockUpdate}
-							onBlockDelete={handleBlockDelete}
-							onBlockDuplicate={handleBlockDuplicate}
-						/>
-					</SortableContext>
+					<PropertiesPanel
+						selectedBlock={selectedBlock}
+						onBlockUpdate={handleBlockUpdate}
+						multipleSections={multipleSections}
+						onImportContent={() => setImportContentOpen(true)}
+						tab={propertiesTab}
+						onTabChange={setPropertiesTab}
+					/>
 				</div>
-
-				<PropertiesPanel
-					selectedBlock={selectedBlock}
-					onBlockUpdate={handleBlockUpdate}
-					multipleSections={multipleSections}
-				/>
 
 				<DragOverlay>
 					{activeId ? (
 						<div className="drag-overlay">
 							{activeId.toString().startsWith("sidebar-")
-								? activeId
-										.toString()
-										.replace("sidebar-", "")
-										.toUpperCase()
+								? PALETTE_LABELS[
+										activeId
+											.toString()
+											.replace("sidebar-", "")
+									] || "Element"
 								: findBlockById(blocks, activeId.toString())
 										?.name || "Block"}
 						</div>

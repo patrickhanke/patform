@@ -7,7 +7,7 @@ export type ResolvedBlockStyle = {
 	className: string;
 };
 
-const SIZING_TYPES = new Set(["text", "button", "image", "section"]);
+const SIZING_TYPES = new Set(["text", "button", "image", "section", "spacer"]);
 
 /**
  * Resolve declarative `block.style` into inline CSS + helper class names.
@@ -79,7 +79,8 @@ export const resolveBlockStyleString = (
 	const { style } = resolveBlockStyle(blockStyle, options);
 	return Object.entries(style)
 		.map(([key, value]) => {
-			if (value === undefined || value === null || value === "") return "";
+			if (value === undefined || value === null || value === "")
+				return "";
 			const cssKey = key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
 			return `${cssKey}: ${value}`;
 		})

@@ -1,0 +1,26 @@
+.spacer-block {
+	width: 100%;
+	min-height: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px dashed #d1d5da;
+	border-radius: 6px;
+	background: repeating-linear-gradient(
+		-45deg,
+		#f6f8fa,
+		#f6f8fa 6px,
+		#eef1f4 6px,
+		#eef1f4 12px
+	);
+
+	&-label {
+		font-size: 11px;
+		font-weight: 600;
+		color: #6a737d;
+		background: #ffffff;
+		padding: 2px 8px;
+		border-radius: 999px;
+		border: 1px solid #e1e4e8;
+	}
+}

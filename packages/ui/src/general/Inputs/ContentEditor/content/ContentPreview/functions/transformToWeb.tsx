@@ -6,6 +6,10 @@ import {
 	DEFAULT_BUTTON_BACKGROUND,
 	DEFAULT_BUTTON_FONT_COLOR
 } from "../../ButtonBlock/buttonBlockStyles";
+import {
+	ensureTextMarkup,
+	getTextTypographyStyle
+} from "../../../utils/textBlock";
 
 /**
  * Transform ContentBlock[] into React components for web preview
@@ -24,6 +28,8 @@ const renderWebBlock = (block: ContentBlock): React.ReactNode => {
 			return renderButtonBlock(block);
 		case "divider":
 			return renderDividerBlock(block);
+		case "spacer":
+			return renderSpacerBlock(block);
 		case "image":
 			return renderImageBlock(block);
 		case "layout":
@@ -37,9 +43,7 @@ const renderWebBlock = (block: ContentBlock): React.ReactNode => {
 	}
 };
 
-const renderContentReferenceBlock = (
-	block: ContentBlock
-): React.ReactNode => {
+const renderContentReferenceBlock = (block: ContentBlock): React.ReactNode => {
 	const { style, className } = resolveBlockStyle(block.style, {
 		includeSizing: true,
 		includeColors: true
@@ -91,31 +95,35 @@ const renderSectionBlock = (block: ContentBlock): React.ReactNode => {
 };
 
 const renderTextBlock = (block: ContentBlock): React.ReactNode => {
-	const textType = block.config?.textType || "paragraph";
-	const headingLevel = block.config?.headingLevel || "h2";
 	const { style, className } = resolveBlockStyle(block.style, {
 		includeSizing: true,
 		includeColors: true
 	});
-
-	if (textType === "heading") {
-		const HeadingTag = headingLevel as keyof JSX.IntrinsicElements;
-		return (
-			<HeadingTag
-				key={block.id}
-				className={className || undefined}
-				dangerouslySetInnerHTML={{ __html: block.value || "" }}
-				style={style}
-			/>
-		);
-	}
+	const typography = getTextTypographyStyle(block.config);
 
 	return (
 		<div
 			key={block.id}
 			className={className || undefined}
-			dangerouslySetInnerHTML={{ __html: block.value || "" }}
-			style={style}
+			dangerouslySetInnerHTML={{ __html: ensureTextMarkup(block) }}
+			style={{ ...typography, ...style }}
+		/>
+	);
+};
+
+const renderSpacerBlock = (block: ContentBlock): React.ReactNode => {
+	const height = block.config?.spacerHeight || "24px";
+	const { style, className } = resolveBlockStyle(block.style, {
+		includeSizing: true,
+		includeColors: true
+	});
+
+	return (
+		<div
+			key={block.id}
+			className={className || undefined}
+			aria-hidden="true"
+			style={{ height, lineHeight: height, fontSize: 0, ...style }}
 		/>
 	);
 };

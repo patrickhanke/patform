@@ -29,7 +29,7 @@ const ContentPanel = ({
 	};
 
 	return (
-		<div className="property-group">
+		<div className="property-group property-group--stack">
 			<label className="property-label">Inhaltselement</label>
 			<div className="content-panel-summary">
 				{selectedBlock.value ? (

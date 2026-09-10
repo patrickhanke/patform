@@ -2,13 +2,25 @@
 
 import { useDraggable } from "@dnd-kit/core";
 
-interface SidebarItemProps {
+export const PALETTE_LABELS: Record<string, string> = {
+	section: "Abschnitt",
+	heading: "Titel",
+	text: "Text",
+	list: "Liste",
+	button: "Button",
+	image: "Bild",
+	divider: "Trennlinie",
+	spacer: "Abstand",
+	layout: "Layout"
+};
+
+interface PaletteItemProps {
 	id: string;
 	label: string;
 	icon: string;
 }
 
-function SidebarItem({ id, label, icon }: SidebarItemProps) {
+function PaletteItem({ id, label, icon }: PaletteItemProps) {
 	const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
 		id: `sidebar-${id}`
 	});
@@ -26,7 +38,7 @@ function SidebarItem({ id, label, icon }: SidebarItemProps) {
 	);
 }
 
-export default function Sidebar({
+export default function ComponentPalette({
 	multipleSections = false,
 	onImportContent
 }: {
@@ -35,27 +47,29 @@ export default function Sidebar({
 }) {
 	const items = [
 		...(multipleSections
-			? [{ id: "section", label: "Abschnitt", icon: "§" }]
+			? [{ id: "section", label: PALETTE_LABELS.section, icon: "§" }]
 			: []),
-		{ id: "text", label: "Text", icon: "T" },
-		{ id: "button", label: "Button", icon: "B" },
-		{ id: "image", label: "Bild", icon: "🖼" },
-		{ id: "divider", label: "Trennlinie", icon: "—" },
-		{ id: "layout", label: "Layout", icon: "⚏" }
+		{ id: "heading", label: PALETTE_LABELS.heading, icon: "H" },
+		{ id: "text", label: PALETTE_LABELS.text, icon: "T" },
+		{ id: "list", label: PALETTE_LABELS.list, icon: "☰" },
+		{ id: "button", label: PALETTE_LABELS.button, icon: "B" },
+		{ id: "image", label: PALETTE_LABELS.image, icon: "🖼" },
+		{ id: "divider", label: PALETTE_LABELS.divider, icon: "—" },
+		{ id: "spacer", label: PALETTE_LABELS.spacer, icon: "↕" },
+		{ id: "layout", label: PALETTE_LABELS.layout, icon: "⚏" }
 	];
 
 	return (
-		<div className="content-editor-sidebar">
-			<div className="sidebar-header">
-				<h3>Komponenten</h3>
-				<p>Ziehe um hinzuzufügen</p>
-			</div>
+		<div className="component-palette">
+			<p className="component-palette-hint">
+				Ziehe Komponenten auf die Fläche
+			</p>
 			<div className="sidebar-items">
 				{items.map((item) => (
-					<SidebarItem
+					<PaletteItem
 						key={item.id}
 						id={item.id}
-						label={item.label}
+						label={item.label || item.id}
 						icon={item.icon}
 					/>
 				))}
