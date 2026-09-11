@@ -6,8 +6,9 @@ import { isArray } from "lodash-es";
 import CreateClass from "../content/CreateClass";
 import { PageHeaderButton, PageHeaderScrollProps } from "../types";
 import "../styles.scss";
-import { useUnsavedChangesGuard } from "@repo/provider";
+import { languages_short, useUnsavedChangesGuard } from "@repo/provider";
 import { PageState } from "@repo/types";
+import { SwitchButtons } from "@repo/ui";
 
 const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 	title,
@@ -18,7 +19,10 @@ const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 	refetch,
 	pageStates = [],
 	pageState,
-	setPageState
+	setPageState,
+	languages,
+	activeLang,
+	setActiveLang
 }) => {
 	const { guard, unsavedChangesModal } = useUnsavedChangesGuard();
 
@@ -38,6 +42,14 @@ const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 		guard(() => setPageState(resolved));
 	};
 
+	const languageButtons =
+		languages?.map((language) => ({
+			value: language,
+			label:
+				languages_short.find((l) => l.value === language)?.label || "",
+			disabled: false
+		})) || [];
+
 	return (
 		<div className="pageheader_scroll_content">
 			<div className={"pageheader_scroll_content_container"}>
@@ -45,6 +57,17 @@ const PageHeaderScroll: FC<PageHeaderScrollProps> = ({
 					<h3>{title}</h3>
 				</div>
 				<div className="flex row a-ce j-fe gap-md">
+					{languages && languages.length > 1 && (
+						<SwitchButtons
+							currentStates={languageButtons?.find(
+								(l) => l.value === activeLang
+							)}
+							buttonStates={languageButtons}
+							changeHandler={(language) =>
+								setActiveLang(language.value)
+							}
+						/>
+					)}
 					{isArray(pageHeaderButtons) &&
 						pageHeaderButtons?.length > 0 && (
 							<div className={"pageheader_button_container"}>

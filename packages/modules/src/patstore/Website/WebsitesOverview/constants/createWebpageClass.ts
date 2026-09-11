@@ -23,7 +23,7 @@ const createClass: PageCreateClassObject<WebpageClass> = {
 		},
 		{
 			id: "title",
-			position: 1,
+			position: 2,
 			name: "title",
 			type: "edit_string",
 			label: "Titel (Der Titel der Seite)",
@@ -36,7 +36,7 @@ const createClass: PageCreateClassObject<WebpageClass> = {
 			name: "subtitle",
 			type: "edit_textfield",
 			label: "Untertitel (Der Untertitel der Seite)",
-			required: true,
+			required: false,
 			active: true
 		},
 		{

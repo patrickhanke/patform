@@ -1,33 +1,34 @@
 "use client";
 
-import { PatstoreAppContext, useDataHandler, useGetData } from "@repo/provider";
+import { PatstoreAppContext } from "@repo/provider";
 import { Field, WebpageClass } from "@repo/types";
-import { Form } from "@repo/ui";
-import { FormikValues } from "formik";
-import { FC, useCallback, useContext, useMemo } from "react";
+import { Form, usePageData } from "@repo/ui";
+import { FC, useContext, useMemo } from "react";
 import WebsitePageCategories from "../../components/WebsitePageCategories";
 
 type WebpageSettingsProps = {
-	websiteId: string;
+	webpage: WebpageClass;
 };
 
-const WebpageSettings: FC<WebpageSettingsProps> = ({ websiteId }) => {
-	const { updateData } = useDataHandler();
+const WebpageSettings: FC<WebpageSettingsProps> = ({ webpage }) => {
 	const { user, currentModule } = useContext(PatstoreAppContext);
-
-	const { data: pageData, refetch } = useGetData({
-		objectName: "Webpage",
-		id: websiteId,
-		fields: [
-			"objectId",
-			"path",
-			"title",
-			"subtitle",
-			"categories",
-			"image",
-			"documents"
-		]
-	});
+	const { data, setData } = usePageData(
+		{
+			initialData: {
+				path: webpage.path,
+				title: webpage.title,
+				image: webpage.image,
+				documents: webpage.documents,
+				categories: webpage.categories
+			},
+			objectId: webpage.objectId
+		},
+		{
+			className: "Webpage",
+			updateObject: (data) => data,
+			message: "Einstellungen der Seite wurden aktualisiert"
+		}
+	);
 
 	const fields = useMemo(
 		() =>
@@ -76,44 +77,18 @@ const WebpageSettings: FC<WebpageSettingsProps> = ({ websiteId }) => {
 		[user?.is_superuser]
 	);
 
-	const webPage = pageData as WebpageClass | undefined;
-
-	const formData = useMemo(
-		() =>
-			webPage
-				? {
-						path: webPage.path,
-						title: webPage.title,
-						subtitle: webPage.subtitle,
-						image: webPage.image,
-						documents: webPage.documents
-					}
-				: undefined,
-		[webPage]
-	);
-
-	const formSubmitHandler = useCallback(
-		async (values: FormikValues) => {
-			await updateData({
-				className: "Webpage",
-				objectId: websiteId,
-				updateObject: values
-			});
-			await refetch();
-		},
-		[refetch, updateData, websiteId]
-	);
-
-	if (!webPage || !formData) {
-		return null;
-	}
-
 	return (
 		<>
 			<Form
 				fields={fields}
-				data={formData}
-				formSubmitHandler={formSubmitHandler}
+				data={data ?? undefined}
+				formSubmitHandler={(formData) => {
+					Object.keys(formData).forEach((key) => {
+						setData(key, formData[key]);
+					});
+				}}
+				useWithDebounce
+				enableReinitialize
 				showRequired={false}
 			/>
 			{currentModule.categories.length > 0 && (
@@ -123,18 +98,11 @@ const WebpageSettings: FC<WebpageSettingsProps> = ({ websiteId }) => {
 						{currentModule.categories.map((moduleCategory) => (
 							<WebsitePageCategories
 								key={moduleCategory.id}
-								categories={webPage.categories}
+								categories={data?.categories || []}
 								category={moduleCategory}
 								isEditable
 								onChange={async (categories) => {
-									await updateData({
-										className: "Webpage",
-										objectId: websiteId,
-										updateObject: {
-											categories: categories
-										}
-									});
-									await refetch();
+									setData("categories", categories);
 								}}
 							/>
 						))}

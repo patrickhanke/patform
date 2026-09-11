@@ -1,5 +1,5 @@
 export type StructuredContentEditorProps = {
 	schema: WebpageStructuredSchema;
 	savedValues: WebpageStructuredValueEntry[];
-	onSave: (values: WebpageStructuredValueEntry[]) => Promise<void>;
+	onSave: (values: WebpageStructuredValueEntry[]) => void | Promise<void>;
 };

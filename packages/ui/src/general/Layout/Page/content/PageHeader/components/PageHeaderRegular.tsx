@@ -6,8 +6,9 @@ import { isArray } from "lodash-es";
 import CreateClass from "../content/CreateClass";
 import { PageHeaderButton, PageHeaderRegularProps } from "../types";
 import "../styles.scss";
-import { useUnsavedChangesGuard } from "@repo/provider";
+import { languages_short, useUnsavedChangesGuard } from "@repo/provider";
 import { PageState } from "@repo/types";
+import { SwitchButtons } from "@repo/ui";
 
 const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 	(
@@ -21,7 +22,10 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 			refetch,
 			pageStates = [],
 			pageState,
-			setPageState
+			setPageState,
+			languages,
+			activeLang,
+			setActiveLang
 		},
 		ref
 	) => {
@@ -43,6 +47,15 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 			guard(() => setPageState(resolved));
 		};
 
+		const languageButtons =
+			languages?.map((language) => ({
+				value: language,
+				label:
+					languages_short.find((l) => l.value === language)?.label ||
+					"",
+				disabled: false
+			})) || [];
+
 		return (
 			<div ref={ref} className="pageheader_content">
 				<div className={"pageheader_content_container"}>
@@ -53,6 +66,17 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 						)}
 					</div>
 					<div className="button_container">
+						{languages && languages.length > 1 && (
+							<SwitchButtons
+								currentStates={languageButtons?.find(
+									(l) => l.value === activeLang
+								)}
+								buttonStates={languageButtons}
+								changeHandler={(language) =>
+									setActiveLang(language.value)
+								}
+							/>
+						)}
 						{isArray(pageHeaderButtons) &&
 							pageHeaderButtons?.length > 0 && (
 								<div className={"pageheader_button_container"}>

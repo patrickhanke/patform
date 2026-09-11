@@ -17,7 +17,10 @@ const Page = ({
 	pageHeaderContent,
 	createClass,
 	refetch,
-	emptyContent = false
+	emptyContent = false,
+	languages,
+	activeLang,
+	setActiveLang
 }: PageProps) => {
 	const { dataHasChanged, resetData, undo, redo, updateOptions, objectId } =
 		usePageData();
@@ -35,6 +38,9 @@ const Page = ({
 					createClass={createClass}
 					refetch={refetch}
 					emptyContent={emptyContent}
+					languages={languages}
+					activeLang={activeLang}
+					setActiveLang={setActiveLang}
 				/>
 			</div>
 			<div className={styles.page_content} id="content">

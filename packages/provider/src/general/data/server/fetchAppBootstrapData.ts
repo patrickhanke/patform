@@ -298,6 +298,11 @@ export async function fetchFormById({
 const WEBPAGE_FIELDS = `
 	objectId
 	title
+	path
+	module {
+		objectId
+		settings
+	}
 `;
 
 export async function fetchWebpageById({

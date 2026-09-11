@@ -1,13 +1,13 @@
 "use client";
 
-import { useDataHandler, useGetData } from "@repo/provider";
 import {
 	WebpageClass,
 	WebpageStructuredSchema,
 	WebpageStructuredValueEntry
 } from "@repo/types";
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { StructuredContentEditor } from "./content";
+import { usePageData } from "@repo/ui";
 
 const isStructuredPageData = (
 	pageData: unknown
@@ -57,48 +57,39 @@ const normalizePageData = (
 	return pageData;
 };
 
-const WebpageContent: FC<{ websiteId: string }> = ({ websiteId }) => {
-	const { updateData } = useDataHandler();
-	const [savedValues, setSavedValues] = useState<
-		WebpageStructuredValueEntry[]
-	>([]);
-
-	const { data: webpageData, refetch } = useGetData({
-		objectName: "Webpage",
-		id: websiteId,
-		fields: ["page_content", "page_data"]
-	});
-
-	const webPage = webpageData as WebpageClass | undefined;
-
-	const schema = useMemo<WebpageStructuredSchema | undefined>(
-		() => normalizePageContent(webPage?.page_content),
-		[webPage?.page_content]
+const WebpageContent: FC<{ webpage: WebpageClass }> = ({ webpage }) => {
+	const { data: webpageData, setData } = usePageData<Partial<WebpageClass>>(
+		{
+			initialData: {
+				page_data: webpage.page_data || [],
+				page_content: webpage.page_content || {}
+			},
+			objectId: webpage.objectId
+		},
+		{
+			className: "Webpage",
+			updateObject: (data) => data,
+			message: "Seiteninhalte wurden aktualisiert"
+		}
 	);
 
-	const initialSavedValues = useMemo(
-		() => normalizePageData(webPage?.page_data),
-		[webPage?.page_data]
+	const schema = useMemo<WebpageStructuredSchema | undefined>(
+		() => normalizePageContent(webpageData?.page_content),
+		[webpageData?.page_content]
+	);
+
+	const savedValues = useMemo(
+		() => normalizePageData(webpageData?.page_data),
+		[webpageData?.page_data]
 	);
 
 	const saveHandler = useCallback(
-		async (values: WebpageStructuredValueEntry[]) => {
-			await updateData({
-				className: "Webpage",
-				objectId: websiteId,
-				updateObject: {
-					page_data: values
-				}
-			});
-			setSavedValues(values);
-			await refetch();
+		(values: WebpageStructuredValueEntry[]) => {
+			setData("page_data", values);
 		},
-		[refetch, updateData, websiteId]
+		[setData]
 	);
 
-	if (!webPage) {
-		return null;
-	}
 	if (schema === undefined) {
 		return (
 			<section>
@@ -108,11 +99,9 @@ const WebpageContent: FC<{ websiteId: string }> = ({ websiteId }) => {
 	}
 	return (
 		<StructuredContentEditor
-			key={`${websiteId}-${webPage.updatedAt}`}
+			key={`${webpage.objectId}-${webpage.updatedAt}`}
 			schema={schema}
-			savedValues={
-				savedValues.length > 0 ? savedValues : initialSavedValues
-			}
+			savedValues={savedValues}
 			onSave={saveHandler}
 		/>
 	);

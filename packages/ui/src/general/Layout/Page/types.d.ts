@@ -1,4 +1,4 @@
-import { ApolloRefetch, ModuleField, PageState } from "@repo/types";
+import { ApolloRefetch, LanguageValue, ModuleField, PageState } from "@repo/types";
 import { ReactNode } from "react";
 
 export type CreateClassProps = {
@@ -40,6 +40,9 @@ export type PageProps = {
 	refetch?: ApolloRefetch;
 	createClass?: PageCreateClassObject;
 	emptyContent?: boolean;
+	languages?: LanguageValue[];
+	activeLang?: LanguageValue;
+	setActiveLang?: Dispatch<SetStateAction<LanguageValue>>;
 };
 
 type PageSkeletonProps = {

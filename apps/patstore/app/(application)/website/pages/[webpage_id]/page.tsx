@@ -16,11 +16,17 @@ async function WebsitePageContent({
 
 	const webpage = await fetchWebpageById({ id: webpage_id, sessionToken: sessionToken });
 
+	console.log( "webpage", webpage);
 	if (!webpage) {
 		return <p>Seite nicht gefunden</p>;
 	}
 
-	return <WebsitePage websiteId={webpage_id} title={webpage.title} />;
+	return <WebsitePage 
+		path={webpage.path} 
+		moduleId={webpage.module.objectId} 
+		languages={webpage?.module?.settings?.languages} 
+		defaultLanguage={webpage?.module?.settings?.default_language}
+	/>;
 }
 
 export default function WebsitePageRender({

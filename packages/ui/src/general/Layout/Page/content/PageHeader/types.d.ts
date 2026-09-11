@@ -32,6 +32,9 @@ export type PageHeaderComponent = {
 	emptyContent?: PageProps["emptyContent"];
 	refetch?: PageProps["refetch"];
 	createClass?: PageProps["createClass"];
+	languages?: PageProps["languages"];
+	activeLang?: PageProps["activeLang"];
+	setActiveLang?: PageProps["setActiveLang"];
 };
 
 export type PageHeaderRegularProps = {
@@ -45,6 +48,9 @@ export type PageHeaderRegularProps = {
 	emptyContent?: PageProps["emptyContent"];
 	refetch?: PageProps["refetch"];
 	createClass?: PageProps["createClass"];
+	languages?: PageProps["languages"];
+	activeLang?: PageProps["activeLang"];
+	setActiveLang?: PageProps["setActiveLang"];
 };
 
 export type PageHeaderScrollProps = {
@@ -57,6 +63,9 @@ export type PageHeaderScrollProps = {
 	emptyContent?: PageProps["emptyContent"];
 	refetch?: PageProps["refetch"];
 	createClass?: PageProps["createClass"];
+	languages?: PageProps["languages"];
+	activeLang?: PageProps["activeLang"];
+	setActiveLang?: PageProps["setActiveLang"];
 };
 
 export type PageNavigationComponent = {

@@ -25,7 +25,10 @@ const PageHeader = ({
 	pageHeaderContent,
 	emptyContent,
 	createClass,
-	refetch
+	refetch,
+	languages,
+	activeLang,
+	setActiveLang
 }: PageHeaderComponent) => {
 	const pageHeader = useRef(null);
 
@@ -53,6 +56,9 @@ const PageHeader = ({
 					emptyContent={emptyContent}
 					createClass={createClass}
 					refetch={refetch}
+					languages={languages}
+					activeLang={activeLang}
+					setActiveLang={setActiveLang}
 				/>
 			</div>
 			<AnimatePresence>
@@ -77,6 +83,9 @@ const PageHeader = ({
 							emptyContent={emptyContent}
 							createClass={createClass}
 							refetch={refetch}
+							languages={languages}
+							activeLang={activeLang}
+							setActiveLang={setActiveLang}
 						/>
 					</motion.div>
 				)}
