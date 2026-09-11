@@ -954,7 +954,8 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "custom") {
 				columnArray.push({
-					accessorFn: (row) => columnElement?.render?.(row),
+					accessorFn: (row) =>
+						columnElement.render ? columnElement?.render(row) : "",
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
 					cell: (info) => info.getValue(),

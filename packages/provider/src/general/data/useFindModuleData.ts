@@ -34,7 +34,6 @@ function useFindModuleData<T extends Classes>({
 	language: LanguageValue | undefined;
 	changeLanguage: (language: LanguageValue) => void;
 } {
-	console.log("filters", filters);
 	const { loading, data, refetch, count, changeLanguage, language } =
 		useFindData({
 			objectName: (module?.connected_class || "_User") as string,

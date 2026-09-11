@@ -60,13 +60,13 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ emailTemplateId }) => {
 		}
 	];
 
-	const { data: emailData } = useFindData<Email>({
+	const { data: emailData, loading: emailDataLoading } = useFindData<Email>({
 		objectName: "Email",
 		fields: ["objectId", "state", "data", "sendAt"],
 		filters: DEFAULT_FILTERS,
-		pollInterval: 10000
+		pollInterval: 60000,
+		limit: 1000
 	});
-
 	console.log(emailData);
 
 	const tableData: TableData[] = useMemo(() => {
@@ -77,7 +77,7 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ emailTemplateId }) => {
 					last_name: email.data?.recipient?.last_name ?? "",
 					first_name: email.data?.recipient?.first_name ?? "",
 					title: email.data?.recipient?.title ?? "",
-					email: email.data?.recipient?.email ?? "",
+					email: email.data?.to?.email ?? "",
 					suppressed: email.data?.suppressed ?? false,
 					state: email.state ?? undefined,
 					sendAt: email.sendAt ?? undefined,
@@ -152,16 +152,10 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ emailTemplateId }) => {
 			{
 				id: "sendAt",
 				label: "Versanddatum",
-				type: "string",
+				type: "custom",
 				render: (row: TableData) => {
 					return row.sendAt
-						? new Date(row.sendAt).toLocaleString("de-DE", {
-								year: "numeric",
-								month: "long",
-								day: "numeric",
-								hour: "2-digit",
-								minute: "2-digit"
-							})
+						? new Date(row.sendAt).toLocaleString("de-DE")
 						: "-";
 				}
 			}
@@ -186,6 +180,14 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ emailTemplateId }) => {
 	const headingCount = filterActive
 		? `${filteredTableData.length} / ${tableData.length}`
 		: String(tableData.length);
+
+	if (emailDataLoading) {
+		return (
+			<div className="flex col gap-md">
+				<p>Lädt...</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex col gap-md">
