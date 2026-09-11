@@ -42,13 +42,13 @@ const TableColumnEmailSettings: React.FC<TableColumnEmailSettingsProps> = ({
 
 	// Fetch all lists from current project
 	const { data: projectLists, loading: listsLoading } = useFindData({
-		objectName: "Item",
+		objectName: "Email",
 		fields: ["objectId", "title"],
 		filters: [
 			{
 				key: "type",
-				value: "list",
-				operator: "equalTo"
+				value: ["static_list"],
+				operator: "in"
 			}
 		],
 		limit: 1000,
