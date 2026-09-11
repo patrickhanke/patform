@@ -67,6 +67,68 @@ const ensureStyleWithCss = () => {
 	}
 };
 
+const ensureSemanticInlineCommands = () => {
+	try {
+		document.execCommand("styleWithCSS", false, "false");
+	} catch {
+		// Unsupported in some browsers; execCommand still works.
+	}
+};
+
+const isBoldFontWeight = (fontWeight: string): boolean => {
+	const value = fontWeight.trim().toLowerCase();
+	if (value === "bold" || value === "bolder") return true;
+	const numeric = Number.parseInt(value, 10);
+	return !Number.isNaN(numeric) && numeric >= 700;
+};
+
+const isItalicFontStyle = (fontStyle: string): boolean =>
+	fontStyle.trim().toLowerCase().includes("italic");
+
+const isExplicitlyBold = (
+	element: Element | null,
+	root: HTMLElement
+): boolean => {
+	let current: Element | null = element;
+	while (current && root.contains(current)) {
+		if (current instanceof HTMLElement) {
+			if (current.tagName === "B" || current.tagName === "STRONG") {
+				return true;
+			}
+			if (
+				current.style.fontWeight &&
+				isBoldFontWeight(current.style.fontWeight)
+			) {
+				return true;
+			}
+		}
+		current = current.parentElement;
+	}
+	return false;
+};
+
+const isExplicitlyItalic = (
+	element: Element | null,
+	root: HTMLElement
+): boolean => {
+	let current: Element | null = element;
+	while (current && root.contains(current)) {
+		if (current instanceof HTMLElement) {
+			if (current.tagName === "I" || current.tagName === "EM") {
+				return true;
+			}
+			if (
+				current.style.fontStyle &&
+				isItalicFontStyle(current.style.fontStyle)
+			) {
+				return true;
+			}
+		}
+		current = current.parentElement;
+	}
+	return false;
+};
+
 export const applyInlineFormat = (
 	blockId: string,
 	action: InlineFormatAction
@@ -91,10 +153,14 @@ export const applyInlineFormat = (
 			document.execCommand("foreColor", false, action.value);
 			break;
 		case "bold":
+			ensureSemanticInlineCommands();
 			document.execCommand("bold", false);
+			ensureStyleWithCss();
 			break;
 		case "italic":
+			ensureSemanticInlineCommands();
 			document.execCommand("italic", false);
+			ensureStyleWithCss();
 			break;
 		case "link":
 			if (action.url.trim()) {
@@ -168,7 +234,10 @@ const getElementAtRangeStart = (
 		return parent && root.contains(parent) ? parent : null;
 	}
 
-	if (!(startContainer instanceof Element) || !root.contains(startContainer)) {
+	if (
+		!(startContainer instanceof Element) ||
+		!root.contains(startContainer)
+	) {
 		return null;
 	}
 
@@ -206,9 +275,7 @@ const findExplicitInlineColor = (
 };
 
 /** Color at the current (or last saved) selection/caret in a text block. */
-export const getTextEditorSelectionColor = (
-	blockId: string
-): string | null => {
+export const getTextEditorSelectionColor = (blockId: string): string | null => {
 	const editor = editors.get(blockId);
 	if (!editor) return null;
 
@@ -224,4 +291,50 @@ export const getTextEditorSelectionColor = (
 	}
 
 	return normalizeCssColor(getComputedStyle(editor.root).color);
+};
+
+/** Whether the current (or last saved) selection is explicitly bold. */
+export const getTextEditorSelectionBold = (blockId: string): boolean => {
+	const editor = editors.get(blockId);
+	if (!editor) return false;
+
+	const range = getActiveRange(blockId);
+	if (!range) return false;
+
+	const element = getElementAtRangeStart(range, editor.root);
+	if (isExplicitlyBold(element, editor.root)) return true;
+
+	const active = document.activeElement;
+	if (active === editor.root || editor.root.contains(active)) {
+		try {
+			return document.queryCommandState("bold");
+		} catch {
+			return false;
+		}
+	}
+
+	return false;
+};
+
+/** Whether the current (or last saved) selection is explicitly italic. */
+export const getTextEditorSelectionItalic = (blockId: string): boolean => {
+	const editor = editors.get(blockId);
+	if (!editor) return false;
+
+	const range = getActiveRange(blockId);
+	if (!range) return false;
+
+	const element = getElementAtRangeStart(range, editor.root);
+	if (isExplicitlyItalic(element, editor.root)) return true;
+
+	const active = document.activeElement;
+	if (active === editor.root || editor.root.contains(active)) {
+		try {
+			return document.queryCommandState("italic");
+		} catch {
+			return false;
+		}
+	}
+
+	return false;
 };

@@ -216,10 +216,60 @@ const stripFontFamilyFromStyle = (style: string): string =>
 		.filter((part) => part && !/^font-family\s*:/i.test(part))
 		.join("; ");
 
+const normalizeInlineStyleForEmail = (style: string): string =>
+	stripFontFamilyFromStyle(style)
+		.split(";")
+		.map((part) => part.trim())
+		.filter(Boolean)
+		.map((part) => {
+			if (/^font-weight\s*:\s*(bold|bolder)$/i.test(part)) {
+				return "font-weight: 700";
+			}
+			return part;
+		})
+		.join("; ");
+
 const cleanInlineStyleAttribute = (style: string): string | null => {
-	const cleaned = stripFontFamilyFromStyle(style);
+	const cleaned = normalizeInlineStyleForEmail(style);
 	return cleaned || null;
 };
+
+const mergeInlineStyle = (...parts: string[]) =>
+	parts
+		.map((part) => part.trim())
+		.filter(Boolean)
+		.join("; ");
+
+const appendStyleToAttrs = (attrs: string, styleAddition: string): string => {
+	const trimmed = attrs.trim();
+	const styleMatch = trimmed.match(/style=(["'])([\s\S]*?)\1/i);
+	if (styleMatch) {
+		const quote = styleMatch[1];
+		const mergedStyle = mergeInlineStyle(styleMatch[2], styleAddition);
+		return trimmed.replace(
+			styleMatch[0],
+			`style=${quote}${mergedStyle}${quote}`
+		);
+	}
+	return trimmed
+		? `${trimmed} style="${styleAddition}"`
+		: `style="${styleAddition}"`;
+};
+
+/** Email clients (especially Outlook) need explicit inline bold/italic styles. */
+const normalizeEmailInlineFormatting = (html: string): string =>
+	html.replace(
+		/<(b|strong|i|em)(\s[^>]*)?>/gi,
+		(_match, tag: string, attrs = "") => {
+			const normalizedTag = tag.toLowerCase();
+			const styleAddition =
+				normalizedTag === "i" || normalizedTag === "em"
+					? "font-style: italic"
+					: "font-weight: 700";
+			const nextAttrs = appendStyleToAttrs(String(attrs), styleAddition);
+			return `<${tag}${nextAttrs ? ` ${nextAttrs}` : ""}>`;
+		}
+	);
 
 /** Remove pasted font-family / legacy <font face> so email output uses one stack. */
 const sanitizeEmailTextHtml = (html: string): string =>
@@ -239,12 +289,6 @@ const sanitizeEmailTextHtml = (html: string): string =>
 			}
 		)
 		.replace(/\sstyle=(["'])\1/gi, "");
-
-const mergeInlineStyle = (...parts: string[]) =>
-	parts
-		.map((part) => part.trim())
-		.filter(Boolean)
-		.join("; ");
 
 /** Email clients apply default margins and heading sizes — reset inline on each tag. */
 const normalizeEmailTextHtml = (
@@ -278,7 +322,9 @@ const renderEmailTextBlock = (block: ContentBlock): string => {
 	const textColor =
 		kind === "heading" ? color || "#333333" : color || "#555555";
 	const content = normalizeEmailTextHtml(
-		sanitizeEmailTextHtml(ensureTextMarkup(block)),
+		normalizeEmailInlineFormatting(
+			sanitizeEmailTextHtml(ensureTextMarkup(block))
+		),
 		{
 			kind,
 			headingLevel,

@@ -413,9 +413,19 @@
 				font-weight: 600;
 			}
 
+			&--active {
+				border-color: #0366d6;
+				background: #e8f4ff;
+				color: #0366d6;
+			}
+
 			&:hover {
 				border-color: #0366d6;
 				background: #f6f8fa;
+			}
+
+			&--active:hover {
+				background: #dbeafe;
 			}
 		}
 

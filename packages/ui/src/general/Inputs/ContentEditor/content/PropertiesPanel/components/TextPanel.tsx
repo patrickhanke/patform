@@ -14,7 +14,9 @@ import {
 } from "../../../utils/textBlock";
 import {
 	applyInlineFormat,
+	getTextEditorSelectionBold,
 	getTextEditorSelectionColor,
+	getTextEditorSelectionItalic,
 	saveTextEditorSelection
 } from "../../../utils/textEditorSelection";
 
@@ -35,32 +37,35 @@ const TextPanel = ({
 	const [linkUrl, setLinkUrl] = useState("https://");
 	const defaultTextColor = kind === "heading" ? "#333333" : "#555555";
 	const [textColor, setTextColor] = useState(defaultTextColor);
+	const [isBold, setIsBold] = useState(false);
+	const [isItalic, setIsItalic] = useState(false);
 
-	const refreshTextColor = useCallback(() => {
+	const refreshTextFormats = useCallback(() => {
 		setTextColor(
 			getTextEditorSelectionColor(selectedBlock.id) ?? defaultTextColor
 		);
+		setIsBold(getTextEditorSelectionBold(selectedBlock.id));
+		setIsItalic(getTextEditorSelectionItalic(selectedBlock.id));
 	}, [defaultTextColor, selectedBlock.id]);
 
 	useEffect(() => {
-		refreshTextColor();
+		refreshTextFormats();
 
-		const onSelectionChange = () => refreshTextColor();
+		const onSelectionChange = () => refreshTextFormats();
 		document.addEventListener("selectionchange", onSelectionChange);
 
 		return () => {
 			document.removeEventListener("selectionchange", onSelectionChange);
 		};
-	}, [refreshTextColor, selectedBlock.value]);
+	}, [refreshTextFormats, selectedBlock.value]);
 
 	const applyFormat = (action: Parameters<typeof applyInlineFormat>[1]) => {
 		saveTextEditorSelection(selectedBlock.id);
 		applyInlineFormat(selectedBlock.id, action);
 		if (action.type === "color") {
 			setTextColor(action.value);
-		} else {
-			refreshTextColor();
 		}
+		refreshTextFormats();
 	};
 
 	const patchConfig = (
@@ -99,16 +104,22 @@ const TextPanel = ({
 				>
 					<button
 						type="button"
-						className="text-format-btn"
+						className={`text-format-btn${
+							isBold ? " text-format-btn--active" : ""
+						}`}
 						title="Fett"
+						aria-pressed={isBold}
 						onClick={() => applyFormat({ type: "bold" })}
 					>
 						B
 					</button>
 					<button
 						type="button"
-						className="text-format-btn text-format-btn--italic"
+						className={`text-format-btn text-format-btn--italic${
+							isItalic ? " text-format-btn--active" : ""
+						}`}
 						title="Kursiv"
+						aria-pressed={isItalic}
 						onClick={() => applyFormat({ type: "italic" })}
 					>
 						I
@@ -121,7 +132,7 @@ const TextPanel = ({
 				<div
 					onMouseDown={() => {
 						saveTextEditorSelection(selectedBlock.id);
-						refreshTextColor();
+						refreshTextFormats();
 					}}
 				>
 					<ColorPicker

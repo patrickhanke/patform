@@ -67,6 +67,8 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ emailTemplateId }) => {
 		pollInterval: 10000
 	});
 
+	console.log(emailData);
+
 	const tableData: TableData[] = useMemo(() => {
 		if (!emailData) return [];
 		return emailData
@@ -78,7 +80,8 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ emailTemplateId }) => {
 					email: email.data?.recipient?.email ?? "",
 					suppressed: email.data?.suppressed ?? false,
 					state: email.state ?? undefined,
-					sendAt: email.sendAt ?? undefined
+					sendAt: email.sendAt ?? undefined,
+					objectId: email.objectId
 				};
 			})
 			.filter((data) => data !== null)
@@ -165,9 +168,9 @@ const EmailRecipients: FC<EmailRecipientsProps> = ({ emailTemplateId }) => {
 		],
 		refetch: () => null,
 		categories: [],
-		className: "User",
+		className: "Email",
 		useMasterKey: true,
-		editDisabled: true
+		editDisabled: false
 	});
 
 	if (!emailData || !emailData.length) {

@@ -30,6 +30,16 @@
 			line-height: 1.3;
 		}
 
+		b,
+		strong {
+			font-weight: 700;
+		}
+
+		i,
+		em {
+			font-style: italic;
+		}
+
 		// Override any global styles
 		* {
 			box-sizing: border-box;
