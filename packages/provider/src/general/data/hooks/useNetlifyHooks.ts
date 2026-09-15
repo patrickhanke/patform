@@ -68,6 +68,11 @@ const useNetlifyHooks = () => {
 					"https://api.netlify.com/build_hooks/698058ffd5736a2e12b62c64"
 				);
 			}
+			if (project.path === "nocogirls") {
+				return axios.post(
+					"https://api.vercel.com/v1/integrations/deploy/prj_GnCaZnL9fR9nmXrHVogTmb3cTHIg/ZOrT890F4A"
+				);
+			}
 		},
 
 		[project]
