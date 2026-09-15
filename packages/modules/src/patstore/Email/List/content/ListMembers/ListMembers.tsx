@@ -66,7 +66,7 @@ const ListMembers: FC<ListMembersProps> = ({
 		loading
 	} = useFindDataSecure({
 		objectName: "User",
-		fields: ["objectId", "first_name", "last_name", "email"],
+		fields: ["objectId", "first_name", "last_name", "email", "emails"],
 		filters: staticList
 			? ([
 					{
@@ -99,8 +99,14 @@ const ListMembers: FC<ListMembersProps> = ({
 			{
 				header: "Email",
 				accessorKey: "email",
-				cell: ({ row }: { row: { original: PatstoreUser } }) =>
-					row.original.email
+				cell: ({ row }: { row: { original: PatstoreUser } }) => {
+					if (list.type === "static_list") {
+						return row.original.emails?.find((email) =>
+							email.lists.includes(list.objectId)
+						)?.email;
+					}
+					return row.original.email || "-";
+				}
 			}
 		],
 		[]
