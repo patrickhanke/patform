@@ -64,6 +64,7 @@ const EmailsOverview = ({
 				text: "Neue E-Mail erstellen",
 				fields: module.fields,
 				refetch: refetch,
+				initialState: "draft",
 				initialData: {
 					type: "template",
 					state: "draft",
