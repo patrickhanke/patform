@@ -1,9 +1,15 @@
+import type { TextBlockKind } from "./textBlock";
+
 export type InlineFormatAction =
 	| { type: "color"; value: string }
 	| { type: "bold" }
 	| { type: "italic" }
 	| { type: "link"; url: string }
 	| { type: "unlink" };
+
+export type TextIndentDirection = "indent" | "outdent";
+
+const PARAGRAPH_INDENT_STEP_PX = 24;
 
 type TextEditorEntry = {
 	root: HTMLElement;
@@ -179,6 +185,126 @@ export const applyInlineFormat = (
 };
 
 export const hasTextEditor = (blockId: string) => editors.has(blockId);
+
+const parseIndentPx = (element: HTMLElement): number => {
+	const paddingLeft = element.style.paddingLeft;
+	if (paddingLeft.endsWith("px")) {
+		return Number.parseInt(paddingLeft, 10) || 0;
+	}
+	const marginLeft = element.style.marginLeft;
+	if (marginLeft.endsWith("px")) {
+		return Number.parseInt(marginLeft, 10) || 0;
+	}
+	return 0;
+};
+
+const setIndentPx = (element: HTMLElement, px: number) => {
+	if (px <= 0) {
+		element.style.paddingLeft = "";
+		element.style.marginLeft = "";
+		return;
+	}
+	element.style.paddingLeft = `${px}px`;
+	element.style.marginLeft = "";
+};
+
+const getParagraphBlocksInRange = (
+	range: Range,
+	root: HTMLElement
+): HTMLElement[] => {
+	const blocks: HTMLElement[] = [];
+
+	if (range.collapsed) {
+		let node: Node | null = range.startContainer;
+		while (node && node !== root) {
+			if (node instanceof HTMLElement && node.tagName === "P") {
+				blocks.push(node);
+				break;
+			}
+			node = node.parentNode;
+		}
+		return blocks;
+	}
+
+	root.querySelectorAll("p").forEach((paragraph) => {
+		if (range.intersectsNode(paragraph)) {
+			blocks.push(paragraph);
+		}
+	});
+
+	if (blocks.length > 0) {
+		return blocks;
+	}
+
+	let node: Node | null = range.commonAncestorContainer;
+	if (node.nodeType === Node.TEXT_NODE) {
+		node = node.parentNode;
+	}
+	while (node && node !== root) {
+		if (node instanceof HTMLElement && node.tagName === "P") {
+			blocks.push(node);
+			break;
+		}
+		node = node.parentNode;
+	}
+
+	return blocks;
+};
+
+const applyParagraphIndent = (
+	root: HTMLElement,
+	range: Range,
+	direction: TextIndentDirection
+) => {
+	const delta =
+		direction === "indent"
+			? PARAGRAPH_INDENT_STEP_PX
+			: -PARAGRAPH_INDENT_STEP_PX;
+	const blocks = getParagraphBlocksInRange(range, root);
+
+	for (const block of blocks) {
+		const next = Math.max(0, parseIndentPx(block) + delta);
+		setIndentPx(block, next);
+	}
+};
+
+/** Indent/outdent paragraph text or nest/unnest list items at the selection. */
+export const applyTextIndent = (
+	blockId: string,
+	direction: TextIndentDirection,
+	textKind: TextBlockKind
+): boolean => {
+	if (textKind !== "paragraph" && textKind !== "list") {
+		return false;
+	}
+
+	const editor = editors.get(blockId);
+	if (!editor) return false;
+
+	editor.root.focus();
+
+	const restored = restoreSelection(blockId);
+	const selection = window.getSelection();
+	if (!selection || !restored || selection.rangeCount === 0) {
+		return false;
+	}
+
+	const range = selection.getRangeAt(0);
+
+	if (textKind === "list") {
+		document.execCommand(
+			direction === "indent" ? "indent" : "outdent",
+			false
+		);
+	} else {
+		applyParagraphIndent(editor.root, range, direction);
+	}
+
+	const html = editor.root.innerHTML;
+	editor.onCommit(html);
+	saveTextEditorSelection(blockId);
+	return true;
+};
 
 export const normalizeCssColor = (color: string): string => {
 	const value = color.trim();

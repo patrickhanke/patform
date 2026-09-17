@@ -275,8 +275,9 @@ export type ModulePathConfig = {
 		connected_class: "Email";
 		default_fields: [];
 		sub_menu: [
-			{ label: "E-Mails"; value: "/emails"; icon: "email" },
-			{ label: "E-Mail-Vorlagen"; value: "/templates"; icon: "templates" }
+			{ label: "Übersicht"; value: "/overview"; icon: "email" },
+			{ label: "Listen"; value: "/lists"; icon: "list" },
+			{ label: "Vorlagen"; value: "/templates"; icon: "list" }
 		];
 	};
 	"/videos": {

@@ -14,6 +14,7 @@ import {
 } from "../../../utils/textBlock";
 import {
 	applyInlineFormat,
+	applyTextIndent,
 	getTextEditorSelectionBold,
 	getTextEditorSelectionColor,
 	getTextEditorSelectionItalic,
@@ -67,6 +68,13 @@ const TextPanel = ({
 		}
 		refreshTextFormats();
 	};
+
+	const applyIndent = (direction: "indent" | "outdent") => {
+		saveTextEditorSelection(selectedBlock.id);
+		applyTextIndent(selectedBlock.id, direction, kind);
+	};
+
+	const showIndentControls = kind === "paragraph" || kind === "list";
 
 	const patchConfig = (
 		patch: Partial<NonNullable<ContentBlock["config"]>>,
@@ -124,6 +132,26 @@ const TextPanel = ({
 					>
 						I
 					</button>
+					{showIndentControls && (
+						<>
+							<button
+								type="button"
+								className="text-format-btn text-format-btn--indent"
+								title="Einzug verkleinern"
+								onClick={() => applyIndent("outdent")}
+							>
+								⇤
+							</button>
+							<button
+								type="button"
+								className="text-format-btn text-format-btn--indent"
+								title="Einzug vergrößern"
+								onClick={() => applyIndent("indent")}
+							>
+								⇥
+							</button>
+						</>
+					)}
 				</div>
 			</div>
 

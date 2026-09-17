@@ -95,7 +95,7 @@ const Icons = ({ icon, color }: { icon: string; color?: string }) => {
 	if (icon === "waste") {
 		return <BiSolidTrashAlt color={color || "inherit"} />;
 	}
-	if (icon === "tasks" || icon === "component") {
+	if (icon === "tasks" || icon === "component" || icon === "components") {
 		return <GrTask color={color || "inherit"} />;
 	}
 	if (icon === "tickets") {

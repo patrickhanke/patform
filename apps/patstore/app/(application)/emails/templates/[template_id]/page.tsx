@@ -1,1 +1,1 @@
-export { EmailTemplate as default } from "@repo/modules";
+export {EmailComponent as default} from "@repo/modules";

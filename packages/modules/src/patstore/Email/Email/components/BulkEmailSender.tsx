@@ -92,9 +92,9 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 				setSentEmails(emailsSent - (startBatch - 1) * BATCH_SIZE);
 				setProgress((batchesSent / batchesToSend) * 100);
 
-				// Wait 10 seconds between batches to avoid overwhelming the server
+				// Wait 12 seconds between batches to avoid overwhelming the server
 				if (i < actualEndBatch - 1) {
-					await new Promise((resolve) => setTimeout(resolve, 10_000));
+					await new Promise((resolve) => setTimeout(resolve, 12_000));
 				}
 			}
 

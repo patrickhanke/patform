@@ -80,10 +80,39 @@
 		ol {
 			margin: 0.5em 0;
 			padding-left: 1.4em;
+			list-style-position: outside;
+		}
+
+		ul {
+			list-style-type: disc;
+		}
+
+		ol {
+			list-style-type: decimal;
 		}
 
 		li {
 			margin: 0.25em 0;
+		}
+
+		li ul,
+		li ol {
+			margin: 0.25em 0;
+			padding-left: 1.4em;
+		}
+
+		ul ul {
+			list-style-type: circle;
+		}
+
+		ul ul ul {
+			list-style-type: square;
+		}
+
+		blockquote {
+			margin: 0.5em 0;
+			padding-left: 24px;
+			border: none;
 		}
 
 		&:empty::before {

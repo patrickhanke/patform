@@ -40,6 +40,18 @@
 			font-style: italic;
 		}
 
+		li ul,
+		li ol {
+			margin: 0.25em 0;
+			padding-left: 1.4em;
+		}
+
+		blockquote {
+			margin: 0.5em 0;
+			padding-left: 24px;
+			border: none;
+		}
+
 		// Override any global styles
 		* {
 			box-sizing: border-box;

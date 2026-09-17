@@ -22,8 +22,7 @@ const Page = ({
 	activeLang,
 	setActiveLang
 }: PageProps) => {
-	const { dataHasChanged, resetData, undo, redo, updateOptions, objectId } =
-		usePageData();
+	const { dataHasChanged, resetData, undo, redo } = usePageData();
 	return (
 		<>
 			<div className={styles.page_header_container}>
@@ -48,8 +47,6 @@ const Page = ({
 			</div>
 			<PageActionBar
 				open={dataHasChanged}
-				updateOptions={updateOptions}
-				objectId={objectId}
 				resetData={resetData}
 				undoData={undo}
 				redoData={redo}

@@ -206,6 +206,14 @@ const getEmailTextTagStyle = (
 		parts.push(`color: ${options.color}`);
 	}
 
+	if (normalizedTag === "blockquote") {
+		parts.push("padding-left: 24px", "border: none");
+	}
+
+	if (normalizedTag === "ul" || normalizedTag === "ol") {
+		parts.push("padding-left: 1.4em");
+	}
+
 	return parts.join("; ");
 };
 
@@ -296,7 +304,7 @@ const normalizeEmailTextHtml = (
 	options: EmailTextNormalizeOptions
 ): string =>
 	html.replace(
-		/<(p|h[1-6]|ul|ol|li)(?=\s|>)([^>]*)>/gi,
+		/<(p|h[1-6]|ul|ol|li|blockquote)(?=\s|>)([^>]*)>/gi,
 		(_match, tag: string, attrs: string) => {
 			const tagStyle = getEmailTextTagStyle(tag, options);
 			const styleMatch = attrs.match(/style="([^"]*)"/i);

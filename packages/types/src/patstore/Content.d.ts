@@ -1,3 +1,4 @@
+import { ContentBlock } from "@repo/ui";
 import { ClassProperties } from "./Classes";
 
 export type WebpageComponentSettings = {
@@ -5,6 +6,10 @@ export type WebpageComponentSettings = {
 	description: string;
 	footer: string;
 	showHeader: boolean;
+};
+
+export type EmailContentComponent = {
+	content: ContentBlock[];
 };
 
 export type WebpageComponentText = {
@@ -41,9 +46,16 @@ export type WebpageComponents =
 	| WebpageComponentImage
 	| WebpageComponentVideo
 	| WebpageComponentTable
-	| WebpageComponentFaq;
+	| WebpageComponentFaq
+	| EmailContentComponent;
 
-export type ContentType = "text" | "image" | "video" | "table" | "faq";
+export type ContentType =
+	| "text"
+	| "image"
+	| "video"
+	| "table"
+	| "faq"
+	| "email";
 
 export type ContentClass = ClassProperties & {
 	type: ContentType;

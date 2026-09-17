@@ -36,6 +36,7 @@
   ol {
     margin: 0.8em 0;
     padding: 0 0 0 2em;
+    list-style-position: outside;
 
     li {
       > ul,
@@ -48,6 +49,22 @@
         margin: 0;
       }
     }
+  }
+
+  ul:not([data-type="taskList"]) {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  ul:not([data-type="taskList"]) ul {
+    list-style-type: circle;
+  }
+
+  ul:not([data-type="taskList"]) ul ul {
+    list-style-type: square;
   }
 
   ul[data-type="taskList"] {

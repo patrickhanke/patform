@@ -1,6 +1,7 @@
 "use client";
 
 import { useDraggable } from "@dnd-kit/core";
+import TemplatesPalette from "./TemplatesPalette";
 
 export const PALETTE_LABELS: Record<string, string> = {
 	section: "Abschnitt",
@@ -39,11 +40,9 @@ function PaletteItem({ id, label, icon }: PaletteItemProps) {
 }
 
 export default function ComponentPalette({
-	multipleSections = false,
-	onImportContent
+	multipleSections = false
 }: {
 	multipleSections?: boolean;
-	onImportContent?: () => void;
 }) {
 	const items = [
 		...(multipleSections
@@ -73,19 +72,8 @@ export default function ComponentPalette({
 						icon={item.icon}
 					/>
 				))}
-				{onImportContent && (
-					<button
-						type="button"
-						className="sidebar-item sidebar-item--action"
-						onClick={onImportContent}
-					>
-						<div className="sidebar-item-icon">⧉</div>
-						<div className="sidebar-item-label">
-							Inhalt importieren
-						</div>
-					</button>
-				)}
 			</div>
+			<TemplatesPalette />
 		</div>
 	);
 }

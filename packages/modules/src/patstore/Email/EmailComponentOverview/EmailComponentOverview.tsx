@@ -11,15 +11,21 @@ import { useContext, useMemo, useState } from "react";
 
 import { ContentClass, Filter, ModuleOverviewProps } from "@repo/types";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
-import createWebpageContenClass from "./constant/createWebpageContentClass";
+import createWebpageContenClass from "./constant/createEmailContentClass";
 
-const WebsiteComponents = ({
+const EmailComponentOverview = ({
 	module,
 	languages,
 	defaultLanguage
-}: ModuleOverviewProps<"/website">) => {
-	const { currentModule, user } = useContext(PatstoreAppContext);
-	const [filters, setFilters] = useState<Filter[]>([]);
+}: ModuleOverviewProps<"/emails">) => {
+	const { currentModule } = useContext(PatstoreAppContext);
+	const [filters, setFilters] = useState<Filter[]>([
+		{
+			key: "type",
+			value: "email",
+			operator: "equalTo"
+		}
+	]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
@@ -50,20 +56,13 @@ const WebsiteComponents = ({
 	const columns = useCreateColumns<ContentClass>({
 		data: [
 			{ id: "title", type: "string", label: "Name" },
-			{
-				id: "content_id",
-				type: user.is_superuser ? "edit_string" : "string",
-				label: "ID (kann nicht geändert werden)"
-			},
-			{ id: "type", type: "string", label: "Typ" },
-			{ id: "createdAt", type: "date", label: "Erstellt am" },
-			{ id: "active", type: "boolean", label: "Aktiv" }
+			{ id: "createdAt", type: "date", label: "Erstellt am" }
 		],
 		fields: [],
 		className: "Content",
 		refetch,
 		categories: [],
-		editLink: "website/components",
+		editLink: "emails/templates",
 		initialData: data ?? []
 	});
 	const { data: pageRows } = usePageData<ContentClass[]>();
@@ -91,7 +90,7 @@ const WebsiteComponents = ({
 	return (
 		<Page
 			title={`${currentModule.name} - Komponenten`}
-			description="Hier können Komponenten erstellt werden, die auf den Seiten eingebunden werden können."
+			description="Hier können Komponenten erstellt werden, die in E-Mails verwendet werden können."
 			emptyContent={true}
 			createClass={{ ...createWebpageContenClass, languages }}
 			refetch={refetch}
@@ -112,4 +111,4 @@ const WebsiteComponents = ({
 	);
 };
 
-export default WebsiteComponents;
+export default EmailComponentOverview;

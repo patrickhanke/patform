@@ -125,6 +125,27 @@
 			color: #6a737d;
 		}
 
+		.component-palette-section-divider {
+			margin: 20px 0 12px;
+			padding-top: 16px;
+			border-top: 1px solid #e1e4e8;
+
+			h4 {
+				margin: 0;
+				font-size: 13px;
+				font-weight: 600;
+				color: #24292e;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+			}
+		}
+
+		.templates-palette {
+			.sidebar-item--template .sidebar-item-icon {
+				background-color: #6f42c1;
+			}
+		}
+
 		.sidebar-items {
 			display: flex;
 			flex-direction: column;
@@ -411,6 +432,13 @@
 			&--italic {
 				font-style: italic;
 				font-weight: 600;
+			}
+
+			&--indent {
+				font-weight: 600;
+				font-size: 16px;
+				min-width: 28px;
+				padding: 0 6px;
 			}
 
 			&--active {

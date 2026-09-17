@@ -75,6 +75,14 @@ const Email = () => {
 		return email?.content || [];
 	}, [email]);
 
+	console.log(
+		loading,
+		recipientsLoading,
+		email?.state,
+		email?.settings.recipient_list,
+		email?.content?.length
+	);
+
 	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
 		if (siteState.value === "overview") {
 			return [

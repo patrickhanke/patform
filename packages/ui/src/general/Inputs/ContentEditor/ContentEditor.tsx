@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import ContentEditorActionBar from "./components/ContentEditorActionBar";
 import { useContentEditorState } from "./hooks/useContentEditorState";
 import {
@@ -30,15 +30,14 @@ import Canvas from "./components/Canvas";
 import { PropertiesPanel } from "./content";
 import type { PropertiesTab } from "./content/PropertiesPanel/PropertiesPanel";
 import { PALETTE_LABELS } from "./components/Sidebar";
-import ImportContentModal, {
-	type ImportedContentRef
-} from "./content/ImportContentModal/ImportContentModal";
 import {
 	createSectionBlock,
 	findBlockById,
 	getSectionInnerBlocks,
 	normalizeToSections
 } from "./utils/sections";
+import { cloneBlocksWithNewIds } from "./utils/cloneBlocks";
+import type { TemplateDragData } from "./components/TemplatesPalette";
 
 import type { ContentBlockStyle } from "./styles";
 import "./styles.scss";
@@ -143,9 +142,9 @@ export default function ContentEditor({
 	const [selectedBlock, setSelectedBlock] = useState<ContentBlock | null>(
 		null
 	);
-	const [importContentOpen, setImportContentOpen] = useState(false);
 	const [propertiesTab, setPropertiesTab] =
 		useState<PropertiesTab>("components");
+	const dragDataRef = useRef<TemplateDragData | null>(null);
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -289,25 +288,21 @@ export default function ContentEditor({
 		}
 	}, []);
 
-	const createContentReferenceBlock = useCallback(
-		(content: ImportedContentRef): ContentBlock => ({
-			id: uuidv4(),
-			name: content.title || "Inhaltselement",
-			type: "content",
-			position: 1,
-			active: true,
-			value: content.objectId,
-			config: {
-				contentTitle: content.title,
-				contentType: content.type,
-				contentId: content.content_id
-			}
-		}),
-		[]
-	);
-
 	const handleDragStart = (event: DragStartEvent) => {
 		setActiveId(event.active.id as string);
+		const data = event.active.data.current as TemplateDragData | undefined;
+		dragDataRef.current =
+			data?.type === "template" && Array.isArray(data.content)
+				? data
+				: null;
+	};
+
+	const getTemplateBlocks = (): ContentBlock[] | null => {
+		const content = dragDataRef.current?.content;
+		if (!Array.isArray(content) || content.length === 0) {
+			return null;
+		}
+		return cloneBlocksWithNewIds(content);
 	};
 
 	const isContainerId = (id: string) =>
@@ -454,44 +449,23 @@ export default function ContentEditor({
 
 	const insertIntoDefaultSection = (
 		newBlocks: ContentBlock[],
-		block: ContentBlock,
+		blocksToInsert: ContentBlock[],
 		overIdStr: string
 	) => {
 		const section = newBlocks[0];
 		if (!section || section.type !== "section") {
-			newBlocks.push(block);
+			newBlocks.push(...blocksToInsert);
 			return;
 		}
 		ensureSectionChildren(section);
 		const inner = section.children![0]!;
 		const overIndex = inner.findIndex((b) => b.id === overIdStr);
 		if (overIndex === -1 || overIdStr === "canvas") {
-			inner.push(block);
+			inner.push(...blocksToInsert);
 		} else {
-			inner.splice(overIndex, 0, block);
+			inner.splice(overIndex, 0, ...blocksToInsert);
 		}
 	};
-
-	const insertBlock = useCallback(
-		(block: ContentBlock) => {
-			const newBlocks = cloneDeep(blocks);
-			if (multipleSections) {
-				const lastSection = newBlocks[newBlocks.length - 1];
-				if (lastSection?.type === "section") {
-					ensureSectionChildren(lastSection);
-					lastSection.children![0]!.push(block);
-				} else {
-					newBlocks.push(block);
-				}
-			} else {
-				insertIntoDefaultSection(newBlocks, block, "canvas");
-			}
-			updateBlocks(newBlocks);
-			setSelectedBlock(block);
-			setPropertiesTab("settings");
-		},
-		[blocks, multipleSections, updateBlocks]
-	);
 
 	const handleDropInColumn = useCallback(
 		(activeIdStr: string, layoutId: string, columnIndex: number) => {
@@ -530,7 +504,12 @@ export default function ContentEditor({
 				target.children![columnIndex] = [];
 			}
 
-			if (activeIdStr.startsWith("sidebar-")) {
+			if (activeIdStr.startsWith("template-")) {
+				const templateBlocks = getTemplateBlocks();
+				if (templateBlocks) {
+					target.children![columnIndex]!.push(...templateBlocks);
+				}
+			} else if (activeIdStr.startsWith("sidebar-")) {
 				const paletteId = activeIdStr.replace("sidebar-", "");
 				if (paletteId === "section") return;
 				const newBlock = createBlock(paletteId);
@@ -547,11 +526,16 @@ export default function ContentEditor({
 		[blocks, createBlock, updateBlocks]
 	);
 
+	const finishDrag = () => {
+		setActiveId(null);
+		dragDataRef.current = null;
+	};
+
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
 
 		if (!over) {
-			setActiveId(null);
+			finishDrag();
 			return;
 		}
 
@@ -564,7 +548,46 @@ export default function ContentEditor({
 			const columnIndex = parts[parts.length - 1]!;
 			const layoutId = parts.slice(1, -1).join("-");
 			handleDropInColumn(activeIdStr, layoutId, parseInt(columnIndex));
-			setActiveId(null);
+			finishDrag();
+			return;
+		}
+
+		// Inject email template blocks
+		if (activeIdStr.startsWith("template-")) {
+			const templateBlocks = getTemplateBlocks();
+			if (templateBlocks) {
+				const newBlocks = cloneDeep(blocks);
+				const overLocation = findListContaining(newBlocks, overIdStr);
+				const overBlock = overLocation
+					? overLocation.list[overLocation.index]!
+					: null;
+
+				if (overBlock && overBlock.type !== "section") {
+					overLocation!.list.splice(
+						overLocation!.index,
+						0,
+						...templateBlocks
+					);
+				} else if (overBlock?.type === "section") {
+					ensureSectionChildren(overBlock);
+					overBlock.children![0]!.push(...templateBlocks);
+				} else if (multipleSections) {
+					const lastSection = newBlocks[newBlocks.length - 1];
+					if (lastSection?.type === "section") {
+						ensureSectionChildren(lastSection);
+						lastSection.children![0]!.push(...templateBlocks);
+					}
+				} else {
+					insertIntoDefaultSection(
+						newBlocks,
+						templateBlocks,
+						overIdStr
+					);
+				}
+
+				updateBlocks(newBlocks);
+			}
+			finishDrag();
 			return;
 		}
 
@@ -574,7 +597,7 @@ export default function ContentEditor({
 
 			if (paletteId === "section") {
 				if (!multipleSections) {
-					setActiveId(null);
+					finishDrag();
 					return;
 				}
 				const newSection = createBlock("section");
@@ -588,7 +611,7 @@ export default function ContentEditor({
 					newBlocks.splice(overIndex, 0, newSection);
 				}
 				updateBlocks(newBlocks);
-				setActiveId(null);
+				finishDrag();
 				return;
 			}
 
@@ -612,11 +635,11 @@ export default function ContentEditor({
 					lastSection.children![0]!.push(newBlock);
 				}
 			} else {
-				insertIntoDefaultSection(newBlocks, newBlock, overIdStr);
+				insertIntoDefaultSection(newBlocks, [newBlock], overIdStr);
 			}
 
 			updateBlocks(newBlocks);
-			setActiveId(null);
+			finishDrag();
 			return;
 		}
 
@@ -628,7 +651,7 @@ export default function ContentEditor({
 			}
 		}
 
-		setActiveId(null);
+		finishDrag();
 	};
 
 	const handleBlockUpdate = (id: string, updates: Partial<ContentBlock>) => {
@@ -847,7 +870,6 @@ export default function ContentEditor({
 						selectedBlock={selectedBlock}
 						onBlockUpdate={handleBlockUpdate}
 						multipleSections={multipleSections}
-						onImportContent={() => setImportContentOpen(true)}
 						tab={propertiesTab}
 						onTabChange={setPropertiesTab}
 					/>
@@ -856,26 +878,20 @@ export default function ContentEditor({
 				<DragOverlay>
 					{activeId ? (
 						<div className="drag-overlay">
-							{activeId.toString().startsWith("sidebar-")
-								? PALETTE_LABELS[
-										activeId
-											.toString()
-											.replace("sidebar-", "")
-									] || "Element"
-								: findBlockById(blocks, activeId.toString())
-										?.name || "Block"}
+							{activeId.toString().startsWith("template-")
+								? dragDataRef.current?.title || "Template"
+								: activeId.toString().startsWith("sidebar-")
+									? PALETTE_LABELS[
+											activeId
+												.toString()
+												.replace("sidebar-", "")
+										] || "Element"
+									: findBlockById(blocks, activeId.toString())
+											?.name || "Block"}
 						</div>
 					) : null}
 				</DragOverlay>
 			</DndContext>
-
-			<ImportContentModal
-				isOpen={importContentOpen}
-				onClose={() => setImportContentOpen(false)}
-				onImport={(content) => {
-					insertBlock(createContentReferenceBlock(content));
-				}}
-			/>
 
 			<ContentEditorActionBar
 				open={hasChanged}

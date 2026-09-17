@@ -23,7 +23,6 @@ interface PropertiesPanelProps {
 	selectedBlock: ContentBlock | null;
 	onBlockUpdate: (id: string, updates: Partial<ContentBlock>) => void;
 	multipleSections?: boolean;
-	onImportContent?: () => void;
 	tab?: PropertiesTab;
 	onTabChange?: (tab: PropertiesTab) => void;
 }
@@ -32,7 +31,6 @@ export default function PropertiesPanel({
 	selectedBlock,
 	onBlockUpdate,
 	multipleSections = false,
-	onImportContent,
 	tab = "components",
 	onTabChange
 }: PropertiesPanelProps) {
@@ -81,10 +79,7 @@ export default function PropertiesPanel({
 						value="components"
 						className="properties-tab-content"
 					>
-						<ComponentPalette
-							multipleSections={multipleSections}
-							onImportContent={onImportContent}
-						/>
+						<ComponentPalette multipleSections={multipleSections} />
 					</Tabs.Content>
 					<Tabs.Content
 						value="settings"

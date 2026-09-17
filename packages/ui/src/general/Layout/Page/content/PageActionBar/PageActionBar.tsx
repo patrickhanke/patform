@@ -9,18 +9,22 @@ import { useDataHandlerSecure } from "@repo/provider";
 
 const PageActionBar: FC<PageActionBarProps> = ({
 	open,
-	updateOptions,
-	objectId,
 	resetData,
 	undoData,
 	redoData,
 	refetch
 }) => {
 	const [isSaving, setIsSaving] = useState(false);
+	const {
+		prepareData,
+		prepareCollectionUpdates,
+		commitData,
+		updateOptions,
+		objectId
+	} = usePageData();
 	const { updateData } = useDataHandlerSecure(
 		updateOptions?.useMasterKey ?? false
 	);
-	const { prepareData, prepareCollectionUpdates, commitData } = usePageData();
 
 	const canSave = Boolean(
 		updateOptions && (objectId || updateOptions.collection)
