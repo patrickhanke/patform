@@ -31,7 +31,9 @@ const PatflowLoginForm = () => {
 			const userData = await axiosclient().post(
 				"/functions/get_user_data",
 				{
-					email: values.email
+					email: values.email,
+					username: values.email,
+					project: "HC0trnizvl" 
 				}
 			);
 
@@ -44,10 +46,9 @@ const PatflowLoginForm = () => {
 			}
 
 			if (user) {
-				if (user.has_access === true) {
 					const login = await loginUser({
 						email: values.email,
-						password: values.password
+						password: values.password,
 					});
 					if (login) {
 						if (login.error) {
@@ -58,13 +59,12 @@ const PatflowLoginForm = () => {
 							window.location.pathname = "/";
 						}
 					}
-				} else {
+				
+				}else {
 					setError("Kein Zugriff auf die App");
 				}
 				setDisabled(false);
-			}
-			setDisabled(false);
-		}
+			} 
 	});
 
 	return (

@@ -16,45 +16,30 @@ export type DaysToSelect = {
 };
 
 export type SurchargeTimeEditProps = {
-	surchargeChangeHandler: (
-		path: string,
-		value: Surcharge[keyof Surcharge]
-	) => void;
+	surchargeChangeHandler: (path: string, value: unknown) => void;
 	newSurcharge: Surcharge;
 };
 
 export type SurchargeDayEditProps = {
 	newSurcharge: Surcharge;
 	holidays: Holiday[];
-	surchargeChangeHandler: (
-		path: string,
-		value: Surcharge[keyof Surcharge]
-	) => void;
+	surchargeChangeHandler: (path: string, value: unknown) => void;
 };
 
 export type SurchargeDaySelectProps = {
-	surchargeChangeHandler: (
-		path: string,
-		value: Surcharge[keyof Surcharge]
-	) => void;
+	surchargeChangeHandler: (path: string, value: unknown) => void;
 	newSurcharge: Surcharge;
 	holidays: Holiday[];
 };
 
 export type SurchargeOvertimeEditProps = {
-	surchargeChangeHandler: (
-		path: string,
-		value: Surcharge[keyof Surcharge]
-	) => void;
+	surchargeChangeHandler: (path: string, value: unknown) => void;
 	newSurcharge: Surcharge;
 };
 
 export type SurchargeSelectColorProps = {
 	selectColor: boolean;
 	setSelectColor: Dispatch<SetStateAction<boolean>>;
-	initialColor: Surcharge["color"];
-	surchargeChangeHandler: (
-		path: string,
-		value: Surcharge[keyof Surcharge]
-	) => void;
+	initialColor: Surcharge["data"]["color"];
+	surchargeChangeHandler: (path: string, value: unknown) => void;
 };

@@ -14,7 +14,11 @@ import {
 	useTaskSubscription,
 	useTicketSubscription
 } from "@repo/provider";
-import { RecordDataStore, RoleUsers } from "./types";
+import { RecordDataStore, RoleUsers, SurchargeDataStore } from "./types";
+import {
+	surchargeItemFields,
+	surchargeItemFilters
+} from "../../constants/surchargeItem";
 import {
 	Absence,
 	Holiday,
@@ -49,7 +53,6 @@ const PatflowAppContextProvider = ({
 		fields: [
 			"objectId",
 			"name",
-			"type",
 			"color",
 			"users {edges{node{objectId username}}}"
 		],
@@ -65,16 +68,14 @@ const PatflowAppContextProvider = ({
 			"email",
 			"portrait { name url }",
 			"color",
-			"time_settings",
-			"is_worker",
-			"number",
+			"settings",
 			"data",
-			"role { objectId name type color }",
+			"roles",
 			"value: objectId",
 			"label: label",
 			"updatedAt"
 		],
-		filters: [{ key: "is_worker", value: true, operator: "equalTo" }],
+		filters: [{ key: "search", value: "is_worker:true", operator: "in" }],
 		order: "last_name_ASC",
 		projectId,
 		useMasterKey: true
@@ -99,7 +100,15 @@ const PatflowAppContextProvider = ({
 
 	const { data: holidayData, refetch: refetchHolidays } = useFindData({
 		objectName: "Holiday",
-		fields: ["objectId", "name", "label", "type", "dates", "updatedAt"],
+		fields: [
+			"objectId",
+			"name",
+			"label: name",
+			"type",
+			"dates",
+			"former_id",
+			"updatedAt"
+		],
 		projectId,
 		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
 		skipQuery: !projectId
@@ -110,7 +119,7 @@ const PatflowAppContextProvider = ({
 		fields: [
 			"objectId",
 			"year",
-			"user {objectId}",
+			"user {objectId first_name last_name portrait { name url }}",
 			"default_times",
 			"createdAt",
 			"start_date",
@@ -143,20 +152,9 @@ const PatflowAppContextProvider = ({
 	});
 
 	const { data: surchargeData, refetch: refetchSurcharges } = useFindData({
-		objectName: "Surcharge",
-		fields: [
-			"objectId",
-			"name",
-			"createdAt",
-			"active",
-			"type",
-			"time_value",
-			"day_value",
-			"work_value",
-			"value",
-			"start_date",
-			"end_date"
-		],
+		objectName: "Item",
+		fields: surchargeItemFields,
+		filters: surchargeItemFilters,
 		projectId,
 		skipQuery: !projectId
 	});
@@ -283,7 +281,7 @@ const PatflowAppContextProvider = ({
 			.join(",");
 		if (updatedAtHash !== prevSurchargeIdsRef.current) {
 			prevSurchargeIdsRef.current = updatedAtHash;
-			setSurcharges(surchargeData ?? []);
+			setSurcharges((surchargeData ?? []) as SurchargeDataStore[]);
 		}
 	}, [surchargeData, setSurcharges]);
 
@@ -383,7 +381,7 @@ const PatflowAppContextProvider = ({
 		const result = await refetchSurcharges();
 		if (result.data) {
 			const queryData =
-				result.data.surcharges?.edges?.map(
+				result.data.items?.edges?.map(
 					(edge: { node: Surcharge }) => edge.node
 				) || [];
 			setSurcharges(queryData);

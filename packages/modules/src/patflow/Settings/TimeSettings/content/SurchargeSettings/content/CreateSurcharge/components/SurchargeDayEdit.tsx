@@ -1,7 +1,6 @@
 import React from "react";
 import { SurchargeDayEditProps } from "../types";
 import { weekdays } from "@repo/provider";
-import { Holiday, Weekdays } from "@repo/types";
 import { Divider } from "@repo/ui";
 
 const SurchargeDayEdit: React.FC<SurchargeDayEditProps> = ({
@@ -10,9 +9,28 @@ const SurchargeDayEdit: React.FC<SurchargeDayEditProps> = ({
 	surchargeChangeHandler
 }) => {
 	const daysArray = [...holidays, ...weekdays];
-	const findDay: (day: string) => Holiday | Weekdays[number] | undefined = (
-		day: string
-	) => daysArray.find((dayToFind) => dayToFind.objectId === day);
+	const findDay = (day: string) =>
+		daysArray.find((dayToFind) => {
+			if ("objectId" in dayToFind) {
+				return (
+					dayToFind.objectId === day || dayToFind.former_id === day
+				);
+			}
+			return "value" in dayToFind && dayToFind.value === day;
+		});
+	const dayLabel = (id: string) => {
+		const selected = findDay(id);
+		if (!selected) {
+			return id;
+		}
+		if ("name" in selected && selected.name) {
+			return selected.name;
+		}
+		if ("label" in selected) {
+			return selected.label;
+		}
+		return id;
+	};
 
 	return (
 		<>
@@ -21,17 +39,20 @@ const SurchargeDayEdit: React.FC<SurchargeDayEditProps> = ({
 				<input
 					type="number"
 					id="value"
-					defaultValue={newSurcharge.value}
+					defaultValue={newSurcharge.data.value}
 					onChange={(e) =>
-						surchargeChangeHandler("value", Number(e.target.value))
+						surchargeChangeHandler(
+							"data.value",
+							Number(e.target.value)
+						)
 					}
 				/>
 			</div>
 			<div className="create_surcharge_container">
 				<Divider text="Ausgewählte Tage" />
-				{newSurcharge.day_value.length > 0 ? (
-					newSurcharge.day_value.map((id) => (
-						<p key={id}> - {findDay(id)?.name || id}</p>
+				{newSurcharge.data.day_value.length > 0 ? (
+					newSurcharge.data.day_value.map((id) => (
+						<p key={id}> - {dayLabel(id)}</p>
 					))
 				) : (
 					<p>Noch keine Tage ausgewählt</p>

@@ -84,6 +84,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
 					const imageObject = new Parse.Object("Image");
 					imageObject.set("file", parseFile);
 					imageObject.set("title", title);
+					imageObject.set("label", title);
+					imageObject.set("date", new Date().toISOString());
+					imageObject.set("description", "");
+					imageObject.set("connected_elements", []);
+					imageObject.set("categories", []);
 					if (userId) {
 						imageObject.set("created_by", {
 							__type: "Pointer",

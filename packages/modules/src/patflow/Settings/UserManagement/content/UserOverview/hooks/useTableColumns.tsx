@@ -40,13 +40,13 @@ const useTableColumns = ({ refetch }: { refetch: () => Promise<void> }) => {
 								className: "User",
 								objectId: row.objectId,
 								updateObject: {
-									is_worker: !row.is_worker
+									is_worker: !row.settings.is_worker
 								}
 							});
 
 							await refetch();
 						}}
-						value={row.is_worker}
+						value={row.settings.is_worker}
 					/>
 				),
 				header: () => <span>Arbeiter</span>,

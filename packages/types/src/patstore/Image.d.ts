@@ -9,4 +9,5 @@ export type ImageClass = ClassProperties & {
     url: string;
     name: string;
   };
+  former_id?: string;
 };

@@ -42,7 +42,7 @@ const renderSurchargeTable = ({
 			});
 
 			surchargeData.forEach((surcharge) => {
-				if (surcharge.type === "overtime") {
+				if (surcharge.data?.type === "overtime") {
 					const overtimeSaldo = getOvertimeSaldo({
 						days,
 						surchargeId: surcharge.objectId,
@@ -50,21 +50,21 @@ const renderSurchargeTable = ({
 						year
 					});
 					surchargeArray.push([
-						surcharge.name,
+						surcharge.title,
 						convertMillisecondsToString(surcharge.saldo)
 					]);
 
 					surchargeArray.push([
-						`${surcharge.name} / pro Woche`,
+						`${surcharge.title} / pro Woche`,
 						convertMillisecondsToString(overtimeSaldo.weeklySaldo)
 					]);
 					surchargeArray.push([
-						`${surcharge.name} / pro Monat`,
+						`${surcharge.title} / pro Monat`,
 						convertMillisecondsToString(overtimeSaldo.monthlySaldo)
 					]);
 				} else {
 					surchargeArray.push([
-						surcharge.name,
+						surcharge.title,
 						convertMillisecondsToString(surcharge.saldo)
 					]);
 				}

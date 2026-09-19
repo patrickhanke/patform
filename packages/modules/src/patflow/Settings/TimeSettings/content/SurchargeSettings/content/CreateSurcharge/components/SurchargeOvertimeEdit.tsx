@@ -12,9 +12,9 @@ const SurchargeOvertimeEdit: React.FC<SurchargeOvertimeEditProps> = ({
 				<input
 					type="number"
 					id="value"
-					defaultValue={newSurcharge.value}
+					defaultValue={newSurcharge.data.value}
 					onChange={(e) =>
-						surchargeChangeHandler("value", Number(e.target.value))
+						surchargeChangeHandler("data.value", Number(e.target.value))
 					}
 				/>
 			</div>

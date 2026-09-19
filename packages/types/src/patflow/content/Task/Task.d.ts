@@ -32,6 +32,7 @@ export type Task = {
   executed_by?: PatflowUser;
   category: "fixed" | "opportunity";
   is_service?: boolean;
+  former_id?: string;
 };
 
 export type Comment = {

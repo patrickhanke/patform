@@ -1,4 +1,4 @@
-import { ApolloRefetch, Surcharge } from "@repo/types";
+import { ApolloRefetch, Holiday, Surcharge } from "@repo/types";
 import { Dispatch, SetStateAction } from "react";
 
 export type SurchargeSettingsProps = {

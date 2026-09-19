@@ -4,11 +4,13 @@ import {
 	findDefaultTimeForDate,
 	getDateString,
 	useFindData,
-	UserContext
+	UserContext,
+	surchargeItemFields,
+	surchargeItemFilters
 } from "@repo/provider";
 import ColumnWorkingTime from "../components/ColumnWorkingTime";
 import ColumnWorkingHours from "../components/ColumnWorkingHours";
-import { ApolloRefetch, Day, Holiday, Record } from "@repo/types";
+import { ApolloRefetch, Day, Holiday, Record, Surcharge } from "@repo/types";
 import EditDayTimes from "../../EditDayTimes";
 import { DayData } from "../types";
 import ColumnWorkingTarget from "../components/ColumnWorkingTarget";
@@ -33,8 +35,9 @@ const useTableColumns = ({
 }) => {
 	const { projectId } = useContext(UserContext);
 	const { data } = useFindData({
-		objectName: "Surcharge",
-		fields: ["objectId", "name", "color", "short", "description"],
+		objectName: "Item",
+		fields: surchargeItemFields,
+		filters: surchargeItemFilters,
 		projectId: projectId,
 		skipQuery: !projectId
 	});
@@ -146,7 +149,7 @@ const useTableColumns = ({
 			{
 				accessorFn: (row) => (
 					<ColumnWorkingSurcharges
-						surcharges={data ? data : []}
+						surcharges={(data || []) as Surcharge[]}
 						daySurcharges={row.surcharges}
 					/>
 				),

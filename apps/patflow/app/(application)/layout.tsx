@@ -21,7 +21,7 @@ const getData = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE)?.value;
   const cookieProjectId = cookieStore.get(
-    `${process.env.APP_NAME}_project_id`
+    `${process.env.PROJECT_ID}`
   )?.value;
 
   if (!token) {
@@ -46,10 +46,8 @@ const getData = async () => {
     redirect("/login");
   }
 
-  const projectId =
-    cookieProjectId && user?.projects?.includes(cookieProjectId)
-      ? cookieProjectId
-      : user?.projects?.[0];
+  console.log(cookieProjectId, user?.projects);
+  const projectId = process.env.PROJECT_ID as string;
 
   const { project, roles } = await fetchAppBootstrapData<
     PatflowProject,

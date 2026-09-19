@@ -71,7 +71,9 @@ const CreateRecordImportSource: FC<CreateRecordImportSourceProps> = ({
 						</div>
 						<div className={styles.record_info_row}>
 							<span className="label">Wochenstunden</span>
-							<span>{latestRecord.time_settings?.hours} Std.</span>
+							<span>
+								{latestRecord.time_settings?.hours} Std.
+							</span>
 						</div>
 						<div className={styles.record_info_row}>
 							<span className="label">Urlaubstage</span>

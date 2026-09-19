@@ -67,13 +67,15 @@ type BasicDay = {
   month: number;
   date: string;
   is_working_day: boolean;
-  surcharges: Surcharge[];
+	surcharges: DaySurcharge[];
   record: Record;
   user: UserDisplayData;
   default_time: DayTime | null;
   saldo: number;
   comment?: string;
   worktime: number;
+  iso_date?: { iso: string; __type: "Date" } | string;
+  former_id?: string;
 };
 
 type InitialDay = {

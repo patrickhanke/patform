@@ -42,9 +42,6 @@ Thumbs.db
 *.tsbuildinfo
 next-env.d.ts
 
-# Dev-only playground (local scripts & data)
-# packages/modules/src/patstore/Admin/Playground/
-
 # Git metadata
 .git/
 

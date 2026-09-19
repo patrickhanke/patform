@@ -8,6 +8,8 @@ import { Day, Holiday } from "@repo/types";
 import {
 	dateHasRecord,
 	findDefaultTimeForDate,
+	findSurchargeById,
+	surchargeIncludesHoliday,
 	useDataStore
 } from "@repo/provider";
 import { set, get, cloneDeep, isArray } from "lodash-es";
@@ -44,15 +46,19 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 				}
 
 				return record.surcharges.some((surchargeId: string) => {
-					const surcharge = surcharges.find(
-						(s) => s.objectId === surchargeId
+					const surcharge = findSurchargeById(
+						surcharges,
+						surchargeId
 					);
 
-					if (!surcharge?.day_value?.length) {
+					if (!surcharge?.data?.day_value?.length) {
 						return false;
 					}
 
-					return surcharge.day_value.includes(holiday.objectId);
+					return surchargeIncludesHoliday(
+						surcharge.data.day_value,
+						holiday
+					);
 				});
 			});
 

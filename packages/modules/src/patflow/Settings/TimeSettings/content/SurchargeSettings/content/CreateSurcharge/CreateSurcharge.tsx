@@ -14,6 +14,7 @@ import { formatISO9075 } from "date-fns";
 import { InfoBox, SlideIn, SwitchButtons } from "@repo/ui";
 import colors from "../../../../../../../../../ui/src/general/Inputs/ColorSelect/constants/colors";
 import SurchargeSelectColor from "./components/SurchargeSelectColor";
+import { remapSurchargeDayValue } from "@repo/provider";
 
 const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 	surcharge = null,
@@ -30,9 +31,18 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 	const [loading, setLoading] = useState(false);
 	const [selectColor, setSelectColor] = useState<boolean>(false);
 	const surchargeChangeHandler = useCallback(
-		(path: string, value: Surcharge[keyof Surcharge]) => {
+		(path: string, value: unknown) => {
 			const newSurchargeCopy: Surcharge = cloneDeep(newSurcharge);
 			set(newSurchargeCopy, path, value);
+			if (path === "data.short") {
+				newSurchargeCopy.label = String(value || "");
+			}
+			if (path === "title" && !newSurchargeCopy.data.short) {
+				newSurchargeCopy.label = String(value || "");
+			}
+			if (path === "data.start_date") {
+				newSurchargeCopy.date = String(value || "");
+			}
 			setNewSurcharge(newSurchargeCopy);
 		},
 		[newSurcharge, surcharge]
@@ -40,30 +50,39 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 
 	useEffect(() => {
 		if (surcharge) {
-			setNewSurcharge(surcharge);
+			setNewSurcharge({
+				...surcharge,
+				data: {
+					...surcharge.data,
+					day_value: remapSurchargeDayValue(
+						surcharge.data?.day_value,
+						holidays
+					)
+				}
+			});
 		} else {
 			setNewSurcharge(default_surcharge());
 		}
-	}, [surcharge]);
+	}, [surcharge, holidays]);
 
 	useEffect(() => {
 		const errorArray: ErrorMessage[] = [];
-		if (!newSurcharge.name) {
+		if (!newSurcharge.title) {
 			errorArray.push({
 				message: "Bitte einen Namen angeben",
 				key: "name",
 				id: "name"
 			});
 		}
-		if (newSurcharge.type === "time") {
-			if (!newSurcharge.time_value?.start) {
+		if (newSurcharge.data.type === "time") {
+			if (!newSurcharge.data.time_value?.start) {
 				errorArray.push({
 					message: "Bitte eine Startzeit angeben",
 					key: "start",
 					id: "start"
 				});
 			}
-			if (!newSurcharge.time_value?.end) {
+			if (!newSurcharge.data.time_value?.end) {
 				errorArray.push({
 					message: "Bitte eine Endzeit angeben",
 					key: "end",
@@ -72,17 +91,17 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 			}
 			const newDate = new Date();
 			const startDate = newDate.setHours(
-				Number(newSurcharge.time_value?.start.split(":")[0]),
-				Number(newSurcharge.time_value?.start.split(":")[1])
+				Number(newSurcharge.data.time_value?.start.split(":")[0]),
+				Number(newSurcharge.data.time_value?.start.split(":")[1])
 			);
 			const endDate = newDate.setHours(
-				Number(newSurcharge.time_value?.end.split(":")[0]),
-				Number(newSurcharge.time_value?.end.split(":")[1])
+				Number(newSurcharge.data.time_value?.end.split(":")[0]),
+				Number(newSurcharge.data.time_value?.end.split(":")[1])
 			);
 
 			if (
-				newSurcharge.time_value?.start &&
-				newSurcharge.time_value?.end &&
+				newSurcharge.data.time_value?.start &&
+				newSurcharge.data.time_value?.end &&
 				(startDate > endDate || startDate === endDate)
 			) {
 				errorArray.push({
@@ -93,8 +112,8 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 			}
 		}
 		if (
-			newSurcharge.type === "day" &&
-			newSurcharge.day_value.length === 0
+			newSurcharge.data.type === "day" &&
+			newSurcharge.data.day_value.length === 0
 		) {
 			errorArray.push({
 				message: "Bitte mindestens einen Tag auswählen",
@@ -102,7 +121,7 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 				id: "day"
 			});
 		}
-		if (newSurcharge.value === 0 || !newSurcharge.value) {
+		if (newSurcharge.data.value === 0 || !newSurcharge.data.value) {
 			errorArray.push({
 				message: "Bitte einen Wert angeben",
 				key: "value",
@@ -113,7 +132,7 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 	}, [newSurcharge]);
 
 	const selectDays = useMemo(() => {
-		if (newSurcharge.type === "day") {
+		if (newSurcharge.data.type === "day") {
 			return (
 				<SurchargeDaySelect
 					holidays={holidays}
@@ -124,8 +143,6 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 		}
 		return null;
 	}, [newSurcharge, holidays]);
-
-	console.log({ newSurcharge });
 
 	return (
 		<>
@@ -170,9 +187,9 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 						<input
 							style={{ width: "240px" }}
 							type="text"
-							defaultValue={newSurcharge.name}
+							defaultValue={newSurcharge.title}
 							onChange={(e) =>
-								surchargeChangeHandler("name", e.target.value)
+								surchargeChangeHandler("title", e.target.value)
 							}
 						/>
 					</div>
@@ -181,9 +198,9 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 						<input
 							style={{ width: "240px" }}
 							type="text"
-							defaultValue={newSurcharge.short}
+							defaultValue={newSurcharge.data.short}
 							onChange={(e) =>
-								surchargeChangeHandler("short", e.target.value)
+								surchargeChangeHandler("data.short", e.target.value)
 							}
 						/>
 					</div>
@@ -209,16 +226,16 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 							>
 								Farbe wählen
 							</button>
-							{colors.find(
-								(color) => color.value === newSurcharge.color
+							{								colors.find(
+								(color) => color.value === newSurcharge.data.color
 							) && (
 								<StateDisplay
-									color={newSurcharge.color}
+									color={newSurcharge.data.color}
 									label={
 										colors.find(
 											(color) =>
 												color.value ===
-												newSurcharge.color
+												newSurcharge.data.color
 										)?.label as string
 									}
 								/>
@@ -232,11 +249,11 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 							id="start"
 							type="date"
 							defaultValue={formatISO9075(
-								new Date(newSurcharge.start_date || new Date()),
+								new Date(newSurcharge.data.start_date || new Date()),
 								{ representation: "date" }
 							)}
 							onChange={(date) =>
-								surchargeChangeHandler("start_date", date)
+								surchargeChangeHandler("data.start_date", date)
 							}
 						/>
 					</div>
@@ -247,22 +264,22 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 							buttonStates={surcharge_types}
 							currentStates={
 								surcharge_types.find(
-									(type) => type.value === newSurcharge.type
+									(type) => type.value === newSurcharge.data.type
 								) as (typeof surcharge_types)[0]
 							}
 							changeHandler={(
 								value: (typeof surcharge_types)[number]
-							) => surchargeChangeHandler("type", value.value)}
+							) => surchargeChangeHandler("data.type", value.value)}
 						/>
 					</div>
-					{newSurcharge.type === "time" && (
+					{newSurcharge.data.type === "time" && (
 						<SurchargeTimeEdit
 							key={JSON.stringify(newSurcharge)} // Use JSON.stringify to create a unique key based on the newSurcharge object
 							surchargeChangeHandler={surchargeChangeHandler}
 							newSurcharge={newSurcharge}
 						/>
 					)}
-					{newSurcharge.type === "day" && (
+					{newSurcharge.data.type === "day" && (
 						<SurchargeDayEdit
 							key={JSON.stringify(newSurcharge)} // Use JSON.stringify to create a unique key based on the newSurcharge object
 							newSurcharge={newSurcharge}
@@ -270,7 +287,7 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 							surchargeChangeHandler={surchargeChangeHandler}
 						/>
 					)}
-					{newSurcharge.type === "overtime" && (
+					{newSurcharge.data.type === "overtime" && (
 						<SurchargeOvertimeEdit
 							newSurcharge={newSurcharge}
 							surchargeChangeHandler={surchargeChangeHandler}
@@ -281,7 +298,7 @@ const CreateSurcharge: React.FC<CreateSurchargeProps> = ({
 			<SurchargeSelectColor
 				selectColor={selectColor}
 				setSelectColor={setSelectColor}
-				initialColor={newSurcharge.color}
+				initialColor={newSurcharge.data.color}
 				surchargeChangeHandler={surchargeChangeHandler}
 			/>
 		</>

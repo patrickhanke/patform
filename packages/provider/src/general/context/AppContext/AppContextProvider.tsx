@@ -25,10 +25,11 @@ const ProjectContextProvider = ({
 	roles?: Record<string, any>[];
 	children: ReactNode;
 }) => {
-	const appId = process.env.APP_NAME as string;
-	const project_id = `${appId}_project_id`;
-	const project_path = `${appId}_project_path`;
+	const project_id = process.env.PROJECT_ID as string;
+	const project_path = process.env.PROJECT_PATH as string;
 	const router = useRouter();
+
+	console.log(project_id, project_path);
 
 	// Keep the cookie in sync so middleware and the next server render pick
 	// up the same project (e.g. after a fresh login with no cookie yet).
@@ -59,6 +60,8 @@ const ProjectContextProvider = ({
 			}) as ContextValues,
 		[project, roles, loadProject]
 	);
+
+	console.log(projectContextObject);
 
 	return (
 		<AppContext.Provider value={projectContextObject}>

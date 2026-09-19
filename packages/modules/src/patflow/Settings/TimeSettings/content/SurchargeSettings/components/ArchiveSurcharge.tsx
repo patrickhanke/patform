@@ -19,10 +19,14 @@ const ArchiveSurcharge: React.FC<ArchiveSurchargeProps> = ({
 			confirmButtonHandler={async () => {
 				if (deleteSurcharge?.objectId) {
 					await updateData({
-						className: "Surcharge",
+						className: "Item",
 						objectId: deleteSurcharge.objectId,
 						updateObject: {
-							active: false
+							data: {
+								...deleteSurcharge.data,
+								active: false,
+								end_date: endDate
+							}
 						}
 					});
 				}
@@ -44,7 +48,7 @@ const ArchiveSurcharge: React.FC<ArchiveSurchargeProps> = ({
 			}
 		>
 			<p>
-				Sind Sie sicher dass sie den Zuschlag {deleteSurcharge?.name}{" "}
+				Sind Sie sicher dass sie den Zuschlag {deleteSurcharge?.title}{" "}
 				archivieren möchten. Damit endet der Zuschlag zu dem angegebenen
 				Datum.
 			</p>

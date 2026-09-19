@@ -1,9 +1,14 @@
-import { useDataHandler, useFindData } from "@repo/provider";
+import {
+	useDataHandler,
+	useFindData,
+	surchargeItemFields,
+	surchargeItemFilters,
+	remapSurchargeDayValue
+} from "@repo/provider";
 import { Surcharge as SurchargeType } from "@repo/types";
 import React, { useCallback, useState } from "react";
 import Surcharge from "./content/Surcharge";
 import CreateSurcharge from "./content/CreateSurcharge";
-import { cloneDeep } from "lodash-es";
 import ArchiveSurcharge from "./components/ArchiveSurcharge";
 import { SurchargeSettingsProps } from "./types";
 import { CreateButton, Divider } from "@repo/ui";
@@ -18,81 +23,62 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({
 		null
 	);
 
-	console.log(editSurcharge);
-
 	const [deleteSurcharge, setDeleteSurcharge] =
 		useState<SurchargeType | null>(null);
 
 	const { data, loading, refetch } = useFindData({
-		objectName: "Surcharge",
-		fields: [
-			"objectId",
-			"name",
-			"createdAt",
-			"active",
-			"type",
-			"time_value",
-			"day_value",
-			"work_value",
-			"value",
-			"start_date",
-			"end_date",
-			"color",
-			"short",
-			"description"
-		],
+		objectName: "Item",
+		fields: surchargeItemFields,
+		filters: surchargeItemFilters,
 		projectId: projectId
 	});
 
 	const updateSurchargeHandler = useCallback(
 		async (surcharge: SurchargeType) => {
+			const dataPayload = {
+				...surcharge.data,
+				kind: "surcharge" as const,
+				day_value: remapSurchargeDayValue(
+					surcharge.data?.day_value,
+					holidays
+				)
+			};
+			const updateObject = {
+				title: surcharge.title,
+				label: dataPayload.short || surcharge.title,
+				date: dataPayload.start_date || surcharge.date,
+				description: surcharge.description,
+				reference_id: "surcharge",
+				data: dataPayload
+			};
 			if (surcharge.objectId && surcharge.objectId.length > 0) {
-				const surchargeCopy: Partial<SurchargeType> =
-					cloneDeep(surcharge);
 				await updateData({
-					className: "Surcharge",
+					className: "Item",
 					objectId: surcharge.objectId,
-					updateObject: {
-						name: surchargeCopy.name,
-						type: surchargeCopy.type,
-						time_value: surchargeCopy.time_value,
-						day_value: surchargeCopy.day_value,
-						work_value: surchargeCopy.work_value,
-						value: surchargeCopy.value,
-						start_date: surchargeCopy.start_date,
-						color: surchargeCopy.color,
-						short: surchargeCopy.short,
-						description: surchargeCopy.description
-					}
+					updateObject
 				});
 			} else {
 				await createData({
-					className: "Surcharge",
-					updateObject: {
-						...surcharge,
-						project: {
-							__type: "Pointer",
-							className: "Project",
-							objectId: projectId
-						}
-					}
+					className: "Item",
+					updateObject
 				});
 			}
 
 			await refetch();
 		},
-		[data]
+		[createData, holidays, refetch, updateData]
 	);
 
 	if (loading) {
 		return null;
 	}
 
+	const items = (data || []) as SurchargeType[];
 	const activeSurcharges: SurchargeType[] = [];
 	const inActiveSurcharges: SurchargeType[] = [];
 
-	data?.forEach((surcharge: SurchargeType) => {
-		if (surcharge.active === true) {
+	items.forEach((surcharge) => {
+		if (surcharge.data?.active === true) {
 			activeSurcharges.push(surcharge);
 		} else {
 			inActiveSurcharges.push(surcharge);
@@ -100,17 +86,17 @@ const SurchargeSettings: React.FC<SurchargeSettingsProps> = ({
 	});
 
 	const surchargeArray: SurchargeType[] = [];
-	data?.forEach((surcharge: SurchargeType) => {
-		const startDate = new Date(surcharge.start_date).getTime();
-		const endDate = surcharge.end_date
-			? new Date(surcharge.end_date).getTime()
+	items.forEach((surcharge) => {
+		const startDate = new Date(surcharge.data?.start_date).getTime();
+		const endDate = surcharge.data?.end_date
+			? new Date(surcharge.data.end_date).getTime()
 			: Infinity;
 		const recordDate = new Date("2024-10-01").getTime();
 
 		if (
 			isNaN(startDate) ||
 			isNaN(recordDate) ||
-			(surcharge.end_date && isNaN(endDate))
+			(surcharge.data?.end_date && isNaN(endDate))
 		) {
 			// throw new Error('Invalid date format');
 			return;

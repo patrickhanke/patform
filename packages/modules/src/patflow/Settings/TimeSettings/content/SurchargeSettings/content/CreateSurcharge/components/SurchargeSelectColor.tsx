@@ -15,7 +15,7 @@ const SurchargeSelectColor: FC<SurchargeSelectColorProps> = ({
 			isOpen={selectColor}
 			cancelButtonHandler={() => setSelectColor(false)}
 			confirmButtonHandler={() => {
-				surchargeChangeHandler("color", color);
+				surchargeChangeHandler("data.color", color);
 				setSelectColor(false);
 			}}
 		>

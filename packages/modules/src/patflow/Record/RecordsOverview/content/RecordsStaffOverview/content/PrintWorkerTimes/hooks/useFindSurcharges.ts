@@ -1,27 +1,26 @@
-import { useFindData } from "@repo/provider";
+import { useContext } from "react";
+import {
+	useFindData,
+	surchargeItemFields,
+	surchargeItemFilters,
+	UserContext
+} from "@repo/provider";
+import { Surcharge } from "@repo/types";
 import { UseFindSurcharges } from "../types";
 
 const useFindSurcharges: UseFindSurcharges = () => {
+	const { projectId } = useContext(UserContext);
 	const { data, loading, refetch } = useFindData({
-		objectName: "Surcharge",
-		fields: [
-			"objectId",
-			"name",
-			"createdAt",
-			"active",
-			"type",
-			"time_value",
-			"day_value",
-			"work_value",
-			"value",
-			"start_date",
-			"end_date"
-		]
+		objectName: "Item",
+		fields: surchargeItemFields,
+		filters: surchargeItemFilters,
+		projectId,
+		skipQuery: !projectId
 	});
 
 	return {
 		loading,
-		surcharges: data || [],
+		surcharges: (data || []) as Surcharge[],
 		refetch
 	};
 };

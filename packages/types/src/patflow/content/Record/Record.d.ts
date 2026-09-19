@@ -37,4 +37,5 @@ export type Record = {
 	saldo: number;
 	former_record: Record | undefined;
 	surcharges: string[];
+	former_id?: string;
 };

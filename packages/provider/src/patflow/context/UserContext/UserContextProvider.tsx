@@ -55,10 +55,7 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 
 	const { data: projectData } = useGetData({
 		objectName: "User",
-		fields: [
-			"objectId",
-			"project {name objectId path time_settings record_settings}"
-		],
+		fields: ["objectId", "project {name objectId path settings}"],
 		id: user?.objectId,
 		skip: !user
 	});

@@ -1,3 +1,4 @@
+import { ApolloRefetch, Day, Record, Surcharge } from "@repo/types";
 import { SelectElement } from "@repo/ui";
 import { Dispatch, SetStateAction } from "react";
 import table_fields from "./constants/table_fields";

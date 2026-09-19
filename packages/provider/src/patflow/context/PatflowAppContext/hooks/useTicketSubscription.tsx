@@ -57,51 +57,17 @@ const useTicketSubscription = (projectId?: string) => {
 
 	useEffect(() => {
 		void fetchTickets();
-	}, [fetchTickets]);
 
-	useEffect(() => {
 		if (!projectId) {
 			return;
 		}
 
-		let subscription: Parse.LiveQuerySubscription | undefined;
-		let isCancelled = false;
-
-		const TicketClass = Parse.Object.extend("Ticket");
-		const projectPointer = createProjectPointer(projectId);
-		const query = new Parse.Query(TicketClass);
-
-		query.equalTo("project", projectPointer);
-
-		const refreshTickets = () => {
+		const intervalId = window.setInterval(() => {
 			void fetchTickets();
-		};
-
-		const subscribeToChanges = async () => {
-			try {
-				subscription = await query.subscribe();
-
-				if (isCancelled || !subscription) {
-					return;
-				}
-
-				subscription.on("create", refreshTickets);
-				subscription.on("update", refreshTickets);
-				subscription.on("enter", refreshTickets);
-				subscription.on("leave", refreshTickets);
-				subscription.on("delete", refreshTickets);
-			} catch (error) {
-				console.error("Ticket subscription failed", error);
-			}
-		};
-
-		void subscribeToChanges();
+		}, 30_000);
 
 		return () => {
-			isCancelled = true;
-			if (subscription) {
-				void subscription.unsubscribe();
-			}
+			window.clearInterval(intervalId);
 		};
 	}, [fetchTickets, projectId]);
 };

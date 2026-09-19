@@ -80,7 +80,7 @@ const CreateRecord: FC<CreateRecordProps> = ({
 
 	const { data: holidayData } = useFindData({
 		objectName: "Holiday",
-		fields: ["objectId", "name", "type", "dates"],
+		fields: ["objectId", "name", "type", "dates", "former_id"],
 		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
 		projectId: projectId
 	});
@@ -115,8 +115,8 @@ const CreateRecord: FC<CreateRecordProps> = ({
 	const surchargeElements = useMemo(
 		() =>
 			surchargeData
-				.filter((s) => s.active)
-				.map((s) => ({ label: s.name, value: s.objectId })),
+				.filter((s) => s.data?.active)
+				.map((s) => ({ label: s.title, value: s.objectId })),
 		[surchargeData]
 	);
 

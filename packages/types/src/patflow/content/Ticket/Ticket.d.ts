@@ -21,6 +21,7 @@ export type Ticket = {
 		title: TaskTypes.Task["title"];
 		state: TaskTypes.TaskState;
 	};
+	former_id?: string;
 };
 
 export type TicketProps = {

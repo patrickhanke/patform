@@ -50,8 +50,7 @@ const PROJECT_FIELDS: Record<string, string> = {
 		name
 		objectId
 		path
-		time_settings
-		record_settings
+		settings
 		logo { name url }
 		data
 	`

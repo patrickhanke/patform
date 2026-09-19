@@ -12,10 +12,10 @@ const SurchargeTimeEdit: React.FC<SurchargeTimeEditProps> = ({
 				<DatePicker
 					label="Startzeit"
 					id="start"
-					defaultValue={newSurcharge.time_value.start}
+					defaultValue={newSurcharge.data.time_value.start}
 					type="time"
 					onChange={(startValue) =>
-						surchargeChangeHandler("time_value.start", startValue)
+						surchargeChangeHandler("data.time_value.start", startValue)
 					}
 				/>
 			</div>
@@ -23,10 +23,10 @@ const SurchargeTimeEdit: React.FC<SurchargeTimeEditProps> = ({
 				<DatePicker
 					label="Endzeit"
 					id="end"
-					defaultValue={newSurcharge.time_value.end}
+					defaultValue={newSurcharge.data.time_value.end}
 					type="time"
 					onChange={(endValue) =>
-						surchargeChangeHandler("time_value.end", endValue)
+						surchargeChangeHandler("data.time_value.end", endValue)
 					}
 				/>
 			</div>
@@ -35,9 +35,9 @@ const SurchargeTimeEdit: React.FC<SurchargeTimeEditProps> = ({
 				<input
 					type="number"
 					id="value"
-					defaultValue={newSurcharge.value}
+					defaultValue={newSurcharge.data.value}
 					onChange={(e) =>
-						surchargeChangeHandler("value", Number(e.target.value))
+						surchargeChangeHandler("data.value", Number(e.target.value))
 					}
 				/>
 			</div>

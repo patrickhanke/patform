@@ -176,11 +176,19 @@ const useDataHandler = (
 			if (language && useLanguageKey) {
 				set(updateObjectCopy, "lang", language);
 			}
-			if (project) {
+
+			console.log("process.env.PROJECT_ID", process.env.PROJECT_ID);
+			if (project && process.env.PROJECT_ID !== "HC0trnizvl") {
 				set(updateObjectCopy, "project", {
 					__type: "Pointer",
 					className: "Project",
 					objectId: project.objectId
+				});
+			} else if (process.env.PROJECT_ID === "HC0trnizvl") {
+				set(updateObjectCopy, "project", {
+					__type: "Pointer",
+					className: "Project",
+					objectId: process.env.PROJECT_ID
 				});
 			}
 

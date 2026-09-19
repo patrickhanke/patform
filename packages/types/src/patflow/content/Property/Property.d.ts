@@ -11,6 +11,7 @@ export type Property = {
   services: { [key: string]: PropertyServices };
   assigned_staff: string[];
   archived: boolean;
+  former_id?: string;
 };
 
 export type PropertyService = {

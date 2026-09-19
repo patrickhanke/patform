@@ -132,15 +132,13 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 			portrait: undefined,
 			color: worker.color,
 			settings: {
-				start_date: formatISO(new Date()),
-				vacation_days: 30,
-				color: generateColor()
-			},
-			time_settings: {
-				hours: 40,
-				weekdays: 5,
-				pause: 30,
-				vacation: 30
+				time_settings: {
+					hours: 40,
+					weekdays: 5,
+					pause: 30,
+					vacation: 30
+				},
+				is_worker: true
 			},
 			projects: [projectId],
 			data: {

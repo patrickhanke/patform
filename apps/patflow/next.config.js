@@ -7,7 +7,7 @@ const {
 	getPrefixedEnv,
 } = require("../env/createNextEnv");
 
-const APP_PREFIX = "PATFLOW";
+const APP_PREFIX = "PATSTORE";
 
 const nextConfig = {
 	cacheComponents: true,
@@ -32,6 +32,8 @@ const nextConfig = {
 			"FIREBASE_MEASUREMENT_ID"
 		),
 		INSTALLATION_ID: getPrefixedEnv(APP_PREFIX, "INSTALLATION_ID"),
+		PROJECT_ID: "HC0trnizvl",
+		PROJECT_PATH: "hgs",
 	}),
 	images: {
 		remotePatterns: createImageRemotePatterns(APP_PREFIX),

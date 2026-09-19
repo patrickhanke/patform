@@ -34,7 +34,9 @@ const getSurchargeData = ({
 					day.surcharges.forEach(
 						(surcharge: Day["surcharges"][number]) => {
 							const surchargeIndex = surchargeArray.findIndex(
-								(s) => s.objectId === surcharge.surcharge_id
+								(s) =>
+									s.objectId === surcharge.surcharge_id ||
+									s.former_id === surcharge.surcharge_id
 							);
 							if (surchargeIndex !== -1) {
 								const saldo = get(

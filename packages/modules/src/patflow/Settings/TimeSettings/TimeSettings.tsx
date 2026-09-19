@@ -21,7 +21,7 @@ const TimeSettings = () => {
 	const [editRecord, setEditRecord] = useState(false);
 	const { data: holidayData, refetch: refetchHolidays } = useFindData({
 		objectName: "Holiday",
-		fields: ["objectId", "name", "label", "type", "dates"],
+		fields: ["objectId", "name", "label", "type", "dates", "former_id"],
 		projectId,
 		filters: [{ key: "type", value: "holiday", operator: "equalTo" }],
 		skipQuery: !projectId

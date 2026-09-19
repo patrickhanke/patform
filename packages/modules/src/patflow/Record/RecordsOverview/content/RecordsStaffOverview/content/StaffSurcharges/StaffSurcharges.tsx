@@ -2,7 +2,9 @@ import { FC, useMemo } from "react";
 import {
 	convertMillisecondsToString,
 	getSurchargeData,
-	useFindData
+	useFindData,
+	surchargeItemFields,
+	surchargeItemFilters
 } from "@repo/provider";
 import { StaffSurchargesProps } from "./types";
 import { Surcharge } from "@repo/types";
@@ -15,20 +17,9 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 	year
 }) => {
 	const { data } = useFindData({
-		objectName: "Surcharge",
-		fields: [
-			"objectId",
-			"name",
-			"createdAt",
-			"active",
-			"type",
-			"time_value",
-			"day_value",
-			"work_value",
-			"value",
-			"start_date",
-			"end_date"
-		],
+		objectName: "Item",
+		fields: surchargeItemFields,
+		filters: surchargeItemFilters,
 		projectId: projectId,
 		skipQuery: !projectId
 	});
@@ -37,7 +28,7 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 		let surcharges: (Surcharge & { saldo: number })[] = [];
 		if (data) {
 			surcharges = getSurchargeData({
-				surcharges: data || [],
+				surcharges: (data || []) as Surcharge[],
 				days,
 				month: month.id,
 				year
@@ -52,7 +43,7 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 			<h3>Zuschläge</h3>
 			<div className="content_element">
 				{surchargeData.map((surcharge) => {
-					if (surcharge.type === "overtime") {
+					if (surcharge.data?.type === "overtime") {
 						const overtimeSaldo = getOvertimeSaldo({
 							days,
 							surchargeId: surcharge.objectId,
@@ -64,7 +55,7 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 							<div key={surcharge.objectId}>
 								<div className="horizontal_container">
 									<label className="surcharge_name">
-										{surcharge.name}
+										{surcharge.title}
 									</label>
 									<p>
 										{convertMillisecondsToString(
@@ -75,7 +66,7 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 								{overtimeSaldo.weeklySaldo.toString() && (
 									<div className="horizontal_container">
 										<label className="surcharge_name">
-											{surcharge.name} / pro Woche
+											{surcharge.title} / pro Woche
 										</label>
 										<p>
 											{convertMillisecondsToString(
@@ -87,7 +78,7 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 								{overtimeSaldo.monthlySaldo.toString() && (
 									<div className="horizontal_container">
 										<label className="surcharge_name">
-											{surcharge.name} / pro Monat
+											{surcharge.title} / pro Monat
 										</label>
 										<p>
 											{convertMillisecondsToString(
@@ -105,7 +96,7 @@ const StaffSurcharges: FC<StaffSurchargesProps> = ({
 							className="horizontal_container"
 						>
 							<label className="surcharge_name">
-								{surcharge.name}
+								{surcharge.title}
 							</label>
 							<p>
 								{convertMillisecondsToString(

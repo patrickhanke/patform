@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Day, Surcharge } from "@repo/types";
 import { StateDisplay } from "@repo/ui";
-import { convertMillisecondsToString } from "@repo/provider";
+import { convertMillisecondsToString, findSurchargeById } from "@repo/provider";
 
 const ColumnWorkingSurcharges = ({
 	surcharges,
@@ -11,11 +11,7 @@ const ColumnWorkingSurcharges = ({
 	daySurcharges: Day["surcharges"];
 }) => {
 	const findSurcharge = useCallback(
-		(surchargeId: string) => {
-			return surcharges.find(
-				(surcharge) => surcharge.objectId === surchargeId
-			);
-		},
+		(surchargeId: string) => findSurchargeById(surcharges, surchargeId),
 		[surcharges]
 	);
 
@@ -30,8 +26,8 @@ const ColumnWorkingSurcharges = ({
 				return (
 					<div key={surcharge.objectId}>
 						<StateDisplay
-							color={surcharge.color}
-							label={`${surcharge.short} (${convertMillisecondsToString(sh.saldo)})`}
+							color={surcharge.data?.color}
+							label={`${surcharge.data?.short || surcharge.label} (${convertMillisecondsToString(sh.saldo)})`}
 						/>
 					</div>
 				);
