@@ -28,44 +28,50 @@ const PatflowLoginForm = () => {
 
 		onSubmit: async (values) => {
 			setDisabled(true);
-			const userData = await axiosclient().post(
-				"/functions/get_user_data",
-				{
-					email: values.email,
-					username: values.email,
-					project: "HC0trnizvl" 
-				}
-			);
+			setError("");
 
-			const user: (PatflowUser & { has_access: boolean }) | undefined =
-				userData?.data?.result;
-
-			if (!user) {
-				setDisabled(false);
-				return [] as PatflowUser[];
-			}
-
-			if (user) {
-					const login = await loginUser({
+			try {
+				const userData = await axiosclient().post(
+					"/functions/get_user_data",
+					{
 						email: values.email,
-						password: values.password,
-						userData: user
-					});
-					if (login) {
-						if (login.error) {
-							setError(login.message);
-							setDisabled(false);
-							return;
-						} else {
-							window.location.pathname = "/";
-						}
+						username: values.email,
+						project: process.env.PROJECT_ID
 					}
-				
-				}else {
-					setError("Kein Zugriff auf die App");
+				);
+
+				const user: (PatflowUser & { has_access: boolean }) | undefined =
+					userData?.data?.result;
+
+				if (!user) {
+					setError("Kein Nutzer gefunden");
+					return;
 				}
+
+				// check is made in backend
+				// if (!user.has_access) {
+				// 	setError("Kein Zugriff auf die App");
+				// 	return;
+				// }
+
+				const login = await loginUser({
+					email: values.email,
+					password: values.password,
+					userData: user
+				});
+
+				if (!login || login.error) {
+					setError(login?.message ?? "Das Einloggen ist leider fehlgeschlagen");
+					return;
+				}
+
+				window.location.pathname = "/";
+			} catch {
+				setError("Das Einloggen ist leider fehlgeschlagen");
+			} finally {
 				setDisabled(false);
-			} 
+			}
+		}
 	});
 
 	return (
@@ -90,9 +96,9 @@ const PatflowLoginForm = () => {
 					type="password"
 					onChange={formik.handleChange}
 					value={formik.values.password}
-					className={clsx(formik.errors.email && "error")}
+					className={clsx(formik.errors.password && "error")}
 				/>
-				{formik.errors.email && (
+				{formik.errors.password && (
 					<div className="error_message">
 						{formik.errors.password}
 					</div>

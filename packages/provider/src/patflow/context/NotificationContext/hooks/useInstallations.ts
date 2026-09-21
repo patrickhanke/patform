@@ -38,21 +38,25 @@ const useInstallations = ({
 
 	const createInstallation = useCallback(
 		async (deviceToken: string) => {
-			await axiosclient().post("functions/create-installation", {
-				deviceType: "web",
-				deviceToken,
-				channels: [],
-				appIdentifier: process.env.FIREBASE_APP_ID,
-				appName: PATFLOW_APP_NAME,
-				appVersion: "0.6.0",
-				parseVersion: "3.6.0",
-				localeIdentifier: "de-DE",
-				timeZone: "GMT",
-				user: user?.objectId,
-				installationId: getInstallationId(),
-				GCMSenderId: process.env.GCMS_SENDER_ID,
-				pushType: "gcm",
-			});
+			try {
+				await axiosclient().post("functions/create-installation", {
+					deviceType: "web",
+					deviceToken,
+					channels: [],
+					appIdentifier: process.env.FIREBASE_APP_ID,
+					appName: PATFLOW_APP_NAME,
+					appVersion: "0.6.0",
+					parseVersion: "3.6.0",
+					localeIdentifier: "de-DE",
+					timeZone: "GMT",
+					user: user?.objectId,
+					installationId: getInstallationId(),
+					GCMSenderId: process.env.GCMS_SENDER_ID,
+					pushType: "gcm",
+				});
+			} catch (error) {
+				console.error("Installation registration failed:", error);
+			}
 		},
 		[user?.objectId]
 	);

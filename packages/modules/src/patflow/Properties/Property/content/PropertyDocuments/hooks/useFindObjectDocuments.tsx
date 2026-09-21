@@ -29,10 +29,9 @@ const useFindObjectsDocuments = ({
 		fields: [
 			"createdAt",
 			"objectId",
-			"name",
+			"title",
 			"type",
 			"created_by { objectId first_name last_name }",
-			"property { objectId name }",
 			"task { objectId title }",
 			"file { name url }"
 		],

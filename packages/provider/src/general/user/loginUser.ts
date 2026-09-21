@@ -29,7 +29,11 @@ const loginclient = (installationId: string) => {
 };
 
 export const loginUser: LoginUser = async ({ email, password, userData }) => {
-	let returnValue = {
+	let returnValue: {
+		user: PatflowUser | null;
+		error: boolean;
+		message: string;
+	} = {
 		user: null,
 		error: true,
 		message: "kein Nutzer gefunden"
@@ -45,7 +49,6 @@ export const loginUser: LoginUser = async ({ email, password, userData }) => {
 		.then(async (response) => {
 			if (response.data.sessionToken) {
 				sessionToken = response.data.sessionToken;
-				console.log({ sessionToken });
 				if (process.env.SESSION_TOKEN) {
 					Cookies.set(
 						process.env.SESSION_TOKEN,
@@ -61,7 +64,8 @@ export const loginUser: LoginUser = async ({ email, password, userData }) => {
 			}
 		})
 		.catch((error) => {
-			if (error.message === "Invalid username/password.") {
+			const message = error.response?.data?.error ?? error.message ?? "";
+			if (message === "Invalid username/password.") {
 				returnValue = {
 					error: true,
 					message: "Falsche E-Mail / Passwort Kombination",
@@ -76,8 +80,6 @@ export const loginUser: LoginUser = async ({ email, password, userData }) => {
 			}
 		});
 
-	console.log("sessionToken: ", sessionToken);
-
 	if (sessionToken) {
 		const installationIdKey =
 			process.env.INSTALLATION_ID || "patflow_installation_id";
@@ -89,21 +91,25 @@ export const loginUser: LoginUser = async ({ email, password, userData }) => {
 		const token = await requestPermissionAndGetToken();
 
 		if (token) {
-			await axiosclient().post("functions/create-installation", {
-				deviceType: "web",
-				deviceToken: token,
-				channels: [],
-				appIdentifier: process.env.FIREBASE_APP_ID,
-				appName: "patflow_web",
-				appVersion: "0.6.0",
-				parseVersion: "3.6.0",
-				localeIdentifier: "de-DE",
-				timeZone: "GMT",
-				user: userData.objectId,
-				GCMSenderId: process.env.GCMS_SENDER_ID,
-				pushType: "gcm",
-				installationId: installationId
-			});
+			try {
+				await axiosclient().post("functions/create-installation", {
+					deviceType: "web",
+					deviceToken: token,
+					channels: [],
+					appIdentifier: process.env.FIREBASE_APP_ID,
+					appName: "patflow_web",
+					appVersion: "0.6.0",
+					parseVersion: "3.6.0",
+					localeIdentifier: "de-DE",
+					timeZone: "GMT",
+					user: userData.objectId,
+					GCMSenderId: process.env.GCMS_SENDER_ID,
+					pushType: "gcm",
+					installationId: installationId
+				});
+			} catch (error) {
+				console.error("Installation registration failed:", error);
+			}
 		} else {
 			console.warn(
 				"FCM token could not be generated; push notifications will be registered after login."
@@ -117,6 +123,8 @@ export const loginUser: LoginUser = async ({ email, password, userData }) => {
 				: "Erfolgreich eingeloggt",
 			user: userData
 		};
+	} else if (returnValue.error) {
+		// keep login error from catch above
 	} else {
 		returnValue = {
 			error: true,

@@ -7,7 +7,7 @@ const {
 	getPrefixedEnv,
 } = require("../env/createNextEnv");
 
-const APP_PREFIX = "PATSTORE";
+const APP_PREFIX = "PATFLOW";
 
 const nextConfig = {
 	cacheComponents: true,
