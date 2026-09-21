@@ -49,6 +49,7 @@ const PatflowLoginForm = () => {
 					const login = await loginUser({
 						email: values.email,
 						password: values.password,
+						userData: user
 					});
 					if (login) {
 						if (login.error) {

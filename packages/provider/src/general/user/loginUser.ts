@@ -7,7 +7,11 @@ import { v4 as generateUuid } from "uuid";
 import axios from "axios";
 import { requestPermissionAndGetToken } from "../firebase/initializeFirebase";
 
-type LoginUser = (T: { email: string; password: string }) => Promise<{
+type LoginUser = (T: {
+	email: string;
+	password: string;
+	userData: PatflowUser;
+}) => Promise<{
 	user: PatflowUser | null;
 	error: boolean;
 	message: string;
@@ -24,113 +28,101 @@ const loginclient = (installationId: string) => {
 	});
 };
 
-export const loginUser: LoginUser = async ({ email, password }) => {
+export const loginUser: LoginUser = async ({ email, password, userData }) => {
 	let returnValue = {
 		user: null,
 		error: true,
 		message: "kein Nutzer gefunden"
 	};
 
-	const response = await axiosclient().post("/functions/get_user_data", {
-		email: email
-	});
-
-	console.log({ response });
-
-	const responseData = response?.data?.result;
-
-	if (!responseData) {
-		console.error("Fehler beim Laden der Daten");
-	} else {
-		const installationId = generateUuid();
-		let sessionToken;
-		await loginclient(installationId)
-			.post("login", {
-				username: email,
-				password: password
-			})
-			.then(async (response) => {
-				if (response.data.sessionToken) {
-					sessionToken = response.data.sessionToken;
-					console.log({ sessionToken });
-					if (process.env.SESSION_TOKEN) {
-						Cookies.set(
-							process.env.SESSION_TOKEN,
-							response.data.sessionToken,
-							{
-								expires: 365,
-								sameSite: "strict"
-							}
-						);
-					} else {
-						console.error("SESSION_TOKEN is not defined");
-					}
-				}
-			})
-			.catch((error) => {
-				if (error.message === "Invalid username/password.") {
-					returnValue = {
-						error: true,
-						message: "Falsche E-Mail / Passwort Kombination",
-						user: null
-					};
+	const installationId = generateUuid();
+	let sessionToken;
+	await loginclient(installationId)
+		.post("login", {
+			username: email,
+			password: password
+		})
+		.then(async (response) => {
+			if (response.data.sessionToken) {
+				sessionToken = response.data.sessionToken;
+				console.log({ sessionToken });
+				if (process.env.SESSION_TOKEN) {
+					Cookies.set(
+						process.env.SESSION_TOKEN,
+						response.data.sessionToken,
+						{
+							expires: 365,
+							sameSite: "strict"
+						}
+					);
 				} else {
-					returnValue = {
-						error: true,
-						message: "Das Einloggen ist leider fehlgeschlagen",
-						user: null
-					};
+					console.error("SESSION_TOKEN is not defined");
 				}
-			});
-
-		console.log("sessionToken: ", sessionToken);
-
-		if (sessionToken) {
-			const installationIdKey =
-				process.env.INSTALLATION_ID || "patflow_installation_id";
-			Cookies.set(installationIdKey, installationId, {
-				expires: 365,
-				sameSite: "strict"
-			});
-
-			const token = await requestPermissionAndGetToken();
-
-			if (token) {
-				await axiosclient().post("functions/create-installation", {
-					deviceType: "web",
-					deviceToken: token,
-					channels: [],
-					appIdentifier: process.env.FIREBASE_APP_ID,
-					appName: "patflow_web",
-					appVersion: "0.6.0",
-					parseVersion: "3.6.0",
-					localeIdentifier: "de-DE",
-					timeZone: "GMT",
-					user: responseData.objectId,
-					GCMSenderId: process.env.GCMS_SENDER_ID,
-					pushType: "gcm",
-					installationId: installationId
-				});
-			} else {
-				console.warn(
-					"FCM token could not be generated; push notifications will be registered after login."
-				);
 			}
+		})
+		.catch((error) => {
+			if (error.message === "Invalid username/password.") {
+				returnValue = {
+					error: true,
+					message: "Falsche E-Mail / Passwort Kombination",
+					user: null
+				};
+			} else {
+				returnValue = {
+					error: true,
+					message: "Das Einloggen ist leider fehlgeschlagen",
+					user: null
+				};
+			}
+		});
 
-			returnValue = {
-				error: false,
-				message: token
-					? "Erfolgreich eingeloggt und Token wurde generiert"
-					: "Erfolgreich eingeloggt",
-				user: responseData
-			};
+	console.log("sessionToken: ", sessionToken);
+
+	if (sessionToken) {
+		const installationIdKey =
+			process.env.INSTALLATION_ID || "patflow_installation_id";
+		Cookies.set(installationIdKey, installationId, {
+			expires: 365,
+			sameSite: "strict"
+		});
+
+		const token = await requestPermissionAndGetToken();
+
+		if (token) {
+			await axiosclient().post("functions/create-installation", {
+				deviceType: "web",
+				deviceToken: token,
+				channels: [],
+				appIdentifier: process.env.FIREBASE_APP_ID,
+				appName: "patflow_web",
+				appVersion: "0.6.0",
+				parseVersion: "3.6.0",
+				localeIdentifier: "de-DE",
+				timeZone: "GMT",
+				user: userData.objectId,
+				GCMSenderId: process.env.GCMS_SENDER_ID,
+				pushType: "gcm",
+				installationId: installationId
+			});
 		} else {
-			returnValue = {
-				error: true,
-				message: "Es konnte kein Session Token generiert werden",
-				user: null
-			};
+			console.warn(
+				"FCM token could not be generated; push notifications will be registered after login."
+			);
 		}
+
+		returnValue = {
+			error: false,
+			message: token
+				? "Erfolgreich eingeloggt und Token wurde generiert"
+				: "Erfolgreich eingeloggt",
+			user: userData
+		};
+	} else {
+		returnValue = {
+			error: true,
+			message: "Es konnte kein Session Token generiert werden",
+			user: null
+		};
 	}
 
 	return returnValue;
