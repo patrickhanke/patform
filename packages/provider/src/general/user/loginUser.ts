@@ -17,6 +17,9 @@ type LoginUser = (T: {
 	message: string;
 } | null>;
 
+const SESSION_COOKIE =
+	process.env.SESSION_TOKEN || "patflow_session_token";
+
 const loginclient = (installationId: string) => {
 	return axios.create({
 		baseURL: process.env.SASHIDO_API_URL,
@@ -26,6 +29,39 @@ const loginclient = (installationId: string) => {
 			"X-Parse-Installation-Id": installationId
 		}
 	});
+};
+
+const registerInstallation = async (
+	userId: string,
+	installationId: string
+) => {
+	const token = await requestPermissionAndGetToken();
+	if (!token) {
+		console.warn(
+			"FCM token could not be generated; push notifications will be registered after login."
+		);
+		return;
+	}
+
+	try {
+		await axiosclient().post("functions/create-installation", {
+			deviceType: "web",
+			deviceToken: token,
+			channels: [],
+			appIdentifier: process.env.FIREBASE_APP_ID,
+			appName: "patflow_web",
+			appVersion: "0.6.0",
+			parseVersion: "3.6.0",
+			localeIdentifier: "de-DE",
+			timeZone: "GMT",
+			user: userId,
+			GCMSenderId: process.env.GCMS_SENDER_ID,
+			pushType: "gcm",
+			installationId
+		});
+	} catch (error) {
+		console.error("Installation registration failed:", error);
+	}
 };
 
 export const loginUser: LoginUser = async ({ email, password, userData }) => {
@@ -49,18 +85,10 @@ export const loginUser: LoginUser = async ({ email, password, userData }) => {
 		.then(async (response) => {
 			if (response.data.sessionToken) {
 				sessionToken = response.data.sessionToken;
-				if (process.env.SESSION_TOKEN) {
-					Cookies.set(
-						process.env.SESSION_TOKEN,
-						response.data.sessionToken,
-						{
-							expires: 365,
-							sameSite: "strict"
-						}
-					);
-				} else {
-					console.error("SESSION_TOKEN is not defined");
-				}
+				Cookies.set(SESSION_COOKIE, response.data.sessionToken, {
+					expires: 365,
+					sameSite: "strict"
+				});
 			}
 		})
 		.catch((error) => {
@@ -88,39 +116,11 @@ export const loginUser: LoginUser = async ({ email, password, userData }) => {
 			sameSite: "strict"
 		});
 
-		const token = await requestPermissionAndGetToken();
-
-		if (token) {
-			try {
-				await axiosclient().post("functions/create-installation", {
-					deviceType: "web",
-					deviceToken: token,
-					channels: [],
-					appIdentifier: process.env.FIREBASE_APP_ID,
-					appName: "patflow_web",
-					appVersion: "0.6.0",
-					parseVersion: "3.6.0",
-					localeIdentifier: "de-DE",
-					timeZone: "GMT",
-					user: userData.objectId,
-					GCMSenderId: process.env.GCMS_SENDER_ID,
-					pushType: "gcm",
-					installationId: installationId
-				});
-			} catch (error) {
-				console.error("Installation registration failed:", error);
-			}
-		} else {
-			console.warn(
-				"FCM token could not be generated; push notifications will be registered after login."
-			);
-		}
+		void registerInstallation(userData.objectId, installationId);
 
 		returnValue = {
 			error: false,
-			message: token
-				? "Erfolgreich eingeloggt und Token wurde generiert"
-				: "Erfolgreich eingeloggt",
+			message: "Erfolgreich eingeloggt",
 			user: userData
 		};
 	} else if (returnValue.error) {

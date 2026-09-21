@@ -45,6 +45,7 @@ const PatflowLoginForm = () => {
 
 				if (!user) {
 					setError("Kein Nutzer gefunden");
+					setDisabled(false);
 					return;
 				}
 
@@ -61,14 +62,17 @@ const PatflowLoginForm = () => {
 				});
 
 				if (!login || login.error) {
-					setError(login?.message ?? "Das Einloggen ist leider fehlgeschlagen");
+					setError(
+						login?.message ?? "Das Einloggen ist leider fehlgeschlagen"
+					);
+					setDisabled(false);
 					return;
 				}
 
-				window.location.pathname = "/";
+				window.location.replace("/");
+				return;
 			} catch {
 				setError("Das Einloggen ist leider fehlgeschlagen");
-			} finally {
 				setDisabled(false);
 			}
 		}
