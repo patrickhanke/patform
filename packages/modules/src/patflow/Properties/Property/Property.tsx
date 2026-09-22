@@ -3,12 +3,7 @@
 import { useMemo, useState } from "react";
 import useSiteStates from "./constants/siteStates";
 import { useGetData } from "@repo/provider";
-import PropertyTasks from "./content/PropertyTasks";
-import PropertySettings from "./content/PropertySettings";
-import PropertyServices from "./content/PropertyServices";
-import PropertyTallies from "./content/PropertyTallies";
-import PropertyDocuments from "./content/PropertyDocuments";
-import PropertyTickets from "./content/PropertyTickets";
+import { PropertyTasks, PropertyTickets } from "./content";
 import { Page, PageHeaderButton } from "@repo/ui";
 import { CreateTask } from "@repo/modules";
 import { useParams } from "next/navigation";
@@ -81,24 +76,8 @@ const Property = () => {
 			{siteState.value === "tasks" && (
 				<PropertyTasks objectId={objectId} />
 			)}
-			{siteState.value === "settings" && (
-				<PropertySettings
-					propertyId={objectId}
-					refetch={refetch}
-				/>
-			)}
-			{siteState.value === "services" && (
-				<PropertyServices objectId={objectId} />
-			)}
-			{siteState.value === "tallies" && (
-				<PropertyTallies objectId={objectId} />
-			)}
-			{siteState.value === "documents" && (
-				<PropertyDocuments id={objectId} />
-			)}
-			{siteState.value === "tickets" && (
-				<PropertyTickets id={objectId} />
-			)}
+
+			{siteState.value === "tickets" && <PropertyTickets id={objectId} />}
 			{addService && (
 				<CreateTask
 					isService={true}

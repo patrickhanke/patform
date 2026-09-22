@@ -62,6 +62,8 @@ const PropertyOverview = () => {
 		setPagination((prev) => ({ ...prev, pageIndex: 0 }));
 	}, [filters, order]);
 
+	console.log({ data });
+
 	const { createData } = useDataHandler();
 
 	const columns = useTableColumns();

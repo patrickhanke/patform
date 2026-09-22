@@ -8,25 +8,8 @@ const useSiteStates = () => {
 				label: "Aufgaben"
 			},
 			{
-				value: "services",
-				label: "Leistungsverzeichnis"
-			},
-			{
-				value: "tallies",
-				label: "Zähler",
-				disabled: true
-			},
-			{
 				value: "tickets",
 				label: "Tickets"
-			},
-			{
-				value: "documents",
-				label: "Dokumente"
-			},
-			{
-				value: "settings",
-				label: "Einstellungen"
 			}
 		];
 

@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useLayoutEffect, useRef } from "react";
+import { useCallback, useLayoutEffect, useMemo } from "react";
 import { create } from "zustand";
 import { temporal } from "zundo";
-import { cloneDeep, isEqual, set } from "lodash-es";
-import { useUnmount } from "usehooks-ts";
+import { cloneDeep, get, isEqual, set } from "lodash-es";
 
 type Primitive = string | number | boolean | bigint | symbol | null | undefined;
 
@@ -116,13 +115,29 @@ type PageDataOptions<T> = {
 	objectId?: string;
 };
 
+type FieldOverlay = Record<string, Record<string, unknown>>;
+
+type RowPatch = {
+	objectId: string;
+	key: string;
+	value: unknown;
+};
+
 type PageDataState = {
+	mode: "document" | "collection";
+	className: string | null;
 	data: unknown;
 	initialData: unknown;
+	serverRows: CollectionRow[] | null;
+	drafts: FieldOverlay;
+	committed: FieldOverlay;
 	setData: (data: unknown) => void;
+	setDraft: (objectId: string, key: string, value: unknown) => void;
+	applyRowPatches: (patches: RowPatch[]) => void;
 	resetData: () => void;
 	initialize: (data: unknown) => void;
-	replaceCollection: (data: unknown, initialData: unknown) => void;
+	syncServerRows: (rows: CollectionRow[], className: string) => void;
+	commitCollection: () => void;
 };
 
 const PARSE_META_KEYS = new Set([
@@ -145,36 +160,94 @@ const getRowObjectId = (row: unknown): string | undefined => {
 	return undefined;
 };
 
-const mergeCollectionRows = (
-	incoming: CollectionRow[],
-	current: CollectionRow[],
-	storedInitial: CollectionRow[]
-): CollectionRow[] => {
-	const currentById = new Map(
-		current
-			.map((row) => [getRowObjectId(row), row] as const)
-			.filter((entry): entry is readonly [string, CollectionRow] =>
-				Boolean(entry[0])
-			)
-	);
-	const initialById = new Map(
-		storedInitial
-			.map((row) => [getRowObjectId(row), row] as const)
-			.filter((entry): entry is readonly [string, CollectionRow] =>
-				Boolean(entry[0])
-			)
-	);
+const hasDrafts = (overlay: FieldOverlay) =>
+	Object.values(overlay).some((fields) => Object.keys(fields).length > 0);
 
-	return incoming.map((serverRow) => {
-		const objectId = getRowObjectId(serverRow);
-		if (!objectId) return serverRow;
-		const currentRow = currentById.get(objectId);
-		const initialRow = initialById.get(objectId);
-		if (currentRow && initialRow && !isEqual(currentRow, initialRow)) {
-			return currentRow;
-		}
-		return serverRow;
+const applyFields = (
+	row: CollectionRow,
+	fields: Record<string, unknown> | undefined
+): CollectionRow => {
+	if (!fields || Object.keys(fields).length === 0) return row;
+	const next = cloneDeep(row);
+	Object.entries(fields).forEach(([key, value]) => {
+		set(next, key, value);
 	});
+	return next;
+};
+
+const overlayRow = (
+	row: CollectionRow,
+	committed: FieldOverlay,
+	drafts: FieldOverlay
+): CollectionRow => {
+	const objectId = getRowObjectId(row);
+	if (!objectId) return row;
+	return applyFields(applyFields(row, committed[objectId]), drafts[objectId]);
+};
+
+const baselineValue = (
+	row: CollectionRow | undefined,
+	committed: FieldOverlay,
+	objectId: string,
+	key: string
+): unknown => {
+	const confirmed = committed[objectId];
+	if (confirmed && Object.hasOwn(confirmed, key)) return confirmed[key];
+	return row ? get(row, key) : undefined;
+};
+
+const withDraftValue = (
+	drafts: FieldOverlay,
+	serverRows: CollectionRow[] | null,
+	committed: FieldOverlay,
+	objectId: string,
+	key: string,
+	value: unknown
+): FieldOverlay => {
+	const row = serverRows?.find((item) => getRowObjectId(item) === objectId);
+	const next: FieldOverlay = { ...drafts };
+	const rowDrafts = { ...(next[objectId] ?? {}) };
+	if (isEqual(value, baselineValue(row, committed, objectId, key))) {
+		delete rowDrafts[key];
+	} else {
+		rowDrafts[key] = value;
+	}
+	if (Object.keys(rowDrafts).length === 0) delete next[objectId];
+	else next[objectId] = rowDrafts;
+	return next;
+};
+
+const pruneOverlay = (
+	rows: CollectionRow[],
+	overlay: FieldOverlay
+): FieldOverlay => {
+	const visible = new Set(
+		rows
+			.map((row) => getRowObjectId(row))
+			.filter((objectId): objectId is string => Boolean(objectId))
+	);
+	const next: FieldOverlay = {};
+	Object.entries(overlay).forEach(([objectId, fields]) => {
+		if (!visible.has(objectId)) return;
+		const row = rows.find((item) => getRowObjectId(item) === objectId);
+		const kept: Record<string, unknown> = {};
+		Object.entries(fields).forEach(([key, value]) => {
+			if (!row || !isEqual(get(row, key), value)) kept[key] = value;
+		});
+		if (Object.keys(kept).length > 0) next[objectId] = kept;
+	});
+	return next;
+};
+
+const mergeOverlay = (
+	base: FieldOverlay,
+	extra: FieldOverlay
+): FieldOverlay => {
+	const next: FieldOverlay = { ...base };
+	Object.entries(extra).forEach(([objectId, fields]) => {
+		next[objectId] = { ...(next[objectId] ?? {}), ...fields };
+	});
+	return next;
 };
 
 const diffCollectionRow = (
@@ -205,15 +278,54 @@ const applyPathValue = <T>(data: T, key: string, value: unknown): T => {
 
 const usePageDataStore = create<PageDataState>()(
 	temporal(
-		(setState, get) => ({
+		(setState, getState) => ({
+			mode: "document",
+			className: null,
 			data: null,
 			initialData: null,
+			serverRows: null,
+			drafts: {},
+			committed: {},
 			setData: (data) => setState({ data }),
+			setDraft: (objectId, key, value) => {
+				const state = getState();
+				setState({
+					mode: "collection",
+					drafts: withDraftValue(
+						state.drafts,
+						state.serverRows,
+						state.committed,
+						objectId,
+						key,
+						value
+					)
+				});
+			},
+			applyRowPatches: (patches) => {
+				const state = getState();
+				const drafts = patches.reduce(
+					(next, patch) =>
+						withDraftValue(
+							next,
+							state.serverRows,
+							state.committed,
+							patch.objectId,
+							patch.key,
+							patch.value
+						),
+					state.drafts
+				);
+				setState({ mode: "collection", drafts });
+			},
 			resetData: () => {
 				const { pause, resume, clear } =
 					usePageDataStore.temporal.getState();
 				pause();
-				setState({ data: get().initialData });
+				if (getState().mode === "collection") {
+					setState({ drafts: {} });
+				} else {
+					setState({ data: getState().initialData });
+				}
 				clear();
 				resume();
 			},
@@ -221,21 +333,72 @@ const usePageDataStore = create<PageDataState>()(
 				const { pause, resume, clear } =
 					usePageDataStore.temporal.getState();
 				pause();
-				setState({ data, initialData: data });
+				setState({
+					mode: "document",
+					className: null,
+					data,
+					initialData: data,
+					serverRows: null,
+					drafts: {},
+					committed: {}
+				});
 				clear();
 				resume();
 			},
-			replaceCollection: (data, initialData) => {
+			syncServerRows: (rows, className) => {
+				const state = getState();
+				const { pause, resume, clear } =
+					usePageDataStore.temporal.getState();
+				const switchingMode = state.mode !== "collection";
+				const switchingClass =
+					state.className != null && state.className !== className;
+				const committed =
+					switchingMode || switchingClass
+						? {}
+						: pruneOverlay(rows, state.committed);
+				const drafts =
+					switchingMode || switchingClass
+						? {}
+						: pruneOverlay(rows, state.drafts);
+				if (
+					!switchingMode &&
+					!switchingClass &&
+					isEqual(state.serverRows, rows) &&
+					isEqual(state.committed, committed) &&
+					isEqual(state.drafts, drafts)
+				) {
+					return;
+				}
+				pause();
+				setState({
+					mode: "collection",
+					className,
+					serverRows: rows,
+					committed,
+					drafts,
+					...(switchingMode ? { data: null, initialData: null } : {})
+				});
+				if (switchingMode || switchingClass) clear();
+				resume();
+			},
+			commitCollection: () => {
+				const state = getState();
 				const { pause, resume, clear } =
 					usePageDataStore.temporal.getState();
 				pause();
-				setState({ data, initialData });
+				setState({
+					committed: mergeOverlay(state.committed, state.drafts),
+					drafts: {}
+				});
 				clear();
 				resume();
 			}
 		}),
 		{
-			partialize: (state) => ({ data: state.data }),
+			partialize: (state) => ({
+				data: state.data,
+				drafts: state.drafts
+			}),
 			equality: (pastState, currentState) =>
 				isEqual(pastState, currentState)
 		}
@@ -247,6 +410,62 @@ const updateOptionsRef: {
 } = { current: null };
 
 const objectIdRef: { current: string | null } = { current: null };
+
+type PendingPatch =
+	| { kind: "document"; key: string; value: unknown }
+	| (RowPatch & { kind: "row" });
+
+const pendingPatches = new Map<string, PendingPatch>();
+let pendingTimeout: ReturnType<typeof setTimeout> | null = null;
+
+const rowPatchKey = (objectId: string, key: string) => `${objectId}\0${key}`;
+
+const cancelPending = () => {
+	if (pendingTimeout) {
+		clearTimeout(pendingTimeout);
+		pendingTimeout = null;
+	}
+	pendingPatches.clear();
+};
+
+const flushPendingNow = () => {
+	if (pendingTimeout) {
+		clearTimeout(pendingTimeout);
+		pendingTimeout = null;
+	}
+	if (pendingPatches.size === 0) return;
+
+	const patches = Array.from(pendingPatches.values());
+	pendingPatches.clear();
+	const store = usePageDataStore.getState();
+	const rowPatches = patches.filter(
+		(patch): patch is RowPatch & { kind: "row" } => patch.kind === "row"
+	);
+	if (rowPatches.length > 0) {
+		store.applyRowPatches(rowPatches);
+	}
+
+	const documentPatches = patches.filter(
+		(patch): patch is { kind: "document"; key: string; value: unknown } =>
+			patch.kind === "document"
+	);
+	if (documentPatches.length === 0) return;
+	const current = usePageDataStore.getState().data;
+	if (current == null) return;
+	let next = current;
+	documentPatches.forEach((patch) => {
+		next = applyPathValue(next, patch.key, patch.value);
+	});
+	usePageDataStore.getState().setData(next);
+};
+
+const scheduleFlush = (delay: number) => {
+	if (pendingTimeout) clearTimeout(pendingTimeout);
+	pendingTimeout = setTimeout(() => {
+		pendingTimeout = null;
+		flushPendingNow();
+	}, delay);
+};
 
 const usePageData = <T = unknown>(
 	options?: PageDataOptions<T>,
@@ -261,154 +480,97 @@ const usePageData = <T = unknown>(
 			updateOptions as PageDataUpdateOptions<unknown>;
 	}
 
+	const mode = usePageDataStore((state) => state.mode);
 	const data = usePageDataStore((state) => state.data) as T | null;
 	const storedInitialData = usePageDataStore(
 		(state) => state.initialData
 	) as T | null;
+	const serverRows = usePageDataStore((state) => state.serverRows);
+	const drafts = usePageDataStore((state) => state.drafts);
+	const committed = usePageDataStore((state) => state.committed);
 	const setStoreData = usePageDataStore((state) => state.setData) as (
 		data: T
 	) => void;
 	const resetStoreData = usePageDataStore((state) => state.resetData);
 
-	const pendingPatchesRef = useRef<Map<string, unknown>>(new Map());
-	const pendingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
-		null
-	);
-
-	const cancelPendingSetData = useCallback(() => {
-		if (pendingTimeoutRef.current) {
-			clearTimeout(pendingTimeoutRef.current);
-			pendingTimeoutRef.current = null;
-		}
-		pendingPatchesRef.current.clear();
-	}, []);
-
 	const initialData = options?.initialData;
+	const collectionMode = Boolean(updateOptions?.collection);
 	const incomingDiffersFromStore =
-		initialData !== undefined && !isEqual(storedInitialData, initialData);
-	const dataIsDirty = !isEqual(data, storedInitialData);
-	const shouldMergeCollection =
-		incomingDiffersFromStore &&
-		dataIsDirty &&
-		isCollectionRowArray(initialData) &&
-		isCollectionRowArray(data) &&
-		isCollectionRowArray(storedInitialData);
+		!collectionMode &&
+		initialData !== undefined &&
+		!isEqual(storedInitialData, initialData);
 
 	useLayoutEffect(() => {
-		if (!incomingDiffersFromStore || initialData === undefined) return;
-		cancelPendingSetData();
+		if (!collectionMode || !isCollectionRowArray(initialData)) return;
+		usePageDataStore
+			.getState()
+			.syncServerRows(initialData, updateOptions?.className ?? "");
+	}, [collectionMode, initialData, updateOptions?.className]);
 
-		const current = usePageDataStore.getState().data;
-		const storedInitial = usePageDataStore.getState().initialData;
-		const isDirty = !isEqual(current, storedInitial);
-
-		if (
-			isDirty &&
-			isCollectionRowArray(initialData) &&
-			isCollectionRowArray(current) &&
-			isCollectionRowArray(storedInitial)
-		) {
-			usePageDataStore
-				.getState()
-				.replaceCollection(
-					mergeCollectionRows(initialData, current, storedInitial),
-					initialData
-				);
+	useLayoutEffect(() => {
+		if (collectionMode || initialData === undefined) return;
+		if (mode !== "collection" && isEqual(storedInitialData, initialData)) {
 			return;
 		}
-
+		cancelPending();
 		usePageDataStore.getState().initialize(initialData);
-	}, [incomingDiffersFromStore, initialData, cancelPendingSetData]);
+	}, [collectionMode, mode, initialData, storedInitialData]);
 
-	const flushPendingPatches = useCallback(() => {
-		const patches = pendingPatchesRef.current;
-		if (patches.size === 0) return;
-
-		const current = usePageDataStore.getState().data as T | null;
-		if (current == null) {
-			patches.clear();
-			pendingTimeoutRef.current = null;
-			return;
-		}
-
-		let next = current;
-		patches.forEach((value, key) => {
-			next = applyPathValue(next, key, value);
-		});
-		patches.clear();
-		pendingTimeoutRef.current = null;
-		setStoreData(next);
-	}, [setStoreData]);
-
-	const flushPendingSetData = useCallback(() => {
-		if (pendingTimeoutRef.current) {
-			clearTimeout(pendingTimeoutRef.current);
-			pendingTimeoutRef.current = null;
-		}
-		flushPendingPatches();
-	}, [flushPendingPatches]);
-
-	useUnmount(() => {
-		if (pendingTimeoutRef.current) {
-			clearTimeout(pendingTimeoutRef.current);
-			pendingTimeoutRef.current = null;
-		}
-		flushPendingPatches();
-	});
+	useLayoutEffect(() => {
+		return () => {
+			flushPendingNow();
+		};
+	}, []);
 
 	const setDataInternal = useCallback(
 		(key: string, value: unknown, debounce?: number) => {
 			if (!debounce) {
-				pendingPatchesRef.current.delete(key);
+				pendingPatches.delete(key);
 				const current = usePageDataStore.getState().data as T | null;
 				if (current == null) return;
 				setStoreData(applyPathValue(current, key, value));
 				return;
 			}
 
-			pendingPatchesRef.current.set(key, value);
-			if (pendingTimeoutRef.current) {
-				clearTimeout(pendingTimeoutRef.current);
-			}
-			pendingTimeoutRef.current = setTimeout(
-				flushPendingPatches,
-				debounce
-			);
+			pendingPatches.set(key, { kind: "document", key, value });
+			scheduleFlush(debounce);
 		},
-		[flushPendingPatches, setStoreData]
+		[setStoreData]
 	);
 	const setData = setDataInternal as SetPageData<T>;
 
 	const resetData = useCallback(() => {
-		cancelPendingSetData();
+		cancelPending();
 		resetStoreData();
-	}, [cancelPendingSetData, resetStoreData]);
+	}, [resetStoreData]);
 
-	const undo = useCallback(
-		(steps?: number) => {
-			cancelPendingSetData();
-			usePageDataStore.temporal.getState().undo(steps);
-		},
-		[cancelPendingSetData]
-	);
+	const undo = useCallback((steps?: number) => {
+		cancelPending();
+		usePageDataStore.temporal.getState().undo(steps);
+	}, []);
 
-	const redo = useCallback(
-		(steps?: number) => {
-			cancelPendingSetData();
-			usePageDataStore.temporal.getState().redo(steps);
-		},
-		[cancelPendingSetData]
-	);
+	const redo = useCallback((steps?: number) => {
+		cancelPending();
+		usePageDataStore.temporal.getState().redo(steps);
+	}, []);
 
 	const setRowData = useCallback(
 		(objectId: string, key: string, value: unknown, debounce?: number) => {
-			const current = usePageDataStore.getState().data;
-			if (isCollectionRowArray(current)) {
-				const index = current.findIndex(
-					(row) => getRowObjectId(row) === objectId
-				);
-				if (index < 0) return;
-				setDataInternal(`${index}.${key}`, value, debounce);
+			const state = usePageDataStore.getState();
+			if (collectionMode || state.mode === "collection") {
+				const patchKey = rowPatchKey(objectId, key);
+				if (!debounce) {
+					pendingPatches.delete(patchKey);
+					state.setDraft(objectId, key, value);
+					return;
+				}
+				pendingPatches.set(patchKey, {
+					kind: "row",
+					objectId,
+					key,
+					value
+				});
+				scheduleFlush(debounce);
 				return;
 			}
 
@@ -416,60 +578,64 @@ const usePageData = <T = unknown>(
 				setDataInternal(key, value, debounce);
 			}
 		},
-		[setDataInternal]
+		[collectionMode, setDataInternal]
 	) as SetPageRowData<T>;
 
 	const prepareData = useCallback(() => {
-		flushPendingSetData();
+		flushPendingNow();
 		return usePageDataStore.getState().data as T | null;
-	}, [flushPendingSetData]);
+	}, []);
 
 	const prepareCollectionUpdates =
 		useCallback((): PageDataCollectionUpdate[] => {
-			flushPendingSetData();
-			const current = usePageDataStore.getState().data;
-			const storedInitial = usePageDataStore.getState().initialData;
-			if (!isCollectionRowArray(current)) return [];
-
-			const initialById = new Map<string, CollectionRow>();
-			if (isCollectionRowArray(storedInitial)) {
-				storedInitial.forEach((row) => {
-					const objectId = getRowObjectId(row);
-					if (objectId) initialById.set(objectId, row);
-				});
-			}
+			flushPendingNow();
+			const { drafts: currentDrafts, serverRows: rows } =
+				usePageDataStore.getState();
+			if (!rows) return [];
 
 			const updates: PageDataCollectionUpdate[] = [];
-			current.forEach((row) => {
-				const objectId = getRowObjectId(row);
-				if (!objectId) return;
-				const initialRow = initialById.get(objectId);
-				if (isEqual(row, initialRow)) return;
+			Object.entries(currentDrafts).forEach(([objectId, fields]) => {
+				if (Object.keys(fields).length === 0) return;
+				const serverRow = rows.find(
+					(row) => getRowObjectId(row) === objectId
+				);
+				if (!serverRow) return;
 				const updateObject = diffCollectionRow(
-					row as Record<string, unknown>,
-					initialRow as Record<string, unknown> | undefined
+					applyFields(serverRow, fields) as Record<string, unknown>,
+					serverRow as Record<string, unknown>
 				);
 				if (Object.keys(updateObject).length === 0) return;
 				updates.push({ objectId, updateObject });
 			});
 
 			return updates;
-		}, [flushPendingSetData]);
+		}, []);
 
 	const commitData = useCallback(() => {
-		const current = usePageDataStore.getState().data;
-		if (current != null) {
-			usePageDataStore.getState().initialize(current);
+		const state = usePageDataStore.getState();
+		if (state.mode === "collection") {
+			state.commitCollection();
+			return;
+		}
+		if (state.data != null) {
+			state.initialize(state.data);
 		}
 	}, []);
 
+	const collectionData = useMemo(() => {
+		if (mode !== "collection" || !serverRows) return null;
+		return serverRows.map((row) => overlayRow(row, committed, drafts));
+	}, [mode, serverRows, committed, drafts]);
+
 	const displayedData = (
-		shouldMergeCollection
-			? mergeCollectionRows(initialData, data, storedInitialData)
+		mode === "collection"
+			? collectionData
 			: incomingDiffersFromStore
 				? initialData
 				: data
 	) as T | null;
+
+	const documentDirty = !isEqual(data, storedInitialData);
 
 	return {
 		data: (displayedData ?? initialData ?? null) as T | null,
@@ -484,12 +650,11 @@ const usePageData = <T = unknown>(
 		undo,
 		redo,
 		dataHasChanged:
-			incomingDiffersFromStore && !shouldMergeCollection
-				? false
-				: !isEqual(
-						shouldMergeCollection ? displayedData : data,
-						shouldMergeCollection ? initialData : storedInitialData
-					),
+			mode === "collection"
+				? hasDrafts(drafts)
+				: incomingDiffersFromStore
+					? false
+					: documentDirty,
 		resetData
 	};
 };

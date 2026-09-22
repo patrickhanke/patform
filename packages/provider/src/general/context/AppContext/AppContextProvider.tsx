@@ -25,8 +25,14 @@ const ProjectContextProvider = ({
 	roles?: Record<string, any>[];
 	children: ReactNode;
 }) => {
-	const project_id = process.env.PROJECT_ID as string;
-	const project_path = process.env.PROJECT_PATH as string;
+	// patflow: cookie keys come from next.config (`PROJECT_ID` / `PROJECT_PATH`).
+	// patstore: falls back to `${APP_NAME}_project_id` / `_project_path`, which
+	// matches layout.tsx and proxy.ts.
+	const appName = process.env.APP_NAME as string;
+	const project_id =
+		process.env.PROJECT_ID ?? `${appName}_project_id`;
+	const project_path =
+		process.env.PROJECT_PATH ?? `${appName}_project_path`;
 	const router = useRouter();
 
 	console.log(project_id, project_path);
@@ -60,8 +66,6 @@ const ProjectContextProvider = ({
 			}) as ContextValues,
 		[project, roles, loadProject]
 	);
-
-	console.log(projectContextObject);
 
 	return (
 		<AppContext.Provider value={projectContextObject}>

@@ -69,7 +69,6 @@ const selectElements = useMemo(() => {
       isOpen={selectProject}
       cancel={() => setSelectProject(false)}
       confirm={() => {
-        router.push("/");
         projectSelectHandler()
       }}
       preventClickOutside

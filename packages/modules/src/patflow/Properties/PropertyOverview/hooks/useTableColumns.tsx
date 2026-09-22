@@ -49,7 +49,7 @@ const useTableColumns = () => {
 			},
 			{
 				accessorFn: (row) => (
-					<DisplayWorker workerId={row.created_by.objectId} />
+					<DisplayWorker workerId={row?.created_by?.objectId} />
 				),
 				header: () => <span>Erstellt von</span>,
 				id: "created_by",

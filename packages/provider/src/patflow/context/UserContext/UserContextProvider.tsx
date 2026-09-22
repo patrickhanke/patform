@@ -63,8 +63,8 @@ const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
 	const userContextObject = useMemo(
 		() => ({
 			user: getItem("user", "session", "object") || ({} as PatflowUser),
-			projectId: "B2vfHKzxqE",
-			project: projectData?.project || ({} as PatflowProject),
+			projectId: process.env.PROJECT_ID as string,
+			project: projectData?.project as PatflowProject,
 			getUserData,
 			userMessages,
 			refetchMessages: refetch
