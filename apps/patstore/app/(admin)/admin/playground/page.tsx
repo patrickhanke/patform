@@ -1,1 +1,3 @@
-export { default } from "../../../../../../packages/modules/src/patstore/Admin/Playground/Playground";
+export default function PlaygroundPage() {
+	return <div>Playground</div>;
+}
