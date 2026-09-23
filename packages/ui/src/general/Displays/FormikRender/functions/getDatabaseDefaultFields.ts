@@ -40,7 +40,7 @@ const getDatabaseDefaultFields = (
 
 		formFields.push(fieldObject);
 	});
-	if (languages.length > 1) {
+	if (languages?.length > 1) {
 		formFields.push({
 			id: "lang",
 			name: "lang",

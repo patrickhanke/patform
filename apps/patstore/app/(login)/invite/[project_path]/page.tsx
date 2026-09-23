@@ -19,7 +19,6 @@ const fetchProject = async (path: string) => {
       .catch((err) => compileAxiosError(err.message));
 
     const projectId = projectData.project.objectId;
-    console.log(projectId);
 
     const moduleData = await axiosclient
       .get("classes/Module", {
@@ -39,7 +38,6 @@ const fetchProject = async (path: string) => {
 
     const module = moduleData.results?.[0];
 
-    console.log(module);
     return  {
       project: projectData.project,
       module: module,

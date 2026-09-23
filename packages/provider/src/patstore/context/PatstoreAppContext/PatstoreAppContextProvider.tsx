@@ -20,7 +20,6 @@ const PatstoreAppContextProvider = ({
 	roles: PatstoreRoleClass[];
 	children: React.ReactNode;
 }) => {
-	console.log("project", project);
 	const [pageTitle, setPageTitle] = useState();
 	const [user, setUser] = useState<PatstoreUser>({} as PatstoreUser);
 	const pathname = usePathname();
