@@ -24,7 +24,9 @@ const TableColumnPerson = ({
 	const { data: personData } = useFindData({
 		objectName: "Person",
 		fields: ["objectId", "label", "portrait"],
-		moduleId: modules.find((module) => module.path === "/persons")?.objectId
+		moduleId: modules.find((module) => module.path === "/people")?.objectId,
+		skipQuery: !modules.find((module) => module.path === "/people")
+			?.objectId
 	});
 
 	const elements = useMemo(() => {

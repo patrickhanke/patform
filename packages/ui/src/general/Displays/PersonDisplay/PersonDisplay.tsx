@@ -1,8 +1,7 @@
-import { getImageUrl, useFindData, useGetData } from "@repo/provider";
+import { getImageUrl, useGetData } from "@repo/provider";
 import "./styles.scss";
 import { PersonDisplayProps } from "./types";
 import Image from "next/image";
-import { use } from "react";
 
 const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 	if (!person) {
@@ -15,10 +14,6 @@ const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 		id: person?.image,
 		skip: !person?.image
 	});
-	console.log(person);
-	console.log(person.image);
-
-	console.log(image);
 
 	return (
 		<div className={"display_person_container"} data-onlyimage={onlyImage}>
