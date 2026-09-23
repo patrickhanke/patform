@@ -27,51 +27,26 @@ const TableColumnPersons = ({
 		skipQuery: !modules.find((module) => module.path === "/people")
 	});
 
-	const elements = useMemo(() => {
-		const personOptionsArray: SelectElement[] = [];
-		if (personData) {
-			personData.forEach((person: PersonClass) => {
-				if (person) {
-					personOptionsArray.push({
-						value: person.objectId,
-						id: person.objectId,
-						label: `${person.label}`,
-						element: <PersonDisplay person={person} />
-					});
-				}
-			});
-		}
-		personOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
-
-		return personOptionsArray;
+	const people = useMemo(() => {
+		const list = (personData ?? []).filter(
+			(person: PersonClass) => person?.objectId
+		);
+		return [...list].sort((a: PersonClass, b: PersonClass) =>
+			`${a.label}`.localeCompare(`${b.label}`)
+		);
 	}, [personData]);
 
-	const currentPersons: SelectElement[] = useMemo(() => {
-		const elementData: SelectElement[] = [];
-		const invalidIds: string[] = [];
+	const elements: SelectElement[] = people.map((person: PersonClass) => ({
+		value: person.objectId,
+		id: person.objectId,
+		label: `${person.label}`,
+		element: <PersonDisplay person={person} />
+	}));
 
-		if (elements.length === 0) {
-			return [];
-		}
-
-		newPersons.forEach((vl) => {
-			const person = elements.find((element) => element.id === vl);
-			if (person) {
-				elementData.push(person);
-			} else {
-				console.log(vl);
-				invalidIds.push(vl);
-			}
-		});
-		if (invalidIds.length > 0) {
-			console.log(invalidIds);
-			onChange(elementData.map((element) => element.id));
-		}
-
-		return elementData || [];
-	}, [elements, newPersons]);
-
-	console.log(currentPersons);
+	const currentPersons: SelectElement[] = newPersons.flatMap((id) => {
+		const person = elements.find((element) => element.id === id);
+		return person ? [person] : [];
+	});
 
 	const selectPerson = useMemo(
 		() => (

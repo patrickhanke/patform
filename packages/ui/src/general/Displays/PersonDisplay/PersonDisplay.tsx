@@ -4,16 +4,16 @@ import { PersonDisplayProps } from "./types";
 import Image from "next/image";
 
 const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
-	if (!person) {
-		return null;
-	}
-
 	const { data: image } = useGetData({
 		objectName: "Image",
 		fields: ["objectId", "file {name url}", "title"],
 		id: person?.image,
 		skip: !person?.image
 	});
+
+	if (!person) {
+		return null;
+	}
 
 	return (
 		<div className={"display_person_container"} data-onlyimage={onlyImage}>
@@ -31,6 +31,7 @@ const PersonDisplay = ({ person, onlyImage = false }: PersonDisplayProps) => {
 						})}
 						height={onlyImage ? 24 : 18}
 						width={onlyImage ? 24 : 18}
+						style={{ width: "100%", height: "auto" }}
 					/>
 				</div>
 			) : (

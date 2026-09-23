@@ -15,14 +15,19 @@ const TableColumnImage = ({ file }: TableColumnImageProps) => {
 						<div className="horizontal_container">
 							<div className="table_columns_image_container">
 								<Image
-									fill
 									alt={file.name}
 									src={getImageUrl({
 										fileName: file.name,
-										height: 128
+										width: 128,
+										height: 72
 									})}
-									sizes="54px"
-									style={{ objectFit: "contain" }}
+									width={128}
+									height={72}
+									style={{
+										width: "100%",
+										height: "auto",
+										objectFit: "contain"
+									}}
 								/>
 							</div>
 							<IconButton

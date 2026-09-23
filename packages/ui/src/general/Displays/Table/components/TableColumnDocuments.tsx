@@ -39,28 +39,10 @@ const TableColumnDocuments = ({
 		return downloadOptionsArray;
 	}, [downloadData]);
 
-	const currentDownloads: SelectElement[] = useMemo(() => {
-		const elementData: SelectElement[] = [];
-		const invalidIds: string[] = [];
-
-		if (elements.length === 0) {
-			return [];
-		}
-
-		newDownloads.forEach((vl) => {
-			const download = elements.find((element) => element.id === vl);
-			if (download) {
-				elementData.push(download);
-			} else {
-				invalidIds.push(vl);
-			}
-		});
-		if (invalidIds.length > 0) {
-			onChange(elementData.map((element) => element.id));
-		}
-
-		return elementData || [];
-	}, [elements, newDownloads]);
+	const currentDownloads: SelectElement[] = newDownloads.flatMap((id) => {
+		const download = elements.find((element) => element.id === id);
+		return download ? [download] : [];
+	});
 
 	const selectDownload = useMemo(
 		() => (
