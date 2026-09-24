@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Modal, Page, Table, useCreateColumns, usePageData } from "@repo/ui";
 import { CategoryClass, ModuleOverviewProps } from "@repo/types";
-import { useFindData } from "@repo/provider";
+import { PatstoreAppContext, useFindData } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import CreateCategory from "./components/CreateCategory";
 
@@ -12,7 +12,11 @@ const CategoriesOverview = ({
 	languages,
 	defaultLanguage
 }: ModuleOverviewProps<"/categories">) => {
-	const pageStates = useMemo(() => module.settings?.categories, [module]);
+	const { currentModule } = useContext(PatstoreAppContext);
+	const pageStates = useMemo(
+		() => currentModule.settings?.categories,
+		[currentModule]
+	);
 	const [activeState, setActiveState] = useState(
 		pageStates ? pageStates[0] : undefined
 	);
@@ -47,7 +51,8 @@ const CategoriesOverview = ({
 		limit: 10,
 		skip: 0,
 		order: "createdAt_DESC",
-		defaultLanguage
+		defaultLanguage,
+		moduleId: currentModule?.objectId
 	});
 
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);

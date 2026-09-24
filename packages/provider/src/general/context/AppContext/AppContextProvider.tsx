@@ -29,13 +29,9 @@ const ProjectContextProvider = ({
 	// patstore: falls back to `${APP_NAME}_project_id` / `_project_path`, which
 	// matches layout.tsx and proxy.ts.
 	const appName = process.env.APP_NAME as string;
-	const project_id =
-		process.env.PROJECT_ID ?? `${appName}_project_id`;
-	const project_path =
-		process.env.PROJECT_PATH ?? `${appName}_project_path`;
+	const project_id = process.env.PROJECT_ID ?? `${appName}_project_id`;
+	const project_path = process.env.PROJECT_PATH ?? `${appName}_project_path`;
 	const router = useRouter();
-
-	console.log(project_id, project_path);
 
 	// Keep the cookie in sync so middleware and the next server render pick
 	// up the same project (e.g. after a fresh login with no cookie yet).
