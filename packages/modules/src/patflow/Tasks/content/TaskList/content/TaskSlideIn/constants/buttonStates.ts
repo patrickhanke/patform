@@ -6,10 +6,6 @@ const buttonStates = [
 	{
 		value: "images",
 		label: "Bilder"
-	},
-	{
-		value: "documents",
-		label: "Dokumente"
 	}
 ] as const;
 

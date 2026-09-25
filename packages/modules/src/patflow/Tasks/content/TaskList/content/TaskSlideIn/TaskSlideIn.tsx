@@ -3,13 +3,7 @@
 import { FC, useState, useMemo } from "react";
 import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
-import {
-	getDateString,
-	useDataHandler,
-	useDataStore,
-	useGetData
-} from "@repo/provider";
-import TaskDocuments from "../TaskDocuments";
+import { getDateString, useDataHandler, useDataStore } from "@repo/provider";
 import TaskImages from "../TaskImages";
 import DisplayTaskState from "../DisplayTaskState";
 import DisplayPropery from "../DisplayPropery";
@@ -43,12 +37,6 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 	const ticketData = useMemo(() => {
 		return tickets.find((ticket: Ticket) => ticket.objectId === taskId);
 	}, [tickets, taskId]);
-
-	const { data: dataDocuments, refetch: refetchDocuments } = useGetData({
-		objectName: "Document",
-		fields: ["objectId", "name", "created_by { objectId username }"],
-		id: taskId
-	});
 
 	const buttonStates = useMemo(() => {
 		const buttonStates = [
@@ -90,14 +78,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 						changeHandler={setButtonState}
 					/>
 				</div>
-				{buttonState.value === "documents" && dataDocuments && (
-					<TaskDocuments
-						taskId={taskId}
-						documents={dataDocuments.objects.findDocument.results}
-						refetch={refetchDocuments}
-						isEditable={isEditable}
-					/>
-				)}
+
 				{buttonState.value === "images" && task && (
 					<TaskImages
 						taskId={taskId}
@@ -117,7 +98,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 				)}
 			</div>
 		);
-	}, [buttonStates, buttonState, task, dataDocuments]);
+	}, [buttonStates, buttonState, task]);
 
 	if (!task) {
 		return null;
@@ -144,18 +125,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 						setButtonState(buttonStates[1]);
 					}}
 				/>
-				<IconButton
-					icon="documents"
-					text={
-						dataDocuments
-							? dataDocuments.objects.findDocument.results.length.toString()
-							: "0"
-					}
-					onClick={() => {
-						setShowDetails(true);
-						setButtonState(buttonStates[2]);
-					}}
-				/>
+
 				<IconButton
 					icon="tickets"
 					disabled={!task?.ticket}

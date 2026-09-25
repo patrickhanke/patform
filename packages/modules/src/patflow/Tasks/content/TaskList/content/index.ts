@@ -5,5 +5,4 @@ export { default as TaskSlideIn } from "./TaskSlideIn";
 export { default as TaskDate } from "./TaskDate";
 export { default as TaskDescription } from "./TaskDescription";
 export { default as TaskComments } from "./TaskComments";
-export { default as TaskDocuments } from "./TaskDocuments";
 export { default as TaskImages } from "./TaskImages";

@@ -16,12 +16,10 @@ const AppModuleEditSettings = ({
 		updateOptions
 	);
 
-	console.log(data);
-
 	if (!data) return null;
 
 	if (modulePath !== "/categories") {
-		return <AppModuleSettings setData={setData} settings={data} />;
+		return <AppModuleSettings setData={setData} settings={data.settings} />;
 	}
 
 	return (
@@ -29,7 +27,7 @@ const AppModuleEditSettings = ({
 			<AppModuleEditCategories
 				settingKey="categories"
 				setData={setData}
-				settings={data}
+				settings={data.settings}
 			/>
 		</div>
 	);

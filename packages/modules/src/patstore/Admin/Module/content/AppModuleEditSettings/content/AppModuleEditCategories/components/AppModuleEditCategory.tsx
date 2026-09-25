@@ -30,7 +30,7 @@ const AppModuleEditSettingsCategories = ({
 		},
 		[categories, setData]
 	);
-
+console.log(categories);
 	return (
 		<div className="vertical_container">
 			{(categories || []).map((category: ModuleSettingsCategory) => {
