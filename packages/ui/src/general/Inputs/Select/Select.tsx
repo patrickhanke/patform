@@ -5,6 +5,7 @@ import {
 	Combobox,
 	createListCollection,
 	Field,
+	Flex,
 	Portal,
 	Span,
 	useFilter
@@ -243,7 +244,8 @@ const Select = ({
 				positioning={{
 					strategy: menuPosition,
 					hideWhenDetached: true,
-					placement: "bottom-start"
+					placement: "bottom-start",
+					offset: { mainAxis: 6 }
 				}}
 			>
 				{label && (
@@ -251,9 +253,9 @@ const Select = ({
 						{label}
 					</Combobox.Label>
 				)}
-				<Combobox.Control minH="26px" h="auto" flexWrap="wrap">
-					{isMulti &&
-						selectedItems.map((item) => (
+				{isMulti && selectedItems.length > 0 && (
+					<Flex flexWrap="wrap" gap="4px" mb="6px">
+						{selectedItems.map((item) => (
 							<Span
 								key={item.value}
 								fontSize="12px"
@@ -261,14 +263,17 @@ const Select = ({
 								lineHeight="1.2"
 								px="6px"
 								py="2px"
-								ml="4px"
 								bg="bg.muted"
 								rounded="sm"
 							>
 								{item.label}
 							</Span>
 						))}
+					</Flex>
+				)}
+				<Combobox.Control minH="26px" h="auto">
 					<Combobox.Input
+						minW={cssWidth}
 						placeholder={
 							isMulti && selectedItems.length > 0
 								? ""
@@ -282,7 +287,6 @@ const Select = ({
 						fontWeight="500"
 						letterSpacing="0.6px"
 						flex="1"
-						minW="40px"
 						onFocus={(event) => event.currentTarget.select()}
 					/>
 					<Combobox.IndicatorGroup p="4px">

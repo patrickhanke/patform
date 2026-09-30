@@ -1,7 +1,6 @@
 import { useCallback, useContext, useMemo } from "react";
 import { Map, Select, SwitchButtons, SwitchButton } from "@repo/ui";
 import { EventTime, LocationClass } from "@repo/types";
-import locationButtonStates from "../constants/locationButtonStates";
 import { set, cloneDeep } from "lodash-es";
 import {
 	PatstoreAppContext,
@@ -12,7 +11,11 @@ import {
 import { TableColumnEditTimeProps } from "../types";
 import { useDebounceCallback } from "usehooks-ts";
 
-const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
+const TableColumnEditTime = ({
+	time,
+	setTimes,
+	settings
+}: TableColumnEditTimeProps) => {
 	const { modules } = useContext(PatstoreAppContext);
 	const { data: locationData } = useFindData({
 		objectName: "Location",
@@ -54,6 +57,52 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
 		[time, setTimes]
 	);
 
+	const locationButtonsState = useMemo(() => {
+		const locationButtons = [];
+		let counter = 0;
+
+		if (settings?.select_address) {
+			locationButtons.push({
+				label: "Adresse",
+				value: "address",
+				disabled: false
+			});
+			counter += 1;
+		}
+
+		if (settings?.select_location) {
+			locationButtons.push({
+				label: "Ort",
+				value: "location",
+				disabled: false
+			});
+			counter += 1;
+		}
+
+		if (settings?.select_map) {
+			locationButtons.push({
+				label: "Karte",
+				value: "map",
+				disabled: false
+			});
+			counter += 1;
+		}
+
+		if (settings?.select_online) {
+			locationButtons.push({
+				label: "Online",
+				value: "online",
+				disabled: false
+			});
+			counter += 1;
+		}
+
+		return {
+			locationButtons,
+			counter
+		};
+	}, [settings]);
+
 	const inputChangeHandler = useDebounceCallback(changeHandler, 1000);
 
 	if (!time) {
@@ -93,28 +142,32 @@ const TableColumnEditTime = ({ time, setTimes }: TableColumnEditTimeProps) => {
 					onChange={(e) => inputChangeHandler("end", e.target.value)}
 				/>
 			</div>
-			<div>
-				<label>Text</label>
-				<input
-					type="textarea"
-					defaultValue={time.text}
-					value={time.text}
-					onChange={(e) => changeHandler("text", e.target.value)}
-				/>
-			</div>
+			{settings?.show_text && (
+				<div>
+					<label>Text</label>
+					<input
+						type="textarea"
+						defaultValue={time.text}
+						value={time.text}
+						onChange={(e) => changeHandler("text", e.target.value)}
+					/>
+				</div>
+			)}
 			<div>
 				<label>Ort</label>
-				<SwitchButtons
-					buttonStates={locationButtonStates}
-					currentStates={
-						locationButtonStates.find(
-							(button) => button.value === time.place.type
-						) as { label: string; value: string }
-					}
-					changeHandler={(value: SwitchButton) =>
-						changeHandler("place.type", value.value as string)
-					}
-				/>
+				{locationButtonsState.locationButtons.length > 1 && (
+					<SwitchButtons
+						buttonStates={locationButtonsState.locationButtons}
+						currentStates={
+							locationButtonsState.locationButtons.find(
+								(button) => button.value === time.place.type
+							) as { label: string; value: string }
+						}
+						changeHandler={(value: SwitchButton) =>
+							changeHandler("place.type", value.value as string)
+						}
+					/>
+				)}
 				<div className="table_columns_dates_location_container">
 					{time.place.type === "address" && (
 						<div>

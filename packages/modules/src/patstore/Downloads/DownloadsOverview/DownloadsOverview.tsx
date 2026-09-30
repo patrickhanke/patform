@@ -16,7 +16,12 @@ import {
 	useFindModuleData,
 	filterModuleCategories
 } from "@repo/provider";
-import { DownloadClass, Filter, ModuleOverviewProps } from "@repo/types";
+import {
+	DownloadClass,
+	Filter,
+	LanguageValue,
+	ModuleOverviewProps
+} from "@repo/types";
 
 const DownloadsOverview = ({
 	module,
@@ -45,20 +50,19 @@ const DownloadsOverview = ({
 	});
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<DownloadClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		defaultLanguage
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
 	console.log(module);
@@ -70,7 +74,9 @@ const DownloadsOverview = ({
 		className: "Download",
 		refetch,
 		categories: module.categories,
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<DownloadClass[]>();
 
@@ -139,7 +145,7 @@ const DownloadsOverview = ({
 				filterContent={renderFilters}
 				setOrder={setOrder}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 			<Modal

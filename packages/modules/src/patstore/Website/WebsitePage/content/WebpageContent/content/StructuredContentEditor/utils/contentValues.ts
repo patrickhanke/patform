@@ -2,7 +2,7 @@ import {
 	WebpageStructuredContainerSchema,
 	WebpageStructuredFieldSchema,
 	WebpageStructuredLinkValue,
-	WebpageStructuredSchema,
+	WebpageStructuredNodeMap,
 	WebpageStructuredSchemaNode,
 	WebpageStructuredValueEntry
 } from "@repo/types";
@@ -35,7 +35,7 @@ const buildPath = (prefix: string, key: string) =>
 
 export const getCollectionFieldSchema = (
 	node: WebpageStructuredFieldSchema
-): WebpageStructuredSchema | undefined => {
+): WebpageStructuredNodeMap | undefined => {
 	if (node.type !== "collection") {
 		return undefined;
 	}
@@ -80,7 +80,7 @@ export const getDefaultFieldValue = (
 };
 
 export const buildCollectionItem = (
-	fields: WebpageStructuredSchema
+	fields: WebpageStructuredNodeMap
 ): Record<string, unknown> => {
 	const item: Record<string, unknown> = {};
 
@@ -118,7 +118,7 @@ export const mergeStoredValues = (
  * Collections are a single `{ path, value: [...] }` entry (patstore-kit).
  */
 export const serializeValues = (
-	schema: WebpageStructuredSchema,
+	schema: WebpageStructuredNodeMap,
 	values: Map<string, unknown>,
 	prefix = ""
 ): WebpageStructuredValueEntry[] => {
@@ -160,7 +160,7 @@ export const valuesAreEqual = (
 
 export const addCollectionItem = (
 	basePath: string,
-	itemSchema: WebpageStructuredSchema,
+	itemSchema: WebpageStructuredNodeMap,
 	values: Map<string, unknown>
 ): Map<string, unknown> => {
 	const next = new Map(values);
@@ -171,7 +171,7 @@ export const addCollectionItem = (
 
 export const removeCollectionItem = (
 	basePath: string,
-	_itemSchema: WebpageStructuredSchema,
+	_itemSchema: WebpageStructuredNodeMap,
 	values: Map<string, unknown>,
 	removeIndex: number
 ): Map<string, unknown> => {

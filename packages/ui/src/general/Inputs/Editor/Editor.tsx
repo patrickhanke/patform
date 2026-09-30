@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Typography from "@tiptap/extension-typography";
 import Link from "@tiptap/extension-link";
+import Image from "@tiptap/extension-image";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
@@ -21,6 +22,7 @@ const lowlight = createLowlight(common);
 
 import { MentionSuggestion, HexColorDecorator, FontSize } from "./extensions";
 
+import { RichTextEditor } from "./components/RichTextEditor";
 import Toolbar from "./components/Toolbar";
 import Popover from "./components/Popover";
 
@@ -44,7 +46,8 @@ function Editor({
 	onChange,
 	onClickOutside = () => null,
 	withHexColorsDecorator = false,
-	withTextAlign = true
+	withTextAlign = true,
+	withImages = false
 }: EditorComponent) {
 	const [debouncedValue, setEditorHtmlContent] = useDebounceValue(
 		content,
@@ -111,6 +114,10 @@ function Editor({
 		);
 	}
 
+	if (withImages) {
+		extensions.push(Image);
+	}
+
 	const editor = useEditor(
 		{
 			content,
@@ -134,24 +141,18 @@ function Editor({
 	}
 
 	return (
-		<div ref={editorRef} style={{ width: "100%", position: "relative" }}>
+		<div ref={editorRef} style={{ width: "100%" }}>
 			{label && <label htmlFor={id}>{label}</label>}
-			{withToolbar ? <Toolbar editor={editor} /> : null}
-			{withPopover ? <Popover editor={editor} /> : null}
-			<EditorContent editor={editor} />
-			{disabled && (
-				<div
-					style={{
-						position: "absolute",
-						top: 0,
-						left: 0,
-						width: "100%",
-						height: "100%",
-						zIndex: 5,
-						backgroundColor: "rgba(255,255,255, 0.5)"
-					}}
-				/>
-			)}
+			<RichTextEditor.Root editor={editor} disabled={disabled}>
+				{withToolbar ? (
+					<Toolbar
+						withTextAlign={withTextAlign}
+						withImages={withImages}
+					/>
+				) : null}
+				{withPopover ? <Popover /> : null}
+				<RichTextEditor.Content id={id || undefined} />
+			</RichTextEditor.Root>
 		</div>
 	);
 }

@@ -38,6 +38,11 @@ const generateInitialFields = (
 		if (initialField) {
 			const isDefault = default_fields[modulePath]?.includes(field.id);
 
+			const settings =
+				field.settings || initialField.settings
+					? { ...field.settings, ...initialField.settings }
+					: undefined;
+
 			return {
 				...field,
 				active: isDefault ? true : initialField.active,
@@ -45,7 +50,8 @@ const generateInitialFields = (
 				position: initialField.position,
 				default: isDefault,
 				disabled: isDefault,
-				hidden: initialField.hidden
+				hidden: initialField.hidden,
+				...(settings ? { settings } : {})
 			};
 		} else {
 			return field;

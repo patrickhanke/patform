@@ -13,7 +13,6 @@ const CreateClass = <T extends Classes>({
 	text,
 	className,
 	refetch,
-	languages = [],
 	initialState = "published"
 }: CreateClassProps<T>) => {
 	const { createData } = useDataHandler();
@@ -56,7 +55,7 @@ const CreateClass = <T extends Classes>({
 				isOpen={isOpen}
 				title={text}
 				setIsOpen={setIsOpen}
-				fields={getDatabaseDefaultFields(fields, languages)}
+				fields={getDatabaseDefaultFields(fields)}
 				data={initialData}
 				dataHandler={(values) => dataHandler(values)}
 			/>

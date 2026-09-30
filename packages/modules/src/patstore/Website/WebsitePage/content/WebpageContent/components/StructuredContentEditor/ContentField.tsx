@@ -3,7 +3,7 @@
 import {
 	WebpageStructuredFieldSchema,
 	WebpageStructuredLinkValue,
-	WebpageStructuredSchema
+	WebpageStructuredNodeMap
 } from "@repo/types";
 import { PatstoreSelectImages, TextInput } from "@repo/ui";
 import { FC } from "react";
@@ -21,10 +21,10 @@ type ContentFieldProps = {
 	schema: WebpageStructuredFieldSchema;
 	value: unknown;
 	onChange: (path: string, value: unknown) => void;
-	onCollectionAdd: (path: string, itemSchema: WebpageStructuredSchema) => void;
+	onCollectionAdd: (path: string, itemSchema: WebpageStructuredNodeMap) => void;
 	onCollectionRemove: (
 		path: string,
-		itemSchema: WebpageStructuredSchema,
+		itemSchema: WebpageStructuredNodeMap,
 		index: number
 	) => void;
 	values: Map<string, unknown>;

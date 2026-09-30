@@ -1,13 +1,17 @@
 "use client";
 
 import {
+	LanguageValue,
 	WebpageClass,
+	WebpageStructuredNodeMap,
 	WebpageStructuredSchema,
+	WebpageStructuredSchemaKey,
 	WebpageStructuredValueEntry
 } from "@repo/types";
+import { usePageData } from "@repo/ui";
 import { FC, useCallback, useMemo } from "react";
 import { StructuredContentEditor } from "./content";
-import { usePageData } from "@repo/ui";
+import { entryMatchesSchemaKey } from "./utils/contentValues";
 
 const isStructuredPageData = (
 	pageData: unknown
@@ -27,6 +31,9 @@ const isStructuredSchema = (
 	typeof pageContent === "object" &&
 	pageContent !== null &&
 	!Array.isArray(pageContent);
+
+const isNodeMap = (value: unknown): value is WebpageStructuredNodeMap =>
+	typeof value === "object" && value !== null && !Array.isArray(value);
 
 const normalizePageContent = (
 	pageContent: WebpageClass["page_content"] | undefined
@@ -57,7 +64,11 @@ const normalizePageData = (
 	return pageData;
 };
 
-const WebpageContent: FC<{ webpage: WebpageClass }> = ({ webpage }) => {
+const WebpageContent: FC<{
+	webpage: WebpageClass;
+	language?: LanguageValue;
+}> = ({ webpage, language }) => {
+	const schemaKey: WebpageStructuredSchemaKey = language ?? "default";
 	const { data: webpageData, setData } = usePageData<Partial<WebpageClass>>(
 		{
 			initialData: {
@@ -78,6 +89,11 @@ const WebpageContent: FC<{ webpage: WebpageClass }> = ({ webpage }) => {
 		[webpageData?.page_content]
 	);
 
+	const languageSchema = useMemo(() => {
+		const slice = schema?.[schemaKey];
+		return isNodeMap(slice) ? slice : undefined;
+	}, [schema, schemaKey]);
+
 	const savedValues = useMemo(
 		() => normalizePageData(webpageData?.page_data),
 		[webpageData?.page_data]
@@ -85,23 +101,29 @@ const WebpageContent: FC<{ webpage: WebpageClass }> = ({ webpage }) => {
 
 	const saveHandler = useCallback(
 		(values: WebpageStructuredValueEntry[]) => {
-			setData("page_data", values);
+			const current = normalizePageData(webpageData?.page_data);
+			const preserved = current.filter(
+				(entry) => !entryMatchesSchemaKey(entry.path, schemaKey)
+			);
+			setData("page_data", [...preserved, ...values]);
 		},
-		[setData]
+		[schemaKey, setData, webpageData?.page_data]
 	);
 
-	if (schema === undefined) {
+	if (languageSchema === undefined) {
 		return (
 			<section>
 				<p>Keine Seiteninhalte gefunden.</p>
 			</section>
 		);
 	}
+
 	return (
 		<StructuredContentEditor
-			key={`${webpage.objectId}-${webpage.updatedAt}`}
-			schema={schema}
+			key={`${webpage.objectId}-${schemaKey}-${webpage.updatedAt}`}
+			schema={languageSchema}
 			savedValues={savedValues}
+			language={language}
 			onSave={saveHandler}
 		/>
 	);

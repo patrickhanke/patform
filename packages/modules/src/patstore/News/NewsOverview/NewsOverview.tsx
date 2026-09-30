@@ -9,7 +9,12 @@ import {
 	useCreateColumns,
 	usePageData
 } from "@repo/ui";
-import { Filter, ModuleOverviewProps, NewsClass } from "@repo/types";
+import {
+	Filter,
+	LanguageValue,
+	ModuleOverviewProps,
+	NewsClass
+} from "@repo/types";
 import {
 	useDataHandler,
 	useFindModuleData,
@@ -41,20 +46,19 @@ const NewsOverview = ({
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<NewsClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		defaultLanguage
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -66,7 +70,9 @@ const NewsOverview = ({
 		refetch,
 		categories: module.categories,
 		currentModule: module,
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<NewsClass[]>();
 
@@ -116,7 +122,7 @@ const NewsOverview = ({
 				setSelectedRows={setSelectedRows}
 				setOrder={setOrder}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 				enableRowSelection
 			/>

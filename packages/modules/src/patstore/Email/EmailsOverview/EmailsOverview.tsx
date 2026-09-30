@@ -8,7 +8,12 @@ import {
 	usePageData
 } from "@repo/ui";
 import { useState } from "react";
-import { Filter, EmailTemplate, ModuleOverviewProps } from "@repo/types";
+import {
+	EmailTemplate,
+	Filter,
+	LanguageValue,
+	ModuleOverviewProps
+} from "@repo/types";
 import { useFindModuleData } from "@repo/provider";
 
 const EmailsOverview = ({
@@ -28,20 +33,19 @@ const EmailsOverview = ({
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<EmailTemplate>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		defaultLanguage
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
 	const columns = useCreateColumns<EmailTemplate>({
@@ -51,7 +55,9 @@ const EmailsOverview = ({
 		editLink: "emails",
 		refetch,
 		categories: module.categories,
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<EmailTemplate[]>();
 
@@ -64,6 +70,7 @@ const EmailsOverview = ({
 				text: "Neue E-Mail erstellen",
 				fields: module.fields,
 				refetch: refetch,
+				languages,
 				initialState: "draft",
 				initialData: {
 					type: "template",
@@ -85,7 +92,7 @@ const EmailsOverview = ({
 				setPagination={setPagination}
 				setOrder={setOrder}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 		</Page>

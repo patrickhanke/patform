@@ -1,6 +1,6 @@
 "use client";
 
-import { TableColumnTexteditor } from "@repo/ui";
+import { TableColumnEditText } from "@repo/ui";
 import { FC, useEffect, useState } from "react";
 
 type ContentRichtextFieldProps = {
@@ -23,9 +23,11 @@ const ContentRichtextField: FC<ContentRichtextFieldProps> = ({
 	}, [value]);
 
 	return (
-		<TableColumnTexteditor
+		<TableColumnEditText
+			type="texteditor"
+			columnKey="richtext"
 			value={editorValue}
-			onChange={(nextValue) => {
+			onChange={(nextValue: string) => {
 				setEditorValue(nextValue);
 				onChange(nextValue);
 			}}

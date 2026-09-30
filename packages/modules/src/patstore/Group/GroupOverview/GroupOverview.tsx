@@ -16,7 +16,12 @@ import {
 	useFindModuleData,
 	filterModuleCategories
 } from "@repo/provider";
-import { Filter, GroupClass, ModuleOverviewProps } from "@repo/types";
+import {
+	Filter,
+	GroupClass,
+	LanguageValue,
+	ModuleOverviewProps
+} from "@repo/types";
 
 const GroupOverview = ({
 	module,
@@ -45,20 +50,19 @@ const GroupOverview = ({
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<GroupClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		defaultLanguage
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
 	const columns = useCreateColumns<GroupClass>({
@@ -67,7 +71,9 @@ const GroupOverview = ({
 		className: "Group",
 		refetch,
 		categories: module.categories,
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<GroupClass[]>();
 
@@ -119,7 +125,7 @@ const GroupOverview = ({
 				setOrder={setOrder}
 				enableRowSelection
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 			<Modal

@@ -1,7 +1,7 @@
 "use client";
 
 import { Stack } from "@chakra-ui/react";
-import { WebpageStructuredSchema } from "@repo/types";
+import { WebpageStructuredNodeMap } from "@repo/types";
 import { FC, useCallback, useMemo } from "react";
 import {
 	addCollectionItem,
@@ -15,15 +15,17 @@ import { StructuredContentEditorProps } from "./types";
 const StructuredContentEditor: FC<StructuredContentEditorProps> = ({
 	schema,
 	savedValues,
-	onSave
+	onSave,
+	language
 }) => {
+	const pathPrefix = language ?? "";
 	const valuesMap = useMemo(() => entriesToMap(savedValues), [savedValues]);
 
 	const persistValues = useCallback(
 		(nextMap: Map<string, unknown>) => {
-			onSave(serializeValues(schema, nextMap));
+			onSave(serializeValues(schema, nextMap, pathPrefix));
 		},
-		[onSave, schema]
+		[onSave, pathPrefix, schema]
 	);
 
 	const updateValue = useCallback(
@@ -36,7 +38,7 @@ const StructuredContentEditor: FC<StructuredContentEditorProps> = ({
 	);
 
 	const addCollectionItemHandler = useCallback(
-		(path: string, itemSchema: WebpageStructuredSchema) => {
+		(path: string, itemSchema: WebpageStructuredNodeMap) => {
 			persistValues(addCollectionItem(path, itemSchema, valuesMap));
 		},
 		[valuesMap, persistValues]
@@ -45,7 +47,7 @@ const StructuredContentEditor: FC<StructuredContentEditorProps> = ({
 	const removeCollectionItemHandler = useCallback(
 		(
 			path: string,
-			itemSchema: WebpageStructuredSchema,
+			itemSchema: WebpageStructuredNodeMap,
 			removeIndex: number
 		) => {
 			persistValues(
@@ -59,6 +61,7 @@ const StructuredContentEditor: FC<StructuredContentEditorProps> = ({
 		<Stack gap={6}>
 			<ContentSection
 				schema={schema}
+				prefix={pathPrefix}
 				values={valuesMap}
 				onChange={updateValue}
 				onCollectionAdd={addCollectionItemHandler}

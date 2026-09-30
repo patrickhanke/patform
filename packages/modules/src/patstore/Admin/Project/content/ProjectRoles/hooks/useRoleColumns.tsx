@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ColumnDef, TableColumnEditColor, TableColumnString } from "@repo/ui";
+import { ColumnDef, TableColumnEditColor, TableColumnEditText } from "@repo/ui";
 import { PatstoreRoleClass } from "@repo/types";
 import SelectRoleModules from "../components/SelectRoleModules";
 import DefaultRole from "../components/DefaultRole";
@@ -19,7 +19,9 @@ const useRoleColumns = ({
 		() => [
 			{
 				accessorFn: (row) => (
-					<TableColumnString
+					<TableColumnEditText
+						type="string"
+						columnKey="title"
 						isEditable
 						value={row.title}
 						onChange={async (value) => {

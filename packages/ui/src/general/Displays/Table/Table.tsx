@@ -40,7 +40,7 @@ const Table: React.FC<TableTypes> = ({
 	filterColumns,
 	exportColumns = [],
 	rowIdResolver,
-	language = "de",
+	language = "de-DE",
 	changeLanguage,
 	languages
 }) => {

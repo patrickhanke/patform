@@ -1,17 +1,36 @@
 import { CreateButton, SlideIn } from "@repo/ui";
 import { useCallback, useState } from "react";
-import { EventTime } from "@repo/types";
+import { EventTime, ModuleFieldTimesSettings } from "@repo/types";
 import { useImmer } from "use-immer";
 import { v4 } from "uuid";
 import { TableColumnTimesFieldProps } from "./types";
-import initialTimeValues from "./constants/initialDateValues";
 import TableColumnTime from "./components/TableColumnDate";
 import TableColumnEditTime from "./components/TableColumnEditDate";
 import { getWeekday } from "@repo/provider";
 
+const getDefaultPlace = (
+	settings?: ModuleFieldTimesSettings
+): EventTime["place"] => {
+	const defaultPlace: EventTime["place"] = {
+		type: "map",
+		address: "",
+		map: {
+			latitude: 0,
+			longitude: 0
+		},
+		online: ""
+	};
+	if (settings?.select_address) defaultPlace.type = "address";
+	if (settings?.select_location) defaultPlace.type = "location";
+	if (settings?.select_map) defaultPlace.type = "map";
+	if (settings?.select_online) defaultPlace.type = "online";
+	return defaultPlace;
+};
+
 const TableColumnTimesField = ({
 	initialTimes,
-	onChange
+	onChange,
+	settings
 }: TableColumnTimesFieldProps) => {
 	const [loading, setLoading] = useState(false);
 	const [editDates, setEditDates] = useState(false);
@@ -75,6 +94,7 @@ const TableColumnTimesField = ({
 					<TableColumnEditTime
 						time={findActiveTime(activeDate)}
 						setTimes={setTimes}
+						settings={settings}
 					/>
 				}
 				disabled={[loading, loading]}
@@ -86,7 +106,10 @@ const TableColumnTimesField = ({
 						onClick={() => {
 							setTimes((draft) => {
 								draft.push({
-									...initialTimeValues,
+									start: "",
+									end: "",
+									weekday: "",
+									place: getDefaultPlace(settings),
 									id: v4() as string
 								});
 							});

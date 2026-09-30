@@ -222,7 +222,6 @@ const RenderFields: FC<RenderFieldsType> = ({
 						{field.type === "select" && (
 							<Select
 								onChange={(value) => {
-									console.log(value);
 									if (
 										field.isMulti &&
 										field.dataType === "string"

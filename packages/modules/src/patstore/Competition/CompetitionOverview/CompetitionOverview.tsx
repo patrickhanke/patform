@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { Page, Table } from "@repo/ui";
-import { Filter, ModuleOverviewProps } from "@repo/types";
+import { CompetitionClass, Filter, LanguageValue, ModuleOverviewProps } from "@repo/types";
 import { useFindModuleData } from "@repo/provider";
-import { CompetitionClass } from "@repo/types";
 import {
 	CompetitionCreateFields,
 	CompetitionInitialData
@@ -22,24 +21,23 @@ const CompetitionOverview = ({
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<CompetitionClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		defaultLanguage,
+		fetchTranslations: defaultLanguage && languages.length > 1,
 		additionalFields: ["title", "season"]
 	});
 
-	const columns = getCompetitionOverviewColumns(refetch);
+	const columns = getCompetitionOverviewColumns(refetch, language);
 
 	return (
 		<Page
@@ -50,6 +48,7 @@ const CompetitionOverview = ({
 				text: "Neue Meisterschaft erstellen",
 				fields: CompetitionCreateFields,
 				refetch,
+				languages,
 				initialData: CompetitionInitialData
 			}}
 			refetch={refetch}
@@ -63,7 +62,7 @@ const CompetitionOverview = ({
 				setPagination={setPagination}
 				setOrder={setOrder}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 		</Page>

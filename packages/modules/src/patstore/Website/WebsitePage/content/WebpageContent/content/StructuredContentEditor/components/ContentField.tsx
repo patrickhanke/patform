@@ -4,7 +4,7 @@ import { Button, Card, Heading, HStack, Stack, Text } from "@chakra-ui/react";
 import {
 	WebpageStructuredFieldSchema,
 	WebpageStructuredLinkValue,
-	WebpageStructuredSchema
+	WebpageStructuredNodeMap
 } from "@repo/types";
 import { IconButton, PatstoreSelectImages, TextInput } from "@repo/ui";
 import { FC } from "react";
@@ -25,11 +25,11 @@ type ContentFieldProps = {
 	onChange: (path: string, value: unknown) => void;
 	onCollectionAdd: (
 		path: string,
-		itemSchema: WebpageStructuredSchema
+		itemSchema: WebpageStructuredNodeMap
 	) => void;
 	onCollectionRemove: (
 		path: string,
-		itemSchema: WebpageStructuredSchema,
+		itemSchema: WebpageStructuredNodeMap,
 		index: number
 	) => void;
 	values: Map<string, unknown>;

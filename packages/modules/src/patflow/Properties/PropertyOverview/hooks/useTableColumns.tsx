@@ -1,7 +1,7 @@
 import { DisplayWorker } from "@repo/ui";
 import { getDateLabel } from "@repo/provider";
 import { Property } from "@repo/types";
-import { IconButton, TableColumnString } from "@repo/ui";
+import { IconButton, TableColumnEditText } from "@repo/ui";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import TeamAssignment from "../content/TeamAssignment";
@@ -13,7 +13,9 @@ const useTableColumns = () => {
 		() => [
 			{
 				accessorFn: (row) => (
-					<TableColumnString
+					<TableColumnEditText
+						type="string"
+						columnKey="name"
 						isEditable
 						value={row.name}
 						onChange={async (value) => {

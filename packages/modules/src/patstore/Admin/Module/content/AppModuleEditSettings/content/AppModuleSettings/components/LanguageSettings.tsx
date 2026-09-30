@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useMemo } from "react";
+import { useMemo } from "react";
 import { Form, SetPageData } from "@repo/ui";
 import { ModuleSettings } from "@repo/types";
 
@@ -14,13 +14,13 @@ const LanguageSettings = ({
 			{
 				id: "languages",
 				position: 3,
-				name: "settings.languages",
+				name: "languages",
 				type: "select",
 				label: "Sprachen",
 				value: settings?.languages,
 				select_options: [
-					{ label: "Deutsch", value: "de" },
-					{ label: "Englisch", value: "en" }
+					{ label: "Deutsch", value: "de-DE" },
+					{ label: "Englisch", value: "en-EN" }
 				],
 				isMulti: true,
 				dataType: "string",
@@ -29,35 +29,65 @@ const LanguageSettings = ({
 			{
 				id: "default_language",
 				position: 3,
-				name: "settings.default_language",
+				name: "default_language",
 				type: "select",
 				label: "Standardsprache",
 				value: settings?.default_language,
 				select_options: [
-					{ label: "Deutsch", value: "de", disabled: false },
+					{ label: "Deutsch", value: "de-DE", disabled: false },
 					{
 						label: "Englisch",
-						value: "en",
-						disabled: settings?.languages?.includes("en")
+						value: "en-EN",
+						disabled: !settings?.languages?.includes("en-EN")
 					}
 				],
 				dataType: "string",
 				width: 240
+			},
+			{
+				id: "edit_title",
+				position: 3,
+				name: "edit_title",
+				type: "checkbox",
+				label: "Titel bearbeiten",
+				value: settings?.edit_title,
+				width: 240,
+				disabled: !settings.languages || settings?.languages?.length > 2
+			},
+			{
+				id: "edit_text",
+				position: 3,
+				name: "edit_text",
+				type: "checkbox",
+				label: "Text bearbeiten",
+				value: settings?.edit_text,
+				width: 240,
+				disabled: !settings.languages || settings?.languages?.length > 2
+			},
+			{
+				id: "edit_description",
+				position: 3,
+				name: "edit_description",
+				type: "checkbox",
+				label: "Beschreibung bearbeiten",
+				value: settings?.edit_description,
+				width: 240,
+				disabled: !settings.languages || settings?.languages?.length > 2
 			}
 		];
-	}, [settings]);
+	}, [settings, settings.languages.length]);
 
 	return (
 		<Form
 			fields={formFields}
 			data={settings}
 			formSubmitHandler={(values) => {
-				console.log(values);
 				Object.keys(values).forEach((key) => {
-					setData(key, values[key]);
+					setData(`settings.${key}`, values[key] as string);
 				});
 			}}
 			useWithDebounce
+			enableReinitialize
 		/>
 	);
 };

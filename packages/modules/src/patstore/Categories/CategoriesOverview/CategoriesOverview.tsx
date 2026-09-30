@@ -2,7 +2,7 @@
 
 import { useContext, useMemo, useState } from "react";
 import { Modal, Page, Table, useCreateColumns, usePageData } from "@repo/ui";
-import { CategoryClass, ModuleOverviewProps } from "@repo/types";
+import { CategoryClass, LanguageValue, ModuleOverviewProps } from "@repo/types";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import CreateCategory from "./components/CreateCategory";
@@ -21,11 +21,10 @@ const CategoriesOverview = ({
 		pageStates ? pageStates[0] : undefined
 	);
 
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data: categories,
-		refetch,
-		language,
-		changeLanguage
+		refetch
 	} = useFindData({
 		objectName: "Category",
 		fields: [
@@ -36,7 +35,8 @@ const CategoriesOverview = ({
 			"data",
 			"color",
 			"categories",
-			"description"
+			"description",
+			...(defaultLanguage && languages.length > 1 ? ["translations"] : [])
 		],
 		filters: activeState?.value
 			? [
@@ -51,7 +51,6 @@ const CategoriesOverview = ({
 		limit: 10,
 		skip: 0,
 		order: "createdAt_DESC",
-		defaultLanguage,
 		moduleId: currentModule?.objectId
 	});
 
@@ -73,7 +72,9 @@ const CategoriesOverview = ({
 		className: "Category",
 		refetch,
 		categories: module.categories,
-		initialData: categories ?? []
+		initialData: categories ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<CategoryClass[]>();
 
@@ -102,7 +103,7 @@ const CategoriesOverview = ({
 				columns={columns}
 				data={pageRows ?? categories ?? []}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 				pagination={{
 					pageIndex: 0,

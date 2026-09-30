@@ -1,11 +1,13 @@
 @use "@repo/styles/constants";
 
+// Above the Modal (6), below the z-index 1000 of the Chakra portals so that
+// dropdowns and popovers inside the slide-in stay visible.
 .overlay_container {
   background-color: constants.$dark;
   position: fixed;
   height: 100vh;
   width: 100vw;
-  z-index: 3;
+  z-index: 7;
   left: 0;
   top: 0;
   visibility: hidden;
@@ -31,7 +33,7 @@
   );
   top: 6vh;
   height: 88vh;
-  z-index: 4;
+  z-index: 8;
   width: fit-content;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
   position: fixed;

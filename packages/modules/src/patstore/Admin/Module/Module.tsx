@@ -136,6 +136,8 @@ const Module = () => {
 		return additionalFieldsArray;
 	}, [module, modules]);
 
+	console.log(module)
+
 	if (loading) return <Loader width="100%" height="100%" />;
 
 	return (

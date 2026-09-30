@@ -1,13 +1,15 @@
 ﻿"use client";
 
 import { ColumnDef, IconButton, TableColumnDeleteField } from "@repo/ui";
-import { ApolloRefetch, CompetitionClass } from "@repo/types";
+import { ApolloRefetch, CompetitionClass, LanguageValue } from "@repo/types";
 
 export const getCompetitionOverviewColumns = (
-	refetch: ApolloRefetch
+	refetch: ApolloRefetch,
+	language?: LanguageValue
 ): ColumnDef<CompetitionClass>[] => [
 	{
-		accessorFn: (row) => row.title,
+		accessorFn: (row) =>
+			(language && row.translations?.[language]?.title) || row.title,
 		header: () => <span>Titel</span>,
 		id: "title",
 		cell: (info) => info.getValue(),

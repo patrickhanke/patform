@@ -1,13 +1,15 @@
 "use client";
 
 import { ColumnDef, IconButton, TableColumnDeleteField } from "@repo/ui";
-import { ApolloRefetch, ClubClass } from "@repo/types";
+import { ApolloRefetch, ClubClass, LanguageValue } from "@repo/types";
 
 export const getClubOverviewColumns = (
-	refetch: ApolloRefetch
+	refetch: ApolloRefetch,
+	language?: LanguageValue
 ): ColumnDef<ClubClass>[] => [
 	{
-		accessorFn: (row) => row.title,
+		accessorFn: (row) =>
+			(language && row.translations?.[language]?.title) || row.title,
 		header: () => <span>Name</span>,
 		id: "title",
 		cell: (info) => info.getValue(),

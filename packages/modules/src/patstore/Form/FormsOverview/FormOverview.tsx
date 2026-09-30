@@ -8,7 +8,12 @@ import {
 	usePageData
 } from "@repo/ui";
 import { useState } from "react";
-import { Filter, FormClass, ModuleOverviewProps } from "@repo/types";
+import {
+	Filter,
+	FormClass,
+	LanguageValue,
+	ModuleOverviewProps
+} from "@repo/types";
 import { useFindModuleData } from "@repo/provider";
 import initial_data from "./constants/initial_data";
 
@@ -23,20 +28,19 @@ const FormsOverview = ({
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<FormClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		defaultLanguage
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
 	const columns = useCreateColumns<FormClass>({
@@ -46,7 +50,9 @@ const FormsOverview = ({
 		editLink: "forms",
 		refetch,
 		categories: module.categories,
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<FormClass[]>();
 
@@ -74,7 +80,7 @@ const FormsOverview = ({
 				setPagination={setPagination}
 				setOrder={setOrder}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 		</Page>

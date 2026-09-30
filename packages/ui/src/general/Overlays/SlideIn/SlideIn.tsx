@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import "./styles.scss";
 
 import { useOnClickOutside } from "usehooks-ts";
@@ -25,12 +26,24 @@ const SlideIn: React.FC<SlideInProps> = ({
 	loading = false
 }) => {
 	const ref = useRef(null);
+	const [mounted, setMounted] = useState(false);
+
 	useOnClickOutside(ref, () => {
 		if (preventClickOutside === true) return;
 		cancel();
 	});
 
-	return (
+	useEffect(() => {
+		setMounted(true);
+	}, []);
+
+	if (!mounted) {
+		return null;
+	}
+
+	// Rendered into the body because a transformed ancestor (e.g. Modal) would
+	// otherwise become the containing block of the fixed positioned panel.
+	return createPortal(
 		<>
 			{isOpen && (
 				<div className={"overlay_container"} data-isopen={isOpen} />
@@ -111,7 +124,8 @@ const SlideIn: React.FC<SlideInProps> = ({
 					</motion.div>
 				)}
 			</AnimatePresence>
-		</>
+		</>,
+		document.body
 	);
 };
 

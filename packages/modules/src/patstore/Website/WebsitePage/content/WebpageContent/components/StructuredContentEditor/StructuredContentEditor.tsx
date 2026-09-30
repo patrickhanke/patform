@@ -1,7 +1,7 @@
 "use client";
 
 import {
-	WebpageStructuredSchema,
+	WebpageStructuredNodeMap,
 	WebpageStructuredValueEntry
 } from "@repo/types";
 import { FormActionBar } from "@repo/ui";
@@ -17,7 +17,7 @@ import ContentSection from "./ContentSection";
 import "./styles.scss";
 
 type StructuredContentEditorProps = {
-	schema: WebpageStructuredSchema;
+	schema: WebpageStructuredNodeMap;
 	savedValues: WebpageStructuredValueEntry[];
 	onSave: (values: WebpageStructuredValueEntry[]) => Promise<void>;
 };
@@ -65,7 +65,7 @@ const StructuredContentEditor: FC<StructuredContentEditorProps> = ({
 	}, []);
 
 	const addCollectionItemHandler = useCallback(
-		(path: string, itemSchema: WebpageStructuredSchema) => {
+		(path: string, itemSchema: WebpageStructuredNodeMap) => {
 			setValuesMap((current) =>
 				addCollectionItem(path, itemSchema, current)
 			);
@@ -77,7 +77,7 @@ const StructuredContentEditor: FC<StructuredContentEditorProps> = ({
 	const removeCollectionItemHandler = useCallback(
 		(
 			path: string,
-			itemSchema: WebpageStructuredSchema,
+			itemSchema: WebpageStructuredNodeMap,
 			removeIndex: number
 		) => {
 			setValuesMap((current) =>

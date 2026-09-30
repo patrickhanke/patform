@@ -7,7 +7,7 @@ import { languages_short } from "@repo/provider";
 
 const getDatabaseDefaultFields = (
 	fields: ModuleField[],
-	languages: LanguageValue[]
+	languages?: LanguageValue[]
 ): Field[] => {
 	const formFields: Field[] = [];
 
@@ -40,7 +40,7 @@ const getDatabaseDefaultFields = (
 
 		formFields.push(fieldObject);
 	});
-	if (languages?.length > 1) {
+	if (languages && languages?.length > 1) {
 		formFields.push({
 			id: "lang",
 			name: "lang",

@@ -1,19 +1,19 @@
 "use client";
 
-import { WebpageStructuredSchema } from "@repo/types";
+import { WebpageStructuredNodeMap } from "@repo/types";
 import { FC } from "react";
 import { isContainerNode, isFieldNode } from "../../utils/contentValues";
 import ContentField from "./ContentField";
 
 type ContentSectionProps = {
-	schema: WebpageStructuredSchema;
+	schema: WebpageStructuredNodeMap;
 	prefix?: string;
 	values: Map<string, unknown>;
 	onChange: (path: string, value: unknown) => void;
-	onCollectionAdd: (path: string, itemSchema: WebpageStructuredSchema) => void;
+	onCollectionAdd: (path: string, itemSchema: WebpageStructuredNodeMap) => void;
 	onCollectionRemove: (
 		path: string,
-		itemSchema: WebpageStructuredSchema,
+		itemSchema: WebpageStructuredNodeMap,
 		index: number
 	) => void;
 };

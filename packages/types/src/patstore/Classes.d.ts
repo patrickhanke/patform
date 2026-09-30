@@ -27,6 +27,18 @@ export type ClassState = {
 	color: string;
 };
 
+export type ClassTranslation = {
+	[key in LanguageValue]: {
+		title?: string;
+		text?: string;
+		description?: string;
+		seo_title?: string;
+		seo_description?: string;
+		seo_keywords?: string;
+		seo_image?: string;
+	};
+};
+
 export type ClassProperties = {
 	objectId: string;
 	createdAt: string;
@@ -37,8 +49,8 @@ export type ClassProperties = {
 	label: string;
 	created_by: PatstoreUser;
 	updated_by: PatstoreUser;
-	lang?: LanguageValue;
 	project: PatstoreProject;
+	translations?: ClassTranslation;
 };
 
 export type Classes =

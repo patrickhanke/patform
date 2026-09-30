@@ -3,21 +3,21 @@ import { Language } from "@repo/types";
 export const languages: Language[] = [
 	{
 		label: "Deutsch",
-		value: "de"
+		value: "de-DE"
 	},
 	{
 		label: "Englisch",
-		value: "en"
+		value: "en-EN"
 	}
 ] as const;
 
 export const languages_short: Language[] = [
 	{
 		label: "DE",
-		value: "de"
+		value: "de-DE"
 	},
 	{
 		label: "EN",
-		value: "en"
+		value: "en-EN"
 	}
 ] as const;

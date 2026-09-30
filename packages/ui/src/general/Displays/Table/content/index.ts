@@ -12,3 +12,5 @@ export * from "./TableFilter";
 export * from "./TableColumnEmailSettings";
 export { TableColumnConnectedElements } from "./TableColumnConnectedElements";
 export { TableColumnLang } from "./TableColumnLang";
+export { TableColumnEditText } from "./TableColumnEditText";
+export type { TableColumnEditTextType } from "./TableColumnEditText";
