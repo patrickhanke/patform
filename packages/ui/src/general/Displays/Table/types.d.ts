@@ -15,7 +15,8 @@ import {
 	ModuleFilter,
 	DatabaseFile,
 	LanguageValue,
-	ModuleSettings
+	ModuleSettings,
+	ModuleField
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -127,6 +128,7 @@ export type ColumnData<Class> = {
 	enableSorting?: boolean;
 	sortingFn?: (a: Row<Class>, b: Row<Class>) => number;
 	render?: (row: Class) => ReactNode;
+	settings?: ModuleField["settings"];
 };
 
 export type CreateColumnHookProps<Class> = {

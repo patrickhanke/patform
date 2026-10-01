@@ -1,5 +1,5 @@
-import { useCallback, useContext, useMemo } from "react";
-import { Map, Select, SwitchButtons, SwitchButton } from "@repo/ui";
+import { useCallback, useContext, useEffect, useMemo } from "react";
+import { Map, Select, SwitchButtons, SwitchButton, Divider } from "@repo/ui";
 import { EventTime, LocationClass } from "@repo/types";
 import { set, cloneDeep } from "lodash-es";
 import {
@@ -60,6 +60,7 @@ const TableColumnEditTime = ({
 	const locationButtonsState = useMemo(() => {
 		const locationButtons = [];
 		let counter = 0;
+		let type = time?.place?.type || "address";
 
 		if (settings?.select_address) {
 			locationButtons.push({
@@ -68,6 +69,7 @@ const TableColumnEditTime = ({
 				disabled: false
 			});
 			counter += 1;
+			type = "address";
 		}
 
 		if (settings?.select_location) {
@@ -77,6 +79,7 @@ const TableColumnEditTime = ({
 				disabled: false
 			});
 			counter += 1;
+			type = "location";
 		}
 
 		if (settings?.select_map) {
@@ -86,6 +89,7 @@ const TableColumnEditTime = ({
 				disabled: false
 			});
 			counter += 1;
+			type = "map";
 		}
 
 		if (settings?.select_online) {
@@ -95,15 +99,26 @@ const TableColumnEditTime = ({
 				disabled: false
 			});
 			counter += 1;
+			type = "online";
 		}
 
 		return {
 			locationButtons,
-			counter
+			counter,
+			type
 		};
 	}, [settings]);
 
 	const inputChangeHandler = useDebounceCallback(changeHandler, 1000);
+
+	useEffect(() => {
+		if (
+			locationButtonsState.locationButtons.length === 1 &&
+			locationButtonsState.type !== time?.place?.type
+		) {
+			changeHandler("place.type", locationButtonsState.type);
+		}
+	}, [locationButtonsState, changeHandler, time?.place?.type]);
 
 	if (!time) {
 		return null;
@@ -153,20 +168,26 @@ const TableColumnEditTime = ({
 					/>
 				</div>
 			)}
+			<Divider showLine />
 			<div>
-				<label>Ort</label>
 				{locationButtonsState.locationButtons.length > 1 && (
-					<SwitchButtons
-						buttonStates={locationButtonsState.locationButtons}
-						currentStates={
-							locationButtonsState.locationButtons.find(
-								(button) => button.value === time.place.type
-							) as { label: string; value: string }
-						}
-						changeHandler={(value: SwitchButton) =>
-							changeHandler("place.type", value.value as string)
-						}
-					/>
+					<>
+						<label>Auswahl</label>
+						<SwitchButtons
+							buttonStates={locationButtonsState.locationButtons}
+							currentStates={
+								locationButtonsState.locationButtons.find(
+									(button) => button.value === time.place.type
+								) as { label: string; value: string }
+							}
+							changeHandler={(value: SwitchButton) =>
+								changeHandler(
+									"place.type",
+									value.value as string
+								)
+							}
+						/>
+					</>
 				)}
 				<div className="table_columns_dates_location_container">
 					{time.place.type === "address" && (
@@ -224,11 +245,14 @@ const TableColumnEditTime = ({
 							<label>Ort auswählen</label>
 							<Map
 								initialPlace={{
-									lat: time.place.map?.lat || 0,
-									lng: time.place.map?.lng || 0
+									lat: time.place.map?.latitude || 0,
+									lng: time.place.map?.longitude || 0
 								}}
 								onChange={(place) =>
-									changeHandler("place.map", place)
+									changeHandler("place.map", {
+										latitude: place.lat,
+										longitude: place.lng
+									})
 								}
 							/>
 						</div>

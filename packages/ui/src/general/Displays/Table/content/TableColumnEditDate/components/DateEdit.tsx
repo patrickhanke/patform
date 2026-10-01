@@ -156,13 +156,13 @@ const DateEdit: FC<DateEditProps> = ({ date, setDate }) => {
 							<label>Ort auswählen</label>
 							<Map
 								initialPlace={{
-									lat: date.place.map?.lat || 0,
-									lng: date.place.map?.lng || 0
+									lat: date.place.map?.latitude || 0,
+									lng: date.place.map?.longitude || 0
 								}}
 								onChange={(place) =>
 									changeHandler("place.map", {
-										lat: place.lat,
-										lng: place.lng
+										latitude: place.lat,
+										longitude: place.lng
 									})
 								}
 							/>

@@ -14,6 +14,7 @@ import {
 	EventDate,
 	EventTime,
 	LanguageValue,
+	ModuleFieldTimesSettings,
 	PatstoreUser,
 	PersonClass,
 	Team,
@@ -206,7 +207,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	const disableHandler = useCallback(
 		(field: string, row: T) => {
 			if (disabledObject?.[field]) {
-				console.log(field, row);
 				return disabledObject[field](row);
 			}
 			return false;
@@ -671,7 +671,11 @@ const useCreateColumns = <T extends ColumnClasses>({
 										"Zeiten aktualisiert"
 									)
 								}
-								settings={columnElement.settings}
+								settings={
+									columnElement?.settings as
+										| ModuleFieldTimesSettings
+										| undefined
+								}
 							/>
 						);
 					},
