@@ -9,7 +9,12 @@ import {
 	useCreateColumns,
 	usePageData
 } from "@repo/ui";
-import { Filter, ModuleOverviewProps, VideoClass } from "@repo/types";
+import {
+	Filter,
+	LanguageValue,
+	ModuleOverviewProps,
+	VideoClass
+} from "@repo/types";
 import { useDataHandler, useFindModuleData } from "@repo/provider";
 
 const VideosOverview = ({
@@ -26,20 +31,19 @@ const VideosOverview = ({
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<VideoClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		defaultLanguage
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -50,7 +54,9 @@ const VideosOverview = ({
 		className: "Video",
 		refetch,
 		categories: module.categories,
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<VideoClass[]>();
 
@@ -98,7 +104,7 @@ const VideosOverview = ({
 				setFilters={setFilters}
 				filterColumns={module.filters || []}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 			<Modal

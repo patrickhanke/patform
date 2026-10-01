@@ -5,10 +5,11 @@ const initialDateValues: EventDate = {
 	start: "",
 	end: "",
 	label: "",
+	text: "",
 	place: {
 		type: "map",
 		address: "",
-		map: { lat: 0, lng: 0 },
+		map: { latitude: 0, longitude: 0 },
 		online: ""
 	},
 	full_day: false

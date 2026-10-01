@@ -139,7 +139,14 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 15,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: {
+			show_text: true,
+			select_address: true,
+			select_location: true,
+			select_map: true,
+			select_online: true
+		}
 	},
 	{
 		id: "link",

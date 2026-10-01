@@ -2,12 +2,12 @@
 
 import { useQuery } from "@apollo/client";
 import { UseFindDataParams, UseFindDataResult } from "../types";
-import { Classes, LanguageValue } from "@repo/types";
+import { Classes } from "@repo/types";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";
 import { get } from "lodash-es";
 import { pluralize, sanitizeGraphQlNode } from "../functions/helpers";
 import paramsHandler from "../functions/paramsHandler";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 const useFindData = <T extends Classes = Classes>({
 	objectName,
@@ -23,12 +23,8 @@ const useFindData = <T extends Classes = Classes>({
 	pollInterval = 0,
 	propertyId,
 	userIds,
-	absenceId,
-	defaultLanguage
+	absenceId
 }: UseFindDataParams): UseFindDataResult<T> => {
-	const [language, setLanguage] = useState<LanguageValue | undefined>(
-		defaultLanguage
-	);
 	const queryName = pluralize(objectName);
 	const {
 		loading,
@@ -46,7 +42,6 @@ const useFindData = <T extends Classes = Classes>({
 		{
 			variables: {
 				params: paramsHandler({
-					language,
 					moduleId,
 					projectId,
 					filters,
@@ -68,14 +63,6 @@ const useFindData = <T extends Classes = Classes>({
 		return await apolloRefetch();
 	}, [apolloRefetch]);
 
-	const changeLanguage = useCallback(
-		(language: LanguageValue) => {
-			setLanguage(language);
-			refetch();
-		},
-		[setLanguage]
-	);
-
 	return {
 		loading,
 		data: get(data, `${queryName}.edges`, [])
@@ -83,9 +70,7 @@ const useFindData = <T extends Classes = Classes>({
 			.filter((node: T | null): node is T => node !== null),
 		refetch,
 		count: get(data, `${queryName}.count`, 0),
-		error,
-		changeLanguage,
-		language
+		error
 	};
 };
 

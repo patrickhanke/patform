@@ -1,5 +1,4 @@
 import { ModuleSettings } from "@repo/types";
-import { Dispatch, SetStateAction } from "react";
 import LanguageSettings from "./components/LanguageSettings";
 import { SetPageData } from "@repo/ui";
 

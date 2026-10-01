@@ -5,18 +5,20 @@ const generateColumnsFromFields = <T extends ColumnClasses>(
 	fields: Module["fields"]
 ): ColumnData<T>[] => {
 	const fieldArray: ColumnData<T>[] = [];
-
-	fields.forEach((field) => {
-		if (field.active && field.id && !field.hidden) {
-			fieldArray.push({
-				id: field.id,
-				label: field.label,
-				type: field.type as ColumnDataTypes,
-				enableSorting: true,
-				sortingFn: undefined
-			});
-		}
-	});
+	fields
+		.sort((a, b) => a.position - b.position)
+		.forEach((field) => {
+			if (field.active && field.id && !field.hidden) {
+				fieldArray.push({
+					id: field.id,
+					label: field.label,
+					type: field.type as ColumnDataTypes,
+					enableSorting: true,
+					sortingFn: undefined,
+					settings: field.settings
+				});
+			}
+		});
 
 	return fieldArray;
 };

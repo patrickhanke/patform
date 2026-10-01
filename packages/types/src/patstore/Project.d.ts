@@ -1,7 +1,7 @@
 import { Module } from "./Module";
 
 type LanguageLabel = "Englisch" | "Deutsch";
-export type LanguageValue = "en" | "de";
+export type LanguageValue = "en-EN" | "de-DE";
 type LanguageLabelShort = "EN" | "DE";
 
 export type Language = {

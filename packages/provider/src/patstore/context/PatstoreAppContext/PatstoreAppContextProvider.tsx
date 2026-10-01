@@ -61,8 +61,8 @@ const PatstoreAppContextProvider = ({
 			user,
 			userLoading: !user.objectId ? true : false,
 			modules: project.modules,
-			defaultLanguage: project?.settings?.default_language || "de",
-			languages: project?.settings?.languages || ["de"]
+			defaultLanguage: project?.settings?.default_language || "de-DE",
+			languages: project?.settings?.languages || ["de-DE"]
 		}),
 		[pageTitle, project, currentModule, user, userRole]
 	);

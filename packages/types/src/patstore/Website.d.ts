@@ -1,4 +1,5 @@
 import { ClassProperties } from "./Classes";
+import { LanguageValue } from "./Project";
 
 export type WebpageStructuredFieldType =
 	| "text"
@@ -21,15 +22,15 @@ export type WebpageStructuredFieldSchema = {
 	 * Collection item schema (`type === "collection"`).
 	 * Matches @patstore/cms-content-plugin: `{ fields, default: [...] }`.
 	 */
-	fields?: WebpageStructuredSchema;
+	fields?: WebpageStructuredNodeMap;
 	/** @deprecated Prefer `fields` for collections; kept for older schemas. */
-	content?: WebpageStructuredSchema;
+	content?: WebpageStructuredNodeMap;
 };
 
 export type WebpageStructuredContainerSchema = {
 	type: WebpageStructuredContainerType;
 	label: string;
-	content: WebpageStructuredSchema;
+	content: WebpageStructuredNodeMap;
 };
 
 export type WebpageStructuredContainerType =
@@ -47,9 +48,17 @@ export type WebpageStructuredSchemaNode =
 	| WebpageStructuredFieldSchema
 	| WebpageStructuredContainerSchema;
 
-export type WebpageStructuredSchema = Record<
+/** Field tree for one language, a section, or a collection item. */
+export type WebpageStructuredNodeMap = Record<
 	string,
 	WebpageStructuredSchemaNode
+>;
+
+export type WebpageStructuredSchemaKey = "default" | LanguageValue;
+
+/** Top-level `page_content`: one field tree per language, plus `default`. */
+export type WebpageStructuredSchema = Partial<
+	Record<WebpageStructuredSchemaKey, WebpageStructuredNodeMap>
 >;
 
 export type WebpageStructuredValueEntry = {

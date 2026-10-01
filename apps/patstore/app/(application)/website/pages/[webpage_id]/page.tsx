@@ -21,12 +21,14 @@ async function WebsitePageContent({
 		return <p>Seite nicht gefunden</p>;
 	}
 
-	return <WebsitePage 
-		path={webpage.path} 
-		moduleId={webpage.module.objectId} 
-		languages={webpage?.module?.settings?.languages} 
-		defaultLanguage={webpage?.module?.settings?.default_language}
-	/>;
+	return (
+		<WebsitePage
+			webpageId={webpage.objectId}
+			moduleId={webpage.module.objectId}
+			languages={webpage?.module?.settings?.languages}
+			defaultLanguage={webpage?.module?.settings?.default_language}
+		/>
+	);
 }
 
 export default function WebsitePageRender({

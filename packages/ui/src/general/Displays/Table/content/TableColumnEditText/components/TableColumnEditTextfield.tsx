@@ -1,0 +1,52 @@
+"use client";
+
+import { TableColumnEditTextfieldProps } from "../types";
+import { useState } from "react";
+import "../../../styles.scss";
+import { Modal, IconButton } from "@repo/ui";
+
+const TableColumnEditTextfield = ({
+	value,
+	isEditable = false,
+	onChange
+}: TableColumnEditTextfieldProps) => {
+	const [isOpen, setIsOpen] = useState(false);
+	const [string, setString] = useState(value);
+
+	return (
+		<>
+			<div className="table_column_textfield_container">
+				{value ? (
+					<span>
+						{value.length > 60 ? `${value.slice(0, 60)}...` : value}
+					</span>
+				) : (
+					"-"
+				)}
+
+				{isEditable && (
+					<IconButton icon="edit" onClick={() => setIsOpen(!isOpen)} />
+				)}
+			</div>
+			<Modal
+				isOpen={isOpen}
+				cancelButtonHandler={() => setIsOpen(false)}
+				confirmButtonHandler={() => {
+					onChange(string);
+					setIsOpen(false);
+				}}
+				header={"Beschreibung ändern"}
+				buttonDisabled={[false, false]}
+			>
+				<div className={"table_column_textfield_textarea_container"}>
+					<textarea
+						defaultValue={value}
+						onChange={(e) => setString(e.target.value)}
+					/>
+				</div>
+			</Modal>
+		</>
+	);
+};
+
+export default TableColumnEditTextfield;

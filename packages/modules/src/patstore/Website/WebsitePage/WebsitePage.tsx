@@ -8,14 +8,14 @@ import page_states from "./constants/page_states";
 import { languages_short, useFindData } from "@repo/provider";
 
 const WebsitePage = ({
-	path,
+	webpageId,
 	moduleId,
-	languages,
+	languages = [],
 	defaultLanguage
 }: {
-	path: string;
+	webpageId: string;
 	moduleId: string;
-	languages: LanguageValue[];
+	languages?: LanguageValue[];
 	defaultLanguage: LanguageValue;
 }) => {
 	const [pageState, setPageState] = useState<PageState>(
@@ -23,14 +23,15 @@ const WebsitePage = ({
 	);
 	const [activeLang, setActiveLang] =
 		useState<LanguageValue>(defaultLanguage);
+	const hasMultipleLanguages = languages.length > 1;
 
 	const { data: pageData, refetch } = useFindData<WebpageClass>({
 		objectName: "Webpage",
 		filters: [
 			{
-				key: "path",
+				key: "objectId",
 				operator: "equalTo",
-				value: path
+				value: webpageId
 			}
 		],
 		fields: [
@@ -41,38 +42,29 @@ const WebsitePage = ({
 			"categories",
 			"image",
 			"documents",
-			"lang",
 			"page_content",
 			"page_data",
 			"active",
 			"content"
 		],
-		skipQuery: !path || !moduleId,
+		skipQuery: !webpageId || !moduleId,
 		moduleId: moduleId
 	});
 
-	console.log(pageData);
+	const webpage = pageData?.[0];
 
-	const activeWebpage = useMemo(() => {
-		return pageData?.find((page) => page.lang === activeLang);
-	}, [pageData, activeLang]);
-
-	console.log(activeLang);
-	console.log(activeWebpage);
 	const activeWebpageTitle = useMemo(() => {
-		const title = activeWebpage?.title || "";
+		const title = webpage?.title || "";
 		const category = pageState.label;
-		const language =
-			languages.length > 1
-				? languages_short.find(
-						(language) => language.value === activeLang
-					)?.label || ""
-				: "";
+		const language = hasMultipleLanguages
+			? languages_short.find((language) => language.value === activeLang)
+					?.label || ""
+			: "";
 
 		return `${title} - ${category} ${language ? `(${language})` : ""}`;
-	}, [activeWebpage]);
+	}, [activeLang, hasMultipleLanguages, pageState.label, webpage?.title]);
 
-	if (!activeWebpage) {
+	if (!webpage) {
 		return null;
 	}
 
@@ -90,10 +82,13 @@ const WebsitePage = ({
 			refetch={refetch}
 		>
 			{pageState.value === "settings" && (
-				<WebpageSettings webpage={activeWebpage} />
+				<WebpageSettings webpage={webpage} />
 			)}
 			{pageState.value === "content" && (
-				<WebpageContent webpage={activeWebpage} />
+				<WebpageContent
+					webpage={webpage}
+					language={hasMultipleLanguages ? activeLang : undefined}
+				/>
 			)}
 		</Page>
 	);

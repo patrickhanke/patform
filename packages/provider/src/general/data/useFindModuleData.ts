@@ -2,13 +2,7 @@
 
 import { generateQueryFromFields, useFindData } from "@repo/provider";
 import { useMemo } from "react";
-import {
-	ApolloRefetch,
-	Classes,
-	Filter,
-	LanguageValue,
-	Module
-} from "@repo/types";
+import { ApolloRefetch, Classes, Filter, Module } from "@repo/types";
 
 function useFindModuleData<T extends Classes>({
 	module,
@@ -17,7 +11,7 @@ function useFindModuleData<T extends Classes>({
 	skip,
 	order,
 	additionalFields = [],
-	defaultLanguage
+	fetchTranslations = false
 }: {
 	module?: Module;
 	filters: Filter[];
@@ -25,42 +19,37 @@ function useFindModuleData<T extends Classes>({
 	skip: number;
 	order?: string;
 	additionalFields?: string[];
-	defaultLanguage?: LanguageValue;
+	fetchTranslations?: boolean;
 }): {
 	loading: boolean;
 	data?: T[];
 	refetch: ApolloRefetch;
 	count: number;
-	language: LanguageValue | undefined;
-	changeLanguage: (language: LanguageValue) => void;
 } {
-	const { loading, data, refetch, count, changeLanguage, language } =
-		useFindData({
-			objectName: (module?.connected_class || "_User") as string,
-			fields: [
-				...generateQueryFromFields(module?.fields ?? []),
-				...additionalFields,
-				"data"
-			],
-			moduleId: module?.objectId,
-			filters,
-			limit,
-			skip,
-			order,
-			skipQuery: !module?.connected_class,
-			defaultLanguage
-		});
+	const { loading, data, refetch, count } = useFindData({
+		objectName: (module?.connected_class || "_User") as string,
+		fields: [
+			...generateQueryFromFields(module?.fields ?? []),
+			...additionalFields,
+			...(fetchTranslations ? ["translations"] : []),
+			"data"
+		],
+		moduleId: module?.objectId,
+		filters,
+		limit,
+		skip,
+		order,
+		skipQuery: !module?.connected_class
+	});
 
 	const returnValue = useMemo(
 		() => ({
 			loading: !module || loading,
 			data,
 			refetch,
-			count,
-			language,
-			changeLanguage
+			count
 		}),
-		[data, loading, module, language]
+		[data, loading, module]
 	);
 
 	return returnValue;

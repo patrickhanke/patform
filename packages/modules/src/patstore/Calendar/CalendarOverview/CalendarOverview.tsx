@@ -12,7 +12,12 @@ import {
 	usePageData
 } from "@repo/ui";
 import { useDataHandler, useFindModuleData } from "@repo/provider";
-import { AppointmentClass, Filter, ModuleOverviewProps } from "@repo/types";
+import {
+	AppointmentClass,
+	Filter,
+	LanguageValue,
+	ModuleOverviewProps
+} from "@repo/types";
 
 const CalendarOverview = ({
 	module,
@@ -27,14 +32,13 @@ const CalendarOverview = ({
 		pageSize: 10
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<AppointmentClass>({
 		module,
 		filters,
@@ -42,7 +46,7 @@ const CalendarOverview = ({
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
 		additionalFields: ["date"],
-		defaultLanguage
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -62,7 +66,9 @@ const CalendarOverview = ({
 		refetch,
 		categories: module?.categories,
 		constants: {},
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<AppointmentClass[]>();
 
@@ -129,7 +135,7 @@ const CalendarOverview = ({
 				setOrder={setOrder}
 				enableRowSelection
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 			<Modal

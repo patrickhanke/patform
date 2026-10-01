@@ -1,24 +1,24 @@
 "use client";
 
 import { Card, Heading, Stack } from "@chakra-ui/react";
-import { WebpageStructuredSchema } from "@repo/types";
+import { WebpageStructuredNodeMap } from "@repo/types";
 import { FC } from "react";
 import { isContainerNode, isFieldNode } from "../utils/contentValues";
 import ContentField from "./ContentField";
 import ContentFieldRow from "./ContentFieldRow";
 
 type ContentSectionProps = {
-	schema: WebpageStructuredSchema;
+	schema: WebpageStructuredNodeMap;
 	prefix?: string;
 	values: Map<string, unknown>;
 	onChange: (path: string, value: unknown) => void;
 	onCollectionAdd: (
 		path: string,
-		itemSchema: WebpageStructuredSchema
+		itemSchema: WebpageStructuredNodeMap
 	) => void;
 	onCollectionRemove: (
 		path: string,
-		itemSchema: WebpageStructuredSchema,
+		itemSchema: WebpageStructuredNodeMap,
 		index: number
 	) => void;
 };
@@ -71,6 +71,7 @@ const ContentSection: FC<ContentSectionProps> = ({
 			}
 
 			if (node.type === "collection") {
+
 				return (
 					<ContentField
 						key={path}

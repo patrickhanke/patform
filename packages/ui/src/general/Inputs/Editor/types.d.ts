@@ -17,6 +17,7 @@ export type EditorComponent = {
 	onClickOutside?: () => void;
 	withHexColorsDecorator?: boolean;
 	withTextAlign?: boolean;
+	withImages?: boolean;
 	id?: string;
 	label?: string;
 };

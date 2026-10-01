@@ -20,6 +20,9 @@ const TableColumnConnectedElements = ({ value = "" }: { value: string }) => {
 			object_id: string;
 			class_name: string;
 		}[] = [];
+
+		if (!connectedImages) return imageEntries;
+
 		Object.keys(connectedImages).forEach((key) => {
 			const images = connectedImages[key].images;
 			if (images.includes(value)) {

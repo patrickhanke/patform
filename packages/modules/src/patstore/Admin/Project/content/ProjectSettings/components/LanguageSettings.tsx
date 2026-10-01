@@ -11,6 +11,7 @@ const LanguageSettings = ({
 	refetch: ApolloRefetch;
 }) => {
 	const { updateData } = useDataHandler();
+
 	const formFields = useMemo(() => {
 		return [
 			{
@@ -21,8 +22,8 @@ const LanguageSettings = ({
 				label: "Sprachen",
 				value: project?.settings?.languages,
 				select_options: [
-					{ label: "Deutsch", value: "de" },
-					{ label: "Englisch", value: "en" }
+					{ label: "Deutsch", value: "de-DE" },
+					{ label: "Englisch", value: "en-EN" }
 				],
 				isMulti: true,
 				dataType: "string",
@@ -36,11 +37,12 @@ const LanguageSettings = ({
 				label: "Standardsprache",
 				value: project?.settings?.default_language,
 				select_options: [
-					{ label: "Deutsch", value: "de", disabled: false },
+					{ label: "Deutsch", value: "de-DE", disabled: false },
 					{
 						label: "Englisch",
 						value: "en",
-						disabled: !project?.settings?.languages?.includes("en")
+						disabled:
+							!project?.settings?.languages?.includes("en-EN")
 					}
 				],
 				dataType: "string",
@@ -55,7 +57,7 @@ const LanguageSettings = ({
 			formSubmitHandler={async (values) => {
 				await updateData({
 					className: "Project",
-					objectId: projectId,
+					objectId: project.objectId,
 					updateObject: {
 						settings: values
 					}

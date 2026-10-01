@@ -10,9 +10,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useDataHandlerSecure } from "@repo/provider";
 import {
 	ClassState,
+	ClassTranslation,
 	EventDate,
 	EventTime,
 	LanguageValue,
+	ModuleFieldTimesSettings,
 	PatstoreUser,
 	PersonClass,
 	Team,
@@ -32,15 +34,11 @@ import {
 	TableColumnImage,
 	TableColumnPerson,
 	TableColumnPersons,
-	TableColumnString,
-	TableColumnTexteditor,
-	TableColumnTextfield,
 	TableColumnDate,
 	TableColumnImages,
 	LatLng,
 	usePageData
 } from "@repo/ui";
-import { get } from "lodash-es";
 import { IconButton } from "@repo/ui";
 import {
 	TableColumnDatesField,
@@ -50,7 +48,9 @@ import {
 	TableColumnEditField,
 	TableColumnTimesField,
 	TableColumnEmailSettings,
-	TableColumnLang
+	TableColumnLang,
+	TableColumnEditText,
+	type TableColumnEditTextType
 } from "../content";
 import {
 	TableColumnFile,
@@ -116,7 +116,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	settings = [],
 	className,
 	refetch,
-	constants,
 	editLink,
 	disableCategory,
 	useMasterKey = false,
@@ -124,7 +123,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 	hasEmailSettings = false,
 	currentModule,
 	initialData,
-	disabledObject
+	disabledObject,
+	languages = [],
+	language = "de-DE"
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandlerSecure(useMasterKey);
 	const updateColumnData: UpdateColumnData = useCallback(
@@ -206,7 +207,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 	const disableHandler = useCallback(
 		(field: string, row: T) => {
 			if (disabledObject?.[field]) {
-				console.log(field, row);
 				return disabledObject[field](row);
 			}
 			return false;
@@ -222,7 +222,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_string"
 			) {
 				columnArray.push({
-					accessorFn: (row) => {
+					accessorKey: columnElement.id as string,
+					cell: (info) => {
+						const row = info.row.original;
 						const live = getLiveRow(pageRows, row);
 						return columnElement.id === "email" &&
 							className === "User" ? (
@@ -232,29 +234,38 @@ const useCreateColumns = <T extends ColumnClasses>({
 								field={columnElement.id}
 							/>
 						) : (
-							<TableColumnString
+							<TableColumnEditText
+								type={
+									columnElement.type as TableColumnEditTextType
+								}
+								columnKey={columnElement.id as string}
 								value={live[columnElement.id] as string}
+								translation={row.translations}
 								isLink={columnElement.id === "link"}
 								isEditable={
 									columnElement.type === "edit_string"
 										? true
 										: false
 								}
-								onChange={(value: string) =>
+								onChange={(
+									key,
+									value: string | ClassTranslation
+								) =>
 									persistRow(
 										live.objectId,
-										columnElement.id as string,
+										key,
 										value,
 										"Text aktualisiert",
 										TEXT_DEBOUNCE_MS
 									)
 								}
+								languages={languages}
+								language={language}
 							/>
 						);
 					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
-					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
 					enableSorting: columnElement.enableSorting ?? false
 				} as ColumnDef<T>);
@@ -293,58 +304,70 @@ const useCreateColumns = <T extends ColumnClasses>({
 				columnElement.type === "edit_textfield"
 			) {
 				columnArray.push({
-					accessorFn: (row) => {
+					accessorKey: columnElement.id as string,
+					cell: (info) => {
+						const row = info.row.original;
 						const live = getLiveRow(pageRows, row);
 						return (
-							<TableColumnTextfield
+							<TableColumnEditText
+								type={
+									columnElement.type as TableColumnEditTextType
+								}
+								columnKey={columnElement.id as string}
 								value={live[columnElement.id] as string}
+								translation={row.translations}
 								isEditable={
 									columnElement.type === "edit_textfield"
-										? true
-										: false
 								}
-								onChange={(value: string) =>
+								onChange={(key, value) =>
 									persistRow(
 										live.objectId,
-										columnElement.id as string,
+										key,
 										value,
 										"Text aktualisiert",
 										TEXT_DEBOUNCE_MS
 									)
 								}
+								languages={languages}
+								language={language}
 							/>
 						);
 					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
-					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
 					enableSorting: false
 				} as ColumnDef<T>);
 			}
 			if (columnElement.type === "texteditor") {
 				columnArray.push({
-					accessorFn: (row) => {
+					accessorKey: columnElement.id as string,
+					cell: (info) => {
+						const row = info.row.original;
 						const live = getLiveRow(pageRows, row);
 						return (
-							<TableColumnTexteditor
+							<TableColumnEditText
+								type="texteditor"
+								columnKey={columnElement.id as string}
 								value={live[columnElement.id] as string}
+								translation={row.translations}
 								isEditable={true}
-								onChange={(value: string) =>
+								onChange={(key, value) =>
 									persistRow(
 										live.objectId,
-										columnElement.id as string,
+										key,
 										value,
 										"Text aktualisiert",
 										TEXT_DEBOUNCE_MS
 									)
 								}
+								languages={languages}
+								language={language}
 							/>
 						);
 					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
-					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
 					enableSorting: false
 				} as ColumnDef<T>);
@@ -487,7 +510,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 										? columnElement.disabled(live)
 										: true
 								}
-								options={get(constants, columnElement.id, [
+								options={[
 									{
 										value: "published",
 										label: "Veröffentlicht",
@@ -498,7 +521,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 										label: "Entwurf",
 										color: "yellow"
 									}
-								])}
+								]}
 								onChange={(value: ClassState) =>
 									persistRow(
 										live.objectId,
@@ -647,6 +670,11 @@ const useCreateColumns = <T extends ColumnClasses>({
 										value,
 										"Zeiten aktualisiert"
 									)
+								}
+								settings={
+									columnElement?.settings as
+										| ModuleFieldTimesSettings
+										| undefined
 								}
 							/>
 						);
@@ -835,24 +863,32 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "content") {
 				columnArray.push({
-					accessorFn: (row) => {
+					cell: (info) => {
+						const row = info.row.original;
 						const live = getLiveRow(pageRows, row);
 						return live?.type === "text" ? (
-							<TableColumnTexteditor
+							<TableColumnEditText
+								type="texteditor"
+								columnKey={columnElement.id as string}
 								value={live[columnElement.id]?.value as string}
+								translation={row.translations}
 								isEditable={true}
-								onChange={(value: string) =>
+								onChange={(key, value) =>
 									persistRow(
 										live.objectId,
-										columnElement.id as string,
-										{
-											type: live.type,
-											value
-										},
+										key,
+										key === "translations"
+											? value
+											: {
+													type: live.type,
+													value: value as string
+												},
 										"Text aktualisiert",
 										TEXT_DEBOUNCE_MS
 									)
 								}
+								languages={languages}
+								language={language}
 							/>
 						) : (
 							<TableColumnImages
@@ -878,7 +914,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 					},
 					header: () => <span>{columnElement.label}</span>,
 					id: columnElement.id as string,
-					cell: (info) => info.getValue(),
 					footer: (info) => info.column.id,
 					enableSorting: false
 				} as ColumnDef<T>);
@@ -1073,7 +1108,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 		data,
 		className,
 		refetch,
-		constants,
 		fields,
 		categories,
 		editLink,
@@ -1087,7 +1121,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 		editDisabled,
 		hasEmailSettings,
 		useMasterKey,
-		updateData
+		updateData,
+		language,
+		languages
 	]);
 
 	return columns;

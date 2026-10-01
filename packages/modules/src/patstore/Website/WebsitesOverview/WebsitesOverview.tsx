@@ -7,10 +7,9 @@ import createClass from "./constants/createWebpageClass";
 
 const WebsitesOverview = ({
 	module,
-	languages,
-	defaultLanguage
+	languages
 }: ModuleOverviewProps<"/website">) => {
-	const { data, refetch, language, changeLanguage } = useFindData({
+	const { data, refetch } = useFindData({
 		objectName: "Webpage",
 		fields: [
 			"objectId",
@@ -20,10 +19,11 @@ const WebsitesOverview = ({
 			"created_by { objectId label portrait { name url } }",
 			"createdAt"
 		],
-		order: "path_DESC",
-		moduleId: module.objectId,
-		defaultLanguage
+		order: "path_ASC",
+		moduleId: module.objectId
 	});
+
+	console.log(module.objectId);
 
 	const columns = useCreateColumns<WebpageClass>({
 		data: [
@@ -65,13 +65,7 @@ const WebsitesOverview = ({
 			}}
 			refetch={refetch}
 		>
-			<Table
-				data={pageRows ?? data ?? []}
-				columns={columns}
-				language={language}
-				languages={languages}
-				changeLanguage={changeLanguage}
-			/>
+			<Table data={pageRows ?? data ?? []} columns={columns} />
 		</Page>
 	);
 };

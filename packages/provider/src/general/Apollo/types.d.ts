@@ -76,7 +76,6 @@ export type UseFindDataParams = {
 	propertyId?: string;
 	userIds?: string[];
 	absenceId?: string;
-	defaultLanguage?: LanguageValue;
 };
 
 export type UseFindDataResult<T extends Classes = Classes> = {
@@ -85,8 +84,6 @@ export type UseFindDataResult<T extends Classes = Classes> = {
 	refetch: ApolloRefetch;
 	count: number;
 	error: ApolloError | undefined;
-	language: LanguageValue | undefined;
-	changeLanguage: (language: LanguageValue) => void;
 };
 
 export type UseFindDataHook<T extends Classes = Classes> = (

@@ -1,8 +1,10 @@
 import {
+	LanguageValue,
 	WebpageStructuredContainerSchema,
 	WebpageStructuredFieldSchema,
 	WebpageStructuredLinkValue,
-	WebpageStructuredSchema,
+	WebpageStructuredNodeMap,
+	WebpageStructuredSchemaKey,
 	WebpageStructuredSchemaNode,
 	WebpageStructuredValueEntry
 } from "@repo/types";
@@ -35,7 +37,7 @@ const buildPath = (prefix: string, key: string) =>
 
 export const getCollectionFieldSchema = (
 	node: WebpageStructuredFieldSchema
-): WebpageStructuredSchema | undefined => {
+): WebpageStructuredNodeMap | undefined => {
 	if (node.type !== "collection") {
 		return undefined;
 	}
@@ -80,7 +82,7 @@ export const getDefaultFieldValue = (
 };
 
 export const buildCollectionItem = (
-	fields: WebpageStructuredSchema
+	fields: WebpageStructuredNodeMap
 ): Record<string, unknown> => {
 	const item: Record<string, unknown> = {};
 
@@ -118,7 +120,7 @@ export const mergeStoredValues = (
  * Collections are a single `{ path, value: [...] }` entry (patstore-kit).
  */
 export const serializeValues = (
-	schema: WebpageStructuredSchema,
+	schema: WebpageStructuredNodeMap,
 	values: Map<string, unknown>,
 	prefix = ""
 ): WebpageStructuredValueEntry[] => {
@@ -160,7 +162,7 @@ export const valuesAreEqual = (
 
 export const addCollectionItem = (
 	basePath: string,
-	itemSchema: WebpageStructuredSchema,
+	itemSchema: WebpageStructuredNodeMap,
 	values: Map<string, unknown>
 ): Map<string, unknown> => {
 	const next = new Map(values);
@@ -171,7 +173,7 @@ export const addCollectionItem = (
 
 export const removeCollectionItem = (
 	basePath: string,
-	_itemSchema: WebpageStructuredSchema,
+	_itemSchema: WebpageStructuredNodeMap,
 	values: Map<string, unknown>,
 	removeIndex: number
 ): Map<string, unknown> => {
@@ -199,4 +201,32 @@ export const updateCollectionItemField = (
 	items[index] = { ...current, [fieldKey]: fieldValue };
 	next.set(basePath, items);
 	return next;
+};
+
+const STRUCTURED_LANGUAGE_KEYS = {
+	"de-DE": true,
+	"en-EN": true
+} satisfies Record<LanguageValue, true>;
+
+const structuredLanguageKeys = Object.keys(
+	STRUCTURED_LANGUAGE_KEYS
+) as LanguageValue[];
+
+export const isStructuredLanguagePath = (
+	path: string,
+	language: LanguageValue
+) => path === language || path.startsWith(`${language}.`);
+
+/** `default` entries have no language prefix. Other keys own `lang` and `lang.*`. */
+export const entryMatchesSchemaKey = (
+	path: string,
+	schemaKey: WebpageStructuredSchemaKey
+) => {
+	if (schemaKey === "default") {
+		return !structuredLanguageKeys.some((language) =>
+			isStructuredLanguagePath(path, language)
+		);
+	}
+
+	return isStructuredLanguagePath(path, schemaKey);
 };

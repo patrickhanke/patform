@@ -9,7 +9,7 @@ import {
 } from "@repo/ui";
 import { useContext, useMemo, useState } from "react";
 
-import { ContentClass, Filter, ModuleOverviewProps } from "@repo/types";
+import { ContentClass, Filter, LanguageValue, ModuleOverviewProps } from "@repo/types";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
 import createWebpageContenClass from "./constant/createEmailContentClass";
 
@@ -30,28 +30,28 @@ const EmailComponentOverview = ({
 		pageIndex: 0,
 		pageSize: 10
 	});
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 
-	const { loading, data, refetch, count, language, changeLanguage } =
-		useFindData({
-			objectName: "Content",
-			fields: [
-				"objectId",
-				"title",
-				"content_id",
-				"type",
-				"createdAt",
-				"active",
-				"data",
-				"created_by {objectId username}",
-				"updated_by {objectId username}",
-				"categories"
-			],
-			moduleId: module.objectId,
-			filters: filters,
-			skip: pagination.pageIndex * pagination.pageSize,
-			limit: pagination.pageSize,
-			defaultLanguage
-		});
+	const { loading, data, refetch, count } = useFindData({
+		objectName: "Content",
+		fields: [
+			"objectId",
+			"title",
+			"content_id",
+			"type",
+			"createdAt",
+			"active",
+			"data",
+			"created_by {objectId username}",
+			"updated_by {objectId username}",
+			"categories",
+			...(defaultLanguage && languages.length > 1 ? ["translations"] : [])
+		],
+		moduleId: module.objectId,
+		filters: filters,
+		skip: pagination.pageIndex * pagination.pageSize,
+		limit: pagination.pageSize
+	});
 
 	const columns = useCreateColumns<ContentClass>({
 		data: [
@@ -63,7 +63,9 @@ const EmailComponentOverview = ({
 		refetch,
 		categories: [],
 		editLink: "emails/templates",
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<ContentClass[]>();
 
@@ -104,7 +106,7 @@ const EmailComponentOverview = ({
 				filterContent={renderFilters}
 				loading={loading}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 		</Page>

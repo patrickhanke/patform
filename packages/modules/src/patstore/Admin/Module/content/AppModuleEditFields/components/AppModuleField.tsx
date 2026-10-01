@@ -1,12 +1,13 @@
-import { Form } from "@repo/ui";
-import { Field } from "@repo/types";
+import { Divider, Form, IconButton, SlideInForm } from "@repo/ui";
+import { Field, ModuleFieldTimesSettings } from "@repo/types";
 
 import { AppModuleFieldProps } from "../types";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const readOnlyFields = ["createdAt", "updatedAt", "slug"];
 
 const AppModuleField = ({ field, changeField }: AppModuleFieldProps) => {
+	const [isOpen, setIsOpen] = useState(false);
 	const formFields = useMemo(
 		() => [
 			{
@@ -45,6 +46,18 @@ const AppModuleField = ({ field, changeField }: AppModuleFieldProps) => {
 		[field]
 	);
 
+	const settingsFields: Field[] = useMemo(() => {
+		if (!field.settings) return [];
+		const settings = field.settings as Record<string, boolean>;
+		return Object.keys(settings).map((key) => ({
+			id: key,
+			label: key,
+			name: key,
+			type: "toggle" as const,
+			value: settings[key] ?? false
+		}));
+	}, [field.settings]);
+
 	return (
 		<>
 			<div>
@@ -64,6 +77,56 @@ const AppModuleField = ({ field, changeField }: AppModuleFieldProps) => {
 				isHorizontal
 				useWithDebounce
 			/>
+			{field.settings && Object.keys(field.settings).length > 0 && (
+				<>
+					<Divider showLine />
+					<div className="flex row a-ce j-sb">
+						<label data-is_horizontal="true" htmlFor="settings">
+							Einstellungen
+						</label>
+						<IconButton
+							key="settings"
+							icon="settings"
+							onClick={() => {
+								setIsOpen(true);
+							}}
+							text="Einstellungen"
+						/>
+					</div>
+				</>
+			)}
+			{field.settings && Object.keys(field.settings).length > 0 && (
+				<div>
+					<SlideInForm
+						title="Einstellungen"
+						isOpen={isOpen}
+						setIsOpen={setIsOpen}
+						dataHandler={(values) => {
+							if (field.id === "times") {
+								changeField({
+									...field,
+									settings: {
+										...field.settings,
+										...(values as Partial<ModuleFieldTimesSettings>)
+									}
+								});
+								return;
+							}
+
+							changeField({
+								...field,
+								settings: {
+									...field.settings,
+									...(values as Record<string, boolean>)
+								}
+							});
+						}}
+						fields={settingsFields}
+						isHorizontal
+						data={field.settings}
+					/>
+				</div>
+			)}
 		</>
 	);
 };

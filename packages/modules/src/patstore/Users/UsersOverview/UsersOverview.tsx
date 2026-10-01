@@ -20,6 +20,7 @@ import { CreateUser } from "./types";
 import { useState } from "react";
 import {
 	Filter,
+	LanguageValue,
 	ModuleOverviewProps,
 	PatstoreRoleClass,
 	PatstoreUser
@@ -39,6 +40,7 @@ const UsersOverview = ({
 	const { project } = useAppContext();
 	const { roles } = useFindRoles({ projectId: project.objectId });
 	const [order, setOrder] = useState<string>("name_ASC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 
 	const [emailSuppression, setEmailSuppression] = useState(false);
 	const [inviteUser, setInviteUser] = useState(false);
@@ -84,14 +86,14 @@ const UsersOverview = ({
 			"data",
 			"roles",
 			"settings",
-			"name"
+			"name",
+			...(defaultLanguage && languages.length > 1 ? ["translations"] : [])
 		],
 		filters: [...initialFilters, ...filters] as Filter[],
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order: order,
-		useMasterKey: true,
-		defaultLanguage
+		useMasterKey: true
 	});
 
 	const columns = useCreateColumns<PatstoreUser>({
@@ -105,7 +107,9 @@ const UsersOverview = ({
 		hasEmailSettings:
 			module.fields?.find((field) => field.id === "emails")?.active ||
 			false,
-		initialData: users ?? []
+		initialData: users ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<PatstoreUser[]>();
 
@@ -212,6 +216,8 @@ const UsersOverview = ({
 					filterColumns={module.filters}
 					setOrder={setOrder}
 					loading={loading}
+					language={language}
+					changeLanguage={setLanguage}
 					languages={languages}
 				/>
 			)}

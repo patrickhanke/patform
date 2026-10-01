@@ -98,6 +98,9 @@ export type ModuleSettings = {
 	languages: LanguageValue[];
 	default_language: LanguageValue;
 	savingsGroup?: SavingsGroupModuleData;
+	edit_title?: boolean;
+	edit_text?: boolean;
+	edit_description?: boolean;
 };
 
 export type ModuleFieldType =
@@ -145,8 +148,15 @@ export type ModuleFieldType =
 	| "lang"
 	| "content_type";
 
-export type ModuleField = {
-	id: ModuleFieldIds;
+export type ModuleFieldTimesSettings = {
+	show_text: boolean;
+	select_address: boolean;
+	select_location: boolean;
+	select_map: boolean;
+	select_online: boolean;
+};
+
+type ModuleFieldBase = {
 	label: string;
 	required: boolean;
 	type: ModuleFieldType;
@@ -156,6 +166,18 @@ export type ModuleField = {
 	hidden: boolean;
 	select_options?: { label: string; value: string }[];
 };
+
+export type ModuleField = ModuleFieldBase &
+	(
+		| {
+				id: "times";
+				settings: ModuleFieldTimesSettings;
+		  }
+		| {
+				id: Exclude<ModuleFieldIds, "times">;
+				settings?: Record<string, boolean>;
+		  }
+	);
 
 export type ModuleClass =
 	| "Webpage"

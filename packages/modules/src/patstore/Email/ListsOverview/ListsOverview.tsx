@@ -10,7 +10,7 @@ import {
 	useCreateColumns,
 	usePageData
 } from "@repo/ui";
-import { EmailList, Filter, ModuleOverviewProps } from "@repo/types";
+import { EmailList, Filter, LanguageValue, ModuleOverviewProps } from "@repo/types";
 
 const ListsOverview = ({
 	module,
@@ -36,16 +36,24 @@ const ListsOverview = ({
 	const [deleteModal, setDeleteModal] = useState<boolean>(false);
 	const [selectedRows, setSelectedRows] = useState<string[]>([]);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 
-	const { data, refetch, count, language, changeLanguage } = useFindData({
+	const { data, refetch, count } = useFindData({
 		objectName: "Email",
-		fields: ["objectId", "title", "createdAt", "updatedAt", "data", "type"],
+		fields: [
+			"objectId",
+			"title",
+			"createdAt",
+			"updatedAt",
+			"data",
+			"type",
+			...(defaultLanguage && languages.length > 1 ? ["translations"] : [])
+		],
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		moduleId: module.objectId,
-		defaultLanguage
+		moduleId: module.objectId
 	});
 
 	const columns = useCreateColumns<EmailList>({
@@ -87,6 +95,8 @@ const ListsOverview = ({
 		refetch,
 		editLink: "emails/lists",
 		initialData: data ?? [],
+		languages,
+		language,
 		disabledObject: {
 			delete: (row) => row.type === "static_list"
 		}
@@ -150,7 +160,8 @@ const ListsOverview = ({
 						]
 					}
 				],
-				refetch
+				refetch,
+				languages
 			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}
@@ -163,7 +174,7 @@ const ListsOverview = ({
 				rowCount={count}
 				setOrder={setOrder}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 			<Modal

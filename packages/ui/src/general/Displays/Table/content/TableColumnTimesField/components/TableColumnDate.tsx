@@ -1,7 +1,7 @@
 import { IconButton } from "@repo/ui";
 import "../styles.scss";
 import { useMemo } from "react";
-import { formatISO9075 } from "date-fns";
+import { formatISO9075, isValid } from "date-fns";
 import { TableColumnTimeProps } from "../types";
 import { weekdays } from "@repo/provider";
 
@@ -14,12 +14,11 @@ const TableColumnTime = ({
 		if (time.weekday) {
 			const day = weekdays.find((day) => day.value === time.weekday);
 			return day?.label || "Kein Wochentag";
-		} else if (
-			time.start &&
-			time.start.length > 2 &&
-			new Date(time.start)
-		) {
-			return formatISO9075(new Date(time.start));
+		}
+
+		const start = time.start ? new Date(time.start) : null;
+		if (start && isValid(start)) {
+			return formatISO9075(start);
 		} else {
 			return "Kein Datum";
 		}

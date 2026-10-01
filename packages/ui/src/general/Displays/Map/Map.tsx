@@ -90,19 +90,19 @@ const Map = ({ initialPlace = defaultPlace, onChange }: MapProps) => {
 			<div className="flex row a-ce j-sb w-100">
 				<input
 					type="text"
-					placeholder="Search for a place"
+					placeholder="Nach einem Ort suchen"
 					value={searchQuery}
 					onChange={(e) => setSearchQuery(e.target.value)}
 				/>
 				<IconButton
 					icon="search"
-					text="Nach Ort suchen"
+					text="Suchen"
 					onClick={handleSearch}
 					disabled={loading || !searchQuery}
 					loading={loading}
 				/>
 			</div>
-			<Divider />
+			<Divider showLine={false} size="small" />
 			<GoogleMap
 				mapContainerStyle={containerStyle}
 				center={selectedPlace}

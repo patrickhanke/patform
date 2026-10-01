@@ -11,7 +11,12 @@ import {
 	useCreateColumns,
 	usePageData
 } from "@repo/ui";
-import { Filter, ImageClass, ModuleOverviewProps } from "@repo/types";
+import {
+	Filter,
+	ImageClass,
+	LanguageValue,
+	ModuleOverviewProps
+} from "@repo/types";
 import { useDataHandler, useFindModuleData, useGetData } from "@repo/provider";
 
 const ImagesOverview = ({
@@ -49,20 +54,19 @@ const ImagesOverview = ({
 
 	const [loading, setLoading] = useState(false);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
+	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
 		data,
 		refetch,
 		count,
-		loading: dataLoading,
-		language,
-		changeLanguage
+		loading: dataLoading
 	} = useFindModuleData<ImageClass>({
 		module,
 		filters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order,
-		defaultLanguage
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
 	const [deleteModal, setDeleteModal] = useState(false);
@@ -73,7 +77,9 @@ const ImagesOverview = ({
 		className: "Image",
 		refetch,
 		categories: module.categories,
-		initialData: data ?? []
+		initialData: data ?? [],
+		languages,
+		language
 	});
 	const { data: pageRows } = usePageData<ImageClass[]>();
 
@@ -145,7 +151,7 @@ const ImagesOverview = ({
 				filterColumns={module.filters}
 				setOrder={setOrder}
 				language={language}
-				changeLanguage={changeLanguage}
+				changeLanguage={setLanguage}
 				languages={languages}
 			/>
 			<Modal

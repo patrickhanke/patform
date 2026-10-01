@@ -9,7 +9,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -43,7 +43,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -61,7 +61,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -79,7 +79,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -97,7 +97,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -115,7 +115,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -133,7 +133,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -151,7 +151,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -169,7 +169,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		data_fields: [
 			{
@@ -210,7 +210,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -228,7 +228,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -246,7 +246,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -264,7 +264,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -282,7 +282,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -300,7 +300,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -334,7 +334,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -352,7 +352,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -370,7 +370,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],
@@ -388,7 +388,7 @@ export const module_option_fields: ModuleOptionsField = {
 		settings: {
 			categories: [],
 			languages: [],
-			default_language: "de"
+			default_language: "de-DE"
 		},
 		fields: [],
 		data_fields: [],

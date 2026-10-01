@@ -14,7 +14,9 @@ import {
 	ModuleFieldType,
 	ModuleFilter,
 	DatabaseFile,
-	LanguageValue
+	LanguageValue,
+	ModuleSettings,
+	ModuleField
 } from "@repo/types";
 import { CategoryClass, ImageClass, NewsClass, PersonClass } from "@repo/types";
 import { Dispatch, ReactNode, SetStateAction } from "react";
@@ -69,13 +71,6 @@ export type TableColumnCategoryProps = {
 	categories: ClassCategories;
 	isEditable: boolean;
 	onChange: (categories: string[]) => Promise<void>;
-};
-
-export type TableColumnStringProps = {
-	value: string;
-	isEditable?: boolean;
-	isLink?: boolean;
-	onChange: (image: string) => void;
 };
 
 export type TableColumnTextfieldProps = {
@@ -133,6 +128,7 @@ export type ColumnData<Class> = {
 	enableSorting?: boolean;
 	sortingFn?: (a: Row<Class>, b: Row<Class>) => number;
 	render?: (row: Class) => ReactNode;
+	settings?: ModuleField["settings"];
 };
 
 export type CreateColumnHookProps<Class> = {
@@ -142,7 +138,6 @@ export type CreateColumnHookProps<Class> = {
 	fields?: Module["data_fields"];
 	settings?: Module["setting_fields"];
 	refetch: ApolloRefetch;
-	constants?: { [key: string]: object };
 	editLink?: string; // if muttiple links, use "link1/link2"
 	disableCategory?: (row: Class, label: ModuleCategory["label"]) => boolean;
 	useMasterKey?: boolean;
@@ -152,6 +147,8 @@ export type CreateColumnHookProps<Class> = {
 	/** Query rows. When set, cell edits go through usePageData and save as a collection. */
 	initialData?: Class[];
 	disabledObject?: { [key: string]: (row: Class) => boolean };
+	languages?: LanguageValue[];
+	language?: LanguageValue;
 };
 
 export type ColumnClasses =

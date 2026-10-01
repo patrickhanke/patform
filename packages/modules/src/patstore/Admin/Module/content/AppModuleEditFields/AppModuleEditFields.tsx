@@ -13,11 +13,15 @@ const AppModuleEditFields = ({
 	modulePath,
 	updateOptions
 }: AppModuleEditFieldsProps) => {
+	const settingsSignature = (initialFields ?? [])
+		.map((field) => JSON.stringify(field.settings ?? null))
+		.join("|");
+
 	const initialData = useMemo(
 		() => ({
 			fields: generateInitialFields(initialFields || [], modulePath)
 		}),
-		[initialFields, modulePath]
+		[initialFields, settingsSignature, modulePath]
 	);
 
 	const { data, setData } = usePageData<ModuleFieldsPageData>(
@@ -25,7 +29,7 @@ const AppModuleEditFields = ({
 		updateOptions
 	);
 
-	const fields = data?.fields ?? [];
+	const fields = useMemo(() => data?.fields ?? [], [data?.fields]);
 
 	const changeField = useCallback(
 		(field: ModuleField) => {

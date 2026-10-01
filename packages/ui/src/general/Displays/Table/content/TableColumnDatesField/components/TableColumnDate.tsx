@@ -2,7 +2,7 @@ import { IconButton } from "@repo/ui";
 import "../styles.scss";
 import { TableColumnDateProps } from "../types";
 import { useMemo } from "react";
-import { formatISO9075 } from "date-fns";
+import { formatISO9075, isValid } from "date-fns";
 
 const TableColumnDate = ({
 	date,
@@ -12,8 +12,11 @@ const TableColumnDate = ({
 	const title = useMemo(() => {
 		if (date.label) {
 			return date.label;
-		} else if (date.start && new Date(date.start)) {
-			return formatISO9075(new Date(date.start));
+		}
+
+		const start = date.start ? new Date(date.start) : null;
+		if (start && isValid(start)) {
+			return formatISO9075(start);
 		} else {
 			return "Kein Datum";
 		}
