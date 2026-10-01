@@ -41,7 +41,6 @@ const TableColumnEditTexteditor = ({
 					<Editor
 						content={string}
 						onChange={(newValue) => setString(newValue)}
-						withImages
 					/>
 				</div>
 			</Modal>

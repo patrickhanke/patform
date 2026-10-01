@@ -37,9 +37,6 @@ const ContentSection: FC<ContentSectionProps> = ({
 	<Stack gap={prefix ? 4 : 6} w="full">
 		{Object.entries(schema).map(([key, node]) => {
 			const path = buildPath(prefix, key);
-			console.log({ path });
-			console.log({ node });
-			console.log({ values });
 
 			if (isContainerNode(node)) {
 				return (
@@ -74,6 +71,7 @@ const ContentSection: FC<ContentSectionProps> = ({
 			}
 
 			if (node.type === "collection") {
+
 				return (
 					<ContentField
 						key={path}
