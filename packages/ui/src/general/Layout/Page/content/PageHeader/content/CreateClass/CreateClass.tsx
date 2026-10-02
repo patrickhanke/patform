@@ -39,7 +39,7 @@ const CreateClass = <T extends Classes>({
 				await refetch();
 			}
 		},
-		[user]
+		[user, currentModule]
 	);
 
 	return (
