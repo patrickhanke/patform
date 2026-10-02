@@ -3,12 +3,12 @@ export type SlideInProps = {
 	header: string;
 	isOpen: boolean;
 	cancel: () => void;
-	confirm: () => void;
+	confirm?: () => void;
 	size?: "small" | "medium" | "large";
 	preventClickOutside?: boolean;
 	secondaryContent?: React.ReactNode | null;
 	showSecondaryContent?: boolean;
-	showCancelButton?: boolean;
+	showConfirmButton?: boolean;
 	disabled?: [boolean, boolean];
 	errors?: ErrorMessage[];
 	confirmText?: string;

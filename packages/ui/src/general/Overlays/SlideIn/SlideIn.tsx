@@ -19,7 +19,7 @@ const SlideIn: React.FC<SlideInProps> = ({
 	confirm,
 	secondaryContent = null,
 	showSecondaryContent = false,
-	showCancelButton = true,
+	showConfirmButton = true,
 	disabled = [false, false],
 	errors,
 	confirmText,
@@ -101,24 +101,26 @@ const SlideIn: React.FC<SlideInProps> = ({
 						</div>
 						<div className="slidein_footer">
 							<div className="button_container">
-								{showCancelButton && (
-									<Button
-										className="full_button md light"
-										disabled={disabled[0]}
-										onClick={() => cancel()}
-										loading={loading}
-									>
-										Abbrechen
-									</Button>
-								)}
 								<Button
-									className="full_button md primary"
-									disabled={disabled[1]}
-									onClick={() => confirm()}
+									className="full_button md light"
+									disabled={disabled[0]}
+									onClick={() => cancel()}
 									loading={loading}
 								>
-									{confirmText ? confirmText : "Speichern"}
+									Abbrechen
 								</Button>
+								{showConfirmButton && confirm && (
+									<Button
+										className="full_button md primary"
+										disabled={disabled[1]}
+										onClick={() => confirm()}
+										loading={loading}
+									>
+										{confirmText
+											? confirmText
+											: "Speichern"}
+									</Button>
+								)}
 							</div>
 						</div>
 					</motion.div>

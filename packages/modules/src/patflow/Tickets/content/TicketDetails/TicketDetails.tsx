@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import styles from "./TicketDetails.module.scss";
 import clsx from "clsx";
 import { TicketDetailsProps } from "@repo/types";
-import { Icon, IconButton, ImagesDisplay, Modal, SlideInRight } from "@repo/ui";
+import { Icon, IconButton, ImagesDisplay, Modal, SlideIn } from "@repo/ui";
 
 const TicketDetails = ({
 	ticket,
@@ -28,11 +28,13 @@ const TicketDetails = ({
 					onClick={() => setShowDetails(true)}
 					icon="info"
 				/>
-				<SlideInRight
+				<SlideIn
 					isOpen={showDetails}
-					setIsOpen={setShowDetails}
+					cancel={() => setShowDetails(false)}
 					header="Ticket Details"
 					size="small"
+					confirmText="Schließen"
+					showConfirmButton={false}
 				>
 					<div>
 						<div className={styles.ticket_slidein_content}>
@@ -49,7 +51,11 @@ const TicketDetails = ({
 						</div>
 						<div className={styles.ticket_slidein_content}>
 							<label>Bilder</label>
-							<div className="images_container">
+							<div
+								className={
+									styles.ticket_slidein_images_container
+								}
+							>
 								{ticket.images && ticket.images.length > 0 ? (
 									<ImagesDisplay images={ticket.images} />
 								) : (
@@ -76,7 +82,7 @@ const TicketDetails = ({
 							</button>
 						</div>
 					</div>
-				</SlideInRight>
+				</SlideIn>
 			</div>
 			<Modal
 				isOpen={archiveModal}

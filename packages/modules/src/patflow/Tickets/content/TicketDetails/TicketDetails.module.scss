@@ -63,3 +63,15 @@
   padding-left: constants.$sm;
   padding-right: constants.$sm;
 }
+
+.ticket_slidein_images_container {
+  @include constants.flexbox(
+    $direction: row,
+    $justify: space-between,
+    $align: flex-start,
+    $gap: constants.$sm
+  );
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
