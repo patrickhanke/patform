@@ -1,44 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ActionBar, Editor } from "@repo/ui";
-import { isEqual } from "lodash-es";
+import { Editor, usePageData } from "@repo/ui";
+import { FC } from "react";
+import { DashboardProps } from "./types";
 
-const Dashboard = ({
-	content,
-	onChange
-}: {
-	content: string;
-	onChange: (content: string) => void;
-}) => {
-	const [editorContent, setEditorContent] = useState<string>(content);
-	const [open, setOpen] = useState<boolean>(false);
-
-	useEffect(() => {
-		console.log(isEqual(editorContent, content));
-		if (!isEqual(editorContent, content)) {
-			setOpen(true);
+const Dashboard: FC<DashboardProps> = ({ project }) => {
+	const { data, setData } = usePageData(
+		{
+			initialData: { data: project.data ?? {} },
+			objectId: project.objectId
+		},
+		{
+			className: "Project",
+			updateObject: (values) => values,
+			message: "Dashboard wurde erfolgreich aktualisiert."
 		}
-	}, [editorContent]);
+	);
 
 	return (
-		<div>
-			<Editor
-				content={editorContent}
-				onChange={(value) => setEditorContent(value)}
-			/>
-			<ActionBar
-				open={open}
-				onSave={() => {
-					onChange(editorContent);
-					setOpen(false);
-				}}
-				onCancel={() => {
-					setEditorContent(content);
-					setOpen(false);
-				}}
-			/>
-		</div>
+		<Editor
+			content={data?.data?.dashboard?.content || ""}
+			onChange={(content) => setData("data.dashboard.content", content)}
+		/>
 	);
 };
 

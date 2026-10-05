@@ -1,4 +1,5 @@
+import { PatstoreProject } from "@repo/types";
+
 export type DashboardProps = {
-	content: string;
-	onChange: (content: string) => void;
+	project: PatstoreProject;
 };

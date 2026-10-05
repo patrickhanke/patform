@@ -1,25 +1,25 @@
 "use client";
 
-import { Form, Page } from "@repo/ui";
-import fields from "./constants/fields";
-import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
+import { Page } from "@repo/ui";
+import { useAppContext, useGetData } from "@repo/provider";
 import page_states from "./constants/page_states";
 import { useState } from "react";
-import { Dashboard } from "./content";
-import { cloneDeep, set } from "lodash-es";
+import { Colors, Dashboard, Settings } from "./content";
+import { PatstoreProject } from "@repo/types";
 
 const Project = () => {
-	const { updateData } = useDataHandler();
 	const { project } = useAppContext();
 	const [activePage, setActivePage] = useState<(typeof page_states)[number]>(
 		page_states[0]
 	);
-	const { data: projectData, refetch } = useGetData({
+	const { data, refetch } = useGetData({
 		objectName: "Project",
-		fields: ["name", "data", "logo {url name}"],
+		fields: ["objectId", "name", "data", "settings", "logo {url name}"],
 		id: project?.objectId,
 		skip: !project?.objectId
 	});
+
+	const projectData = data as PatstoreProject | null;
 
 	if (!projectData) {
 		return <div>Loading...</div>;
@@ -31,47 +31,15 @@ const Project = () => {
 			pageStates={[...page_states]}
 			pageState={activePage}
 			setPageState={setActivePage}
+			refetch={refetch}
 		>
 			{activePage?.value === "settings" && (
-				<Form
-					fields={fields}
-					isHorizontal
-					apiClass="Project"
-					data={{
-						data: projectData?.data,
-						name: projectData?.name,
-						logo: projectData?.logo
-					}}
-					formSubmitHandler={async (values) => {
-						await updateData({
-							className: "Project",
-							objectId: project?.objectId,
-							updateObject: values,
-							feedback: "Daten wurden erfolgreich aktualisiert."
-						});
-						await refetch();
-					}}
-				/>
+				<Settings project={projectData} />
 			)}
 			{activePage?.value === "dashboard" && (
-				<Dashboard
-					content={projectData?.data?.dashboard?.content || ""}
-					onChange={async (content) => {
-						const pData = cloneDeep(projectData.data);
-						set(pData, "dashboard.content", content);
-
-						await updateData({
-							className: "Project",
-							objectId: project?.objectId,
-							updateObject: {
-								data: pData
-							},
-							feedback: "Daten wurden erfolgreich aktualisiert."
-						});
-						await refetch();
-					}}
-				/>
+				<Dashboard project={projectData} />
 			)}
+			{activePage?.value === "colors" && <Colors project={projectData} />}
 		</Page>
 	);
 };

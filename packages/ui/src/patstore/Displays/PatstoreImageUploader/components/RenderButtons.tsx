@@ -57,13 +57,17 @@ const RenderButtons: FC<RenderButtonsProps> = ({
 				className="full_button sm light"
 				type="button"
 				onClick={() => onClick()}
+				style={{ width: "fit-content" }}
 			>
 				{isArray(selectedImages) ? selectedImages?.length : "0"} Bilder
 			</button>
 		);
 	} else if (maxFileCount === 1 && data) {
 		return (
-			<div onClick={() => onClick()} style={{ cursor: "pointer" }}>
+			<div
+				onClick={() => onClick()}
+				style={{ cursor: "pointer", width: "fit-content" }}
+			>
 				<Image
 					alt={data?.title || data?.objectId}
 					src={getImageUrl({

@@ -6,6 +6,9 @@ const page_states = [
 	{
 		value: "dashboard",
 		label: "Dashboard"
+	}, {
+		value: "colors",
+		label: "Farben"
 	}
 ] as const;
 

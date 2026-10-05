@@ -1,13 +1,18 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import {
 	ColorPicker as ChakraColorPicker,
 	HStack,
 	parseColor,
-	Portal
+	Portal,
+	Stack,
+	Text
 } from "@chakra-ui/react";
-import { ColorPickerProps } from "./types";
+import { LuCheck } from "react-icons/lu";
+import { useAppContext } from "@repo/provider";
+import { PatstoreProjectColor } from "@repo/types";
+import { ColorPickerProps, ProjectColorSwatch } from "./types";
 
 const DEFAULT_COLOR = "#000000";
 
@@ -15,9 +20,9 @@ const parseSafeColor = (value?: string) => {
 	try {
 		if (value?.trim()) return parseColor(value);
 	} catch {
-		// fall through
+		// unparsable values are treated as "no color"
 	}
-	return parseColor(DEFAULT_COLOR);
+	return undefined;
 };
 
 const colorToCss = (color: ReturnType<typeof parseColor>) => {
@@ -28,7 +33,11 @@ const colorToCss = (color: ReturnType<typeof parseColor>) => {
 	return color.toString("rgba");
 };
 
-const PickerBody = () => (
+const PickerBody = ({
+	projectColors
+}: {
+	projectColors: ProjectColorSwatch[];
+}) => (
 	<>
 		<ChakraColorPicker.Area />
 		<HStack gap="2">
@@ -36,6 +45,31 @@ const PickerBody = () => (
 			<ChakraColorPicker.Sliders />
 		</HStack>
 		<ChakraColorPicker.Input />
+		{projectColors.length > 0 && (
+			<Stack gap="1" paddingTop="2">
+				<Text fontSize="xs" color="fg.muted">
+					Projektfarben
+				</Text>
+				<ChakraColorPicker.SwatchGroup>
+					{projectColors.map((swatch) => (
+						<ChakraColorPicker.SwatchTrigger
+							key={swatch.id}
+							value={swatch.color}
+							title={swatch.label}
+						>
+							<ChakraColorPicker.Swatch
+								value={swatch.color}
+								respectAlpha
+							>
+								<ChakraColorPicker.SwatchIndicator>
+									<LuCheck />
+								</ChakraColorPicker.SwatchIndicator>
+							</ChakraColorPicker.Swatch>
+						</ChakraColorPicker.SwatchTrigger>
+					))}
+				</ChakraColorPicker.SwatchGroup>
+			</Stack>
+		)}
 	</>
 );
 
@@ -44,11 +78,31 @@ const ColorPicker: FC<ColorPickerProps> = ({
 	onChange,
 	isOverlay = false
 }) => {
-	const [color, setColor] = useState(() => parseSafeColor(value));
+	const { project } = useAppContext();
+	const [color, setColor] = useState(
+		() => parseSafeColor(value) ?? parseColor(DEFAULT_COLOR)
+	);
 
 	useEffect(() => {
-		setColor(parseSafeColor(value));
+		setColor(parseSafeColor(value) ?? parseColor(DEFAULT_COLOR));
 	}, [value]);
+
+	const projectColors = useMemo<ProjectColorSwatch[]>(() => {
+		const colors = (project?.settings?.colors ||
+			[]) as PatstoreProjectColor[];
+
+		return colors.reduce<ProjectColorSwatch[]>((swatches, entry) => {
+			const parsed = parseSafeColor(entry?.value);
+			if (parsed) {
+				swatches.push({
+					id: entry.id || entry.value,
+					label: entry.label || entry.value,
+					color: parsed
+				});
+			}
+			return swatches;
+		}, []);
+	}, [project?.settings?.colors]);
 
 	return (
 		<ChakraColorPicker.Root
@@ -72,14 +126,14 @@ const ColorPicker: FC<ColorPickerProps> = ({
 					<Portal>
 						<ChakraColorPicker.Positioner style={{ zIndex: 2000 }}>
 							<ChakraColorPicker.Content>
-								<PickerBody />
+								<PickerBody projectColors={projectColors} />
 							</ChakraColorPicker.Content>
 						</ChakraColorPicker.Positioner>
 					</Portal>
 				</>
 			) : (
 				<ChakraColorPicker.Content>
-					<PickerBody />
+					<PickerBody projectColors={projectColors} />
 				</ChakraColorPicker.Content>
 			)}
 		</ChakraColorPicker.Root>

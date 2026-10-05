@@ -19,11 +19,28 @@ export type PatstoreProjectInvitation = {
 	};
 };
 
+export type PatstoreProjectColor = {
+	label: string;
+	value: string;
+	id: string;
+};
+
+export type PatstoreProjectData = {
+	name?: string;
+	street?: string;
+	zip?: string;
+	city?: string;
+	dashboard?: {
+		content?: string;
+	};
+};
+
 export type PatstoreProject = {
 	name: string;
 	description: string;
 	objectId: string;
 	content: { label: string; value: string; icon: string }[];
+	data?: PatstoreProjectData;
 	logo: {
 		url: string;
 		name: string;
@@ -41,6 +58,7 @@ export type PatstoreProject = {
 		user_creation: boolean;
 		languages: LanguageValue[];
 		default_language: LanguageValue;
+		colors: PatstoreProjectColor[];
 	};
 	connected_images: {
 		[key: string]: {

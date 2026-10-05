@@ -2,11 +2,7 @@
 
 import { Form, Page } from "@repo/ui";
 import fields from "./constants/fields";
-import {
-	useAppContext,
-	useDataHandler,
-	useGetData
-} from "@repo/provider";
+import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
 
 const Project = () => {
 	const { updateData } = useDataHandler();
@@ -21,8 +17,6 @@ const Project = () => {
 	if (!projectData) {
 		return <div>Loading...</div>;
 	}
-
-	console.log(projectData);
 
 	return (
 		<Page title="Projektverwaltung">
