@@ -5,7 +5,6 @@ import useSiteStates from "./constants/siteStates";
 import { useGetData } from "@repo/provider";
 import { PropertyTasks, PropertyTickets } from "./content";
 import { Page, PageHeaderButton } from "@repo/ui";
-import { CreateTask } from "@repo/modules";
 import { useParams } from "next/navigation";
 
 const Property = () => {
@@ -14,7 +13,6 @@ const Property = () => {
 	const [siteState, setSiteState] = useState<(typeof siteStates)[number]>(
 		siteStates[0] as (typeof siteStates)[number]
 	);
-	const [addService, setAddService] = useState(false);
 
 	const { data: property, refetch } = useGetData({
 		objectName: "Property",
@@ -39,26 +37,8 @@ const Property = () => {
 		if (siteState.value === "settings") {
 			content.description = "Einstellungen";
 		}
-		if (siteState.value === "services") {
-			content.description = "Dienstleistungen";
-		}
-		if (siteState.value === "tallies") {
-			content.description = "Zähler";
-		}
-		return content;
-	}, [siteState]);
 
-	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
-		if (siteState.value === "services") {
-			return [
-				{
-					text: "Leistung hinzufügen",
-					onClick: () => setAddService(true),
-					is_add_button: true
-				}
-			] as PageHeaderButton[];
-		}
-		return [];
+		return content;
 	}, [siteState]);
 
 	if (!property) return null;
@@ -71,21 +51,12 @@ const Property = () => {
 			pageStates={siteStates}
 			pageState={siteState}
 			setPageState={setSiteState}
-			pageHeaderButtons={pageHeaderButtons}
 		>
 			{siteState.value === "tasks" && (
 				<PropertyTasks objectId={objectId} />
 			)}
 
 			{siteState.value === "tickets" && <PropertyTickets id={objectId} />}
-			{addService && (
-				<CreateTask
-					isService={true}
-					openSlideIn={addService}
-					setOpenSlideIn={setAddService}
-					propertyId={objectId}
-				/>
-			)}
 		</Page>
 	);
 };

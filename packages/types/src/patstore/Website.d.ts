@@ -1,5 +1,6 @@
 import { ClassProperties } from "./Classes";
 import { LanguageValue } from "./Project";
+import { SeoData } from "./Seo";
 
 export type WebpageStructuredFieldType =
 	| "text"
@@ -77,6 +78,7 @@ export type WebpageClass = ClassProperties & {
 	active: boolean;
 	image: string;
 	documents: string[];
+	seo?: SeoData;
 };
 
 export type WebpageContentText = {
@@ -189,6 +191,7 @@ export type WebpageContentReference = {
 		contentType?: string;
 		contentId?: string;
 	};
+	seo: SeoData;
 };
 
 export type WebpageContent =

@@ -45,7 +45,7 @@ const PatflowAppContextProvider = ({
 	const { project } = useAppContext();
 	const [year, setYear] = useState(new Date().getFullYear());
 	const projectId = project?.objectId;
-	useTaskSubscription(projectId);
+	const { fetchTasks } = useTaskSubscription(projectId);
 	useTicketSubscription(projectId);
 
 	const { data: roleData } = useFindData({
@@ -423,7 +423,8 @@ const PatflowAppContextProvider = ({
 						)
 					}))
 				: [],
-			roleUsers
+			roleUsers,
+			fetchTasks
 		}),
 		[
 			roleUsers,
@@ -437,7 +438,8 @@ const PatflowAppContextProvider = ({
 			reloadRecords,
 			reloadProperties,
 			reloadAbsences,
-			reloadSurcharges
+			reloadSurcharges,
+			fetchTasks
 		]
 	);
 

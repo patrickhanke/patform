@@ -23,7 +23,8 @@ const SlideIn: React.FC<SlideInProps> = ({
 	disabled = [false, false],
 	errors,
 	confirmText,
-	loading = false
+	loading = false,
+	cancelText
 }) => {
 	const ref = useRef(null);
 	const [mounted, setMounted] = useState(false);
@@ -107,7 +108,7 @@ const SlideIn: React.FC<SlideInProps> = ({
 									onClick={() => cancel()}
 									loading={loading}
 								>
-									Abbrechen
+									{cancelText ? cancelText : "Abbrechen"}
 								</Button>
 								{showConfirmButton && confirm && (
 									<Button

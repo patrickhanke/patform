@@ -26,3 +26,4 @@ export type * from "./Competition";
 export type * from "./Club";
 export type * from "./Booking";
 export type * from "./SavingsGroup";
+export type * from "./Seo";

@@ -23,12 +23,16 @@ const useDataStore = create<DataStoreState>((set, get) => ({
 	tasksUpdatedAt: null,
 	ticketsUpdatedAt: null,
 	setServices: (services) => set({ services, servicesUpdatedAt: Date.now() }),
-	setSurcharges: (surcharges) => set({ surcharges, surchargesUpdatedAt: Date.now() }),
+	setSurcharges: (surcharges) =>
+		set({ surcharges, surchargesUpdatedAt: Date.now() }),
 	setHolidays: (holidays) => set({ holidays, holidaysUpdatedAt: Date.now() }),
 	setWorkers: (workers) => set({ workers, workersUpdatedAt: Date.now() }),
-	setRecords: (records: RecordDataStore[]) => set({ records, recordsUpdatedAt: Date.now() }),
-	setAbsences: (absences: AbsenceDataStore[]) => set({ absences, absencesUpdatedAt: Date.now() }),
-	setProperties: (properties) => set({ properties, propertiesUpdatedAt: Date.now() }),
+	setRecords: (records: RecordDataStore[]) =>
+		set({ records, recordsUpdatedAt: Date.now() }),
+	setAbsences: (absences: AbsenceDataStore[]) =>
+		set({ absences, absencesUpdatedAt: Date.now() }),
+	setProperties: (properties) =>
+		set({ properties, propertiesUpdatedAt: Date.now() }),
 	setTasks: (tasks) => set({ tasks, tasksUpdatedAt: Date.now() }),
 	setTickets: (tickets) => set({ tickets, ticketsUpdatedAt: Date.now() }),
 	getTasks: (

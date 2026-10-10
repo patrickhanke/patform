@@ -14,7 +14,7 @@ const page_states: readonly PageState[] = [
 	{
 		value: "seo",
 		label: "SEO",
-		disabled: true
+		disabled: false
 	}
 ] as const;
 

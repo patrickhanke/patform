@@ -1,11 +1,15 @@
 "use client";
 
-import { FC, useState, useMemo } from "react";
+import { FC, useState, useMemo, useContext } from "react";
 import TaskDescription from "../TaskDescription";
 import TaskComments from "../TaskComments";
-import { getDateString, useDataHandler, useDataStore } from "@repo/provider";
+import {
+	getDateString,
+	PatflowAppContext,
+	useDataHandler,
+	useDataStore
+} from "@repo/provider";
 import TaskImages from "../TaskImages";
-import DisplayTaskState from "../DisplayTaskState";
 import DisplayPropery from "../DisplayPropery";
 import TeamAssignment from "../TeamAssignment";
 import {
@@ -31,6 +35,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 	const { deleteData } = useDataHandler();
 	const [deleteTask, setDeleteTask] = useState(false);
 	const [showDetails, setShowDetails] = useState(false);
+	const { fetchTasks } = useContext(PatflowAppContext);
 
 	const { tickets } = useDataStore();
 
@@ -139,27 +144,16 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 			<SlideIn
 				isOpen={showDetails}
 				cancel={() => setShowDetails(false)}
-				showCancelButton={false}
 				header={title}
 				size="small"
-				confirmText="Schließen"
-				confirm={() => setShowDetails(false)}
+				showConfirmButton={false}
+				cancelText="Schließen"
 				preventClickOutside
 				secondaryContent={secondaryContent}
 				showSecondaryContent={true}
 			>
 				<div className={"task_slidein_content"}>
 					<div className={"flex col a-st gap-md"}>
-						<div className={"task_slidein_content_element"}>
-							<label
-								className={"task_slidein_content_element_label"}
-							>
-								Status
-							</label>
-							<div>
-								<DisplayTaskState taskState={task?.state} />
-							</div>
-						</div>
 						<div className={"task_slidein_content_element"}>
 							<label
 								className={"task_slidein_content_element_label"}
@@ -268,6 +262,7 @@ const TaskSlideIn: FC<TaskSlideInProps> = ({
 						objectId: taskId,
 						feedback: "Aufgabe erfolgreich gelöscht"
 					});
+					fetchTasks();
 					setDeleteTask(false);
 					setShowDetails(false);
 				}}

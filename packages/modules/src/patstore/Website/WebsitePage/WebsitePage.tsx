@@ -3,7 +3,7 @@
 import { LanguageValue, PageState, WebpageClass } from "@repo/types";
 import { Page } from "@repo/ui";
 import { useMemo, useState } from "react";
-import { WebpageSettings, WebpageContent } from "./content";
+import { WebpageSettings, WebpageContent, WebpageSeo } from "./content";
 import page_states from "./constants/page_states";
 import { languages_short, useFindData } from "@repo/provider";
 
@@ -45,7 +45,8 @@ const WebsitePage = ({
 			"page_content",
 			"page_data",
 			"active",
-			"content"
+			"content",
+			"seo"
 		],
 		skipQuery: !webpageId || !moduleId,
 		moduleId: moduleId
@@ -86,6 +87,12 @@ const WebsitePage = ({
 			)}
 			{pageState.value === "content" && (
 				<WebpageContent
+					webpage={webpage}
+					language={hasMultipleLanguages ? activeLang : undefined}
+				/>
+			)}
+			{pageState.value === "seo" && (
+				<WebpageSeo
 					webpage={webpage}
 					language={hasMultipleLanguages ? activeLang : undefined}
 				/>

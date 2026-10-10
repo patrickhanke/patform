@@ -45,6 +45,7 @@ export type ContextValues = {
 	}[];
 	project: PatflowProject;
 	roleUsers: RoleUsers;
+	fetchTasks: () => void;
 };
 
 export type YearOptions = { value: number; label: string }[];

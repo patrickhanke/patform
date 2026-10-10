@@ -11,8 +11,7 @@ import {
 	TaskSlideIn,
 	TeamAssignments
 } from "../content";
-import { UserDisplay } from "../../../../../../../ui/src/general";
-import { DisplayWorker } from "../../../../../../../ui/src/patflow";
+import { DisplayWorker } from "@repo/ui";
 
 const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 	const columns: ColumnDef<Task>[] = useMemo(() => {
@@ -71,7 +70,10 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 			},
 			{
 				accessorFn: (task) => (
-					<DisplayTaskState taskState={task.state} />
+					<DisplayTaskState
+						taskState={task.state}
+						taskId={task.objectId}
+					/>
 				),
 				header: () => <span>Status</span>,
 				id: "state",

@@ -75,6 +75,10 @@ const useTaskSubscription = (projectId?: string) => {
 			window.clearInterval(intervalId);
 		};
 	}, [fetchTasks, projectId]);
+
+	return {
+		fetchTasks
+	};
 };
 
 export default useTaskSubscription;
