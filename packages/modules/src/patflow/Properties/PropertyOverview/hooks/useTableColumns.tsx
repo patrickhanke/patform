@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import TeamAssignment from "../content/TeamAssignment";
 import { useDataHandler } from "@repo/provider";
 
-const useTableColumns = () => {
+const useTableColumns = ({ refetch }: { refetch: () => void }) => {
 	const { updateData } = useDataHandler();
 	const columns: ColumnDef<Property>[] = useMemo(
 		() => [
@@ -61,7 +61,11 @@ const useTableColumns = () => {
 			},
 			{
 				accessorFn: (row) => (
-					<TeamAssignment propertyId={row.objectId} showAsButton />
+					<TeamAssignment
+						propertyId={row.objectId}
+						assignedStaff={row.assigned_staff || []}
+						refetch={refetch}
+					/>
 				),
 				header: () => <span>Zugewiesene Arbeiter</span>,
 				id: "assigned_staff",

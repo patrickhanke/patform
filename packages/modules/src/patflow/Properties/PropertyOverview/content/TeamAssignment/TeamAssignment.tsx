@@ -5,14 +5,16 @@ import { TeamAssignmentsProps } from "@repo/types";
 
 const TeamAssignment: FC<TeamAssignmentsProps> = ({
 	propertyId,
-	showAsButton = false
+	assignedStaff,
+	refetch
 }) => {
 	return (
 		<div className={styles.team_assignment_container}>
 			<div className={styles.team_assignment_workers_container}>
 				<DisplayWorkers
 					propertyId={propertyId}
-					showAsButton={showAsButton}
+					assignedStaff={assignedStaff}
+					refetch={refetch}
 				/>
 			</div>
 		</div>

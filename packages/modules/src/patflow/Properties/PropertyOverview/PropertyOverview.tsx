@@ -13,7 +13,7 @@ import CreatePropterty from "./components/CreateProperty";
 import initialData from "./constants/initialData";
 import { Page, Table } from "@repo/ui";
 import { UserContext } from "@repo/provider";
-import { Filter } from "@repo/types";
+import { Filter, ModuleFilter } from "@repo/types";
 import { ColumnData } from "@repo/ui";
 import { Property } from "@repo/types";
 
@@ -25,9 +25,8 @@ const baseFilters: Filter[] = [
 	}
 ];
 
-const filterColumns: ColumnData<Property>[] = [
-	{ id: "name", label: "Name", type: "edit_string" },
-	{ id: "createdAt", label: "Erstellt am", type: "date" }
+const filterColumns: ModuleFilter[] = [
+	{ id: "name", field: "name", type: "string", operator: "matchesRegex" }
 ];
 
 const PropertyOverview = () => {
@@ -49,7 +48,8 @@ const PropertyOverview = () => {
 			"name",
 			"createdAt",
 			"created_by {objectId username}",
-			"archived"
+			"archived",
+			"assigned_staff"
 		],
 		projectId,
 		filters: allFilters,
@@ -62,11 +62,9 @@ const PropertyOverview = () => {
 		setPagination((prev) => ({ ...prev, pageIndex: 0 }));
 	}, [filters, order]);
 
-	console.log({ data });
-
 	const { createData } = useDataHandler();
 
-	const columns = useTableColumns();
+	const columns = useTableColumns({ refetch });
 
 	const createObjectHandler = useCallback(
 		async (data: typeof initialData) => {

@@ -1,35 +1,42 @@
-import { DisplayWorker } from "@repo/ui";
-import { useDataHandler, useDataStore, useGetData } from "@repo/provider";
-import { DisplayWorkersProps, Worker } from "@repo/types";
-import { FC, useMemo, useState } from "react";
+"use client";
 
-import styles from "../TeamAssignment.module.scss";
-import { ElementSelectInterface, SlideInRight } from "@repo/ui";
-import { WorkerOption } from "../types";
+import { DisplayWorker, SlideIn } from "@repo/ui";
+import { useDataHandler, useDataStore } from "@repo/provider";
+import { StaffMember, Worker } from "@repo/types";
+import { FC, useEffect, useMemo, useState } from "react";
+
+import { ElementSelectInterface } from "@repo/ui";
+import { DisplayWorkersProps, WorkerOption } from "../types";
+import { AvatarGroup } from "@chakra-ui/react";
 
 const DisplayWorkers: FC<DisplayWorkersProps> = ({
 	propertyId,
-	showAsButton = false
+	assignedStaff,
+	refetch
 }) => {
-	const [isOpen, setIsOpen] = useState(false);
 	const { updateData } = useDataHandler();
-	const { data: property, refetch } = useGetData({
-		objectName: "Property",
-		fields: ["assigned_staff"],
-		id: propertyId
-	});
-	const { workers: workerData } = useDataStore();
+	const [isOpen, setIsOpen] = useState(false);
+	const { workers } = useDataStore();
+	const [loading, setLoading] = useState(false);
+	const [selectedWorkers, setSelectedWorkers] = useState<
+		Worker["objectId"][]
+	>(assignedStaff || []);
 
 	const elements = useMemo(() => {
 		const workerOptionsArray: WorkerOption[] = [];
-		if (workerData) {
-			workerData.forEach((worker: Worker) => {
+		if (workers.length > 0) {
+			workers.forEach((worker: StaffMember) => {
 				if (worker) {
 					workerOptionsArray.push({
 						value: worker.objectId,
 						id: worker.objectId,
 						label: `${worker.first_name} ${worker.last_name}`,
-						element: <DisplayWorker workerId={worker.objectId} />
+						element: (
+							<DisplayWorker
+								workerId={worker.objectId}
+								propertyId={propertyId}
+							/>
+						)
 					});
 				}
 			});
@@ -37,102 +44,84 @@ const DisplayWorkers: FC<DisplayWorkersProps> = ({
 		workerOptionsArray.sort((a, b) => a.label?.localeCompare(b.label));
 
 		return workerOptionsArray;
-	}, [workerData]);
+	}, [workers, propertyId]);
 
 	const workerComponent = useMemo(
 		() => (
 			<ElementSelectInterface
-				elements={workerData}
+				elements={elements}
 				selectedElements={
-					property
-						? property.assigned_staff.map((element: string) =>
-								elements.find((el) => el.value === element)
-							)
-						: []
+					elements.filter((element) =>
+						selectedWorkers.includes(element.value)
+					) || []
 				}
 				onSelect={async (values) => {
-					const workers = values.map((value) => value.value);
-					await updateData({
-						className: "Property",
-						objectId: propertyId,
-						updateObject: {
-							assigned_staff: [...workers]
-						}
-					});
-					refetch();
+					setSelectedWorkers(
+						values.map((value) => value.value as string)
+					);
 				}}
 				max={100}
 				isSearchable
 			/>
 		),
-		[property, property?.assigned_staff?.length]
+		[selectedWorkers]
 	);
 
-	const staffNumber = property?.assigned_staff?.length || 0;
+	useEffect(() => {
+		if (isOpen) {
+			setSelectedWorkers(assignedStaff || []);
+		}
+	}, [isOpen, assignedStaff]);
 
-	if (property)
-		return !showAsButton ? (
-			<>
-				{property.assigned_staff.map((workerId: Worker["objectId"]) => (
-					<DisplayWorker
-						key={workerId}
-						workerId={workerId}
-						onlyImage={false}
-					/>
-				))}
-				<SlideInRight
-					isOpen={isOpen}
-					setIsOpen={setIsOpen}
-					header="Arbeiter auswählen"
-				>
-					{workerComponent}
-				</SlideInRight>
-			</>
-		) : (
-			<>
+	return (
+		<>
+			{assignedStaff.length > 0 ? (
 				<button
-					className={"full_button sm light"}
+					onClick={() => setIsOpen(true)}
+					style={{ cursor: "pointer" }}
+				>
+					<AvatarGroup>
+						{assignedStaff.map((workerId: Worker["objectId"]) => (
+							<DisplayWorker
+								key={workerId}
+								workerId={workerId}
+								onlyImage
+							/>
+						))}
+					</AvatarGroup>
+				</button>
+			) : (
+				<button
+					className="full_button sm light"
 					onClick={() => setIsOpen(true)}
 				>
-					{/* <IoPersonCircleOutline size={24} color={'#efefef'} /> */}
-					<div className={styles.button_workers_container}>
-						{staffNumber > 0 ? (
-							property.assigned_staff.map(
-								(
-									workerId: Worker["objectId"],
-									index: number
-								) => (
-									<div
-										key={workerId}
-										style={{
-											width: "fit-content",
-											transform: `translateX(${-index * 12}px)`,
-											overflow: "visible",
-											zIndex: index
-										}}
-									>
-										<DisplayWorker
-											workerId={workerId}
-											onlyImage={true}
-										/>
-									</div>
-								)
-							)
-						) : (
-							<span>+ Arbeiter hinzufügen</span>
-						)}
-					</div>
+					+ Arbeiter hinzufügen
 				</button>
-				<SlideInRight
-					isOpen={isOpen}
-					setIsOpen={setIsOpen}
-					header="Arbeiter auswählen"
-				>
-					{workerComponent}
-				</SlideInRight>
-			</>
-		);
-	return null;
+			)}
+			<SlideIn
+				isOpen={isOpen}
+				cancel={() => setIsOpen(false)}
+				confirm={async () => {
+					setLoading(true);
+					await updateData({
+						className: "Property",
+						objectId: propertyId,
+						updateObject: {
+							assigned_staff: selectedWorkers
+						},
+						feedback: "Arbeiter erfolgreich geändert"
+					});
+					await refetch();
+					setLoading(false);
+					setIsOpen(false);
+				}}
+				loading={loading}
+				header="Arbeiter auswählen"
+			>
+				{workerComponent}
+			</SlideIn>
+		</>
+	);
 };
 
 export default DisplayWorkers;

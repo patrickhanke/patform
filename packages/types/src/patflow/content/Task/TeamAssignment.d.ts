@@ -1,12 +1,11 @@
-import { ApolloRefetch } from "@repo/types";
-import { TaskState } from "./Task";
-
 export type TeamAssignmentsProps = {
-  propertyId: string;
-  showAsButton?: boolean;
+	propertyId: string;
+	assignedStaff: string[];
+	refetch: () => void;
 };
 
 export type DisplayWorkersProps = {
-  propertyId: string;
-  showAsButton?: boolean;
+	propertyId: string;
+	assignedStaff: string[];
+	refetch: () => void;
 };
