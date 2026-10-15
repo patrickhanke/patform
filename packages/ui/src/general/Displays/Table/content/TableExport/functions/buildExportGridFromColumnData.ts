@@ -10,8 +10,6 @@ export const stringifyColumnDataValue = async <TData extends RowData>(
 	row: TData,
 	col: ColumnData<TData>
 ): Promise<string> => {
-	console.log(row);
-	console.log(col);
 	const raw = row[col.id as keyof TData];
 	if (col.id === "image" && raw) {
 		const image = await axiosclient().post("/functions/query_class", {
@@ -43,7 +41,14 @@ export const stringifyColumnDataValue = async <TData extends RowData>(
 			.join(", ");
 	}
 	if (typeof raw === "object") {
-		return JSON.stringify(raw);
+		let value = "Kein Wert gefunden";
+		if ("title" in raw) {
+			value = raw["title"] as string;
+		}
+		if ("label" in raw) {
+			value = raw["label"] as string;
+		}
+		return value;
 	}
 	return String(raw);
 };

@@ -32,7 +32,7 @@ export const getColumnExportValue = <TData extends RowData>(
 		const v = get(row, columnDef.accessorKey as string);
 		return stringifyPrimitive(v);
 	}
-	if (columnDef.accessorFn) {
+	if ("accessorFn" in columnDef && columnDef.accessorFn) {
 		const v = columnDef.accessorFn(row, rowIndex);
 		if (isValidElement(v)) {
 			return "";

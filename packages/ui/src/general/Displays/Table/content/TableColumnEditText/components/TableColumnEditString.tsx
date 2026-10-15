@@ -45,8 +45,6 @@ export const TableColumnEditString = ({
 	const mirrorRef = useRef<HTMLSpanElement>(null);
 	const { project } = useAppContext();
 
-	console.log(project);
-
 	const resizeInput = useCallback(() => {
 		if (!inputRef.current || !mirrorRef.current) return;
 		fitInputToText(inputRef.current, mirrorRef.current);

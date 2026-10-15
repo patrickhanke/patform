@@ -36,8 +36,6 @@ const TableColumnConnectedElements = ({ value = "" }: { value: string }) => {
 		return imageEntries;
 	}, [connectedImages, value]);
 
-	console.log(imageEntries);
-
 	return (
 		<>
 			<IconButton
@@ -50,14 +48,11 @@ const TableColumnConnectedElements = ({ value = "" }: { value: string }) => {
 			<SlideIn
 				header="Verbundene Elemente"
 				isOpen={showConnectedElements}
-				confirm={() => {
-					setShowConnectedElements(false);
-				}}
+				showConfirmButton={false}
 				cancel={() => {
 					setShowConnectedElements(false);
 				}}
-				confirmText="Schließen"
-				showCancelButton={false}
+				cancelText="Schließen"
 			>
 				<div>
 					{imageEntries.map((imageEntry) => (
