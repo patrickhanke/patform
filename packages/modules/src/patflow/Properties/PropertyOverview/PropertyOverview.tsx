@@ -72,6 +72,11 @@ const PropertyOverview = () => {
 				updateObject: {
 					name: data.name,
 					settings: { key: false },
+					data: {
+						street: data.street,
+						zip_code: data.zip_code,
+						city: data.city
+					},
 					project: {
 						__type: "Pointer",
 						className: "Project",

@@ -18,7 +18,7 @@ const SelectUser: FC<SelectUserProps> = ({ selectedUser, setSelectedUser }) => {
 					<PersonDisplay
 						person={{
 							label: `${user.first_name} ${user.last_name}`,
-							portrait: user.portrait
+							portrait: user.portrait.name
 						}}
 					/>
 				)

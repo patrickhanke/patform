@@ -76,7 +76,7 @@ const EditRecords: FC<EditRecordsProps> = ({
 					projectId={projectId}
 					person={{
 						label: `${selectedUser.first_name} ${selectedUser.last_name}`,
-						portrait: selectedUser.portrait
+						portrait: selectedUser.portrait.url
 					}}
 				/>
 			)}
