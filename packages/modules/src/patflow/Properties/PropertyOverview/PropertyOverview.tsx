@@ -1,6 +1,6 @@
 "use client";
 
-import { useDataHandler, useFindData } from "@repo/provider";
+import { PatflowAppContext, useDataHandler, useFindData } from "@repo/provider";
 import React, {
 	useCallback,
 	useContext,
@@ -14,8 +14,6 @@ import initialData from "./constants/initialData";
 import { Page, Table } from "@repo/ui";
 import { UserContext } from "@repo/provider";
 import { Filter, ModuleFilter } from "@repo/types";
-import { ColumnData } from "@repo/ui";
-import { Property } from "@repo/types";
 
 const baseFilters: Filter[] = [
 	{
@@ -38,6 +36,7 @@ const PropertyOverview = () => {
 	});
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 	const { user, projectId } = useContext(UserContext);
+	const { refetchProperties } = useContext(PatflowAppContext);
 
 	const allFilters = useMemo(() => [...baseFilters, ...filters], [filters]);
 
@@ -64,7 +63,7 @@ const PropertyOverview = () => {
 
 	const { createData } = useDataHandler();
 
-	const columns = useTableColumns({ refetch });
+	const columns = useTableColumns({ refetch, refetchProperties });
 
 	const createObjectHandler = useCallback(
 		async (data: typeof initialData) => {
@@ -90,6 +89,7 @@ const PropertyOverview = () => {
 			});
 
 			setIsOpen(false);
+			refetchProperties();
 			refetch();
 		},
 		[user, projectId, refetch]

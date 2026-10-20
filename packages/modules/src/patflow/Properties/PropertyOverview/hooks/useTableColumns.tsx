@@ -1,13 +1,19 @@
 import { DisplayWorker } from "@repo/ui";
 import { getDateLabel } from "@repo/provider";
-import { Property } from "@repo/types";
-import { IconButton, TableColumnEditText } from "@repo/ui";
+import { Property, ApolloRefetch } from "@repo/types";
+import { TableColumnEditText } from "@repo/ui";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
-import TeamAssignment from "../content/TeamAssignment";
 import { useDataHandler } from "@repo/provider";
+import { EditProperty, TeamAssignment } from "../content";
 
-const useTableColumns = ({ refetch }: { refetch: () => void }) => {
+const useTableColumns = ({
+	refetch,
+	refetchProperties
+}: {
+	refetch: ApolloRefetch;
+	refetchProperties: ApolloRefetch;
+}) => {
 	const { updateData } = useDataHandler();
 	const columns: ColumnDef<Property>[] = useMemo(
 		() => [
@@ -74,11 +80,13 @@ const useTableColumns = ({ refetch }: { refetch: () => void }) => {
 			},
 			{
 				accessorFn: (row) => (
-					<IconButton
-						icon="link"
-						isLink
-						link={`/properties/${row.objectId}`}
-					/>
+					<>
+						<EditProperty
+							propertyId={row.objectId}
+							refetchProperties={refetchProperties}
+							refetch={refetch}
+						/>
+					</>
 				),
 				header: () => <span>Zur Objektseite</span>,
 				id: "link",

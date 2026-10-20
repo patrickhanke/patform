@@ -25,7 +25,21 @@ export type FilterOperator =
 export type Filter = {
 	id?: string;
 	key: string;
-	value: string | Array<string | number> | number | boolean | null;
+	value:
+		| string
+		| Array<string | number>
+		| number
+		| boolean
+		| null
+		| {
+				[key: string]: {
+					[Property in FilterOperator]?:
+						| string
+						| number
+						| boolean
+						| null;
+				};
+		  };
 	operator: FilterOperator;
 	/** JSON template with {{value}} placeholder for complex nested structures (e.g. Pointer) */
 	operatorTemplate?: string;

@@ -1,5 +1,6 @@
 import {
 	Absence,
+	ApolloRefetch,
 	PatflowProject,
 	PatflowUser,
 	PatflowUserRoleTypes
@@ -29,7 +30,7 @@ export type ContextValues = {
 	selectYear: JSX.Element;
 	year: number;
 	refetchWorkers: () => void;
-	refetchProperties: () => void;
+	refetchProperties: ApolloRefetch;
 	reloadHolidays: () => Promise<void>;
 	reloadWorkers: () => Promise<void>;
 	reloadRecords: () => Promise<void>;

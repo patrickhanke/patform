@@ -1,1 +1,1 @@
-export { default } from "./TeamAssignment";
+export { default as TeamAssignment } from "./TeamAssignment";
