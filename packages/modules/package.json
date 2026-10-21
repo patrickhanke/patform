@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@apollo/client": "^3.13.0",
+    "@apollo/client": "^4.3.5",
     "@chakra-ui/react": "^3.27.0",
     "@emotion/react": "^11.14.0",
     "@repo/provider": "*",

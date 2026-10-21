@@ -39,8 +39,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "dependencies": {
-    "@apollo/client-integration-nextjs": "^0.14.5"
-  }
+  ]
 }
