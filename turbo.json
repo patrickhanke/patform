@@ -51,11 +51,47 @@
       "inputs": ["$TURBO_DEFAULT$", ".env"],
       "outputLogs": "full"
     },
+    "@repo/types#build": {
+      "dependsOn": []
+    },
+    "@repo/ui#build": {
+      "dependsOn": []
+    },
+    "@repo/modules#build": {
+      "dependsOn": []
+    },
+    "@repo/provider#build": {
+      "dependsOn": []
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "@repo/types#lint": {
+      "dependsOn": []
+    },
+    "@repo/ui#lint": {
+      "dependsOn": []
+    },
+    "@repo/modules#lint": {
+      "dependsOn": []
+    },
+    "@repo/provider#lint": {
+      "dependsOn": []
+    },
     "typecheck": {
       "dependsOn": ["^typecheck"]
+    },
+    "@repo/types#typecheck": {
+      "dependsOn": []
+    },
+    "@repo/ui#typecheck": {
+      "dependsOn": []
+    },
+    "@repo/modules#typecheck": {
+      "dependsOn": []
+    },
+    "@repo/provider#typecheck": {
+      "dependsOn": []
     },
     "test": {
       "cache": false
