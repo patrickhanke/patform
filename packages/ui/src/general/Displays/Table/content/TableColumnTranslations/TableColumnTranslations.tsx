@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { TableColumnTranslationTitleProps } from "./types";
 import { EditTitleTranslation } from "./components";
 

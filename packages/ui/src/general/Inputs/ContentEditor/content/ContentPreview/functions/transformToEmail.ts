@@ -253,7 +253,10 @@ const appendStyleToAttrs = (attrs: string, styleAddition: string): string => {
 	const styleMatch = trimmed.match(/style=(["'])([\s\S]*?)\1/i);
 	if (styleMatch) {
 		const quote = styleMatch[1];
-		const mergedStyle = mergeInlineStyle(styleMatch[2], styleAddition);
+		const mergedStyle = mergeInlineStyle(
+			styleMatch[2] || "",
+			styleAddition
+		);
 		return trimmed.replace(
 			styleMatch[0],
 			`style=${quote}${mergedStyle}${quote}`
@@ -310,7 +313,7 @@ const normalizeEmailTextHtml = (
 			const styleMatch = attrs.match(/style="([^"]*)"/i);
 			if (styleMatch) {
 				const mergedStyle = mergeInlineStyle(
-					stripFontFamilyFromStyle(styleMatch[1]),
+					stripFontFamilyFromStyle(styleMatch[1] || ""),
 					tagStyle
 				);
 				const nextAttrs = attrs.replace(

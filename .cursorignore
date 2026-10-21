@@ -20,6 +20,7 @@
 # Environment & secrets
 .env*
 !.env.example
+!.env.ci
 
 # Testing
 **/coverage/

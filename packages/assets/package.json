@@ -8,7 +8,6 @@
   },
   "scripts": {
     "lint": "node -e \"process.exit(0)\"",
-    "typecheck": "tsc --noEmit",
     "generate:component": "turbo gen react-component"
   },
   "devDependencies": {
