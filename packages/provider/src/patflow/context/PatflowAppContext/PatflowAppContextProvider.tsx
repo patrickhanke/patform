@@ -12,7 +12,8 @@ import {
 	useFindData,
 	useFindDataSecure,
 	useTaskSubscription,
-	useTicketSubscription
+	useTicketSubscription,
+	useAbsenceSubscription
 } from "@repo/provider";
 import { RecordDataStore, RoleUsers, SurchargeDataStore } from "./types";
 import {
@@ -20,7 +21,6 @@ import {
 	surchargeItemFilters
 } from "../../constants/surchargeItem";
 import {
-	Absence,
 	Holiday,
 	PatflowUser,
 	PatflowUserRole,
@@ -47,6 +47,7 @@ const PatflowAppContextProvider = ({
 	const projectId = project?.objectId;
 	const { fetchTasks } = useTaskSubscription(projectId);
 	useTicketSubscription(projectId);
+	const { fetchAbsences } = useAbsenceSubscription(projectId);
 
 	const { data: roleData } = useFindData({
 		objectName: "Role",
@@ -133,24 +134,6 @@ const PatflowAppContextProvider = ({
 		skipQuery: !projectId
 	});
 
-	const { data: absenceData, refetch: refetchAbsences } = useFindData({
-		objectName: "Absence",
-		fields: [
-			"objectId",
-			"year",
-			"type",
-			"state",
-			"start_date",
-			"end_date",
-			"user {objectId first_name last_name portrait { name url }}",
-			"updatedAt",
-			"approved_by { objectId first_name last_name portrait { name url } }"
-		],
-		filters: [{ key: "year", value: year, operator: "equalTo" }],
-		projectId,
-		skipQuery: !projectId
-	});
-
 	const { data: surchargeData, refetch: refetchSurcharges } = useFindData({
 		objectName: "Item",
 		fields: surchargeItemFields,
@@ -164,7 +147,6 @@ const PatflowAppContextProvider = ({
 		setWorkers,
 		setRecords,
 		setProperties,
-		setAbsences,
 		setSurcharges
 	} = useDataStore();
 
@@ -172,7 +154,6 @@ const PatflowAppContextProvider = ({
 	const prevWorkerIdsRef = useRef("");
 	const prevRecordIdsRef = useRef("");
 	const prevPropertyIdsRef = useRef("");
-	const prevAbsenceIdsRef = useRef("");
 	const prevSurchargeIdsRef = useRef("");
 
 	useEffect(() => {
@@ -245,18 +226,6 @@ const PatflowAppContextProvider = ({
 			);
 		}
 	}, [propertyData, setProperties]);
-
-	useEffect(() => {
-		if (absenceData === undefined) return;
-		const updatedAtHash = (absenceData ?? [])
-			.map((a) => `${a.objectId}:${a.updatedAt}`)
-			.sort()
-			.join(",");
-		if (updatedAtHash !== prevAbsenceIdsRef.current) {
-			prevAbsenceIdsRef.current = updatedAtHash;
-			setAbsences(absenceData ?? []);
-		}
-	}, [absenceData, setAbsences]);
 
 	const reloadHolidays = useCallback(async () => {
 		const result = await refetchHolidays();
@@ -343,21 +312,8 @@ const PatflowAppContextProvider = ({
 	}, [refetchProperties, setProperties]);
 
 	const reloadAbsences = useCallback(async () => {
-		console.log("reloadAbsences");
-		const result = await refetchAbsences();
-		if (result.data) {
-			const queryData =
-				result.data.absences?.edges?.map(
-					(edge: { node: Absence }) => edge.node
-				) || [];
-			setAbsences(queryData);
-			prevAbsenceIdsRef.current = queryData
-				.map((a: Absence) => `${a.objectId}:${a.updatedAt}`)
-				.sort()
-				.join(",");
-		}
-		console.log("reloadAbsences done");
-	}, [refetchAbsences, setAbsences]);
+		await fetchAbsences();
+	}, [fetchAbsences]);
 
 	const roleUsers = useMemo(() => {
 		const roleObject: RoleUsers = {

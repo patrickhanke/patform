@@ -8,7 +8,6 @@ export type EditDayAbsenceProps = {
 	date: string;
 	records: Record[];
 	workerId: string;
-	year: number;
 	isOpen: boolean;
 	setIsOpen: Dispatch<SetStateAction<boolean>>;
 	times: DayDataTime[] | undefined;

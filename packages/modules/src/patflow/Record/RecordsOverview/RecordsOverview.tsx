@@ -39,7 +39,7 @@ const RecordsOverview = () => {
 
 	const absenceData = useMemo(() => {
 		return filterAbsences(absences, year);
-	}, [absences, selectedUser]);
+	}, [absences, year, selectedUser]);
 
 	const pageHeaderButtons = useMemo(() => {
 		if (siteState.value === "workers") {

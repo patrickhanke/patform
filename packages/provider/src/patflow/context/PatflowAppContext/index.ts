@@ -6,3 +6,4 @@ export type * from "./types";
 export { default as useDataStore } from "./hooks/useDataStore";
 export { default as useTaskSubscription } from "./hooks/useTaskSubscription";
 export { default as useTicketSubscription } from "./hooks/useTicketSubscription";
+export { default as useAbsenceSubscription } from "./hooks/useAbsenceSubscription";

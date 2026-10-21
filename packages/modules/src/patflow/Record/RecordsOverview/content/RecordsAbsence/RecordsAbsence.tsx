@@ -11,7 +11,7 @@ const RecordAbsence = () => {
 	const absenceData = useMemo(() => {
 		console.log({ absences });
 		return filterAbsences(absences, year);
-	}, [absences]);
+	}, [absences, year]);
 
 	const columns = useRecordAbsenceColumns({ refetch: reloadAbsences });
 

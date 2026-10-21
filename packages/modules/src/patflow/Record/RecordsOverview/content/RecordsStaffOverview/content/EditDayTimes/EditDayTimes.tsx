@@ -285,7 +285,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 				absenceId={absenceId}
 				records={records}
 				workerId={userId}
-				year={new Date().getFullYear()}
 				isOpen={editAbsence}
 				setIsOpen={setEditAbsence}
 				refetch={refetch}

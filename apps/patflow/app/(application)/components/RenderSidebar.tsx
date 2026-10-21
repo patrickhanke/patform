@@ -124,7 +124,7 @@ const RenderSidebar = ({ user }: { user: PatflowUser }) => {
       }
       return item;
     });
-  }, [absences]);
+  }, [absences, year]);
 
   if (!project) {
     return null;

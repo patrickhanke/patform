@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState, useCallback } from "react";
+import { FC, useEffect, useState, useCallback, useContext } from "react";
 import {
 	DatePicker,
 	DisplayWorker,
@@ -18,6 +18,7 @@ import {
 	absence_type_options,
 	axiosclient,
 	findDefaultTimeForDate,
+	PatflowAppContext,
 	useDataHandler,
 	useGetData
 } from "@repo/provider";
@@ -36,11 +37,11 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	times,
 	records,
 	workerId,
-	year,
 	isOpen,
 	setIsOpen,
 	refetch
 }) => {
+	const { year } = useContext(PatflowAppContext);
 	const { deleteData } = useDataHandler();
 	const [deleteModal, setDeleteModal] = useState(false);
 	const [isFull, setIsFull] = useState(true);
