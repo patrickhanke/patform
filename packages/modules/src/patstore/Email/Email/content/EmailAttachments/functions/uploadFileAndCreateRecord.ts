@@ -1,4 +1,4 @@
-import Parse from "parse/dist/parse.min.js";
+import Parse from "parse";
 import Cookies from "js-cookie";
 
 // Initialize Parse if not already initialized

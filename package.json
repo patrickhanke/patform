@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.3.0",
   "scripts": {
-    "build": "dotenv -- turbo build",
+    "build": "dotenv -v NODE_ENV=production -- turbo build",
     "dev": "dotenv -- turbo dev",
     "dev:patstore": "dotenv -- turbo dev --filter=patstore",
     "dev:patflow": "dotenv -- turbo dev --filter=patflow",

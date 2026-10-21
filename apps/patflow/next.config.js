@@ -20,9 +20,6 @@ const nextConfig = {
 	typescript: {
 		ignoreBuildErrors: true,
 	},
-	eslint: {
-		ignoreDuringBuilds: true,
-	},
 	sassOptions: {
 		includePaths: [path.join(__dirname, "../../packages/styles/src")],
 	},

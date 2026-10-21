@@ -1,4 +1,4 @@
-import Parse from "parse/dist/parse.min.js";
+import Parse from "parse";
 
 if (!Parse.applicationId) {
 	Parse.initialize(

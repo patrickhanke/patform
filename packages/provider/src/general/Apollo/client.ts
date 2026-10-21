@@ -7,7 +7,7 @@ import {
 	ApolloClient,
 	InMemoryCache,
 	SSRMultipartLink
-} from "@apollo/experimental-nextjs-app-support";
+} from "@apollo/client-integration-nextjs";
 import { ClientHeaders, MakeClientProps } from "./types";
 // import { InMemoryCache } from '@apollo/client-react-streaming';
 
