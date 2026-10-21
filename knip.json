@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "tags": ["-lintignore"],
+  "workspaces": {
+    ".": {
+      "entry": ["apps/env/**/*.js"],
+      "project": ["apps/env/**/*.js"]
+    },
+    "apps/patflow": {},
+    "apps/patstore": {},
+    "packages/assets": {},
+    "packages/eslint": {},
+    "packages/modules": {},
+    "packages/provider": {},
+    "packages/styles": {},
+    "packages/types": {},
+    "packages/typescript": {},
+    "packages/ui": {}
+  }
+}

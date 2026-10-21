@@ -9,6 +9,9 @@ node_modules
 .env*
 !.env.example
 
+# npmrc file
+.npmrc
+
 # Local admin playground (dev-only scripts and data)
 packages/modules/src/patstore/Admin/Playground/
 apps/patstore/app/(admin)/admin/playground/
@@ -33,6 +36,7 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
 
 # Misc
 .DS_Store

@@ -13,24 +13,24 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check-deps": "manypkg check",
-    "syncpack:check": "syncpack list-mismatches",
+    "syncpack:check": "syncpack lint",
     "gen": "turbo gen",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "knip": "knip"
   },
   "devDependencies": {
     "@manypkg/cli": "^0.23.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^26.6.5",
     "@vitejs/plugin-react": "^6.0.4",
-    "axios": "^1.18.1",
+    "dotenv-cli": "^7.4.2",
     "jsdom": "^29.1.1",
-    "react-email": "4.2.11",
-    "syncpack": "^13.0.0",
+    "knip": "^6.42.1",
+    "syncpack": "^15.3.3",
     "turbo": "latest",
-    "typescript": "^5.4.3",
-    "vitest": "^3.2.4"
+    "typescript": "^5.8.3",
+    "vitest": "^5.0.5"
   },
   "engines": {
     "node": ">=18"
@@ -41,12 +41,6 @@
     "packages/*"
   ],
   "dependencies": {
-    "@react-email/components": "0.5.3",
-    "firebase": "^11.1.0",
-    "idb": "^8.0.1",
-    "js-cookie": "^3.0.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "zustand": "^5.0.11"
+    "@apollo/client-integration-nextjs": "^0.14.5"
   }
 }

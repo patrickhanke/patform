@@ -12,7 +12,7 @@ const containerStyle = {
 	height: "400px"
 };
 
-const API_KEY = "AIzaSyAJgX9vOxmGb-w5JtU4z9xrlXJ0vKpQHP8";
+const API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 
 const defaultPlace = { lat: 52.51226761820683, lng: 13.379393221148042 };
 

@@ -5,33 +5,51 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "dependencies": {
-    "@apollo/client": "^3.13.0",
-    "zustand": "^5.0.11",
-    "@apollo/experimental-nextjs-app-support": "^0.11.3",
-    "@repo/eslint": "*",
-    "@repo/typescript": "*",
-    "algoliasearch": "^5.23.2",
-    "js-cookie": "^3.0.5",
-    "usehooks-ts": "^3.1.0",
-    "uuid": "^11.0.4"
-  },
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
     "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
     "generate:component": "turbo gen react-component"
   },
+  "dependencies": {
+    "@apollo/client": "^4.3.5",
+    "@bytescale/sdk": "^3.62.0",
+    "@chakra-ui/react": "^3.27.0",
+    "@emotion/react": "^11.14.0",
+    "@repo/modules": "*",
+    "@repo/types": "*",
+    "@repo/ui": "*",
+    "algoliasearch": "^5.23.2",
+    "axios": "^1.18.1",
+    "date-fns": "^3.6.0",
+    "firebase": "^13.0.0",
+    "graphql": "^16.14.2",
+    "idb": "^8.0.1",
+    "js-cookie": "^3.0.5",
+    "lodash-es": "^4.17.21",
+    "motion": "^12.4.2",
+    "parse": "^8.6.2",
+    "react-icons": "^5.4.0",
+    "react-select": "^5.10.1",
+    "uuid": "^11.0.4",
+    "zustand": "^5.0.11"
+  },
+  "peerDependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
   "devDependencies": {
-    "@turbo/gen": "^1.12.4",
-    "@types/eslint": "^8.56.5",
-    "@types/node": "^20.11.24",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
+    "@repo/eslint": "*",
+    "@repo/typescript": "*",
+    "@turbo/gen": "^2.11.10",
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "eslint": "^9.22.0",
-    "typescript": "^5.4.3"
+    "fs-extra": "^11.4.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "typescript": "^5.8.3",
+    "vitest": "^5.0.5"
   }
 }

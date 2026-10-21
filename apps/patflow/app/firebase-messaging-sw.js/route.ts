@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const FIREBASE_SW_VERSION = "11.1.0";
+const FIREBASE_SW_VERSION = "13.0.0";
 
 function buildFirebaseMessagingServiceWorker() {
 	const firebaseConfig = {

@@ -7,11 +7,11 @@
     "./base": "./base.js",
     "./next-js": "./next.js",
     "./react-internal": "./react-internal.js",
-    "./library": "./lib rary.js"
+    "./library": "./library.js"
   },
-  "devDependencies": {
+  "dependencies": {
     "@eslint/js": "^9.22.0",
-    "@next/eslint-plugin-next": "^15.2.2",
+    "@next/eslint-plugin-next": "^14.2.35",
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "@typescript-eslint/parser": "^8.26.0",
     "eslint": "^9.22.0",
@@ -23,7 +23,7 @@
     "eslint-plugin-turbo": "^2.4.4",
     "globals": "^16.0.0",
     "prettier": "^3.5.3",
-    "typescript": "^5.8.2",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.26.1"
   }
 }

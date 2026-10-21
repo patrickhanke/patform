@@ -4,7 +4,7 @@ import { FirebaseApp, initializeApp } from "firebase/app";
 import { getMessaging, getToken, Messaging } from "firebase/messaging";
 
 const SERVICE_WORKER_PATH = "/firebase-messaging-sw.js";
-const FIREBASE_SW_VERSION = "11.1.0";
+const FIREBASE_SW_VERSION = "13.0.0";
 
 const firebaseConfig = {
 	apiKey: process.env.FIREBASE_API_KEY,
