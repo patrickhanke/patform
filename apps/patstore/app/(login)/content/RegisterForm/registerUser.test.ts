@@ -32,12 +32,14 @@ describe("registerUser", () => {
 		});
 		expect(post).toHaveBeenNthCalledWith(2, "users", {
 			username: "user@example.com",
-			name: "Max Mustermann",
+			name: "user@example.com",
 			password: "SecurePass123!",
 			email: "user@example.com",
 			projects: ["project-123"],
 			is_superuser: false,
-			roles: ["editor"]
+			roles: ["editor"],
+			first_name: "Max",
+			last_name: "Mustermann"
 		});
 		expect(post).toHaveBeenNthCalledWith(
 			3,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { UseGetDataParams, UseGetDataResult } from "../types";
 import { Classes } from "@repo/types";
 import generateGraphQLQuery_4_1 from "../functions/generateGraphQlQuery_4_1";

@@ -10,7 +10,7 @@ import { PatstoreAppContext } from "../../patstore";
 import useNetlifyHooks from "./hooks/useNetlifyHooks";
 import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
-import { ClientParseError } from "@apollo/client";
+import { CombinedGraphQLErrors } from "@apollo/client";
 import Parse from "./parse";
 
 const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
@@ -364,7 +364,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 						}
 						return response.data;
 					})
-					.catch((error: ClientParseError) => {
+					.catch((error: CombinedGraphQLErrors) => {
 						console.log(error);
 						feedbackHandler({
 							success: true,

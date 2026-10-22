@@ -1,13 +1,8 @@
 "use client";
 
-import {
-	generateGraphQLQuery_4_1,
-	useDataHandler,
-	useFindData
-} from "@repo/provider";
+import { useDataHandler, useFindData, useGetData } from "@repo/provider";
 import { DnDDisplay, sortItemsByPosition } from "@repo/ui";
 import { Module } from "@repo/types";
-import { useQuery } from "@apollo/client";
 import AppModule from "./content/AppModule";
 import { useCallback, useMemo, useState } from "react";
 import { AdminPage } from "@repo/modules";
@@ -21,23 +16,11 @@ import { useParams } from "next/navigation";
 
 const Project = () => {
 	const { project_id: projectId } = useParams<{ project_id: string }>();
-	const { data: projectData } = useQuery(
-		generateGraphQLQuery_4_1({
-			type: "get",
-			queryName: "project",
-			objectName: "Project",
-			fields: [
-				"objectId",
-				"name",
-				"createdAt",
-				"logo { url name }",
-				"path"
-			]
-		}),
-		{
-			variables: { id: projectId }
-		}
-	);
+	const { data: projectData } = useGetData({
+		objectName: "Project",
+		id: projectId,
+		fields: ["objectId", "name", "createdAt", "logo { url name }", "path"]
+	});
 	const [createModule, setCreateModule] = useState(false);
 	const [createUser, setCreateUser] = useState(false);
 	const [createRole, setCreateRole] = useState(false);
@@ -152,11 +135,7 @@ const Project = () => {
 							) || []
 						}
 						ItemComponent={({ item }) => (
-							<AppModule
-								id={item.id}
-								projectId={projectId}
-								modules={modules}
-							/>
+							<AppModule id={item.id} projectId={projectId} />
 						)}
 						objectClass="Module"
 					/>

@@ -129,6 +129,14 @@ const defaultProps = {
 	invitationKey: "invite-key-abc",
 };
 
+async function submitRegistration(
+	user: ReturnType<typeof userEvent.setup>,
+) {
+	await user.click(screen.getByTestId("mark-form-valid"));
+	await user.click(screen.getByTestId("submit-registration"));
+	await user.click(screen.getByRole("button", { name: "Registrieren" }));
+}
+
 describe("RegisterForm", () => {
 	beforeEach(() => {
 		mockRegisterUser.mockReset();
@@ -149,7 +157,7 @@ describe("RegisterForm", () => {
 
 		render(<RegisterForm {...defaultProps} />);
 
-		await user.click(screen.getByTestId("submit-registration"));
+		await submitRegistration(user);
 
 		await waitFor(() => {
 			expect(
@@ -162,12 +170,11 @@ describe("RegisterForm", () => {
 		).toHaveAttribute("href", "https://store.patwork.net/login/demo-projekt");
 		expect(mockRegisterUser).toHaveBeenCalledWith(expect.anything(), {
 			email: "user@example.com",
+			username: "user@example.com",
 			projectId: "project-123",
 			invitationKey: "invite-key-abc",
-			values: {
-				username: "Max Mustermann",
-				password: "SecurePass123!",
-			},
+			password: "SecurePass123!",
+			values: {},
 		});
 	});
 
@@ -180,7 +187,7 @@ describe("RegisterForm", () => {
 
 		render(<RegisterForm {...defaultProps} />);
 
-		await user.click(screen.getByTestId("submit-registration"));
+		await submitRegistration(user);
 
 		await waitFor(() => {
 			expect(screen.getByText("Einladung ungültig")).toBeInTheDocument();
@@ -197,7 +204,7 @@ describe("RegisterForm", () => {
 
 		render(<RegisterForm {...defaultProps} />);
 
-		await user.click(screen.getByTestId("submit-registration"));
+		await submitRegistration(user);
 
 		await waitFor(() => {
 			expect(
@@ -217,7 +224,7 @@ describe("RegisterForm", () => {
 
 		render(<RegisterForm {...defaultProps} />);
 
-		await user.click(screen.getByTestId("submit-registration"));
+		await submitRegistration(user);
 
 		await waitFor(() => {
 			expect(
@@ -237,7 +244,7 @@ describe("RegisterForm", () => {
 
 		render(<RegisterForm {...defaultProps} />);
 
-		await user.click(screen.getByTestId("submit-registration"));
+		await submitRegistration(user);
 
 		await waitFor(() => {
 			expect(

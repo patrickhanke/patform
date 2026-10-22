@@ -9,7 +9,6 @@ import {
 	SSRMultipartLink
 } from "@apollo/client-integration-nextjs";
 import { ClientHeaders, MakeClientProps } from "./types";
-// import { InMemoryCache } from '@apollo/client-react-streaming';
 
 const makeClient: MakeClientProps = (uri, appId, restKey, masterKey) => {
 	const localToken = Cookies.get(process.env.SESSION_TOKEN as string);

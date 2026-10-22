@@ -1,6 +1,6 @@
 "use client";
 
-import { BubbleMenu } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 
 import {
 	Control,

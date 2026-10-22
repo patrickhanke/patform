@@ -4,16 +4,24 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
 	plugins: [react()],
 	test: {
-		include: [
-			"packages/**/src/**/*.test.ts",
-			"apps/**/**/*.test.{ts,tsx}",
-		],
-		environment: "node",
-		environmentMatchGlobs: [
-			["apps/**", "jsdom"],
-			["**/*.test.tsx", "jsdom"],
-		],
-		setupFiles: ["./vitest.setup.ts"],
 		passWithNoTests: false,
+		projects: [
+			{
+				test: {
+					name: "unit",
+					include: ["packages/**/src/**/*.test.ts"],
+					environment: "node",
+					setupFiles: ["./vitest.setup.ts"],
+				},
+			},
+			{
+				test: {
+					name: "dom",
+					include: ["apps/**/*.test.ts", "apps/**/*.test.tsx"],
+					environment: "jsdom",
+					setupFiles: ["./vitest.setup.ts"],
+				},
+			},
+		],
 	},
 });
