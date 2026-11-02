@@ -4,4 +4,3 @@ export * from "./Dashboard";
 export * from "./AdminPage";
 export * from "./Project";
 export { Module } from "./Module";
-export { Playground } from "./Playground";
