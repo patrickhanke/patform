@@ -1,0 +1,15 @@
+declare module "@repo/styles/global";
+declare module "@repo/styles/layout";
+declare module "@repo/styles/constants";
+declare module "@repo/styles/sizes";
+declare module "@repo/styles/colors";
+declare module "@repo/styles/breakpoints";
+declare module "@repo/styles/elements";
+declare module "@repo/styles/shadows";
+declare module "@repo/styles/buttons";
+declare module "@repo/styles/typography";
+declare module "@repo/styles/inputs";
+declare module "@repo/styles/layout-base";
+declare module "@repo/styles/form";
+declare module "@repo/styles/tag";
+declare module "@repo/styles/fonts";

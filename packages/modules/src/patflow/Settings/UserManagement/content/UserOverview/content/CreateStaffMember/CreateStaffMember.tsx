@@ -1,47 +1,53 @@
-import React, { useState, useEffect, FC, useContext } from "react";
+import { FC, useCallback, useContext, useEffect, useState } from "react";
 import { useImmer } from "use-immer";
-import { useFindData } from "@repo/provider";
-import { generateColor, useDataHandler } from "@repo/provider";
-import { ErrorMessage, Worker } from "@repo/types";
+import { PatflowAppContext, useDataHandlerSecure } from "@repo/provider";
+import { ErrorMessage, PatflowUser } from "@repo/types";
 import { SlideIn } from "@repo/ui";
-import { CreateStaffMemberProps } from "./types";
+import { CreateStaffMemberProps, NewStaffMemberForm } from "./types";
 import EditStaffData from "./components/EditStaffData";
 import EditStaffSecondaryData from "./components/EditStaffSecondaryData";
-import { formatISO } from "date-fns";
-import { CreatePatflowUser } from "@repo/types";
-import { UserContext } from "@repo/provider";
+
+const initialStaffMember = (): NewStaffMemberForm => ({
+	last_name: "",
+	first_name: "",
+	email: "",
+	password: "",
+	repeat_password: "",
+	color: "blue",
+	roles: []
+});
 
 const CreateStaffMember: FC<CreateStaffMemberProps> = ({
-	workers = [],
+	users = [],
 	setIsOpen,
 	isOpen,
 	refetch
 }) => {
-	const { projectId } = useContext(UserContext);
-	const { createData, updateData, loading: dataLoading } = useDataHandler();
-	const [loading, setLoading] = useState(dataLoading);
-	const { data: roleData } = useFindData({
-		objectName: "Role",
-		fields: ["objectId", "name", "type", "color"]
-	});
+	const { project, roles } = useContext(PatflowAppContext);
+	const {
+		createData,
+		updateData,
+		loading: dataLoading
+	} = useDataHandlerSecure(true);
+	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState([] as unknown as ErrorMessage[]);
-	const [worker, setWorker] = useImmer<CreatePatflowUser>({
-		last_name: "",
-		first_name: "",
-		portrait: "",
-		email: "",
-		role: "",
-		password: "",
-		repeat_password: "",
-		color: "blue"
-	});
+	const [staffMember, setStaffMember] =
+		useImmer<NewStaffMemberForm>(initialStaffMember());
+
+	useEffect(() => {
+		if (!isOpen) {
+			return;
+		}
+		setStaffMember(initialStaffMember());
+	}, [isOpen, setStaffMember]);
 
 	useEffect(() => {
 		const errorArray: ErrorMessage[] = [];
-		workers.forEach((existingWorker: Worker) => {
+
+		users.forEach((existingUser: PatflowUser) => {
 			if (
-				existingWorker.last_name === worker.last_name &&
-				existingWorker.first_name === worker.first_name
+				existingUser.last_name === staffMember.last_name &&
+				existingUser.first_name === staffMember.first_name
 			) {
 				errorArray.push({
 					message: "Dieser Name existiert bereits",
@@ -50,42 +56,43 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 				});
 			}
 		});
-		if (!worker.first_name) {
+
+		if (!staffMember.first_name) {
 			errorArray.push({
 				message: "Bitte einen Vornamen angeben",
 				key: "first_name",
 				id: "first_name"
 			});
 		}
-		if (!worker.last_name) {
+		if (!staffMember.last_name) {
 			errorArray.push({
 				message: "Bitte einen Nachnamen angeben",
 				key: "last_name",
 				id: "last_name"
 			});
 		}
-		if (!worker.role) {
+		if (!staffMember.roles.length) {
 			errorArray.push({
 				message: "Bitte eine Rolle auswählen",
 				key: "role",
 				id: "role"
 			});
 		}
-		if (!worker.email) {
+		if (!staffMember.email) {
 			errorArray.push({
 				message: "Bitte eine E-Mail Adresse angeben",
 				key: "email",
 				id: "email"
 			});
 		}
-		if (!worker.password) {
+		if (!staffMember.password) {
 			errorArray.push({
 				message: "Bitte ein Passwort angeben",
 				key: "password",
 				id: "password"
 			});
 		}
-		if (!worker.repeat_password) {
+		if (!staffMember.repeat_password) {
 			errorArray.push({
 				message: "Bitte das Passwort wiederholen",
 				key: "repeat_password",
@@ -93,8 +100,8 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 			});
 		}
 		if (
-			worker.repeat_password &&
-			worker.repeat_password !== worker.password
+			staffMember.repeat_password &&
+			staffMember.repeat_password !== staffMember.password
 		) {
 			errorArray.push({
 				message: "Die beiden Passwörter stimmen nicht überein",
@@ -104,68 +111,54 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 		}
 
 		setErrors(errorArray);
-	}, [worker]);
+	}, [staffMember, users]);
 
-	const createWorkerHandler = async (
-		worker: CreatePatflowUser,
-		number: number
-	) => {
+	const createStaffMember = useCallback(async () => {
+		const roleId = staffMember.roles[0];
+		if (!roleId || !project.objectId) {
+			return;
+		}
+
 		setLoading(true);
 
-		const updateObject = {
-			username: worker.email,
-			last_name: worker.last_name,
-			first_name: worker.first_name,
-			role: {
-				__type: "Pointer",
-				className: "_Role",
-				objectId: worker.role
-			},
-			project: {
-				__type: "Pointer",
-				className: "Project",
-				objectId: projectId
-			},
-			email: worker.email,
-			number: number,
-			password: worker.password,
-			portrait: undefined,
-			color: worker.color,
-			settings: {
-				time_settings: {
-					hours: 40,
-					weekdays: 5,
-					pause: 30,
-					vacation: 30
-				},
-				is_worker: true
-			},
-			projects: [projectId],
-			data: {
-				street: "",
-				zip: "",
-				city: "",
-				email: "",
-				phone: ""
-			}
-		};
-
-		if (worker.portrait) {
-			updateObject.portrait = worker.portrait;
-		}
-
-		if (worker.color) {
-			updateObject.color = worker.color;
-		}
-
 		await createData({
-			className: "_User",
-			updateObject,
+			className: "User",
+			updateObject: {
+				username: staffMember.email,
+				last_name: staffMember.last_name,
+				first_name: staffMember.first_name,
+				email: staffMember.email,
+				password: staffMember.password,
+				color: staffMember.color,
+				roles: staffMember.roles,
+				project: {
+					__type: "Pointer",
+					className: "Project",
+					objectId: project.objectId
+				},
+				projects: [project.objectId],
+				settings: {
+					time_settings: {
+						hours: 40,
+						weekdays: 5,
+						pause: 30,
+						vacation: 30
+					},
+					is_worker: true
+				},
+				data: {
+					street: "",
+					zip: "",
+					city: "",
+					email: staffMember.email,
+					phone: ""
+				}
+			},
 			feedback: "Mitarbeiter erfolgreich erstellt",
-			afterSaveHandler: async (data) => {
+			afterSaveHandler: async (data: { objectId: string }) => {
 				await updateData({
-					className: "_Role",
-					objectId: worker.role,
+					className: "Role",
+					objectId: roleId,
 					updateObject: {
 						users: {
 							__op: "AddRelation",
@@ -179,34 +172,44 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 						}
 					}
 				});
-				refetch();
+				await refetch();
 			}
 		});
-		setLoading(false);
 
+		setLoading(false);
 		setIsOpen(false);
-	};
+	}, [
+		createData,
+		updateData,
+		project.objectId,
+		refetch,
+		setIsOpen,
+		staffMember
+	]);
+
+	const isBusy = loading || dataLoading;
 
 	return (
 		<SlideIn
 			header="Neuen Mitarbeiter anlegen"
 			isOpen={isOpen}
 			cancel={() => setIsOpen(false)}
-			confirm={() => createWorkerHandler(worker, workers.length + 1)}
-			disabled={[loading, errors.length > 0 || loading]}
+			confirm={createStaffMember}
+			disabled={[isBusy, errors.length > 0 || isBusy]}
+			loading={isBusy}
 			secondaryContent={
 				<EditStaffSecondaryData
-					staffMember={worker}
-					setStaffMember={setWorker}
+					staffMember={staffMember}
+					setStaffMember={setStaffMember}
 				/>
 			}
 			showSecondaryContent={true}
 		>
 			<EditStaffData
-				staffMember={worker}
-				setStaffMember={setWorker}
+				staffMember={staffMember}
+				setStaffMember={setStaffMember}
 				errors={errors}
-				roles={roleData || []}
+				roles={roles}
 			/>
 		</SlideIn>
 	);

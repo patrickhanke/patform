@@ -17,7 +17,11 @@ const UserManagement = () => {
 	];
 
 	return (
-		<Page title="Nutzerverwaltung" pageHeaderButtons={siteHeaderButtons}>
+		<Page
+			title="Nutzerverwaltung"
+			description="Informationen und Einstellungen zu den Mitarbeitern"
+			pageHeaderButtons={siteHeaderButtons}
+		>
 			<UserOverview isOpen={isOpen} setIsOpen={setIsOpen} />
 		</Page>
 	);

@@ -1,26 +1,33 @@
-import { CreateUser, ErrorMessage, User, UserRole } from "@repo/types";
-import { Worker } from "@repo/types";
+import { ApolloRefetch, ErrorMessage, PatflowUser } from "@repo/types";
+import { Role } from "@repo/provider";
 import { Updater } from "use-immer";
 
-type EditUser = User & { repeat_password: string };
+export type NewStaffMemberForm = Pick<
+	PatflowUser,
+	"first_name" | "last_name" | "email" | "color"
+> & {
+	password: string;
+	repeat_password: string;
+	roles: string[];
+};
 
 export type CreateStaffMemberProps = {
-	workers: Worker[];
+	users: PatflowUser[];
 	setIsOpen: (isOpen: boolean) => void;
 	isOpen: boolean;
-	refetch: () => void;
+	refetch: ApolloRefetch;
 };
 
 export type EditStaffDataProps = {
-	staffMember: StaffMember;
-	setStaffMember: Updater<CreateUser>;
+	staffMember: NewStaffMemberForm;
+	setStaffMember: Updater<NewStaffMemberForm>;
 	errors: ErrorMessage[];
-	roles: UserRole[];
+	roles: Role[];
 };
 
 export type EditStaffSecondaryDataProps = {
-	staffMember: StaffMember;
-	setStaffMember: Updater<CreateUser>;
+	staffMember: NewStaffMemberForm;
+	setStaffMember: Updater<NewStaffMemberForm>;
 };
 
 export type RoleSelect = {

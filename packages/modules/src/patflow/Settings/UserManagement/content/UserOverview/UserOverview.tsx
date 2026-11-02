@@ -20,20 +20,17 @@ const UserOverview: FC<UserOverviewProps> = ({ isOpen, setIsOpen }) => {
 			"username",
 			"roles",
 			"color",
-			"data"
+			"data",
+			"settings"
 		],
 		useMasterKey: true,
 		projectId: project.objectId
 	});
 
-	console.log({ data });
-
 	const columns = useTableColumns({
 		refetch,
 		roles
 	});
-
-	console.log({ roles });
 
 	return (
 		<>
@@ -41,7 +38,7 @@ const UserOverview: FC<UserOverviewProps> = ({ isOpen, setIsOpen }) => {
 				<Table columns={columns} data={data || []} />
 			</div>
 			<CreateStaffMember
-				workers={data || []}
+				users={data || []}
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 				refetch={refetch}

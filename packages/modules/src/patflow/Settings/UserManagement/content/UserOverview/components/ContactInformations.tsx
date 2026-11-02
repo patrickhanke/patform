@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
-import { Field, Form } from "@repo/ui";
+import { Field } from "@repo/types";
+import { Form } from "@repo/ui";
 import { ChangeUserSettingsProps } from "../types";
 
 const ContactInformation: React.FC<ChangeUserSettingsProps> = ({
@@ -80,18 +81,22 @@ const ContactInformation: React.FC<ChangeUserSettingsProps> = ({
 	);
 
 	return (
-		<div>
-			<h4>Kontakteinstellungen</h4>
-			<Form
-				fields={fields}
-				data={data}
-				formSubmitHandler={async (values) => {
-					setData({ ...data, ...values });
-				}}
-				useWithDebounce
-				isHorizontal
-			/>
-		</div>
+		<Form
+			fields={fields}
+			data={data}
+			formSubmitHandler={async (values) => {
+				setData((prev) => ({
+					...prev,
+					...values,
+					data: {
+						...prev.data,
+						...(values.data ?? {})
+					}
+				}));
+			}}
+			useWithDebounce
+			isHorizontal
+		/>
 	);
 };
 

@@ -3,7 +3,8 @@ import {
 	ApolloRefetch,
 	PatflowProject,
 	PatflowUser,
-	PatflowUserRoleTypes
+	PatflowUserRoleTypes,
+	PatstoreUserRole
 } from "@repo/types";
 import {
 	Worker,
@@ -24,6 +25,14 @@ export type RoleUsers = {
 	[Property in PatflowUserRoleTypes]: PatflowUser["objectId"][];
 };
 
+export type Role = {
+	value: string;
+	type: string;
+	label: string;
+	color: string;
+	users: { objectId: string; username: string }[];
+};
+
 export type ContextValues = {
 	createTicket: JSX.Element;
 	createTask: JSX.Element;
@@ -37,13 +46,7 @@ export type ContextValues = {
 	reloadProperties: () => Promise<void>;
 	reloadAbsences: () => Promise<void>;
 	reloadSurcharges: () => Promise<void>;
-	roles: {
-		value: string;
-		type: string;
-		label: string;
-		color: string;
-		users: { objectId: string; username: string }[];
-	}[];
+	roles: Role[];
 	project: PatflowProject;
 	roleUsers: RoleUsers;
 	fetchTasks: () => void;

@@ -278,10 +278,16 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 			const parseFile = new Parse.File(fileName, file);
 			await parseFile.save();
 
+			const parseClassName = className === "User" ? "_User" : className;
+			const uploadedFile = {
+				name: parseFile.name() ?? fileName,
+				url: parseFile.url() ?? ""
+			};
+
 			let existingClassObject;
 
 			if (classId && className) {
-				const classQuery = new Parse.Query(className);
+				const classQuery = new Parse.Query(parseClassName);
 				const classObject = await classQuery
 					.get(classId)
 					.catch((error) => {
@@ -295,7 +301,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 			}
 
 			if (!existingClassObject) {
-				const obj = new Parse.Object(className);
+				const obj = new Parse.Object(parseClassName);
 				// at a certain point, the save method must be inferre from types associated with className
 				if (className === "Download") {
 					obj.set("file", parseFile);
@@ -406,6 +412,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 					});
 			}
 			netlifyHookHandler(className);
+			return uploadedFile;
 		},
 		[user, project]
 	);

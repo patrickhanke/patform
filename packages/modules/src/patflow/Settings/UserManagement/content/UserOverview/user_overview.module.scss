@@ -1,0 +1,26 @@
+@use "@repo/styles/constants";
+@use "sass:map";
+
+.user_slidein_container {
+  @include constants.flexbox(
+    $direction: column,
+    $justify: flex-start,
+    $align: stretch
+  );
+  gap: map.get(constants.$padding, "lg");
+  padding: map.get(constants.$padding, "md");
+  width: 100%;
+  height: 100%;
+
+  section {
+    @include constants.flexbox($direction: column, $align: stretch);
+    gap: map.get(constants.$padding, "sm");
+  }
+
+  .user_portrait_preview {
+    max-height: 80px;
+    max-width: 120px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+}

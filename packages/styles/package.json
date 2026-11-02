@@ -3,22 +3,68 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
+  "types": "./styles.d.ts",
   "exports": {
-    "./layout": "./src/layout/_index.scss",
-    "./global": "./src/global.scss",
-    "./constants": "./src/constants/_index.scss",
-    "./sizes": "./src/constants/sizes.scss",
-    "./colors": "./src/constants/colors.scss",
-    "./breakpoints": "./src/constants/breakpoints.scss",
-    "./elements": "./src/constants/elements.scss",
-    "./shadows": "./src/constants/styles.scss",
-    "./buttons": "./src/layout/buttons.scss",
-    "./typography": "./src/layout/typography.scss",
-    "./inputs": "./src/layout/inputs.scss",
-    "./layout-base": "./src/layout/layout.scss",
-    "./form": "./src/layout/form.scss",
-    "./tag": "./src/layout/tag.scss",
-    "./fonts": "./src/fonts/_fonts.scss"
+    "./layout": {
+      "types": "./styles.d.ts",
+      "default": "./src/layout/_index.scss"
+    },
+    "./global": {
+      "types": "./styles.d.ts",
+      "default": "./src/global.scss"
+    },
+    "./constants": {
+      "types": "./styles.d.ts",
+      "default": "./src/constants/_index.scss"
+    },
+    "./sizes": {
+      "types": "./styles.d.ts",
+      "default": "./src/constants/sizes.scss"
+    },
+    "./colors": {
+      "types": "./styles.d.ts",
+      "default": "./src/constants/colors.scss"
+    },
+    "./breakpoints": {
+      "types": "./styles.d.ts",
+      "default": "./src/constants/breakpoints.scss"
+    },
+    "./elements": {
+      "types": "./styles.d.ts",
+      "default": "./src/constants/elements.scss"
+    },
+    "./shadows": {
+      "types": "./styles.d.ts",
+      "default": "./src/constants/styles.scss"
+    },
+    "./buttons": {
+      "types": "./styles.d.ts",
+      "default": "./src/layout/buttons.scss"
+    },
+    "./typography": {
+      "types": "./styles.d.ts",
+      "default": "./src/layout/typography.scss"
+    },
+    "./inputs": {
+      "types": "./styles.d.ts",
+      "default": "./src/layout/inputs.scss"
+    },
+    "./layout-base": {
+      "types": "./styles.d.ts",
+      "default": "./src/layout/layout.scss"
+    },
+    "./form": {
+      "types": "./styles.d.ts",
+      "default": "./src/layout/form.scss"
+    },
+    "./tag": {
+      "types": "./styles.d.ts",
+      "default": "./src/layout/tag.scss"
+    },
+    "./fonts": {
+      "types": "./styles.d.ts",
+      "default": "./src/fonts/_fonts.scss"
+    }
   },
   "scripts": {
     "lint": "node -e \"process.exit(0)\"",

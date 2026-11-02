@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useImmer } from "use-immer";
 import { ErrorMessage } from "@repo/types";
 import { IconButton, SlideInRight, TextInput } from "@repo/ui";
-import "../user_overview.scss";
+import styles from "../user_overview.module.scss";
 
 const SetStaffMemberPassword = ({ userId }: { userId: string }) => {
 	const [showSlideIn, setShowSlideIn] = useState(false);
@@ -64,7 +64,7 @@ const SetStaffMemberPassword = ({ userId }: { userId: string }) => {
 				setIsOpen={setShowSlideIn}
 				preventClickOutside
 			>
-				<div className={"user_slidein_container"}>
+				<div className={styles.user_slidein_container}>
 					<form>
 						<p>
 							Sie können hier ein neues Passowort für den Nutzer

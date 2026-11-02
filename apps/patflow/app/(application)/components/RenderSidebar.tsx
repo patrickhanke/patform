@@ -71,12 +71,6 @@ const menu_items = [
     sub_menu: [],
   },
   {
-    label: "Mitarbeiter",
-    value: "/staff",
-    icon: "staff",
-    sub_menu: [],
-  },
-  {
     label: "Nutzerverwaltung",
     value: "/settings/user_management",
     icon: "users",
