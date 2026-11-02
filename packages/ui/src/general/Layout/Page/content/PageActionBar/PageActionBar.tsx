@@ -63,6 +63,9 @@ const PageActionBar: FC<PageActionBarProps> = ({
 					updateObject: updateOptions.updateObject(currentData),
 					feedback: updateOptions.message
 				});
+				if (updateOptions.afterSave) {
+					await updateOptions.afterSave(currentData);
+				}
 			}
 			commitData();
 			if (refetch) {

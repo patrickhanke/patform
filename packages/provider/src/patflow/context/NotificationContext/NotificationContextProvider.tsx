@@ -5,6 +5,7 @@ import React, {
 	useContext,
 	useEffect,
 	useMemo,
+	useRef,
 	useState
 } from "react";
 import {
@@ -20,6 +21,29 @@ import { isEqual } from "lodash-es";
 import { Notification } from "@repo/types";
 import { UserContext } from "../UserContext";
 
+const sortNotifications = (items: Notification[]) =>
+	[...items].sort(
+		(a, b) =>
+			new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+	);
+
+const partitionNotifications = (data: Notification[]) => {
+	const notificationArray: Notification[] = [];
+	const unreadNotificationArray: Notification[] = [];
+
+	data.forEach((notification) => {
+		notificationArray.push(notification);
+		if (!notification.read) {
+			unreadNotificationArray.push(notification);
+		}
+	});
+
+	return {
+		all: sortNotifications(notificationArray),
+		unread: sortNotifications(unreadNotificationArray)
+	};
+};
+
 const NotificationContextProvider = ({
 	children
 }: {
@@ -30,17 +54,14 @@ const NotificationContextProvider = ({
 		undefined
 	);
 
-	const messageChangeHanlder = useCallback(
-		(notification: MessagePayload) => {
-			if (
-				notification?.messageId &&
-				newNotification !== notification.messageId
-			) {
-				setNewNotification(notification.messageId);
-			}
-		},
-		[newNotification]
-	);
+	const messageChangeHanlder = useCallback((notification: MessagePayload) => {
+		if (!notification?.messageId) {
+			return;
+		}
+		setNewNotification((current) =>
+			current !== notification.messageId ? notification.messageId : current
+		);
+	}, []);
 
 	const { token } = useFirebaseMessaging({
 		initialize: true,
@@ -57,60 +78,47 @@ const NotificationContextProvider = ({
 		Notification[]
 	>([]);
 
+	const notificationsRef = useRef(notifications);
+	const unreadNotificationsRef = useRef(unreadNotifications);
+	notificationsRef.current = notifications;
+	unreadNotificationsRef.current = unreadNotifications;
+
 	const getNotificationCallback = useCallback(async () => {
 		const data: Notification[] = await getNotifications();
-		const notificationArray: Notification[] = [];
-		const unreadNotificationArray: Notification[] = [];
-		data.forEach((notification) => {
-			if (!notification.read) {
-				notificationArray.push(notification);
-				unreadNotificationArray.push(notification);
-			} else {
-				notificationArray.push(notification);
-			}
-		});
-		if (!isEqual(notifications, notificationArray)) {
-			setNotifications(
-				notificationArray.sort(
-					(a, b) =>
-						new Date(b.timestamp).getTime() -
-						new Date(a.timestamp).getTime()
-				)
-			);
+		const { all, unread } = partitionNotifications(data);
+
+		if (!isEqual(notificationsRef.current, all)) {
+			setNotifications(all);
 		}
-		if (!isEqual(unreadNotifications, unreadNotificationArray)) {
-			setUnreadNotifications(
-				unreadNotificationArray.sort(
-					(a, b) =>
-						new Date(b.timestamp).getTime() -
-						new Date(a.timestamp).getTime()
-				)
-			);
+		if (!isEqual(unreadNotificationsRef.current, unread)) {
+			setUnreadNotifications(unread);
 		}
-	}, [notifications, unreadNotifications]);
+	}, []);
 
 	const deleteNotificationCallaback = useCallback(
 		async (id: number | string) => {
 			await deleteNotification(id);
 			await getNotificationCallback();
 		},
-		[notifications]
+		[getNotificationCallback]
 	);
 
 	useEffect(() => {
-		const interval = setInterval(async () => {
-			getNotificationCallback();
+		void getNotificationCallback();
+
+		const interval = setInterval(() => {
+			void getNotificationCallback();
 		}, 24000);
 
 		return () => clearInterval(interval);
-	}, []);
+	}, [getNotificationCallback]);
 
 	const setNotificationsToRead = useCallback(() => {
 		setTimeout(async () => {
 			await snr();
-			getNotificationCallback();
+			await getNotificationCallback();
 		}, 2000);
-	}, []);
+	}, [getNotificationCallback]);
 
 	const notificationContextObject = useMemo(
 		() => ({
@@ -121,7 +129,14 @@ const NotificationContextProvider = ({
 			deleteNotification: deleteNotificationCallaback,
 			reloadNotifications: getNotificationCallback
 		}),
-		[notifications, unreadNotifications]
+		[
+			newNotification,
+			notifications,
+			unreadNotifications,
+			setNotificationsToRead,
+			deleteNotificationCallaback,
+			getNotificationCallback
+		]
 	);
 
 	return (

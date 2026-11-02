@@ -20,6 +20,9 @@ const default_fields: {
 	"/videos": ["title"],
 	"/competitions": ["title"],
 	"/clubs": ["title"],
+	"/championships": ["title"],
+	"/results": ["title"],
+	"/vereine": ["title"],
 	"/savings-group": []
 };
 

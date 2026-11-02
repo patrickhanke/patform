@@ -21,10 +21,14 @@ export type ModulePath =
 	| "/videos"
 	| "/competitions"
 	| "/clubs"
+	| "/championships"
+	| "/results"
+	| "/vereine"
 	| "/savings-group";
 
 export type ModuleFieldIds =
 	| "title"
+	| "categories"
 	| "createdAt"
 	| "updatedAt"
 	| "description"
@@ -83,6 +87,7 @@ export type ModuleCategory = {
 	position: number;
 	is_multi: boolean;
 	category_ids: string[];
+	is_required: boolean;
 };
 
 export type ModuleSettingsCategory = {
@@ -199,6 +204,7 @@ export type ModuleClass =
 	| "TrainingGroup"
 	| "Competition"
 	| "Club"
+	| "Championship"
 	| "Booking";
 
 export type ModuleSubMenuItem = {
@@ -313,6 +319,24 @@ export type ModulePathConfig = {
 		sub_menu: [];
 	};
 	"/clubs": {
+		connected_class: "Club";
+		default_fields: ["title"];
+		sub_menu: [];
+	};
+	"/championships": {
+		connected_class: "Championship";
+		default_fields: ["title"];
+		sub_menu: [
+			{ label: "Wettkämpfe"; value: "/overview"; icon: "events" },
+			{ label: "Ergebnisse"; value: "/results"; icon: "forms" }
+		];
+	};
+	"/results": {
+		connected_class: "Championship";
+		default_fields: ["title"];
+		sub_menu: [];
+	};
+	"/vereine": {
 		connected_class: "Club";
 		default_fields: ["title"];
 		sub_menu: [];

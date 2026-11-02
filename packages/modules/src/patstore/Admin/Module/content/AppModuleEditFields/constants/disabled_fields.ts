@@ -20,6 +20,9 @@ const disabled_fields: {
 	"/videos": [],
 	"/competitions": [],
 	"/clubs": [],
+	"/championships": [],
+	"/results": [],
+	"/vereine": [],
 	"/savings-group": []
 };
 

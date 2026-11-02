@@ -96,6 +96,8 @@ const useErrors: UseErrors = ({
 					});
 				}
 
+				console.log(time);
+
 				if (time?.breaks?.length > 0) {
 					time.breaks.forEach(
 						(breakTime: DayTime["breaks"][number]) => {
@@ -134,7 +136,7 @@ const useErrors: UseErrors = ({
 									id: breakTime.id,
 									key: `break_after_end`,
 									message:
-										"Endezeit muss nach Ende der Pause sein"
+										"Endzeit muss nach Ende der Pause sein"
 								});
 							}
 

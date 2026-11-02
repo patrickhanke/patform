@@ -381,6 +381,63 @@ export const module_option_fields: ModuleOptionsField = {
 		setting_fields: [],
 		default_fields: ["title"]
 	},
+	"/championships": {
+		path: "/championships",
+		name: "Wettkämpfe",
+		icon: "events",
+		settings: {
+			categories: [],
+			languages: [],
+			default_language: "de-DE"
+		},
+		fields: [],
+		data_fields: [],
+		position: 18,
+		categories: [],
+		connected_class: "Championship",
+		sub_menu: [
+			{ label: "Wettkämpfe", value: "/overview", icon: "events" },
+			{ label: "Ergebnisse", value: "/results", icon: "forms" }
+		],
+		setting_fields: [],
+		default_fields: ["title"]
+	},
+	"/results": {
+		path: "/results",
+		name: "Ergebnisse",
+		icon: "events",
+		settings: {
+			categories: [],
+			languages: [],
+			default_language: "de-DE"
+		},
+		fields: [],
+		data_fields: [],
+		position: 19,
+		categories: [],
+		connected_class: "Championship",
+		sub_menu: [],
+		setting_fields: [],
+		default_fields: ["title"]
+	},
+	"/vereine": {
+		path: "/vereine",
+		name: "Vereine",
+		icon: "users",
+		settings: {
+			categories: [],
+			languages: [],
+			default_language: "de-DE"
+		},
+		fields: [],
+		data_fields: [],
+		position: 20,
+		categories: [],
+		connected_class: "Club",
+		sub_menu: [],
+		setting_fields: [],
+		default_fields: ["title"]
+	},
 	"/savings-group": {
 		path: "/savings-group",
 		name: "Sparclub",

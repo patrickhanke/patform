@@ -22,10 +22,7 @@ const CategoriesOverview = ({
 	);
 
 	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
-	const {
-		data: categories,
-		refetch
-	} = useFindData({
+	const { data: categories, refetch } = useFindData({
 		objectName: "Category",
 		fields: [
 			"objectId",
@@ -48,7 +45,7 @@ const CategoriesOverview = ({
 					}
 				]
 			: [],
-		limit: 10,
+		limit: 30,
 		skip: 0,
 		order: "createdAt_DESC",
 		moduleId: currentModule?.objectId
@@ -109,6 +106,7 @@ const CategoriesOverview = ({
 					pageIndex: 0,
 					pageSize: 30
 				}}
+				rowCount={30}
 			/>
 			<Modal
 				isOpen={deleteModal.isOpen}

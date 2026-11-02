@@ -17,6 +17,4 @@ export * from "./Project";
 export * from "./Email";
 export * from "./Videos";
 export * from "./Log";
-export * from "./Competition";
-export * from "./Club";
 export * from "./SavingsGroup";

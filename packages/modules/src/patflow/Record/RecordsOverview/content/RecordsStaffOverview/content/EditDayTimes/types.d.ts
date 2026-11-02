@@ -1,12 +1,24 @@
 import { DayDataTime } from "../StaffWorkingTimes";
-import { WorkingTimes } from "./types";
 import {
 	AbsenceTime,
 	ApolloRefetch,
 	Day,
 	DefaultWorkingDay,
-	ErrorMessage
+	ErrorMessage,
+	Record
 } from "@repo/types";
+
+export type WorkTimeEditorSession = {
+	key: string;
+	date: string;
+	dayId?: string;
+	initialTime?: Day["time"];
+	times: DayDataTime[] | undefined;
+	refetch: ApolloRefetch;
+	records: Record[];
+};
+
+export type OpenWorkTimeEditor = (session: WorkTimeEditorSession) => void;
 
 export type EditDayTimesProps = {
 	type: "create" | "edit";
@@ -23,6 +35,7 @@ export type EditDayTimesProps = {
 	label?: string;
 	isWorkingDay: boolean;
 	hasRecordForDate: boolean;
+	onOpenWorkEditor: OpenWorkTimeEditor;
 };
 
 export type EditTimeProps = {

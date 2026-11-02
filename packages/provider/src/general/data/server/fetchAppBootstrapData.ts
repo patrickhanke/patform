@@ -251,6 +251,7 @@ export async function fetchModuleByPath<P extends ModulePath>({
 		},
 		sessionToken
 	});
+	console.log(data);
 
 	const node = data?.modules?.edges?.[0]?.node;
 	return node ? (sanitizeGraphQlNode(node) as ModuleForPath<P>) : undefined;

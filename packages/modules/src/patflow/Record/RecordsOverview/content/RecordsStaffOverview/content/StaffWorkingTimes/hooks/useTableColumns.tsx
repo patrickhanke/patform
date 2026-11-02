@@ -12,6 +12,7 @@ import ColumnWorkingTime from "../components/ColumnWorkingTime";
 import ColumnWorkingHours from "../components/ColumnWorkingHours";
 import { ApolloRefetch, Day, Holiday, Record, Surcharge } from "@repo/types";
 import EditDayTimes from "../../EditDayTimes";
+import { OpenWorkTimeEditor } from "../../EditDayTimes/types";
 import { DayData } from "../types";
 import ColumnWorkingTarget from "../components/ColumnWorkingTarget";
 import ColumnWorkingSaldo from "../components/ColumnWorkingSaldo";
@@ -25,22 +26,36 @@ const useTableColumns = ({
 	userId,
 	records,
 	holidays,
-	days
+	days,
+	onOpenWorkEditor
 }: {
 	refetch: ApolloRefetch;
 	userId: string;
 	records: Record[];
 	holidays: Holiday[];
 	days: Day[];
+	onOpenWorkEditor: OpenWorkTimeEditor;
 }) => {
 	const { projectId } = useContext(UserContext);
-	const { data } = useFindData({
+	const { data: surchargeDataRaw } = useFindData({
 		objectName: "Item",
 		fields: surchargeItemFields,
 		filters: surchargeItemFilters,
 		projectId: projectId,
 		skipQuery: !projectId
 	});
+
+	const surchargeStableKey = useMemo(
+		() =>
+			surchargeDataRaw
+				?.map((item) => `${item.objectId}:${item.updatedAt ?? ""}`)
+				.join("|") ?? "",
+		[surchargeDataRaw]
+	);
+
+	const surchargeItems = useMemo((): Surcharge[] => {
+		return (surchargeDataRaw ?? []) as Surcharge[];
+	}, [surchargeStableKey, surchargeDataRaw]);
 
 	const secondaryRow = useCallback((row: Row<DayData>) => {
 		const text = row.original.comment?.trim();
@@ -97,6 +112,7 @@ const useTableColumns = ({
 						refetch={refetch}
 						userId={userId}
 						records={records}
+						onOpenWorkEditor={onOpenWorkEditor}
 					/>
 				),
 				header: () => <span>Arbeitszeiten</span>,
@@ -149,7 +165,7 @@ const useTableColumns = ({
 			{
 				accessorFn: (row) => (
 					<ColumnWorkingSurcharges
-						surcharges={(data || []) as Surcharge[]}
+						surcharges={surchargeItems}
 						daySurcharges={row.surcharges}
 					/>
 				),
@@ -181,6 +197,7 @@ const useTableColumns = ({
 						userId={userId}
 						records={records}
 						days={days}
+						onOpenWorkEditor={onOpenWorkEditor}
 					/>
 				),
 				header: () => (
@@ -192,7 +209,7 @@ const useTableColumns = ({
 				footer: (info) => info.column.id
 			}
 		],
-		[userId, refetch, data, holidays, records]
+		[userId, refetch, surchargeStableKey, holidays, records, days, onOpenWorkEditor]
 	);
 
 	return { columns, secondaryRow };

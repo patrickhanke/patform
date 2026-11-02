@@ -10,6 +10,8 @@ const StatelessToggle: FC<StatelessToggleProps> = ({
 	disabled = false,
 	label
 }) => {
+	const checked = Boolean(value);
+
 	return (
 		<div className="toggle-container">
 			{label && <label>{label}</label>}
@@ -17,7 +19,7 @@ const StatelessToggle: FC<StatelessToggleProps> = ({
 				<input
 					readOnly
 					type="checkbox"
-					checked={value}
+					checked={checked}
 					disabled={disabled}
 				/>
 				<span
@@ -25,7 +27,7 @@ const StatelessToggle: FC<StatelessToggleProps> = ({
 						if (disabled) {
 							return;
 						}
-						onChange(!value);
+						onChange(!checked);
 					}}
 					className="toggle-slider"
 				></span>

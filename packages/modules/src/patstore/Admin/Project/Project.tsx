@@ -117,7 +117,7 @@ const Project = () => {
 
 	return (
 		<AdminPage
-			title={`${projectData?.project?.name} - ${siteState.label}`}
+			title={`${projectData?.name} - ${siteState.label}`}
 			pageHeaderButtons={pageHeaderButtons}
 			pageStates={site_states}
 			activeState={siteState}
@@ -162,7 +162,7 @@ const Project = () => {
 				<>
 					<ProjectRoles
 						projectId={projectId}
-						projectPath={projectData?.project?.path}
+						projectPath={projectData?.path}
 						createRole={createRole}
 						setCreateRole={setCreateRole}
 						modules={modules}

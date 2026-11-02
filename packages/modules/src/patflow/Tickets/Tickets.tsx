@@ -41,7 +41,7 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 			className: "Ticket",
 			objectId,
 			updateObject: {
-				archived: true
+				state: "archived"
 			}
 		});
 	}, []);
@@ -78,7 +78,7 @@ const Tickets = ({ id, className, pageState = "open" }: TicketsComponent) => {
 				operator: "equalTo",
 				id: "state"
 			});
-		} 
+		}
 		if (searchParams.get("ticket")) {
 			filterArray.push({
 				key: "objectId",

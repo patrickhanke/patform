@@ -141,6 +141,13 @@ const AppModuleEditCategory = ({
 					onChange={(e) => changeHandler({ is_multi: e })}
 				/>
 			</div>
+			<div>
+				<StatelessToggle
+					label="Pflichtfeld"
+					value={localCategory.is_required}
+					onChange={(e) => changeHandler({ is_required: e })}
+				/>
+			</div>
 		</div>
 	);
 };

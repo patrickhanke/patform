@@ -8,7 +8,7 @@ import { Tooltip } from "@repo/ui";
 
 const IconButton: FC<IconButtonProps> = ({
 	icon,
-	isLink,
+	isLink = false,
 	isBlank,
 	link,
 	onClick,
@@ -27,7 +27,6 @@ const IconButton: FC<IconButtonProps> = ({
 				showArrow={!!tooltip}
 				portalled
 				content={tooltip}
-				disabled={disabled}
 				contentProps={{
 					display: tooltip ? "block" : "none"
 				}}

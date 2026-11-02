@@ -16,6 +16,8 @@ import { ContentClass } from "./Content";
 import { LanguageValue, PatstoreProject } from "./Project";
 import { CompetitionClass } from "./Competition";
 import { ClubClass } from "./Club";
+import { ChampionshipClass } from "../prellball/Championship";
+import { PrellballClubClass } from "../prellball/Club";
 import { EmailClass } from "./Email";
 import { BookingClass } from "./Booking";
 
@@ -70,4 +72,6 @@ export type Classes =
 	| CompetitionClass
 	| ClubClass
 	| EmailClass
-	| BookingClass;
+	| BookingClass
+	| ChampionshipClass
+	| PrellballClubClass;

@@ -25,6 +25,7 @@ const ImagesOverview = ({
 	languages,
 	defaultLanguage
 }: ModuleOverviewProps<"/images"> & { projectId: string }) => {
+	console.log(module);
 	const { deleteData } = useDataHandler(false);
 	const [uploadImages, setUploadImages] = useState(false);
 	const [filters, setFilters] = useState<Filter[]>([]);

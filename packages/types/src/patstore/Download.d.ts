@@ -4,5 +4,6 @@ export type DownloadClass = ClassProperties & {
   title: string;
   image: string;
   file: string;
-  info: string;
+	info: string;
+	former_id?: string;
 };

@@ -13,13 +13,25 @@ export type ClubTrainingTime = {
 	gymId?: string;
 };
 
+export type ClubFile = {
+	__type?: "File";
+	name?: string;
+	url?: string;
+};
+
+export type ClubSettings = {
+	short?: string;
+};
+
 export type ClubClass = ClassProperties & {
 	title: string;
 	contact?: string;
 	email?: string;
 	homepage?: string;
-	logo?: string;
-	short?: string;
+	/** Logo. Former `logo`. */
+	file?: ClubFile | null;
+	/** `short` is the club abbreviation. */
+	settings?: ClubSettings;
 	training: ClubTrainingTime[];
 	playerIds: string[];
 };

@@ -1,7 +1,7 @@
 {
   "name": "patwork",
   "private": true,
-  "version": "0.3.0",
+  "version": "1.0.0",
   "scripts": {
     "build": "dotenv -v NODE_ENV=production -- turbo build",
     "dev": "dotenv -- turbo dev",

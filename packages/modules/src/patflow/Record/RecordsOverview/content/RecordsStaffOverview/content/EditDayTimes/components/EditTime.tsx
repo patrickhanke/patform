@@ -3,7 +3,6 @@ import { FC, useCallback } from "react";
 import { EditTimeProps, WorkingTime } from "../types";
 import { useDebounceCallback } from "usehooks-ts";
 import { cloneDeep, set } from "lodash-es";
-import "../styles.scss";
 import { v4 as generateUuid } from "uuid";
 import { IconButton } from "@repo/ui";
 
@@ -116,18 +115,19 @@ const EditTime: FC<EditTimeProps> = ({
 											<input
 												data-error={errors.find(
 													(error) =>
-														error.id === breakTime.id
+														error.id ===
+														breakTime.id
 												)}
 												aria-label="Time"
 												id={`break-start-${index}`}
 												name="break-start"
 												type="datetime-local"
-												onChange={(e) =>
+												onChange={(e) => {
 													debounced(
 														`breaks.${index}.start`,
 														e.target.value
-													)
-												}
+													);
+												}}
 												defaultValue={
 													breakTime.start || ""
 												}
@@ -144,7 +144,8 @@ const EditTime: FC<EditTimeProps> = ({
 											<input
 												data-error={errors.find(
 													(error) =>
-														error.id === breakTime.id
+														error.id ===
+														breakTime.id
 												)}
 												aria-label="Time"
 												id={`break-end-${index}`}

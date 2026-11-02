@@ -17,8 +17,8 @@
   position: relative;
   box-sizing: border-box;
   padding: map-get($map: constants.$padding, $key: "md");
-  padding-top: 36px;
-  padding-bottom: 36px;
+  padding-top: 24px;
+  padding-bottom: 24px;
   background-color: constants.$white;
   overflow: hidden;
 }

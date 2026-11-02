@@ -15,7 +15,7 @@ export async function fetchModuleForPage<P extends ModulePath>({
 	path: P;
 }): Promise<{ module?: ModuleForPath<P>; projectId?: string }> {
 	"use cache";
-	cacheLife("hours");
+	cacheLife("minutes");
 
 	const projectId = await resolveActiveProjectId({
 		sessionToken,

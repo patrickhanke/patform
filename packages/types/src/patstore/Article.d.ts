@@ -10,4 +10,5 @@ export type ArticleClass = ClassProperties & {
 	date: string;
 	state: ClassState["value"];
 	author: PersonClass;
+	former_id?: string;
 };

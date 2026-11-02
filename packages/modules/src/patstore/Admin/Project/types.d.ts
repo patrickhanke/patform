@@ -36,6 +36,9 @@ export type ModuleOptionsKeys =
 	| "/videos"
 	| "/competitions"
 	| "/clubs"
+	| "/championships"
+	| "/results"
+	| "/vereine"
 	| "/savings-group";
 
 export type ModuleOptionsField = {

@@ -84,6 +84,8 @@ export type PageDataUpdateOptions<T> = {
 	message?: string;
 	collection?: boolean;
 	useMasterKey?: boolean;
+	/** Runs after the class update and before the page is marked clean. */
+	afterSave?: (data: T) => Promise<void> | void;
 };
 
 export type PageDataCollectionUpdate = {

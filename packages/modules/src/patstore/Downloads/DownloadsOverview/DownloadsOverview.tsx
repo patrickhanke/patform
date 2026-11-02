@@ -65,9 +65,6 @@ const DownloadsOverview = ({
 		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
-	console.log(module);
-	console.log(data);
-
 	const columns = useCreateColumns<DownloadClass>({
 		data: generateColumnsFromFields(module.fields),
 		fields: module.data_fields,

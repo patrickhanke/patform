@@ -30,6 +30,8 @@ export function createModuleOverviewPage<P extends ModulePath>({
 			path: modulePath
 		});
 
+		console.log(module);
+
 		if (!module || !projectId) {
 			return <PageSkeleton title={fallbackTitle} />;
 		}

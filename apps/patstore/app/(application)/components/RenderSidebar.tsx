@@ -22,20 +22,32 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
 
     if (project) {
       const modules = cloneDeep(project.modules.sort( (a: Module, b: Module) => a.position - b.position));
+      const hasChampionships = modules.some(
+        (module) => module.path === "/championships"
+      );
+      const championshipSubMenu = [
+        { label: "Wettkämpfe", value: "/overview", icon: "events" },
+        { label: "Ergebnisse", value: "/results", icon: "forms" },
+      ];
       modules.forEach((module: Module) => {
+        if (module.path === "/results" && hasChampionships) return;
+        const subMenu =
+          module.path === "/championships" && !(module.sub_menu || []).length
+            ? championshipSubMenu
+            : module.sub_menu || [];
         if (user.is_superuser) {
           menuItemsArray.push({
             label: module.name,
             icon: module.icon,
             value: module.path,
-            sub_menu: module.sub_menu || [],
+            sub_menu: subMenu,
           });
         } else if (userRole && userRole?.modules?.includes(module.objectId)) {
           menuItemsArray.push({
             label: module.name,
             icon: module.icon,
             value: module.path,
-            sub_menu: module.sub_menu || [],
+            sub_menu: subMenu,
           });
         }
       });

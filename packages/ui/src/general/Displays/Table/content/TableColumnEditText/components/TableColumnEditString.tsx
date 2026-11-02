@@ -159,7 +159,7 @@ export const TableColumnEditString = ({
 									onChange={handleInputChange}
 									style={{ minWidth: MIN_INPUT_WIDTH }}
 								/>
-								{project.objectId === "lt4HonzqK3" && (
+								{project?.objectId === "lt4HonzqK3" && (
 									<div style={{ marginTop: "12px" }}>
 										<p>
 											Textinput wurde auf Susis Wunsch

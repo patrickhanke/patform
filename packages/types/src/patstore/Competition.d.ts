@@ -110,7 +110,6 @@ export type CompetitionClass = ClassProperties & {
 	director?: string;
 	email?: string;
 	open_signup: boolean;
-	free_signup: boolean;
 	secondary_teams: boolean;
 	group_mode: boolean;
 	classes: string[];

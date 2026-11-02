@@ -1,5 +1,9 @@
 import { ColumnWorkingTimeProps, DayDataTime } from "../types";
-import { absence_type_options, dateHasRecord, getDateString } from "@repo/provider";
+import {
+	absence_type_options,
+	dateHasRecord,
+	getDateString
+} from "@repo/provider";
 import { FC } from "react";
 import EditDayTimes from "../../EditDayTimes";
 import { StateDisplay } from "@repo/ui";
@@ -11,13 +15,14 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 	days,
 	refetch,
 	userId,
-	records
+	records,
+	onOpenWorkEditor
 }) => {
 	const isEditable = true;
 	const hasRecordForDate = dateHasRecord(date, records);
 
 	const sortedTime = times
-		? times.sort(
+		? [...times].sort(
 				(a, b) =>
 					new Date(a.time?.start).getTime() -
 					new Date(b.time?.start).getTime()
@@ -75,6 +80,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 										absenceId={timeValue.absence?.objectId}
 										color={getColor(timeValue)}
 										label={getLabel(timeValue)}
+										onOpenWorkEditor={onOpenWorkEditor}
 									/>
 								) : (
 									<StateDisplay
@@ -107,6 +113,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 										refetch={refetch}
 										userId={userId}
 										records={records}
+										onOpenWorkEditor={onOpenWorkEditor}
 									/>
 								) : (
 									<StateDisplay

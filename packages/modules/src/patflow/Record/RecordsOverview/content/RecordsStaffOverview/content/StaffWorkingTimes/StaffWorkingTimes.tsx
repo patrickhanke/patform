@@ -1,4 +1,6 @@
-import { FC, useCallback, useMemo } from "react";
+"use client";
+
+import { FC, useCallback, useMemo, useState } from "react";
 import { Table } from "@repo/ui";
 import { DayData, StaffWorkingTimesProps } from "./types";
 import { eachDayOfInterval, formatISO9075, isWeekend } from "date-fns";
@@ -13,6 +15,8 @@ import {
 	useDataStore
 } from "@repo/provider";
 import { set, get, cloneDeep, isArray } from "lodash-es";
+import EditDayTimesWorkSlideIn from "../EditDayTimes/EditDayTimesWorkSlideIn";
+import { WorkTimeEditorSession } from "../EditDayTimes/types";
 
 const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	days,
@@ -71,12 +75,25 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		return recordHolidays;
 	}, [holidays, year, records, surcharges]);
 
+	const [workEditor, setWorkEditor] = useState<WorkTimeEditorSession | null>(
+		null
+	);
+
+	const openWorkEditor = useCallback((session: WorkTimeEditorSession) => {
+		setWorkEditor(session);
+	}, []);
+
+	const closeWorkEditor = useCallback(() => {
+		setWorkEditor(null);
+	}, []);
+
 	const { columns, secondaryRow } = useTableColumns({
 		refetch,
 		userId: selectedUser?.value,
 		records,
 		holidays: currentHolidays,
-		days
+		days,
+		onOpenWorkEditor: openWorkEditor
 	});
 
 	const tableData = useMemo(() => {
@@ -214,6 +231,13 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					secondaryRow={secondaryRow}
 				/>
 			</div>
+			{workEditor && (
+				<EditDayTimesWorkSlideIn
+					session={workEditor}
+					onClose={closeWorkEditor}
+					userId={selectedUser.value}
+				/>
+			)}
 		</div>
 	);
 };

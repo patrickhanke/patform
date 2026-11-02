@@ -2,11 +2,17 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import EditStaffMember from "../components/EditStaffMember";
 import SetStaffMemberPassword from "../components/SetStaffMemberPassword";
-import { PatflowUser } from "@repo/types";
+import { ApolloRefetch, PatflowUser, PatstoreUserRole } from "@repo/types";
 import { StateDisplay, Toggle } from "@repo/ui";
 import { useDataHandlerSecure } from "@repo/provider";
 
-const useTableColumns = ({ refetch }: { refetch: () => Promise<void> }) => {
+const useTableColumns = ({
+	refetch,
+	roles
+}: {
+	refetch: ApolloRefetch;
+	roles: PatstoreUserRole[];
+}) => {
 	const { updateData } = useDataHandlerSecure(true);
 
 	const columns = useMemo<ColumnDef<PatflowUser>[]>(
@@ -20,12 +26,19 @@ const useTableColumns = ({ refetch }: { refetch: () => Promise<void> }) => {
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => (
-					<StateDisplay
-						label={row.role?.name || "Keine Rolle"}
-						color={row.role?.color || "black"}
-					/>
-				),
+				accessorFn: (row) => {
+					const userRole: PatstoreUserRole | undefined = roles.find(
+						(role) => row.roles.includes(role.objectId)
+					);
+					let label = "Keine Rolle";
+					let color = "black";
+
+					if (userRole) {
+						label = userRole.name;
+						color = userRole.color;
+					}
+					return <StateDisplay label={label} color={color} />;
+				},
 				header: () => <span>Rolle</span>,
 				id: "role",
 				cell: (info) => info.getValue(),

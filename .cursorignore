@@ -47,8 +47,8 @@ next-env.d.ts
 .git/
 
 ── patflow (exclude when working on patstore only) ──
-apps/patflow/
-packages/modules/src/patflow/
-packages/ui/src/patflow/
-packages/provider/src/patflow/
-packages/types/src/patflow/
+# apps/patflow/
+# packages/modules/src/patflow/
+# packages/ui/src/patflow/
+# packages/provider/src/patflow/
+# packages/types/src/patflow/

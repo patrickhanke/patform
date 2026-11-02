@@ -1,3 +1,5 @@
+import { Playground } from "@repo/modules";
+
 export default function PlaygroundPage() {
-	return <div>Playground</div>;
+	return <Playground />;
 }

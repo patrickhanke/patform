@@ -1,0 +1,145 @@
+"use client";
+
+import { FC, useMemo } from "react";
+import { ColumnDef, Table, TextInput, usePageData } from "@repo/ui";
+import { PersonClass } from "@repo/types";
+import { ChampionshipPageModel, ChampionshipTabProps } from "../../types";
+import { mergedPersonData, playedGameCount } from "../../functions/person";
+import { useAppContext } from "@repo/provider";
+import useSeasonCategories from "../../../hooks/useSeasonCategories";
+import { seasonCategoryId } from "../../../functions/season";
+
+const Players: FC<ChampionshipTabProps> = ({ related }) => {
+	const { project } = useAppContext();
+	const seasons = useSeasonCategories(project?.objectId);
+	const { data: page, setData } = usePageData<ChampionshipPageModel>();
+	const seasonId = seasonCategoryId(page?.categories, seasons);
+	const people = useMemo(() => {
+		if (!page || !page.data) return [];
+		const ids = new Set(
+			page.data.sign_ups.flatMap((signup) => signup.person_ids)
+		);
+		return related.people.filter((person) => ids.has(person.objectId));
+	}, [page, related.people]);
+
+	const columns: ColumnDef<PersonClass>[] = useMemo(
+		() => [
+			{
+				id: "name",
+				header: () => <span>Name</span>,
+				accessorFn: (row) => row.name || row.label,
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id
+			},
+			{
+				id: "club",
+				header: () => <span>Verein</span>,
+				accessorFn: (row) => {
+					const data = mergedPersonData(
+						row,
+						page?.person_drafts || {}
+					);
+					return (
+						related.clubs.find(
+							(club) => club.objectId === data.club_id
+						)?.title || "—"
+					);
+				},
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id
+			},
+			{
+				id: "dtb_id",
+				header: () => <span>DTB-ID</span>,
+				accessorFn: (row) => row.objectId,
+				cell: (info) => {
+					const person = info.row.original;
+					const data = mergedPersonData(
+						person,
+						page?.person_drafts || {}
+					);
+					return (
+						<TextInput
+							id={`dtb-${person.objectId}`}
+							defaultValue={data.dtb_id || ""}
+							onChange={(value) =>
+								setData(`person_drafts.${person.objectId}`, {
+									...data,
+									dtb_id: value
+								})
+							}
+						/>
+					);
+				},
+				footer: (info) => info.column.id
+			},
+			{
+				id: "games",
+				header: () => <span>Spiele</span>,
+				accessorFn: (row) => {
+					const data = mergedPersonData(
+						row,
+						page?.person_drafts || {}
+					);
+					return playedGameCount(data, seasonId);
+				},
+				cell: (info) => {
+					const count = info.getValue() as number;
+					if (!count) return "—";
+					return count > 2
+						? `${count} (festgespielt)`
+						: String(count);
+				},
+				footer: (info) => info.column.id
+			},
+			{
+				id: "confirm",
+				header: () => <span>Bestätigen</span>,
+				accessorFn: (row) => row.objectId,
+				cell: (info) => {
+					const person = info.row.original;
+					const data = mergedPersonData(
+						person,
+						page?.person_drafts || {}
+					);
+					if (data.id_confirmed) return <p>DTB-ID bestätigt</p>;
+					return (
+						<button
+							type="button"
+							className="full_button sm"
+							onClick={() =>
+								setData(`person_drafts.${person.objectId}`, {
+									...data,
+									id_confirmed: true
+								})
+							}
+						>
+							DTB-ID bestätigen
+						</button>
+					);
+				},
+				footer: (info) => info.column.id
+			}
+		],
+		[page, related.clubs, seasonId, setData]
+	);
+
+	if (!page) return null;
+
+	return (
+		<div className="flex col a-st gap-sm">
+			<h2>Spieler:innen</h2>
+			{people.length === 0 ? (
+				<p>Noch keine Spieler:innen in den Meldungen.</p>
+			) : (
+				<Table
+					columns={columns}
+					data={people}
+					rowIdResolver={(row) => (row as PersonClass).objectId}
+				/>
+			)}
+		</div>
+	);
+};
+
+export default Players;

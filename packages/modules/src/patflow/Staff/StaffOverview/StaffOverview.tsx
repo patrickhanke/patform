@@ -1,11 +1,13 @@
 "use client";
 
 import useTableColumns from "./hooks/useTableColumns";
-import { useFindDataSecure } from "@repo/provider";
+import { AppContext, useFindDataSecure } from "@repo/provider";
 import { Page } from "@repo/ui";
 import { Table } from "@repo/ui";
+import { useContext } from "react";
 
 const StaffOverview = () => {
+	const { project } = useContext(AppContext);
 	const { data, refetch } = useFindDataSecure({
 		objectName: "User",
 		fields: [
@@ -14,12 +16,12 @@ const StaffOverview = () => {
 			"last_name",
 			"email",
 			"username",
-			"role {name}",
+			"roles",
 			"color",
-			"data",
-			"notification_settings"
+			"data"
 		],
-		useMasterKey: true
+		useMasterKey: true,
+		projectId: project.objectId
 	});
 
 	console.log({ data });

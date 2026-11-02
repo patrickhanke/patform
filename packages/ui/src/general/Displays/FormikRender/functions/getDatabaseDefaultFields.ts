@@ -1,13 +1,50 @@
-import { LanguageValue, ModuleField } from "@repo/types";
+import {
+	CategoryClass,
+	Field,
+	LanguageValue,
+	ModuleCategory,
+	ModuleField
+} from "@repo/types";
 import database_fields, {
 	DatabaseFieldType
 } from "../constants/database_fields";
-import { Field } from "@repo/types";
 import { languages_short } from "@repo/provider";
+
+type CategoryRecord = CategoryClass & {
+	category_id?: string;
+};
+
+const categorySelectOptions = (
+	category: ModuleCategory,
+	categoryRecords: CategoryRecord[] = []
+) => {
+	if (category.connected_class !== "Category") {
+		return [];
+	}
+
+	const categoryIds = category.category_ids || [];
+	const records =
+		categoryIds.length > 0
+			? categoryRecords.filter(
+					(record) =>
+						!!record.category_id &&
+						categoryIds.includes(record.category_id)
+				)
+			: categoryRecords;
+
+	return records
+		.map((record) => ({
+			label: record.label || record.title || record.objectId,
+			value: record.objectId
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label, "de"));
+};
 
 const getDatabaseDefaultFields = (
 	fields: ModuleField[],
-	languages?: LanguageValue[]
+	languages?: LanguageValue[],
+	categories?: ModuleCategory[],
+	categoryRecords?: CategoryRecord[]
 ): Field[] => {
 	const formFields: Field[] = [];
 
@@ -40,6 +77,28 @@ const getDatabaseDefaultFields = (
 
 		formFields.push(fieldObject);
 	});
+
+	categories?.forEach((category) => {
+		if (category.is_required !== true) {
+			return;
+		}
+
+		formFields.push({
+			id: category.id,
+			name: category.id,
+			label: category.label,
+			type: "select",
+			dataType: "string",
+			isMulti: category.is_multi,
+			width: "100%",
+			select_options: categorySelectOptions(category, categoryRecords),
+			validation: {
+				validate: true,
+				required: "Pflichtfeld"
+			}
+		});
+	});
+
 	if (languages && languages?.length > 1) {
 		formFields.push({
 			id: "lang",
