@@ -77,7 +77,7 @@ const Settings: FC<ChampionshipTabProps> = ({ related }) => {
 						</p>
 					</div>
 					<StatelessToggle
-						value={page.settings.group_mode}
+						value={page?.settings?.group_mode}
 						onChange={(value) =>
 							setData("settings.group_mode", value)
 						}

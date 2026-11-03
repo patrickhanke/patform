@@ -3,3 +3,8 @@ export { Games } from "./Games";
 export { Settings } from "./Settings";
 export { MatchDays } from "./MatchDays";
 export { Teams } from "./Teams";
+export { Players } from "./Players";
+export { Referees } from "./Referees";
+export { Import } from "./Import";
+export { Media } from "./Media";
+export { Results } from "./Results";

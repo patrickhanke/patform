@@ -2,8 +2,8 @@
 
 import { FC } from "react";
 import { PatstoreSelectImages, Select, usePageData } from "@repo/ui";
-import { ChampionshipPageModel, ChampionshipTabProps } from "../../types";
-import { selectString } from "../../functions/selectValue";
+import { ChampionshipPageModel, ChampionshipTabProps } from "@repo/modules";
+import { selectString } from "@repo/provider";
 
 const Media: FC<ChampionshipTabProps> = ({ related }) => {
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();

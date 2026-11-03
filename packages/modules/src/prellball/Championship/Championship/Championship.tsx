@@ -20,10 +20,18 @@ import useChampionshipRelated from "./hooks/useChampionshipRelated";
 import { ChampionshipPageModel } from "../types";
 import useSeasonCategories from "../../hooks/useSeasonCategories";
 import { seasonCategoryTitle } from "../../functions/season";
-import { Groups, Games, Settings, MatchDays, Teams } from "./content";
-import Players from "./content/Players";
-import Media from "./content/Media";
-import ImportTab from "./content/Import";
+import {
+	Groups,
+	Games,
+	Settings,
+	MatchDays,
+	Teams,
+	Players,
+	Referees,
+	Media,
+	Import,
+	Results
+} from "./content";
 
 const Championship = () => {
 	const { championship_id: championshipId } = useParams<{
@@ -118,9 +126,11 @@ const Championship = () => {
 			{siteState.value === "teams" && <Teams related={related} />}
 			{siteState.value === "groups" && <Groups related={related} />}
 			{siteState.value === "games" && <Games related={related} />}
+			{siteState.value === "results" && <Results related={related} />}
 			{siteState.value === "players" && <Players related={related} />}
+			{siteState.value === "referees" && <Referees related={related} />}
 			{siteState.value === "media" && <Media related={related} />}
-			{siteState.value === "import" && <ImportTab />}
+			{siteState.value === "import" && <Import />}
 		</Page>
 	);
 };

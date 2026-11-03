@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { ColumnDef, IconButton, Page, Table, usePageData } from "@repo/ui";
+import { ColumnDef, IconButton, Page, Table } from "@repo/ui";
 import {
 	ChampionshipClass,
 	ChampionshipGame,
@@ -16,14 +16,10 @@ import {
 import { championshipDetailFields } from "../../Championship/Championship/constants/siteStates";
 import { normalizeChampionship } from "../../Championship/functions/normalize";
 import { championshipUpdateObject } from "../../Championship/functions/updateObject";
-import {
-	mergedPersonData,
-	readPersonData
-} from "../../Championship/functions/person";
+import { readPersonData } from "../../Championship/functions/person";
 import useChampionshipRelated from "../../Championship/Championship/hooks/useChampionshipRelated";
 import useSeasonCategories from "../../hooks/useSeasonCategories";
 import { seasonCategoryId, seasonCategoryTitle } from "../../functions/season";
-import { ChampionshipPageModel } from "../../Championship/types";
 import { divisionShort } from "../../functions/divisions";
 import useDivisionCategories from "../../hooks/useDivisionCategories";
 import { resolveTeam, withWinner } from "../functions/resolveTeam";
@@ -49,59 +45,10 @@ const Results = () => {
 		fields: championshipDetailFields,
 		id: championshipId
 	});
-	const championship = useMemo(
+	const page = useMemo(
 		() => normalizeChampionship((data as ChampionshipClass | null) ?? null),
 		[data]
 	);
-
-	usePageData<ChampionshipPageModel>(
-		{
-			initialData: championship ?? undefined,
-			objectId: championshipId
-		},
-		{
-			className: "Championship",
-			message: "Ergebnisse gespeichert",
-			updateObject: (page) =>
-				championshipUpdateObject({
-					...page,
-					data: {
-						...page.data,
-						groups: calculateGroupStandings(
-							page.data.groups,
-							page.data.games,
-							page.data.sign_ups,
-							related.clubs
-						)
-					}
-				}),
-			afterSave: async (page) => {
-				const drafts = Object.entries(page.person_drafts || {});
-				if (drafts.length === 0) return;
-				await Promise.all(
-					drafts.map(([personId, draft], index) => {
-						const person = related.people.find(
-							(item) => item.objectId === personId
-						);
-						const nextData: PrellballPersonData = {
-							...readPersonData(person),
-							...draft
-						};
-						return updateData({
-							className: "Person",
-							objectId: personId,
-							updateObject: { data: nextData },
-							feedback:
-								index === 0 ? "Einsätze gespeichert" : undefined
-						});
-					})
-				);
-				await related.refetchPeople();
-			}
-		}
-	);
-
-	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 	const matchDays = [...(page?.data.match_days || [])].sort(
 		(a, b) => a.number - b.number
 	);
@@ -121,7 +68,10 @@ const Results = () => {
 		onClick: () => setMatchDayId(day.id)
 	}));
 
-	const commitGames = (nextGames: ChampionshipGame[]) => {
+	const saveGames = async (
+		nextGames: ChampionshipGame[],
+		personDrafts: Record<string, PrellballPersonData> = {}
+	) => {
 		if (!page) return;
 		let finished = nextGames;
 		finished = finished.map((game) =>
@@ -130,16 +80,43 @@ const Results = () => {
 		finished = finished.map((game) =>
 			withWinner(game, page.data.groups, finished)
 		);
-		setData("data", {
-			...page.data,
-			games: finished,
-			groups: calculateGroupStandings(
-				page.data.groups,
-				finished,
-				page.data.sign_ups,
-				related.clubs
-			)
+		await updateData({
+			className: "Championship",
+			objectId: page.objectId,
+			updateObject: championshipUpdateObject({
+				...page,
+				data: {
+					...page.data,
+					games: finished,
+					groups: calculateGroupStandings(
+						page.data.groups,
+						finished,
+						page.data.sign_ups,
+						related.clubs
+					)
+				}
+			}),
+			feedback: "Ergebnisse gespeichert"
 		});
+		const drafts = Object.entries(personDrafts);
+		await Promise.all(
+			drafts.map(([personId, draft]) => {
+				const person = related.people.find(
+					(item) => item.objectId === personId
+				);
+				return updateData({
+					className: "Person",
+					objectId: personId,
+					updateObject: {
+						data: { ...readPersonData(person), ...draft }
+					}
+				});
+			})
+		);
+		await Promise.all([
+			refetch(),
+			drafts.length > 0 ? related.refetchPeople() : undefined
+		]);
 	};
 
 	const columns: ColumnDef<ChampionshipGame>[] = useMemo(
@@ -241,15 +218,6 @@ const Results = () => {
 				header: () => <span>Schiedsrichter</span>,
 				accessorFn: (row) => {
 					if (!page) return "—";
-					const referee = related.people.find((item) =>
-						(
-							mergedPersonData(item, page.person_drafts)
-								.referee || []
-						).includes(row.id)
-					);
-					if (referee?.name || referee?.label) {
-						return referee.name || referee.label;
-					}
 					return resolveTeam(
 						row,
 						"referee",
@@ -305,10 +273,10 @@ const Results = () => {
 				footer: (info) => info.column.id
 			}
 		],
-		[page, related.clubs, related.people, page?.person_drafts, divisions]
+		[page, related.clubs, divisions]
 	);
 
-	if (!championship || !page) {
+	if (!page) {
 		return (
 			<Page title="Ergebnisse" emptyContent>
 				<p>
@@ -352,6 +320,7 @@ const Results = () => {
 			emptyContent
 			refetch={refetch}
 			pageHeaderButtons={headerButtons}
+			showActionBar={false}
 		>
 			<div className="flex col a-st gap-sm">
 				<h2>
@@ -399,18 +368,15 @@ const Results = () => {
 					(signup) => signup.id === rightTeam?.signupId
 				)}
 				people={related.people}
-				drafts={page.person_drafts}
 				season={seasonCategoryId(page.categories, seasons)}
 				onClose={() => setEditId("")}
-				onGame={(game) =>
-					commitGames(
+				onSave={(game, personDrafts) =>
+					saveGames(
 						page.data.games.map((item) =>
 							item.id === game.id ? game : item
-						)
+						),
+						personDrafts
 					)
-				}
-				onPerson={(personId, personData) =>
-					setData(`person_drafts.${personId}`, personData)
 				}
 			/>
 			<DeciderSlideIn
@@ -421,8 +387,8 @@ const Results = () => {
 				signups={page.data.sign_ups}
 				clubs={related.clubs}
 				onClose={() => setDecider(false)}
-				onCreate={(game) => {
-					commitGames([...page.data.games, game]);
+				onCreate={async (game) => {
+					await saveGames([...page.data.games, game]);
 					setDecider(false);
 				}}
 			/>

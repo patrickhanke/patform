@@ -15,7 +15,7 @@ const ActionBarComponent: FC<ActionBarProps> = ({ open, onCancel, onSave }) => {
 				bottom="4"
 				left="50%"
 				transform="translateX(-50%)"
-				zIndex={1400}
+				zIndex={5}
 				bg="bg.panel"
 				borderWidth="1px"
 				borderRadius="lg"

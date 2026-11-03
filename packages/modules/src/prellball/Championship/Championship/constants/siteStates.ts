@@ -6,7 +6,9 @@ export const championshipSiteStates: PageState[] = [
 	{ value: "teams", label: "Mannschaften" },
 	{ value: "groups", label: "Gruppen" },
 	{ value: "games", label: "Spiele" },
+	{ value: "results", label: "Ergebnisse" },
 	{ value: "players", label: "Spieler:innen" },
+	{ value: "referees", label: "Schiedsrichter:innen" },
 	{ value: "media", label: "Medien" },
 	{ value: "import", label: "Import" }
 ];

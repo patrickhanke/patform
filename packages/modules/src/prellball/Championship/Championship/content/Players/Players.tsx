@@ -3,11 +3,14 @@
 import { FC, useMemo } from "react";
 import { ColumnDef, Table, TextInput, usePageData } from "@repo/ui";
 import { PersonClass } from "@repo/types";
-import { ChampionshipPageModel, ChampionshipTabProps } from "../../types";
-import { mergedPersonData, playedGameCount } from "../../functions/person";
+import { ChampionshipPageModel, ChampionshipTabProps } from "@repo/modules";
 import { useAppContext } from "@repo/provider";
-import useSeasonCategories from "../../../hooks/useSeasonCategories";
-import { seasonCategoryId } from "../../../functions/season";
+import {
+	seasonCategoryId,
+	useSeasonCategories,
+	mergedPersonData,
+	playedGameCount
+} from "@repo/provider";
 
 const Players: FC<ChampionshipTabProps> = ({ related }) => {
 	const { project } = useAppContext();
@@ -21,6 +24,10 @@ const Players: FC<ChampionshipTabProps> = ({ related }) => {
 		);
 		return related.people.filter((person) => ids.has(person.objectId));
 	}, [page, related.people]);
+
+	console.log(people);
+	console.log(page);
+	console.log(page?.person_drafts);
 
 	const columns: ColumnDef<PersonClass>[] = useMemo(
 		() => [
@@ -58,7 +65,7 @@ const Players: FC<ChampionshipTabProps> = ({ related }) => {
 						person,
 						page?.person_drafts || {}
 					);
-					return (
+					return !person.data?.id_confirmed ? (
 						<TextInput
 							id={`dtb-${person.objectId}`}
 							defaultValue={data.dtb_id || ""}
@@ -69,6 +76,8 @@ const Players: FC<ChampionshipTabProps> = ({ related }) => {
 								})
 							}
 						/>
+					) : (
+						<p>{data.dtb_id}</p>
 					);
 				},
 				footer: (info) => info.column.id
@@ -135,6 +144,9 @@ const Players: FC<ChampionshipTabProps> = ({ related }) => {
 				<Table
 					columns={columns}
 					data={people}
+					rowStyles={() => ({
+						padding: "0.5rem"
+					})}
 					rowIdResolver={(row) => (row as PersonClass).objectId}
 				/>
 			)}

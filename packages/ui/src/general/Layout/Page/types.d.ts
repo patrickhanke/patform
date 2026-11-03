@@ -43,6 +43,8 @@ export type PageProps = {
 	languages?: LanguageValue[];
 	activeLang?: LanguageValue;
 	setActiveLang?: Dispatch<SetStateAction<LanguageValue>>;
+	/** Set to false for pages that save directly instead of through the page store. */
+	showActionBar?: boolean;
 };
 
 type PageSkeletonProps = {

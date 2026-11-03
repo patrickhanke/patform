@@ -20,7 +20,8 @@ const Page = ({
 	emptyContent = false,
 	languages,
 	activeLang,
-	setActiveLang
+	setActiveLang,
+	showActionBar = true
 }: PageProps) => {
 	const { dataHasChanged, resetData, undo, redo } = usePageData();
 	return (
@@ -45,13 +46,15 @@ const Page = ({
 			<div className={styles.page_content} id="content">
 				{children}
 			</div>
-			<PageActionBar
-				open={dataHasChanged}
-				resetData={resetData}
-				undoData={undo}
-				redoData={redo}
-				refetch={refetch}
-			/>
+			{showActionBar ? (
+				<PageActionBar
+					open={dataHasChanged}
+					resetData={resetData}
+					undoData={undo}
+					redoData={redo}
+					refetch={refetch}
+				/>
+			) : null}
 		</>
 	);
 };

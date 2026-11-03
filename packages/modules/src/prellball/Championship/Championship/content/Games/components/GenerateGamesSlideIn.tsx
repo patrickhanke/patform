@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { FC, useEffect, useMemo, useState } from "react";
 import { SlideIn } from "@repo/ui";
@@ -59,7 +59,7 @@ const GenerateGamesSlideIn: FC<{
 			settings: page.settings,
 			season: seasonId,
 			division: divisionIds,
-			group_mode: page.group_mode,
+			group_mode: page.settings.group_mode,
 			match_day: matchDay,
 			groups: selectedGroups,
 			sign_ups: page.data.sign_ups,
@@ -70,7 +70,7 @@ const GenerateGamesSlideIn: FC<{
 		notes,
 		divisionIds,
 		page.data.sign_ups,
-		page.group_mode,
+		page.settings.group_mode,
 		seasonId,
 		page.settings,
 		selectedGroups
@@ -101,7 +101,7 @@ const GenerateGamesSlideIn: FC<{
 							settings: page.settings,
 							season: seasonId,
 							division: divisionIds,
-							group_mode: page.group_mode,
+							group_mode: page.settings.group_mode,
 							match_day: matchDay,
 							groups: selectedGroups,
 							sign_ups: page.data.sign_ups,

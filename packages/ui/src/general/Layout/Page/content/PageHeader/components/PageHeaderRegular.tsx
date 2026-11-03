@@ -134,6 +134,7 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 								className={createClass.className}
 								refetch={refetch}
 								initialState={createClass.initialState}
+								disabled={createClass.disabled}
 							/>
 						)}
 					</div>

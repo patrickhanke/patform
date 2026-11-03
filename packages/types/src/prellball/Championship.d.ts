@@ -131,6 +131,10 @@ export type ChampionshipGame = {
 	score2?: number | null;
 	winner_signup_id?: string;
 	loser_signup_id?: string;
+	/** Person ids entered in the result slide-in. */
+	referee?: string;
+	team1_players?: string[];
+	team2_players?: string[];
 	/** Locked games keep their pass and field when the schedule is optimized. */
 	locked?: boolean;
 };

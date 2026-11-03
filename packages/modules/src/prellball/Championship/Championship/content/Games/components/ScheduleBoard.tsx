@@ -1,10 +1,12 @@
 "use client";
 
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment, useEffect, useRef, useState } from "react";
 import { ScheduleState } from "../hooks/useSchedule";
 import { ScheduleModelGame } from "../types";
 import GameCard from "./GameCard";
 import styles from "../games.module.scss";
+
+const DOUBLE_CLICK_MS = 250;
 
 const involves = (game: ScheduleModelGame, key: string | null) =>
 	Boolean(
@@ -21,6 +23,7 @@ const ScheduleBoard: FC<{
 	onMove: (gameId: string, pass: number, field: number) => void;
 	onToggleLock: (gameId: string) => void;
 	onEdit: (gameId: string) => void;
+	onCreate: (pass: number, field: number) => void;
 }> = ({
 	schedule,
 	selectedGameId,
@@ -28,12 +31,19 @@ const ScheduleBoard: FC<{
 	onSelect,
 	onMove,
 	onToggleLock,
-	onEdit
+	onEdit,
+	onCreate
 }) => {
 	const { model, placements, analysis, targets, options, matchDay } =
 		schedule;
 	const [dragging, setDragging] = useState<string | null>(null);
 	const [dropCell, setDropCell] = useState<string | null>(null);
+	const pendingClick = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const clearPendingClick = () => {
+		if (pendingClick.current) clearTimeout(pendingClick.current);
+		pendingClick.current = null;
+	};
+	useEffect(() => clearPendingClick, []);
 
 	const byCell: Record<string, ScheduleModelGame[]> = {};
 	const unplaced: ScheduleModelGame[] = [];
@@ -135,21 +145,33 @@ const ScheduleBoard: FC<{
 												field > options.fields
 											}
 											onClick={() => {
+												if (games.length > 0) return;
 												if (
 													selectedGameId &&
-													games.length === 0 &&
 													(target === "good" ||
 														target === "ok")
 												) {
-													onMove(
-														selectedGameId,
-														pass,
-														field
-													);
+													const gameId =
+														selectedGameId;
+													clearPendingClick();
+													pendingClick.current =
+														setTimeout(
+															() =>
+																onMove(
+																	gameId,
+																	pass,
+																	field
+																),
+															DOUBLE_CLICK_MS
+														);
 													return;
 												}
-												if (games.length === 0)
-													onSelect(null);
+												onSelect(null);
+											}}
+											onDoubleClick={() => {
+												if (games.length > 0) return;
+												clearPendingClick();
+												onCreate(pass, field);
 											}}
 											onDragOver={(event) => {
 												if (!dragging || !canDrop)

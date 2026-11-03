@@ -33,6 +33,7 @@ const ScheduleWorkspace: FC<{
 	onChangeGames: (games: ChampionshipGame[]) => void;
 	onMaxConsecutiveChange: (value: number) => void;
 	onEdit: (game: ChampionshipGame) => void;
+	onCreate: (pass: number, field: number) => void;
 }> = ({
 	page,
 	matchDayId,
@@ -40,7 +41,8 @@ const ScheduleWorkspace: FC<{
 	divisions,
 	onChangeGames,
 	onMaxConsecutiveChange,
-	onEdit
+	onEdit,
+	onCreate
 }) => {
 	const [selectedGameId, setSelectedGameId] = useState<string | null>(null);
 	const [focusKey, setFocusKey] = useState<string | null>(null);
@@ -131,7 +133,8 @@ const ScheduleWorkspace: FC<{
 					<div className={styles.sectionHeader}>
 						<h3>Spielplan</h3>
 						<span className={styles.muted}>
-							Durchgänge × Felder · Doppelklick zum Bearbeiten
+							Durchgänge × Felder · Doppelklick auf ein Spiel zum
+							Bearbeiten, auf ein leeres Feld zum Anlegen
 						</span>
 					</div>
 					<ScheduleBoard
@@ -142,6 +145,7 @@ const ScheduleWorkspace: FC<{
 						onMove={move}
 						onToggleLock={toggleLock}
 						onEdit={editGame}
+						onCreate={onCreate}
 					/>
 				</div>
 				<div className={styles.section}>

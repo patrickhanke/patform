@@ -13,7 +13,11 @@ import {
 	LanguageValue,
 	ModuleOverviewProps
 } from "@repo/types";
-import { useFindModuleData } from "@repo/provider";
+import {
+	filterModuleCategories,
+	useFindCategoryPageStates,
+	useFindModuleData
+} from "@repo/provider";
 import { championshipInitialData } from "./constants/create_fields";
 
 const ChampionshipOverview = ({
@@ -21,11 +25,22 @@ const ChampionshipOverview = ({
 	languages,
 	defaultLanguage
 }: ModuleOverviewProps<"/championships">) => {
-	const [filters] = useState<Filter[]>([]);
+	const [filters, setFilters] = useState<Filter[]>([]);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10
 	});
+	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
+		{
+			categories:
+				filterModuleCategories(module.categories || []).categoryIds ||
+				[],
+			categoryModuleId: filterModuleCategories(module.categories || [])
+				.categoryModuleId,
+			filters,
+			setFilters
+		}
+	);
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
@@ -64,8 +79,12 @@ const ChampionshipOverview = ({
 				fields: module.fields,
 				refetch,
 				languages,
-				initialData: championshipInitialData
+				initialData: championshipInitialData,
+				disabled: true
 			}}
+			pageStates={pageStates}
+			setPageState={setActivePage}
+			pageState={activePage}
 			refetch={refetch}
 		>
 			<Table
@@ -79,6 +98,9 @@ const ChampionshipOverview = ({
 				language={language}
 				changeLanguage={setLanguage}
 				languages={languages}
+				filters={filters}
+				setFilters={setFilters}
+				filterColumns={module.filters || []}
 			/>
 		</Page>
 	);

@@ -16,21 +16,16 @@ export type PageDataPaths<T, D extends number = 4> = [D] extends [never]
 	: T extends Primitive
 		? never
 		: T extends ReadonlyArray<infer V>
-			?
-					| `${number}`
-					| Join<`${number}`, PageDataPaths<NonNullable<V>, Prev[D]>>
+			? | `${number}`
+				| Join<`${number}`, PageDataPaths<NonNullable<V>, Prev[D]>>
 			: {
 					[K in keyof T & string]: T[K] extends Primitive | undefined
 						? K
-						:
-								| K
-								| Join<
-										K,
-										PageDataPaths<
-											NonNullable<T[K]>,
-											Prev[D]
-										>
-								  >;
+						: | K
+							| Join<
+									K,
+									PageDataPaths<NonNullable<T[K]>, Prev[D]>
+							  >;
 				}[keyof T & string];
 
 export type PageDataPathValue<
@@ -60,22 +55,12 @@ export type SetPageData<T> = <K extends PageDataPaths<T> | string>(
 
 export type PageDataUpdateObject<T> = (data: T) => {
 	[key: string]:
-		| string
-		| number
-		| boolean
-		| object
-		| Array<unknown>
-		| undefined;
+		string | number | boolean | object | Array<unknown> | undefined;
 };
 
 export type PageDataUpdatePayload = {
 	[key: string]:
-		| string
-		| number
-		| boolean
-		| object
-		| Array<unknown>
-		| undefined;
+		string | number | boolean | object | Array<unknown> | undefined;
 };
 
 export type PageDataUpdateOptions<T> = {

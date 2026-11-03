@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
 	ElementSelectInterface,
 	SelectElement,
@@ -16,6 +16,10 @@ import {
 	withPlayedGame,
 	withRefereeGame
 } from "../../../../Championship/functions/person";
+
+type TeamSlot = "team1" | "team2";
+
+type PersonDrafts = Record<string, PrellballPersonData>;
 
 const numberOrNull = (value: string) => {
 	if (value.trim() === "") return null;
@@ -57,11 +61,12 @@ const ResultSlideIn: FC<{
 	leftSignup?: ChampionshipSignUp;
 	rightSignup?: ChampionshipSignUp;
 	people: PersonClass[];
-	drafts: Record<string, PrellballPersonData>;
 	season: string;
 	onClose: () => void;
-	onGame: (game: ChampionshipGame) => void;
-	onPerson: (personId: string, data: PrellballPersonData) => void;
+	onSave: (
+		game: ChampionshipGame,
+		personDrafts: PersonDrafts
+	) => Promise<void>;
 }> = ({
 	game,
 	leftLabel,
@@ -69,95 +74,148 @@ const ResultSlideIn: FC<{
 	leftSignup,
 	rightSignup,
 	people,
-	drafts,
 	season,
 	onClose,
-	onGame,
-	onPerson
+	onSave
 }) => {
+	const [draft, setDraft] = useState<ChampionshipGame | null>(game);
+	const [personDrafts, setPersonDrafts] = useState<PersonDrafts>({});
+	const [saving, setSaving] = useState(false);
+
+	useEffect(() => {
+		setDraft(game);
+		setPersonDrafts({});
+	}, [game]);
+
+	const setPerson = (personId: string, data: PrellballPersonData) =>
+		setPersonDrafts((previous) => ({ ...previous, [personId]: data }));
+
 	const elements: SelectElement[] = people.map((person) => ({
 		value: person.objectId,
 		id: person.objectId,
 		label: person.name || person.label || person.objectId
 	}));
-	const currentRefereeId = game
-		? refereePersonId(people, drafts, game.id)
+	const currentRefereeId = draft
+		? (draft.referee ?? refereePersonId(people, personDrafts, draft.id))
 		: "";
 	const selected = elements.find(
 		(element) => element.value === currentRefereeId
 	);
 
+	const players = (slot: TeamSlot, signup?: ChampionshipSignUp) => {
+		if (!signup?.club_id) return [];
+		const stored = draft?.[`${slot}_players`];
+		return signup.person_ids.map((personId) => {
+			const person = people.find((item) => item.objectId === personId);
+			return {
+				personId,
+				name: person?.name || person?.label || personId,
+				played: stored
+					? stored.includes(personId)
+					: playerPlayedGame(
+							mergedPersonData(person, personDrafts),
+							season,
+							signup.club_id || "",
+							draft?.id || ""
+						)
+			};
+		});
+	};
+
 	const togglePlayer = (
+		slot: TeamSlot,
+		signup: ChampionshipSignUp | undefined,
 		personId: string,
-		clubId: string,
 		played: boolean
 	) => {
+		if (!draft) return;
+		const current = players(slot, signup)
+			.filter((player) => player.played)
+			.map((player) => player.personId)
+			.filter((id) => id !== personId);
+		setDraft({
+			...draft,
+			[`${slot}_players`]: played ? [...current, personId] : current
+		});
 		const person = people.find((item) => item.objectId === personId);
-		onPerson(
+		setPerson(
 			personId,
 			withPlayedGame(
-				mergedPersonData(person, drafts),
+				mergedPersonData(person, personDrafts),
 				season,
-				clubId,
-				game?.id || "",
+				signup?.club_id || "",
+				draft.id,
 				played
 			)
 		);
 	};
 
 	const selectReferee = (next: SelectElement[]) => {
-		if (!game) return;
+		if (!draft) return;
 		const personId = String(next[0]?.value || "");
+		setDraft({ ...draft, referee: personId || undefined });
 		if (currentRefereeId && currentRefereeId !== personId) {
 			const previous = people.find(
 				(item) => item.objectId === currentRefereeId
 			);
-			onPerson(
+			setPerson(
 				currentRefereeId,
 				withRefereeGame(
-					mergedPersonData(previous, drafts),
-					game.id,
+					mergedPersonData(previous, personDrafts),
+					draft.id,
 					false
 				)
 			);
 		}
 		if (personId) {
 			const person = people.find((item) => item.objectId === personId);
-			onPerson(
+			setPerson(
 				personId,
-				withRefereeGame(mergedPersonData(person, drafts), game.id, true)
+				withRefereeGame(
+					mergedPersonData(person, personDrafts),
+					draft.id,
+					true
+				)
 			);
 		}
 	};
 
-	const players = (signup?: ChampionshipSignUp) => {
-		if (!signup?.club_id) return [];
-		return signup.person_ids.map((personId) => {
-			const person = people.find((item) => item.objectId === personId);
-			const data = mergedPersonData(person, drafts);
-			return {
-				personId,
-				name: person?.name || person?.label || personId,
-				played: playerPlayedGame(
-					data,
-					season,
-					signup.club_id || "",
-					game?.id || ""
-				)
-			};
-		});
+	const save = async () => {
+		if (!draft) return;
+		setSaving(true);
+		try {
+			await onSave(draft, personDrafts);
+			onClose();
+		} finally {
+			setSaving(false);
+		}
 	};
+
+	const playerList = (slot: TeamSlot, signup?: ChampionshipSignUp) =>
+		players(slot, signup).map((player) => (
+			<div key={player.personId} className="flex row a-ce gap-sm">
+				<StatelessToggle
+					value={player.played}
+					onChange={(value) =>
+						togglePlayer(slot, signup, player.personId, value)
+					}
+				/>
+				<span>{player.name}</span>
+			</div>
+		));
 
 	return (
 		<SlideIn
 			header="Ergebnisse und Einsätze"
 			isOpen={Boolean(game)}
 			cancel={onClose}
-			showConfirmButton={false}
-			cancelText="Schließen"
+			confirm={save}
+			confirmText="Speichern"
+			cancelText="Abbrechen"
+			loading={saving}
 			size="large"
 		>
-			{game ? (
+			{draft ? (
 				<div className="flex col a-st gap-md">
 					<div className="flex col a-ce gap-sm">
 						<div className="flex row a-ce gap-sm">
@@ -167,24 +225,24 @@ const ResultSlideIn: FC<{
 						</div>
 						<ScorePair
 							label="Halbzeit"
-							left={game.half1}
-							right={game.half2}
+							left={draft.half1}
+							right={draft.half2}
 							onLeft={(value) =>
-								onGame({ ...game, half1: value })
+								setDraft({ ...draft, half1: value })
 							}
 							onRight={(value) =>
-								onGame({ ...game, half2: value })
+								setDraft({ ...draft, half2: value })
 							}
 						/>
 						<ScorePair
 							label="Ergebnis"
-							left={game.score1}
-							right={game.score2}
+							left={draft.score1}
+							right={draft.score2}
 							onLeft={(value) =>
-								onGame({ ...game, score1: value })
+								setDraft({ ...draft, score1: value })
 							}
 							onRight={(value) =>
-								onGame({ ...game, score2: value })
+								setDraft({ ...draft, score2: value })
 							}
 						/>
 					</div>
@@ -204,45 +262,11 @@ const ResultSlideIn: FC<{
 					<div className="flex row a-st j-sb gap-md">
 						<div className="flex col a-st gap-sm">
 							<h3>{leftLabel}</h3>
-							{players(leftSignup).map((player) => (
-								<div
-									key={player.personId}
-									className="flex row a-ce gap-sm"
-								>
-									<StatelessToggle
-										value={player.played}
-										onChange={(value) =>
-											togglePlayer(
-												player.personId,
-												leftSignup?.club_id || "",
-												value
-											)
-										}
-									/>
-									<span>{player.name}</span>
-								</div>
-							))}
+							{playerList("team1", leftSignup)}
 						</div>
 						<div className="flex col a-st gap-sm">
 							<h3>{rightLabel}</h3>
-							{players(rightSignup).map((player) => (
-								<div
-									key={player.personId}
-									className="flex row a-ce gap-sm"
-								>
-									<StatelessToggle
-										value={player.played}
-										onChange={(value) =>
-											togglePlayer(
-												player.personId,
-												rightSignup?.club_id || "",
-												value
-											)
-										}
-									/>
-									<span>{player.name}</span>
-								</div>
-							))}
+							{playerList("team2", rightSignup)}
 						</div>
 					</div>
 				</div>

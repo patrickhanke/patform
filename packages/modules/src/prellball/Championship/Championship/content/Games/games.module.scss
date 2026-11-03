@@ -525,6 +525,56 @@ $yellow_light: #fbf3c8;
   }
 }
 
+// Game form
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: constants.$xs;
+  width: 100%;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  align-items: center;
+  gap: constants.$sm;
+  width: 100%;
+
+  input:not([role="combobox"]) {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.slotControl {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.allGroups {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  font-size: map-get(constants.$font_size, "sm");
+  font-weight: 400;
+  color: constants.$grey_shaded;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+  }
+
+  &[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 // Dependencies
 
 .phase {

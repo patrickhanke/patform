@@ -21,7 +21,8 @@ const CreateClass = <T extends Classes>({
 	text,
 	className,
 	refetch,
-	initialState = "published"
+	initialState = "published",
+	disabled = false
 }: CreateClassProps<T>) => {
 	const { createData } = useDataHandler();
 	const { currentModule, user } = useContext(PatstoreAppContext);
@@ -107,7 +108,7 @@ const CreateClass = <T extends Classes>({
 		<>
 			<button
 				onClick={() => setIsOpen(true)}
-				disabled={false}
+				disabled={disabled}
 				className="full_button md primary"
 			>
 				{text}

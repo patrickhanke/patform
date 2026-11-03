@@ -17,6 +17,9 @@ node_modules
 packages/modules/src/patstore/Admin/Playground
 apps/patstore/app/(admin)/admin/playground
 
+# Local security audit report
+SECURITY_AUDIT.md
+
 # Testing
 coverage
 

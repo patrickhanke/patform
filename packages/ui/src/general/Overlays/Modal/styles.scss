@@ -35,11 +35,11 @@
     $gap: 0
   );
   position: fixed;
-  top: 50%;
+  top: calc(50% - 30px);
   left: 50%;
   transform: translate(-50%, -50%);
   height: auto;
-  max-height: 95%;
+  max-height: calc(100vh - 120px);
   width: auto;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px 0px;
   min-width: 360px;

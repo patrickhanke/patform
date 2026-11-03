@@ -83,29 +83,36 @@ const Games: FC<ChampionshipTabProps> = ({ related }) => {
 		setEditGame(null);
 	};
 
-	const addGame = () => {
-		const groupId =
-			view === "table" && filter.value !== "all" && filter.value !== "akk"
-				? String(filter.value)
-				: groups[0]?.id;
-		const nextNumber =
-			games.reduce((max, game) => Math.max(max, game.game_nr || 0), 0) +
-			1;
-		const dayId =
-			view === "board" ? activeMatchDayId : page.data.match_days[0]?.id;
-		const nextPass =
-			games
-				.filter((game) => game.match_day_id === dayId)
-				.reduce((max, game) => Math.max(max, game.pass || 0), 0) + 1;
+	const newGame = (partial: Partial<ChampionshipGame>) =>
 		setEditGame(
 			createGame({
-				game_nr: nextNumber,
-				group_id: groupId,
-				match_day_id: dayId,
-				pass: view === "board" ? nextPass : 1,
-				type: view === "table" && filter.value === "akk" ? "akk" : "grp"
+				game_nr:
+					games.reduce(
+						(max, game) => Math.max(max, game.game_nr || 0),
+						0
+					) + 1,
+				group_id: groups[0]?.id,
+				type: "grp",
+				...partial
 			})
 		);
+
+	const addGame = () => {
+		if (view === "board") {
+			const nextPass =
+				games
+					.filter((game) => game.match_day_id === activeMatchDayId)
+					.reduce((max, game) => Math.max(max, game.pass || 0), 0) +
+				1;
+			newGame({ match_day_id: activeMatchDayId, pass: nextPass });
+			return;
+		}
+		const groupFilter = filter.value !== "all" && filter.value !== "akk";
+		newGame({
+			match_day_id: page.data.match_days[0]?.id,
+			group_id: groupFilter ? String(filter.value) : groups[0]?.id,
+			type: filter.value === "akk" ? "akk" : "grp"
+		});
 	};
 
 	return (
@@ -161,6 +168,13 @@ const Games: FC<ChampionshipTabProps> = ({ related }) => {
 								)
 							}
 							onEdit={setEditGame}
+							onCreate={(pass, field) =>
+								newGame({
+									match_day_id: activeMatchDayId,
+									pass,
+									field
+								})
+							}
 						/>
 					</>
 				)
@@ -203,6 +217,8 @@ const Games: FC<ChampionshipTabProps> = ({ related }) => {
 				groups={page.data.groups}
 				games={page.data.games}
 				matchDays={page.data.match_days}
+				signups={page.data.sign_ups}
+				clubs={related.clubs}
 				onClose={() => setEditGame(null)}
 				onSave={saveGame}
 			/>
