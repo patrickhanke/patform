@@ -1,11 +1,7 @@
 import Parse from "parse";
 
 if (!Parse.applicationId) {
-	Parse.initialize(
-		process.env.SASHIDO_APP_ID ,
-		process.env.SASHIDO_JS_KEY,
-		process.env.SASHIDO_MASTER_KEY
-	);
+	Parse.initialize(process.env.SASHIDO_APP_ID, process.env.SASHIDO_JS_KEY);
 	Parse.serverURL = process.env.SASHIDO_API_URL;
 }
 

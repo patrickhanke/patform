@@ -5,8 +5,7 @@ import Cookies from "js-cookie";
 if (!Parse.applicationId) {
 	Parse.initialize(
 		process.env.NEXT_PUBLIC_SASHIDO_APP_ID || process.env.SASHIDO_APP_ID,
-		process.env.NEXT_PUBLIC_SASHIDO_JS_KEY || process.env.SASHIDO_JS_KEY,
-		process.env.NEXT_PUBLIC_SASHIDO_MASTER_KEY || process.env.SASHIDO_MASTER_KEY
+		process.env.NEXT_PUBLIC_SASHIDO_JS_KEY || process.env.SASHIDO_JS_KEY
 	);
 	Parse.serverURL = process.env.NEXT_PUBLIC_SASHIDO_API_URL || process.env.SASHIDO_API_URL;
 }

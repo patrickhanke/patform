@@ -39,7 +39,7 @@ export type ApolloAppProviderProps = {
 	uri: string;
 	appId: string;
 	restKey: string;
-	masterKey?: string;
+	useMasterKey?: boolean;
 	children: React.ReactNode;
 };
 
@@ -47,16 +47,16 @@ export type MakeClientProps = (
 	uri: string,
 	appId: string,
 	restKey: string,
-	masterKey?: string
+	useMasterKey?: boolean
 ) => ApolloClient;
 
-export type ClientHeaders = {
-	"X-Parse-Application-Id": string;
-	"X-Parse-REST-API-Key": string;
-	"X-Parse-Session-Token": string;
-	"X-Parse-Master-Key"?: string;
-	"Access-Control-Allow-Origin"?: string;
-};
+export type ClientHeaders =
+	| {
+			"X-Parse-Application-Id": string;
+			"X-Parse-REST-API-Key": string;
+			"X-Parse-Session-Token": string;
+	  }
+	| { "x-use-master-key": "true" };
 
 export type ApolloRefetch = () => Promise<ApolloQueryResult<Classes>>;
 

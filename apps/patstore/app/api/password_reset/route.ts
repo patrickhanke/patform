@@ -1,40 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
-
-const createAxiosClient = (useMasterKey: boolean) => {
-	const headers: Record<string, string> = {
-		"X-Parse-Application-Id": process.env.SASHIDO_APP_ID!,
-		"X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY!
-	};
-
-	if (useMasterKey) {
-		headers["X-Parse-Master-Key"] = process.env.SASHIDO_MASTER_KEY!;
-	}
-
-	return axios.create({
-		baseURL: process.env.SASHIDO_API_URL,
-		headers
-	});
-};
+import { parseRest } from "@repo/provider/server";
 
 export async function POST(request: NextRequest) {
 	const body = await request.json();
 	const { email } = body;
 
-	const client = createAxiosClient(true);
-
 	try {
-		const getUserProjects = await client.post("functions/get_user_projects_with_lettermint_key", { email });
+		const getUserProjects = await parseRest<{ result?: { id: string }[] }>(
+			"functions/get_user_projects_with_lettermint_key",
+			{ method: "POST", body: { email }, useMasterKey: true }
+		);
 
 		const userProjects = getUserProjects.data.result;
-		console.log("userProjects", userProjects);
-		if (!getUserProjects.data.result) {
+		if (!userProjects) {
 			return NextResponse.json(
 				{ error: "No projects found for user" },
 				{ status: 404 }
 			);
 		}
-		console.log("userProjects", userProjects);
 		let projectId ="HC0trnizvl";
 
 		if (userProjects && userProjects.length === 0) {
@@ -48,7 +31,10 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const response = await client.post("functions/send_password_reset", { email, project_id: projectId });
+		const response = await parseRest<{ result?: unknown }>(
+			"functions/send_password_reset",
+			{ method: "POST", body: { email, project_id: projectId }, useMasterKey: true }
+		);
 
 		if (!response.data.result) {
 			return NextResponse.json(
@@ -59,10 +45,10 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json(response.data.result);
 	}  catch (error: any) {
-		console.error("GET Error:", error.message);
+		console.error("password_reset error:", error.message);
 		return NextResponse.json(
-			{ error: error.message, details: error.response?.data },
-			{ status: error.response?.status || 500 }
+			{ error: "Failed to send password reset" },
+			{ status: 500 }
 		);
 	}
 }

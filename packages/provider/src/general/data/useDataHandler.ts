@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useContext, useState } from "react";
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import axiosclient from "./axios";
 import { useDataContext } from "./DataContext";
 import compileAxiosError from "./compileAxiosError";
@@ -12,6 +12,62 @@ import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
 import { CombinedGraphQLErrors } from "@apollo/client";
 import Parse from "./parse";
+
+type DataRequest = {
+	method: "GET" | "POST" | "PUT" | "DELETE";
+	className: string;
+	objectId?: string;
+	updateObject?: unknown;
+	query?: string;
+	projectId?: string;
+};
+
+// Without master key the browser talks to Parse with the user's session. Master-key requests go
+// through the server route `/api/data`, which checks whether the user may use it.
+const dataRequest = async (
+	useMasterKey: boolean,
+	{ method, className, objectId, updateObject, query, projectId }: DataRequest
+): Promise<{ data: any }> => {
+	const parseClassName = className === "User" ? "_User" : className;
+
+	if (!useMasterKey) {
+		const path = objectId
+			? `classes/${parseClassName}/${objectId}`
+			: `classes/${parseClassName}${query ? `?where={${query}}` : ""}`;
+		const client = axiosclient();
+		if (method === "GET") return client.get(path);
+		if (method === "DELETE") return client.delete(path);
+		if (method === "PUT") return client.put(path, updateObject as AxiosRequestConfig<any>);
+		return client.post(path, updateObject as AxiosRequestConfig<any>);
+	}
+
+	const hasBody = method === "POST" || method === "PUT";
+	const params = new URLSearchParams({ className: parseClassName, useMasterKey: "true" });
+	if (objectId) params.set("objectId", objectId);
+	if (query) params.set("query", query);
+	if (projectId) params.set("projectId", projectId);
+
+	const response = await fetch(hasBody ? "/api/data" : `/api/data?${params}`, {
+		method,
+		headers: hasBody ? { "Content-Type": "application/json" } : undefined,
+		body: hasBody
+			? JSON.stringify({
+					className: parseClassName,
+					objectId,
+					updateObject,
+					projectId,
+					useMasterKey: true
+				})
+			: undefined
+	});
+	const data = await response.json();
+
+	if (!response.ok) {
+		throw new Error(data.error || "Anfrage fehlgeschlagen");
+	}
+
+	return { data };
+};
 
 const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 	const setFeedback = (a: string, b: string, c: Date) => console.log(a, b, c);
@@ -63,12 +119,14 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 				});
 			}
 
-			await axiosclient(useMasterKey)
-				.put(
-					`classes/${className === "User" ? "_User" : className}/${objectId}`,
-					updateObjectCopy as AxiosRequestConfig<any>
-				)
-				.then((response: AxiosResponse<any, any>) => {
+			await dataRequest(useMasterKey, {
+				method: "PUT",
+				className,
+				objectId,
+				updateObject: updateObjectCopy,
+				projectId: useProjectKey ? project?.objectId : undefined
+			})
+				.then((response) => {
 					data = response.data.results;
 					if (feedback) {
 						feedbackHandler({
@@ -112,11 +170,13 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 			if (feedback) {
 				setFeedback("lädt", "loading", new Date());
 			}
-			await axiosclient(useMasterKey)
-				.delete(
-					`classes/${className === "User" ? "_User" : className}/${objectId}`
-				)
-				.then((response: AxiosResponse<any, any>) => {
+			await dataRequest(useMasterKey, {
+				method: "DELETE",
+				className,
+				objectId,
+				projectId: project?.objectId
+			})
+				.then((response) => {
 					if (feedback) {
 						feedbackHandler({
 							success: true,
@@ -180,12 +240,12 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 				});
 			}
 
-			await axiosclient(useMasterKey)
-				.post(
-					`classes/${className === "User" ? "_User" : className}`,
-					updateObjectCopy as AxiosRequestConfig<any>
-				)
-				.then((response: AxiosResponse<any, any>) => {
+			await dataRequest(useMasterKey, {
+				method: "POST",
+				className,
+				updateObject: updateObjectCopy
+			})
+				.then((response) => {
 					if (feedback) {
 						feedbackHandler({
 							success: true,
@@ -212,11 +272,13 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 			let data: Array<any> = [];
 			setLoading(true);
 			if (query) {
-				await axiosclient(useMasterKey)
-					.get(
-						`classes/${className === "User" ? "_User" : className}?where={${query}}`
-					)
-					.then((response: AxiosResponse<any, any>) => {
+				await dataRequest(useMasterKey, {
+					method: "GET",
+					className,
+					query,
+					projectId: project?.objectId
+				})
+					.then((response) => {
 						data = response.data.results;
 					})
 					.catch((error) => {
@@ -224,11 +286,12 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 					});
 			}
 			if (!query) {
-				await axiosclient(useMasterKey)
-					.get(
-						`classes/${className === "User" ? "_User" : className}`
-					)
-					.then((response: AxiosResponse<any, any>) => {
+				await dataRequest(useMasterKey, {
+					method: "GET",
+					className,
+					projectId: project?.objectId
+				})
+					.then((response) => {
 						data = response.data.results;
 					})
 					.catch((error) => {

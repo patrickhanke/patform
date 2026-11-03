@@ -16,11 +16,14 @@ export type RegisterUserResult =
 	| { status: "success" }
 	| { status: "error"; message: string };
 
-type InviteCheckResponse = {
-	key?: string;
-	roles?: string[];
+type RegisterResponse = {
+	success?: boolean;
+	message?: string;
+	type?: string;
 };
 
+// Invite validation, user creation and role assignment happen server-side in the
+// `register_with_invite` cloud function; the client never sees the invite key of others.
 export async function registerUser(
 	client: Pick<AxiosInstance, "post">,
 	params: {
@@ -32,67 +35,35 @@ export async function registerUser(
 		values: RegisterUserValues;
 	},
 ): Promise<RegisterUserResult> {
-	let inviteResponse: InviteCheckResponse | undefined;
+	let registerResponse: RegisterResponse | undefined;
 
 	try {
-		const response = await client.post("functions/check_for_invite", {
+		const response = await client.post("functions/register_with_invite", {
 			email: params.email,
 			project_id: params.projectId,
-		});
-		inviteResponse = response.data.result;
-	} catch {
-		return {
-			status: "error",
-			message: "Einladung konnte nicht geprüft werden.",
-		};
-	}
-
-	if (!inviteResponse?.key || params.invitationKey !== inviteResponse.key) {
-		return { status: "error", message: "Einladung ungültig" };
-	}
-
-	try {
-		const additionalValues = params.values;
-
-		await client.post("users", {
-			username: params.email,
-			name: params.username,
+			key: params.invitationKey,
 			password: params.password,
-			email: params.email,
-			projects: [params.projectId],
-			is_superuser: false,
-			roles: inviteResponse.roles || [],
-			...additionalValues,
+			name: params.username,
+			values: params.values,
 		});
-
-		await client.post("functions/remove_invitation_key", {
-			key: inviteResponse.key,
-			project_id: params.projectId,
-		});
-
-		return { status: "success" };
-	} catch (error: unknown) {
-		const code = (error as { response?: { data?: { code?: number } } })
-			.response?.data?.code;
-
-		if (code === 202) {
-			return {
-				status: "error",
-				message:
-					"Für diesen Nutzernamen besteht bereits ein Account. Bitte wählen Sie einen anderen.",
-			};
-		}
-
-		if (code === 203) {
-			return {
-				status: "error",
-				message: "Für diese E-Mail Adresse besteht bereits ein Account",
-			};
-		}
-
+		registerResponse = response.data.result;
+	} catch {
 		return {
 			status: "error",
 			message: "Registrierung fehlgeschlagen.",
 		};
 	}
+
+	if (registerResponse?.success) {
+		return { status: "success" };
+	}
+
+	if (registerResponse?.type === "invite-invalid") {
+		return { status: "error", message: "Einladung ungültig" };
+	}
+
+	return {
+		status: "error",
+		message: registerResponse?.message || "Registrierung fehlgeschlagen.",
+	};
 }

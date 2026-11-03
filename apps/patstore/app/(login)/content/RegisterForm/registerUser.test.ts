@@ -1,139 +1,90 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { registerUser } from "./registerUser";
 
+const params = {
+	email: "user@example.com",
+	projectId: "project-123",
+	invitationKey: "invite-key-abc",
+	password: "SecurePass123!",
+	username: "user@example.com",
+	values: { first_name: "Max", last_name: "Mustermann" }
+};
+
 describe("registerUser", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
-	it("returns success when invite is valid and user is created", async () => {
-		const post = vi
-			.fn()
-			.mockResolvedValueOnce({
-				data: { result: { key: "invite-key-abc", roles: ["editor"] } }
-			})
-			.mockResolvedValueOnce({ data: { objectId: "user-1" } })
-			.mockResolvedValueOnce({ data: { result: true } });
-
-		const result = await registerUser({ post } as never, {
-			email: "user@example.com",
-			projectId: "project-123",
-			invitationKey: "invite-key-abc",
-			password: "SecurePass123!",
-			username: "user@example.com",
-			values: { first_name: "Max", last_name: "Mustermann" }
+	it("registers through the register_with_invite cloud function", async () => {
+		const post = vi.fn().mockResolvedValueOnce({
+			data: { result: { success: true, type: "user-created" } }
 		});
+
+		const result = await registerUser({ post } as never, params);
 
 		expect(result).toEqual({ status: "success" });
-		expect(post).toHaveBeenCalledTimes(3);
-		expect(post).toHaveBeenNthCalledWith(1, "functions/check_for_invite", {
+		expect(post).toHaveBeenCalledTimes(1);
+		expect(post).toHaveBeenCalledWith("functions/register_with_invite", {
 			email: "user@example.com",
-			project_id: "project-123"
-		});
-		expect(post).toHaveBeenNthCalledWith(2, "users", {
-			username: "user@example.com",
+			project_id: "project-123",
+			key: "invite-key-abc",
+			password: "SecurePass123!",
 			name: "user@example.com",
-			password: "SecurePass123!",
-			email: "user@example.com",
-			projects: ["project-123"],
-			is_superuser: false,
-			roles: ["editor"],
-			first_name: "Max",
-			last_name: "Mustermann"
-		});
-		expect(post).toHaveBeenNthCalledWith(
-			3,
-			"functions/remove_invitation_key",
-			{
-				key: "invite-key-abc",
-				project_id: "project-123"
-			}
-		);
-	});
-
-	it("returns invalid invitation when the invite key does not match", async () => {
-		const post = vi.fn().mockResolvedValueOnce({
-			data: { result: { key: "different-key" } }
-		});
-
-		const result = await registerUser({ post } as never, {
-			email: "user@example.com",
-			projectId: "project-123",
-			invitationKey: "invite-key-abc",
-			password: "SecurePass123!",
-			username: "user@example.com",
 			values: { first_name: "Max", last_name: "Mustermann" }
 		});
+	});
+
+	it("never sends authorization fields itself", async () => {
+		const post = vi.fn().mockResolvedValueOnce({
+			data: { result: { success: true } }
+		});
+
+		await registerUser({ post } as never, params);
+
+		const payload = post.mock.calls[0][1];
+		expect(payload).not.toHaveProperty("roles");
+		expect(payload).not.toHaveProperty("projects");
+		expect(payload).not.toHaveProperty("is_superuser");
+	});
+
+	it("returns invalid invitation when the server rejects the invite", async () => {
+		const post = vi.fn().mockResolvedValueOnce({
+			data: {
+				result: { success: false, type: "invite-invalid", message: "Einladung ungültig" }
+			}
+		});
+
+		const result = await registerUser({ post } as never, params);
 
 		expect(result).toEqual({
 			status: "error",
 			message: "Einladung ungültig"
 		});
-		expect(post).toHaveBeenCalledTimes(1);
 	});
 
-	it("returns an error when the invite check fails", async () => {
+	it("returns an error when the request fails", async () => {
 		const post = vi.fn().mockRejectedValueOnce(new Error("network error"));
 
-		const result = await registerUser({ post } as never, {
-			email: "user@example.com",
-			projectId: "project-123",
-			invitationKey: "invite-key-abc",
-			password: "SecurePass123!",
-			username: "user@example.com",
-			values: { first_name: "Max", last_name: "Mustermann" }
-		});
+		const result = await registerUser({ post } as never, params);
 
 		expect(result).toEqual({
 			status: "error",
-			message: "Einladung konnte nicht geprüft werden."
+			message: "Registrierung fehlgeschlagen."
 		});
 	});
 
-	it("returns duplicate username error for Parse code 202", async () => {
-		const post = vi
-			.fn()
-			.mockResolvedValueOnce({
-				data: { result: { key: "invite-key-abc", roles: [] } }
-			})
-			.mockRejectedValueOnce({
-				response: { data: { code: 202 } }
-			});
-
-		const result = await registerUser({ post } as never, {
-			email: "user@example.com",
-			projectId: "project-123",
-			invitationKey: "invite-key-abc",
-			password: "SecurePass123!",
-			username: "user@example.com",
-			values: { first_name: "Max", last_name: "Mustermann" }
+	it("passes through the server message for existing accounts", async () => {
+		const post = vi.fn().mockResolvedValueOnce({
+			data: {
+				result: {
+					success: false,
+					type: "user-exists",
+					message: "Für diese E-Mail Adresse besteht bereits ein Account"
+				}
+			}
 		});
 
-		expect(result).toEqual({
-			status: "error",
-			message:
-				"Für diesen Nutzernamen besteht bereits ein Account. Bitte wählen Sie einen anderen."
-		});
-	});
-
-	it("returns duplicate email error for Parse code 203", async () => {
-		const post = vi
-			.fn()
-			.mockResolvedValueOnce({
-				data: { result: { key: "invite-key-abc", roles: [] } }
-			})
-			.mockRejectedValueOnce({
-				response: { data: { code: 203 } }
-			});
-
-		const result = await registerUser({ post } as never, {
-			email: "user@example.com",
-			projectId: "project-123",
-			invitationKey: "invite-key-abc",
-			password: "SecurePass123!",
-			username: "user@example.com",
-			values: { first_name: "Max", last_name: "Mustermann" }
-		});
+		const result = await registerUser({ post } as never, params);
 
 		expect(result).toEqual({
 			status: "error",

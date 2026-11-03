@@ -3,15 +3,25 @@ import "@repo/styles/global";
 import "@repo/styles/layout";
 import { PatstoreProject } from "@repo/types";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import {
   AdminRenderSidebar,
   AdminLayoutContext,
   AdminSiteHeader,
 } from "@repo/modules";
+import { fetchSessionUser, getSessionCookieName } from "@repo/provider/server";
 
 const getData = async () => {
   const cookieStore = await cookies();
-  const token = cookieStore.get(process.env.SESSION_TOKEN as string)?.value;
+  const token = cookieStore.get(getSessionCookieName())?.value;
+  const user = await fetchSessionUser(token);
+
+  if (!user) {
+    redirect("/login");
+  }
+  if (user.is_superuser !== true) {
+    redirect("/");
+  }
 
   const httpHeaders = {
     "X-Parse-Session-Token": token || "",

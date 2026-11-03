@@ -10,24 +10,25 @@ import {
 } from "@apollo/client-integration-nextjs";
 import { ClientHeaders, MakeClientProps } from "./types";
 
-const makeClient: MakeClientProps = (uri, appId, restKey, masterKey) => {
+const SERVER_GRAPHQL_ROUTE = "/api/graphql";
+
+const makeClient: MakeClientProps = (uri, appId, restKey, useMasterKey) => {
 	const localToken = Cookies.get(process.env.SESSION_TOKEN as string);
 
 	const token = localToken || "";
 
-	const headers: ClientHeaders = {
-		"X-Parse-Application-Id": appId || "",
-		"X-Parse-REST-API-Key": restKey || "",
-		"X-Parse-Session-Token": token,
-		"Access-Control-Allow-Origin": "*"
-	};
-
-	if (masterKey) {
-		headers["X-Parse-Master-Key"] = masterKey;
-	}
+	// Master-key queries are sent to the app's own server route, which decides whether the
+	// master key may be used. The key itself never reaches the browser.
+	const headers: ClientHeaders = useMasterKey
+		? { "x-use-master-key": "true" }
+		: {
+				"X-Parse-Application-Id": appId || "",
+				"X-Parse-REST-API-Key": restKey || "",
+				"X-Parse-Session-Token": token
+			};
 
 	const httpLink = new HttpLink({
-		uri,
+		uri: useMasterKey ? SERVER_GRAPHQL_ROUTE : uri,
 		headers
 	});
 

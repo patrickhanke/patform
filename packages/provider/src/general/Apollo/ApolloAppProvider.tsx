@@ -9,11 +9,11 @@ function ApolloAppProvider({
 	uri,
 	appId,
 	restKey,
-	masterKey
+	useMasterKey
 }: ApolloAppProviderProps) {
 	return (
 		<ApolloNextAppProvider
-			makeClient={() => makeClient(uri, appId, restKey, masterKey)}
+			makeClient={() => makeClient(uri, appId, restKey, useMasterKey)}
 		>
 			{children}
 		</ApolloNextAppProvider>

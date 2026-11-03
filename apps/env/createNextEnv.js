@@ -5,12 +5,13 @@ dotenv.config({ path: path.join(__dirname, "../../.env") });
 
 /** @typedef {Record<string, string | undefined>} EnvMap */
 
+// Every key listed here is inlined into client bundles by Next.js. Never add secrets
+// (e.g. SASHIDO_MASTER_KEY) — server code reads those at runtime via `@repo/provider/server`.
 const SHARED_ENV_KEYS = [
 	"SASHIDO_API_URL",
 	"SASHIDO_GQL_URL",
 	"SASHIDO_APP_ID",
 	"SASHIDO_REST_KEY",
-	"SASHIDO_MASTER_KEY",
 	"SASHIDO_JS_KEY",
 	"SASHIDO_FILE_URL",
 	"SASHIDO_CLIENT_KEY",
