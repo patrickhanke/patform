@@ -1,1 +1,1 @@
-export { PrellballClub as default } from "@repo/modules";
+export { Club as default } from "@repo/modules";
