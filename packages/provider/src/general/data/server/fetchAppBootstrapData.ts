@@ -60,7 +60,6 @@ const ROLE_FIELDS: Record<string, string> = {
 	patstore: `
 		objectId
 		name
-		users { edges { node { objectId username } } }
 		default
 		modules { ...on Element { value } }
 		color

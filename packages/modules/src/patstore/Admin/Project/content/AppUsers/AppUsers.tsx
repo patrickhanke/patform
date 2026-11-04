@@ -37,7 +37,6 @@ const AppUsers: FC<AppUsersProps> = ({
 		fields: [
 			"objectId",
 			"name",
-			"users {edges{node{objectId username}}}",
 			"default"
 		],
 		projectId

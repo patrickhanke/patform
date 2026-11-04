@@ -1,23 +1,24 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
 import { PatstoreRoleClass } from "@repo/types";
-import { axiosclient, findRoleForUser } from "@repo/provider";
+import { axiosclient, useAppContext, useRoleForUser } from "@repo/provider";
 import { SelectUserRoleProps } from "../types";
 
 const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
-	const [initialRole, setInitialRole] = useState<string | undefined>(
-		findRoleForUser(roles, user.objectId)?.objectId
+	const { project } = useAppContext();
+	const { role, refetch: refetchRole } = useRoleForUser(
+		user.objectId,
+		project?.objectId
 	);
-
-	const [selectedRole, setSelectedRole] = useState<string | undefined>(
-		initialRole
-	);
-	const matchedRoleId = findRoleForUser(roles, user.objectId)?.objectId;
+	const [initialRole, setInitialRole] = useState<string | undefined>();
+	const [selectedRole, setSelectedRole] = useState<string | undefined>();
 
 	useEffect(() => {
-		setInitialRole(matchedRoleId);
-		setSelectedRole(matchedRoleId);
-	}, [matchedRoleId]);
+		if (role?.objectId && initialRole !== role.objectId) {
+			setInitialRole(role.objectId);
+			setSelectedRole(role.objectId);
+		}
+	}, [role?.objectId, initialRole]);
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
@@ -88,7 +89,7 @@ const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 						former_role_id: initialRole,
 						new_role_id: selectedRole
 					});
-					await refetch();
+					await Promise.all([refetch(), refetchRole()]);
 					setIsOpen(false);
 					setLoading(false);
 				}}

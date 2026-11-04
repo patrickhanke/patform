@@ -26,13 +26,3 @@ export const roleMemberIds = (users: RoleUsers | null | undefined): string[] => 
 	}
 	return [];
 };
-
-export const findRoleForUser = <T extends { users?: RoleUsers | null }>(
-	roles: T[] | null | undefined,
-	userId?: string
-) => {
-	if (!userId || !roles) {
-		return undefined;
-	}
-	return roles.find((role) => roleMemberIds(role.users).includes(userId));
-};

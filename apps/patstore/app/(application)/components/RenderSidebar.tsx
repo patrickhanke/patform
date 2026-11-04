@@ -5,17 +5,15 @@ import Logo from "./Logo";
 import { MenuItem, Sidebar } from "@repo/ui";
 import { Module, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import packageJson from "../../../package.json";
-import { findRoleForUser, useAppContext } from "@repo/provider";
+import { useAppContext, useRoleForUser } from "@repo/provider";
 import { cloneDeep, truncate } from 'lodash-es';
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
   const { project, roles } = useAppContext();
-
-  console.log(roles);
-  
-  const userRole = findRoleForUser(roles, user.objectId) || ({} as PatstoreRoleClass);
-
-  console.log(userRole);
+  const { role: membership } = useRoleForUser(user.objectId, project?.objectId);
+  const userRole =
+    roles?.find((role) => role.objectId === membership?.objectId) ||
+    ({} as PatstoreRoleClass);
   const menuItems = useMemo(() => {
     const menuItemsArray: MenuItem[] = [{
       label: "Dashboard",

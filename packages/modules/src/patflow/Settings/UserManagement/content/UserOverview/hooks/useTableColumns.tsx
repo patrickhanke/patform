@@ -1,10 +1,28 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import EditStaffMember from "../components/EditStaffMember";
 import SetStaffMemberPassword from "../components/SetStaffMemberPassword";
 import { ApolloRefetch, PatflowUser } from "@repo/types";
 import { StateDisplay, TableColumnEditColor, Toggle } from "@repo/ui";
-import { Role, useDataHandlerSecure } from "@repo/provider";
+import { PatflowAppContext, Role, useDataHandlerSecure, useRoleForUser } from "@repo/provider";
+
+const StaffRoleCell = ({
+	userId,
+	roles
+}: {
+	userId: string;
+	roles: Role[];
+}) => {
+	const { project } = useContext(PatflowAppContext);
+	const { role } = useRoleForUser(userId, project?.objectId);
+	const userRole = roles.find((item) => item.value === role?.objectId);
+	return (
+		<StateDisplay
+			label={userRole?.label || "Keine Rolle"}
+			color={userRole?.color || "black"}
+		/>
+	);
+};
 
 const useTableColumns = ({
 	refetch,
@@ -26,19 +44,9 @@ const useTableColumns = ({
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => {
-					const userRole: Role | undefined = roles.find((role) =>
-						role.users?.some((member) => member.objectId === row.objectId)
-					);
-					let label = "Keine Rolle";
-					let color = "black";
-
-					if (userRole) {
-						label = userRole.label;
-						color = userRole.color;
-					}
-					return <StateDisplay label={label} color={color} />;
-				},
+				accessorFn: (row) => (
+					<StaffRoleCell userId={row.objectId} roles={roles} />
+				),
 				header: () => <span>Rolle</span>,
 				id: "role",
 				cell: (info) => info.getValue(),

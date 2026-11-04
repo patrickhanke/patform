@@ -22,4 +22,4 @@ export type {
 } from "./dataTransporter";
 export { default as convertDateToString } from "./convertDateToString";
 export { default as generateQueryFromFields } from "./generateQueryFromFields";
-export { findRoleForUser, roleMemberIds } from "./roleMembership";
+export { roleMemberIds } from "./roleMembership";

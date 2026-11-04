@@ -1,4 +1,4 @@
-import { axiosclient, findRoleForUser, useAppContext } from "@repo/provider";
+import { axiosclient, useAppContext, useRoleForUser } from "@repo/provider";
 import {
 	ElementSelectInterface,
 	SelectElement,
@@ -6,35 +6,29 @@ import {
 	StateDisplay
 } from "@repo/ui";
 import { useState, useMemo, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { ApolloRefetch, PatstoreRoleClass, PatstoreUser } from "@repo/types";
+import { PatstoreRoleClass, PatstoreUser } from "@repo/types";
 
-const TableColumnUserRole = ({
-	user,
-	refetch
-}: {
-	user: PatstoreUser;
-	refetch: ApolloRefetch;
-}) => {
+const TableColumnUserRole = ({ user }: { user: PatstoreUser }) => {
 	// `AppContext` is shared with patflow (whose roles have a different
 	// shape), so `useAppContext()` types `roles` loosely. This component is
 	// patstore-only and relies on the concrete PatstoreRoleClass shape.
-	const { roles: contextRoles } = useAppContext();
+	const { roles: contextRoles, project } = useAppContext();
 	const roles = contextRoles as PatstoreRoleClass[];
-	const router = useRouter();
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const matchedRole = findRoleForUser(roles, user.objectId);
 	const [initialRole, setInitialRole] = useState<string | undefined>(
-		matchedRole?.objectId
+		undefined
 	);
-
 	const [selectedRole, setSelectedRole] = useState<string | undefined>(
-		initialRole
+		undefined
 	);
 
-	const userRole =
-		roles.find((role) => role.objectId === initialRole) || matchedRole;
+	const { role, refetch: refetchRole } = useRoleForUser(
+		user.objectId,
+		project?.objectId
+	);
+
+	const userRole = roles.find((role) => role.objectId === initialRole);
 	const elements = useMemo(() => {
 		const personOptionsArray: SelectElement[] = [];
 		if (roles) {
@@ -52,16 +46,19 @@ const TableColumnUserRole = ({
 	}, [roles]);
 
 	useEffect(() => {
-		setInitialRole(matchedRole?.objectId);
-		setSelectedRole(matchedRole?.objectId);
-	}, [matchedRole?.objectId]);
+		if (role?.objectId && initialRole !== role.objectId) {
+			setInitialRole(role.objectId);
+		}
+	}, [role?.objectId, initialRole]);
 
 	const selectRole = useMemo(
 		() => (
 			<ElementSelectInterface
 				elements={elements}
-				selectedElements={elements.filter(
-					(element) => selectedRole === element.id
+				selectedElements={elements.filter((element) =>
+					selectedRole
+						? selectedRole === element.id
+						: initialRole === element.id
 				)}
 				onSelect={(selectValue) => {
 					if (!selectValue || selectValue.length === 0) {
@@ -109,12 +106,11 @@ const TableColumnUserRole = ({
 						new_role_id: selectedRole
 					});
 					setInitialRole(selectedRole);
-					await refetch();
-					router.refresh();
+					await refetchRole();
 					setIsOpen(false);
 					setLoading(false);
 				}}
-				disabled={[loading, loading]}
+				disabled={[loading, loading || !initialRole || !selectedRole]}
 				header="Rolle auswählen"
 			>
 				{selectRole}

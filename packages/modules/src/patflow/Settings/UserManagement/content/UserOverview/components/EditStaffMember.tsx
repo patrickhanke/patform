@@ -1,9 +1,9 @@
 import {
 	PatflowAppContext,
 	axiosclient,
-	findRoleForUser,
 	useDataHandlerSecure,
-	useGetDataSecure
+	useGetDataSecure,
+	useRoleForUser
 } from "@repo/provider";
 import { useCallback, useContext, useState, useEffect, useMemo } from "react";
 import { useImmer } from "use-immer";
@@ -44,7 +44,11 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 		site_states[0]
 	);
 	const [loading, setLoading] = useState(false);
-	const { roles, refetchRoles } = useContext(PatflowAppContext);
+	const { roles, refetchRoles, project } = useContext(PatflowAppContext);
+	const { role: membershipRole, refetch: refetchMembership } = useRoleForUser(
+		isOpen ? userId : undefined,
+		project?.objectId
+	);
 	const { updateData } = useDataHandlerSecure(true);
 	const [errors] = useState([] as unknown as ErrorMessage[]);
 	const [staffMember, setStaffMember] = useImmer<
@@ -100,11 +104,19 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 			draft.email = source.email ?? contact.data.email ?? "";
 			draft.data = contact.data;
 			if (userData) {
-				draft.roleId = findRoleForUser(roles, userId)?.value;
 				draft.portrait = userData.portrait;
 			}
 		});
-	}, [userData, listUser, isOpen, roles, userId, setStaffMember]);
+	}, [userData, listUser, isOpen, setStaffMember]);
+
+	useEffect(() => {
+		if (!isOpen || !membershipRole?.objectId) {
+			return;
+		}
+		setStaffMember((draft) => {
+			draft.roleId = membershipRole.objectId;
+		});
+	}, [isOpen, membershipRole?.objectId, setStaffMember]);
 
 	const contactData: Pick<
 		StaffMemberContactData,
@@ -138,7 +150,7 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 
 	const updateUser = useCallback(async () => {
 		setLoading(true);
-		const currentRoleId = findRoleForUser(roles, userId)?.value;
+		const currentRoleId = membershipRole?.objectId;
 		await updateData({
 			className: "User",
 			objectId: userId,
@@ -156,12 +168,20 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 				former_role_id: currentRoleId,
 				new_role_id: staffMember.roleId
 			});
-			await refetchRoles();
+			await Promise.all([refetchRoles(), refetchMembership()]);
 		}
 		await refetch();
 		setIsOpen(false);
 		setLoading(false);
-	}, [staffMember, updateData, userId, refetch, refetchRoles, roles]);
+	}, [
+		staffMember,
+		updateData,
+		userId,
+		refetch,
+		refetchRoles,
+		refetchMembership,
+		membershipRole?.objectId
+	]);
 
 	return (
 		<>

@@ -10,7 +10,7 @@ import {
 } from "@repo/types";
 import { usePathname } from "next/navigation";
 import { axiosclient } from "../../../general";
-import { findRoleForUser } from "../../../general/functions/roleMembership";
+import { useRoleForUser } from "../../../general/hooks/useRoleForUser";
 
 const PatstoreAppContextProvider = ({
 	project,
@@ -48,9 +48,10 @@ const PatstoreAppContextProvider = ({
 		getUser();
 	}, []);
 
+	const { role: membership } = useRoleForUser(user?.objectId, project?.objectId);
 	const userRole = useMemo(() => {
-		return findRoleForUser(roles, user?.objectId);
-	}, [roles, user]);
+		return roles?.find((role) => role.objectId === membership?.objectId);
+	}, [roles, membership?.objectId]);
 
 	const appContextObject = useMemo(
 		() => ({
