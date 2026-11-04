@@ -4,6 +4,7 @@ import { FC, useMemo, useState } from "react";
 import { Table, usePageData } from "@repo/ui";
 import { EmailList, Filter, Module, PatstoreUser } from "@repo/types";
 import { useFindDataSecure } from "@repo/provider";
+import { useFiltersWithRoleMembership } from "../../../functions/useFiltersWithRoleMembership";
 import EditFilter from "./components/EditFilter";
 
 export interface ListFilterProps {
@@ -53,6 +54,13 @@ const ListFilter: FC<ListFilterProps> = ({ list, userModule }) => {
 		pageSize: 10
 	});
 
+	const sourceFilters = useMemo(
+		() => [...initialFilters, ...(data?.filters || [])] as Filter[],
+		[data?.filters, initialFilters]
+	);
+	const { filters: queryFilters, ready: rolesReady } =
+		useFiltersWithRoleMembership(sourceFilters, list.project.objectId);
+
 	const {
 		data: users,
 		count,
@@ -60,11 +68,12 @@ const ListFilter: FC<ListFilterProps> = ({ list, userModule }) => {
 	} = useFindDataSecure({
 		objectName: "User",
 		fields: ["objectId", "first_name", "last_name", "email"],
-		filters: [...initialFilters, ...(data?.filters || [])] as Filter[],
+		filters: queryFilters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order: "label_ASC",
-		useMasterKey: true
+		useMasterKey: true,
+		skipQuery: !rolesReady
 	});
 
 	const columns = useMemo(

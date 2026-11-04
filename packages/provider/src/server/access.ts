@@ -6,8 +6,6 @@ export type SessionUser = {
 	objectId: string;
 	is_superuser?: boolean;
 	projects?: string[];
-	roles?: string[];
-	role?: { objectId: string };
 };
 
 export type AccessContext = {

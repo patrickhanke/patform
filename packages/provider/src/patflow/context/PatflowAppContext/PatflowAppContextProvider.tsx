@@ -49,7 +49,7 @@ const PatflowAppContextProvider = ({
 	useTicketSubscription(projectId);
 	const { fetchAbsences } = useAbsenceSubscription(projectId);
 
-	const { data: roleData } = useFindData({
+	const { data: roleData, refetch: refetchRoles } = useFindData({
 		objectName: "Role",
 		fields: [
 			"objectId",
@@ -71,7 +71,6 @@ const PatflowAppContextProvider = ({
 			"color",
 			"settings",
 			"data",
-			"roles",
 			"value: objectId",
 			"label: label",
 			"updatedAt"
@@ -363,6 +362,7 @@ const PatflowAppContextProvider = ({
 			reloadAbsences,
 			reloadSurcharges,
 			project: project ?? { objectId: "" },
+			refetchRoles,
 			roles: roleData
 				? roleData.map((role: PatflowUserRole) => ({
 						value: role.objectId,
@@ -385,6 +385,7 @@ const PatflowAppContextProvider = ({
 		[
 			roleUsers,
 			year,
+			refetchRoles,
 			roleData,
 			workerData,
 			propertyData,

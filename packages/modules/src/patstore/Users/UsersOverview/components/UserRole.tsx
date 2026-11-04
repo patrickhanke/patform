@@ -1,4 +1,4 @@
-import { axiosclient, useAppContext } from "@repo/provider";
+import { axiosclient, findRoleForUser, useAppContext } from "@repo/provider";
 import {
 	ElementSelectInterface,
 	SelectElement,
@@ -7,13 +7,6 @@ import {
 } from "@repo/ui";
 import { useState, useMemo } from "react";
 import { ApolloRefetch, PatstoreRoleClass, PatstoreUser } from "@repo/types";
-
-const findRoleFromUserId = (userId: string, roles: PatstoreRoleClass[]) => {
-	const role = roles.find((role) =>
-		role.users.results.some((user) => user.objectId === userId)
-	);
-	return role ? role : undefined;
-};
 
 const UserRole = ({
 	user,
@@ -26,16 +19,14 @@ const UserRole = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [initialRole, setInitialRole] = useState<string | undefined>(
-		findRoleFromUserId(user.objectId, roles)
-			? findRoleFromUserId(user.objectId, roles)?.objectId
-			: undefined
+		findRoleForUser(roles, user.objectId)?.objectId
 	);
 
 	const [selectedRole, setSelectedRole] = useState<string | undefined>(
 		initialRole
 	);
 
-	const userRole = roles.find((role) => user.roles.includes(role.objectId));
+	const userRole = findRoleForUser(roles, user.objectId);
 	const elements = useMemo(() => {
 		const personOptionsArray: SelectElement[] = [];
 		if (roles) {
@@ -99,7 +90,7 @@ const UserRole = ({
 				cancel={() => setIsOpen(false)}
 				confirm={async () => {
 					setLoading(true);
-					await axiosclient().post("functions/update-user-role", {
+					await axiosclient().post("functions/update_user_role", {
 						user_id: user.objectId,
 						former_role_id: initialRole,
 						new_role_id: selectedRole

@@ -1,29 +1,23 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { ElementSelectInterface, SelectElement, SlideIn } from "@repo/ui";
-import { PatstoreRoleClass, PatstoreUser } from "@repo/types";
-import { axiosclient } from "@repo/provider";
+import { PatstoreRoleClass } from "@repo/types";
+import { axiosclient, findRoleForUser } from "@repo/provider";
 import { SelectUserRoleProps } from "../types";
-
-const findRoleFromUserId = (userId: string, roles: PatstoreRoleClass[]) => {
-	console.log({ roles });
-	const role = roles.find((role) =>
-		role.users.edges.some(
-			(edge: { node: PatstoreUser }) => edge.node.objectId === userId
-		)
-	);
-	return role ? role : undefined;
-};
 
 const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 	const [initialRole, setInitialRole] = useState<string | undefined>(
-		findRoleFromUserId(user.objectId, roles)
-			? findRoleFromUserId(user.objectId, roles)?.objectId
-			: undefined
+		findRoleForUser(roles, user.objectId)?.objectId
 	);
 
 	const [selectedRole, setSelectedRole] = useState<string | undefined>(
 		initialRole
 	);
+	const matchedRoleId = findRoleForUser(roles, user.objectId)?.objectId;
+
+	useEffect(() => {
+		setInitialRole(matchedRoleId);
+		setSelectedRole(matchedRoleId);
+	}, [matchedRoleId]);
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);

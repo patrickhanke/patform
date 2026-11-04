@@ -24,19 +24,15 @@ const redirectToLogin = (request: NextRequest) => {
 
 const findAllowedModulePaths = async (
   projectId: string,
-  userRoleIds: string[]
+  userId: string
 ): Promise<string[]> => {
-  if (userRoleIds.length === 0) {
-    return [];
-  }
-
   const projectWhere = {
     project: { __type: "Pointer", className: "Project", objectId: projectId },
   };
 
   const roleWhere = JSON.stringify({
     ...projectWhere,
-    objectId: { $in: userRoleIds },
+    users: { __type: "Pointer", className: "_User", objectId: userId },
   });
   const { data: roleData } = await parseRest<{ results?: { modules?: string[] }[] }>(
     `classes/_Role?where=${encodeURIComponent(roleWhere)}`,
@@ -112,7 +108,7 @@ export async function proxy(request: NextRequest) {
   }
 
   try {
-    const allowedPaths = await findAllowedModulePaths(projectId, user.roles || []);
+    const allowedPaths = await findAllowedModulePaths(projectId, user.objectId);
 
     if (!allowedPaths.some((path) => matchesPath(pathname, path))) {
       return NextResponse.redirect(new URL("/", request.url));

@@ -33,7 +33,6 @@ export type PatflowUser = {
 		url: string;
 		name: string;
 	};
-	roles: string[];
 	projects: string[];
 	label: string;
 	data: {

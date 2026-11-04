@@ -5,8 +5,11 @@ import { useAppContext, useFindDataSecure, useGetData } from "@repo/provider";
 import { EmailList, Filter } from "@repo/types";
 import { buildEmailRecipientsFromUsers } from "../functions/buildEmailRecipientsFromUsers";
 import { buildUserFiltersFromList } from "../functions/buildUserFiltersFromList";
+import { useFiltersWithRoleMembership } from "../../functions/useFiltersWithRoleMembership";
 import { resolveRecipientListId } from "../functions/resolveRecipientListId";
 import { EmailRecipient } from "../types";
+
+const EMPTY_FILTERS: Filter[] = [];
 
 const EMPTY_RECIPIENTS: {
 	recipients: EmailRecipient[];
@@ -55,7 +58,13 @@ export const useEmailRecipients = (recipientListId?: unknown) => {
 		return buildUserFiltersFromList(list, baseFilters);
 	}, [baseFilters, list, listReady]);
 
-	const skipUsersQuery = !listReady || userFilters === null;
+	const { filters: resolvedFilters, ready: rolesReady } =
+		useFiltersWithRoleMembership(
+			userFilters ?? EMPTY_FILTERS,
+			project.objectId
+		);
+
+	const skipUsersQuery = !listReady || userFilters === null || !rolesReady;
 
 	const { data: users, loading: usersLoading } = useFindDataSecure({
 		objectName: "User",
@@ -71,7 +80,7 @@ export const useEmailRecipients = (recipientListId?: unknown) => {
 			"emails",
 			"settings"
 		],
-		filters: userFilters ?? baseFilters,
+		filters: resolvedFilters,
 		limit: 5000,
 		skip: 0,
 		order: "label_ASC",
@@ -83,12 +92,18 @@ export const useEmailRecipients = (recipientListId?: unknown) => {
 		recipients: EmailRecipient[];
 		suppressedRecipients: EmailRecipient[];
 	} => {
-		if (!listReady || !list || userFilters === null || usersLoading) {
+		if (
+			!listReady ||
+			!list ||
+			userFilters === null ||
+			!rolesReady ||
+			usersLoading
+		) {
 			return EMPTY_RECIPIENTS;
 		}
 
 		return buildEmailRecipientsFromUsers(list, users || []);
-	}, [list, listReady, userFilters, users, usersLoading]);
+	}, [list, listReady, rolesReady, userFilters, users, usersLoading]);
 
 	return {
 		recipients,
@@ -98,7 +113,7 @@ export const useEmailRecipients = (recipientListId?: unknown) => {
 			!!listId &&
 			(listLoading ||
 				!listReady ||
-				(userFilters !== null && usersLoading))
+				(userFilters !== null && (!rolesReady || usersLoading)))
 	};
 };
 

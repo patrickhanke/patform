@@ -18,7 +18,6 @@ const UserOverview: FC<UserOverviewProps> = ({ isOpen, setIsOpen }) => {
 			"last_name",
 			"email",
 			"username",
-			"roles",
 			"color",
 			"data",
 			"settings"

@@ -4,6 +4,7 @@ import { FC, useCallback, useMemo, useState } from "react";
 import { IconButton, Table, usePageData } from "@repo/ui";
 import { EmailList, Filter, Module, PatstoreUser } from "@repo/types";
 import { useFindDataSecure } from "@repo/provider";
+import { useFiltersWithRoleMembership } from "../../../functions/useFiltersWithRoleMembership";
 
 export interface ListMembersProps {
 	list: EmailList;
@@ -60,6 +61,22 @@ const ListMembers: FC<ListMembersProps> = ({
 		pageSize: 10
 	});
 
+	const sourceFilters = useMemo(
+		() =>
+			staticList
+				? ([
+						{
+							key: "search",
+							value: `lists:${list.objectId}`,
+							operator: "in"
+						}
+					] as Filter[])
+				: ([...initialFilters, ...filters] as Filter[]),
+		[filters, initialFilters, list.objectId, staticList]
+	);
+	const { filters: queryFilters, ready: rolesReady } =
+		useFiltersWithRoleMembership(sourceFilters, list.project.objectId);
+
 	const {
 		data: users,
 		count,
@@ -67,19 +84,12 @@ const ListMembers: FC<ListMembersProps> = ({
 	} = useFindDataSecure({
 		objectName: "User",
 		fields: ["objectId", "first_name", "last_name", "email", "emails"],
-		filters: staticList
-			? ([
-					{
-						key: "search",
-						value: `lists:${list.objectId}`,
-						operator: "in"
-					}
-				] as Filter[])
-			: ([...initialFilters, ...filters] as Filter[]),
+		filters: queryFilters,
 		limit: pagination.pageSize,
 		skip: pagination.pageIndex * pagination.pageSize,
 		order: "label_ASC",
-		useMasterKey: true
+		useMasterKey: true,
+		skipQuery: !rolesReady
 	});
 
 	const columns = useMemo(

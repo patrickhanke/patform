@@ -39,7 +39,6 @@ export type PatstoreUser = {
 	};
 	password: string;
 	projects: string[];
-	roles: string[];
 	newsletter_optin?: boolean;
 	newsletter_email?: string;
 	newsletter_optin_date?: string;

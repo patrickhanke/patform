@@ -28,7 +28,7 @@ const useTableColumns = ({
 			{
 				accessorFn: (row) => {
 					const userRole: Role | undefined = roles.find((role) =>
-						row.roles.includes(role.value)
+						role.users?.some((member) => member.objectId === row.objectId)
 					);
 					let label = "Keine Rolle";
 					let color = "black";
@@ -111,7 +111,7 @@ const useTableColumns = ({
 				enableSorting: false
 			}
 		],
-		[]
+		[refetch, roles, updateData]
 	);
 
 	return columns;

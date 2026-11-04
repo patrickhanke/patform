@@ -116,34 +116,6 @@ export const assertProjectPointer = (
   }
 };
 
-const assertRolesInProject = async (roleIds: unknown, projectId: string) => {
-  if (roleIds === undefined || roleIds === null) {
-    return;
-  }
-  const ids = (Array.isArray(roleIds) ? roleIds : [roleIds])
-    .map(pointerId)
-    .filter(Boolean) as string[];
-
-  if (ids.length === 0) {
-    return;
-  }
-  ids.forEach(assertObjectId);
-
-  const where = JSON.stringify({ objectId: { $in: ids } });
-  const { data } = await parseRest<{ results?: ParseObject[] }>(
-    `classes/_Role?where=${encodeURIComponent(where)}&limit=${ids.length}`,
-    { useMasterKey: true },
-  );
-  const roles = data.results || [];
-  const allInProject =
-    roles.length === ids.length &&
-    roles.every((role) => projectIdsOf("_Role", role).includes(projectId));
-
-  if (!allInProject) {
-    throw new AccessError(403, "Rollen gehören nicht zum Projekt");
-  }
-};
-
 const assertUsersInProject = async (users: unknown, projectId: string) => {
   if (!Array.isArray(users)) {
     return;
@@ -202,21 +174,12 @@ export const isProjectAdmin = async (
     return false;
   }
 
-  const roleIds = [
-    ...(context.user.roles || []),
-    pointerId(context.user.role),
-  ].filter(Boolean);
   const where = JSON.stringify({
-    $or: [
-      { objectId: { $in: roleIds } },
-      {
-        users: {
-          __type: "Pointer",
-          className: "_User",
-          objectId: context.user.objectId,
-        },
-      },
-    ],
+    users: {
+      __type: "Pointer",
+      className: "_User",
+      objectId: context.user.objectId,
+    },
   });
   const { data } = await parseRest<{ results?: ParseObject[] }>(
     `classes/_Role?where=${encodeURIComponent(where)}&limit=1000`,
@@ -313,12 +276,8 @@ export const sanitizeMemberWrite = async ({
     } else {
       delete data.projects;
     }
-    if (!isAdmin) {
-      delete data.roles;
-      delete data.role;
-    }
-    await assertRolesInProject(data.roles, projectId);
-    await assertRolesInProject(data.role, projectId);
+    delete data.roles;
+    delete data.role;
     if (data.project !== undefined) {
       data.project = projectPointer(projectId);
     }

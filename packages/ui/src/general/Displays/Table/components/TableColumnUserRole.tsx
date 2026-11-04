@@ -1,4 +1,4 @@
-import { axiosclient, useAppContext } from "@repo/provider";
+import { axiosclient, findRoleForUser, useAppContext } from "@repo/provider";
 import {
 	ElementSelectInterface,
 	SelectElement,
@@ -6,18 +6,8 @@ import {
 	StateDisplay
 } from "@repo/ui";
 import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ApolloRefetch, PatstoreRoleClass, PatstoreUser } from "@repo/types";
-
-const findRoleFromUserId = (
-	userRoles: string[],
-	roles: PatstoreRoleClass[]
-) => {
-	if (!userRoles || userRoles.length === 0) {
-		return undefined;
-	}
-	const role = roles.find((role) => userRoles.includes(role.objectId));
-	return role ? role : undefined;
-};
 
 const TableColumnUserRole = ({
 	user,
@@ -31,17 +21,20 @@ const TableColumnUserRole = ({
 	// patstore-only and relies on the concrete PatstoreRoleClass shape.
 	const { roles: contextRoles } = useAppContext();
 	const roles = contextRoles as PatstoreRoleClass[];
+	const router = useRouter();
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const matchedRole = findRoleForUser(roles, user.objectId);
 	const [initialRole, setInitialRole] = useState<string | undefined>(
-		findRoleFromUserId(user.roles, roles)?.objectId
+		matchedRole?.objectId
 	);
 
 	const [selectedRole, setSelectedRole] = useState<string | undefined>(
 		initialRole
 	);
 
-	const userRole = roles.find((role) => user?.roles?.includes(role.objectId));
+	const userRole =
+		roles.find((role) => role.objectId === initialRole) || matchedRole;
 	const elements = useMemo(() => {
 		const personOptionsArray: SelectElement[] = [];
 		if (roles) {
@@ -59,10 +52,9 @@ const TableColumnUserRole = ({
 	}, [roles]);
 
 	useEffect(() => {
-		if (initialRole && !selectedRole) {
-			setSelectedRole(initialRole);
-		}
-	}, [initialRole]);
+		setInitialRole(matchedRole?.objectId);
+		setSelectedRole(matchedRole?.objectId);
+	}, [matchedRole?.objectId]);
 
 	const selectRole = useMemo(
 		() => (
@@ -116,7 +108,9 @@ const TableColumnUserRole = ({
 						former_role_id: initialRole,
 						new_role_id: selectedRole
 					});
+					setInitialRole(selectedRole);
 					await refetch();
+					router.refresh();
 					setIsOpen(false);
 					setLoading(false);
 				}}

@@ -23,7 +23,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 	isOpen,
 	refetch
 }) => {
-	const { project, roles } = useContext(PatflowAppContext);
+	const { project, roles, refetchRoles } = useContext(PatflowAppContext);
 	const {
 		createData,
 		updateData,
@@ -130,7 +130,6 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 				email: staffMember.email,
 				password: staffMember.password,
 				color: staffMember.color,
-				roles: staffMember.roles,
 				project: {
 					__type: "Pointer",
 					className: "Project",
@@ -173,6 +172,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 					}
 				});
 				await refetch();
+				await refetchRoles();
 			}
 		});
 
@@ -183,6 +183,7 @@ const CreateStaffMember: FC<CreateStaffMemberProps> = ({
 		updateData,
 		project.objectId,
 		refetch,
+		refetchRoles,
 		setIsOpen,
 		staffMember
 	]);

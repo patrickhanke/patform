@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useDataHandler, useFindData } from "@repo/provider";
+import { axiosclient, useDataHandler, useFindData } from "@repo/provider";
 import { SlideIn, Table } from "@repo/ui";
 import useUserColumns from "./hooks/useUserColumns";
 import { AppUsersProps, UserObject } from "./types";
@@ -20,13 +20,19 @@ const AppUsers: FC<AppUsersProps> = ({
 	const { updateData, createData } = useDataHandler(true, false);
 	const { data, refetch } = useFindData({
 		objectName: "User",
-		fields: ["objectId", "username", "email", "label", "name", "roles"],
-		projectId
+		fields: ["objectId", "username", "email", "label", "name"],
+		filters: [
+			{
+				key: "projects",
+				value: [projectId],
+				operator: "contains"
+			}
+		]
 	});
 
 	console.log({ data });
 
-	const { data: roleData } = useFindData({
+	const { data: roleData, refetch: refetchRoles } = useFindData({
 		objectName: "Role",
 		fields: [
 			"objectId",
@@ -38,7 +44,10 @@ const AppUsers: FC<AppUsersProps> = ({
 	});
 
 	const columns = useUserColumns({
-		refetch,
+		refetch: async () => {
+			const [users] = await Promise.all([refetch(), refetchRoles()]);
+			return users;
+		},
 		roles: roleData ?? []
 	});
 
@@ -71,6 +80,7 @@ const AppUsers: FC<AppUsersProps> = ({
 	const updateUserHandler = useCallback(async () => {
 		setLoading(true);
 		if (createUser && user) {
+			let createdId: string | undefined;
 			await createData({
 				className: "User",
 				updateObject: {
@@ -81,10 +91,18 @@ const AppUsers: FC<AppUsersProps> = ({
 					email: user?.username,
 					set_password: true,
 					name: user?.name,
-					roles: [user.role.value],
 					is_superuser: false
+				},
+				afterSaveHandler: (created: { objectId?: string }) => {
+					createdId = created?.objectId;
 				}
 			});
+			if (createdId && user.role?.value) {
+				await axiosclient().post("functions/update_user_role", {
+					user_id: createdId,
+					new_role_id: user.role.value
+				});
+			}
 		}
 		if (addUser && user) {
 			const projectsCopy = cloneDeep(user.projects);
@@ -97,7 +115,7 @@ const AppUsers: FC<AppUsersProps> = ({
 				}
 			});
 		}
-		await refetch();
+		await Promise.all([refetch(), refetchRoles()]);
 		setLoading(false);
 		if (createUser) {
 			setCreateUser(false);

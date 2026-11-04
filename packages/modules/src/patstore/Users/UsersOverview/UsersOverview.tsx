@@ -84,7 +84,6 @@ const UsersOverview = ({
 		fields: [
 			...generateQueryFromFields(module.fields),
 			"data",
-			"roles",
 			"settings",
 			"name",
 			...(defaultLanguage && languages.length > 1 ? ["translations"] : [])

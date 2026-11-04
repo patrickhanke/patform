@@ -19,7 +19,8 @@ const generateQueryFromFields = (fields: Module["fields"]) => {
 				staticFields.push("portrait {name url}");
 			} else if (field.id === "coordinates") {
 				staticFields.push("coordinates {latitude longitude}");
-			} else {
+			} else if (field.id !== "roles") {
+				// `roles` is not a user field. Membership lives on `_Role.users`.
 				staticFields.push(field.id);
 			}
 		}

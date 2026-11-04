@@ -1,5 +1,7 @@
 import {
 	PatflowAppContext,
+	axiosclient,
+	findRoleForUser,
 	useDataHandlerSecure,
 	useGetDataSecure
 } from "@repo/provider";
@@ -42,19 +44,18 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 		site_states[0]
 	);
 	const [loading, setLoading] = useState(false);
-	const { roles } = useContext(PatflowAppContext);
+	const { roles, refetchRoles } = useContext(PatflowAppContext);
 	const { updateData } = useDataHandlerSecure(true);
 	const [errors] = useState([] as unknown as ErrorMessage[]);
 	const [staffMember, setStaffMember] = useImmer<
-		Pick<
-			PatflowUser,
-			"first_name" | "last_name" | "email" | "roles" | "portrait" | "data"
-		>
+		Pick<PatflowUser, "first_name" | "last_name" | "email" | "portrait" | "data"> & {
+			roleId?: string;
+		}
 	>({
 		first_name: "",
 		last_name: "",
 		email: "",
-		roles: [],
+		roleId: undefined,
 		portrait: undefined as unknown as FileObject,
 		data: {} as StaffMemberContactData["data"]
 	});
@@ -99,11 +100,11 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 			draft.email = source.email ?? contact.data.email ?? "";
 			draft.data = contact.data;
 			if (userData) {
-				draft.roles = userData.roles ?? [];
+				draft.roleId = findRoleForUser(roles, userId)?.value;
 				draft.portrait = userData.portrait;
 			}
 		});
-	}, [userData, listUser, isOpen, setStaffMember]);
+	}, [userData, listUser, isOpen, roles, userId, setStaffMember]);
 
 	const contactData: Pick<
 		StaffMemberContactData,
@@ -137,6 +138,7 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 
 	const updateUser = useCallback(async () => {
 		setLoading(true);
+		const currentRoleId = findRoleForUser(roles, userId)?.value;
 		await updateData({
 			className: "User",
 			objectId: userId,
@@ -144,15 +146,22 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 				first_name: staffMember.first_name,
 				last_name: staffMember.last_name,
 				email: staffMember.email,
-				data: staffMember.data,
-				roles: staffMember.roles
+				data: staffMember.data
 			},
 			feedback: "Nutzerdaten aktualisiert"
 		});
+		if (staffMember.roleId && staffMember.roleId !== currentRoleId) {
+			await axiosclient().post("functions/update_user_role", {
+				user_id: userId,
+				former_role_id: currentRoleId,
+				new_role_id: staffMember.roleId
+			});
+			await refetchRoles();
+		}
 		await refetch();
 		setIsOpen(false);
 		setLoading(false);
-	}, [staffMember, updateData, userId, refetch]);
+	}, [staffMember, updateData, userId, refetch, refetchRoles, roles]);
 
 	return (
 		<>
@@ -193,17 +202,13 @@ const EditStaffMember = ({ userId, listUser }: EditStaffMemberProps) => {
 										value: role.value,
 										label: role.label
 									}))}
-									value={
-										staffMember.roles &&
-										roles.find((roleToFind) =>
-											staffMember.roles.includes(
-												roleToFind.value
-											)
-										)
-									}
+									value={roles.find(
+										(roleToFind) =>
+											roleToFind.value === staffMember.roleId
+									)}
 									onChange={(value) =>
 										setStaffMember((draft) => {
-											draft.roles = value.value;
+											draft.roleId = value.value;
 										})
 									}
 								/>

@@ -87,22 +87,20 @@ describe("server data policy", () => {
     expect(updated).toEqual({ name: "x" });
   });
 
-  it("rejects roles from other projects", async () => {
-    parseRest.mockResolvedValueOnce({
-      status: 200,
-      data: {
-        results: [{ objectId: "role1", project: { objectId: "projB" } }],
+  it("drops role fields from user writes", async () => {
+    const updated = await sanitizeMemberWrite({
+      className: "_User",
+      updateObject: {
+        roles: ["role1"],
+        role: { objectId: "role1" },
+        name: "x",
       },
+      projectId: "projA",
+      isCreate: false,
+      isAdmin: true,
     });
-    await expect(
-      sanitizeMemberWrite({
-        className: "_User",
-        updateObject: { roles: ["role1"] },
-        projectId: "projA",
-        isCreate: false,
-        isAdmin: true,
-      }),
-    ).rejects.toThrow();
+    expect(updated).toEqual({ name: "x" });
+    expect(parseRest).not.toHaveBeenCalled();
   });
 
   it("strips role changes from non-admin members", async () => {

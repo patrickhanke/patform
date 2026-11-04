@@ -47,6 +47,7 @@ export type ContextValues = {
 	reloadAbsences: () => Promise<void>;
 	reloadSurcharges: () => Promise<void>;
 	roles: Role[];
+	refetchRoles: () => Promise<unknown>;
 	project: PatflowProject;
 	roleUsers: RoleUsers;
 	fetchTasks: () => void;
