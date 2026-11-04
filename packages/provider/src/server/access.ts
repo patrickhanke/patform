@@ -27,6 +27,77 @@ export class AccessError extends Error {
 
 export const OBJECT_ID_PATTERN = /^[A-Za-z0-9]{1,32}$/;
 
+type SessionResponse = SessionUser & {
+	code?: number;
+	error?: string;
+};
+
+// Parse uses 209 / "invalid session token" when the token is missing or expired.
+// Other failures (timeouts, 429, 5xx) must not be treated as a logout.
+const isRejectedSession = (status: number, data?: SessionResponse) => {
+	if (status === 401) return true;
+	if (data?.code === 209) return true;
+	return (
+		typeof data?.error === "string" &&
+		/invalid session token/i.test(data.error)
+	);
+};
+
+const FRESH_SESSION_MS = 60_000;
+const STALE_SESSION_MS = 3 * 60_000;
+
+const sessionCache = new Map<string, { user: SessionUser; checkedAt: number }>();
+
+const cachedSession = (sessionToken: string) => {
+	const entry = sessionCache.get(sessionToken);
+	if (!entry) return undefined;
+	if (Date.now() - entry.checkedAt > STALE_SESSION_MS) {
+		sessionCache.delete(sessionToken);
+		return undefined;
+	}
+	return entry;
+};
+
+const rememberSession = (sessionToken: string, user: SessionUser) => {
+	sessionCache.set(sessionToken, { user, checkedAt: Date.now() });
+	return user;
+};
+
+const readSessionUser = async (
+	sessionToken: string
+): Promise<
+	| { state: "user"; user: SessionUser }
+	| { state: "invalid" }
+	| { state: "unavailable"; detail: string }
+> => {
+	const { status, data } = await parseRest<SessionResponse>("users/me", {
+		sessionToken
+	});
+
+	if (status === 200 && data?.objectId) {
+		return { state: "user", user: data };
+	}
+	if (isRejectedSession(status, data)) {
+		return { state: "invalid" };
+	}
+
+	const where = encodeURIComponent(JSON.stringify({ sessionToken }));
+	const fallback = await parseRest<{
+		results?: { user?: SessionUser }[];
+		code?: number;
+		error?: string;
+	}>(`classes/_Session?where=${where}&include=user&limit=1`, {
+		useMasterKey: true
+	});
+	const fallbackUser = fallback.data?.results?.[0]?.user;
+	if (fallback.status === 200 && fallbackUser?.objectId) {
+		return { state: "user", user: fallbackUser };
+	}
+
+	const detail = [status, data?.error].filter(Boolean).join(" ");
+	return { state: "unavailable", detail };
+};
+
 export const fetchSessionUser = async (
 	sessionToken?: string
 ): Promise<SessionUser | null> => {
@@ -34,11 +105,57 @@ export const fetchSessionUser = async (
 		return null;
 	}
 
-	const { status, data } = await parseRest<SessionUser>("users/me", {
-		sessionToken
-	});
+	const cached = cachedSession(sessionToken);
+	if (cached && Date.now() - cached.checkedAt < FRESH_SESSION_MS) {
+		return cached.user;
+	}
 
-	return status === 200 && data?.objectId ? data : null;
+	let failure = "Anmeldung konnte nicht geprüft werden";
+	for (let attempt = 0; attempt < 3; attempt += 1) {
+		try {
+			const result = await readSessionUser(sessionToken);
+			if (result.state === "user") {
+				return rememberSession(sessionToken, result.user);
+			}
+			if (result.state === "invalid") {
+				sessionCache.delete(sessionToken);
+				return null;
+			}
+			failure = `Anmeldung konnte nicht geprüft werden (${result.detail})`;
+		} catch (error) {
+			failure =
+				error instanceof Error
+					? `Anmeldung konnte nicht geprüft werden (${error.message})`
+					: failure;
+		}
+		if (attempt < 2) {
+			await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+		}
+	}
+
+	if (cached) return cached.user;
+	throw new AccessError(503, failure);
+};
+
+// One credential check, then every task runs with that user. Tasks must not call getAccessContext again.
+// pauseMs spaces the tasks so the database can finish one write before the next starts.
+export const withLegitimateUser = async <T>(
+	tasks: Array<(context: AccessContext) => Promise<T>>,
+	pauseMs = 0
+): Promise<T[]> => {
+	const context = await getAccessContext();
+	if (pauseMs <= 0) {
+		return Promise.all(tasks.map((task) => task(context)));
+	}
+
+	const results: T[] = [];
+	for (let index = 0; index < tasks.length; index += 1) {
+		results.push(await tasks[index](context));
+		if (index < tasks.length - 1) {
+			await new Promise((resolve) => setTimeout(resolve, pauseMs));
+		}
+	}
+	return results;
 };
 
 const resolveActiveProjectId = async (

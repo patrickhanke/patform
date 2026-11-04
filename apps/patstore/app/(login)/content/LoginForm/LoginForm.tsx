@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { axiosclient } from "@repo/provider";
 import { useFormik } from "formik";
-import Cookies from "js-cookie";
 import * as Yup from "yup";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
@@ -19,7 +17,6 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
-  const [disabled, setDisabled] = useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
   const [passwordReset, setPasswordReset] = useState(false);
@@ -32,43 +29,33 @@ const LoginForm = () => {
     },
     onSubmit: async (values) => {
       setLoading(true);
+      setError("");
 
-      await axiosclient()
-        .post("login", {
-          username: values.email,
-          password: values.password,
-        })
-        .then((response) => {
-          Cookies.set(
-            process.env.SESSION_TOKEN as string,
-            response.data.sessionToken,
-            { expires: 90 },
-          );
-          setError("");
-        })
-        .catch((error) => {
-          axiosclient().post("/functions/create_log", {
-            type: "error",
-            operation: "login",
-            className: "Patstore",
-            message: `Ungültiger Login: ${error.response.data.error}`,
-            data: {
-                username: values.email
-            },
-            service: "login_patstore"
-          });
-          if (error.message === "Invalid username/password.") {
-            setError("Falsche E-Mail / Passwort Kombination");
-            setLoading(false);
-            setDisabled(false);
-          } else {
-            setError("Das Einloggen ist leider fehlgeschlagen");
-            setLoading(false);
-            setDisabled(false);
-          }
+      try {
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password,
+          }),
         });
-      setLoading(false);
-      router.push("/");
+        const data = (await response.json().catch(() => ({}))) as {
+          error?: string;
+        };
+
+        if (!response.ok) {
+          setError(data.error || "Das Einloggen ist leider fehlgeschlagen");
+          return;
+        }
+
+        router.push("/");
+        router.refresh();
+      } catch {
+        setError("Das Einloggen ist leider fehlgeschlagen");
+      } finally {
+        setLoading(false);
+      }
     },
   });
 

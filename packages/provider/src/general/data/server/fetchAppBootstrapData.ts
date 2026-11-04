@@ -100,7 +100,13 @@ async function graphqlFetch({
 		cache: "no-store"
 	});
 
-	const json = await response.json();
+	const json = await response.json().catch(() => {
+		console.error(
+			"fetchAppBootstrapData: non-JSON response",
+			response.status
+		);
+		return {};
+	});
 
 	if (json.errors) {
 		console.error("fetchAppBootstrapData GraphQL errors:", json.errors);

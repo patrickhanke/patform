@@ -4,9 +4,11 @@ import "@repo/styles/layout";
 import LayoutContext from "./components/LayoutContext";
 import RenderSidebar from "./components/RenderSidebar";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { SiteHeader } from "./content/SiteHeader";
 import { fetchAppBootstrapData } from "@repo/provider";
-import { PatstoreProject, PatstoreRoleClass } from "@repo/types";
+import { fetchSessionUser, getSessionCookieName } from "@repo/provider/server";
+import { PatstoreProject, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 
 // The providers pages need (Apollo, AppContext) only become available once
 // AppShell resolves the cookie-based user/project fetch below, so children
@@ -22,28 +24,34 @@ export const metadata = {
 
 const getData = async () => {
   const cookieStore = await cookies();
-  const token = cookieStore.get("patstore_token")?.value;
+  const token = cookieStore.get(getSessionCookieName())?.value;
   const cookieProjectId = cookieStore.get(
     `${process.env.APP_NAME}_project_id`
   )?.value;
 
-  const httpHeaders = {
-    "X-Parse-Session-Token": token || "",
-    "X-Parse-Application-Id": process.env.SASHIDO_APP_ID || "",
-    "X-Parse-REST-API-Key": process.env.SASHIDO_REST_KEY || "",
-  };
+  if (!token) {
+    redirect("/login");
+  }
 
-  const headers = new Headers(httpHeaders);
+  let user: PatstoreUser | null;
+  try {
+    user = (await fetchSessionUser(token)) as PatstoreUser | null;
+  } catch (error) {
+    console.error(
+      "users/me unavailable:",
+      error instanceof Error ? error.message : error
+    );
+    return { unavailable: true as const };
+  }
 
-  const user = await fetch(`${process.env.SASHIDO_API_URL}users/me`, {
-    method: "GET",
-    headers,
-  }).then((response) => response.json());
+  if (!user?.objectId) {
+    redirect("/login");
+  }
 
   const projectId =
-    cookieProjectId && user?.projects?.includes(cookieProjectId)
+    cookieProjectId && user.projects?.includes(cookieProjectId)
       ? cookieProjectId
-      : user?.projects?.[0];
+      : user.projects?.[0];
 
   const { project, roles } = await fetchAppBootstrapData<
     PatstoreProject,
@@ -54,11 +62,26 @@ const getData = async () => {
     sessionToken: token,
   });
 
-  return { user, project, roles };
+  return { unavailable: false as const, user, project, roles };
 };
 
 async function AppShell({ children }: { children: React.ReactNode }) {
-  const { user, project, roles } = await getData();
+  const data = await getData();
+
+  if (data.unavailable) {
+    return (
+      <div className={"layout"}>
+        <div className={"content"}>
+          <p>
+            Die Anmeldung konnte nicht geprüft werden. Bitte laden Sie die
+            Seite in einem Moment neu.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const { user, project, roles } = data;
 
   return (
     <div className={"layout"}>

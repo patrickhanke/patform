@@ -76,9 +76,14 @@ export const parseRest = async <T = any>(
 		useMasterKey?: boolean;
 	} = {}
 ): Promise<{ status: number; data: T }> => {
+	const headers = createParseHeaders({ sessionToken, useMasterKey });
+	if (body === undefined) {
+		delete headers["Content-Type"];
+	}
+
 	const response = await fetch(`${getSashidoConfig().apiUrl}${path}`, {
 		method,
-		headers: createParseHeaders({ sessionToken, useMasterKey }),
+		headers,
 		body: body === undefined ? undefined : JSON.stringify(body),
 		cache: "no-store"
 	});

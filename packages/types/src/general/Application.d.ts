@@ -20,7 +20,8 @@ export type FilterOperator =
 	| "exists"
 	| "containedIn"
 	| "have"
-	| "haveNot";
+	| "haveNot"
+	| "contains";
 
 export type Filter = {
 	id?: string;

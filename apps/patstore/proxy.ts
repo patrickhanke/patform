@@ -74,9 +74,19 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const user = await fetchSessionUser(
-    request.cookies.get(getSessionCookieName())?.value
-  ).catch(() => null);
+  const sessionToken = request.cookies.get(getSessionCookieName())?.value;
+  if (!sessionToken) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  let user;
+  try {
+    user = await fetchSessionUser(sessionToken);
+  } catch {
+    // Parse did not reject the session. Leave the cookie in place; a cleared
+    // cookie here logs the browser out for every following request.
+    return NextResponse.next();
+  }
 
   if (!user) {
     return redirectToLogin(request);
