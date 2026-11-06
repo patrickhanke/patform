@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect, useState } from "react";
-import { axiosclient, compileAxiosError } from "@repo/provider";
 import * as yup from "yup";
 
 import { Modal, TextInput } from "@repo/ui";
@@ -9,6 +8,7 @@ import { ErrorMessage, Response } from "@repo/types";
 const PasswordForm: FC<PasswordFormProps> = ({
   passwordReset,
   setPasswordReset,
+  projectId,
 }) => {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<ErrorMessage[]>([]);
@@ -22,34 +22,57 @@ const PasswordForm: FC<PasswordFormProps> = ({
 
     await schema.validate({ email: email }).catch((errors) => {
       errorArray.push({
-        message: "Bitte geben Sie eine gültie E-Mail Adresse an",
+        message: "Bitte geben Sie eine gültige E-Mail Adresse an",
         id: errors.path,
         key: errors.path,
       });
     });
 
+    if (errorArray.length > 0) {
+      setErrors(errorArray);
+      return;
+    }
 
-    if (errorArray.length === 0) {
+    try {
       const response = await fetch("/api/password_reset", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify({
-					email: email,
-				}),
-			});
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          projectId,
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
 
-      const data = await response.json();
-
-      if (data.error) {
-        setErrors([{ message: data.error, id: "email", key: "email" }]);
-      } else {
-        setResponse(data);
-        }
+      if (!response.ok || data.error || data.success === false) {
+        setResponse(undefined);
+        setErrors([
+          {
+            message:
+              data.error ||
+              data.message ||
+              "Der Passwort-Reset konnte nicht gesendet werden.",
+            id: "email",
+            key: "email",
+          },
+        ]);
+        return;
       }
-    setErrors(errorArray);
-  }, [email]);
+
+      setErrors([]);
+      setResponse(data);
+    } catch {
+      setErrors([
+        {
+          message: "Der Passwort-Reset konnte nicht gesendet werden.",
+          id: "email",
+          key: "email",
+        },
+      ]);
+    }
+  }, [email, projectId]);
 
   useEffect(() => {
     if (response && response.success === true) {

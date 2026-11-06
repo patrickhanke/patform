@@ -278,6 +278,7 @@ export const sanitizeMemberWrite = async ({
     }
     delete data.roles;
     delete data.role;
+    delete data.access;
     if (data.project !== undefined) {
       data.project = projectPointer(projectId);
     }

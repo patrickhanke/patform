@@ -2,6 +2,7 @@
 
 import { Divider, HtmlContent, InfoBox, Page } from "@repo/ui";
 import { useAppContext } from "@repo/provider";
+import UserAccess from "./components/UserAccess";
 
 const Dashboard = () => {
 	const { project } = useAppContext();
@@ -10,7 +11,7 @@ const Dashboard = () => {
 	return (
 		<Page title="Dashboard">
 			<div className="flex col gap-md">
-				<InfoBox
+				{/* <InfoBox
 					status="info"
 					maxWidth="100%"
 					content={() => (
@@ -56,7 +57,8 @@ const Dashboard = () => {
 				<InfoBox
 					maxWidth="100%"
 					text="Nach dem Speichern eines Eintrages, dauert es einige Minuten bis die Änderungen auf der Webseite erscheinen."
-				/>
+				/> */}
+				<UserAccess />
 			</div>
 			<Divider />
 			{dashboardContent && <HtmlContent content={dashboardContent} />}

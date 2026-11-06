@@ -35,10 +35,7 @@ export type Filter = {
 		| {
 				[key: string]: {
 					[Property in FilterOperator]?:
-						| string
-						| number
-						| boolean
-						| null;
+						string | number | boolean | null;
 				};
 		  };
 	operator: FilterOperator;

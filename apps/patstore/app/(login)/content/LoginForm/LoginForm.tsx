@@ -16,7 +16,7 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required("Ein Passwort muss eingegeben werden"),
 });
 
-const LoginForm = () => {
+const LoginForm = ({ projectId }: { projectId?: string }) => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [passwordReset, setPasswordReset] = useState(false);
@@ -121,6 +121,7 @@ const LoginForm = () => {
       <PasswordForm
         passwordReset={passwordReset}
         setPasswordReset={setPasswordReset}
+        projectId={projectId}
       />
     </div>
   );

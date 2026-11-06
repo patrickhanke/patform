@@ -33,12 +33,14 @@ export const useFindCategoryPageStates = ({
 	categories,
 	categoryModuleId,
 	filters,
-	setFilters
+	setFilters,
+	categoriesFilter
 }: {
 	categories: string[];
 	categoryModuleId?: string;
 	filters: Filter[];
 	setFilters: Dispatch<SetStateAction<Filter[]>>;
+	categoriesFilter?: (category: CategoryClass) => boolean;
 }) => {
 	const [activePage, setActivePage] = useState<SiteState | undefined>();
 
@@ -50,7 +52,8 @@ export const useFindCategoryPageStates = ({
 			"title",
 			"category_id",
 			"description",
-			"color"
+			"color",
+			"type"
 		],
 		filters: [
 			{
@@ -65,6 +68,8 @@ export const useFindCategoryPageStates = ({
 		order: "createdAt_DESC"
 	});
 
+	console.log("category data", data);
+
 	const pageStates = useMemo(() => {
 		const categories = data || [];
 		const pageStates: SiteState[] = [];
@@ -75,6 +80,9 @@ export const useFindCategoryPageStates = ({
 				label: "Alle"
 			});
 			categories.forEach((category: CategoryClass) => {
+				if (categoriesFilter && !categoriesFilter(category)) {
+					return;
+				}
 				pageStates.push({
 					value: category.objectId,
 					label: category.title || category.label

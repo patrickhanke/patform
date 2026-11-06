@@ -42,7 +42,7 @@ async function LoginContent({
   return (
     <>
       <DisplayProject project={response.project} />
-      <LoginForm />
+      <LoginForm projectId={response.project?.objectId || response.project?.id} />
     </>
   );
 }

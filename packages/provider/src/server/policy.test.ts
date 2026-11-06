@@ -93,6 +93,7 @@ describe("server data policy", () => {
       updateObject: {
         roles: ["role1"],
         role: { objectId: "role1" },
+        access: [{ id: "DhAcIEbDpV", className: "Club", expires_at: null }],
         name: "x",
       },
       projectId: "projA",

@@ -673,8 +673,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 								}
 								settings={
 									columnElement?.settings as
-										| ModuleFieldTimesSettings
-										| undefined
+										ModuleFieldTimesSettings | undefined
 								}
 							/>
 						);
@@ -851,9 +850,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			}
 			if (columnElement.type === "edit_role") {
 				columnArray.push({
-					accessorFn: (row) => (
-						<TableColumnUserRole user={row} refetch={refetch} />
-					),
+					accessorFn: (row) => <TableColumnUserRole user={row} />,
 					header: () => <span>Rolle</span>,
 					id: "role",
 					cell: (info) => info.getValue(),

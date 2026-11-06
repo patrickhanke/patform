@@ -23,3 +23,9 @@ export type {
 export { default as convertDateToString } from "./convertDateToString";
 export { default as generateQueryFromFields } from "./generateQueryFromFields";
 export { roleMemberIds } from "./roleMembership";
+export {
+	isActiveAccessGrant,
+	modulesForAccessClass,
+	recordAccessPath
+} from "./userAccess";
+export type { AccessModule } from "./userAccess";

@@ -30,6 +30,7 @@ const ChampionshipOverview = ({
 		pageIndex: 0,
 		pageSize: 10
 	});
+
 	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
 		{
 			categories:
@@ -38,9 +39,11 @@ const ChampionshipOverview = ({
 			categoryModuleId: filterModuleCategories(module.categories || [])
 				.categoryModuleId,
 			filters,
-			setFilters
+			setFilters,
+			categoriesFilter: (category) => category.type === "saison"
 		}
 	);
+
 	const [order, setOrder] = useState<string>("createdAt_DESC");
 	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
 	const {
@@ -82,7 +85,15 @@ const ChampionshipOverview = ({
 				initialData: championshipInitialData,
 				disabled: true
 			}}
-			pageStates={pageStates}
+			pageStates={pageStates.sort((a, b) => {
+				if (a.label === "Alle") {
+					return -1;
+				}
+				if (b.label === "Alle") {
+					return 1;
+				}
+				return b.label.localeCompare(a.label);
+			})}
 			setPageState={setActivePage}
 			pageState={activePage}
 			refetch={refetch}

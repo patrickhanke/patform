@@ -5,3 +5,8 @@ import * as graphqlRoute from "./graphqlRoute";
 export { dataRoute, graphqlRoute };
 export * from "./access";
 export * from "./sashido";
+export {
+	isActiveAccessGrant,
+	modulesForAccessClass,
+	recordAccessPath
+} from "../general/functions/userAccess";

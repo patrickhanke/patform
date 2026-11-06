@@ -9,4 +9,5 @@ export type user = {
 export type PasswordFormProps = {
   passwordReset: boolean;
   setPasswordReset: Dispatch<SetStateAction<boolean>>;
+  projectId?: string;
 };
