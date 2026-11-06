@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo, useRef, useState } from "react";
 import {
 	ColumnDef,
 	IconButton,
@@ -23,6 +23,7 @@ import GameCard from "./content/cards/GameCard";
 import { ResultSlideIn } from "./content";
 import { resolveTeam, withWinner } from "./functions/resolveTeam";
 import { calculateGroupStandings } from "./functions/standings";
+import { printGameCards } from "./functions/printGameCards";
 
 /**
  * Tab inside the championship page. The page owns loading and saving
@@ -35,6 +36,7 @@ const Results: FC<ChampionshipTabProps> = ({ related }) => {
 	const [matchDayId, setMatchDayId] = useState("");
 	const [editId, setEditId] = useState("");
 	const [decider, setDecider] = useState(false);
+	const cardsRef = useRef<HTMLDivElement>(null);
 
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 	const matchDays = [...(page?.data.match_days || [])].sort(
@@ -280,21 +282,28 @@ const Results: FC<ChampionshipTabProps> = ({ related }) => {
 						: "Keine Spieltage"}
 				</h2>
 				<div className="flex row a-ce j-sb gap-sm">
-					<button
+					<IconButton
 						type="button"
-						className="full_button sm light"
-						onClick={() => window.print()}
-					>
-						Spielkarten drucken
-					</button>
-					<button
+						disabled={games.length === 0}
+						onClick={() =>
+							printGameCards(
+								cardsRef.current,
+								activeDay
+									? `Spielkarten Spieltag ${activeDay.number}`
+									: "Spielkarten"
+							)
+						}
+						icon="print"
+						text="Spielkarten drucken"
+					/>
+
+					<IconButton
 						type="button"
-						className="full_button sm"
 						disabled={!activeId}
 						onClick={() => setDecider(true)}
-					>
-						Entscheidungsspiel
-					</button>
+						icon="plus"
+						text="Entscheidungsspiel"
+					/>
 				</div>
 				{matchDays.length === 0 ? (
 					<p>
@@ -347,6 +356,7 @@ const Results: FC<ChampionshipTabProps> = ({ related }) => {
 				}}
 			/>
 			<GameCard
+				ref={cardsRef}
 				games={games}
 				title={page.title}
 				season={seasonCategoryTitle(page.categories, seasons)}

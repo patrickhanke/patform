@@ -1,1 +1,1 @@
-export { default as PrellballClubOverview } from "./PrellballClubOverview";
+export { default as ClubOverview } from "./PrellballClubOverview";

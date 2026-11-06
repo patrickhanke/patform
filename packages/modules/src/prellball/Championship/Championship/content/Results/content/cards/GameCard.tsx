@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, forwardRef } from "react";
 import { ChampionshipGame } from "@repo/types";
 import GameCardBox, { CardCell } from "./GameCardBox";
 import {
@@ -160,15 +160,18 @@ const GameSheet: FC<{
 	);
 };
 
-const GameCard: FC<{
-	games: ChampionshipGame[];
-	title: string;
-	season: string;
-	ctx: CardContext;
-}> = ({ games, title, season, ctx }) => {
+const GameCard = forwardRef<
+	HTMLDivElement,
+	{
+		games: ChampionshipGame[];
+		title: string;
+		season: string;
+		ctx: CardContext;
+	}
+>(function GameCard({ games, title, season, ctx }, ref) {
 	const pages = pagesFor(games, ctx);
 	return (
-		<div className={styles.printRoot}>
+		<div ref={ref} className={styles.printRoot}>
 			{pages.map((page, pageIndex) => (
 				<div key={page.map((game) => game.id).join("-") || pageIndex}>
 					{page.map((game, index) => (
@@ -185,6 +188,6 @@ const GameCard: FC<{
 			))}
 		</div>
 	);
-};
+});
 
 export default GameCard;

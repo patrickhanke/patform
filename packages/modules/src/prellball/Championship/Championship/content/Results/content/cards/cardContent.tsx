@@ -136,8 +136,8 @@ export const cardContent = (
 			</div>
 		);
 	}
-	if (type === "1-verl") return <p style={{ margin: 0 }}>1. Verlängerung</p>;
-	if (type === "2-verl") return <p style={{ margin: 0 }}>2. Verlängerung</p>;
+	if (type === "1-verl") return <p style={{ margin: 0 }}>1. Verl.</p>;
+	if (type === "2-verl") return <p style={{ margin: 0 }}>2. Verl.</p>;
 	if (type === "score") return <p style={{ margin: 0 }}>:</p>;
 	if (type === "crossed-out") {
 		return (
@@ -168,7 +168,11 @@ export const cardContent = (
 		const location = ctx.locations.find(
 			(item) => item.objectId === matchDay?.location_id
 		);
-		return <p style={{ margin: 0 }}>{location?.address || "—"}</p>;
+		return (
+			<p style={{ margin: 0, marginLeft: "0.5cm" }}>
+				{location?.address || "—"}
+			</p>
+		);
 	}
 	if (type === "count-first-row") {
 		return (
@@ -196,22 +200,53 @@ export const cardContent = (
 			type === "mannschaft-a" ? "team1" : "team2",
 			ctx
 		);
+		const logo = ctx.clubs.find((club) => club.objectId === team.clubId)
+			?.file?.url;
+		return (
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					gap: "0.1cm",
+					paddingLeft: ".6cm"
+				}}
+			>
+				{logo ? (
+					<img
+						src={logo}
+						alt=""
+						width={15}
+						height={15}
+						style={{
+							width: 15,
+							height: 15,
+							objectFit: "contain",
+							flexShrink: 0
+						}}
+					/>
+				) : null}
+				<p
+					style={{
+						margin: 0,
+						fontSize: "12px",
+						fontWeight: 600
+					}}
+				>
+					{team.label}
+				</p>
+			</div>
+		);
+	}
+	if (type === "linienrichter-anschreiber") {
 		return (
 			<p
 				style={{
 					margin: 0,
-					paddingLeft: ".6cm",
-					fontSize: "12px",
-					fontWeight: 600
+					paddingLeft: "2cm",
+					paddingTop: "0.3cm",
+					fontSize: "9px"
 				}}
 			>
-				{team.label}
-			</p>
-		);
-	}
-	if (type === "schiedsrichter") {
-		return (
-			<p style={{ margin: 0, paddingLeft: "2cm", fontSize: "9px" }}>
 				{teamOf(game, "referee", ctx).label}
 			</p>
 		);
@@ -229,7 +264,8 @@ export const cardContent = (
 				style={{
 					margin: 0,
 					lineHeight: 1,
-					textDecoration: player.captain ? "underline" : "none"
+					textDecoration: player.captain ? "underline" : "none",
+					fontSize: "9px"
 				}}
 			>
 				{player.name}
@@ -244,7 +280,11 @@ export const cardContent = (
 			Number(idMatch[2]) - 1,
 			ctx
 		);
-		return <p style={{ margin: 0, lineHeight: 1 }}>{player.dtbId}</p>;
+		return (
+			<p style={{ margin: 0, lineHeight: 1, fontSize: "9px" }}>
+				{player.dtbId}
+			</p>
+		);
 	}
 	return null;
 };

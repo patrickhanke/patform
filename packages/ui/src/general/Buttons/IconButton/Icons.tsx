@@ -13,7 +13,8 @@ import {
 	BsFillBarChartFill,
 	BsLayoutTextWindowReverse,
 	BsPeople,
-	BsPlusLg
+	BsPlusLg,
+	BsPrinter
 } from "react-icons/bs";
 import {
 	FaInfo,
@@ -485,6 +486,11 @@ const Icons: React.FC<IconProps> = ({ icon, color, size }) => {
 	}
 	if (icon === "redo") {
 		return <CiRedo color={color || "currentColor"} fontSize={size || 12} />;
+	}
+	if (icon === "print") {
+		return (
+			<BsPrinter color={color || "currentColor"} fontSize={size || 12} />
+		);
 	}
 	return null;
 };

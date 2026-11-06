@@ -9,6 +9,7 @@ export type IconButtonColor =
 	| "whiteAlpha.900";
 
 export type IconTypes =
+	| "print"
 	| "delete"
 	| "edit"
 	| "cancel"

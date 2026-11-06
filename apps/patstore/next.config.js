@@ -4,7 +4,7 @@ const path = require("path");
 const {
 	createAppEnv,
 	createImageRemotePatterns,
-	getPrefixedEnv,
+	getPrefixedEnv
 } = require("../env/createNextEnv");
 
 const APP_PREFIX = "PATSTORE";
@@ -15,21 +15,21 @@ module.exports = {
 		"@repo/ui",
 		"@repo/provider",
 		"@repo/modules",
-		"@repo/types",
+		"@repo/types"
 	],
 	typescript: {
-		ignoreBuildErrors: true,
+		ignoreBuildErrors: true
 	},
 	sassOptions: {
-		includePaths: [path.join(__dirname, "../../packages/styles/src")],
+		includePaths: [path.join(__dirname, "../../packages/styles/src")]
 	},
 	env: createAppEnv(APP_PREFIX, {
 		PATSTORE_NEXT_LETTERMINT_KEY: getPrefixedEnv(
 			APP_PREFIX,
 			"PATSTORE_NEXT_LETTERMINT_KEY"
-		),
+		)
 	}),
 	images: {
-		remotePatterns: createImageRemotePatterns(APP_PREFIX),
-	},
+		remotePatterns: createImageRemotePatterns(APP_PREFIX)
+	}
 };

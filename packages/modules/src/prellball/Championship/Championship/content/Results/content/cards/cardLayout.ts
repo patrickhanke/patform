@@ -33,7 +33,8 @@ export const pointCard = {
 					borderLeft: 'none',
 					borderRight: 'regular',
 					borderTop: 'regular',
-					borderBottom: 'regular'
+					borderBottom: 'regular',
+					content: 'linienrichter-anschreiber'
 
 				}
 			]
@@ -2412,19 +2413,22 @@ export const gameInfo = {
 					id: 'cell001',
 					width: 1,
 					height: '0.2cm',
-					label: 'Dg.'
+					label: 'Dg.',
+					position: "top-out"
 				},
 				{
 					id: 'cell002',
 					width: 1,
 					height: '0.2cm',
-					label: 'Sp. Nr.'
+					label: 'Sp. Nr.',
+					position: "top-out"
 				},
 				{
 					id: 'cell003',
 					width: 1,
 					height: '0.2cm',
-					label: 'Feld'
+					label: 'Feld',	
+					position: "top-out"
 
 				}
 			]

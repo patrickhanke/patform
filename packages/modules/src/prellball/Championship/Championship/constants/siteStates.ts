@@ -15,6 +15,7 @@ export const championshipSiteStates: PageState[] = [
 
 export const championshipDetailFields = [
 	"objectId",
+	"project { objectId }",
 	"title",
 	"text",
 	"documents",

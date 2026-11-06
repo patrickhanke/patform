@@ -13,7 +13,7 @@ const borderValue = (value?: string) => {
 
 const labelPosition = (position?: string): CSSProperties => {
 	if (position === "bottom") return { bottom: "0.02cm" };
-	if (position === "top-out") return { top: "-0.02cm" };
+	if (position === "top-out") return { top: "-0.1cm" };
 	if (position === "bottom-out") return { bottom: "-0.36cm" };
 	return { top: "0.02cm" };
 };

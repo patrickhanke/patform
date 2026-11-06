@@ -8,7 +8,14 @@ import { DIVISION_CATEGORY_ID, DivisionCategory } from "../functions/divisions";
 const useDivisionCategories = (projectId?: string) => {
 	const { data } = useFindData<CategoryClass>({
 		objectName: "Category",
-		fields: ["objectId", "title", "label", "key", "category_id"],
+		fields: [
+			"objectId",
+			"title",
+			"label",
+			"key",
+			"category_id",
+			"description"
+		],
 		projectId,
 		filters: [
 			{

@@ -46,7 +46,6 @@ const Championship = () => {
 		}
 	);
 	const { updateData } = useDataHandlerSecure();
-	const related = useChampionshipRelated(project?.objectId);
 	const { data, refetch, error } = useGetData<ChampionshipClass>({
 		objectName: "Championship",
 		fields: championshipDetailFields,
@@ -56,6 +55,9 @@ const Championship = () => {
 	const championship = useMemo(
 		() => normalizeChampionship((data as ChampionshipClass | null) ?? null),
 		[data]
+	);
+	const related = useChampionshipRelated(
+		championship?.project?.objectId || project?.objectId
 	);
 
 	usePageData<ChampionshipPageModel>(

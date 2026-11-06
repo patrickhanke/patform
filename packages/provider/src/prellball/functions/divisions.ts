@@ -5,7 +5,7 @@ export const DIVISION_CATEGORY_ID = "9ea6655e-2063-48f0-ae36-ca442d67978f";
 
 export type DivisionCategory = Pick<
 	CategoryClass,
-	"objectId" | "title" | "label"
+	"objectId" | "title" | "label" | "description"
 > & {
 	key?: string;
 	category_id?: string;
@@ -25,7 +25,9 @@ export const divisionShort = (
 	divisions: DivisionCategory[]
 ) => {
 	if (!id) return "";
-	const match = divisions.find((item) => item.objectId === id);
+	const match = divisions.find(
+		(item) => item.description.toLowerCase() === id.toLowerCase()
+	);
 	if (!match) return "";
 	return match.title || "";
 };
