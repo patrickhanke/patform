@@ -20,16 +20,30 @@ export const divisionLabel = (
 	return match?.title || match?.label || id;
 };
 
+const matchesDivision = (item: DivisionCategory, id: string) =>
+	item.objectId === id || item.description?.toLowerCase() === id.toLowerCase();
+
+export const findDivision = (
+	id: string | undefined,
+	divisions: DivisionCategory[]
+) => {
+	if (!id) return undefined;
+	return divisions.find((item) => matchesDivision(item, id));
+};
+
+/** Category objectId for a stored division, whether that value is an id or a short code. */
+export const divisionKey = (
+	id: string | undefined,
+	divisions: DivisionCategory[]
+) => findDivision(id, divisions)?.objectId || id || "";
+
 export const divisionShort = (
 	id: string | undefined,
 	divisions: DivisionCategory[]
 ) => {
-	if (!id) return "";
-	const match = divisions.find(
-		(item) => item.description.toLowerCase() === id.toLowerCase()
-	);
+	const match = findDivision(id, divisions);
 	if (!match) return "";
-	return match.title || "";
+	return match.title || match.label || "";
 };
 
 export const selectedDivisionIds = (

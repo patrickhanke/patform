@@ -7,6 +7,7 @@ import { ChampionshipGroup, ChampionshipSignUp } from "@repo/types";
 import { ClubClass } from "@repo/types";
 import { useAppContext } from "@repo/provider";
 import { signupLabel } from "@repo/provider";
+import { distinctClubSignups, signupTeamKey } from "@repo/provider";
 import { useDivisionCategories } from "@repo/provider";
 
 const AssignSignups: FC<{
@@ -15,6 +16,7 @@ const AssignSignups: FC<{
 	groups: ChampionshipGroup[];
 	signups: ChampionshipSignUp[];
 	clubs: ClubClass[];
+	projectId?: string;
 	showClass: boolean;
 	onClose: () => void;
 	onSave: (group: ChampionshipGroup) => void;
@@ -24,12 +26,13 @@ const AssignSignups: FC<{
 	groups,
 	signups,
 	clubs,
+	projectId,
 	showClass,
 	onClose,
 	onSave
 }) => {
 	const { project } = useAppContext();
-	const divisions = useDivisionCategories(project?.objectId);
+	const divisions = useDivisionCategories(projectId || project?.objectId);
 	const [draft, setDraft] = useState<ChampionshipGroup | null>(group);
 	const [subgroupId, setSubgroupId] = useState("");
 
@@ -65,22 +68,44 @@ const AssignSignups: FC<{
 				item.subgroups.flatMap((subgroup) => subgroup.signup_ids)
 			)
 	);
-	const elements: SelectElement[] = signups
-		.filter((signup) => signup.club_id)
-		.map((signup) => ({
+	const visibleSignups = distinctClubSignups(signups, divisions);
+	const teamIds = (signupId: string) => {
+		const signup = signups.find((item) => item.id === signupId);
+		if (!signup) return [signupId];
+		const key = signupTeamKey(signup, signups, divisions);
+		return signups
+			.filter(
+				(item) =>
+					item.club_id &&
+					signupTeamKey(item, signups, divisions) === key
+			)
+			.map((item) => item.id);
+	};
+	const elements: SelectElement[] = visibleSignups.map((signup) => {
+		const ids = teamIds(signup.id);
+		return {
 			value: signup.id,
-			label: signupLabel(signup, signups, clubs, showClass, divisions),
+			label: signupLabel(
+				signup,
+				visibleSignups,
+				clubs,
+				showClass,
+				divisions
+			),
 			disabled:
-				takenElsewhere.has(signup.id) && !assignedHere.has(signup.id)
-		}));
+				ids.some((id) => takenElsewhere.has(id)) &&
+				!ids.some((id) => assignedHere.has(id))
+		};
+	});
 	const selectedElements = elements.filter((element) =>
-		selected.includes(String(element.value))
+		teamIds(String(element.value)).some((id) => selected.includes(id))
 	);
 
 	const applySelection = (next: SelectElement[]) => {
 		const ids = next
 			.map((element) => element.value)
 			.filter((value): value is string => Boolean(value));
+		const covered = new Set(ids.flatMap((id) => teamIds(id)));
 		setDraft((current) => {
 			if (!current) return current;
 			return {
@@ -90,7 +115,7 @@ const AssignSignups: FC<{
 						return {
 							...subgroup,
 							signup_ids: subgroup.signup_ids.filter(
-								(id) => !ids.includes(id)
+								(id) => !covered.has(id)
 							)
 						};
 					}

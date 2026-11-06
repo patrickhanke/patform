@@ -35,7 +35,8 @@ const GroupCard: FC<{
 	onDelete: () => void;
 }> = ({ group, page, related, onChange, onDelete }) => {
 	const { project } = useAppContext();
-	const divisions = useDivisionCategories(project?.objectId);
+	const divisionProjectId = page.project?.objectId || project?.objectId;
+	const divisions = useDivisionCategories(divisionProjectId);
 	const [assign, setAssign] = useState(false);
 	const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -193,6 +194,7 @@ const GroupCard: FC<{
 				groups={page.data.groups}
 				signups={page.data.sign_ups}
 				clubs={related.clubs}
+				projectId={divisionProjectId}
 				showClass={page.settings.show_division}
 				onClose={() => setAssign(false)}
 				onSave={(next) => {

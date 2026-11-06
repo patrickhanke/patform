@@ -5,7 +5,11 @@ import {
 	ChampionshipSignUp,
 	ClubClass
 } from "@repo/types";
-import { DivisionCategory, divisionShort } from "../functions/divisions";
+import {
+	DivisionCategory,
+	divisionKey,
+	divisionShort
+} from "../functions/divisions";
 import { createId } from "./ids";
 
 export const signupLabel = (
@@ -27,6 +31,66 @@ export const signupLabel = (
 			: club.title;
 	const divisionName = divisionShort(signup.division, divisions);
 	return showDivision && divisionName ? `${base} - ${divisionName}` : base;
+};
+
+const STATUS_RANK: Record<ChampionshipSignUp["status"], number> = {
+	gemeldet: 5,
+	eingereicht: 4,
+	eingeladen: 3,
+	erstellt: 2,
+	abgelehnt: 1,
+	none: 0
+};
+
+const teamSlot = (
+	signup: ChampionshipSignUp,
+	signups: ChampionshipSignUp[],
+	divisions: DivisionCategory[]
+) => {
+	if (signup.number > 0) return signup.number;
+	const division = divisionKey(signup.division, divisions);
+	const numbers = [
+		...new Set(
+			signups
+				.filter(
+					(item) =>
+						item.club_id === signup.club_id &&
+						item.number > 0 &&
+						divisionKey(item.division, divisions) === division
+				)
+				.map((item) => item.number)
+		)
+	];
+	return numbers.length === 1 ? numbers[0] : 0;
+};
+
+/** Same club, same class, same team number. Class short codes and category ids count as one class. */
+export const signupTeamKey = (
+	signup: ChampionshipSignUp,
+	signups: ChampionshipSignUp[],
+	divisions: DivisionCategory[] = []
+) =>
+	`${signup.club_id || ""}|${divisionKey(signup.division, divisions)}|${teamSlot(signup, signups, divisions)}`;
+
+const signupScore = (signup: ChampionshipSignUp) =>
+	(signup.person_ids?.length || 0) * 100 + (STATUS_RANK[signup.status] ?? 0);
+
+/** One signup per club and team when the same team was stored under two class ids. */
+export const distinctClubSignups = (
+	signups: ChampionshipSignUp[],
+	divisions: DivisionCategory[] = []
+) => {
+	const winners = new Map<string, ChampionshipSignUp>();
+	signups.forEach((signup) => {
+		if (!signup.club_id) return;
+		const key = signupTeamKey(signup, signups, divisions);
+		const current = winners.get(key);
+		if (!current || signupScore(signup) > signupScore(current)) {
+			winners.set(key, signup);
+		}
+	});
+	const ids = new Set([...winners.values()].map((signup) => signup.id));
+	return signups.filter((signup) => ids.has(signup.id));
 };
 
 export const groupClassLabel = (
