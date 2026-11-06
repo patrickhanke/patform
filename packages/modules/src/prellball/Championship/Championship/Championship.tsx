@@ -33,17 +33,22 @@ import {
 	Results
 } from "./content";
 
-const Championship = () => {
+const Championship = ({
+	initialSite = "settings"
+}: {
+	initialSite?: string;
+}) => {
 	const { championship_id: championshipId } = useParams<{
 		championship_id: string;
 	}>();
 	const { project } = useAppContext();
 	const seasons = useSeasonCategories(project?.objectId);
 	const [siteState, setSiteState] = useState<PageState>(
-		championshipSiteStates[0] ?? {
-			value: "settings",
-			label: "Einstellungen"
-		}
+		championshipSiteStates.find((state) => state.value === initialSite) ??
+			championshipSiteStates[0] ?? {
+				value: "settings",
+				label: "Einstellungen"
+			}
 	);
 	const { updateData } = useDataHandlerSecure();
 	const { data, refetch, error } = useGetData<ChampionshipClass>({
@@ -136,5 +141,9 @@ const Championship = () => {
 		</Page>
 	);
 };
+
+export function ResultsChampionship() {
+	return <Championship initialSite="results" />;
+}
 
 export default Championship;

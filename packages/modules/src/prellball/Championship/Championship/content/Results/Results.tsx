@@ -17,7 +17,21 @@ import {
 	divisionShort,
 	useDivisionCategories
 } from "@repo/provider";
-import { ChampionshipPageModel, ChampionshipTabProps } from "../../../types";
+import {
+	ChampionshipPageModel,
+	ChampionshipRelatedData,
+	ChampionshipTabProps
+} from "../../../types";
+
+const emptyRelated: ChampionshipRelatedData = {
+	clubs: [],
+	locations: [],
+	people: [],
+	articles: [],
+	downloads: [],
+	users: [],
+	refetchPeople: async () => undefined
+};
 import DeciderSlideIn from "./content/DeciderSlideIn";
 import GameCard from "./content/cards/GameCard";
 import { ResultSlideIn } from "./content";
@@ -29,7 +43,9 @@ import { printGameCards } from "./functions/printGameCards";
  * Tab inside the championship page. The page owns loading and saving
  * (`usePageData` with `initialData`); this tab only reads and edits that store.
  */
-const Results: FC<ChampionshipTabProps> = ({ related }) => {
+const Results: FC<ChampionshipTabProps> = ({
+	related = emptyRelated
+}) => {
 	const { project } = useAppContext();
 	const seasons = useSeasonCategories(project?.objectId);
 	const divisions = useDivisionCategories(project?.objectId);

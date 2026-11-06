@@ -1,1 +1,1 @@
-export { Results as default } from "@repo/modules";
+export { ResultsChampionship as default } from "@repo/modules";
