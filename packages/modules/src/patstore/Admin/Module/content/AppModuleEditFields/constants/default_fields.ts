@@ -16,7 +16,7 @@ const default_fields: {
 	"/emails": ["title"],
 	"/calendar": ["title"],
 	"/website": ["title"],
-	"/users": ["title"],
+	"/users": ["first_name", "last_name", "email", "roles"],
 	"/videos": ["title"],
 	"/competitions": ["title"],
 	"/clubs": ["title"],

@@ -10,7 +10,11 @@ const Settings: FC<SettingsProps> = ({ project }) => {
 		{
 			initialData: {
 				name: project.name,
-				logo: project.logo,
+				logo: {
+					__type: "File",
+					url: project?.logo?.url,
+					name: project?.logo?.name
+				},
 				data: project.data
 			},
 			objectId: project.objectId
@@ -21,6 +25,8 @@ const Settings: FC<SettingsProps> = ({ project }) => {
 			message: "Daten wurden erfolgreich aktualisiert."
 		}
 	);
+
+	console.log(data);
 
 	return (
 		<Form

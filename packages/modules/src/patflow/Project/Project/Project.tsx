@@ -30,10 +30,29 @@ const Project = () => {
 					logo: projectData?.logo
 				}}
 				formSubmitHandler={(values) => {
+					console.log(values);
+					const udValues: Record<string, string | object> = {};
+
+					if (values.logo) {
+						udValues.logo = {
+							__type: "File",
+							url: values.logo,
+							name: values.logo.name
+						};
+					}
+
+					if (values.data) {
+						udValues.data = values.data;
+					}
+
+					if (values.name) {
+						udValues.name = values.name;
+					}
+
 					updateData({
 						className: "Project",
 						objectId: project?.objectId,
-						updateObject: values,
+						updateObject: udValues,
 						feedback: "Daten wurden erfolgreich aktualisiert."
 					});
 				}}
