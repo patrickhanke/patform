@@ -41,7 +41,7 @@ const Championship = ({
 	const { championship_id: championshipId } = useParams<{
 		championship_id: string;
 	}>();
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
 	const [siteState, setSiteState] = useState<PageState>(
 		championshipSiteStates.find((state) => state.value === initialSite) ??

@@ -22,7 +22,7 @@ import { EmailTemplate } from "@repo/types";
 
 const Email = () => {
 	const { email_id: emailId } = useParams<{ email_id: string }>();
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 
 	const {
 		data: email,

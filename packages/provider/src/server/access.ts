@@ -1,13 +1,11 @@
 import "server-only";
 import { cookies } from "next/headers";
-import type { PatstoreUserAccess } from "@repo/types";
 import { getSessionCookieName, parseRest } from "./sashido";
 
 export type SessionUser = {
 	objectId: string;
 	is_superuser?: boolean;
 	projects?: string[];
-	access?: PatstoreUserAccess[];
 };
 
 export type AccessContext = {

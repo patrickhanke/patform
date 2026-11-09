@@ -28,7 +28,7 @@ const TeamRow: FC<{
 	onDelete,
 	onClearClub
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const [details, setDetails] = useState(false);
 	const [confirmDelete, setConfirmDelete] = useState(false);

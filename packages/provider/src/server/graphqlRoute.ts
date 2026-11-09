@@ -9,6 +9,7 @@ import {
 	toErrorResponseInit
 } from "./access";
 import { fetchObjectWithMasterKey, projectIdsOf, SECRET_FIELDS } from "./policy";
+import { loadContentAccess, stripGraphqlData } from "./contentAccess";
 import { createParseHeaders, getSashidoConfig } from "./sashido";
 
 type Variables = Record<string, any>;
@@ -158,6 +159,25 @@ export async function POST(request: NextRequest) {
 		});
 
 		const data = await response.json();
+
+		if (
+			!context.isSuperuser &&
+			context.activeProjectId &&
+			data?.data &&
+			typeof data.data === "object"
+		) {
+			const access = await loadContentAccess(
+				context.activeProjectId,
+				context.user.objectId
+			);
+			if (access.modules.length > 0) {
+				data.data = stripGraphqlData(
+					data.data,
+					access.roles,
+					access.modules
+				);
+			}
+		}
 
 		return NextResponse.json(data, { status: data.errors ? 200 : response.status });
 	} catch (error) {

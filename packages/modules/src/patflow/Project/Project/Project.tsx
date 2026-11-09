@@ -6,7 +6,7 @@ import { useAppContext, useDataHandler, useGetData } from "@repo/provider";
 
 const Project = () => {
 	const { updateData } = useDataHandler();
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patflow">();
 	const { data: projectData } = useGetData({
 		objectName: "Project",
 		fields: ["name", "data", "logo {url name}"],

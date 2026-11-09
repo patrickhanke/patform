@@ -185,7 +185,7 @@ const TrainingEditor: FC<{
 };
 
 const TrainingTimes: FC<{ locations: LocationClass[] }> = ({ locations }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const { data: club, setData } = usePageData<PrellballClubClass>();
 	const [edit, setEdit] = useState<PrellballTrainingTime | null>(null);

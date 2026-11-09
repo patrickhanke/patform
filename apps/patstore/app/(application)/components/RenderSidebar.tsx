@@ -5,11 +5,11 @@ import Logo from "./Logo";
 import { MenuItem, Sidebar } from "@repo/ui";
 import { Module, PatstoreRoleClass, PatstoreUser } from "@repo/types";
 import packageJson from "../../../package.json";
-import { useAppContext, useRoleForUser } from "@repo/provider";
+import { useAppContext, useRoleForUser, canEnterModule } from "@repo/provider";
 import { cloneDeep, truncate } from 'lodash-es';
 
 const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
-  const { project, roles } = useAppContext();
+  const { project, roles } = useAppContext<"patstore">();
   const { role: membership } = useRoleForUser(user.objectId, project?.objectId);
   const userRole =
     roles?.find((role) => role.objectId === membership?.objectId) ||
@@ -34,7 +34,7 @@ const RenderSidebar = ({ user }: { user: PatstoreUser }) => {
             value: module.path,
             sub_menu: subMenu,
           });
-        } else if (userRole && userRole?.modules?.includes(module.objectId)) {
+        } else if (userRole?.objectId && canEnterModule([userRole], module)) {
           menuItemsArray.push({
             label: module.name,
             icon: module.icon,

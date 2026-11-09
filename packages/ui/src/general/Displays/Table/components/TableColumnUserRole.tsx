@@ -9,11 +9,7 @@ import { useState, useMemo, useEffect } from "react";
 import { PatstoreRoleClass, PatstoreUser } from "@repo/types";
 
 const TableColumnUserRole = ({ user }: { user: PatstoreUser }) => {
-	// `AppContext` is shared with patflow (whose roles have a different
-	// shape), so `useAppContext()` types `roles` loosely. This component is
-	// patstore-only and relies on the concrete PatstoreRoleClass shape.
-	const { roles: contextRoles, project } = useAppContext();
-	const roles = contextRoles as PatstoreRoleClass[];
+	const { roles, project } = useAppContext<"patstore">();
 	const [isOpen, setIsOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [initialRole, setInitialRole] = useState<string | undefined>(

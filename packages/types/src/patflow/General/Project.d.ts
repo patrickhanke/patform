@@ -8,6 +8,9 @@ export type PatflowProject = {
 	};
 	name: string;
 	path: string;
+	data?: {
+		name?: string;
+	};
 	settings: {
 		time_settings?: TimeSettings;
 		record_settings?: RecordSettings;

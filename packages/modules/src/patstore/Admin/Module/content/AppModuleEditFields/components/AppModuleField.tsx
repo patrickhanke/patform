@@ -1,12 +1,18 @@
 import { Divider, Form, IconButton, SlideInForm } from "@repo/ui";
 import { Field, ModuleFieldTimesSettings } from "@repo/types";
 
+import { FieldPermissionEditor } from "../../../components/PermissionEditors";
 import { AppModuleFieldProps } from "../types";
 import { useMemo, useState } from "react";
 
 const readOnlyFields = ["createdAt", "updatedAt", "slug"];
 
-const AppModuleField = ({ field, changeField }: AppModuleFieldProps) => {
+const AppModuleField = ({
+	field,
+	changeField,
+	roles = [],
+	modulePermission
+}: AppModuleFieldProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const formFields = useMemo(
 		() => [
@@ -76,6 +82,12 @@ const AppModuleField = ({ field, changeField }: AppModuleFieldProps) => {
 				showRequired={false}
 				isHorizontal
 				useWithDebounce
+			/>
+			<FieldPermissionEditor
+				roles={roles}
+				modulePermission={modulePermission}
+				permission={field.permission}
+				onChange={(permission) => changeField({ ...field, permission })}
 			/>
 			{field.settings && Object.keys(field.settings).length > 0 && (
 				<>

@@ -1,15 +1,21 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
+  canEnterModule,
   fetchSessionUser,
   getSessionCookieName,
   isActiveAccessGrant,
+  loadAccessRoles,
+  loadProjectModules,
   modulesForAccessClass,
   OBJECT_ID_PATTERN,
+  pageGrantRecords,
   parseRest,
   recordAccessPath,
+  type AccessRole,
+  type StoredAccessModule,
 } from "@repo/provider/server";
-import type { PatstoreUserAccess } from "@repo/types";
+import type { PatstoreRoleAccess } from "@repo/types";
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -24,49 +30,6 @@ const redirectToLogin = (request: NextRequest) => {
   const response = NextResponse.redirect(new URL("/login", request.url));
   response.cookies.set(getSessionCookieName(), "", { maxAge: 0 });
   return response;
-};
-
-type ProjectModule = {
-  objectId: string;
-  path?: string;
-  name?: string;
-  connected_class?: string;
-  position?: number;
-};
-
-const projectWhere = (projectId: string) =>
-  JSON.stringify({
-    project: { __type: "Pointer", className: "Project", objectId: projectId },
-  });
-
-const fetchProjectModules = async (projectId: string): Promise<ProjectModule[]> => {
-  const { data } = await parseRest<{ results?: ProjectModule[] }>(
-    `classes/Module?where=${encodeURIComponent(projectWhere(projectId))}`,
-    { useMasterKey: true }
-  );
-  return data.results || [];
-};
-
-const findAllowedModulePaths = async (
-  projectId: string,
-  userId: string,
-  modules: ProjectModule[]
-): Promise<string[]> => {
-  const roleWhere = JSON.stringify({
-    project: { __type: "Pointer", className: "Project", objectId: projectId },
-    users: { __type: "Pointer", className: "_User", objectId: userId },
-  });
-  const { data: roleData } = await parseRest<{ results?: { modules?: string[] }[] }>(
-    `classes/_Role?where=${encodeURIComponent(roleWhere)}`,
-    { useMasterKey: true }
-  );
-  const allowedModuleIds = (roleData.results || []).flatMap(
-    (role) => role.modules || []
-  );
-
-  return modules
-    .filter((module) => module.path && allowedModuleIds.includes(module.objectId))
-    .map((module) => module.path as string);
 };
 
 const recordBelongsToProject = async (
@@ -85,8 +48,8 @@ const recordBelongsToProject = async (
 
 const pathMatchesGrant = (
   pathname: string,
-  grant: PatstoreUserAccess,
-  modules: ProjectModule[]
+  grant: PatstoreRoleAccess,
+  modules: StoredAccessModule[]
 ) =>
   modulesForAccessClass(modules, grant.className).some((module) => {
     const path = recordAccessPath(module.path, grant.id);
@@ -96,12 +59,14 @@ const pathMatchesGrant = (
 const hasGrantedRecordAccess = async (
   pathname: string,
   projectId: string,
-  grants: PatstoreUserAccess[] | undefined,
-  modules: ProjectModule[]
+  roles: AccessRole[],
+  modules: StoredAccessModule[]
 ) => {
-  const matches = (grants || []).filter(
-    (grant) => isActiveAccessGrant(grant) && pathMatchesGrant(pathname, grant, modules)
-  );
+  const matches = roles
+    .flatMap((role) => role.access || [])
+    .filter(
+      (grant) => isActiveAccessGrant(grant) && pathMatchesGrant(pathname, grant, modules)
+    );
   if (matches.length === 0) return false;
   const owned = await Promise.all(
     matches.map((grant) => recordBelongsToProject(grant.className, grant.id, projectId))
@@ -169,30 +134,43 @@ export async function proxy(request: NextRequest) {
   }
 
   try {
-    const modules = await fetchProjectModules(projectId);
-    const allowedPaths = await findAllowedModulePaths(
-      projectId,
-      user.objectId,
-      modules
-    );
+    const [modules, roles] = await Promise.all([
+      loadProjectModules(projectId),
+      loadAccessRoles(projectId, user.objectId),
+    ]);
 
-    if (allowedPaths.some((path) => matchesPath(pathname, path))) {
+    const allowed = modules.some(
+      (module) =>
+        !!module.path &&
+        matchesPath(pathname, module.path) &&
+        canEnterModule(roles, module)
+    );
+    if (allowed) {
       return NextResponse.next();
     }
 
-    const granted = await hasGrantedRecordAccess(
-      pathname,
-      projectId,
-      user.access,
-      modules
-    );
-    if (!granted) {
-      return NextResponse.redirect(new URL("/", request.url));
+    const granted = await hasGrantedRecordAccess(pathname, projectId, roles, modules);
+    if (granted) {
+      return NextResponse.next();
     }
+
+    const pageGrants = pageGrantRecords(modules, user.objectId).filter((grant) =>
+      matchesPath(pathname, grant.path)
+    );
+    if (pageGrants.length > 0) {
+      const owned = await Promise.all(
+        pageGrants.map((grant) =>
+          recordBelongsToProject(grant.className, grant.id, projectId)
+        )
+      );
+      if (owned.some(Boolean)) {
+        return NextResponse.next();
+      }
+    }
+
+    return NextResponse.redirect(new URL("/", request.url));
   } catch (err: any) {
     console.error("Error checking module access:", err.message);
     return NextResponse.redirect(new URL("/", request.url));
   }
-
-  return NextResponse.next();
 }

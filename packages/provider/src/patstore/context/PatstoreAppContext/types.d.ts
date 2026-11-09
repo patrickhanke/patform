@@ -1,4 +1,4 @@
-import { Module, PatstoreUser, Project } from "@repo/types";
+import { Module, PatstoreRoleClass, PatstoreUser, Project } from "@repo/types";
 import { languages_short } from "@repo/provider";
 
 export type LanguageValue = (typeof languages_short)[number]["value"];

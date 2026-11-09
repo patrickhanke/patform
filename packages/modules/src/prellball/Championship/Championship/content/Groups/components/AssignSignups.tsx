@@ -31,7 +31,7 @@ const AssignSignups: FC<{
 	onClose,
 	onSave
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(projectId || project?.objectId);
 	const [draft, setDraft] = useState<ChampionshipGroup | null>(group);
 	const [subgroupId, setSubgroupId] = useState("");

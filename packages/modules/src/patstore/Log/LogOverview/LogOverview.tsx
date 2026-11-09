@@ -8,7 +8,7 @@ import { useLogFilters, useLogColumns } from "./hooks";
 import query_fields from "./constants/query_fields";
 
 const LogOverview = () => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 10

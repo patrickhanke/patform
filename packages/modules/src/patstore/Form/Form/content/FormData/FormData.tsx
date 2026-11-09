@@ -20,7 +20,7 @@ const FormData: FC<FormDataProps> = ({
 	setLoading
 }) => {
 	const { deleteData } = useDataHandler();
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const initialFilters: Filter[] = [
 		{
 			key: "reference_id",

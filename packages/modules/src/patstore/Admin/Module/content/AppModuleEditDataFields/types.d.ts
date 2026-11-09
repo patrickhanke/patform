@@ -1,4 +1,4 @@
-import { ApolloRefetch, Field } from "@repo/types";
+import { ApolloRefetch, Field, ModulePermission } from "@repo/types";
 import { type PageDataUpdateOptions } from "@repo/ui";
 
 export type ModuleDataFieldsPageData = {
@@ -8,6 +8,7 @@ export type ModuleDataFieldsPageData = {
 export type AppModuleEditFieldsProps = {
 	objectId: string;
 	initialFields: Field[];
+	modulePermission?: ModulePermission;
 	updateOptions: PageDataUpdateOptions<ModuleDataFieldsPageData>;
 	refetch: ApolloRefetch;
 };
@@ -21,4 +22,7 @@ export type AppModuleFieldProps = {
 export type AppModuleEditFieldProps = {
 	field: Field;
 	onChange: (field: Field) => void;
+	roles?: { objectId: string; label: string }[];
+	modulePermission?: ModulePermission;
+	onPermissionEditorOpenChange?: (isOpen: boolean) => void;
 };

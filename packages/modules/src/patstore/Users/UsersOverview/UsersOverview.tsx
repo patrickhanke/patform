@@ -37,7 +37,7 @@ const UsersOverview = ({
 	languages,
 	defaultLanguage
 }: ModuleOverviewProps<"/users">) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const { roles } = useFindRoles({ projectId: project.objectId });
 	const [order, setOrder] = useState<string>("name_ASC");
 	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);

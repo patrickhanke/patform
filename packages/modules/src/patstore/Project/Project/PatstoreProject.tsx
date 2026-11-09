@@ -8,7 +8,7 @@ import { Colors, Dashboard, Settings } from "./content";
 import { PatstoreProject } from "@repo/types";
 
 const Project = () => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const [activePage, setActivePage] = useState<(typeof page_states)[number]>(
 		page_states[0]
 	);

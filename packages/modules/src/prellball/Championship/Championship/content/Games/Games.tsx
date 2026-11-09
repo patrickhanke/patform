@@ -20,7 +20,7 @@ const views: GameFilter[] = [
 ];
 
 const Games: FC<ChampionshipTabProps> = ({ related }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 	const [view, setView] = useState("board");

@@ -26,6 +26,23 @@ export { roleMemberIds } from "./roleMembership";
 export {
 	isActiveAccessGrant,
 	modulesForAccessClass,
-	recordAccessPath
+	recordAccessPath,
+	recordIdFromPath
 } from "./userAccess";
 export type { AccessModule } from "./userAccess";
+export {
+	allowedRoleIds,
+	anyRoleAllowed,
+	canCreateRecord,
+	canDeleteRecord,
+	canEnterModule,
+	canEnterRecord,
+	canReadField,
+	canUpdateRecord,
+	canWriteField,
+	effectiveFieldRoleIds,
+	grantsForClass,
+	moduleUsesLegacy,
+	readModulePermission
+} from "./fieldAccess";
+export type { AccessField, AccessModuleShape, AccessRole } from "./fieldAccess";

@@ -20,7 +20,7 @@ const RenderRecordData: FC<RenderRecordDataProps> = ({
 	surcharges,
 	fields
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patflow">();
 
 	const generatePDF = (worker: Worker) => {
 		const workerDays = days.filter(

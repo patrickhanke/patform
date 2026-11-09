@@ -1,6 +1,7 @@
 import { FormikValues } from "formik";
 import React from "react";
 import ParseFile from "parse/types/ParseFile";
+import type { FieldPermission } from "./Permission";
 
 // import { DatePickerTypes } from "@repo/ui";
 import { Pointer } from "../Application";
@@ -57,6 +58,8 @@ export type BasicField = {
 	options?: object;
 	disabled?: boolean | ((values: FormikValues) => boolean);
 	width?: string | number;
+	/** Missing action inherits the module. An empty array denies that action. */
+	permission?: FieldPermission;
 };
 
 export type StringField = BasicField & {

@@ -19,7 +19,7 @@ const SignupDetails: FC<{
 	related: ChampionshipRelatedData;
 	onClose: () => void;
 }> = ({ isOpen, signup, related, onClose }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const divisionName = divisionLabel(signup?.division, divisions);
 

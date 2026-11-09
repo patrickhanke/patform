@@ -23,7 +23,7 @@ const GenerateGamesSlideIn: FC<{
 	onClose: () => void;
 	onApply: (games: ChampionshipGame[]) => void;
 }> = ({ isOpen, page, clubs, onClose, onApply }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
 	const divisions = useDivisionCategories(project?.objectId);
 	const seasonId = seasonCategoryId(page.categories, seasons);

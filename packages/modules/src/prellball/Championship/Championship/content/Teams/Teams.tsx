@@ -11,7 +11,7 @@ import { clearSignupClub, createSignup, withoutSignup } from "@repo/provider";
 import TeamRow from "./components/TeamRow";
 
 const Teams: FC<ChampionshipTabProps> = ({ related }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 	if (!page) return null;

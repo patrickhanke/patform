@@ -13,7 +13,7 @@ import {
 } from "@repo/provider";
 
 const Players: FC<ChampionshipTabProps> = ({ related }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 	const seasonId = seasonCategoryId(page?.categories, seasons);

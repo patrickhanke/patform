@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
 	CreateButton,
 	Divider,
@@ -9,10 +9,11 @@ import {
 	sortItemsByPosition,
 	usePageData
 } from "@repo/ui";
-import { Field, ErrorMessage } from "@repo/types";
+import { Field, ErrorMessage, PatstoreRoleClass } from "@repo/types";
 import { v4 } from "uuid";
 import { cloneDeep } from "lodash-es";
-import { useDataHandlerSecure } from "@repo/provider";
+import { useDataHandlerSecure, useFindData } from "@repo/provider";
+import { useParams } from "next/navigation";
 import AppModuleField from "./components/AppModuleField";
 import AppModuleEditField from "./components/AppModuleEditField";
 import { AppModuleEditFieldsProps, ModuleDataFieldsPageData } from "./types";
@@ -20,6 +21,7 @@ import { AppModuleEditFieldsProps, ModuleDataFieldsPageData } from "./types";
 const AppModuleEditDataFields = ({
 	objectId,
 	initialFields,
+	modulePermission,
 	updateOptions,
 	refetch
 }: AppModuleEditFieldsProps) => {
@@ -27,8 +29,23 @@ const AppModuleEditDataFields = ({
 		{ initialData: { data_fields: initialFields || [] }, objectId },
 		updateOptions
 	);
+	const { project_id: projectId } = useParams<{ project_id: string }>();
+	const { data: roles } = useFindData({
+		objectName: "Role",
+		fields: ["objectId", "name", "title"],
+		projectId
+	});
+	const roleOptions = useMemo(
+		() =>
+			((roles || []) as PatstoreRoleClass[]).map((role) => ({
+				objectId: role.objectId,
+				label: role.title || role.name || role.objectId
+			})),
+		[roles]
+	);
 	const { updateData } = useDataHandlerSecure();
 	const [activeField, setActiveField] = useState("");
+	const [permissionEditorOpen, setPermissionEditorOpen] = useState(false);
 	const [saving, setSaving] = useState(false);
 	const [errors, setErrors] = useState<ErrorMessage[]>([]);
 	const draftRef = useRef<Field | null>(null);
@@ -166,12 +183,16 @@ const AppModuleEditDataFields = ({
 				loading={saving}
 				disabled={[saving, saving]}
 				errors={errors}
+				preventClickOutside={permissionEditorOpen}
 			>
 				{activeFieldData ? (
 					<AppModuleEditField
 						key={activeFieldData.id}
 						field={cloneDeep(activeFieldData)}
 						onChange={handleLocalChange}
+						roles={roleOptions}
+						modulePermission={modulePermission}
+						onPermissionEditorOpenChange={setPermissionEditorOpen}
 					/>
 				) : null}
 			</SlideIn>

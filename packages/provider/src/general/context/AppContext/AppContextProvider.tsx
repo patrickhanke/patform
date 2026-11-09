@@ -1,34 +1,58 @@
 "use client";
 
-import { ReactNode, useCallback, useContext, useEffect, useMemo } from "react";
+import {
+	ReactNode,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo
+} from "react";
+import { PatflowProject, PatstoreProject } from "@repo/types";
 import { AppContext } from "./AppContext";
-import { ContextValues } from "./types";
+import {
+	AppEnvironment,
+	ContextValues,
+	ProjectByApp,
+	RoleByApp
+} from "./types";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
-// `project` and `roles` are now fetched server-side (in the app's layout)
-// and handed down as props, instead of being loaded here via a client-side
-// Apollo query. That removes the window where `project`/`roles` are
-// undefined on first render. Switching the active project still goes
-// through this provider (`loadProject`), it just triggers a server refetch
-// via `router.refresh()` instead of an in-place Apollo refetch.
+// `project` and `roles` are fetched server-side (in the app's layout) and
+// handed down as props. Switching the active project still goes through
+// this provider (`loadProject`); it triggers a server refetch via
+// `router.refresh()`.
 //
-// Kept loosely typed: patstore and patflow pass their own project/role
-// shapes (`PatstoreProject`/`PatflowProject`, `PatstoreRoleClass`/
-// `PatflowUserRole`) into this shared provider.
-const ProjectContextProvider = ({
+// The project prop selects the app: a `PatstoreProject` pairs with
+// `PatstoreRoleClass`, a `PatflowProject` with `PatflowUserRole`.
+// `useAppContext<"patstore">()` / `useAppContext<"patflow">()` reads that
+// shape back out. The running app is `process.env.APP_NAME`.
+type RoleForProject<TProject> = [TProject] extends [PatstoreProject]
+	? RoleByApp["patstore"]
+	: [TProject] extends [PatflowProject]
+		? RoleByApp["patflow"]
+		: RoleByApp[AppEnvironment];
+
+type AppContextProviderProps<
+	TProject extends PatstoreProject | PatflowProject
+> = {
+	project?: TProject;
+	roles?: RoleForProject<TProject>[];
+	children: ReactNode;
+};
+
+function ProjectContextProvider<
+	TProject extends PatstoreProject | PatflowProject
+>({
 	project,
 	roles = [],
 	children
-}: {
-	project?: Record<string, any>;
-	roles?: Record<string, any>[];
-	children: ReactNode;
-}) => {
+}: AppContextProviderProps<TProject>) {
 	// patflow: cookie keys come from next.config (`PROJECT_ID` / `PROJECT_PATH`).
 	// patstore: falls back to `${APP_NAME}_project_id` / `_project_path`, which
 	// matches layout.tsx and proxy.ts.
-	const appName = process.env.APP_NAME as string;
+	const appName = process.env.APP_NAME;
+	const isPatflow = appName === "patflow";
 	const project_id = process.env.PROJECT_ID ?? `${appName}_project_id`;
 	const project_path = process.env.PROJECT_PATH ?? `${appName}_project_path`;
 	const router = useRouter();
@@ -51,33 +75,39 @@ const ProjectContextProvider = ({
 		[project_id, router]
 	);
 
-	// `project` is genuinely undefined for a user with no projects (rare);
-	// cast rather than widen `ContextValues.project` (see its definition).
-	const projectContextObject = useMemo(
-		() =>
-			({
-				project,
+	const projectContextObject = useMemo((): ContextValues => {
+		if (isPatflow) {
+			return {
+				project: project as ProjectByApp["patflow"],
 				loadProject,
-				roles
-			}) as ContextValues,
-		[project, roles, loadProject]
-	);
+				roles: roles as RoleByApp["patflow"][]
+			};
+		}
+
+		return {
+			project: project as ProjectByApp["patstore"],
+			loadProject,
+			roles: roles as RoleByApp["patstore"][]
+		};
+	}, [isPatflow, project, roles, loadProject]);
 
 	return (
 		<AppContext.Provider value={projectContextObject}>
 			{children}
 		</AppContext.Provider>
 	);
-};
+}
 
-export const useAppContext = () => {
+export const useAppContext = <
+	T extends AppEnvironment = AppEnvironment
+>(): ContextValues<T> => {
 	const context = useContext(AppContext);
 	if (!context) {
 		throw new Error(
 			"useAppContext must be used within a ProjectContextProvider"
 		);
 	}
-	return context;
+	return context as ContextValues<T>;
 };
 
 export default ProjectContextProvider;

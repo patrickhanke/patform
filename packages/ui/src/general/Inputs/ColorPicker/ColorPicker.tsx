@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { LuCheck } from "react-icons/lu";
 import { useAppContext } from "@repo/provider";
-import { PatstoreProjectColor } from "@repo/types";
 import { ColorPickerProps, ProjectColorSwatch } from "./types";
 
 const DEFAULT_COLOR = "#000000";
@@ -88,8 +87,10 @@ const ColorPicker: FC<ColorPickerProps> = ({
 	}, [value]);
 
 	const projectColors = useMemo<ProjectColorSwatch[]>(() => {
-		const colors = (project?.settings?.colors ||
-			[]) as PatstoreProjectColor[];
+		const settings = project?.settings;
+		const colors =
+			(settings && "colors" in settings ? settings.colors : undefined) ??
+			[];
 
 		return colors.reduce<ProjectColorSwatch[]>((swatches, entry) => {
 			const parsed = parseSafeColor(entry?.value);
@@ -102,7 +103,7 @@ const ColorPicker: FC<ColorPickerProps> = ({
 			}
 			return swatches;
 		}, []);
-	}, [project?.settings?.colors]);
+	}, [project?.settings]);
 
 	return (
 		<ChakraColorPicker.Root

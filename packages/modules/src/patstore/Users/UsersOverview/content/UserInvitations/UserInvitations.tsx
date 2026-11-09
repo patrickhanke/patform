@@ -4,7 +4,7 @@ import { Table } from "@repo/ui";
 import { useState } from "react";
 
 const UserInvitations = () => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const { data, refetch } = useGetData({
 		objectName: "Project",
 		fields: ["objectId", "name", "invitations"],

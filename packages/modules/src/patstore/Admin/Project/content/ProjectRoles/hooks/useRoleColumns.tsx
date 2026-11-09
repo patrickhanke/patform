@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { ColumnDef, TableColumnEditColor, TableColumnEditText } from "@repo/ui";
 import { PatstoreRoleClass } from "@repo/types";
 import SelectRoleModules from "../components/SelectRoleModules";
+import SelectRoleAccess from "../components/SelectRoleAccess";
 import DefaultRole from "../components/DefaultRole";
 import { UseRoleColumnsProps } from "../types";
 import { useDataHandler } from "@repo/provider";
@@ -58,6 +59,20 @@ const useRoleColumns = ({
 			},
 			{
 				accessorFn: (row) => (
+					<SelectRoleAccess
+						roleId={row.objectId}
+						projectId={projectId}
+						modules={modules}
+					/>
+				),
+				header: () => <span>Zugänge</span>,
+				id: "access",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				accessorFn: (row) => (
 					<TableColumnEditColor
 						value={row.color || "blue"}
 						onChange={async (color) => {
@@ -108,7 +123,7 @@ const useRoleColumns = ({
 				enableSorting: false
 			}
 		],
-		[modules, roles, refetch]
+		[modules, roles, refetch, projectId]
 	);
 
 	return columns;

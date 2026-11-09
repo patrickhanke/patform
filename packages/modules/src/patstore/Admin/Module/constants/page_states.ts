@@ -18,6 +18,14 @@ const page_states = [
 	{
 		label: "Filter",
 		value: "filters"
+	},
+	{
+		label: "Berechtigungen",
+		value: "permissions"
+	},
+	{
+		label: "Unterseiten",
+		value: "subpages"
 	}
 ] as const;
 

@@ -29,7 +29,7 @@ import { DisplayMember, SavingsGroupContextValue } from "./SavingsGroupContext";
 const useSavingsGroupData = (
 	module: ModuleForPath<"/savings-group">
 ): SavingsGroupContextValue => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const { createData, updateData, deleteData } = useDataHandlerSecure();
 	const [restBookings, setRestBookings] = useState<BookingClass[]>([]);
 

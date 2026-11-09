@@ -5,6 +5,7 @@ import fieldTypes from "../constants/fieldTypes";
 import { Field } from "@repo/types";
 import { cloneDeep, set } from "lodash-es";
 import styles from "../AppModuleEditDataFields.module.scss";
+import { FieldPermissionEditor } from "../../../components/PermissionEditors";
 
 type EditableField = Field & {
 	select_options?: { label: string; value: string }[];
@@ -14,7 +15,13 @@ type EditableField = Field & {
 	};
 };
 
-const AppModuleEditField = ({ field, onChange }: AppModuleEditFieldProps) => {
+const AppModuleEditField = ({
+	field,
+	onChange,
+	roles = [],
+	modulePermission,
+	onPermissionEditorOpenChange
+}: AppModuleEditFieldProps) => {
 	const [localField, setLocalField] = useState<EditableField>(() =>
 		cloneDeep(field)
 	);
@@ -182,6 +189,13 @@ const AppModuleEditField = ({ field, onChange }: AppModuleEditFieldProps) => {
 					/>
 				</div>
 			)}
+			<FieldPermissionEditor
+				roles={roles}
+				modulePermission={modulePermission}
+				permission={localField.permission}
+				onChange={(permission) => changeHandler("permission", permission)}
+				onOpenChange={onPermissionEditorOpenChange}
+			/>
 		</div>
 	);
 };

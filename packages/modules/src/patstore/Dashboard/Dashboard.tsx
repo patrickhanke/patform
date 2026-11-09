@@ -1,67 +1,57 @@
 "use client";
 
-import { Divider, HtmlContent, InfoBox, Page } from "@repo/ui";
-import { useAppContext } from "@repo/provider";
+import { useContext, useMemo, useState } from "react";
+import { Divider, HtmlContent, Page, SwitchButtons } from "@repo/ui";
+import { PatstoreAppContext, useAppContext } from "@repo/provider";
+import { SiteState } from "@repo/types";
 import UserAccess from "./components/UserAccess";
+import UserAccessLink from "./components/UserAccessLink";
+import { userModulePermissions } from "./functions/userModulePermissions";
+
+const dashboardViews: SiteState[] = [
+	{ label: "Übersicht", value: "overview" },
+	{ label: "Berechtigungen", value: "permissions" }
+];
 
 const Dashboard = () => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
+	const { user, modules } = useContext(PatstoreAppContext);
 	const dashboardContent = project?.data?.dashboard?.content;
+	const [view, setView] = useState<SiteState>(dashboardViews[0]);
+
+	const permissions = useMemo(
+		() => userModulePermissions(modules, user?.objectId),
+		[modules, user?.objectId]
+	);
+	const showPermissions = view.value === "permissions" && permissions.length > 0;
 
 	return (
 		<Page title="Dashboard">
-			<div className="flex col gap-md">
-				{/* <InfoBox
-					status="info"
-					maxWidth="100%"
-					content={() => (
-						<div>
-							<h3>Update 1.1.1</h3>
-							<p>
-								Liebe Nutzerinnen und Nutzer, mit dem Update auf
-								die Version 1.1.1 haben wurden einige Funktionen
-								für die Bearbeitung von Inhalten geändert.
-							</p>
-							<Divider />
-							<h3>1. Erstellen eines neues Eintrages</h3>
-							<p>
-								Ein neuer Eintrag wird nach wie vor über den
-								Button oben rechts auf der Seite erstellt.
-							</p>
-							<p>
-								Der Status eines neu erstellten Eintrages ist
-								jetzt in der Regel immer &quot;Entwurf&quot;.
-								Dieser wird erst dann auf der Webseite
-								angezeigt, wenn er veröffentlicht wird.
-							</p>
-							<Divider />
-							<h3>2. Änderung der Speicherung von Einträgen</h3>
-							<p>
-								Das Speichern von Einträgen erfolgt jetzt nicht
-								mehr mit der Änderung des entsprechenden Feldes
-								in der Tabelle, sondern erfolgt über eine
-								entsprechende Aktiosleiste. Über diese kann
-								können die Eingaben rückgängig gemacht,
-								verworfern oder gespeichert werden.
-							</p>
-							<Divider showLine />
-							<video
-								src={"/patstore_tutorial.mp4"}
-								loop
-								controls
-								autoPlay
-							/>
-						</div>
-					)}
+			{permissions.length > 0 && (
+				<SwitchButtons
+					buttonStates={dashboardViews}
+					currentStates={view}
+					changeHandler={setView}
 				/>
-				<InfoBox
-					maxWidth="100%"
-					text="Nach dem Speichern eines Eintrages, dauert es einige Minuten bis die Änderungen auf der Webseite erscheinen."
-				/> */}
-				<UserAccess />
-			</div>
-			<Divider />
-			{dashboardContent && <HtmlContent content={dashboardContent} />}
+			)}
+			{showPermissions ? (
+				<div className="content_element flex col gap-sm">
+					<h2>Berechtigungen</h2>
+					<div className="flex col gap-xs">
+						{permissions.map((item) => (
+							<UserAccessLink key={item.href} {...item} />
+						))}
+					</div>
+				</div>
+			) : (
+				<>
+					<div className="flex col gap-md">
+						<UserAccess />
+					</div>
+					<Divider />
+					{dashboardContent && <HtmlContent content={dashboardContent} />}
+				</>
+			)}
 		</Page>
 	);
 };

@@ -5,6 +5,7 @@ import PatstoreAppContext from "./PatstoreAppContext";
 import {
 	Module,
 	PatstoreProject,
+	PatstoreRoleAccess,
 	PatstoreRoleClass,
 	PatstoreUser
 } from "@repo/types";
@@ -49,9 +50,41 @@ const PatstoreAppContextProvider = ({
 	}, []);
 
 	const { role: membership } = useRoleForUser(user?.objectId, project?.objectId);
-	const userRole = useMemo(() => {
+	const matchedRole = useMemo(() => {
 		return roles?.find((role) => role.objectId === membership?.objectId);
 	}, [roles, membership?.objectId]);
+	const [roleAccess, setRoleAccess] = useState<PatstoreRoleAccess[]>([]);
+
+	useEffect(() => {
+		if (!matchedRole?.objectId || !project?.objectId) {
+			setRoleAccess([]);
+			return;
+		}
+		let cancelled = false;
+		const params = new URLSearchParams({
+			className: "_Role",
+			useMasterKey: "true",
+			projectId: project.objectId,
+			query: `"objectId":"${matchedRole.objectId}"`
+		});
+		fetch(`/api/data?${params}`)
+			.then((response) => (response.ok ? response.json() : null))
+			.then((body) => {
+				if (cancelled) return;
+				setRoleAccess(body?.results?.[0]?.access || []);
+			})
+			.catch(() => {
+				if (!cancelled) setRoleAccess([]);
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [matchedRole?.objectId, project?.objectId]);
+
+	const userRole = useMemo(() => {
+		if (!matchedRole) return matchedRole;
+		return { ...matchedRole, access: roleAccess };
+	}, [matchedRole, roleAccess]);
 
 	const appContextObject = useMemo(
 		() => ({

@@ -5,7 +5,7 @@ import { axiosclient, useAppContext, useRoleForUser } from "@repo/provider";
 import { SelectUserRoleProps } from "../types";
 
 const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const { role, refetch: refetchRole } = useRoleForUser(
 		user.objectId,
 		project?.objectId

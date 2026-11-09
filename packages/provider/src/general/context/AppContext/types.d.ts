@@ -1,16 +1,36 @@
-// `AppContext` is shared between patstore and patflow, whose project/role
-// shapes differ (see `PatstoreProject`/`PatflowProject`, `PatstoreRoleClass`/
-// `PatflowUserRole`). Kept loosely typed here on purpose; each app's own
+import {
+	PatflowProject,
+	PatflowUserRole,
+	PatstoreProject,
+	PatstoreRoleClass
+} from "@repo/types";
 
-import { PatflowProject } from "@repo/types";
+// `AppContext` is mounted by both apps. The project and role shapes are not
+// interchangeable, so callers pick the app they are running in
+// (`useAppContext<"patstore">()` / `useAppContext<"patflow">()`).
+export type AppEnvironment = "patstore" | "patflow";
 
-// `LayoutContext` is the strongly-typed boundary for its own shape.
-export type ContextValues = {
-	// Optimistically non-optional, matching the pre-existing convention:
-	// `project` genuinely can be undefined (e.g. a user with no projects),
-	// but typing it that way would ripple `| undefined` checks through
-	// every consumer that already assumes it's defined.
-	project: PatflowProject;
-	loadProject: (projectId: string) => void;
-	roles: PatstoreRoleClass[];
+export type ProjectByApp = {
+	patstore: PatstoreProject;
+	patflow: PatflowProject;
 };
+
+export type RoleByApp = {
+	patstore: PatstoreRoleClass;
+	patflow: PatflowUserRole;
+};
+
+// Distributive so `ContextValues<"patstore" | "patflow">` stays a union of
+// the two app objects (roles stay a homogeneous array per app).
+export type ContextValues<T extends AppEnvironment = AppEnvironment> =
+	T extends AppEnvironment
+		? {
+				// Optimistically non-optional, matching the pre-existing convention:
+				// `project` genuinely can be undefined (e.g. a user with no projects),
+				// but typing it that way would ripple `| undefined` checks through
+				// every consumer that already assumes it's defined.
+				project: ProjectByApp[T];
+				loadProject: (projectId: string) => void;
+				roles: RoleByApp[T][];
+			}
+		: never;

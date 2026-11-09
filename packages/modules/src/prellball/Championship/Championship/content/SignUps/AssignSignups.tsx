@@ -17,7 +17,7 @@ const AssignSignups: FC<{
 	onClose: () => void;
 	onSave: (group: ChampionshipGroup) => void;
 }> = ({ isOpen, group, signups, clubs, showClass, onClose, onSave }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const [draft, setDraft] = useState<ChampionshipGroup | null>(group);
 	const [subgroupId, setSubgroupId] = useState("");

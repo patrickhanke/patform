@@ -34,7 +34,7 @@ const GroupCard: FC<{
 	onChange: (group: ChampionshipGroup) => void;
 	onDelete: () => void;
 }> = ({ group, page, related, onChange, onDelete }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisionProjectId = page.project?.objectId || project?.objectId;
 	const divisions = useDivisionCategories(divisionProjectId);
 	const [assign, setAssign] = useState(false);

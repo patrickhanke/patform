@@ -10,11 +10,11 @@ import {
 import UserAccessLink from "./UserAccessLink";
 
 const UserAccess = () => {
-	const { user, modules } = useContext(PatstoreAppContext);
+	const { userRole, modules } = useContext(PatstoreAppContext);
 
 	const items = useMemo(
 		() =>
-			(user?.access || [])
+			(userRole?.access || [])
 				.filter((grant) => isActiveAccessGrant(grant))
 				.flatMap((grant) =>
 				modulesForAccessClass(modules, grant.className).flatMap((module) => {
@@ -31,7 +31,7 @@ const UserAccess = () => {
 					];
 				})
 			),
-		[user?.access, modules]
+		[userRole?.access, modules]
 	);
 
 	if (items.length === 0) return null;

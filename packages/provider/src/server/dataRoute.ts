@@ -20,6 +20,12 @@ import {
 	scopeWhere,
 	stripSecretFields
 } from "./policy";
+import {
+	enforceContentDelete,
+	enforceContentWrite,
+	prepareContentRead,
+	stripReadResult
+} from "./contentAccess";
 import { parseRest } from "./sashido";
 
 type ParseObject = Record<string, any>;
@@ -90,15 +96,28 @@ export async function GET(request: NextRequest) {
 		const useMasterKey = searchParams.get("useMasterKey") === "true";
 		let where = parseClientWhere(searchParams.get("query"));
 		const limit = parseLimit(searchParams.get("limit"));
+		let accessProjectId = context.activeProjectId;
 
 		if (useMasterKey && !context.isSuperuser) {
 			assertMemberMayUseMasterKey(className);
-			const projectId = resolveRequestProjectId(
+			accessProjectId = resolveRequestProjectId(
 				context,
 				searchParams.get("projectId") || undefined
 			);
-			const scope = scopeWhere(className, projectId);
+			const scope = scopeWhere(className, accessProjectId);
 			where = where ? { $and: [where, scope] } : scope;
+		}
+
+		let contentAccess: Awaited<ReturnType<typeof prepareContentRead>>["access"] | undefined;
+		if (!context.isSuperuser && accessProjectId) {
+			const prepared = await prepareContentRead(
+				accessProjectId,
+				context.user.objectId,
+				className,
+				where
+			);
+			where = prepared.where;
+			contentAccess = prepared.access;
 		}
 
 		const params = new URLSearchParams();
@@ -115,7 +134,12 @@ export async function GET(request: NextRequest) {
 			{ sessionToken: context.sessionToken, useMasterKey }
 		);
 
-		return parseResponse(context, status, data);
+		const visible =
+			status < 400 && contentAccess
+				? stripReadResult(data, contentAccess.roles, contentAccess.modules, className)
+				: data;
+
+		return parseResponse(context, status, visible);
 	} catch (error) {
 		return errorResponse(error);
 	}
@@ -175,6 +199,20 @@ const prepareWrite = async ({
 			isCreate,
 			isAdmin
 		});
+	}
+
+	if (!context.isSuperuser) {
+		const accessProjectId = projectId || context.activeProjectId;
+		if (accessProjectId) {
+			data = await enforceContentWrite({
+				projectId: accessProjectId,
+				userId: context.user.objectId,
+				className,
+				data,
+				isCreate,
+				objectId: isCreate ? undefined : assertObjectId(body.objectId)
+			});
+		}
 	}
 
 	return { data, useMasterKey };
@@ -298,20 +336,32 @@ export async function DELETE(request: NextRequest) {
 		const className = normalizeClassName(searchParams.get("className"));
 		const objectId = assertObjectId(searchParams.get("objectId"));
 		const useMasterKey = searchParams.get("useMasterKey") === "true";
+		const accessProjectId =
+			useMasterKey && !context.isSuperuser
+				? resolveRequestProjectId(
+						context,
+						searchParams.get("projectId") || undefined
+					)
+				: context.activeProjectId;
 
-		if (useMasterKey && !context.isSuperuser) {
+		if (useMasterKey && !context.isSuperuser && accessProjectId) {
 			assertMemberMayUseMasterKey(className);
-			const projectId = resolveRequestProjectId(
-				context,
-				searchParams.get("projectId") || undefined
-			);
 			await authorizeUserManagement(context, {
 				className,
 				operation: "delete",
 				objectId,
-				projectId
+				projectId: accessProjectId
 			});
-			await assertMemberMayModify(className, objectId, projectId);
+			await assertMemberMayModify(className, objectId, accessProjectId);
+		}
+
+		if (!context.isSuperuser && accessProjectId) {
+			await enforceContentDelete(
+				accessProjectId,
+				context.user.objectId,
+				className,
+				objectId
+			);
 		}
 
 		const { status, data } = await parseRest(

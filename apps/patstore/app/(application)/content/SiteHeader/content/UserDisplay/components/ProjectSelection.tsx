@@ -13,7 +13,7 @@ const ProjectSelection: FC<ProjectSelectionProps> = ({
 }) => {
 	const router = useRouter();
 
-  const { project, loadProject } = useAppContext();
+  const { project, loadProject } = useAppContext<"patstore">();
   const [selectedProject, setSelectedProject] = useState<SelectElement[]>([
     { value: project.objectId, label: project.name },
   ]);

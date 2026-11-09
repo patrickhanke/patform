@@ -2,7 +2,9 @@
 
 import { useCallback, useMemo } from "react";
 import { DnDDisplay, sortItemsByPosition, usePageData } from "@repo/ui";
-import { ModuleField } from "@repo/types";
+import { ModuleField, PatstoreRoleClass } from "@repo/types";
+import { useFindData } from "@repo/provider";
+import { useParams } from "next/navigation";
 import AppModuleField from "./components/AppModuleField";
 import { AppModuleEditFieldsProps, ModuleFieldsPageData } from "./types";
 import generateInitialFields from "./functions/generateInitialFields";
@@ -11,8 +13,24 @@ const AppModuleEditFields = ({
 	objectId,
 	initialFields,
 	modulePath,
+	modulePermission,
 	updateOptions
 }: AppModuleEditFieldsProps) => {
+	const { project_id: projectId } = useParams<{ project_id: string }>();
+	const { data: roles } = useFindData({
+		objectName: "Role",
+		fields: ["objectId", "name", "title"],
+		projectId
+	});
+	const roleOptions = useMemo(
+		() =>
+			((roles || []) as PatstoreRoleClass[]).map((role) => ({
+				objectId: role.objectId,
+				label: role.title || role.name || role.objectId
+			})),
+		[roles]
+	);
+
 	const settingsSignature = (initialFields ?? [])
 		.map((field) => JSON.stringify(field.settings ?? null))
 		.join("|");
@@ -53,6 +71,8 @@ const AppModuleEditFields = ({
 						field={item as ModuleField}
 						changeField={changeField}
 						modulePath={modulePath}
+						roles={roleOptions}
+						modulePermission={modulePermission}
 					/>
 				)}
 				onChange={(newFields) => {

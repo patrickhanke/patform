@@ -1,4 +1,4 @@
-import type { PatstoreUserAccess } from "@repo/types";
+import type { PatstoreRoleAccess } from "@repo/types";
 
 const OBJECT_ID_PATTERN = /^[A-Za-z0-9]{10}$/;
 const CLASS_NAME_PATTERN = /^[A-Za-z][A-Za-z0-9_]{0,63}$/;
@@ -11,9 +11,9 @@ export type AccessModule = {
 };
 
 export const isActiveAccessGrant = (
-	grant: PatstoreUserAccess | null | undefined,
+	grant: PatstoreRoleAccess | null | undefined,
 	now = Date.now()
-): grant is PatstoreUserAccess => {
+): grant is PatstoreRoleAccess => {
 	if (!grant) return false;
 	if (!OBJECT_ID_PATTERN.test(grant.id || "")) return false;
 	if (!CLASS_NAME_PATTERN.test(grant.className || "")) return false;
@@ -49,3 +49,17 @@ export const modulesForAccessClass = <T extends AccessModule>(
 				(a.position ?? 0) - (b.position ?? 0) ||
 				String(a.path).localeCompare(String(b.path))
 		);
+
+const RECORD_ID_PATTERN = /^[A-Za-z0-9]{10}$/;
+
+/** Object id when the pathname is `/{modulePath}/{id}` or a route under it. */
+export const recordIdFromPath = (
+	modulePath: string | null | undefined,
+	pathname: string | null | undefined
+): string | undefined => {
+	if (!modulePath || !pathname || !modulePath.startsWith("/")) return undefined;
+	const path = modulePath.replace(/\/+$/, "");
+	if (!path || !pathname.startsWith(`${path}/`)) return undefined;
+	const id = pathname.slice(path.length + 1).split("/")[0];
+	return RECORD_ID_PATTERN.test(id) ? id : undefined;
+};

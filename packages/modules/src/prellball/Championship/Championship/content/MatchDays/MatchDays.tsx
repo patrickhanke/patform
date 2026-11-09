@@ -13,7 +13,7 @@ import {
 import MatchDaySlideIn from "./components/MatchDaySlideIn";
 
 const MatchDays: FC<ChampionshipTabProps> = ({ related }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 	const [editor, setEditor] = useState<ChampionshipMatchDay | null>(null);

@@ -39,7 +39,7 @@ const detailFields = [
 
 const PrellballClub = () => {
 	const { club_id: clubId } = useParams<{ club_id: string }>();
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
 	console.log("seasons", seasons);
 	const [siteState, setSiteState] = useState<PageState>(siteStates[0]!);

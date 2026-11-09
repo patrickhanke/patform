@@ -46,7 +46,7 @@ import { printGameCards } from "./functions/printGameCards";
 const Results: FC<ChampionshipTabProps> = ({
 	related = emptyRelated
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
 	const divisions = useDivisionCategories(project?.objectId);
 	const [matchDayId, setMatchDayId] = useState("");

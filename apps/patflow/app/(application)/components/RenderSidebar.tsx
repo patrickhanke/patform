@@ -99,7 +99,7 @@ const menu_items = [
 
 const RenderSidebar = ({ user }: { user: PatflowUser }) => {
   const { year } = useContext(PatflowAppContext);
-  const { project } = useAppContext();
+  const { project } = useAppContext<"patflow">();
   const absences = useDataStore( (state) => state.absences );
 
   const menuItems = useMemo(() => {

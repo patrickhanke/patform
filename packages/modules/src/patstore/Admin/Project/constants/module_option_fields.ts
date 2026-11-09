@@ -18,6 +18,7 @@ export const module_option_fields: ModuleOptionsField = {
 		categories: [],
 		setting_fields: [],
 		connected_class: "Webpage",
+		pages: ["Webpage"],
 		sub_menu: [
 			{
 				label: "Inhalte",
@@ -235,6 +236,7 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 10,
 		categories: [],
 		connected_class: "Form",
+		pages: ["Form"],
 		sub_menu: [],
 		setting_fields: [],
 		default_fields: ["title", "text"]
@@ -307,6 +309,7 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 13,
 		categories: [],
 		connected_class: "Email",
+		pages: ["Email"],
 		sub_menu: [
 			{
 				label: "Übersicht",
@@ -377,6 +380,7 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 16,
 		categories: [],
 		connected_class: "Club",
+		pages: ["Club"],
 		sub_menu: [],
 		setting_fields: [],
 		default_fields: ["title"]
@@ -395,6 +399,7 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 18,
 		categories: [],
 		connected_class: "Championship",
+		pages: ["Championship"],
 		sub_menu: [
 			{ label: "Wettkämpfe", value: "/overview", icon: "events" },
 			{ label: "Ergebnisse", value: "/results", icon: "forms" }
@@ -416,6 +421,7 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 19,
 		categories: [],
 		connected_class: "Championship",
+		pages: ["Championship"],
 		sub_menu: [],
 		setting_fields: [],
 		default_fields: ["title"]
@@ -434,6 +440,7 @@ export const module_option_fields: ModuleOptionsField = {
 		position: 20,
 		categories: [],
 		connected_class: "Club",
+		pages: ["Club"],
 		sub_menu: [],
 		setting_fields: [],
 		default_fields: ["title"]

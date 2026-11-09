@@ -42,7 +42,7 @@ const PatflowAppContextProvider = ({
 }: {
 	children: React.ReactNode;
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patflow">();
 	const [year, setYear] = useState(new Date().getFullYear());
 	const projectId = project?.objectId;
 	const { fetchTasks } = useTaskSubscription(projectId);

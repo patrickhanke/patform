@@ -32,7 +32,7 @@ const RecipientEmailSender: FC<RecipientEmailSenderProps> = ({
 	emailContent,
 	emailId
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const [recipients, setRecipients] = useState<EmailRecipient[]>([]);
 	const [currentEmail, setCurrentEmail] = useState<string>("");
 	const [emailError, setEmailError] = useState<string>("");

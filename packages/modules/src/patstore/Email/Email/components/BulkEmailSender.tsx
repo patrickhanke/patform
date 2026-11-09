@@ -19,7 +19,7 @@ const BulkEmailSender: FC<BulkEmailSenderProps> = ({
 	recipients,
 	onSendSuccess
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const { updateData } = useDataHandler();
 	const [loading, setLoading] = useState(false);
 	const [progress, setProgress] = useState(0);

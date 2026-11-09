@@ -1,11 +1,3 @@
-import type { Module } from "./Module";
-
-export type PatstoreUserAccess = {
-	id: string;
-	className: Module["connected_class"];
-	expires_at: string | null;
-};
-
 export type PatstoreUserRole = {
 	objectId: string;
 	name: string;
@@ -69,6 +61,4 @@ export type PatstoreUser = {
 			[key: string]: boolean | string;
 		} & any;
 	};
-	/** Grants for specific records. `className` is the module's connected class. */
-	access?: PatstoreUserAccess[];
 };

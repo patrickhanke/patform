@@ -1,5 +1,6 @@
 ﻿import { FilterOperator } from "@repo/ui";
 import { Field } from "@repo/types";
+import type { FieldPermission, ModulePermission } from "../general/ui/Permission";
 import { LanguageValue, PatstoreProject } from "./Project";
 import { SavingsGroupModuleData } from "./SavingsGroup";
 
@@ -106,6 +107,8 @@ export type ModuleSettings = {
 	edit_title?: boolean;
 	edit_text?: boolean;
 	edit_description?: boolean;
+	/** Role permissions. Absent means the role's module list still grants full access. */
+	permission?: ModulePermission;
 };
 
 export type ModuleFieldType =
@@ -170,6 +173,7 @@ type ModuleFieldBase = {
 	default: boolean;
 	hidden: boolean;
 	select_options?: { label: string; value: string }[];
+	permission?: FieldPermission;
 };
 
 export type ModuleField = ModuleFieldBase &
@@ -225,7 +229,11 @@ export type ModuleCommon = {
 	categories: ModuleCategory[];
 	settings: ModuleSettings;
 	filters?: ModuleFilter[];
+	/** Classes that have a record subpage, such as `Club` for `/clubs/{id}`. */
+	pages?: ModuleClass[];
 	data?: SavingsGroupModuleData | Record<string, unknown>;
+	/** Optional column. The editor stores the same object on `settings.permission`. */
+	permission?: ModulePermission;
 };
 
 /** Path-specific defaults and connected_class for each module type */

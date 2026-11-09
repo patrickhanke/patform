@@ -1,13 +1,21 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useContext, useMemo } from "react";
 import {
 	CreateColumnHookProps,
 	ColumnClasses,
 	UpdateColumnData
 } from "../types";
 import { ColumnDef } from "@tanstack/react-table";
-import { useDataHandlerSecure } from "@repo/provider";
+import { usePathname } from "next/navigation";
+import {
+	PatstoreAppContext,
+	canDeleteRecord,
+	canReadField,
+	canWriteField,
+	recordIdFromPath,
+	useDataHandlerSecure
+} from "@repo/provider";
 import {
 	ClassState,
 	ClassTranslation,
@@ -128,6 +136,45 @@ const useCreateColumns = <T extends ColumnClasses>({
 	language = "de-DE"
 }: CreateColumnHookProps<T>) => {
 	const { updateData } = useDataHandlerSecure(useMasterKey);
+	const patstore = useContext(PatstoreAppContext);
+	const pathname = usePathname();
+	const accessModule = currentModule || patstore.currentModule;
+	const accessRole = patstore.userRole?.objectId ? patstore.userRole : undefined;
+	const recordId = recordIdFromPath(accessModule?.path, pathname);
+	const restrictFields =
+		!patstore.user?.is_superuser &&
+		!patstore.userLoading &&
+		!!accessRole &&
+		!!accessModule?.objectId;
+	const visibleColumns = useMemo(() => {
+		if (!restrictFields || !accessModule || !accessRole) return data;
+		return data.filter((column) =>
+			canReadField(
+				[accessRole],
+				accessModule,
+				accessModule.fields?.find((field) => field.id === column.id) || {
+					id: String(column.id)
+				},
+				recordId
+			)
+		);
+	}, [restrictFields, accessModule, accessRole, data, recordId]);
+	const visibleDataFields = useMemo(() => {
+		if (!restrictFields || !accessModule || !accessRole) return fields;
+		return fields.flatMap((field) => {
+			if (!canReadField([accessRole], accessModule, field, recordId)) return [];
+			if (canWriteField([accessRole], accessModule, field, recordId)) return [field];
+			return [{ ...field, disabled: true }];
+		});
+	}, [restrictFields, accessModule, accessRole, fields, recordId]);
+	const visibleSettingFields = useMemo(() => {
+		if (!restrictFields || !accessModule || !accessRole) return settings;
+		return settings.flatMap((field) => {
+			if (!canReadField([accessRole], accessModule, field, recordId)) return [];
+			if (canWriteField([accessRole], accessModule, field, recordId)) return [field];
+			return [{ ...field, disabled: true }];
+		});
+	}, [restrictFields, accessModule, accessRole, settings, recordId]);
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
 			await updateData({
@@ -216,7 +263,11 @@ const useCreateColumns = <T extends ColumnClasses>({
 
 	const columns = useMemo(() => {
 		const columnArray: ColumnDef<T>[] = [];
-		data.forEach((columnElement) => {
+		const blockDelete = (objectId?: string) =>
+			restrictFields && accessModule && accessRole
+				? !canDeleteRecord([accessRole], accessModule, objectId)
+				: false;
+		visibleColumns.forEach((columnElement) => {
 			if (
 				columnElement.type === "string" ||
 				columnElement.type === "edit_string"
@@ -1044,7 +1095,10 @@ const useCreateColumns = <T extends ColumnClasses>({
 								objectId={row.objectId}
 								className={className}
 								refetch={refetch}
-								disabled={disableHandler("delete", row)}
+								disabled={
+									disableHandler("delete", row) ||
+									blockDelete(row.objectId)
+								}
 							/>
 						</div>
 					),
@@ -1066,18 +1120,18 @@ const useCreateColumns = <T extends ColumnClasses>({
 									refetch={refetch}
 								/>
 							)}
-							{fields.length > 0 && (
+							{visibleDataFields.length > 0 && (
 								<TableColumnEditField
 									objectId={row.objectId}
 									className={className}
-									dataFields={fields}
+									dataFields={visibleDataFields}
 								/>
 							)}
-							{settings?.length > 0 && (
+							{visibleSettingFields?.length > 0 && (
 								<TableColumnEditField
 									objectId={row.objectId}
 									className={className}
-									dataFields={settings}
+									dataFields={visibleSettingFields}
 									type="setting"
 								/>
 							)}
@@ -1086,11 +1140,12 @@ const useCreateColumns = <T extends ColumnClasses>({
 								className={className}
 								refetch={refetch}
 								useMasterKey={useMasterKey}
+								disabled={blockDelete(row.objectId)}
 							/>
 						</div>
 					),
 					header: () => (
-						<span>{fields.length > 0 ? "Bearb." : "Löschen"}</span>
+						<span>{visibleDataFields.length > 0 ? "Bearb." : "Löschen"}</span>
 					),
 					id: "edit",
 					cell: (info) => info.getValue(),
@@ -1102,6 +1157,12 @@ const useCreateColumns = <T extends ColumnClasses>({
 
 		return columnArray.map(withPlaceholderCell);
 	}, [
+		visibleColumns,
+		visibleDataFields,
+		visibleSettingFields,
+		restrictFields,
+		accessModule,
+		accessRole,
 		data,
 		className,
 		refetch,

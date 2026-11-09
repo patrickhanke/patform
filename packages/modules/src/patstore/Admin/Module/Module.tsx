@@ -11,6 +11,7 @@ import {
 import { Loader, Page, type PageDataUpdateOptions } from "@repo/ui";
 import { useFindData, useGetData } from "@repo/provider";
 import page_states from "./constants/page_states";
+import { module_option_fields } from "../Project/constants/module_option_fields";
 import {
 	AppModuleEditCategories,
 	AppModuleEditFields,
@@ -18,6 +19,8 @@ import {
 	AppModuleEditSettings,
 	AppModuleEditFilters
 } from "./content";
+import AppModuleEditPermissions from "./content/AppModuleEditPermissions";
+import AppModuleEditPages from "./content/AppModuleEditPages";
 import { AdditionalField } from "./types";
 import { ModuleCategoriesPageData } from "./content/AppModuleEditCategories/types";
 import { ModuleFieldsPageData } from "./content/AppModuleEditFields/types";
@@ -138,12 +141,19 @@ const Module = () => {
 
 	if (loading) return <Loader width="100%" height="100%" />;
 
+	const subpages = module?.path
+		? module_option_fields[module.path]?.pages || []
+		: [];
+	const visibleStates = page_states.filter(
+		(state) => state.value !== "subpages" || subpages.length > 0
+	);
+
 	return (
 		<Page
 			title={module?.name || "Modul"}
 			description="Bearbeitung des Moduls"
 			pageHeaderButtons={[]}
-			pageStates={[...page_states]}
+			pageStates={[...visibleStates]}
 			pageState={pageState}
 			setPageState={setPageState}
 			refetch={refetch}
@@ -166,6 +176,7 @@ const Module = () => {
 							objectId={module.objectId}
 							initialFields={module.fields || []}
 							modulePath={module.path}
+							modulePermission={module.settings?.permission}
 							updateOptions={fieldsUpdateOptions}
 						/>
 					)}
@@ -175,6 +186,7 @@ const Module = () => {
 							initialFields={
 								(module.data_fields || []) as Field[]
 							}
+							modulePermission={module.settings?.permission}
 							updateOptions={dataFieldsUpdateOptions}
 							refetch={refetch}
 						/>
@@ -205,6 +217,22 @@ const Module = () => {
 							dataFields={(module.data_fields || []) as Field[]}
 							additionnalFields={additionalFields}
 							updateOptions={filtersUpdateOptions}
+							refetch={refetch}
+						/>
+					)}
+					{pageState.value === "permissions" && (
+						<AppModuleEditPermissions
+							objectId={module.objectId}
+							moduleId={module.objectId}
+							initialSettings={module.settings}
+							refetch={refetch}
+						/>
+					)}
+					{pageState.value === "subpages" && subpages.length > 0 && (
+						<AppModuleEditPages
+							objectId={module.objectId}
+							pages={subpages}
+							initialSettings={module.settings}
 							refetch={refetch}
 						/>
 					)}

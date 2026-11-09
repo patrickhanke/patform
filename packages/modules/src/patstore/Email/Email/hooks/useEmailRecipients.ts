@@ -20,7 +20,7 @@ const EMPTY_RECIPIENTS: {
 };
 
 export const useEmailRecipients = (recipientListId?: unknown) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const listId = resolveRecipientListId(recipientListId);
 
 	const baseFilters = useMemo<Filter[]>(

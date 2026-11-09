@@ -60,7 +60,7 @@ const SignUps: FC<{
 	people,
 	refetchChampionships
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const { updateData } = useDataHandlerSecure();
 	const [edit, setEdit] = useState<SignupRow | null>(null);

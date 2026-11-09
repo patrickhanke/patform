@@ -29,7 +29,7 @@ type ImportedUser = {
 
 export default function FileImporter() {
 	const [data, setData] = useState<ImportedUser[]>([]);
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const handleFileUpload = (e) => {
 		const file = e.target.files[0];
 		if (!file) return;

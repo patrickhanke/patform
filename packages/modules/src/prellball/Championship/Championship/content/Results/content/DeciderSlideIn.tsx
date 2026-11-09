@@ -48,7 +48,7 @@ const DeciderSlideIn: FC<{
 	onClose,
 	onCreate
 }) => {
-	const { project } = useAppContext();
+	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const [pass, setPass] = useState(1);
 	const [field, setField] = useState(1);

@@ -13,7 +13,7 @@ const UserSettings: FC<UserSettingsProps> = ({
 }) => {
   const { updateData } = useDataHandler();
   const [data, setData] = useState<PatstoreUser>(user);
-  const { project } = useAppContext();
+  const { project } = useAppContext<"patflow">();
 
   const [loading, setLoading] = useState(false);
 
