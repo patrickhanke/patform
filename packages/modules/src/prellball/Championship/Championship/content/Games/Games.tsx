@@ -118,13 +118,13 @@ const Games: FC<ChampionshipTabProps> = ({ related }) => {
 	return (
 		<div className="flex col a-st gap-sm" style={{ width: "100%" }}>
 			<div className="flex row a-ce gap-sm" style={{ flexWrap: "wrap" }}>
-				<button
+				{/* <button
 					type="button"
 					className="full_button sm"
 					onClick={() => setGenerate(true)}
 				>
 					Spiele generieren
-				</button>
+				</button> */}
 				<CreateButton
 					text="Spiel hinzufügen"
 					size="small"

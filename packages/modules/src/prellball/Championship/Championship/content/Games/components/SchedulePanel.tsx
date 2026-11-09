@@ -320,7 +320,7 @@ const SchedulePanel: FC<{
 			</div>
 
 			<div className={styles.section}>
-				<h3>Optimieren</h3>
+				<h3>Optimieren (Coming Soon)</h3>
 				<p className={styles.muted}>
 					Erst werden harte Regeln erfüllt, dann Pausen verbessert.
 					Gesperrte Spiele bleiben stehen.
@@ -329,6 +329,7 @@ const SchedulePanel: FC<{
 					type="button"
 					className="full_button sm"
 					onClick={() => onOptimize(1)}
+					disabled
 				>
 					Spieltag neu verteilen
 				</button>
@@ -338,6 +339,7 @@ const SchedulePanel: FC<{
 						type="number"
 						min={1}
 						value={fromPass}
+						disabled
 						onChange={(event) =>
 							setFromPass(
 								Math.max(1, Number(event.target.value) || 1)
@@ -348,6 +350,7 @@ const SchedulePanel: FC<{
 						type="button"
 						className="full_button sm light"
 						onClick={() => onOptimize(fromPass)}
+						disabled
 					>
 						neu berechnen
 					</button>
@@ -357,6 +360,7 @@ const SchedulePanel: FC<{
 						type="button"
 						className="full_button sm light"
 						onClick={onAssignReferees}
+						disabled
 					>
 						Schiedsrichter zuweisen
 					</button>
@@ -364,6 +368,7 @@ const SchedulePanel: FC<{
 						type="button"
 						className="full_button sm light"
 						onClick={onRenumber}
+						disabled
 					>
 						Spielnummern nach Plan
 					</button>

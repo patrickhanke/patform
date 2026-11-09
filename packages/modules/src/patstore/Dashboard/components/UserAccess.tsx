@@ -17,20 +17,25 @@ const UserAccess = () => {
 			(userRole?.access || [])
 				.filter((grant) => isActiveAccessGrant(grant))
 				.flatMap((grant) =>
-				modulesForAccessClass(modules, grant.className).flatMap((module) => {
-					const href = recordAccessPath(module.path, grant.id);
-					if (!href) return [];
-					return [
-						{
-							href,
-							className: grant.className,
-							id: grant.id,
-							moduleName: module.name || grant.className,
-							expiresAt: grant.expires_at
+					modulesForAccessClass(modules, grant.className).flatMap(
+						(module) => {
+							const href = recordAccessPath(
+								module.path,
+								grant.id
+							);
+							if (!href) return [];
+							return [
+								{
+									href,
+									className: grant.className,
+									id: grant.id,
+									moduleName: module.name || grant.className,
+									expiresAt: grant.expires_at
+								}
+							];
 						}
-					];
-				})
-			),
+					)
+				),
 		[userRole?.access, modules]
 	);
 
