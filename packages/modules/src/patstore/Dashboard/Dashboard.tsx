@@ -1,55 +1,36 @@
 "use client";
 
-import { useContext, useMemo, useState } from "react";
-import { Divider, HtmlContent, Page, SwitchButtons } from "@repo/ui";
+import { useContext, useMemo } from "react";
+import { Divider, HtmlContent, Page } from "@repo/ui";
 import { PatstoreAppContext, useAppContext } from "@repo/provider";
-import { SiteState } from "@repo/types";
-import UserAccess from "./components/UserAccess";
 import UserAccessLink from "./components/UserAccessLink";
 import { userModulePermissions } from "./functions/userModulePermissions";
-
-const dashboardViews: SiteState[] = [
-	{ label: "Übersicht", value: "overview" },
-	{ label: "Berechtigungen", value: "permissions" }
-];
 
 const Dashboard = () => {
 	const { project } = useAppContext<"patstore">();
 	const { user, modules } = useContext(PatstoreAppContext);
 	const dashboardContent = project?.data?.dashboard?.content;
-	const [view, setView] = useState<SiteState>(dashboardViews[0]);
 
 	const permissions = useMemo(
 		() => userModulePermissions(modules, user?.objectId),
 		[modules, user?.objectId]
 	);
-	const showPermissions = view.value === "permissions" && permissions.length > 0;
+	const showPermissions = permissions.length > 0;
 
 	return (
 		<Page title="Dashboard">
-			{permissions.length > 0 && (
-				<SwitchButtons
-					buttonStates={dashboardViews}
-					currentStates={view}
-					changeHandler={setView}
-				/>
-			)}
-			{showPermissions ? (
-				<div className="content_element flex col gap-sm">
-					<h2>Berechtigungen</h2>
-					<div className="flex col gap-xs">
-						{permissions.map((item) => (
-							<UserAccessLink key={item.href} {...item} />
-						))}
-					</div>
-				</div>
-			) : (
+			{dashboardContent && <HtmlContent content={dashboardContent} />}
+			{showPermissions && (
 				<>
-					<div className="flex col gap-md">
-						<UserAccess />
+					<h2>Berechtigungen</h2>
+					<Divider showLine={false} />
+					<div className="content_element flex col gap-sm">
+						<div className="flex col gap-xs">
+							{permissions.map((item) => (
+								<UserAccessLink key={item.href} {...item} />
+							))}
+						</div>
 					</div>
-					<Divider />
-					{dashboardContent && <HtmlContent content={dashboardContent} />}
 				</>
 			)}
 		</Page>
