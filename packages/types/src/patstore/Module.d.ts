@@ -1,6 +1,9 @@
 ﻿import { FilterOperator } from "@repo/ui";
 import { Field } from "@repo/types";
-import type { FieldPermission, ModulePermission } from "../general/ui/Permission";
+import type {
+	FieldPermission,
+	ModulePermission
+} from "../general/ui/Permission";
 import { LanguageValue, PatstoreProject } from "./Project";
 import { SavingsGroupModuleData } from "./SavingsGroup";
 

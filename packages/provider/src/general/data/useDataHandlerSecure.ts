@@ -3,7 +3,7 @@
 import { useCallback, useContext, useState } from "react";
 import { useDataContext } from "./DataContext";
 import { PatstoreAppContext } from "../../patstore";
-import useNetlifyHooks from "./hooks/useNetlifyHooks";
+import requestDeployWebhook from "./requestDeployWebhook";
 import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
 import { CombinedGraphQLErrors  } from "@apollo/client";
@@ -18,7 +18,6 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 	const [loading, setLoading] = useState(false);
 	const { feedbackHandler } = useDataContext();
 	const { user, userLoading, project } = useContext(PatstoreAppContext);
-	const netlifyHookHandler = useNetlifyHooks();
 
 	// Get the API base URL (should be set in your environment)
 	const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "/api";
@@ -93,7 +92,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 				}
 			}
 
-			netlifyHookHandler(className);
+			requestDeployWebhook(className, project?.objectId);
 			setLoading(false);
 			return data;
 		},
@@ -150,11 +149,11 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 				});
 			}
 
-			netlifyHookHandler(className);
+			requestDeployWebhook(className, project?.objectId);
 			setLoading(false);
 			setFeedback("", "", new Date());
 		},
-		[user, useMasterKey]
+		[user, project, useMasterKey]
 	);
 
 	const createData = useCallback(
@@ -214,7 +213,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 				});
 			}
 
-			netlifyHookHandler(className);
+			requestDeployWebhook(className, project?.objectId);
 			setLoading(false);
 			return data;
 		},
@@ -427,7 +426,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 						});
 					});
 			}
-			netlifyHookHandler(className);
+			requestDeployWebhook(className, project?.objectId);
 			return uploadedFile;
 		},
 		[user, project]

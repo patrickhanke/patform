@@ -1,8 +1,9 @@
 import "server-only";
 import * as dataRoute from "./dataRoute";
+import * as deployHookRoute from "./deployHookRoute";
 import * as graphqlRoute from "./graphqlRoute";
 
-export { dataRoute, graphqlRoute };
+export { dataRoute, deployHookRoute, graphqlRoute };
 export * from "./access";
 export * from "./sashido";
 export {

@@ -6,7 +6,9 @@ dotenv.config({ path: path.join(__dirname, "../../.env") });
 /** @typedef {Record<string, string | undefined>} EnvMap */
 
 // Every key listed here is inlined into client bundles by Next.js. Never add secrets
-// (e.g. SASHIDO_MASTER_KEY) — server code reads those at runtime via `@repo/provider/server`.
+// (e.g. SASHIDO_MASTER_KEY, COOLIFY_WEBHOOK_TOKEN) — server code reads those at
+// runtime. `applyServerEnv` copies server-only keys onto `process.env` without
+// putting them in next.config `env`.
 const SHARED_ENV_KEYS = [
 	"SASHIDO_API_URL",
 	"SASHIDO_GQL_URL",
@@ -26,6 +28,10 @@ const SHARED_ENV_KEYS = [
 	"GOOGLE_MAPS_API_KEY",
 	"GCMS_SENDER_ID",
 ];
+
+// Resolved from `{PREFIX}_{KEY}` or `{KEY}` and assigned to `process.env[KEY]`.
+// Kept out of `createAppEnv` so Next.js does not inline the values into the client bundle.
+const SERVER_ENV_KEYS = ["COOLIFY_WEBHOOK_TOKEN"];
 
 /**
  * Maps `{PREFIX}_{KEY}` from the root `.env` to runtime `{KEY}` for Next.js.
@@ -84,6 +90,20 @@ function getSashidoFileHostname(prefix) {
 }
 
 /**
+ * Maps server-only secrets onto runtime `process.env` names.
+ * Call from next.config.js. Do not pass these keys to `createAppEnv`.
+ * @param {string} prefix e.g. `PATFLOW` or `PATSTORE`
+ */
+function applyServerEnv(prefix) {
+	for (const key of SERVER_ENV_KEYS) {
+		const value = getPrefixedEnv(prefix, key);
+		if (value !== undefined) {
+			process.env[key] = value;
+		}
+	}
+}
+
+/**
  * @param {string} prefix
  */
 function createImageRemotePatterns(prefix) {
@@ -112,6 +132,7 @@ function createImageRemotePatterns(prefix) {
 }
 
 module.exports = {
+	applyServerEnv,
 	createAppEnv,
 	createImageRemotePatterns,
 	getPrefixedEnv,

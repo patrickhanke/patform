@@ -2,12 +2,15 @@ const path = require("path");
 
 /** @type {import('next').NextConfig} */
 const {
+	applyServerEnv,
 	createAppEnv,
 	createImageRemotePatterns,
 	getPrefixedEnv,
 } = require("../env/createNextEnv");
 
 const APP_PREFIX = "PATFLOW";
+
+applyServerEnv(APP_PREFIX);
 
 const nextConfig = {
 	cacheComponents: true,

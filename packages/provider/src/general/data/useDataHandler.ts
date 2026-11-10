@@ -7,7 +7,7 @@ import { useDataContext } from "./DataContext";
 import compileAxiosError from "./compileAxiosError";
 import { cloneDeep, set } from "lodash-es";
 import { PatstoreAppContext } from "../../patstore";
-import useNetlifyHooks from "./hooks/useNetlifyHooks";
+import requestDeployWebhook from "./requestDeployWebhook";
 import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
 import { CombinedGraphQLErrors } from "@apollo/client";
@@ -74,7 +74,6 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 	const [loading, setLoading] = useState(false);
 	const { feedbackHandler } = useDataContext();
 	const { user, userLoading, project } = useContext(PatstoreAppContext);
-	const netlifyHookHandler = useNetlifyHooks();
 	const updateData = useCallback(
 		async ({
 			className,
@@ -147,7 +146,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 						onError(error.message);
 					}
 				});
-			netlifyHookHandler(className);
+			requestDeployWebhook(className, project?.objectId);
 			setLoading(false);
 			return data;
 		},
@@ -191,11 +190,11 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 				.catch((error) => {
 					feedbackHandler(compileAxiosError(error));
 				});
-			netlifyHookHandler(className);
+			requestDeployWebhook(className, project?.objectId);
 			setLoading(false);
 			setFeedback("", "", new Date());
 		},
-		[user]
+		[user, project]
 	);
 
 	const createData = useCallback(
@@ -260,7 +259,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 				.catch((error) => {
 					feedbackHandler(compileAxiosError(error));
 				});
-			netlifyHookHandler(className);
+			requestDeployWebhook(className, project?.objectId);
 			setLoading(false);
 			return data;
 		},
@@ -474,7 +473,7 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 						});
 					});
 			}
-			netlifyHookHandler(className);
+			requestDeployWebhook(className, project?.objectId);
 			return uploadedFile;
 		},
 		[user, project]
