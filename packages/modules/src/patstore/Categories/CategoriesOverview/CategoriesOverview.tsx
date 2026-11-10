@@ -1,7 +1,14 @@
 "use client";
 
 import { useContext, useMemo, useState } from "react";
-import { Modal, Page, Table, useCreateColumns, usePageData } from "@repo/ui";
+import {
+	generateColumnsFromFields,
+	Modal,
+	Page,
+	Table,
+	useCreateColumns,
+	usePageData
+} from "@repo/ui";
 import { CategoryClass, LanguageValue, ModuleOverviewProps } from "@repo/types";
 import { PatstoreAppContext, useFindData } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
@@ -54,17 +61,7 @@ const CategoriesOverview = ({
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
 
 	const columns = useCreateColumns<CategoryClass>({
-		data: [
-			{ id: "image", type: "edit_image", label: "Bild" },
-			{ id: "objectId", type: "string", label: "ID" },
-			{ id: "title", type: "edit_string", label: "Name" },
-			{
-				id: "description",
-				type: "edit_textfield",
-				label: "Beschreibung"
-			},
-			{ id: "color", type: "edit_color", label: "Farbe" }
-		],
+		data: generateColumnsFromFields(module.fields),
 		fields: module.data_fields,
 		className: "Category",
 		refetch,
