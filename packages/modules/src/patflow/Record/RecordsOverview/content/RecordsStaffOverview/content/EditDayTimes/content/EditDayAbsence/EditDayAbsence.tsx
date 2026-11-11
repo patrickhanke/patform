@@ -250,166 +250,171 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				{absenceLoading || !formReady ? (
 					<LoadingIndicator />
 				) : (
-				<form className="flex col gap-lg">
-					<div>
-						<label htmlFor="worker">Mitarbeiter</label>
-						<DisplayWorker workerId={workerId} />
-					</div>
-					{absenceState.approved_by && (
+					<form className="flex col gap-lg">
 						<div>
-							<label htmlFor="approved_by">Genehmigt von</label>
-							<DisplayWorker
-								workerId={absence?.approved_by?.objectId}
+							<label htmlFor="worker">Mitarbeiter</label>
+							<DisplayWorker workerId={workerId} />
+						</div>
+						{absenceState.approved_by && (
+							<div>
+								<label htmlFor="approved_by">
+									Genehmigt von
+								</label>
+								<DisplayWorker
+									workerId={absence?.approved_by?.objectId}
+								/>
+							</div>
+						)}
+						<div>
+							<Select
+								key={absenceState.type}
+								value={absenceState.type}
+								options={absence_type_options}
+								onChange={(value) =>
+									setAbsenceState({
+										...absenceState,
+										type: value.value
+									})
+								}
+								placeholder="Art der Abwesenheit"
+								label="Art der Abwesenheit"
+								width={300}
+								isDisabled={type === "edit"}
 							/>
 						</div>
-					)}
-					<div>
-						<Select
-							key={absenceState.type}
-							value={absenceState.type}
-							options={absence_type_options}
-							onChange={(value) =>
-								setAbsenceState({
-									...absenceState,
-									type: value.value
-								})
-							}
-							placeholder="Art der Abwesenheit"
-							label="Art der Abwesenheit"
-							width={300}
-							isDisabled={type === "edit"}
-						/>
-					</div>
-					<div>
-						<div className={"label"}>Ganztägig</div>
-						<div className="divider small" />
-						<StatelessToggle
-							onChange={(value) => {
-								if (typeof value === "boolean") {
-									if (value === true) {
-										setIsFull(true);
-										setAbsenceState({
-											...absenceState,
-											start_date: date,
-											end_date: date
-										});
-									} else {
-										setIsFull(false);
-										setAbsenceState({
-											...absenceState,
-											start_date:
-												default_time?.start || date,
-											end_date: default_time?.end || date
-										});
-									}
-								}
-							}}
-							value={isFull}
-							disabled={type === "edit"}
-						/>
-					</div>
-					<div>
-						<label htmlFor="start">Anfangsdatum</label>
-						<div className="light_box">
-							<input
-								key={isFull ? "start-date" : "start-datetime"}
-								aria-label="Anfangsdatum"
-								id="dstart"
-								name="dstart"
-								type={isFull ? "date" : "datetime-local"}
-								style={{ width: 300 }}
-								onChange={(event) => {
-									if (event.target.value) {
-										debouncedStartChange(
-											"start_date",
-											event.target.value
-										);
+						<div>
+							<div className={"label"}>Ganztägig</div>
+							<div className="divider small" />
+							<StatelessToggle
+								onChange={(value) => {
+									if (typeof value === "boolean") {
+										if (value === true) {
+											setIsFull(true);
+											setAbsenceState({
+												...absenceState,
+												start_date: date,
+												end_date: date
+											});
+										} else {
+											setIsFull(false);
+											setAbsenceState({
+												...absenceState,
+												start_date:
+													default_time?.start || date,
+												end_date:
+													default_time?.end || date
+											});
+										}
 									}
 								}}
-								defaultValue={
-									isFull
-										? toDateInputValue(
-												absenceState.start_date
-											)
-										: toDateTimeLocalValue(
-												absenceState.start_date
-											)
-								}
-								step={undefined}
-								disabled={false}
+								value={isFull}
+								disabled={type === "edit"}
 							/>
 						</div>
-					</div>
-					<div>
-						<label htmlFor="end">Enddatum</label>
-						<div className="light_box">
-							<input
-								key={isFull ? "end-date" : "end-datetime"}
-								aria-label="Enddatum"
-								id="end"
-								name="end"
-								type={isFull ? "date" : "datetime-local"}
-								style={{ width: 300 }}
-								onChange={(event) => {
-									if (event.target.value) {
-										debouncedEndChange(
-											"end_date",
-											event.target.value
-										);
+						<div>
+							<label htmlFor="start">Anfangsdatum</label>
+							<div className="light_box">
+								<input
+									key={
+										isFull ? "start-date" : "start-datetime"
 									}
-								}}
-								defaultValue={
-									isFull
-										? toDateInputValue(
-												absenceState.end_date
-											)
-										: toDateTimeLocalValue(
-												absenceState.end_date
-											)
-								}
-								step={undefined}
-								disabled={!absenceState.start_date}
-							/>
+									aria-label="Anfangsdatum"
+									id="dstart"
+									name="dstart"
+									type={isFull ? "date" : "datetime-local"}
+									style={{ width: 300 }}
+									onChange={(event) => {
+										if (event.target.value) {
+											debouncedStartChange(
+												"start_date",
+												event.target.value
+											);
+										}
+									}}
+									defaultValue={
+										isFull
+											? toDateInputValue(
+													absenceState.start_date
+												)
+											: toDateTimeLocalValue(
+													absenceState.start_date
+												)
+									}
+									step={undefined}
+									disabled={false}
+								/>
+							</div>
 						</div>
-					</div>
+						<div>
+							<label htmlFor="end">Enddatum</label>
+							<div className="light_box">
+								<input
+									key={isFull ? "end-date" : "end-datetime"}
+									aria-label="Enddatum"
+									id="end"
+									name="end"
+									type={isFull ? "date" : "datetime-local"}
+									style={{ width: 300 }}
+									onChange={(event) => {
+										if (event.target.value) {
+											debouncedEndChange(
+												"end_date",
+												event.target.value
+											);
+										}
+									}}
+									defaultValue={
+										isFull
+											? toDateInputValue(
+													absenceState.end_date
+												)
+											: toDateTimeLocalValue(
+													absenceState.end_date
+												)
+									}
+									step={undefined}
+									disabled={!absenceState.start_date}
+								/>
+							</div>
+						</div>
 
-					<div style={{ position: "relative" }}>
-						<Select
-							value={absenceState.state}
-							options={absence_state_options}
-							onChange={(value) =>
-								setAbsenceState({
-									...absenceState,
-									state: value.value
-								})
-							}
-							placeholder="Status"
-							label="Status"
-							width={300}
-							isDisabled={
-								!absenceState.end_date ||
-								!absenceState.start_date ||
-								absenceState.state === "approved"
-							}
-						/>
-					</div>
-					<div>
-						<TextInput
-							id="comment"
-							defaultValue={absenceState?.comment}
-							onChange={(value) =>
-								setAbsenceState({
-									...absenceState,
-									comment: value
-								})
-							}
-							label="Kommentar"
-							placeholder="Kommentar"
-							isTextArea
-							width={"300px"}
-						/>
-					</div>
-				</form>
+						<div style={{ position: "relative" }}>
+							<Select
+								value={absenceState.state}
+								options={absence_state_options}
+								onChange={(value) =>
+									setAbsenceState({
+										...absenceState,
+										state: value.value
+									})
+								}
+								placeholder="Status"
+								label="Status"
+								width={300}
+								isDisabled={
+									!absenceState.end_date ||
+									!absenceState.start_date ||
+									absenceState.state === "approved"
+								}
+							/>
+						</div>
+						<div>
+							<TextInput
+								id="comment"
+								defaultValue={absenceState?.comment}
+								onChange={(value) =>
+									setAbsenceState({
+										...absenceState,
+										comment: value
+									})
+								}
+								label="Kommentar"
+								placeholder="Kommentar"
+								isTextArea
+								width={"300px"}
+							/>
+						</div>
+					</form>
 				)}
 			</SlideIn>
 			<Modal

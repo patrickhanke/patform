@@ -111,10 +111,11 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 
 		if (pageState !== "active") {
 			col.splice(2, 0, {
-				accessorFn: (task) =>
-					task.executed_at
-						? `${getDateString(task.executed_at?.iso).date} - ${getDateString(task.executed_at?.iso).time}`
-						: "-",
+				accessorFn: (task) => {
+					return task.executed_at
+						? `${getDateString(task.executed_at).date} - ${getDateString(task.executed_at).time}`
+						: "-";
+				},
 				header: () => {
 					return <span>Ausgeführt am</span>;
 				},
@@ -124,10 +125,10 @@ const useTableColumns = ({ pageState }: UseTaskColumnsProps) => {
 				enableSorting: true,
 				sortingFn: (rowA, rowB) => {
 					const dateA = rowA.original.executed_at
-						? new Date(rowA.original.executed_at?.iso).getTime()
+						? new Date(rowA.original.executed_at).getTime()
 						: 0;
 					const dateB = rowB.original.executed_at
-						? new Date(rowB.original.executed_at?.iso).getTime()
+						? new Date(rowB.original.executed_at).getTime()
 						: 0;
 					return dateA - dateB;
 					// return 0;
