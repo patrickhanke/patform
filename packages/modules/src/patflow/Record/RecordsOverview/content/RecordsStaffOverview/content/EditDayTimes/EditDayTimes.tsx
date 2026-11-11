@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import { EditDayTimesProps } from "./types";
 import {
 	absence_type_options,
@@ -9,7 +9,6 @@ import {
 } from "@repo/provider";
 import { IconButton, StateDisplay } from "@repo/ui";
 import { getDateString } from "@repo/provider";
-import { EditDayAbsence } from "./content";
 import { isArray } from "lodash-es";
 
 const EditDayTimes: FC<EditDayTimesProps> = ({
@@ -27,9 +26,22 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 	label,
 	isWorkingDay,
 	hasRecordForDate,
-	onOpenWorkEditor
+	onOpenWorkEditor,
+	onOpenAbsenceEditor
 }) => {
-	const [editAbsence, setEditAbsence] = useState(false);
+	const openAbsenceEditor = () => {
+		onOpenAbsenceEditor({
+			key: `${date}-${dayId ?? "new"}-${absenceId ?? "create"}`,
+			date,
+			dayId,
+			absenceId,
+			times,
+			days,
+			records,
+			workerId: userId,
+			refetch
+		});
+	};
 
 	const openWorkEditor = (
 		editorInitialTime?: EditDayTimesProps["initialTime"]
@@ -110,7 +122,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 					<StateDisplay
 						onClick={() => {
 							if (absenceId) {
-								setEditAbsence(true);
+								openAbsenceEditor();
 							} else {
 								openWorkEditor(initialTime);
 							}
@@ -123,7 +135,7 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 						<IconButton
 							icon="plus"
 							onClick={() => {
-								setEditAbsence(true);
+								openAbsenceEditor();
 							}}
 							text="Abwesenheit"
 							color="dark"
@@ -147,19 +159,6 @@ const EditDayTimes: FC<EditDayTimesProps> = ({
 					</>
 				)}
 			</div>
-			<EditDayAbsence
-				date={date}
-				dayId={dayId}
-				type={absenceId ? "edit" : "create"}
-				times={times}
-				days={days}
-				absenceId={absenceId}
-				records={records}
-				workerId={userId}
-				isOpen={editAbsence}
-				setIsOpen={setEditAbsence}
-				refetch={refetch}
-			/>
 		</>
 	);
 };

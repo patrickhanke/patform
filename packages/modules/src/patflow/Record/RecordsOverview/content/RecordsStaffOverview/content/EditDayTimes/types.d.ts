@@ -20,6 +20,20 @@ export type WorkTimeEditorSession = {
 
 export type OpenWorkTimeEditor = (session: WorkTimeEditorSession) => void;
 
+export type AbsenceEditorSession = {
+	key: string;
+	date: string;
+	dayId?: string;
+	absenceId?: string;
+	times: DayDataTime[] | undefined;
+	days?: Day[];
+	records: Record[];
+	workerId: string;
+	refetch: ApolloRefetch;
+};
+
+export type OpenAbsenceEditor = (session: AbsenceEditorSession) => void;
+
 export type EditDayTimesProps = {
 	type: "create" | "edit";
 	date: string;
@@ -36,6 +50,7 @@ export type EditDayTimesProps = {
 	isWorkingDay: boolean;
 	hasRecordForDate: boolean;
 	onOpenWorkEditor: OpenWorkTimeEditor;
+	onOpenAbsenceEditor: OpenAbsenceEditor;
 };
 
 export type EditTimeProps = {

@@ -13,6 +13,17 @@ const useAbsenceDays: UseAbsenceDaysHook = ({
 	const intervalDays = useMemo(() => {
 		if (!absence || !days || !absence.start_date || !absence.end_date)
 			return [];
+
+		const startTime = new Date(absence.start_date).getTime();
+		const endTime = new Date(absence.end_date).getTime();
+		if (
+			Number.isNaN(startTime) ||
+			Number.isNaN(endTime) ||
+			startTime > endTime
+		) {
+			return [];
+		}
+
 		const interval = createIntervalFromTimes(
 			absence.start_date,
 			absence.end_date
@@ -81,7 +92,7 @@ const useAbsenceDays: UseAbsenceDaysHook = ({
 		return intervalArray.sort(
 			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
 		);
-	}, [days, absence]);
+	}, [days, absence, isFull]);
 
 	return {
 		intervalDays,

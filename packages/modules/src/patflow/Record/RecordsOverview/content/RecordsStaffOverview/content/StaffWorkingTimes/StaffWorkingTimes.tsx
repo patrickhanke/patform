@@ -16,7 +16,11 @@ import {
 } from "@repo/provider";
 import { set, get, cloneDeep, isArray } from "lodash-es";
 import EditDayTimesWorkSlideIn from "../EditDayTimes/EditDayTimesWorkSlideIn";
-import { WorkTimeEditorSession } from "../EditDayTimes/types";
+import {
+	AbsenceEditorSession,
+	WorkTimeEditorSession
+} from "../EditDayTimes/types";
+import { EditDayAbsence } from "../EditDayTimes/content";
 
 const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	days,
@@ -78,6 +82,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	const [workEditor, setWorkEditor] = useState<WorkTimeEditorSession | null>(
 		null
 	);
+	const [absenceEditor, setAbsenceEditor] =
+		useState<AbsenceEditorSession | null>(null);
 
 	const openWorkEditor = useCallback((session: WorkTimeEditorSession) => {
 		setWorkEditor(session);
@@ -87,13 +93,22 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 		setWorkEditor(null);
 	}, []);
 
+	const openAbsenceEditor = useCallback((session: AbsenceEditorSession) => {
+		setAbsenceEditor(session);
+	}, []);
+
+	const closeAbsenceEditor = useCallback(() => {
+		setAbsenceEditor(null);
+	}, []);
+
 	const { columns, secondaryRow } = useTableColumns({
 		refetch,
 		userId: selectedUser?.value,
 		records,
 		holidays: currentHolidays,
 		days,
-		onOpenWorkEditor: openWorkEditor
+		onOpenWorkEditor: openWorkEditor,
+		onOpenAbsenceEditor: openAbsenceEditor
 	});
 
 	const tableData = useMemo(() => {
@@ -236,6 +251,22 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 					session={workEditor}
 					onClose={closeWorkEditor}
 					userId={selectedUser.value}
+				/>
+			)}
+			{absenceEditor && (
+				<EditDayAbsence
+					key={absenceEditor.key}
+					type={absenceEditor.absenceId ? "edit" : "create"}
+					date={absenceEditor.date}
+					dayId={absenceEditor.dayId}
+					absenceId={absenceEditor.absenceId}
+					times={absenceEditor.times}
+					days={absenceEditor.days}
+					records={absenceEditor.records}
+					workerId={absenceEditor.workerId}
+					refetch={absenceEditor.refetch}
+					isOpen
+					setIsOpen={closeAbsenceEditor}
 				/>
 			)}
 		</div>

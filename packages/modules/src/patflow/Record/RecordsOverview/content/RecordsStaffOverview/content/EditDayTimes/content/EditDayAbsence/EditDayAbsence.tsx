@@ -2,7 +2,6 @@
 
 import { FC, useEffect, useState, useCallback, useContext } from "react";
 import {
-	DatePicker,
 	DisplayWorker,
 	Divider,
 	LoadingIndicator,
@@ -12,6 +11,7 @@ import {
 	StatelessToggle,
 	TextInput
 } from "@repo/ui";
+import { useDebounceCallback } from "usehooks-ts";
 import { EditDayAbsenceProps, InitialAbsence } from "./types";
 import {
 	absence_state_options,
@@ -27,6 +27,32 @@ import { useAbsenceDays, useCreateAbsence, useErrors } from "./hooks";
 import AbsenceDay from "./components/AbsenceDay";
 import { ErrorMessage } from "@repo/types";
 import { outOfBounds } from "./functions";
+
+const toDateInputValue = (value: string): string => {
+	if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+		return value;
+	}
+	if (value.includes("T")) {
+		return value.slice(0, 10);
+	}
+	return "";
+};
+
+// datetime-local rejects timezone suffixes and millisecond precision, and
+// Chrome then fires a change that rewrites the stored value.
+const toDateTimeLocalValue = (value: string): string => {
+	if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(value)) {
+		return value;
+	}
+
+	const parsed = new Date(value);
+	if (Number.isNaN(parsed.getTime())) {
+		return "";
+	}
+
+	const pad = (part: number) => String(part).padStart(2, "0");
+	return `${parsed.getFullYear()}-${pad(parsed.getMonth() + 1)}-${pad(parsed.getDate())}T${pad(parsed.getHours())}:${pad(parsed.getMinutes())}`;
+};
 
 const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 	type,
@@ -70,6 +96,37 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		start_date: date,
 		end_date: date
 	});
+
+	const updateAbsenceDate = useCallback(
+		(key: "start_date" | "end_date", value: string) => {
+			if (!value) {
+				return;
+			}
+			if (outOfBounds({ date: value, year })) {
+				setErrors((current) => {
+					if (current.some((error) => error.id === "out_of_bounds")) {
+						return current;
+					}
+					return [
+						...current,
+						{
+							id: "out_of_bounds",
+							key: "out_of_bounds",
+							message: "Das Datum liegt außerhalb des Jahres"
+						}
+					];
+				});
+				return;
+			}
+			setAbsenceState((current) => ({
+				...current,
+				[key]: value
+			}));
+		},
+		[year]
+	);
+	const debouncedStartChange = useDebounceCallback(updateAbsenceDate, 600);
+	const debouncedEndChange = useDebounceCallback(updateAbsenceDate, 600);
 
 	const { intervalDays, daysData } = useAbsenceDays({
 		absence: absenceState || undefined,
@@ -138,7 +195,10 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 
 	useEffect(() => {
 		if (absence && !absenceState.objectId) {
-			if (absence.start_date.length > 10) {
+			if (
+				typeof absence.start_date === "string" &&
+				absence.start_date.length > 10
+			) {
 				setIsFull(false);
 			}
 			setAbsenceState(absence);
@@ -171,9 +231,7 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 		</div>
 	);
 
-	if (absenceLoading) {
-		return <LoadingIndicator />;
-	}
+	const formReady = type === "create" || Boolean(absenceState.objectId);
 
 	return (
 		<>
@@ -189,6 +247,9 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 				loading={loading}
 				preventClickOutside
 			>
+				{absenceLoading || !formReady ? (
+					<LoadingIndicator />
+				) : (
 				<form className="flex col gap-lg">
 					<div>
 						<label htmlFor="worker">Mitarbeiter</label>
@@ -250,76 +311,64 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 					<div>
 						<label htmlFor="start">Anfangsdatum</label>
 						<div className="light_box">
-							<DatePicker
-								key={absenceState.start_date}
+							<input
+								key={isFull ? "start-date" : "start-datetime"}
+								aria-label="Anfangsdatum"
 								id="dstart"
-								defaultValue={absenceState.start_date}
-								onChange={(value) => {
-									if (value) {
-										if (
-											outOfBounds({ date: value, year })
-										) {
-											setErrors([
-												...errors,
-												{
-													id: "out_of_bounds",
-													key: "out_of_bounds",
-													message:
-														"Das Datum liegt außerhalb des Jahres"
-												}
-											]);
-											return;
-										}
-										setAbsenceState({
-											...absenceState,
-											start_date: value
-										});
+								name="dstart"
+								type={isFull ? "date" : "datetime-local"}
+								style={{ width: 300 }}
+								onChange={(event) => {
+									if (event.target.value) {
+										debouncedStartChange(
+											"start_date",
+											event.target.value
+										);
 									}
 								}}
+								defaultValue={
+									isFull
+										? toDateInputValue(
+												absenceState.start_date
+											)
+										: toDateTimeLocalValue(
+												absenceState.start_date
+											)
+								}
+								step={undefined}
 								disabled={false}
-								disabledDate={isFull === false}
-								type={isFull ? "date" : "datetime"}
-								label=""
-								width={300}
-								onlyDate
 							/>
 						</div>
 					</div>
 					<div>
 						<label htmlFor="end">Enddatum</label>
 						<div className="light_box">
-							<DatePicker
-								key={absenceState.end_date}
+							<input
+								key={isFull ? "end-date" : "end-datetime"}
+								aria-label="Enddatum"
 								id="end"
-								defaultValue={absenceState.end_date}
-								onChange={(value) => {
-									if (value) {
-										if (
-											outOfBounds({ date: value, year })
-										) {
-											setErrors([
-												...errors,
-												{
-													id: "out_of_bounds",
-													key: "out_of_bounds",
-													message:
-														"Das Datum liegt außerhalb des Jahres"
-												}
-											]);
-											return;
-										}
-										setAbsenceState({
-											...absenceState,
-											end_date: value
-										});
+								name="end"
+								type={isFull ? "date" : "datetime-local"}
+								style={{ width: 300 }}
+								onChange={(event) => {
+									if (event.target.value) {
+										debouncedEndChange(
+											"end_date",
+											event.target.value
+										);
 									}
 								}}
+								defaultValue={
+									isFull
+										? toDateInputValue(
+												absenceState.end_date
+											)
+										: toDateTimeLocalValue(
+												absenceState.end_date
+											)
+								}
+								step={undefined}
 								disabled={!absenceState.start_date}
-								disabledDate={isFull === false}
-								type={isFull ? "date" : "datetime"}
-								label=""
-								width={300}
-								onlyDate
 							/>
 						</div>
 					</div>
@@ -361,6 +410,7 @@ const EditDayAbsence: FC<EditDayAbsenceProps> = ({
 						/>
 					</div>
 				</form>
+				)}
 			</SlideIn>
 			<Modal
 				header="Abwesenheit löschen"

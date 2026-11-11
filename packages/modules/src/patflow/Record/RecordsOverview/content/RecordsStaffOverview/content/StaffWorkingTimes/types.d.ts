@@ -1,6 +1,6 @@
 import { ApolloRefetch, months } from "@repo/provider";
 import { AbsenceTime, Day, DayTime } from "@repo/types";
-import { OpenWorkTimeEditor } from "../../EditDayTimes/types";
+import { OpenWorkTimeEditor, OpenAbsenceEditor } from "../../EditDayTimes/types";
 
 export type StaffWorkingTimesProps = {
 	month: (typeof months)[number];
@@ -42,4 +42,5 @@ export type ColumnWorkingTimeProps = {
 	userId: string;
 	records: Record[];
 	onOpenWorkEditor: OpenWorkTimeEditor;
+	onOpenAbsenceEditor: OpenAbsenceEditor;
 };

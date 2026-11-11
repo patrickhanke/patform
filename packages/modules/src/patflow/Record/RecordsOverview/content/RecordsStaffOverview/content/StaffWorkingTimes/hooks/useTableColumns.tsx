@@ -12,7 +12,7 @@ import ColumnWorkingTime from "../components/ColumnWorkingTime";
 import ColumnWorkingHours from "../components/ColumnWorkingHours";
 import { ApolloRefetch, Day, Holiday, Record, Surcharge } from "@repo/types";
 import EditDayTimes from "../../EditDayTimes";
-import { OpenWorkTimeEditor } from "../../EditDayTimes/types";
+import { OpenWorkTimeEditor, OpenAbsenceEditor } from "../../EditDayTimes/types";
 import { DayData } from "../types";
 import ColumnWorkingTarget from "../components/ColumnWorkingTarget";
 import ColumnWorkingSaldo from "../components/ColumnWorkingSaldo";
@@ -27,7 +27,8 @@ const useTableColumns = ({
 	records,
 	holidays,
 	days,
-	onOpenWorkEditor
+	onOpenWorkEditor,
+	onOpenAbsenceEditor
 }: {
 	refetch: ApolloRefetch;
 	userId: string;
@@ -35,6 +36,7 @@ const useTableColumns = ({
 	holidays: Holiday[];
 	days: Day[];
 	onOpenWorkEditor: OpenWorkTimeEditor;
+	onOpenAbsenceEditor: OpenAbsenceEditor;
 }) => {
 	const { projectId } = useContext(UserContext);
 	const { data: surchargeDataRaw } = useFindData({
@@ -113,6 +115,7 @@ const useTableColumns = ({
 						userId={userId}
 						records={records}
 						onOpenWorkEditor={onOpenWorkEditor}
+						onOpenAbsenceEditor={onOpenAbsenceEditor}
 					/>
 				),
 				header: () => <span>Arbeitszeiten</span>,
@@ -198,6 +201,7 @@ const useTableColumns = ({
 						records={records}
 						days={days}
 						onOpenWorkEditor={onOpenWorkEditor}
+						onOpenAbsenceEditor={onOpenAbsenceEditor}
 					/>
 				),
 				header: () => (
@@ -209,7 +213,7 @@ const useTableColumns = ({
 				footer: (info) => info.column.id
 			}
 		],
-		[userId, refetch, surchargeStableKey, holidays, records, days, onOpenWorkEditor]
+		[userId, refetch, surchargeStableKey, holidays, records, days, onOpenWorkEditor, onOpenAbsenceEditor]
 	);
 
 	return { columns, secondaryRow };

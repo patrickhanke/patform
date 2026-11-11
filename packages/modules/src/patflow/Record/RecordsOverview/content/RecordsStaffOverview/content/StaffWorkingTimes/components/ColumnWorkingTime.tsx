@@ -16,7 +16,8 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 	refetch,
 	userId,
 	records,
-	onOpenWorkEditor
+	onOpenWorkEditor,
+	onOpenAbsenceEditor
 }) => {
 	const isEditable = true;
 	const hasRecordForDate = dateHasRecord(date, records);
@@ -81,6 +82,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 										color={getColor(timeValue)}
 										label={getLabel(timeValue)}
 										onOpenWorkEditor={onOpenWorkEditor}
+										onOpenAbsenceEditor={onOpenAbsenceEditor}
 									/>
 								) : (
 									<StateDisplay
@@ -114,6 +116,7 @@ const ColumnWorkingTime: FC<ColumnWorkingTimeProps> = ({
 										userId={userId}
 										records={records}
 										onOpenWorkEditor={onOpenWorkEditor}
+										onOpenAbsenceEditor={onOpenAbsenceEditor}
 									/>
 								) : (
 									<StateDisplay

@@ -10,7 +10,7 @@ import {
 	usePageData
 } from "@repo/ui";
 import { CategoryClass, LanguageValue, ModuleOverviewProps } from "@repo/types";
-import { PatstoreAppContext, useFindData } from "@repo/provider";
+import { PatstoreAppContext, useFindModuleData } from "@repo/provider";
 import deleteModalInitialValues from "./constants/deleteModalInitialValues";
 import CreateCategory from "./components/CreateCategory";
 
@@ -29,19 +29,8 @@ const CategoriesOverview = ({
 	);
 
 	const [language, setLanguage] = useState<LanguageValue>(defaultLanguage);
-	const { data: categories, refetch } = useFindData({
-		objectName: "Category",
-		fields: [
-			"objectId",
-			"title",
-			"image",
-			"createdAt",
-			"data",
-			"color",
-			"categories",
-			"description",
-			...(defaultLanguage && languages.length > 1 ? ["translations"] : [])
-		],
+	const { data: categories, refetch } = useFindModuleData<CategoryClass>({
+		module,
 		filters: activeState?.value
 			? [
 					{
@@ -55,7 +44,7 @@ const CategoriesOverview = ({
 		limit: 30,
 		skip: 0,
 		order: "createdAt_DESC",
-		moduleId: currentModule?.objectId
+		fetchTranslations: defaultLanguage && languages.length > 1
 	});
 
 	const [deleteModal, setDeleteModal] = useState(deleteModalInitialValues);
