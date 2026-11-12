@@ -69,7 +69,6 @@ const pagesFor = (games: ChampionshipGame[], ctx: CardContext) => {
 			index += 1;
 		}
 	}
-	console.log(pages);
 	return pages;
 };
 
@@ -95,7 +94,8 @@ const GameSheet: FC<{
 	title: string;
 	season: string;
 	ctx: CardContext;
-}> = ({ game, index, title, season, ctx }) => {
+	pagesLength: number;
+}> = ({ game, index, title, season, ctx, pagesLength }) => {
 	if (game.fillPlayers && game.page === 2) {
 		return (
 			<div>
@@ -156,7 +156,9 @@ const GameSheet: FC<{
 				</div>
 			</div>
 			{index === 0 ? <CutLine full={Boolean(game.fillPlayers)} /> : null}
-			{index === 1 ? <div className={styles.pageBreak} /> : null}
+			{index === pagesLength - 1 ? (
+				<div className={styles.pageBreak} />
+			) : null}
 		</div>
 	);
 };
@@ -183,6 +185,7 @@ const GameCard = forwardRef<
 							title={title}
 							season={season}
 							ctx={ctx}
+							pagesLength={page.length}
 						/>
 					))}
 				</div>
