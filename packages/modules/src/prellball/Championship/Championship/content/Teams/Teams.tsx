@@ -17,6 +17,10 @@ const Teams: FC<ChampionshipTabProps> = ({ related }) => {
 	if (!page) return null;
 	const divisionIds = selectedDivisionIds(page.categories, divisions);
 
+	console.log(page);
+	console.log(divisions);
+	console.log(divisionIds);
+
 	const allowSecondary = page.settings?.secondary_teams || false;
 
 	const replaceSignup = (signup: ChampionshipSignUp) => {
@@ -38,8 +42,15 @@ const Teams: FC<ChampionshipTabProps> = ({ related }) => {
 			style={{ flexWrap: "wrap" }}
 		>
 			{divisionIds.map((division) => {
+				const div = divisions.find((d) => d.objectId === division);
+				if (!div) return null;
 				const signups = page.data.sign_ups
-					.filter((signup) => signup.division === division)
+					.filter(
+						(signup) =>
+							signup.division === div.objectId ||
+							div.description.toLocaleLowerCase() ===
+								signup.division
+					)
 					.sort((a, b) => a.position - b.position);
 				return (
 					<div

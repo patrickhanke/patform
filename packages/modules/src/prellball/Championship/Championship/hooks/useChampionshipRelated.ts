@@ -33,7 +33,7 @@ const useChampionshipRelated = (
 		objectName: "Person",
 		fields: ["objectId", "name", "portrait", "email", "data", "label"],
 		projectId,
-		limit: 1000,
+		limit: 1500,
 		skipQuery
 	});
 	const { data: articles } = useFindData<ArticleClass>({

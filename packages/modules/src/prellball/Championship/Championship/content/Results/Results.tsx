@@ -43,9 +43,7 @@ import { printGameCards } from "./functions/printGameCards";
  * Tab inside the championship page. The page owns loading and saving
  * (`usePageData` with `initialData`); this tab only reads and edits that store.
  */
-const Results: FC<ChampionshipTabProps> = ({
-	related = emptyRelated
-}) => {
+const Results: FC<ChampionshipTabProps> = ({ related = emptyRelated }) => {
 	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
 	const divisions = useDivisionCategories(project?.objectId);

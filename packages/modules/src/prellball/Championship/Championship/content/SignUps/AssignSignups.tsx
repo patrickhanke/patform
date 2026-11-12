@@ -22,6 +22,12 @@ const AssignSignups: FC<{
 	const [draft, setDraft] = useState<ChampionshipGroup | null>(group);
 	const [subgroupId, setSubgroupId] = useState("");
 
+	console.log(group);
+	console.log(signups);
+	console.log(clubs);
+	console.log(showClass);
+	console.log(divisions);
+
 	useEffect(() => {
 		if (!isOpen) return;
 		setDraft(group ? structuredClone(group) : null);

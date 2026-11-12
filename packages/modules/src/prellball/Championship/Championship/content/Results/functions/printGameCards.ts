@@ -28,7 +28,10 @@ const collectCss = () => {
 	return sheets.map((sheet) => rulesFrom(sheet)).join("\n");
 };
 
-export const printGameCards = (node: HTMLElement | null, title = "Spielkarten") => {
+export const printGameCards = (
+	node: HTMLElement | null,
+	title = "Spielkarten"
+) => {
 	if (!node) return;
 
 	const iframe = document.createElement("iframe");
@@ -83,12 +86,20 @@ export const printGameCards = (node: HTMLElement | null, title = "Spielkarten") 
 									resolve();
 									return;
 								}
-								image.addEventListener("load", () => resolve(), {
-									once: true
-								});
-								image.addEventListener("error", () => resolve(), {
-									once: true
-								});
+								image.addEventListener(
+									"load",
+									() => resolve(),
+									{
+										once: true
+									}
+								);
+								image.addEventListener(
+									"error",
+									() => resolve(),
+									{
+										once: true
+									}
+								);
 							})
 					)
 				);

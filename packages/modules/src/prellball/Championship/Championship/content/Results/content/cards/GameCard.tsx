@@ -69,6 +69,7 @@ const pagesFor = (games: ChampionshipGame[], ctx: CardContext) => {
 			index += 1;
 		}
 	}
+	console.log(pages);
 	return pages;
 };
 
