@@ -39,5 +39,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "sharp": "^0.35.5"
+  }
 }
