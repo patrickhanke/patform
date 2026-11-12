@@ -85,6 +85,8 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - name: Install sharp for Linux image optimization
+        run: npm install --no-save --include=optional sharp
       - name: Prepare CI environment
         run: cp .env.ci .env
       - run: npx turbo build --filter=patflow --filter=patstore
