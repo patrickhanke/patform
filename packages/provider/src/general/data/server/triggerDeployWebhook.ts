@@ -9,7 +9,8 @@ import { parseRest } from "../../../server/sashido";
 
 const PROJECT_UUIDS = {
 	koloproktologie: "8utwscyidznxnv3os29juxwm",
-	coloproktologen: "qkev9d3hcoeb8uc5tkt1jplz"
+	coloproktologen: "qkev9d3hcoeb8uc5tkt1jplz",
+	hebammenteam: "xueg8mvz21ldcaonlr8uic1r"
 } as const;
 
 const COOLIFY_API = "https://coolify.patwork.net";
@@ -108,6 +109,16 @@ const dispatchWebhook = async (project: ProjectRef, objectClass: string) => {
 			`${COOLIFY_API}/api/v1/deploy?uuid=${PROJECT_UUIDS.coloproktologen}&force=false`,
 			true,
 			PROJECT_UUIDS.coloproktologen
+		);
+		return;
+	}
+	console.log("project.path", project.path);
+	if (project.path === "hebammenteam") {
+		console.log("deploying hebammenteam");
+		await postWebhook(
+			`${COOLIFY_API}/api/v1/deploy?uuid=${PROJECT_UUIDS.hebammenteam}&force=false`,
+			true,
+			PROJECT_UUIDS.hebammenteam
 		);
 		return;
 	}
