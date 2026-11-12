@@ -3,7 +3,7 @@
 import { getImageUrl } from "@repo/provider";
 import Image from "next/image";
 import React from "react";
-import { patstoreLogo } from "@repo/assets";
+import patstoreLogo from "../patstore_logo.png";
 
 const Logo = ({ logo, alt = "patwork" }: { logo: {name: string, url: string}; alt?: string }) => {
   return logo ? (
