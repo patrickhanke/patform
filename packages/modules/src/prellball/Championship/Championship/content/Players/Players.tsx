@@ -7,16 +7,26 @@ import { ChampionshipPageModel, ChampionshipTabProps } from "@repo/modules";
 import { useAppContext } from "@repo/provider";
 import {
 	seasonCategoryId,
+	seasonCategoryTitle,
+	useDivisionCategories,
 	useSeasonCategories,
 	mergedPersonData,
 	playedGameCount
 } from "@repo/provider";
+import IdDownload from "./components/IdDownload";
+import ListDownload from "./components/ListDownload";
+import { buildPlayerExportRows } from "./functions/playerExport";
 
 const Players: FC<ChampionshipTabProps> = ({ related }) => {
 	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 	const seasonId = seasonCategoryId(page?.categories, seasons);
+	const seasonKey =
+		seasonId ||
+		seasonCategoryTitle(page?.categories, seasons).replace(/\s+/g, "_") ||
+		"saison";
+	const divisions = useDivisionCategories(project?.objectId);
 	const people = useMemo(() => {
 		if (!page || !page.data) return [];
 		const ids = new Set(
@@ -25,9 +35,21 @@ const Players: FC<ChampionshipTabProps> = ({ related }) => {
 		return related.people.filter((person) => ids.has(person.objectId));
 	}, [page, related.people]);
 
-	console.log(people);
-	console.log(page);
-	console.log(page?.person_drafts);
+	const exportRows = useMemo(
+		() =>
+			page
+				? buildPlayerExportRows(
+						people,
+						page,
+						related,
+						seasonId,
+						divisions
+					)
+				: [],
+		[people, page, related, seasonId, divisions]
+	);
+
+	const championshipShort = page?.short || page?.title || "wettkampf";
 
 	const columns: ColumnDef<PersonClass>[] = useMemo(
 		() => [
@@ -137,7 +159,23 @@ const Players: FC<ChampionshipTabProps> = ({ related }) => {
 
 	return (
 		<div className="flex col a-st gap-sm">
-			<h2>Spieler:innen</h2>
+			<div className="flex row a-ce j-sb gap-sm">
+				<h2>Spieler:innen</h2>
+				{people.length > 0 && (
+					<div className="flex row gap-sm">
+						<ListDownload
+							rows={exportRows}
+							championshipShort={championshipShort}
+							seasonKey={seasonKey}
+						/>
+						<IdDownload
+							rows={exportRows}
+							championshipShort={championshipShort}
+							seasonKey={seasonKey}
+						/>
+					</div>
+				)}
+			</div>
 			{people.length === 0 ? (
 				<p>Noch keine Spieler:innen in den Meldungen.</p>
 			) : (

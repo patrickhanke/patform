@@ -121,7 +121,7 @@ const DownloadsOverview = ({
 				fields: module.fields,
 				refetch: refetch,
 				languages: languages,
-				initialState: "draft"
+				initialState: "published"
 			}}
 			refetch={refetch}
 			pageHeaderButtons={pageHeaderButtons}

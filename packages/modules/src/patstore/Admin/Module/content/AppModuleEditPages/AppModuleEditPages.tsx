@@ -39,7 +39,9 @@ const AppModuleEditPages = ({
 	);
 	const [isOpen, setIsOpen] = useState(false);
 	const [saving, setSaving] = useState(false);
-	const [className, setClassName] = useState<ModuleClass>(pages[0]);
+	const [className, setClassName] = useState<ModuleClass | undefined>(
+		pages[0]
+	);
 	const [userId, setUserId] = useState("");
 	const [recordId, setRecordId] = useState("");
 
@@ -67,10 +69,11 @@ const AppModuleEditPages = ({
 	console.log(users);
 
 	const { data: records } = useFindData({
-		objectName: className,
+		objectName: className || "",
 		fields: ["objectId", "title", "label"],
 		projectId,
-		limit: 1000
+		limit: 1000,
+		skipQuery: !className
 	});
 
 	const userName = useMemo(() => {

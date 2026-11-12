@@ -9,6 +9,10 @@ import {
 } from "./types";
 import { Classes } from "@repo/types";
 import { FormikValues } from "formik";
+import {
+	formatFormDataForFields,
+	normalizeFormDataForFields
+} from "./functions/normalizeFormData";
 
 const TableColumnEditField: TableColumnEditFieldComponent = <
 	Class extends Classes
@@ -32,22 +36,29 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 		id: objectId,
 		skip: !isOpen,
 		afterSaveHandler: (serverData) => {
-			if (type === "data") {
-				setData(serverData.data);
-			} else {
-				setData(serverData.settings);
-			}
+			const slice =
+				type === "data" ? serverData.data : serverData.settings;
+			setData(
+				normalizeFormDataForFields(
+					slice as Record<string, unknown> | null | undefined,
+					dataFields
+				) as Class["data"]
+			);
 		}
 	});
 
 	const dataHandler = useCallback(
 		async (values: FormikValues) => {
+			const payload = formatFormDataForFields(
+				values as Record<string, unknown>,
+				dataFields
+			);
 			await updateData({
 				objectId: objectId,
 				className,
 				updateObject: {
 					[type === "data" ? "data" : "settings"]: {
-						...values
+						...payload
 					}
 				},
 				feedback:
@@ -58,7 +69,7 @@ const TableColumnEditField: TableColumnEditFieldComponent = <
 			await refetch();
 			setIsOpen(false);
 		},
-		[updateData, objectId, className, type, refetch]
+		[updateData, objectId, className, type, refetch, dataFields]
 	);
 
 	return (

@@ -3,11 +3,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@repo/ui";
-import { ModulePermission, ModuleSettings, PatstoreRoleClass } from "@repo/types";
+import {
+	ModulePermission,
+	ModuleSettings,
+	PatstoreRoleClass
+} from "@repo/types";
 import { useDataHandler, useFindData } from "@repo/provider";
-import { ModulePermissionEditor } from "../../components/PermissionEditors";
+import { ModulePermissionEditor } from "./components/PermissionEditors";
 
-const roleLabel = (role: PatstoreRoleClass) => role.title || role.name || role.objectId;
+const roleLabel = (role: PatstoreRoleClass) =>
+	role.title || role.name || role.objectId;
 
 const AppModuleEditPermissions = ({
 	objectId,
@@ -61,7 +66,8 @@ const AppModuleEditPermissions = ({
 			return { ...(permission || {}), pages };
 		};
 		const stored = withPages(next);
-		if (stored && Object.keys(stored).length > 0) settings.permission = stored;
+		if (stored && Object.keys(stored).length > 0)
+			settings.permission = stored;
 		else delete settings.permission;
 		await updateData({
 			className: "Module",
@@ -105,8 +111,9 @@ const AppModuleEditPermissions = ({
 			{!roleConfigured ? (
 				<>
 					<p>
-						Solange hier nichts gespeichert ist, gilt der Modulzugriff auf der
-						Rolle für das ganze Modul und alle Felder.
+						Solange hier nichts gespeichert ist, gilt der
+						Modulzugriff auf der Rolle für das ganze Modul und alle
+						Felder.
 					</p>
 					<Button
 						text="Berechtigungen aus den Rollen übernehmen"

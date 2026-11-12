@@ -28,6 +28,14 @@ const fieldTypes = [
 		label: "Select"
 	},
 	{
+		value: "date",
+		label: "Datum"
+	},
+	{
+		value: "datetime",
+		label: "Datum und Uhrzeit"
+	},
+	{
 		value: "texteditor",
 		label: "Texteditor"
 	},

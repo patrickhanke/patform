@@ -46,7 +46,10 @@ const isRejectedSession = (status: number, data?: SessionResponse) => {
 const FRESH_SESSION_MS = 60_000;
 const STALE_SESSION_MS = 3 * 60_000;
 
-const sessionCache = new Map<string, { user: SessionUser; checkedAt: number }>();
+const sessionCache = new Map<
+	string,
+	{ user: SessionUser; checkedAt: number }
+>();
 
 const cachedSession = (sessionToken: string) => {
 	const entry = sessionCache.get(sessionToken);
@@ -129,7 +132,9 @@ export const fetchSessionUser = async (
 					: failure;
 		}
 		if (attempt < 2) {
-			await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+			await new Promise((resolve) =>
+				setTimeout(resolve, 250 * (attempt + 1))
+			);
 		}
 	}
 

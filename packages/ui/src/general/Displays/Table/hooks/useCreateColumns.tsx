@@ -139,7 +139,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 	const patstore = useContext(PatstoreAppContext);
 	const pathname = usePathname();
 	const accessModule = currentModule || patstore.currentModule;
-	const accessRole = patstore.userRole?.objectId ? patstore.userRole : undefined;
+	const accessRole = patstore.userRole?.objectId
+		? patstore.userRole
+		: undefined;
 	const recordId = recordIdFromPath(accessModule?.path, pathname);
 	const restrictFields =
 		!patstore.user?.is_superuser &&
@@ -152,7 +154,9 @@ const useCreateColumns = <T extends ColumnClasses>({
 			canReadField(
 				[accessRole],
 				accessModule,
-				accessModule.fields?.find((field) => field.id === column.id) || {
+				accessModule.fields?.find(
+					(field) => field.id === column.id
+				) || {
 					id: String(column.id)
 				},
 				recordId
@@ -162,16 +166,20 @@ const useCreateColumns = <T extends ColumnClasses>({
 	const visibleDataFields = useMemo(() => {
 		if (!restrictFields || !accessModule || !accessRole) return fields;
 		return fields.flatMap((field) => {
-			if (!canReadField([accessRole], accessModule, field, recordId)) return [];
-			if (canWriteField([accessRole], accessModule, field, recordId)) return [field];
+			if (!canReadField([accessRole], accessModule, field, recordId))
+				return [];
+			if (canWriteField([accessRole], accessModule, field, recordId))
+				return [field];
 			return [{ ...field, disabled: true }];
 		});
 	}, [restrictFields, accessModule, accessRole, fields, recordId]);
 	const visibleSettingFields = useMemo(() => {
 		if (!restrictFields || !accessModule || !accessRole) return settings;
 		return settings.flatMap((field) => {
-			if (!canReadField([accessRole], accessModule, field, recordId)) return [];
-			if (canWriteField([accessRole], accessModule, field, recordId)) return [field];
+			if (!canReadField([accessRole], accessModule, field, recordId))
+				return [];
+			if (canWriteField([accessRole], accessModule, field, recordId))
+				return [field];
 			return [{ ...field, disabled: true }];
 		});
 	}, [restrictFields, accessModule, accessRole, settings, recordId]);
@@ -1145,7 +1153,11 @@ const useCreateColumns = <T extends ColumnClasses>({
 						</div>
 					),
 					header: () => (
-						<span>{visibleDataFields.length > 0 ? "Bearb." : "Löschen"}</span>
+						<span>
+							{visibleDataFields.length > 0
+								? "Bearb."
+								: "Löschen"}
+						</span>
 					),
 					id: "edit",
 					cell: (info) => info.getValue(),

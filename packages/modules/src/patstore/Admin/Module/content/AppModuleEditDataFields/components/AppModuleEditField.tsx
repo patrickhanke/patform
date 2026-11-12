@@ -71,7 +71,18 @@ const AppModuleEditField = ({
 					label="Typ auswählen"
 					options={fieldTypes}
 					value={localField.type}
-					onChange={(e) => changeHandler("type", e.value)}
+					onChange={(e) => {
+						const nextType = e.value as EditableField["type"];
+						setLocalField((current) => {
+							const next = cloneDeep(current);
+							next.type = nextType;
+							if (nextType === "date" || nextType === "datetime") {
+								delete next.select_options;
+								delete next.options;
+							}
+							return next;
+						});
+					}}
 				/>
 			</div>
 

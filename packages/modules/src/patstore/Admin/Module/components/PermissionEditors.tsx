@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SlideIn } from "@repo/ui";
-import type { FieldPermission, ModulePermission } from "@repo/types";
+import type { ErrorMessage, FieldPermission, ModulePermission } from "@repo/types";
 
 export type PermissionRole = {
 	objectId: string;
@@ -153,6 +153,38 @@ const FieldPermissionFields = ({
 export const fieldPermissionIsEdited = (permission?: FieldPermission) =>
 	permission?.read !== undefined || permission?.write !== undefined;
 
+const normalizeFieldPermission = (
+	permission?: FieldPermission
+): FieldPermission | undefined => {
+	if (!permission) return undefined;
+	if (permission.read === undefined && permission.write === undefined)
+		return undefined;
+	return permission;
+};
+
+const roleIdsEqual = (a?: string[], b?: string[]) => {
+	if (a === undefined && b === undefined) return true;
+	if (a === undefined || b === undefined) return false;
+	if (a.length !== b.length) return false;
+	const sortedA = [...a].sort();
+	const sortedB = [...b].sort();
+	return sortedA.every((id, index) => id === sortedB[index]);
+};
+
+export const fieldPermissionEquals = (
+	a?: FieldPermission,
+	b?: FieldPermission
+) => {
+	const left = normalizeFieldPermission(a);
+	const right = normalizeFieldPermission(b);
+	if (!left && !right) return true;
+	if (!left || !right) return false;
+	return (
+		roleIdsEqual(left.read, right.read) &&
+		roleIdsEqual(left.write, right.write)
+	);
+};
+
 export const FieldPermissionEditor = ({
 	roles,
 	modulePermission,
@@ -169,6 +201,24 @@ export const FieldPermissionEditor = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [draft, setDraft] = useState<FieldPermission | undefined>(permission);
 	const edited = fieldPermissionIsEdited(permission);
+	const alreadySaved = useMemo(
+		() => fieldPermissionEquals(draft, permission),
+		[draft, permission]
+	);
+	const errors = useMemo<ErrorMessage[] | undefined>(
+		() =>
+			alreadySaved
+				? [
+						{
+							id: "permission-already-saved",
+							key: "permission",
+							message:
+								"Diese Berechtigung ist bereits am Feld hinterlegt."
+						}
+					]
+				: undefined,
+		[alreadySaved]
+	);
 
 	useEffect(() => () => onOpenChange?.(false), [onOpenChange]);
 
@@ -195,9 +245,12 @@ export const FieldPermissionEditor = ({
 				isOpen={isOpen}
 				cancel={close}
 				confirm={() => {
+					if (alreadySaved) return;
 					onChange(draft);
 					close();
 				}}
+				disabled={[false, alreadySaved]}
+				errors={errors}
 			>
 				<FieldPermissionFields
 					roles={roles}
