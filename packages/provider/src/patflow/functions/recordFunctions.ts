@@ -207,18 +207,30 @@ export const findDefaultTimeForDate: (
 	return default_time;
 };
 
-export const getHolidayDates = (y: number, hds: Holiday[]): string[] => {
-	const dateArray: string[] = [];
+const toDateOnly = (date: string) => date.slice(0, 10);
 
+export const getHolidayDateForYear = (
+	holiday: Holiday,
+	year: number
+): string | undefined => {
+	if (!isArray(holiday.dates)) {
+		return undefined;
+	}
+
+	const dateForYear = holiday.dates.find(
+		(dt) => toDateOnly(dt).slice(0, 4) === String(year)
+	);
+
+	return dateForYear ? toDateOnly(dateForYear) : undefined;
+};
+
+export const getHolidayDates = (y: number, hds: Holiday[]): string[] => {
 	if (!isArray(hds)) {
 		return [];
 	}
 
-	hds.forEach((hd: Holiday) => {
-		if (hd.dates && hd.dates[y.toString()]) {
-			dateArray.push(hd.dates[y.toString()] as string);
-		}
+	return hds.flatMap((hd) => {
+		const dateForYear = getHolidayDateForYear(hd, y);
+		return dateForYear ? [dateForYear] : [];
 	});
-
-	return dateArray;
 };

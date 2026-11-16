@@ -17,7 +17,8 @@ const SurchargeDaySelect: React.FC<SurchargeDaySelectProps> = ({
 				surchargeChangeHandler(
 					"data.day_value",
 					newSurcharge.data.day_value.filter(
-						(dayToFind) => dayToFind !== day && dayToFind !== formerId
+						(dayToFind) =>
+							dayToFind !== day && dayToFind !== formerId
 					)
 				);
 			} else {
@@ -30,12 +31,16 @@ const SurchargeDaySelect: React.FC<SurchargeDaySelectProps> = ({
 		[newSurcharge, surchargeChangeHandler]
 	);
 
+	console.log(holidays);
+
 	return (
 		<div className="create_surcharge_container">
 			<h3>Feiertage</h3>
 			{holidays.map((day) => (
 				<button
-					onClick={() => dayChangeHandler(day.objectId, day.former_id)}
+					onClick={() =>
+						dayChangeHandler(day.objectId, day.former_id)
+					}
 					className="day_select_container"
 					data-isselected={surchargeIncludesHoliday(
 						newSurcharge.data.day_value,
@@ -66,4 +71,3 @@ const SurchargeDaySelect: React.FC<SurchargeDaySelectProps> = ({
 };
 
 export default SurchargeDaySelect;
-

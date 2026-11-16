@@ -52,16 +52,20 @@ const EditRecords: FC<EditRecordsProps> = ({
 		setSelectedUser(undefined);
 	};
 
-	if (loading) {
-		return <div>Loading...</div>;
-	}
+	console.log("recordData", data);
 
 	return (
 		<>
 			<div className="site_content">
-				<div className="content_element no_padding">
-					<Table data={data || []} columns={columns} />
-				</div>
+				{loading ? (
+					<div className="content_element no_padding">
+						<Table data={[]} columns={columns} />
+					</div>
+				) : (
+					<div className="content_element no_padding">
+						<Table data={data || []} columns={columns} />
+					</div>
+				)}
 			</div>
 			{!!selectedUser && recordFlowMode && (
 				<CreateRecord
@@ -76,7 +80,7 @@ const EditRecords: FC<EditRecordsProps> = ({
 					projectId={projectId}
 					person={{
 						label: `${selectedUser.first_name} ${selectedUser.last_name}`,
-						portrait: selectedUser.portrait.url
+						portrait: selectedUser?.portrait?.url
 					}}
 				/>
 			)}

@@ -3,6 +3,7 @@ import { ReactNode, useCallback, useContext, useMemo } from "react";
 import {
 	findDefaultTimeForDate,
 	getDateString,
+	getHolidayDateForYear,
 	useFindData,
 	UserContext,
 	surchargeItemFields,
@@ -81,8 +82,12 @@ const useTableColumns = ({
 		() => [
 			{
 				accessorFn: (row) => {
-					const holiday = holidays.find((holiday) =>
-						holiday.dates.includes(row?.date)
+					const holiday = holidays.find(
+						(holiday) =>
+							getHolidayDateForYear(
+								holiday,
+								Number(row.date.slice(0, 4))
+							) === row.date
 					);
 
 					return (

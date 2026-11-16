@@ -6,6 +6,8 @@ import { Table } from "@repo/ui";
 const Holidays: React.FC<HolidaysProps> = ({ holidays }) => {
 	const columns = useHolidayColumns();
 
+	console.log(holidays);
+
 	return (
 		<div>
 			<div className="content_element no_padding">

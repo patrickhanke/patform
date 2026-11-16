@@ -6,12 +6,11 @@ import { DayData, StaffWorkingTimesProps } from "./types";
 import { eachDayOfInterval, formatISO9075, isWeekend } from "date-fns";
 import useTableColumns from "./hooks/useTableColumns";
 import { Row } from "@tanstack/react-table";
-import { Day, Holiday } from "@repo/types";
+import { Day } from "@repo/types";
 import {
 	dateHasRecord,
 	findDefaultTimeForDate,
-	findSurchargeById,
-	surchargeIncludesHoliday,
+	getHolidayDateForYear,
 	useDataStore
 } from "@repo/provider";
 import { set, get, cloneDeep, isArray } from "lodash-es";
@@ -30,54 +29,24 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 	selectedUser,
 	records
 }) => {
-	const { holidays, surcharges } = useDataStore();
+	const { holidays } = useDataStore();
 
 	const currentHolidays = useMemo(() => {
 		if (!year || !records.length) {
 			return [];
 		}
 
-		const recordHolidays: Holiday[] = [];
-		const addedHolidayIds = new Set<string>();
-
-		holidays.forEach((holiday) => {
-			const date = holiday.dates.find(
-				(dt) => new Date(dt).getFullYear() === year
-			);
+		return holidays.filter((holiday) => {
+			const date = getHolidayDateForYear(holiday, year);
 			if (!date) {
-				return;
+				return false;
 			}
 
-			const isRecordHoliday = records.some((record) => {
-				if (!record.surcharges?.length) {
-					return false;
-				}
-
-				return record.surcharges.some((surchargeId: string) => {
-					const surcharge = findSurchargeById(
-						surcharges,
-						surchargeId
-					);
-
-					if (!surcharge?.data?.day_value?.length) {
-						return false;
-					}
-
-					return surchargeIncludesHoliday(
-						surcharge.data.day_value,
-						holiday
-					);
-				});
-			});
-
-			if (isRecordHoliday && !addedHolidayIds.has(holiday.objectId)) {
-				addedHolidayIds.add(holiday.objectId);
-				recordHolidays.push(holiday);
-			}
+			return records.some(
+				(record) => record.start_date <= date && date <= record.end_date
+			);
 		});
-
-		return recordHolidays;
-	}, [holidays, year, records, surcharges]);
+	}, [holidays, year, records]);
 
 	const [workEditor, setWorkEditor] = useState<WorkTimeEditorSession | null>(
 		null
@@ -219,9 +188,8 @@ const StaffWorkingTimes: FC<StaffWorkingTimesProps> = ({
 			if (
 				currentHolidays.find(
 					(holiday) =>
-						holiday.dates?.find(
-							(dt) => new Date(dt).getFullYear() === year
-						) === row.original.date
+						getHolidayDateForYear(holiday, year) ===
+						row.original.date
 				)
 			) {
 				return { backgroundColor: "rgba(86, 138, 212, 0.4)" };
