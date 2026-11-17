@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .elements_container {
   height: 100%;
@@ -41,7 +42,7 @@
   );
   cursor: pointer;
   flex: 1;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
   background-color: constants.$white;
   &:hover {
     background-color: constants.$grey_tinted;
@@ -63,7 +64,7 @@
     );
     max-width: 120px;
     min-width: 120px;
-    padding: map-get($map: constants.$padding, $key: "sm");
+    padding: map.get($map: constants.$padding, $key: "sm");
 
 }
 

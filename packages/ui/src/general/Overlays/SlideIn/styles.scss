@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 // Above the Modal (6), below the z-index 1000 of the Chakra portals so that
 // dropdowns and popovers inside the slide-in stay visible.
@@ -41,7 +42,7 @@
   overflow: visible;
   background-color: constants.$white;
   padding: 0;
-  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  border-radius: map.get($map: constants.$border_radius, $key: "md");
 }
 
 .is_open[data-size="small"] {
@@ -71,7 +72,7 @@
   box-sizing: border-box;
   height: 36px;
   border-bottom: 1px solid constants.$grey;
-  padding: map-get(constants.$padding, "sm");
+  padding: map.get(constants.$padding, "sm");
   position: relative;
 }
 
@@ -98,7 +99,7 @@
   );
   width: 420px;
   order: 2;
-  padding: map-get(constants.$padding, "sm");
+  padding: map.get(constants.$padding, "sm");
   overflow: hidden;
   .children-container {
     flex: 1 1 auto;
@@ -116,7 +117,7 @@
 }
 
 .slidein_secondary_content[data-open="true"] {
-  padding: map-get(constants.$padding, "sm");
+  padding: map.get(constants.$padding, "sm");
   border-right: 1px solid constants.$grey;
 }
 
@@ -132,5 +133,5 @@
   border-top: 1px solid constants.$grey;
   // background-color: constants.$light;
   position: relative;
-  padding: map-get(constants.$padding, "sm");
+  padding: map.get(constants.$padding, "sm");
 }

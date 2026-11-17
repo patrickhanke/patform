@@ -1,4 +1,4 @@
-import { Field } from "@repo/ui";
+import { Field } from "@repo/types";
 
 const fields: Field[] = [
 	{
@@ -52,13 +52,6 @@ const fields: Field[] = [
 		validation: {
 			required: "Stadt ist ein Pflichtfeld"
 		}
-	},
-	{
-		id: "url",
-		name: "url",
-		placeholder: "https://example.com",
-		label: "URL der Webseite",
-		type: "input"
 	}
 ];
 

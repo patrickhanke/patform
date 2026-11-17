@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .nav_container_underline {
   @include constants.flexbox(
@@ -11,7 +12,7 @@
   position: relative;
   box-sizing: border-box;
   border-bottom: 1px solid constants.$grey;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
   padding-bottom: 0;
 }
 
@@ -46,12 +47,12 @@
     color 0.2 ease;
   // border: .5px solid constants.$grey;
   border: none;
-  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  border-radius: map.get($map: constants.$border_radius, $key: "sm");
   &:hover {
     background-color: constants.$light;
   }
   .title_container {
-    padding: map-get($map: constants.$padding, $key: "xs");
+    padding: map.get($map: constants.$padding, $key: "xs");
   }
 }
 

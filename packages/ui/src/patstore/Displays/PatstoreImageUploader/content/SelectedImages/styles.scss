@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .selected_image_container {
   @include constants.flexbox(
@@ -11,7 +12,7 @@
   border: 1px solid constants.$grey;
   width: auto;
   position: relative;
-  border-radius: map-get($map: constants.$border_radius, $key: "xs");
+  border-radius: map.get($map: constants.$border_radius, $key: "xs");
 }
 
 .selected_image_container[data-hasfullwidth="true"] {
@@ -28,5 +29,5 @@
   position: absolute;
   top: 6px;
   right: 6px;
-  padding: map-get($map: constants.$padding, $key: "xs");
+  padding: map.get($map: constants.$padding, $key: "xs");
 }

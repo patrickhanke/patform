@@ -54,6 +54,8 @@ export type PatstoreProject = {
 	};
 	settings: {
 		email: string;
+		url?: string;
+		preview_url?: string;
 		user_invitations: boolean;
 		user_creation: boolean;
 		languages: LanguageValue[];

@@ -41,6 +41,22 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 					options: { max_file_count: 1, return_type: "string" }
 				},
 				{
+					id: "url",
+					position: 3,
+					name: "settings.url",
+					type: "input",
+					label: "URL der Webseite",
+					value: project?.settings?.url
+				},
+				{
+					id: "preview_url",
+					position: 4,
+					name: "settings.preview_url",
+					type: "input",
+					label: "Vorschau-URL",
+					value: project?.settings?.preview_url
+				},
+				{
 					id: "email",
 					position: 3,
 					name: "settings.email",

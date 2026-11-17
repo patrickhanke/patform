@@ -97,15 +97,15 @@
 
   @if $size == "sm" {
       padding: map.get($padding, "xs");
-    font-size: map-get($font_size, "xs");
+    font-size: map.get($font_size, "xs");
   }
   @if $size == "md" {
-    padding: map-get($padding, "sm");
-    font-size: map-get($font_size, "sm");
+    padding: map.get($padding, "sm");
+    font-size: map.get($font_size, "sm");
   }
   @if $size == "lg" {
-    padding: map-get($padding, "lg");
-    font-size: map-get($font_size, "lg");
+    padding: map.get($padding, "lg");
+    font-size: map.get($font_size, "lg");
   }
 
   @if $color == "violet" {
@@ -155,16 +155,16 @@
     }
   }
   @if ($size == "sm") {
-    padding: map-get($padding, "xs");
-    font-size: map-get($font_size, "sm");
+    padding: map.get($padding, "xs");
+    font-size: map.get($font_size, "sm");
   }
   @if ($size == "md") {
-    padding: map-get($padding, "md");
-    font-size: map-get($font_size, "md");
+    padding: map.get($padding, "md");
+    font-size: map.get($font_size, "md");
   }
   @if ($size == "lg") {
-    padding: map-get($padding, "lg");
-    font-size: map-get($font_size, "md");
+    padding: map.get($padding, "lg");
+    font-size: map.get($font_size, "md");
   }
   @if ($color == "primary") {
     background-color: $primary;

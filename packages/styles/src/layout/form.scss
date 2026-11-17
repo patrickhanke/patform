@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 form {
   label.error {
@@ -8,7 +9,7 @@ form {
   .error_message {
     color: #cc0033;
     display: inline-block;
-    font-size: map-get($map: constants.$font_size, $key: "xs");
+    font-size: map.get($map: constants.$font_size, $key: "xs");
     line-height: 12px;
     // margin-top: constants.$xs;
   }
@@ -23,11 +24,11 @@ form {
   }
 
   input {
-    padding: map-get($map: constants.$padding, $key: "xs");
+    padding: map.get($map: constants.$padding, $key: "xs");
     border: 1px solid constants.$grey_shaded;
     transition: border 0.4s ease;
     outline: 0;
-    font-size: map-get($map: constants.$font_size, $key: "md");
+    font-size: map.get($map: constants.$font_size, $key: "md");
     border: 1px solid constants.$grey_tinted;
     position: relative;
     box-sizing: border-box;
@@ -37,19 +38,19 @@ form {
     // max-width: 360px;
 
     &:focus {
-      padding: map-get($map: constants.$padding, $key: "sm");
+      padding: map.get($map: constants.$padding, $key: "sm");
       border-radius: 0;
       border: 1px solid constants.$primary;
     }
 
     &:focus-visible {
-      padding: map-get($map: constants.$padding, $key: "sm");
+      padding: map.get($map: constants.$padding, $key: "sm");
       border-radius: 0;
       border: 1px solid constants.$primary;
     }
 
     &:target {
-      padding: map-get($map: constants.$padding, $key: "sm");
+      padding: map.get($map: constants.$padding, $key: "sm");
       border-radius: 0;
       border: 1px solid constants.$primary;
     }
@@ -61,11 +62,11 @@ form {
   }
   textarea {
     font-family: "Open Sans", sans-serif;
-    font-size: map-get($map: constants.$font_size, $key: "md");
+    font-size: map.get($map: constants.$font_size, $key: "md");
     box-sizing: border-box;
     font-weight: 500;
     border: 1px solid constants.$primary;
-    padding: map-get($map: constants.$padding, $key: "sm");
+    padding: map.get($map: constants.$padding, $key: "sm");
     outline: none;
     transition:
       border 0.2s ease,

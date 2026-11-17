@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 $orange: #e07b28;
 $orange_tinted: #fde8d6;
@@ -34,7 +35,7 @@ $yellow_light: #fbf3c8;
 .section {
   background-color: constants.$white;
   border: 0.5px solid constants.$grey;
-  border-radius: map-get(constants.$border_radius, "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
   padding: constants.$sm;
   display: flex;
   flex-direction: column;
@@ -43,7 +44,7 @@ $yellow_light: #fbf3c8;
 
   h3 {
     margin: 0;
-    font-size: map-get(constants.$font_size, "lg");
+    font-size: map.get(constants.$font_size, "lg");
   }
 
   p {
@@ -61,7 +62,7 @@ $yellow_light: #fbf3c8;
 
 .muted {
   color: constants.$grey_shaded;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
 }
 
 .scroll {
@@ -78,7 +79,7 @@ $yellow_light: #fbf3c8;
   min-width: max-content;
 
   th {
-    font-size: map-get(constants.$font_size, "md");
+    font-size: map.get(constants.$font_size, "md");
     font-weight: 600;
     color: constants.$dark;
     text-align: center;
@@ -89,7 +90,7 @@ $yellow_light: #fbf3c8;
 .passHeader {
   width: 56px;
   text-align: center;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
   color: constants.$dark;
   font-weight: 600;
 
@@ -104,7 +105,7 @@ $yellow_light: #fbf3c8;
   min-width: 170px;
   height: 78px;
   vertical-align: top;
-  border-radius: map-get(constants.$border_radius, "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
   background-color: constants.$lightest;
   border: 1px dashed transparent;
   padding: 2px;
@@ -141,7 +142,7 @@ $yellow_light: #fbf3c8;
 
 .breakRow td {
   text-align: center;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
   color: constants.$grey_shaded;
   border-top: 1px dashed constants.$grey;
   padding: 0;
@@ -156,11 +157,11 @@ $yellow_light: #fbf3c8;
   flex-direction: column;
   gap: 2px;
   padding: 4px 6px 4px 8px;
-  border-radius: map-get(constants.$border_radius, "sm");
+  border-radius: map.get(constants.$border_radius, "sm");
   background-color: constants.$white;
   border: 1px solid constants.$grey;
   border-left: 4px solid constants.$green;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
   cursor: pointer;
   box-sizing: border-box;
   user-select: none;
@@ -207,7 +208,7 @@ $yellow_light: #fbf3c8;
   gap: 4px;
 
   strong {
-    font-size: map-get(constants.$font_size, "md");
+    font-size: map.get(constants.$font_size, "md");
   }
 }
 
@@ -229,7 +230,7 @@ $yellow_light: #fbf3c8;
   display: inline-block;
   padding: 0 5px;
   border-radius: 8px;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
   line-height: 15px;
   background-color: constants.$blue_tinted;
   color: constants.$blue;
@@ -270,7 +271,7 @@ $yellow_light: #fbf3c8;
 
 .referee {
   color: constants.$grey_shaded;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -281,7 +282,7 @@ $yellow_light: #fbf3c8;
 .matrix {
   border-collapse: collapse;
   min-width: max-content;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
 
   th,
   td {
@@ -366,7 +367,7 @@ $yellow_light: #fbf3c8;
   display: flex;
   flex-wrap: wrap;
   gap: constants.$xs constants.$sm;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
   color: constants.$dark;
 }
 
@@ -409,7 +410,7 @@ $yellow_light: #fbf3c8;
   display: inline-block;
   padding: 1px 8px;
   border-radius: 10px;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
   background-color: constants.$green_tinted;
   color: constants.$green_shaded;
 
@@ -433,7 +434,7 @@ $yellow_light: #fbf3c8;
   display: flex;
   align-items: flex-start;
   gap: constants.$xs;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
 
   svg {
     flex-shrink: 0;
@@ -458,7 +459,7 @@ $yellow_light: #fbf3c8;
   border-left: 3px solid constants.$red;
   background-color: constants.$lightest;
   padding: 4px 6px;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
   cursor: pointer;
   border-radius: 3px;
 
@@ -491,7 +492,7 @@ $yellow_light: #fbf3c8;
   padding: 4px 6px;
   border: 1px solid constants.$grey_tinted;
   border-radius: 4px;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
 
   &[data-recommended="true"] {
     border-color: constants.$green;
@@ -503,7 +504,7 @@ $yellow_light: #fbf3c8;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 2px constants.$xs;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
 
   dt {
     color: constants.$grey_shaded;
@@ -559,7 +560,7 @@ $yellow_light: #fbf3c8;
   align-items: center;
   gap: 4px;
   margin: 0;
-  font-size: map-get(constants.$font_size, "sm");
+  font-size: map.get(constants.$font_size, "sm");
   font-weight: 400;
   color: constants.$grey_shaded;
   cursor: pointer;
@@ -585,7 +586,7 @@ $yellow_light: #fbf3c8;
   border-radius: 4px;
   border-left: 3px solid constants.$blue;
   background-color: constants.$lightest;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
   min-width: 180px;
 }
 
@@ -602,7 +603,7 @@ $yellow_light: #fbf3c8;
   align-items: center;
   padding: 4px 6px;
   border-radius: 4px;
-  font-size: map-get(constants.$font_size, "md");
+  font-size: map.get(constants.$font_size, "md");
   cursor: pointer;
   border: 1px solid constants.$grey_tinted;
 

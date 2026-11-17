@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .toggle_content {
   display: flex;
@@ -71,7 +72,7 @@
   font-family: Geist, sans-serif;
   color: #cc0033;
   display: inline-block;
-  font-size: map-get($map: constants.$font_size, $key: "xs");
+  font-size: map.get($map: constants.$font_size, $key: "xs");
   line-height: 12px;
 }
 
@@ -81,7 +82,7 @@
   font-family: Geist, sans-serif;
   color: green;
   display: inline-block;
-  font-size: map-get($map: constants.$font_size, $key: "xs");
+  font-size: map.get($map: constants.$font_size, $key: "xs");
   line-height: 12px;
 }
 
@@ -91,7 +92,7 @@
   font-size: 14px;
   font-family: Geist, sans-serif;
   display: inline-block;
-  font-size: map-get($map: constants.$font_size, $key: "xs");
+  font-size: map.get($map: constants.$font_size, $key: "xs");
   line-height: 12px;
 }
 
@@ -153,6 +154,6 @@
   overflow: hidden;
   display: inline-block;
   height: 36px;
-  padding: map-get($map: constants.$padding, $key: "xs");
+  padding: map.get($map: constants.$padding, $key: "xs");
   background-color: constants.$lightest;
 }

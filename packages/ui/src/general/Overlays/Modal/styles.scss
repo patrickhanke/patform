@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .modal_overlay_container {
   background-color: rgba(0, 0, 0, 0.09);
@@ -48,17 +49,17 @@
   overflow: hidden;
   background-color: constants.$white;
   z-index: 13;
-  border-radius: map-get($map: constants.$border_radius, $key: "lg");
+  border-radius: map.get($map: constants.$border_radius, $key: "lg");
   border: 1px solid constants.$grey;
 }
 
 .modal_header {
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
   border-bottom: 1px solid constants.$grey;
 }
 
 .modal_content {
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
   padding-top: constants.$lg;
   padding-bottom: constants.$lg;
   // overflow-y: auto;
@@ -73,7 +74,7 @@
     $justify: flex-end,
     $gap: constants.$lg
   );
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
   background-color: constants.$light;
   border-top: 1px solid constants.$grey;
 }

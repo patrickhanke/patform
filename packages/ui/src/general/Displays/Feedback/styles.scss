@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .feedback_container {
   @include constants.flexbox(
@@ -8,7 +9,7 @@
   );
   font-family: Geist;
   width: auto;
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-size: map.get($map: constants.$font_size, $key: "md");
   animation-name: example;
   animation-duration: 3s;
   color: constants.$dark;

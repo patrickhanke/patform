@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .error_display_container {
   // min-height: 24px;
@@ -9,7 +10,7 @@
 
 .error_display_message {
   color: #cc0033;
-  font-size: map-get($map: constants.$font_size, $key: "xs");
+  font-size: map.get($map: constants.$font_size, $key: "xs");
   font-weight: 500;
   display: list-item;
   font-family: Geist, sans-serif;

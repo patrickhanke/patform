@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .table_header {
   @include constants.flexbox(
@@ -25,7 +26,7 @@
   overflow: auto;
   padding-bottom: constants.$md;
   .header {
-    padding: map-get($map: constants.$padding, $key: "md");
+    padding: map.get($map: constants.$padding, $key: "md");
   }
   .sortable {
     @include constants.flexbox(
@@ -41,7 +42,7 @@
   table {
     // border: 1px solid constants.$grey_tinted;
     // border: 1px solid constants.$grey_tinted;
-    // border-radius: map-get($map: constants.$border_radius, $key: 'md' );
+    // border-radius: map.get($map: constants.$border_radius, $key: 'md' );
     position: relative;
     box-sizing: border-box;
     width: 100%;
@@ -51,7 +52,7 @@
     // border-bottom: 1px solid constants.$grey_tinted;
     font-family: "Open Sans", sans-serif;
     font-weight: 500;
-    font-size: map-get($map: constants.$font_size, $key: "sm");
+    font-size: map.get($map: constants.$font_size, $key: "sm");
     border-bottom: 1px solid constants.$grey_tinted;
   }
   tbody tr:nth-child(even) {
@@ -60,13 +61,13 @@
 
   th {
     font-family: Geist;
-    font-size: map-get($map: constants.$font_size, $key: "sm");
+    font-size: map.get($map: constants.$font_size, $key: "sm");
     font-weight: 600;
     text-align: left;
     border-bottom: 1px solid constants.$grey_tinted;
     background-color: constants.$light;
     // border-right: 1px solid constants.$grey_tinted;
-    padding: map-get($map: constants.$padding, $key: "sm");
+    padding: map.get($map: constants.$padding, $key: "sm");
     white-space: nowrap;
   }
   th[data-cell_borders="true"] {
@@ -90,7 +91,7 @@
     background-color: constants.$blue_tinted !important;
   }
   td {
-    padding: map-get($map: constants.$padding, $key: "sm");
+    padding: map.get($map: constants.$padding, $key: "sm");
     position: relative;
   }
 

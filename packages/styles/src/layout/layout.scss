@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .layout {
   @include constants.flexbox($direction: row, $align: stretch, $gap: 0);
@@ -35,7 +36,7 @@
   width: 100%;
   box-sizing: border-box;
   height: 42px;
-  padding: map-get(constants.$padding, "lg");
+  padding: map.get(constants.$padding, "lg");
   h1 {
     color: constants.$primary;
   }
@@ -67,7 +68,7 @@
   height: 100%;
   title {
     color: constants.$primary;
-    font-size: map-get(constants.$font_size, "md");
+    font-size: map.get(constants.$font_size, "md");
     font-weight: 500;
     margin: 0;
   }
@@ -111,7 +112,7 @@
   margin: 0;
   text-decoration: none;
   line-height: 1;
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-size: map.get($map: constants.$font_size, $key: "md");
   color: constants.$dark;
   transition:
     text-decoration 0.2s ease,
@@ -132,15 +133,15 @@
   flex: 1 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: map-get($map: constants.$padding, $key: "site");
+  padding: map.get($map: constants.$padding, $key: "site");
 }
 
 .content_element {
   background-color: constants.$white;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 2px 0px;
-  border-radius: map-get($map: constants.$border_radius, $key: "sm");
+  border-radius: map.get($map: constants.$border_radius, $key: "sm");
   border: 0.5px solid constants.$grey_tinted;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
   overflow: hidden;
 }
 
@@ -154,7 +155,7 @@ label {
   margin-bottom: constants.$xs;
   color: constants.$dark;
   font-weight: 500;
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-size: map.get($map: constants.$font_size, $key: "md");
   font-family: "Geist", sans-serif;
   line-height: 1;
   letter-spacing: 0.02rem;
@@ -181,7 +182,7 @@ label.error {
   margin: 0;
   color: constants.$dark;
   font-weight: 500;
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-size: map.get($map: constants.$font_size, $key: "md");
   font-family: "Geist", sans-serif;
   line-height: 1;
   letter-spacing: 0.02rem;
@@ -200,8 +201,8 @@ label.error {
 // State Element
 
 .state_element {
-  padding: map-get($map: constants.$padding, $key: "xs");
-  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "xs");
+  border-radius: map.get($map: constants.$border_radius, $key: "md");
   background-color: transparent;
   border: 1px solid constants.$primary;
   color: constants.$primary;
@@ -233,8 +234,8 @@ label.error {
 
 .light_box {
   background-color: constants.$lightest;
-  border-radius: map-get($map: constants.$border_radius, $key: "sm");
-  padding: map-get($map: constants.$padding, $key: "md");
+  border-radius: map.get($map: constants.$border_radius, $key: "sm");
+  padding: map.get($map: constants.$padding, $key: "md");
   box-shadow: constants.$shadow_light;
 }
 

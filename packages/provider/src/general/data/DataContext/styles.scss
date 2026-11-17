@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .feedback_container {
   font-family: Geist;
@@ -10,7 +11,7 @@
   padding: 10px 20px;
   border-radius: 5px;
   color: white !important;
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-size: map.get($map: constants.$font_size, $key: "md");
   z-index: 10;
   box-shadow: constants.$shadow_large_regular;
 }

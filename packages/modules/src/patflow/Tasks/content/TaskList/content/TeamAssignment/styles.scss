@@ -1,7 +1,7 @@
 @use "@repo/styles/constants";
 @use "sass:map";
 
-@import "../../Task.module.scss";
+@use "../../Task.module.scss";
 
 .team_assignment_container {
   @include constants.flexbox(

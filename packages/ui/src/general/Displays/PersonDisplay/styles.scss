@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .display_person_container {
   @include constants.flexbox(
@@ -9,9 +10,9 @@
   );
   width: fit-content;
   font-family: Geist, sans-serif;
-  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  border-radius: map.get($map: constants.$border_radius, $key: "md");
   letter-spacing: 1px;
-  font-size: map-get($map: constants.$font_size, $key: "sm");
+  font-size: map.get($map: constants.$font_size, $key: "sm");
   padding-right: constants.$xs;
   font-weight: 500;
 }
@@ -75,7 +76,7 @@
 .display_person_no_image_character {
   position: relative;
   z-index: 3;
-  font-size: map-get($map: constants.$font_size, $key: "xxs");
+  font-size: map.get($map: constants.$font_size, $key: "xxs");
 }
 
 .display_person_label {

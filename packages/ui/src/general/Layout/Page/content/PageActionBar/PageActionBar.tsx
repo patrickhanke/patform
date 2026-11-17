@@ -26,6 +26,7 @@ const PageActionBar: FC<PageActionBarProps> = ({
 		updateOptions?.useMasterKey ?? false
 	);
 
+
 	const canSave = Boolean(
 		updateOptions && (objectId || updateOptions.collection)
 	);
@@ -38,6 +39,8 @@ const PageActionBar: FC<PageActionBarProps> = ({
 		try {
 			if (updateOptions.collection) {
 				const updates = prepareCollectionUpdates();
+
+				console.log("updates", updates);
 				if (updates.length > 0) {
 					await Promise.all(
 						updates.map((item, index) =>

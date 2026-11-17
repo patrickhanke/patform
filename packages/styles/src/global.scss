@@ -1,4 +1,5 @@
 @use "@repo/styles/constants" as *;
+@use "sass:map";
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -22,7 +23,7 @@ body {
   overflow: hidden;
   margin: 0;
   box-sizing: border-box;
-  font-size: map-get($map: $font-size, $key: "md");
+  font-size: map.get($map: $font-size, $key: "md");
   color: $dark;
 }
 

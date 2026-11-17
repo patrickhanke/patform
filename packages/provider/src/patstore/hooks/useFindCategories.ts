@@ -68,8 +68,6 @@ export const useFindCategoryPageStates = ({
 		order: "createdAt_DESC"
 	});
 
-	console.log("category data", data);
-
 	const pageStates = useMemo(() => {
 		const categories = data || [];
 		const pageStates: SiteState[] = [];

@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .admin_main_container {
   @include constants.flexbox(
@@ -24,7 +25,7 @@
   height: 42px;
   box-sizing: border-box;
   border-bottom: 1px solid constants.$grey;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
 }
 
 .admin_nav_container {
@@ -36,10 +37,10 @@
   width: 100%;
   position: relative;
   box-sizing: border-box;
-  border-radius: map-get($map: constants.$border_radius, $key: "md");
+  border-radius: map.get($map: constants.$border_radius, $key: "md");
   background-color: constants.$light;
   border: 0.6px solid constants.$grey;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
 }
 
 .admin_nav_container_underline {
@@ -53,7 +54,7 @@
   position: relative;
   box-sizing: border-box;
   border-bottom: 1px solid constants.$grey;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
   padding-bottom: 0;
 }
 
@@ -73,7 +74,7 @@
   position: relative;
   box-sizing: border-box;
   border-bottom: 1px solid constants.$grey;
-  padding: map-get($map: constants.$padding, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "md");
   background-color: constants.$white;
 }
 

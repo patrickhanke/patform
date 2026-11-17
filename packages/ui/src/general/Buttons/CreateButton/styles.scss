@@ -1,9 +1,10 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .create_button {
   border: 2px dotted constants.$primary;
   color: constants.$primary;
-  padding: map-get($map: constants.$padding, $key: "sm");
+  padding: map.get($map: constants.$padding, $key: "sm");
   width: 100%;
   background-color: transparent;
   cursor: pointer;
@@ -11,7 +12,7 @@
     background-color 0.4s ease,
     color 0.4s ease,
     border 0.4s ease;
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  font-size: map.get($map: constants.$font_size, $key: "md");
   font-family: "Geist";
   font-weight: 500;
   position: relative;
@@ -29,8 +30,8 @@
 }
 
 .create_button[data-size="medium"] {
-  padding: map-get($map: constants.$padding, $key: "md");
-  font-size: map-get($map: constants.$font_size, $key: "lg");
+  padding: map.get($map: constants.$padding, $key: "md");
+  font-size: map.get($map: constants.$font_size, $key: "lg");
 }
 
 .create_button_content {

@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .patstore_image_uploader_container {
   @include constants.flexbox($direction: column, $align: flex-start, $justify: flex-start, $gap: 12px);
@@ -36,13 +37,13 @@
           .upload-widget__main-screen {
             .upload-widget__main-screen__file-list {
               .upload-widget__main-screen__file-list__inner {
-                padding: map-get($map: constants.$padding, $key: "sm");
+                padding: map.get($map: constants.$padding, $key: "sm");
                 .upload-widget__submitted-file {
                   .upload-widget__submitted-file__container {
                     .upload-widget__submitted-file__inner {
-                      padding: map-get($map: constants.$padding, $key: "sm");
+                      padding: map.get($map: constants.$padding, $key: "sm");
                       a {
-                        font-size: map-get(
+                        font-size: map.get(
                           $map: constants.$font_size,
                           $key: "sm"
                         );
@@ -90,7 +91,7 @@
       //     }
       //     label {
       //         color: constants.$white;
-      //         padding: map-get($map: constants.$padding, $key: 'md' );
+      //         padding: map.get($map: constants.$padding, $key: 'md' );
       //     }
       //     .upload-widget__image-editor{
       //         .upload-widget__controls--space {

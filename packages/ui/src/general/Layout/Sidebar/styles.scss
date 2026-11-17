@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 .sidebar_container {
   @include constants.flexbox(
@@ -17,26 +18,26 @@
     font-weight: 500;
     li {
       font-family: Geist;
-      font-size: map-get(constants.$font_size, "md");
+      font-size: map.get(constants.$font_size, "md");
     }
     li[data-hassubmenu="true"] {
       font-family: Geist;
       margin-bottom: constants.$xs;
-      font-size: map-get(constants.$font_size, "md");
+      font-size: map.get(constants.$font_size, "md");
       button {
-        font-size: map-get(constants.$font_size, "md");
+        font-size: map.get(constants.$font_size, "md");
       }
       a {
-        font-size: map-get(constants.$font_size, "md");
+        font-size: map.get(constants.$font_size, "md");
       }
     }
   }
   .menu_content_container {
-    padding: map-get($map: constants.$padding, $key: "xs");
+    padding: map.get($map: constants.$padding, $key: "xs");
     border-bottom: 1px solid constants.$grey;
   }
   .menu_item_container {
-    padding: map-get($map: constants.$padding, $key: "xs");
+    padding: map.get($map: constants.$padding, $key: "xs");
     margin: 0;
     .menu_item {
       border: none;
@@ -49,8 +50,8 @@
         $gap: constants.$xs
       );
       color: constants.$dark_tinted;
-      padding: map-get(constants.$padding, "xs");
-      border-radius: map-get(constants.$border_radius, "xs");
+      padding: map.get(constants.$padding, "xs");
+      border-radius: map.get(constants.$border_radius, "xs");
       text-decoration: none;
       cursor: pointer;
       width: 100%;
@@ -90,7 +91,7 @@
     list-style: none;
     font-weight: 500;
     // background-color: constants.$lightest;
-    border-radius: map-get($map: constants.$border_radius, $key: "xs");
+    border-radius: map.get($map: constants.$border_radius, $key: "xs");
     // padding-inline-start: constants.$sm;
     li:first-child {
       margin-top: 0;
@@ -99,9 +100,9 @@
     li {
       margin-bottom: constants.$xxs;
       padding-left: 18px;
-      font-size: map-get(constants.$font_size, "sm");
+      font-size: map.get(constants.$font_size, "sm");
       button {
-        font-size: map-get(constants.$font_size, "sm");
+        font-size: map.get(constants.$font_size, "sm");
       }
     }
     li[data-isopen="true"] {
@@ -126,8 +127,8 @@
     $gap: constants.$md
   );
   background-color: constants.$yellow;
-  padding: map-get($map: constants.$padding, $key: "md");
-  font-size: map-get(constants.$font_size, "xs");
+  padding: map.get($map: constants.$padding, $key: "md");
+  font-size: map.get(constants.$font_size, "xs");
   font-weight: 500;
   color: constants.$dark;
 }
@@ -153,10 +154,10 @@
     $align: flex-end,
     $justify: flex-start
   );
-  padding: map-get($map: constants.$padding, $key: "xs");
+  padding: map.get($map: constants.$padding, $key: "xs");
   border-bottom: 1px solid constants.$grey;
   position: relative;
-  font-size: map-get(constants.$font_size, "xs");
+  font-size: map.get(constants.$font_size, "xs");
   font-weight: 500;
   color: constants.$dark;
   margin-top: constants.$md;

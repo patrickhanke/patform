@@ -1,4 +1,5 @@
 @use "@repo/styles/constants";
+@use "sass:map";
 
 body {
   margin: 0;
@@ -26,8 +27,8 @@ body {
   min-width: 240px;
   max-width: 300px;
   height: auto;
-  padding: map-get($map: constants.$padding, $key: "sm");
-  font-size: map-get($map: constants.$font_size, $key: "md");
+  padding: map.get($map: constants.$padding, $key: "sm");
+  font-size: map.get($map: constants.$font_size, $key: "md");
 }
 
 .autocomplete-container .custom-list {

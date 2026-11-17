@@ -1,5 +1,6 @@
 @use "@repo/styles/constants";
 @use "@repo/styles/fonts";
+@use "sass:map";
 
 h1 {
   font-family: "Geist", sans-serif;
@@ -29,13 +30,13 @@ h3 {
   margin: 0;
   margin-block-end: 0;
   letter-spacing: 0.04rem;
-  font-size: map-get($map: constants.$font-size, $key: "md");
+  font-size: map.get($map: constants.$font-size, $key: "md");
   margin-bottom: 0;
 }
 h4 {
   font-family: Geist;
   font-weight: 600;
-  font-size: map-get($map: constants.$font-size, $key: "xs");
+  font-size: map.get($map: constants.$font-size, $key: "xs");
   line-height: 1;
   margin-block-end: 0;
   margin-top: 0;
@@ -73,7 +74,7 @@ p {
   margin-block-start: 0;
   margin: 0;
   text-align: left;
-  font-size: map-get($map: constants.$font-size, $key: "md");
+  font-size: map.get($map: constants.$font-size, $key: "md");
   text-wrap: wrap;
 }
 li {
@@ -86,7 +87,7 @@ li {
   margin-block-start: 0;
   margin: 0;
   text-align: left;
-  font-size: map-get($map: constants.$font-size, $key: "md");
+  font-size: map.get($map: constants.$font-size, $key: "md");
   text-wrap: wrap;
 }
 td {
@@ -98,7 +99,7 @@ td {
   margin-bottom: 0;
   margin-block-start: 0;
   margin: 0;
-  font-size: map-get($map: constants.$font-size, $key: "md");
+  font-size: map.get($map: constants.$font-size, $key: "md");
   text-wrap: wrap;
 }
 a {
