@@ -8,7 +8,7 @@ import {
 import database_fields, {
 	DatabaseFieldType
 } from "../constants/database_fields";
-import { languages_short } from "@repo/provider";
+import { languages_short, toLocaleKey } from "@repo/provider";
 
 type CategoryRecord = CategoryClass & {
 	category_id?: string;
@@ -106,12 +106,15 @@ const getDatabaseDefaultFields = (
 			label: "Sprache",
 			type: "select",
 			dataType: "string",
-			select_options: languages.map((language) => ({
-				value: language,
-				label:
-					languages_short.find((lng) => lng.value === language)
-						?.label || language
-			})),
+			select_options: languages.map((language) => {
+				const locale = toLocaleKey(language);
+				return {
+					value: locale,
+					label:
+						languages_short.find((lng) => lng.value === locale)
+							?.label || locale
+				};
+			}),
 			validation: {
 				validate: true,
 				required: "Pflichtfeld"

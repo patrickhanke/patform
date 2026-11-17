@@ -6,15 +6,22 @@ type InfoBoxComponent = {
 	text?: string;
 	status?: "info" | "success" | "warning" | "error";
 	maxWidth?: string;
+	noMargin?: boolean;
 };
 
 const InfoBox = ({
 	content,
 	text,
 	status = "info",
-	maxWidth = "500px"
+	maxWidth = "500px",
+	noMargin = false
 }: InfoBoxComponent) => (
-	<Alert.Root status={status} maxWidth={maxWidth}>
+	<Alert.Root
+		status={status}
+		maxWidth={maxWidth}
+		marginBottom={noMargin ? "0px" : "12px"}
+		padding="6px"
+	>
 		<Alert.Indicator />
 		<Alert.Title fontSize="xs">
 			{content && content()}

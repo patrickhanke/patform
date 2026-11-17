@@ -1,5 +1,10 @@
 import { ModuleField } from "@repo/types";
 
+const fieldDescriptionSettings = {
+	show_info: false,
+	info: undefined
+} as const;
+
 const module_fields: ModuleField[] = [
 	{
 		id: "title",
@@ -9,7 +14,8 @@ const module_fields: ModuleField[] = [
 		active: true,
 		position: 1,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "createdAt",
@@ -19,7 +25,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 2,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "updatedAt",
@@ -29,7 +36,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 2,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "description",
@@ -39,7 +47,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 2,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "text",
@@ -49,7 +58,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 3,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "image",
@@ -59,7 +69,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 4,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "state",
@@ -69,7 +80,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 5,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "gallery",
@@ -79,7 +91,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 6,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "color",
@@ -89,7 +102,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 9,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "active",
@@ -99,7 +113,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 10,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "file",
@@ -109,7 +124,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 12,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "date",
@@ -119,7 +135,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 13,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "dates",
@@ -129,7 +146,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 14,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "times",
@@ -156,7 +174,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 16,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "documents",
@@ -166,7 +185,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 17,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "created_by",
@@ -176,7 +196,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 5,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "updated_by",
@@ -186,7 +207,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 18,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "location",
@@ -196,7 +218,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 19,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "slug",
@@ -206,7 +229,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 20,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	},
 	{
 		id: "lang",
@@ -216,7 +240,8 @@ const module_fields: ModuleField[] = [
 		active: false,
 		position: 21,
 		default: false,
-		hidden: false
+		hidden: false,
+		settings: { ...fieldDescriptionSettings }
 	}
 ] as const;
 

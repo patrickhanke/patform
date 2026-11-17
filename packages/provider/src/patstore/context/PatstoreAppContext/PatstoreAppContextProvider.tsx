@@ -49,7 +49,10 @@ const PatstoreAppContextProvider = ({
 		getUser();
 	}, []);
 
-	const { role: membership } = useRoleForUser(user?.objectId, project?.objectId);
+	const { role: membership } = useRoleForUser(
+		user?.objectId,
+		project?.objectId
+	);
 	const matchedRole = useMemo(() => {
 		return roles?.find((role) => role.objectId === membership?.objectId);
 	}, [roles, membership?.objectId]);
@@ -96,7 +99,7 @@ const PatstoreAppContextProvider = ({
 			user,
 			userLoading: !user.objectId ? true : false,
 			modules: project.modules,
-			defaultLanguage: project?.settings?.default_language || "de-DE",
+			defaultLanguage: project?.settings?.default_language ?? "de-DE",
 			languages: project?.settings?.languages || ["de-DE"]
 		}),
 		[pageTitle, project, currentModule, user, userRole]

@@ -88,6 +88,7 @@ const PersonsOverview = ({
 			}}
 			emptyContent={true}
 			refetch={refetch}
+			description={module.settings.description}
 		>
 			<Table
 				columns={columns}

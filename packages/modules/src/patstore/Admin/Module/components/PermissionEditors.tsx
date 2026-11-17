@@ -2,7 +2,11 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { SlideIn } from "@repo/ui";
-import type { ErrorMessage, FieldPermission, ModulePermission } from "@repo/types";
+import type {
+	ErrorMessage,
+	FieldPermission,
+	ModulePermission
+} from "@repo/types";
 
 export type PermissionRole = {
 	objectId: string;
@@ -18,9 +22,14 @@ const MODULE_ACTIONS: { action: keyof ModulePermission; label: string }[] = [
 	{ action: "delete", label: "Löschen" }
 ];
 
-const toggleId = (ids: string[] | undefined, roleId: string, checked: boolean) => {
+const toggleId = (
+	ids: string[] | undefined,
+	roleId: string,
+	checked: boolean
+) => {
 	const current = ids || [];
-	if (checked) return current.includes(roleId) ? current : [...current, roleId];
+	if (checked)
+		return current.includes(roleId) ? current : [...current, roleId];
 	return current.filter((id) => id !== roleId);
 };
 
@@ -39,10 +48,15 @@ export const ModulePermissionEditor = ({
 				<h3>{label}</h3>
 				<div className="flex col gap-xs">
 					{roles.map((role) => (
-						<label key={role.objectId} className="flex row a-ce gap-xs">
+						<label
+							key={role.objectId}
+							className="flex row a-ce gap-xs"
+						>
 							<input
 								type="checkbox"
-								checked={(permission[action] || []).includes(role.objectId)}
+								checked={(permission[action] || []).includes(
+									role.objectId
+								)}
 								onChange={(event) =>
 									onChange({
 										...permission,
@@ -82,7 +96,8 @@ const FieldPermissionFields = ({
 	<div className="flex col gap-sm">
 		{FIELD_ACTIONS.map(({ action, label }) => {
 			const inherited = permission?.[action] === undefined;
-			const selected = permission?.[action] ?? modulePermission?.[action] ?? [];
+			const selected =
+				permission?.[action] ?? modulePermission?.[action] ?? [];
 			return (
 				<div key={action}>
 					<label className="flex row a-ce gap-xs">
@@ -90,7 +105,9 @@ const FieldPermissionFields = ({
 							type="checkbox"
 							checked={inherited}
 							onChange={(event) => {
-								const next: FieldPermission = { ...(permission || {}) };
+								const next: FieldPermission = {
+									...(permission || {})
+								};
 								if (event.target.checked) {
 									delete next[action];
 								} else {
@@ -100,7 +117,8 @@ const FieldPermissionFields = ({
 									];
 								}
 								onChange(
-									next.read === undefined && next.write === undefined
+									next.read === undefined &&
+										next.write === undefined
 										? undefined
 										: next
 								);
@@ -116,7 +134,9 @@ const FieldPermissionFields = ({
 							{roles.map((role) => (
 								<li key={role.objectId}>
 									{role.label}:{" "}
-									{selected.includes(role.objectId) ? "erlaubt" : "verweigert"}
+									{selected.includes(role.objectId)
+										? "erlaubt"
+										: "verweigert"}
 								</li>
 							))}
 						</ul>
@@ -124,10 +144,15 @@ const FieldPermissionFields = ({
 					{!inherited && (
 						<div className="flex col gap-xs">
 							{roles.map((role) => (
-								<label key={role.objectId} className="flex row a-ce gap-xs">
+								<label
+									key={role.objectId}
+									className="flex row a-ce gap-xs"
+								>
 									<input
 										type="checkbox"
-										checked={(permission?.[action] || []).includes(role.objectId)}
+										checked={(
+											permission?.[action] || []
+										).includes(role.objectId)}
 										onChange={(event) =>
 											onChange({
 												...(permission || {}),

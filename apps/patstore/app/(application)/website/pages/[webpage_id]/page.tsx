@@ -16,7 +16,6 @@ async function WebsitePageContent({
 
 	const webpage = await fetchWebpageById({ id: webpage_id, sessionToken: sessionToken });
 
-	console.log( "webpage", webpage);
 	if (!webpage) {
 		return <p>Seite nicht gefunden</p>;
 	}

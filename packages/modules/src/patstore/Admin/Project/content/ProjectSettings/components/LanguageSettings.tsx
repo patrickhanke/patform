@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Form } from "@repo/ui";
 import { ApolloRefetch, PatstoreProject } from "@repo/types";
-import { useDataHandler } from "@repo/provider";
+import { toLocaleKey, useDataHandler } from "@repo/provider";
 
 const LanguageSettings = ({
 	project,
@@ -20,10 +20,12 @@ const LanguageSettings = ({
 				name: "settings.languages",
 				type: "select",
 				label: "Sprachen",
-				value: project?.settings?.languages,
+				value: project?.settings?.languages?.map((lang) =>
+					toLocaleKey(lang)
+				),
 				select_options: [
 					{ label: "Deutsch", value: "de-DE" },
-					{ label: "Englisch", value: "en-EN" }
+					{ label: "Englisch", value: "en-GB" }
 				],
 				isMulti: true,
 				dataType: "string",
@@ -35,14 +37,17 @@ const LanguageSettings = ({
 				name: "settings.default_language",
 				type: "select",
 				label: "Standardsprache",
-				value: project?.settings?.default_language,
+				value: project?.settings?.default_language
+					? toLocaleKey(project.settings.default_language)
+					: project?.settings?.default_language,
 				select_options: [
 					{ label: "Deutsch", value: "de-DE", disabled: false },
 					{
 						label: "Englisch",
-						value: "en",
-						disabled:
-							!project?.settings?.languages?.includes("en-EN")
+						value: "en-GB",
+						disabled: !project?.settings?.languages?.some(
+							(lang) => toLocaleKey(lang) === "en-GB"
+						)
 					}
 				],
 				dataType: "string",

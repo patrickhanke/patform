@@ -213,7 +213,6 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 		}) => {
 			const data: Array<any> = [];
 			setLoading(true);
-			console.log("userId", userId);
 
 			const updateObjectCopy = cloneDeep(updateObject);
 			if (userId) {

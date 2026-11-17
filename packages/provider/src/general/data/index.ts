@@ -9,3 +9,4 @@ export { default as useUploadAlgoliaData } from "./algolia/useUploadAlgoliaData"
 export { default as Parse } from "./parse";
 export * from "./DataContext";
 export * from "./server/fetchAppBootstrapData";
+export { default as requestDeployWebhook } from "./requestDeployWebhook";

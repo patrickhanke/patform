@@ -2,8 +2,8 @@ import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { EditTranslationFieldProps } from "../types";
 import { ClassTranslation, LanguageValue } from "@repo/types";
 import { IconButton, Modal, SwitchButtons } from "@repo/ui";
-import { languages as languagesArray } from "@repo/provider";
 import { cloneDeep, get, set } from "lodash-es";
+import { getLanguageSwitchStates } from "../../../functions/getLanguageSwitchStates";
 
 const TableColumnEditTextfieldTranslation: FC<EditTranslationFieldProps> = ({
 	value,
@@ -20,14 +20,10 @@ const TableColumnEditTextfieldTranslation: FC<EditTranslationFieldProps> = ({
 	const [newTranslation, setNewTranslation] =
 		useState<ClassTranslation>(value);
 
-	const currentStates = useMemo(() => {
-		return languages.map((lang) => ({
-			label: languagesArray.find((l) => l.value === lang)
-				?.label as string,
-			value: lang,
-			disabled: false
-		}));
-	}, [languages]);
+	const currentStates = useMemo(
+		() => getLanguageSwitchStates(languages),
+		[languages]
+	);
 
 	useEffect(() => {
 		if (!isOpen) {

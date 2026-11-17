@@ -26,7 +26,6 @@ const PageActionBar: FC<PageActionBarProps> = ({
 		updateOptions?.useMasterKey ?? false
 	);
 
-
 	const canSave = Boolean(
 		updateOptions && (objectId || updateOptions.collection)
 	);

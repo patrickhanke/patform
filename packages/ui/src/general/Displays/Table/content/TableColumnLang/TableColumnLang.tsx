@@ -1,6 +1,6 @@
 import { LanguageValue } from "@repo/types";
 import { ElementSelectInterface, SlideIn } from "@repo/ui";
-import { languages_short } from "@repo/provider";
+import { languages_short, toLocaleKey } from "@repo/provider";
 import { useMemo, useState } from "react";
 
 const TableColumnLang = ({
@@ -16,12 +16,15 @@ const TableColumnLang = ({
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	const selectOptions = languages.map((language) => ({
-		value: language,
-		label:
-			languages_short.find((lng) => lng.value === language)?.label ||
-			language
-	}));
+	const selectOptions = languages.map((language) => {
+		const locale = toLocaleKey(language);
+		return {
+			value: locale,
+			label:
+				languages_short.find((lng) => lng.value === locale)?.label ||
+				locale
+		};
+	});
 
 	console.log("languages", languages);
 	console.log("value", value);
@@ -43,10 +46,13 @@ const TableColumnLang = ({
 			<ElementSelectInterface
 				elements={selectOptions}
 				selectedElements={
-					selectOptions.find((option) => option.value === value)
+					selectOptions.find(
+						(option) => option.value === toLocaleKey(value)
+					)
 						? [
 								selectOptions.find(
-									(option) => option.value === value
+									(option) =>
+										option.value === toLocaleKey(value)
 								)!
 							]
 						: []
@@ -61,7 +67,11 @@ const TableColumnLang = ({
 	);
 
 	const selectedLanguage = useMemo(() => {
-		return selectOptions.find((option) => option.value === value) || null;
+		return (
+			selectOptions.find(
+				(option) => option.value === toLocaleKey(value)
+			) || null
+		);
 	}, [selectOptions, value]);
 
 	return (

@@ -3,6 +3,7 @@ import { ColumnDef } from "@repo/ui";
 import { PatstoreUser } from "@repo/types";
 import { UseUserColumnsProps } from "../types";
 import SelectUserRole from "../components/SelectUserRole";
+import EditUser from "../components/EditUser";
 
 const useUserColumns = ({ roles, refetch }: UseUserColumnsProps) => {
 	const renderSelectUserRole = useCallback(
@@ -41,7 +42,7 @@ const useUserColumns = ({ roles, refetch }: UseUserColumnsProps) => {
 				enableSorting: false
 			},
 			{
-				accessorFn: (row) => "edit",
+				accessorFn: (row) => <EditUser user={row} />,
 				header: () => <span>Bearbeiten</span>,
 				id: "edit",
 				cell: (info) => info.getValue(),

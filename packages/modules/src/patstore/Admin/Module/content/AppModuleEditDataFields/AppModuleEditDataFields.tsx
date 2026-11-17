@@ -111,6 +111,7 @@ const AppModuleEditDataFields = ({
 				data_fields: nextFields
 			},
 			feedback: "Datenfelder gespeichert",
+			projectId,
 			onError: (message) => {
 				failed = true;
 				setErrors([

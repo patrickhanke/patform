@@ -21,7 +21,6 @@ import {
 	ClassTranslation,
 	EventDate,
 	EventTime,
-	LanguageValue,
 	ModuleFieldTimesSettings,
 	PatstoreUser,
 	PersonClass,
@@ -56,7 +55,6 @@ import {
 	TableColumnEditField,
 	TableColumnTimesField,
 	TableColumnEmailSettings,
-	TableColumnLang,
 	TableColumnEditText,
 	type TableColumnEditTextType
 } from "../content";
@@ -163,6 +161,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			)
 		);
 	}, [restrictFields, accessModule, accessRole, data, recordId]);
+	
 	const visibleDataFields = useMemo(() => {
 		if (!restrictFields || !accessModule || !accessRole) return fields;
 		return fields.flatMap((field) => {
@@ -173,6 +172,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			return [{ ...field, disabled: true }];
 		});
 	}, [restrictFields, accessModule, accessRole, fields, recordId]);
+	
 	const visibleSettingFields = useMemo(() => {
 		if (!restrictFields || !accessModule || !accessRole) return settings;
 		return settings.flatMap((field) => {
@@ -183,6 +183,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			return [{ ...field, disabled: true }];
 		});
 	}, [restrictFields, accessModule, accessRole, settings, recordId]);
+	
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
 			await updateData({
@@ -301,6 +302,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 								value={live[columnElement.id] as string}
 								translation={row.translations}
 								isLink={columnElement.id === "link"}
+								info={columnElement.settings?.info}
 								isEditable={
 									columnElement.type === "edit_string"
 										? true
@@ -984,34 +986,6 @@ const useCreateColumns = <T extends ColumnClasses>({
 									live[columnElement.id] as WebpageContent[]
 								}
 								onChange={(value: WebpageContent[]) =>
-									persistRow(
-										live.objectId,
-										columnElement.id as string,
-										value,
-										"Inhalt aktualisiert"
-									)
-								}
-							/>
-						);
-					},
-					header: () => <span>{columnElement.label}</span>,
-					id: columnElement.id as string,
-					cell: (info) => info.getValue(),
-					footer: (info) => info.column.id,
-					enableSorting: false
-				} as ColumnDef<T>);
-			}
-			if (columnElement.type === "lang") {
-				columnArray.push({
-					accessorFn: (row) => {
-						const live = getLiveRow(pageRows, row);
-						return (
-							<TableColumnLang
-								value={live[columnElement.id] as LanguageValue}
-								languages={
-									currentModule?.settings?.languages || []
-								}
-								onChange={(value: string) =>
 									persistRow(
 										live.objectId,
 										columnElement.id as string,

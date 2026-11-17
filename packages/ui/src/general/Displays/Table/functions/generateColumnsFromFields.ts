@@ -8,7 +8,12 @@ const generateColumnsFromFields = <T extends ColumnClasses>(
 	fields
 		.sort((a, b) => a.position - b.position)
 		.forEach((field) => {
-			if (field.active && field.id && !field.hidden) {
+			if (
+				field.active &&
+				field.id &&
+				!field.hidden &&
+				field.type !== "lang"
+			) {
 				fieldArray.push({
 					id: field.id,
 					label: field.label,

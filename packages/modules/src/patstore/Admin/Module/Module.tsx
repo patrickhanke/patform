@@ -26,6 +26,7 @@ import { ModuleCategoriesPageData } from "./content/AppModuleEditCategories/type
 import { ModuleFieldsPageData } from "./content/AppModuleEditFields/types";
 import { ModuleDataFieldsPageData } from "./content/AppModuleEditDataFields/types";
 import { ModuleFiltersPageData } from "./content/AppModuleEditFilters/types";
+import { requestDeployWebhook } from "@repo/provider";
 
 const categoriesUpdateOptions: PageDataUpdateOptions<ModuleCategoriesPageData> =
 	{
@@ -35,14 +36,6 @@ const categoriesUpdateOptions: PageDataUpdateOptions<ModuleCategoriesPageData> =
 		}),
 		message: "Kategorien gespeichert"
 	};
-
-const fieldsUpdateOptions: PageDataUpdateOptions<ModuleFieldsPageData> = {
-	className: "Module",
-	updateObject: (data) => ({
-		fields: data.fields
-	}),
-	message: "Felder gespeichert"
-};
 
 const dataFieldsUpdateOptions: PageDataUpdateOptions<ModuleDataFieldsPageData> =
 	{
@@ -105,6 +98,21 @@ const Module = () => {
 		fields: ["objectId", "name", "connected_class", "path"],
 		projectId
 	});
+
+	const fieldsUpdateOptions: PageDataUpdateOptions<ModuleFieldsPageData> =
+		useMemo(
+			() => ({
+				className: "Module",
+				updateObject: (data) => ({
+					fields: data.fields
+				}),
+				message: "Felder gespeichert",
+				afterSave: () => {
+					requestDeployWebhook("Module", projectId);
+				}
+			}),
+			[projectId]
+		);
 
 	const module = data as ModuleType | null;
 

@@ -147,7 +147,7 @@ const dispatchWebhook = async (project: ProjectRef, objectClass: string) => {
 	if (project.objectId === "JRxDkaxCoI") {
 		if (objectClass !== "User") {
 			await postWebhook(
-				`${COOLIFY_API}/api/v1/deploy?uuid=${PROJECT_UUIDS.koloproktologie}&force=false`,
+				`${COOLIFY_API}/api/v1/deploy?tag=koloproktologie&force=false`,
 				true,
 				PROJECT_UUIDS.koloproktologie
 			);

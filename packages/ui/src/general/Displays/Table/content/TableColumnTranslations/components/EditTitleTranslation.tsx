@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo, useState } from "react";
 import { EditTitleTranslationProps } from "../types";
 import { LanguageValue } from "@repo/types";
 import { SwitchButtons } from "@repo/ui";
-import { languages as languagesArray } from "@repo/provider";
+import { getLanguageSwitchStates } from "../../../functions/getLanguageSwitchStates";
 
 const EditTitleTranslation: FC<EditTitleTranslationProps> = ({
 	value,
@@ -15,14 +15,10 @@ const EditTitleTranslation: FC<EditTitleTranslationProps> = ({
 		defaultLanguage as LanguageValue
 	);
 
-	const currentStates = useMemo(() => {
-		return languages.map((lang) => ({
-			label: languagesArray.find((l) => l.value === lang)
-				?.label as string,
-			value: lang,
-			disabled: false
-		}));
-	}, [languages]);
+	const currentStates = useMemo(
+		() => getLanguageSwitchStates(languages as LanguageValue[]),
+		[languages]
+	);
 
 	const handleInputChange = useCallback(
 		(value: string) => {
@@ -36,7 +32,9 @@ const EditTitleTranslation: FC<EditTitleTranslationProps> = ({
 		<div>
 			<SwitchButtons
 				buttonStates={currentStates}
-				changeHandler={(value) => setLangState(value as LanguageValue)}
+				changeHandler={(state) =>
+					setLangState(state.value as LanguageValue)
+				}
 				currentStates={currentStates.find((l) => l.value === langState)}
 			/>
 			<input

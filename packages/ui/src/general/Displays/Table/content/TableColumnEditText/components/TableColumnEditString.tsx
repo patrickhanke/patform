@@ -2,7 +2,7 @@
 
 import { TableColumnStringProps } from "../types";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { Modal, IconButton } from "@repo/ui";
+import { Modal, IconButton, InfoBox } from "@repo/ui";
 import { ErrorMessage } from "@repo/types";
 import { useAppContext } from "@repo/provider";
 
@@ -35,7 +35,8 @@ export const TableColumnEditString = ({
 	columnKey,
 	isEditable = false,
 	isLink = false,
-	onChange
+	onChange,
+	info
 }: TableColumnStringProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [string, setString] = useState(value);
@@ -132,6 +133,7 @@ export const TableColumnEditString = ({
 				errors={errors}
 				styles={{ width: "fit-content", minWidth: "420px" }}
 			>
+				{info && <InfoBox text={info} status="info" />}
 				{isEditable ? (
 					<div
 						className={"table_column_textfield_textarea_container"}

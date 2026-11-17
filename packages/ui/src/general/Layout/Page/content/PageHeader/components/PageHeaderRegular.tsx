@@ -6,7 +6,11 @@ import { isArray } from "lodash-es";
 import CreateClass from "../content/CreateClass";
 import { PageHeaderButton, PageHeaderRegularProps } from "../types";
 import "../styles.scss";
-import { languages_short, useUnsavedChangesGuard } from "@repo/provider";
+import {
+	languages_short,
+	toLocaleKey,
+	useUnsavedChangesGuard
+} from "@repo/provider";
 import { PageState } from "@repo/types";
 import { SwitchButtons } from "@repo/ui";
 
@@ -48,13 +52,16 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 		};
 
 		const languageButtons =
-			languages?.map((language) => ({
-				value: language,
-				label:
-					languages_short.find((l) => l.value === language)?.label ||
-					"",
-				disabled: false
-			})) || [];
+			languages?.map((language) => {
+				const locale = toLocaleKey(language);
+				return {
+					value: locale,
+					label:
+						languages_short.find((l) => l.value === locale)?.label ||
+						locale.slice(0, 2).toUpperCase(),
+					disabled: false
+				};
+			}) || [];
 
 		return (
 			<div ref={ref} className="pageheader_content">
@@ -69,7 +76,9 @@ const PageHeaderRegular = forwardRef<HTMLDivElement, PageHeaderRegularProps>(
 						{languages && languages.length > 1 && (
 							<SwitchButtons
 								currentStates={languageButtons?.find(
-									(l) => l.value === activeLang
+									(l) =>
+										activeLang &&
+										l.value === toLocaleKey(activeLang)
 								)}
 								buttonStates={languageButtons}
 								changeHandler={(language) =>

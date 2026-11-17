@@ -110,6 +110,7 @@ export type ModuleSettings = {
 	edit_title?: boolean;
 	edit_text?: boolean;
 	edit_description?: boolean;
+	description?: string;
 	/** Role permissions. Absent means the role's module list still grants full access. */
 	permission?: ModulePermission;
 };
@@ -167,6 +168,11 @@ export type ModuleFieldTimesSettings = {
 	select_online: boolean;
 };
 
+export type ModuleFieldDescriptionSettings = {
+	show_info: boolean;
+	info?: string;
+};
+
 type ModuleFieldBase = {
 	label: string;
 	required: boolean;
@@ -183,11 +189,12 @@ export type ModuleField = ModuleFieldBase &
 	(
 		| {
 				id: "times";
-				settings: ModuleFieldTimesSettings;
+				settings: ModuleFieldTimesSettings &
+					ModuleFieldDescriptionSettings;
 		  }
 		| {
 				id: Exclude<ModuleFieldIds, "times">;
-				settings?: Record<string, boolean>;
+				settings?: ModuleFieldDescriptionSettings;
 		  }
 	);
 

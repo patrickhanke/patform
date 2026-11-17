@@ -8,6 +8,6 @@ export type StructuredContentEditorProps = {
 	schema: WebpageStructuredNodeMap;
 	savedValues: WebpageStructuredValueEntry[];
 	onSave: (values: WebpageStructuredValueEntry[]) => void | Promise<void>;
-	/** Selected language. Omitted while editing the `default` schema (no path prefix). */
-	language?: LanguageValue;
+	/** Path prefix for saved values. Omitted when entries are stored without a locale prefix. */
+	language?: LanguageValue | string;
 };

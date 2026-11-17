@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC, useCallback, useMemo } from "react";
 import {
 	TableColumnEditString,
 	TableColumnEditStringTranslation,
@@ -10,6 +10,7 @@ import {
 import { TableColumnEditTextProps } from "./types";
 import { get, set } from "lodash";
 import { ClassTranslation } from "@repo/types";
+import { toLocaleKey } from "@repo/provider";
 
 export const TableColumnEditText: FC<TableColumnEditTextProps> = ({
 	type,
@@ -20,31 +21,58 @@ export const TableColumnEditText: FC<TableColumnEditTextProps> = ({
 	isLink,
 	onChange,
 	languages = [],
-	language
+	language,
+	info
 }) => {
+	const locales = useMemo(
+		() => [...new Set(languages.map((lang) => toLocaleKey(lang)))],
+		[languages]
+	);
+	const locale = language ? toLocaleKey(language) : undefined;
+
+	const normalizeTranslations = useCallback(
+		(source: ClassTranslation): ClassTranslation => {
+			const next = {} as ClassTranslation;
+			Object.entries(source || {}).forEach(([key, fields]) => {
+				const localeKey = toLocaleKey(key);
+				if (key === localeKey || !next[localeKey]) {
+					next[localeKey] = {
+						...(next[localeKey] || {}),
+						...(fields || {})
+					};
+				}
+			});
+			return next;
+		},
+		[]
+	);
+
 	const getTranslation = useCallback((): ClassTranslation => {
 		if (!translation) {
 			const defaultTranslation: ClassTranslation = {};
-			languages.forEach((lang) => {
+			locales.forEach((lang) => {
 				set(defaultTranslation, `${lang}.${columnKey}`, value);
 			});
 			return defaultTranslation;
 		}
-		return translation;
-	}, [translation, languages, columnKey, value]);
+		return normalizeTranslations(translation);
+	}, [translation, locales, columnKey, value, normalizeTranslations]);
 
 	const handleChange = useCallback(
 		(key: string, nextValue: string | ClassTranslation) => {
 			if (key === "translations") {
-				onChange("translations", nextValue as ClassTranslation);
+				const normalized = normalizeTranslations(
+					nextValue as ClassTranslation
+				);
+				onChange("translations", normalized);
 				const columnValue =
-					get(nextValue, `${language}.${columnKey}`) || "";
+					(locale && get(normalized, `${locale}.${columnKey}`)) || "";
 				onChange(columnKey, columnValue);
 			} else {
 				onChange(columnKey, nextValue);
 			}
 		},
-		[onChange, language, columnKey]
+		[onChange, locale, columnKey, normalizeTranslations]
 	);
 
 	const handleFieldChange = useCallback(
@@ -54,7 +82,7 @@ export const TableColumnEditText: FC<TableColumnEditTextProps> = ({
 		[onChange, columnKey]
 	);
 
-	if (!isLink && languages.length > 1 && language) {
+	if (!isLink && locales.length > 1 && locale) {
 		switch (type) {
 			case "edit_string":
 				return (
@@ -64,8 +92,8 @@ export const TableColumnEditText: FC<TableColumnEditTextProps> = ({
 						isEditable={isEditable}
 						isLink={isLink}
 						onChange={handleChange}
-						languages={languages}
-						language={language}
+						languages={locales}
+						language={locale}
 					/>
 				);
 			case "edit_textfield":
@@ -75,8 +103,8 @@ export const TableColumnEditText: FC<TableColumnEditTextProps> = ({
 						columnKey={columnKey}
 						isEditable={isEditable}
 						onChange={handleChange}
-						languages={languages}
-						language={language}
+						languages={locales}
+						language={locale}
 					/>
 				);
 			case "texteditor":
@@ -85,8 +113,8 @@ export const TableColumnEditText: FC<TableColumnEditTextProps> = ({
 						value={getTranslation()}
 						columnKey={columnKey}
 						onChange={handleChange}
-						languages={languages}
-						language={language}
+						languages={locales}
+						language={locale}
 					/>
 				);
 			default:
@@ -104,6 +132,7 @@ export const TableColumnEditText: FC<TableColumnEditTextProps> = ({
 					isEditable={isEditable}
 					isLink={isLink}
 					onChange={onChange}
+					info={info}
 				/>
 			);
 		case "textfield":
@@ -113,6 +142,7 @@ export const TableColumnEditText: FC<TableColumnEditTextProps> = ({
 					value={value}
 					isEditable={isEditable}
 					onChange={handleFieldChange}
+					info={info}
 				/>
 			);
 		case "texteditor":

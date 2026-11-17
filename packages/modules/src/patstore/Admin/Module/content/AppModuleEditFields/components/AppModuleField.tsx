@@ -54,14 +54,29 @@ const AppModuleField = ({
 
 	const settingsFields: Field[] = useMemo(() => {
 		if (!field.settings) return [];
-		const settings = field.settings as Record<string, boolean>;
-		return Object.keys(settings).map((key) => ({
-			id: key,
-			label: key,
-			name: key,
-			type: "toggle" as const,
-			value: settings[key] ?? false
-		}));
+		const settings = field.settings as Record<
+			string,
+			boolean | string | undefined
+		>;
+		return Object.keys(settings).map((key) => {
+			if (key === "info") {
+				return {
+					id: key,
+					label: "Beschreibung",
+					name: key,
+					type: "textarea" as const,
+					value: (settings[key] ?? "") as string
+				};
+			} else {
+				return {
+					id: key,
+					label: key,
+					name: key,
+					type: "toggle" as const,
+					value: settings[key] ?? (false as boolean)
+				};
+			}
+		});
 	}, [field.settings]);
 
 	return (

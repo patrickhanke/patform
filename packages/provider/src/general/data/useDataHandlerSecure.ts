@@ -6,7 +6,7 @@ import { PatstoreAppContext } from "../../patstore";
 import requestDeployWebhook from "./requestDeployWebhook";
 import { formatISO9075 } from "date-fns";
 import Cookies from "js-cookie";
-import { CombinedGraphQLErrors  } from "@apollo/client";
+import { CombinedGraphQLErrors } from "@apollo/client";
 import Parse from "./parse";
 
 /**
@@ -29,7 +29,8 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 			updateObject,
 			afterSaveHandler,
 			feedback,
-			onError
+			onError,
+			projectId
 		}: {
 			className: string;
 			objectId: string;
@@ -40,6 +41,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 			afterSaveHandler?: (objectId: string) => void;
 			feedback?: string;
 			onError?: (error: string) => void;
+			projectId?: string;
 		}) => {
 			let data: Array<any> = [];
 			setLoading(true);
@@ -92,7 +94,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 				}
 			}
 
-			requestDeployWebhook(className, project?.objectId);
+			requestDeployWebhook(className, project?.objectId ?? projectId);
 			setLoading(false);
 			return data;
 		},
@@ -387,7 +389,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 						}
 						return response.data;
 					})
-					.catch((error: CombinedGraphQLErrors ) => {
+					.catch((error: CombinedGraphQLErrors) => {
 						console.log(error);
 						feedbackHandler({
 							success: false,

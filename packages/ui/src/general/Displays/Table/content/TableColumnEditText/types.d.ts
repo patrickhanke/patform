@@ -1,11 +1,7 @@
 import { ClassTranslation, LanguageValue } from "@repo/types";
 
 export type TableColumnEditTextType =
-	| "string"
-	| "edit_string"
-	| "textfield"
-	| "edit_textfield"
-	| "texteditor";
+	"string" | "edit_string" | "textfield" | "edit_textfield" | "texteditor";
 
 export type TableColumnEditTextProps = {
 	type: TableColumnEditTextType;
@@ -17,6 +13,7 @@ export type TableColumnEditTextProps = {
 	onChange: (key: string, value: string | ClassTranslation) => void;
 	languages?: LanguageValue[];
 	language?: LanguageValue;
+	info?: string;
 };
 
 export type TableColumnStringProps = {
@@ -25,12 +22,14 @@ export type TableColumnStringProps = {
 	isEditable?: boolean;
 	isLink?: boolean;
 	onChange: (key: string, value: string | ClassTranslation) => void;
+	info?: string;
 };
 
 export type TableColumnEditTextfieldProps = {
 	value: string;
 	isEditable?: boolean;
 	onChange: (value: string) => void;
+	info?: string;
 };
 
 export type TableColumnEditTexteditorProps = {

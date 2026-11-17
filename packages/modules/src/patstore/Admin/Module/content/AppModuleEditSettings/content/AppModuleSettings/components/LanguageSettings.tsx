@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Form, SetPageData } from "@repo/ui";
 import { ModuleSettings } from "@repo/types";
+import { toLocaleKey } from "@repo/provider";
 
 const LanguageSettings = ({
 	setData,
@@ -17,10 +18,10 @@ const LanguageSettings = ({
 				name: "languages",
 				type: "select",
 				label: "Sprachen",
-				value: settings?.languages,
+				value: settings?.languages?.map((lang) => toLocaleKey(lang)),
 				select_options: [
 					{ label: "Deutsch", value: "de-DE" },
-					{ label: "Englisch", value: "en-EN" }
+					{ label: "Englisch", value: "en-GB" }
 				],
 				isMulti: true,
 				dataType: "string",
@@ -32,50 +33,34 @@ const LanguageSettings = ({
 				name: "default_language",
 				type: "select",
 				label: "Standardsprache",
-				value: settings?.default_language,
+				value: settings?.default_language
+					? toLocaleKey(settings.default_language)
+					: settings?.default_language,
 				select_options: [
 					{ label: "Deutsch", value: "de-DE", disabled: false },
 					{
 						label: "Englisch",
-						value: "en-EN",
-						disabled: !settings?.languages?.includes("en-EN")
+						value: "en-GB",
+						disabled: !settings?.languages?.some(
+							(lang) => toLocaleKey(lang) === "en-GB"
+						)
 					}
 				],
 				dataType: "string",
 				width: 240
 			},
 			{
-				id: "edit_title",
+				id: "description",
 				position: 3,
-				name: "edit_title",
-				type: "checkbox",
-				label: "Titel bearbeiten",
-				value: settings?.edit_title,
-				width: 240,
-				disabled: !settings.languages || settings?.languages?.length > 2
-			},
-			{
-				id: "edit_text",
-				position: 3,
-				name: "edit_text",
-				type: "checkbox",
-				label: "Text bearbeiten",
-				value: settings?.edit_text,
-				width: 240,
-				disabled: !settings.languages || settings?.languages?.length > 2
-			},
-			{
-				id: "edit_description",
-				position: 3,
-				name: "edit_description",
-				type: "checkbox",
-				label: "Beschreibung bearbeiten",
-				value: settings?.edit_description,
+				name: "description",
+				type: "textarea",
+				label: "Beschreibung",
+				value: settings?.description,
 				width: 240,
 				disabled: !settings.languages || settings?.languages?.length > 2
 			}
 		];
-	}, [settings, settings.languages.length]);
+	}, [settings, settings?.languages?.length]);
 
 	return (
 		<Form

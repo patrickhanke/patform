@@ -5,7 +5,7 @@ import { Page } from "@repo/ui";
 import { useMemo, useState } from "react";
 import { WebpageSettings, WebpageContent, WebpageSeo } from "./content";
 import page_states from "./constants/page_states";
-import { languages_short, useFindData } from "@repo/provider";
+import { languages_short, toLocaleKey, useFindData } from "@repo/provider";
 
 const WebsitePage = ({
 	webpageId,
@@ -22,7 +22,7 @@ const WebsitePage = ({
 		page_states[0] as PageState
 	);
 	const [activeLang, setActiveLang] =
-		useState<LanguageValue>(defaultLanguage);
+		useState<LanguageValue>(toLocaleKey(defaultLanguage));
 	const hasMultipleLanguages = languages.length > 1;
 
 	const { data: pageData, refetch } = useFindData<WebpageClass>({
@@ -59,7 +59,7 @@ const WebsitePage = ({
 		const category = pageState.label;
 		const language = hasMultipleLanguages
 			? languages_short.find((language) => language.value === activeLang)
-					?.label || ""
+					?.label || activeLang.slice(0, 2).toUpperCase()
 			: "";
 
 		return `${title} - ${category} ${language ? `(${language})` : ""}`;

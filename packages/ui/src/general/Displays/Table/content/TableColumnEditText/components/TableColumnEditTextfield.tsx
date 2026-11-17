@@ -3,12 +3,13 @@
 import { TableColumnEditTextfieldProps } from "../types";
 import { useState } from "react";
 import "../../../styles.scss";
-import { Modal, IconButton } from "@repo/ui";
+import { Modal, IconButton, InfoBox } from "@repo/ui";
 
 const TableColumnEditTextfield = ({
 	value,
 	isEditable = false,
-	onChange
+	onChange,
+	info
 }: TableColumnEditTextfieldProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [string, setString] = useState(value);
@@ -25,7 +26,10 @@ const TableColumnEditTextfield = ({
 				)}
 
 				{isEditable && (
-					<IconButton icon="edit" onClick={() => setIsOpen(!isOpen)} />
+					<IconButton
+						icon="edit"
+						onClick={() => setIsOpen(!isOpen)}
+					/>
 				)}
 			</div>
 			<Modal
@@ -38,6 +42,7 @@ const TableColumnEditTextfield = ({
 				header={"Beschreibung ändern"}
 				buttonDisabled={[false, false]}
 			>
+				{info && <InfoBox text={info} status="info" />}
 				<div className={"table_column_textfield_textarea_container"}>
 					<textarea
 						defaultValue={value}

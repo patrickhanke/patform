@@ -205,7 +205,7 @@ export const updateCollectionItemField = (
 
 const STRUCTURED_LANGUAGE_KEYS = {
 	"de-DE": true,
-	"en-EN": true
+	"en-GB": true
 } satisfies Record<LanguageValue, true>;
 
 const structuredLanguageKeys = Object.keys(

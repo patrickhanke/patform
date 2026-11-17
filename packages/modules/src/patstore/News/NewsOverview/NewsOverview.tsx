@@ -90,6 +90,8 @@ const NewsOverview = ({
 		[selectedRows, module.name]
 	);
 
+	console.log(data);
+
 	return (
 		<Page
 			title={module.name}

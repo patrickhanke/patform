@@ -9,6 +9,7 @@ import {
 	WebpageStructuredValueEntry
 } from "@repo/types";
 import { usePageData } from "@repo/ui";
+import { toLocaleKey } from "@repo/provider";
 import { FC, useCallback, useMemo } from "react";
 import { StructuredContentEditor } from "./content";
 import { entryMatchesSchemaKey } from "./utils/contentValues";
@@ -34,6 +35,54 @@ const isStructuredSchema = (
 
 const isNodeMap = (value: unknown): value is WebpageStructuredNodeMap =>
 	typeof value === "object" && value !== null && !Array.isArray(value);
+
+/**
+ * Module languages may be short codes (`de`, `en`) or the previous English
+ * code `en-EN`. `page_content` is keyed by locale (`de-DE`, `en-GB`) plus `default`.
+ */
+const resolveSchemaKey = (
+	schema: WebpageStructuredSchema | undefined,
+	language?: string
+): WebpageStructuredSchemaKey | undefined => {
+	if (!schema) {
+		return undefined;
+	}
+
+	const hasMap = (key: string) =>
+		isNodeMap(schema[key as WebpageStructuredSchemaKey]);
+
+	if (!language) {
+		return hasMap("default") ? "default" : undefined;
+	}
+
+	const locale = toLocaleKey(language);
+	const candidates =
+		locale === "de-DE"
+			? ["de-DE", "de"]
+			: locale === "en-GB"
+				? ["en-GB", "en-EN", "en"]
+				: [locale];
+
+	const matchedCandidate = candidates.find((key) => hasMap(key));
+	if (matchedCandidate) {
+		return matchedCandidate as WebpageStructuredSchemaKey;
+	}
+
+	const normalized = locale.toLowerCase();
+	const match = Object.keys(schema).find((key) => {
+		if (key === "default") {
+			return false;
+		}
+		const lower = key.toLowerCase();
+		return lower === normalized || lower.startsWith(`${normalized.slice(0, 2)}-`);
+	});
+
+	if (match && hasMap(match)) {
+		return match as WebpageStructuredSchemaKey;
+	}
+
+	return hasMap("default") ? "default" : undefined;
+};
 
 const normalizePageContent = (
 	pageContent: WebpageClass["page_content"] | undefined
@@ -66,9 +115,8 @@ const normalizePageData = (
 
 const WebpageContent: FC<{
 	webpage: WebpageClass;
-	language?: LanguageValue;
+	language?: LanguageValue | string;
 }> = ({ webpage, language }) => {
-	const schemaKey: WebpageStructuredSchemaKey = language ?? "default";
 	const { data: webpageData, setData } = usePageData<Partial<WebpageClass>>(
 		{
 			initialData: {
@@ -89,7 +137,15 @@ const WebpageContent: FC<{
 		[webpageData?.page_content]
 	);
 
+	const schemaKey = useMemo(
+		() => resolveSchemaKey(schema, language),
+		[language, schema]
+	);
+
 	const languageSchema = useMemo(() => {
+		if (!schemaKey) {
+			return undefined;
+		}
 		const slice = schema?.[schemaKey];
 		return isNodeMap(slice) ? slice : undefined;
 	}, [schema, schemaKey]);
@@ -99,15 +155,34 @@ const WebpageContent: FC<{
 		[webpageData?.page_data]
 	);
 
+	/**
+	 * Prefixed paths (`de-DE.home-news.eyebrow`) belong to that locale.
+	 * This page stores overrides without a prefix (`home-news.eyebrow`).
+	 * Keep that shape until a locale actually has prefixed entries.
+	 */
+	const valuePrefix =
+		schemaKey &&
+		schemaKey !== "default" &&
+		savedValues.some((entry) => entryMatchesSchemaKey(entry.path, schemaKey))
+			? schemaKey
+			: "";
+
 	const saveHandler = useCallback(
 		(values: WebpageStructuredValueEntry[]) => {
 			const current = normalizePageData(webpageData?.page_data);
-			const preserved = current.filter(
-				(entry) => !entryMatchesSchemaKey(entry.path, schemaKey)
-			);
+			const preserved = valuePrefix
+				? current.filter(
+						(entry) =>
+							!schemaKey ||
+							!entryMatchesSchemaKey(entry.path, schemaKey)
+					)
+				: current.filter(
+						(entry) =>
+							!values.some((value) => value.path === entry.path)
+					);
 			setData("page_data", [...preserved, ...values]);
 		},
-		[schemaKey, setData, webpageData?.page_data]
+		[schemaKey, setData, valuePrefix, webpageData?.page_data]
 	);
 
 	if (languageSchema === undefined) {
@@ -120,10 +195,10 @@ const WebpageContent: FC<{
 
 	return (
 		<StructuredContentEditor
-			key={`${webpage.objectId}-${schemaKey}-${webpage.updatedAt}`}
+			key={`${webpage.objectId}-${schemaKey}-${valuePrefix}-${webpage.updatedAt}`}
 			schema={languageSchema}
 			savedValues={savedValues}
-			language={language}
+			language={valuePrefix || undefined}
 			onSave={saveHandler}
 		/>
 	);
