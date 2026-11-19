@@ -57,8 +57,24 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 					value: project?.settings?.preview_url
 				},
 				{
+					id: "webhook",
+					position: 5,
+					name: "settings.webhook",
+					type: "input",
+					label: "Webhook-URL",
+					value: project?.settings?.webhook
+				},
+				{
+					id: "uuid",
+					position: 6,
+					name: "settings.uuid",
+					type: "input",
+					label: "Coolify UUID",
+					value: project?.settings?.uuid
+				},
+				{
 					id: "email",
-					position: 3,
+					position: 7,
 					name: "settings.email",
 					type: "input",
 					label: "E-Mail",
@@ -67,7 +83,7 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 				},
 				{
 					id: "user_invitations",
-					position: 3,
+					position: 8,
 					name: "settings.user_invitations",
 					type: "toggle",
 					label: "Nutzereinladungen aktivieren",
@@ -76,7 +92,7 @@ const ProjectSettings = ({ projectId }: { projectId: string }) => {
 				},
 				{
 					id: "user_creation",
-					position: 3,
+					position: 9,
 					name: "settings.user_creation",
 					type: "toggle",
 					label: "Nutzer erstellen aktivieren",

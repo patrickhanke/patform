@@ -7,7 +7,6 @@ import {
 	OBJECT_ID_PATTERN,
 	parseRest
 } from "@repo/provider/server";
-import { websiteProjectKey, WebsiteProjectKey } from "./projects";
 import {
 	WebsiteActionResult,
 	WebsiteBuildState,
@@ -17,17 +16,15 @@ import {
 
 const COOLIFY_API = "https://coolify.patwork.net";
 
-const APPLICATION_UUIDS: Record<WebsiteProjectKey, string> = {
-	koloproktologie: "8utwscyidznxnv3os29juxwm",
-	coloproktologen: "qkev9d3hcoeb8uc5tkt1jplz"
-};
-
 const ADMIN_EMAIL = "info@patwork.net";
 
 type ProjectRecord = {
 	objectId: string;
 	path?: string;
 	name?: string;
+	settings?: {
+		uuid?: string;
+	};
 };
 
 type CoolifyDeployment = {
@@ -42,7 +39,6 @@ type CoolifyDeployment = {
 
 type ResolvedProject = {
 	project: ProjectRecord;
-	key: WebsiteProjectKey;
 	uuid: string;
 	sessionToken: string;
 };
@@ -146,19 +142,14 @@ const resolveProject = async (): Promise<ResolvedProject | undefined> => {
 	}
 
 	const project = await loadProject(projectId);
-	if (!project) {
+	if (!project || !project.settings?.uuid) {
 		return undefined;
 	}
 
-	const key = websiteProjectKey(project);
-	if (!key) {
-		return undefined;
-	}
 
 	return {
 		project,
-		key,
-		uuid: APPLICATION_UUIDS[key],
+		uuid: project.settings?.uuid || "",
 		sessionToken: context.sessionToken
 	};
 };
@@ -180,6 +171,9 @@ const fetchCoolifyDeployments = async (
 			cache: "no-store"
 		}
 	);
+
+	console.log("fetching deployments for uuid", uuid);
+	console.log("response", response);
 
 	if (!response.ok) {
 		throw new Error(`Coolify deployments failed (${response.status})`);
@@ -206,7 +200,8 @@ const actionError = (error: unknown, fallback: string): WebsiteActionResult => {
 export async function fetchWebsiteBuildState(): Promise<WebsiteBuildState> {
 	try {
 		const resolved = await resolveProject();
-		if (!resolved) {
+		console.log("resolved", resolved);
+		if (!resolved || !resolved.uuid) {
 			return { applicable: false, deployments: [] };
 		}
 
@@ -306,12 +301,11 @@ const escapeHtml = (value: string) =>
 
 const failureEmail = (
 	project: ProjectRecord,
-	key: WebsiteProjectKey,
 	deployment: CoolifyDeployment
 ) => {
 	const logs = (deployment.logs || "").trim().slice(-1500);
 	const rows: [string, string][] = [
-		["Projekt", project.name || key],
+		["Projekt", project.name || "Unbekannt"],
 		["Status", deployment.status || "failed"],
 		[
 			"Deployment",
@@ -379,7 +373,7 @@ export async function notifyWebsiteAdministrator(): Promise<WebsiteActionResult>
 			};
 		}
 
-		const content = failureEmail(resolved.project, resolved.key, latest);
+		const content = failureEmail(resolved.project, latest);
 		const { status, data } = await parseRest<{
 			error?: unknown;
 			result?: { success?: boolean; message?: string };
@@ -401,7 +395,7 @@ export async function notifyWebsiteAdministrator(): Promise<WebsiteActionResult>
 							pre_title: "",
 							post_title: "",
 							list_name: "Website-Build",
-							project_name: resolved.project.name || resolved.key,
+							project_name: resolved.project.name || "Unbekannt",
 							project_path: resolved.project.path || "",
 							deployment_id:
 								latest.deployment_uuid ||

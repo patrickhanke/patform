@@ -9,7 +9,6 @@ import {
 	retryWebsiteBuild
 } from "./actions";
 import { BuildList, Links } from "./components";
-import { websiteProjectKey } from "./projects";
 import { WebsiteBuildStatus, WebsiteDeployment } from "./types";
 
 const POLL_INTERVAL = 10_000;
@@ -70,7 +69,7 @@ const clearRetry = (projectId: string) => {
 
 const Website = () => {
 	const { project } = useAppContext<"patstore">();
-	const projectKey = project ? websiteProjectKey(project) : null;
+	const projectKey = project ? project.settings?.uuid : null;
 	const projectId = project?.objectId;
 	const [deployments, setDeployments] = useState<WebsiteDeployment[]>([]);
 	const [pending, setPending] = useState(false);

@@ -61,6 +61,8 @@ export type PatstoreProject = {
 		languages: LanguageValue[];
 		default_language: LanguageValue;
 		colors: PatstoreProjectColor[];
+		webhook?: string;
+		uuid?: string;
 	};
 	connected_images: {
 		[key: string]: {

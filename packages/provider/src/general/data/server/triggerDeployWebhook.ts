@@ -7,12 +7,6 @@ import {
 } from "../../../server/access";
 import { parseRest } from "../../../server/sashido";
 
-const PROJECT_UUIDS = {
-	koloproktologie: "8utwscyidznxnv3os29juxwm",
-	coloproktologen: "qkev9d3hcoeb8uc5tkt1jplz",
-	hebammenteam: "xueg8mvz21ldcaonlr8uic1r"
-} as const;
-
 const COOLIFY_API = "https://coolify.patwork.net";
 
 const TVSTG_CLASSES = new Set([
@@ -35,6 +29,10 @@ const PATWORK_CLASSES = new Set(["Article", "Webpage", "Content"]);
 type ProjectRef = {
 	objectId: string;
 	path?: string;
+	settings?: {
+		webhook?: string;
+		uuid?: string;
+	};
 };
 
 const coolifyToken = () => process.env.COOLIFY_WEBHOOK_TOKEN || "";
@@ -88,6 +86,7 @@ const postWebhook = async (url: string, withToken = false, uuid?: string) => {
 const loadProject = async (
 	projectId: string
 ): Promise<ProjectRef | undefined> => {
+	console.log("projectId", projectId);
 	const { status, data } = await parseRest<ProjectRef>(
 		`classes/Project/${projectId}`,
 		{ useMasterKey: true }
@@ -98,31 +97,29 @@ const loadProject = async (
 		return undefined;
 	}
 
-	return { objectId: data.objectId, path: data.path };
+	return {
+		objectId: data.objectId,
+		path: data.path,
+		settings: data.settings
+	};
 };
-
 
 // Which deploy hook runs depends on the project loaded for this request.
 // A project switch therefore selects a different webhook. URLs stay on the server.
 const dispatchWebhook = async (project: ProjectRef, objectClass: string) => {
-	if (project.path === "bcd") {
+	if (objectClass === "User") {
+		return;
+	}
+
+	if (project.settings?.webhook) {
 		await postWebhook(
-			`${COOLIFY_API}/api/v1/deploy?uuid=${PROJECT_UUIDS.coloproktologen}&force=false`,
+			project.settings.webhook,
 			true,
-			PROJECT_UUIDS.coloproktologen
+			project.settings.uuid
 		);
 		return;
 	}
-	console.log("project.path", project.path);
-	if (project.path === "hebammenteam") {
-		console.log("deploying hebammenteam");
-		await postWebhook(
-			`${COOLIFY_API}/api/v1/deploy?uuid=${PROJECT_UUIDS.hebammenteam}&force=false`,
-			true,
-			PROJECT_UUIDS.hebammenteam
-		);
-		return;
-	}
+
 	if (project.path === "tvstg") {
 		if (TVSTG_CLASSES.has(objectClass)) {
 			await postWebhook(
@@ -144,16 +141,7 @@ const dispatchWebhook = async (project: ProjectRef, objectClass: string) => {
 			return;
 		}
 	}
-	if (project.objectId === "JRxDkaxCoI") {
-		if (objectClass !== "User") {
-			await postWebhook(
-				`${COOLIFY_API}/api/v1/deploy?tag=koloproktologie&force=false`,
-				true,
-				PROJECT_UUIDS.koloproktologie
-			);
-			return;
-		}
-	}
+
 	if (project.objectId === "JwPcBkuLDi") {
 		if (objectClass !== "User") {
 			await postWebhook(
@@ -165,11 +153,6 @@ const dispatchWebhook = async (project: ProjectRef, objectClass: string) => {
 	if (project.path === "bei_lisa") {
 		await postWebhook(
 			"https://api.netlify.com/build_hooks/698058ffd5736a2e12b62c64"
-		);
-	}
-	if (project.path === "nocogirls") {
-		await postWebhook(
-			"https://api.vercel.com/v1/integrations/deploy/prj_GnCaZnL9fR9nmXrHVogTmb3cTHIg/ZOrT890F4A"
 		);
 	}
 };
