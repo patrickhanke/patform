@@ -18,12 +18,14 @@ import {
 	withDivisionCategories,
 	useAppContext,
 	useDivisionCategories,
+	useRefereeCategories,
 	toDateInput
 } from "@repo/provider";
 
 const Settings: FC<ChampionshipTabProps> = ({ related }) => {
 	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
+	const referees = useRefereeCategories(project?.objectId);
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 
 	console.log("page", page);
@@ -122,6 +124,32 @@ const Settings: FC<ChampionshipTabProps> = ({ related }) => {
 								"settings?.staff_lead_id",
 								selectString(option)
 							)
+						}
+					/>
+				</div>
+				<Divider showLine size="small" />
+				<div className="flex row a-st j-sb">
+					<div>
+						<label>Schiedsrichterstufe</label>
+						<p>
+							Wähle die Schiedsrichterstufe für diesen Wettkampf.
+						</p>
+					</div>
+					<Select
+						id="championship-referees"
+						options={referees.map((item) => ({
+							value: item.objectId,
+							label: item.title || item.label || item.objectId
+						}))}
+						value={
+							referees.find(
+								(option) =>
+									option.objectId ===
+									page.settings?.referees_class
+							) || null
+						}
+						onChange={(option) =>
+							setData("settings.referees_class", option.value)
 						}
 					/>
 				</div>

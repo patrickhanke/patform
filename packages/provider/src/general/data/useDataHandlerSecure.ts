@@ -390,7 +390,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 						return response.data;
 					})
 					.catch((error: CombinedGraphQLErrors) => {
-						console.log(error);
+						console.error(error);
 						feedbackHandler({
 							success: false,
 							message: error.message,
@@ -500,7 +500,7 @@ const useDataHandlerSecure = (useMasterKey = false, useProjectKey = true) => {
 					}
 				})
 				.catch((error) => {
-					console.log(error);
+					console.error(error);
 					feedbackHandler({
 						success: false,
 						message: error.message,

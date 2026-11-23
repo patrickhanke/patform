@@ -161,7 +161,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			)
 		);
 	}, [restrictFields, accessModule, accessRole, data, recordId]);
-	
+
 	const visibleDataFields = useMemo(() => {
 		if (!restrictFields || !accessModule || !accessRole) return fields;
 		return fields.flatMap((field) => {
@@ -172,7 +172,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			return [{ ...field, disabled: true }];
 		});
 	}, [restrictFields, accessModule, accessRole, fields, recordId]);
-	
+
 	const visibleSettingFields = useMemo(() => {
 		if (!restrictFields || !accessModule || !accessRole) return settings;
 		return settings.flatMap((field) => {
@@ -183,7 +183,7 @@ const useCreateColumns = <T extends ColumnClasses>({
 			return [{ ...field, disabled: true }];
 		});
 	}, [restrictFields, accessModule, accessRole, settings, recordId]);
-	
+
 	const updateColumnData: UpdateColumnData = useCallback(
 		async ({ objectId, updateObject, feedback }) => {
 			await updateData({

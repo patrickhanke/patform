@@ -21,7 +21,8 @@ export const divisionLabel = (
 };
 
 const matchesDivision = (item: DivisionCategory, id: string) =>
-	item.objectId === id || item.description?.toLowerCase() === id.toLowerCase();
+	item.objectId === id ||
+	item.description?.toLowerCase() === id.toLowerCase();
 
 export const findDivision = (
 	id: string | undefined,

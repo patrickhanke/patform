@@ -136,6 +136,52 @@ const PARSE_META_KEYS = new Set([
 	"className"
 ]);
 
+/** Top-level Parse columns that hold a Parse File. */
+const PARSE_FILE_KEYS = new Set(["file"]);
+
+type ParseFilePayload = { __type: "File"; name: string; url: string };
+
+const isParseFile = (value: unknown): value is ParseFilePayload => {
+	if (!value || typeof value !== "object" || Array.isArray(value)) {
+		return false;
+	}
+	const file = value as Record<string, unknown>;
+	return (
+		file.__type === "File" &&
+		typeof file.name === "string" &&
+		file.name.length > 0 &&
+		typeof file.url === "string" &&
+		file.url.length > 0
+	);
+};
+
+/**
+ * Failsafe before writing to Parse: a file field must match the Parse file
+ * schema ({ __type: "File", name, url }). `null` (unset) is kept; anything else
+ * that does not fit is dropped so Parse does not reject the whole update with
+ * "schema mismatch for Class.file; expected File but got Object".
+ */
+export const sanitizeParseFiles = <T extends PageDataUpdatePayload>(
+	payload: T
+): T => {
+	const next: PageDataUpdatePayload = {};
+	Object.entries(payload).forEach(([key, value]) => {
+		const looksLikeFile =
+			PARSE_FILE_KEYS.has(key) ||
+			(value != null &&
+				typeof value === "object" &&
+				(value as { __type?: unknown }).__type === "File");
+		if (!looksLikeFile || value === null) {
+			next[key] = value;
+			return;
+		}
+		if (isParseFile(value)) {
+			next[key] = { __type: "File", name: value.name, url: value.url };
+		}
+	});
+	return next as T;
+};
+
 const isCollectionRowArray = (value: unknown): value is CollectionRow[] =>
 	Array.isArray(value);
 
@@ -254,7 +300,7 @@ const diffCollectionRow = (
 		}
 	});
 
-	return payload;
+	return sanitizeParseFiles(payload);
 };
 
 const applyPathValue = <T>(data: T, key: string, value: unknown): T => {
@@ -463,8 +509,13 @@ const usePageData = <T = unknown>(
 	}
 
 	if (updateOptions !== undefined) {
-		updateOptionsRef.current =
-			updateOptions as PageDataUpdateOptions<unknown>;
+		const unsafeUpdateObject =
+			updateOptions.updateObject as PageDataUpdateObject<unknown>;
+		updateOptionsRef.current = {
+			...(updateOptions as PageDataUpdateOptions<unknown>),
+			updateObject: (current) =>
+				sanitizeParseFiles(unsafeUpdateObject(current))
+		};
 	}
 
 	const mode = usePageDataStore((state) => state.mode);

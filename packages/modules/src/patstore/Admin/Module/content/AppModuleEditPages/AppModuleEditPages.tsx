@@ -161,11 +161,14 @@ const AppModuleEditPages = ({
 								{userName.get(grant.userId) || grant.userId}
 								{" · "}
 								{recordName.get(grant.id) || grant.id}
+								{grant.derived_from
+									? ` · automatisch über ${recordName.get(grant.derived_from) || grant.derived_from}`
+									: ""}
 							</span>
 							<button
 								type="button"
 								className="full_button sm light"
-								disabled={saving}
+								disabled={saving || Boolean(grant.derived_from)}
 								onClick={() =>
 									saveGrants(
 										grants.filter(

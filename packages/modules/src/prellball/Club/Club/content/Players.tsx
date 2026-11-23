@@ -11,7 +11,9 @@ const Players: FC<{
 	clubId: string;
 	people: PersonClass[];
 	refetchPeople: () => Promise<unknown>;
-}> = ({ clubId, people, refetchPeople }) => {
+	/** Spielgemeinschaft: players are assigned by the member clubs. */
+	union?: boolean;
+}> = ({ clubId, people, refetchPeople, union = false }) => {
 	const { createData } = useDataHandlerSecure();
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
@@ -68,30 +70,40 @@ const Players: FC<{
 		return next;
 	}, [dtbId, name, people]);
 
-	const columns: ColumnDef<PersonClass>[] = [
-		{
-			id: "name",
-			header: () => <span>Name</span>,
-			accessorFn: (row) => row.name || row.label,
-			cell: (info) => info.getValue(),
-			footer: (info) => info.column.id
-		},
-		{
-			id: "dtb",
-			header: () => <span>DTB-ID</span>,
-			accessorFn: (row) => readPersonData(row).dtb_id || "—",
-			cell: (info) => info.getValue(),
-			footer: (info) => info.column.id
-		},
-		{
-			id: "birth",
-			header: () => <span>Geburtstag</span>,
-			accessorFn: (row) =>
-				toDateInput(readPersonData(row).birth_date) || "—",
-			cell: (info) => info.getValue(),
-			footer: (info) => info.column.id
-		}
-	];
+	const columns: ColumnDef<PersonClass>[] = !union
+		? [
+				{
+					id: "name",
+					header: () => <span>Name</span>,
+					accessorFn: (row) => row.name || row.label,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id
+				},
+				{
+					id: "dtb",
+					header: () => <span>DTB-ID</span>,
+					accessorFn: (row) => readPersonData(row).dtb_id || "—",
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id
+				},
+				{
+					id: "birth",
+					header: () => <span>Geburtstag</span>,
+					accessorFn: (row) =>
+						toDateInput(readPersonData(row).birth_date) || "—",
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id
+				}
+			]
+		: [
+				{
+					id: "name",
+					header: () => <span>Name</span>,
+					accessorFn: (row) => row.name || row.label,
+					cell: (info) => info.getValue(),
+					footer: (info) => info.column.id
+				}
+			];
 
 	const createPlayer = async () => {
 		if (errors.length > 0) return;
@@ -119,11 +131,19 @@ const Players: FC<{
 
 	return (
 		<div className="flex col a-st gap-sm">
-			<CreateButton
-				text="Spieler:in erstellen"
-				size="medium"
-				onClick={() => setOpen(true)}
-			/>
+			{union ? (
+				<p>
+					Spieler:innen werden der Spielgemeinschaft von den Vereinen
+					zugewiesen. Nur zugewiesene Spieler:innen können gemeldet
+					werden.
+				</p>
+			) : (
+				<CreateButton
+					text="Spieler:in erstellen"
+					size="medium"
+					onClick={() => setOpen(true)}
+				/>
+			)}
 			<Table
 				columns={columns}
 				data={clubPlayers}

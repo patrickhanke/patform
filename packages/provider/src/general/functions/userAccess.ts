@@ -26,7 +26,11 @@ export const recordAccessPath = (
 	modulePath: string | null | undefined,
 	id: string
 ): string | null => {
-	if (!modulePath || !modulePath.startsWith("/") || modulePath.includes("..")) {
+	if (
+		!modulePath ||
+		!modulePath.startsWith("/") ||
+		modulePath.includes("..")
+	) {
 		return null;
 	}
 	const path = modulePath.replace(/\/+$/, "");
@@ -57,7 +61,8 @@ export const recordIdFromPath = (
 	modulePath: string | null | undefined,
 	pathname: string | null | undefined
 ): string | undefined => {
-	if (!modulePath || !pathname || !modulePath.startsWith("/")) return undefined;
+	if (!modulePath || !pathname || !modulePath.startsWith("/"))
+		return undefined;
 	const path = modulePath.replace(/\/+$/, "");
 	if (!path || !pathname.startsWith(`${path}/`)) return undefined;
 	const id = pathname.slice(path.length + 1).split("/")[0];

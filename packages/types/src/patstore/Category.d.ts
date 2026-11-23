@@ -10,4 +10,5 @@ export type CategoryClass = ClassProperties & {
 	color: string;
 	text: string;
 	type: string;
+	category_id: string;
 };

@@ -37,29 +37,38 @@ const dataRequest = async (
 		const client = axiosclient();
 		if (method === "GET") return client.get(path);
 		if (method === "DELETE") return client.delete(path);
-		if (method === "PUT") return client.put(path, updateObject as AxiosRequestConfig<any>);
+		if (method === "PUT")
+			return client.put(path, updateObject as AxiosRequestConfig<any>);
 		return client.post(path, updateObject as AxiosRequestConfig<any>);
 	}
 
 	const hasBody = method === "POST" || method === "PUT";
-	const params = new URLSearchParams({ className: parseClassName, useMasterKey: "true" });
+	const params = new URLSearchParams({
+		className: parseClassName,
+		useMasterKey: "true"
+	});
 	if (objectId) params.set("objectId", objectId);
 	if (query) params.set("query", query);
 	if (projectId) params.set("projectId", projectId);
 
-	const response = await fetch(hasBody ? "/api/data" : `/api/data?${params}`, {
-		method,
-		headers: hasBody ? { "Content-Type": "application/json" } : undefined,
-		body: hasBody
-			? JSON.stringify({
-					className: parseClassName,
-					objectId,
-					updateObject,
-					projectId,
-					useMasterKey: true
-				})
-			: undefined
-	});
+	const response = await fetch(
+		hasBody ? "/api/data" : `/api/data?${params}`,
+		{
+			method,
+			headers: hasBody
+				? { "Content-Type": "application/json" }
+				: undefined,
+			body: hasBody
+				? JSON.stringify({
+						className: parseClassName,
+						objectId,
+						updateObject,
+						projectId,
+						useMasterKey: true
+					})
+				: undefined
+		}
+	);
 	const data = await response.json();
 
 	if (!response.ok) {
@@ -146,6 +155,8 @@ const useDataHandler = (useMasterKey = false, useProjectKey = true) => {
 						onError(error.message);
 					}
 				});
+			console.log("project?.objectId", project?.objectId);
+			console.log("className", className);
 			requestDeployWebhook(className, project?.objectId);
 			setLoading(false);
 			return data;

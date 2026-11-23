@@ -172,9 +172,6 @@ const fetchCoolifyDeployments = async (
 		}
 	);
 
-	console.log("fetching deployments for uuid", uuid);
-	console.log("response", response);
-
 	if (!response.ok) {
 		throw new Error(`Coolify deployments failed (${response.status})`);
 	}
@@ -200,7 +197,6 @@ const actionError = (error: unknown, fallback: string): WebsiteActionResult => {
 export async function fetchWebsiteBuildState(): Promise<WebsiteBuildState> {
 	try {
 		const resolved = await resolveProject();
-		console.log("resolved", resolved);
 		if (!resolved || !resolved.uuid) {
 			return { applicable: false, deployments: [] };
 		}

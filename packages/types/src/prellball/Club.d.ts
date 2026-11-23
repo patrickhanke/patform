@@ -11,6 +11,10 @@ export type ClubSettings = {
 	email?: string;
 	homepage?: string;
 	short?: string;
+	/** Spielgemeinschaft only: objectId of the leading regular club. */
+	primary_club_id?: string;
+	/** Spielgemeinschaft only: objectId of the second regular club. */
+	secondary_club_id?: string;
 };
 
 export type PrellballTrainingTime = {

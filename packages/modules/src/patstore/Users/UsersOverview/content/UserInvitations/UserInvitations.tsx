@@ -32,7 +32,7 @@ const UserInvitations = () => {
 			data={projectData.invitations}
 			setPagination={setPagination}
 			pagination={pagination}
-			rowCount={projectData.invitations.length}
+			rowCount={projectData?.invitations?.length}
 		/>
 	);
 };

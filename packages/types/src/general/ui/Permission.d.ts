@@ -9,6 +9,12 @@ export type ModulePageAccess = {
 	className: string;
 	userId: string;
 	id: string;
+	/**
+	 * Set when the grant was copied from another record, e.g. the primary club
+	 * of a Spielgemeinschaft. Holds the id of that record. Managed by the cloud
+	 * function `check_union_rights`.
+	 */
+	derived_from?: string;
 };
 
 /**

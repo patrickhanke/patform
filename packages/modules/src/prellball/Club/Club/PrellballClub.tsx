@@ -12,18 +12,35 @@ import {
 } from "@repo/types";
 import { useAppContext, useFindData, useGetData } from "@repo/provider";
 import useSeasonCategories from "../../hooks/useSeasonCategories";
-import { clubUpdateObject, normalizeClub } from "../functions/club";
-import General from "./content/General";
+import { clubKind, clubUpdateObject, normalizeClub } from "../functions/club";
 import TrainingTimes from "./content/TrainingTimes";
-import { SignUps } from "./content";
+import { General, SignUps } from "./content";
 import Players from "./content/Players";
+import Unions from "./content/Unions";
+import { checkUnionRights, primaryClubChanged } from "../functions/unionRights";
 
-const siteStates: PageState[] = [
-	{ value: "general", label: "Überblick" },
-	{ value: "training", label: "Trainingszeiten" },
-	{ value: "signups", label: "Meldungen" },
-	{ value: "players", label: "Spieler:innen" }
+const generalState: PageState = { value: "general", label: "Überblick" };
+const trainingState: PageState = {
+	value: "training",
+	label: "Trainingszeiten"
+};
+const signupsState: PageState = { value: "signups", label: "Meldungen" };
+const playersState: PageState = { value: "players", label: "Spieler:innen" };
+const unionsState: PageState = {
+	value: "unions",
+	label: "Spielgemeinschaften"
+};
+
+const clubStates: PageState[] = [
+	generalState,
+	trainingState,
+	signupsState,
+	playersState,
+	unionsState
 ];
+
+/** Spielgemeinschaften have no training times of their own. */
+const unionStates: PageState[] = [generalState, signupsState, playersState];
 
 const detailFields = [
 	"objectId",
@@ -41,25 +58,28 @@ const PrellballClub = () => {
 	const { club_id: clubId } = useParams<{ club_id: string }>();
 	const { project } = useAppContext<"patstore">();
 	const seasons = useSeasonCategories(project?.objectId);
-	console.log("seasons", seasons);
-	const [siteState, setSiteState] = useState<PageState>(siteStates[0]!);
+	const [siteState, setSiteState] = useState<PageState>(generalState);
 	const [seasonId, setSeasonId] = useState("");
+
 	const { data, refetch } = useGetData<PrellballClubClass>({
 		objectName: "Club",
 		fields: detailFields,
 		id: clubId
 	});
+
 	const club = useMemo(
 		() => normalizeClub((data as PrellballClubClass | null) ?? null),
 		[data]
 	);
+
 	const { data: clubs } = useFindData<PrellballClubClass>({
 		objectName: "Club",
-		fields: ["objectId", "title", "settings"],
+		fields: ["objectId", "title", "settings", "categories"],
 		projectId: project?.objectId,
 		limit: 500,
 		skipQuery: !project?.objectId
 	});
+
 	const { data: locations } = useFindData<LocationClass>({
 		objectName: "Location",
 		fields: ["objectId", "title", "address"],
@@ -67,6 +87,7 @@ const PrellballClub = () => {
 		limit: 500,
 		skipQuery: !project?.objectId
 	});
+
 	const { data: championships, refetch: refetchChampionships } =
 		useFindData<ChampionshipClass>({
 			objectName: "Championship",
@@ -75,9 +96,17 @@ const PrellballClub = () => {
 			limit: 300,
 			skipQuery: !project?.objectId
 		});
+
 	const { data: people, refetch: refetchPeople } = useFindData<PersonClass>({
 		objectName: "Person",
 		fields: ["objectId", "name", "label", "categories", "data"],
+		filters: [
+			{
+				key: "categories",
+				operator: "contains",
+				value: [clubId]
+			}
+		],
 		projectId: project?.objectId,
 		limit: 1000,
 		skipQuery: !project?.objectId
@@ -88,7 +117,12 @@ const PrellballClub = () => {
 		{
 			className: "Club",
 			updateObject: clubUpdateObject,
-			message: "Verein gespeichert"
+			message: "Verein gespeichert",
+			afterSave: async (saved) => {
+				if (primaryClubChanged(club, saved)) {
+					await checkUnionRights();
+				}
+			}
 		}
 	);
 
@@ -109,28 +143,34 @@ const PrellballClub = () => {
 		);
 	}
 
+	const isUnion = clubKind(club.categories) === "union";
+	const siteStates = isUnion ? unionStates : clubStates;
+	const activeState =
+		siteStates.find((state) => state.value === siteState.value) ||
+		siteStates[0]!;
+
 	return (
 		<Page
-			title={club.title || "Verein"}
+			title={club.title || (isUnion ? "Spielgemeinschaft" : "Verein")}
 			description={club.settings.short}
 			emptyContent
 			refetch={refetch}
 			pageStates={siteStates}
-			pageState={
-				siteStates.find((state) => state.value === siteState.value) ||
-				siteStates[0]
-			}
+			pageState={activeState}
 			setPageState={setSiteState}
 		>
-			{siteState.value === "general" && (
-				<General clubs={(clubs || []) as PrellballClubClass[]} />
+			{activeState.value === "general" && (
+				<General
+					clubs={(clubs || []) as PrellballClubClass[]}
+					union={isUnion}
+				/>
 			)}
-			{siteState.value === "training" && (
+			{activeState.value === "training" && (
 				<TrainingTimes
 					locations={(locations || []) as LocationClass[]}
 				/>
 			)}
-			{siteState.value === "signups" && (
+			{activeState.value === "signups" && (
 				<SignUps
 					clubId={club.objectId}
 					seasonId={activeSeason}
@@ -141,9 +181,18 @@ const PrellballClub = () => {
 					refetchChampionships={refetchChampionships}
 				/>
 			)}
-			{siteState.value === "players" && (
+			{activeState.value === "players" && (
 				<Players
 					clubId={club.objectId}
+					people={(people || []) as PersonClass[]}
+					refetchPeople={refetchPeople}
+					union={isUnion}
+				/>
+			)}
+			{activeState.value === "unions" && (
+				<Unions
+					clubId={club.objectId}
+					clubs={(clubs || []) as PrellballClubClass[]}
 					people={(people || []) as PersonClass[]}
 					refetchPeople={refetchPeople}
 				/>

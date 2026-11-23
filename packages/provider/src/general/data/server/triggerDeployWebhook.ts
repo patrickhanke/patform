@@ -6,23 +6,9 @@ import {
 	OBJECT_ID_PATTERN
 } from "../../../server/access";
 import { parseRest } from "../../../server/sashido";
+import axios from "axios";
 
 const COOLIFY_API = "https://coolify.patwork.net";
-
-const TVSTG_CLASSES = new Set([
-	"Article",
-	"Webpage",
-	"Content",
-	"Entry",
-	"Event",
-	"Form",
-	"Image",
-	"Group",
-	"Download",
-	"Person",
-	"Category",
-	"Appointment"
-]);
 
 const PATWORK_CLASSES = new Set(["Article", "Webpage", "Content"]);
 
@@ -86,7 +72,6 @@ const postWebhook = async (url: string, withToken = false, uuid?: string) => {
 const loadProject = async (
 	projectId: string
 ): Promise<ProjectRef | undefined> => {
-	console.log("projectId", projectId);
 	const { status, data } = await parseRest<ProjectRef>(
 		`classes/Project/${projectId}`,
 		{ useMasterKey: true }
@@ -121,20 +106,18 @@ const dispatchWebhook = async (project: ProjectRef, objectClass: string) => {
 	}
 
 	if (project.path === "tvstg") {
-		if (TVSTG_CLASSES.has(objectClass)) {
-			await postWebhook(
-				"https://api.netlify.com/build_hooks/608c71bcb42fb00f6e535a9c"
-			);
-			return;
-		}
+		await axios.post(
+			"https://api.netlify.com/build_hooks/608c71bcb42fb00f6e535a9c"
+		);
+		return;
 	}
 	if (project.path === "patwork") {
 		if (PATWORK_CLASSES.has(objectClass)) {
 			await Promise.all([
-				postWebhook(
+				axios.post(
 					"https://api.netlify.com/build_hooks/684a8ce3f81b3b21f4aa34d8"
 				),
-				postWebhook(
+				axios.post(
 					"https://api.vercel.com/v1/integrations/deploy/prj_OhGFYMtNJUrzaAoTTHMsBUVybA5G/zgrsBETrlk"
 				)
 			]);
@@ -144,14 +127,14 @@ const dispatchWebhook = async (project: ProjectRef, objectClass: string) => {
 
 	if (project.objectId === "JwPcBkuLDi") {
 		if (objectClass !== "User") {
-			await postWebhook(
+			await axios.post(
 				"https://api.netlify.com/build_hooks/6a425999f5c9e23580ef3d53"
 			);
 			return;
 		}
 	}
 	if (project.path === "bei_lisa") {
-		await postWebhook(
+		await axios.post(
 			"https://api.netlify.com/build_hooks/698058ffd5736a2e12b62c64"
 		);
 	}
@@ -175,6 +158,5 @@ export async function triggerDeployWebhook(
 	if (!project) {
 		return;
 	}
-
 	await dispatchWebhook(project, objectClass);
 }

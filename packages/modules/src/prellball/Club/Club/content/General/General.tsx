@@ -2,9 +2,10 @@
 
 import { FC, useState } from "react";
 import { useContext } from "react";
-import { Parse, PatstoreAppContext } from "@repo/provider";
+import { Parse, PatstoreAppContext, canUpdateRecord } from "@repo/provider";
 import { TextInput, usePageData } from "@repo/ui";
 import { ParseFileValue, PrellballClubClass } from "@repo/types";
+import UnionClubSelection from "./components/UnionClubSelection";
 
 const replaceUmlaute = (fileName: string) =>
 	fileName
@@ -18,11 +19,28 @@ const replaceUmlaute = (fileName: string) =>
 
 const General: FC<{
 	clubs: PrellballClubClass[];
-}> = ({ clubs }) => {
+	/** Spielgemeinschaft: two regular clubs instead of contact data. */
+	union?: boolean;
+}> = ({ clubs, union = false }) => {
 	const { data: club, setData } = usePageData<PrellballClubClass>();
-	const { user } = useContext(PatstoreAppContext);
+	const { user, userRole, currentModule } = useContext(PatstoreAppContext);
 	const [uploading, setUploading] = useState(false);
+	console.log(club);
 	if (!club) return null;
+
+	// Role with update rights on the module or a grant for this club, or a
+	// per-user page grant for this club.
+	const roleCanEdit =
+		Boolean(userRole?.objectId && currentModule) &&
+		canUpdateRecord([userRole], currentModule, club.objectId);
+
+	const canEdit = Boolean(user?.is_superuser) || roleCanEdit;
+
+	const primaryId = club.settings?.primary_club_id || "";
+	const secondaryId = club.settings?.secondary_club_id || "";
+	const unionComplete = Boolean(primaryId && secondaryId);
+
+	const locked = union && !unionComplete;
 
 	const shortValue = club.settings?.short || "";
 	const shortLength = shortValue.replace(/\s/g, "").length;
@@ -58,37 +76,63 @@ const General: FC<{
 	};
 
 	return (
-		<div className="flex row a-st gap-md" style={{ flexWrap: "wrap" }}>
+		<div className="flex col a-st gap-md" style={{ flexWrap: "wrap" }}>
+			<div className="content_element">
+				{union && (
+					<UnionClubSelection
+						club={club}
+						clubs={clubs}
+						primaryId={primaryId}
+						secondaryId={secondaryId}
+						setData={setData}
+						disabled={!canEdit}
+					/>
+				)}
+			</div>
 			<div className="flex col a-st gap-sm">
 				<TextInput
 					id="club-title"
 					label="Name"
 					defaultValue={club.title}
+					disabled={locked || !canEdit}
 					onChange={(value) => setData("title", value)}
 				/>
-				<TextInput
-					id="club-contact"
-					label="Name Ansprechpartner"
-					defaultValue={club.settings?.contact || ""}
-					onChange={(value) => setData("settings.contact", value)}
-				/>
-				<TextInput
-					id="club-email"
-					label="E-Mail"
-					defaultValue={club.settings?.email || ""}
-					onChange={(value) => setData("settings.email", value)}
-				/>
-				<TextInput
-					id="club-homepage"
-					label="Homepage"
-					defaultValue={club.settings?.homepage || ""}
-					onChange={(value) => setData("settings.homepage", value)}
-				/>
+				{!union && (
+					<>
+						<TextInput
+							id="club-contact"
+							label="Name Ansprechpartner"
+							defaultValue={club.settings?.contact || ""}
+							disabled={locked || !canEdit}
+							onChange={(value) =>
+								setData("settings.contact", value)
+							}
+						/>
+						<TextInput
+							id="club-email"
+							label="E-Mail"
+							defaultValue={club.settings?.email || ""}
+							disabled={locked || !canEdit}
+							onChange={(value) =>
+								setData("settings.email", value)
+							}
+						/>
+						<TextInput
+							id="club-homepage"
+							label="Homepage"
+							defaultValue={club.settings?.homepage || ""}
+							disabled={locked || !canEdit}
+							onChange={(value) =>
+								setData("settings.homepage", value)
+							}
+						/>
+					</>
+				)}
 				<TextInput
 					id="club-short"
 					label="Kürzel"
 					defaultValue={shortValue}
-					disabled={!user?.is_superuser}
+					disabled={!user?.is_superuser || locked}
 					onChange={(value) => setData("settings.short", value)}
 				/>
 				{shortError ? <p>{shortError}</p> : null}
@@ -96,6 +140,7 @@ const General: FC<{
 					<p>Dieses Kürzel ist gut</p>
 				) : null}
 			</div>
+
 			<div className="flex col a-st gap-sm">
 				<label htmlFor="club-logo">Logo</label>
 				{club.file?.url ? (
@@ -113,7 +158,7 @@ const General: FC<{
 					id="club-logo"
 					type="file"
 					accept="image/*"
-					disabled={uploading}
+					disabled={uploading || locked}
 					onChange={(event) => {
 						const file = event.target.files?.[0];
 						if (file) uploadLogo(file);
@@ -123,6 +168,7 @@ const General: FC<{
 					<button
 						type="button"
 						className="full_button sm light"
+						disabled={locked}
 						onClick={() => setData("file", null)}
 					>
 						Logo entfernen

@@ -13,7 +13,11 @@ import {
 	ModuleOverviewProps,
 	PrellballClubClass
 } from "@repo/types";
-import { useFindModuleData } from "@repo/provider";
+import {
+	filterModuleCategories,
+	useFindCategoryPageStates,
+	useFindModuleData
+} from "@repo/provider";
 import { clubCreateFields, clubInitialData } from "./constants/create_fields";
 
 const PrellballClubOverview = ({
@@ -42,8 +46,17 @@ const PrellballClubOverview = ({
 		fetchTranslations: Boolean(defaultLanguage) && languages.length > 1,
 		additionalFields: ["title", "settings"]
 	});
-
-	console.log(data);
+	const { pageStates, setActivePage, activePage } = useFindCategoryPageStates(
+		{
+			categories:
+				filterModuleCategories(module.categories || []).categoryIds ||
+				[],
+			categoryModuleId: filterModuleCategories(module.categories || [])
+				.categoryModuleId,
+			filters,
+			setFilters
+		}
+	);
 
 	const columns = useCreateColumns<PrellballClubClass>({
 		data: generateColumnsFromFields(module.fields),
@@ -70,6 +83,9 @@ const PrellballClubOverview = ({
 				initialData: clubInitialData
 			}}
 			refetch={refetch}
+			pageStates={pageStates}
+			setPageState={setActivePage}
+			pageState={activePage}
 		>
 			<Table
 				columns={columns}
