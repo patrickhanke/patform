@@ -25,8 +25,6 @@ const generateColumnsFromFields = <T extends ColumnClasses>(
 			}
 		});
 
-	console.log("fieldArray", fieldArray);
-
 	return fieldArray;
 };
 
