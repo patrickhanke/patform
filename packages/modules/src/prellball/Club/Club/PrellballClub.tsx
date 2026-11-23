@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { Page, usePageData } from "@repo/ui";
+import { Page, PageHeaderButton, usePageData } from "@repo/ui";
 import {
 	ChampionshipClass,
 	LocationClass,
@@ -18,6 +18,7 @@ import { General, SignUps } from "./content";
 import Players from "./content/Players";
 import Unions from "./content/Unions";
 import { checkUnionRights, primaryClubChanged } from "../functions/unionRights";
+import { currentSeasonId } from "../../functions/season";
 
 const generalState: PageState = { value: "general", label: "Überblick" };
 const trainingState: PageState = {
@@ -60,6 +61,13 @@ const PrellballClub = () => {
 	const seasons = useSeasonCategories(project?.objectId);
 	const [siteState, setSiteState] = useState<PageState>(generalState);
 	const [seasonId, setSeasonId] = useState("");
+	const [createTraining, setCreateTraining] = useState(false);
+	const closeTrainingCreate = useCallback(
+		() => setCreateTraining(false),
+		[]
+	);
+	const [createPlayer, setCreatePlayer] = useState(false);
+	const closePlayerCreate = useCallback(() => setCreatePlayer(false), []);
 
 	const { data, refetch } = useGetData<PrellballClubClass>({
 		objectName: "Club",
@@ -126,9 +134,34 @@ const PrellballClub = () => {
 		}
 	);
 
+	const isUnion = club ? clubKind(club.categories) === "union" : false;
+	const pageHeaderButtons: PageHeaderButton[] = useMemo(() => {
+		if (!club || isUnion) return [];
+		if (siteState.value === "training") {
+			return [
+				{
+					text: "Neue Trainingszeit erstellen",
+					onClick: () => setCreateTraining(true),
+					is_add_button: true
+				}
+			];
+		}
+		if (siteState.value === "players") {
+			return [
+				{
+					text: "Spieler:in erstellen",
+					onClick: () => setCreatePlayer(true),
+					is_add_button: true
+				}
+			];
+		}
+		return [];
+	}, [club, isUnion, siteState.value]);
+
 	console.log(seasonId);
 	const activeSeason =
 		seasonId ||
+		currentSeasonId(seasons) ||
 		seasons.find((season) =>
 			(club?.categories || []).includes(season.objectId)
 		)?.objectId ||
@@ -143,7 +176,6 @@ const PrellballClub = () => {
 		);
 	}
 
-	const isUnion = clubKind(club.categories) === "union";
 	const siteStates = isUnion ? unionStates : clubStates;
 	const activeState =
 		siteStates.find((state) => state.value === siteState.value) ||
@@ -155,6 +187,7 @@ const PrellballClub = () => {
 			description={club.settings.short}
 			emptyContent
 			refetch={refetch}
+			pageHeaderButtons={pageHeaderButtons}
 			pageStates={siteStates}
 			pageState={activeState}
 			setPageState={setSiteState}
@@ -168,6 +201,8 @@ const PrellballClub = () => {
 			{activeState.value === "training" && (
 				<TrainingTimes
 					locations={(locations || []) as LocationClass[]}
+					createOpen={createTraining}
+					onCreateClose={closeTrainingCreate}
 				/>
 			)}
 			{activeState.value === "signups" && (
@@ -187,6 +222,8 @@ const PrellballClub = () => {
 					people={(people || []) as PersonClass[]}
 					refetchPeople={refetchPeople}
 					union={isUnion}
+					createOpen={createPlayer}
+					onCreateClose={closePlayerCreate}
 				/>
 			)}
 			{activeState.value === "unions" && (

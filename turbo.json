@@ -45,7 +45,8 @@
     "COOLIFY_WEBHOOK_TOKEN",
     "PATSTORE_COOLIFY_WEBHOOK_TOKEN",
     "PATFLOW_COOLIFY_WEBHOOK_TOKEN",
-    "NODE_ENV"
+    "NODE_ENV",
+    "GOOGLE_MAPS_API_KEY"
   ],
   "globalDependencies": [".env"],
   "tasks": {

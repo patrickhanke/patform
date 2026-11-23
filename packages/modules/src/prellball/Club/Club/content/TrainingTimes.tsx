@@ -1,12 +1,13 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import {
-	CreateButton,
+	ColumnDef,
 	IconButton,
 	Modal,
 	Select,
 	SlideIn,
+	Table,
 	TextInput,
 	usePageData
 } from "@repo/ui";
@@ -45,11 +46,12 @@ const timeValue = (hours: number | null, minutes: number | null) => {
 
 const TrainingEditor: FC<{
 	time: PrellballTrainingTime | null;
+	existingIds?: Set<string>;
 	locations: LocationClass[];
 	divisions: DivisionCategory[];
 	onClose: () => void;
 	onSave: (time: PrellballTrainingTime) => void;
-}> = ({ time, locations, divisions, onClose, onSave }) => {
+}> = ({ time, existingIds, locations, divisions, onClose, onSave }) => {
 	const [draft, setDraft] = useState<PrellballTrainingTime>(
 		time || emptyTime()
 	);
@@ -69,7 +71,11 @@ const TrainingEditor: FC<{
 
 	return (
 		<SlideIn
-			header={time ? "Trainingszeit bearbeiten" : "Neue Trainingszeit"}
+			header={
+				time && existingIds?.has(time.id)
+					? "Trainingszeit bearbeiten"
+					: "Neue Trainingszeit"
+			}
 			isOpen={Boolean(time)}
 			cancel={onClose}
 			confirm={() => onSave(draft)}
@@ -184,12 +190,98 @@ const TrainingEditor: FC<{
 	);
 };
 
-const TrainingTimes: FC<{ locations: LocationClass[] }> = ({ locations }) => {
+const TrainingTimes: FC<{
+	locations: LocationClass[];
+	createOpen: boolean;
+	onCreateClose: () => void;
+}> = ({ locations, createOpen, onCreateClose }) => {
 	const { project } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const { data: club, setData } = usePageData<PrellballClubClass>();
 	const [edit, setEdit] = useState<PrellballTrainingTime | null>(null);
 	const [deleteId, setDeleteId] = useState("");
+
+	useEffect(() => {
+		if (!createOpen) return;
+		setEdit(emptyTime());
+		onCreateClose();
+	}, [createOpen, onCreateClose]);
+
+	const columns: ColumnDef<PrellballTrainingTime>[] = useMemo(
+		() => [
+			{
+				id: "title",
+				header: () => <span>Titel</span>,
+				accessorFn: (row) => row.title || "—",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				id: "weekday",
+				header: () => <span>Wochentag</span>,
+				accessorFn: (row) => row.weekday || "—",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				id: "time",
+				header: () => <span>Zeit</span>,
+				accessorFn: (row) =>
+					`${timeValue(row.start_hours, row.start_minutes)} – ${timeValue(
+						row.end_hours,
+						row.end_minutes
+					)}`,
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				id: "location",
+				header: () => <span>Halle</span>,
+				accessorFn: (row) =>
+					locations.find((item) => item.objectId === row.location_id)
+						?.title || "—",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				id: "classes",
+				header: () => <span>Spielklassen</span>,
+				accessorFn: (row) =>
+					row.classes
+						.map((id) => divisionLabel(id, divisions))
+						.filter(Boolean)
+						.join(", ") || "—",
+				cell: (info) => info.getValue(),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			},
+			{
+				id: "edit",
+				header: () => <span>Bearbeiten</span>,
+				accessorFn: (row) => row.id,
+				cell: (info) => (
+					<div className="button_container">
+						<IconButton
+							icon="edit"
+							onClick={() => setEdit(info.row.original)}
+						/>
+						<IconButton
+							icon="delete"
+							onClick={() => setDeleteId(info.row.original.id)}
+						/>
+					</div>
+				),
+				footer: (info) => info.column.id,
+				enableSorting: false
+			}
+		],
+		[divisions, locations]
+	);
+
 	if (!club) return null;
 	const times = club.data.training_times || [];
 
@@ -206,45 +298,14 @@ const TrainingTimes: FC<{ locations: LocationClass[] }> = ({ locations }) => {
 
 	return (
 		<div className="flex col a-st gap-sm">
-			{times.map((time) => {
-				const location = locations.find(
-					(item) => item.objectId === time.location_id
-				);
-				return (
-					<div key={time.id} className="flex row a-ce j-sb gap-sm">
-						<span>{time.title || "—"}</span>
-						<span>{time.weekday}</span>
-						<span>
-							{timeValue(time.start_hours, time.start_minutes)} –{" "}
-							{timeValue(time.end_hours, time.end_minutes)}
-						</span>
-						<span>{location?.title || "—"}</span>
-						<span>
-							{time.classes
-								.map((id) => divisionLabel(id, divisions))
-								.filter(Boolean)
-								.join(", ") || "—"}
-						</span>
-						<div className="flex row a-ce gap-sm">
-							<IconButton
-								icon="edit"
-								onClick={() => setEdit(time)}
-							/>
-							<IconButton
-								icon="delete"
-								onClick={() => setDeleteId(time.id)}
-							/>
-						</div>
-					</div>
-				);
-			})}
-			<CreateButton
-				text="Neue Trainingszeit erstellen"
-				size="medium"
-				onClick={() => setEdit(emptyTime())}
+			<Table
+				columns={columns}
+				data={times}
+				rowIdResolver={(row) => (row as PrellballTrainingTime).id}
 			/>
 			<TrainingEditor
 				time={edit}
+				existingIds={new Set(times.map((item) => item.id))}
 				locations={locations}
 				divisions={divisions}
 				onClose={() => setEdit(null)}

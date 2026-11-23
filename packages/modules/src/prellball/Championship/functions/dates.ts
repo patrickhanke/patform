@@ -1,3 +1,17 @@
+/** Display value for a stored date, as dd.mm.yyyy. */
+export const formatDeadline = (value?: string) => {
+	if (!value) return "—";
+	const german = value.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+	if (german?.[1] && german[2] && german[3]) {
+		return `${german[1].padStart(2, "0")}.${german[2].padStart(2, "0")}.${german[3]}`;
+	}
+	const iso = toDateInput(value);
+	if (!iso) return "—";
+	const [year, month, day] = iso.split("-");
+	if (!year || !month || !day) return "—";
+	return `${day}.${month}.${year}`;
+};
+
 export const toDateInput = (value?: string) => {
 	if (!value) return "";
 	if (/^\d{4}-\d{2}-\d{2}/.test(value)) return value.slice(0, 10);

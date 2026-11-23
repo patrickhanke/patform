@@ -1,7 +1,7 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
-import { ColumnDef, CreateButton, SlideIn, Table, TextInput } from "@repo/ui";
+import { FC, useEffect, useMemo, useState } from "react";
+import { ColumnDef, SlideIn, Table, TextInput } from "@repo/ui";
 import { ErrorMessage, PersonClass } from "@repo/types";
 import { useDataHandlerSecure } from "@repo/provider";
 import { readPersonData } from "../../../Championship/functions/person";
@@ -13,12 +13,27 @@ const Players: FC<{
 	refetchPeople: () => Promise<unknown>;
 	/** Spielgemeinschaft: players are assigned by the member clubs. */
 	union?: boolean;
-}> = ({ clubId, people, refetchPeople, union = false }) => {
+	createOpen?: boolean;
+	onCreateClose?: () => void;
+}> = ({
+	clubId,
+	people,
+	refetchPeople,
+	union = false,
+	createOpen = false,
+	onCreateClose
+}) => {
 	const { createData } = useDataHandlerSecure();
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [dtbId, setDtbId] = useState("");
 	const [birthDate, setBirthDate] = useState("");
+
+	useEffect(() => {
+		if (!createOpen || union) return;
+		setOpen(true);
+		onCreateClose?.();
+	}, [createOpen, onCreateClose, union]);
 
 	const clubPlayers = people.filter((person) =>
 		(person.categories || []).includes(clubId)
@@ -137,13 +152,7 @@ const Players: FC<{
 					zugewiesen. Nur zugewiesene Spieler:innen können gemeldet
 					werden.
 				</p>
-			) : (
-				<CreateButton
-					text="Spieler:in erstellen"
-					size="medium"
-					onClick={() => setOpen(true)}
-				/>
-			)}
+			) : null}
 			<Table
 				columns={columns}
 				data={clubPlayers}

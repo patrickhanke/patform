@@ -132,24 +132,31 @@ const Settings: FC<ChampionshipTabProps> = ({ related }) => {
 					<div>
 						<label>Schiedsrichterstufe</label>
 						<p>
-							Wähle die Schiedsrichterstufe für diesen Wettkampf.
+							Wähle die Schiedsrichterstufen für diesen Wettkampf.
 						</p>
 					</div>
 					<Select
 						id="championship-referees"
+						isMulti
 						options={referees.map((item) => ({
 							value: item.objectId,
 							label: item.title || item.label || item.objectId
 						}))}
-						value={
-							referees.find(
-								(option) =>
-									option.objectId ===
-									page.settings?.referees_class
-							) || null
-						}
+						value={referees
+							.filter((item) =>
+								(page.settings?.referees_class || []).includes(
+									item.objectId
+								)
+							)
+							.map((item) => ({
+								value: item.objectId,
+								label: item.title || item.label || item.objectId
+							}))}
 						onChange={(option) =>
-							setData("settings.referees_class", option.value)
+							setData(
+								"settings.referees_class",
+								selectStrings(option)
+							)
 						}
 					/>
 				</div>

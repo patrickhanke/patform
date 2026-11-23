@@ -4,11 +4,9 @@ import { FC, useMemo, useState } from "react";
 import {
 	ColumnDef,
 	CreateButton,
-	ElementSelectInterface,
 	IconButton,
 	Modal,
 	Select,
-	SelectElement,
 	SlideIn,
 	Table
 } from "@repo/ui";
@@ -28,8 +26,9 @@ import {
 	clubNumber,
 	createSignup
 } from "../../../../Championship/functions/signups";
-import { toDateInput } from "../../../../Championship/functions/dates";
+import { formatDeadline } from "../../../../Championship/functions/dates";
 import { selectString } from "../../../../Championship/functions/selectValue";
+import { SignupEdit } from "./components";
 
 type SignupRow = {
 	id: string;
@@ -312,13 +311,9 @@ const SignUps: FC<{
 		setEdit(null);
 	};
 
-	const personElements = (selected: string[]): SelectElement[] =>
-		clubPeople.map((person) => ({
-			value: person.objectId,
-			id: person.objectId,
-			label: person.name || person.label || person.objectId,
-			selected: selected.includes(person.objectId)
-		}));
+	const editChampionship = inSeason.find(
+		(item) => item.objectId === edit?.championshipId
+	);
 
 	const columns: ColumnDef<SignupRow>[] = [
 		{
@@ -345,7 +340,7 @@ const SignUps: FC<{
 		{
 			id: "deadline",
 			header: () => <span>Meldefrist</span>,
-			accessorFn: (row) => toDateInput(row.deadline) || "—",
+			accessorFn: (row) => formatDeadline(row.deadline),
 			cell: (info) => info.getValue(),
 			footer: (info) => info.column.id
 		},
@@ -417,33 +412,38 @@ const SignUps: FC<{
 	return (
 		<div className="flex col a-st gap-sm">
 			<div
-				className="flex row a-ce j-sb gap-sm"
+				className="flex row a-ce gap-md"
 				style={{ flexWrap: "wrap" }}
 			>
-				<Select
-					id="signup-season"
-					label="Saison"
-					options={seasons.map((season) => ({
-						value: season.objectId,
-						label: season.title
-					}))}
-					value={
-						seasons
-							.map((season) => ({
-								value: season.objectId,
-								label: season.title
-							}))
-							.find((option) => option.value === seasonId) || null
-					}
-					onChange={(option) => onSeason(selectString(option))}
-				/>
-				{seasonId && openChampionships.length > 0 ? (
+				<div className="flex row a-ce gap-sm">
+					<label htmlFor="signup-season">Saison</label>
+					<Select
+						id="signup-season"
+						width={220}
+						options={seasons.map((season) => ({
+							value: season.objectId,
+							label: season.title
+						}))}
+						value={
+							seasons
+								.map((season) => ({
+									value: season.objectId,
+									label: season.title
+								}))
+								.find((option) => option.value === seasonId) ||
+							null
+						}
+						onChange={(option) => onSeason(selectString(option))}
+					/>
+				</div>
+				<div style={{ width: 260 }}>
 					<CreateButton
-						text={`Offene Meldung (${openChampionships.length})`}
+						text="Offene Meldungen"
 						size="small"
+						disabled={!seasonId || openChampionships.length === 0}
 						onClick={() => setCreateOpen(true)}
 					/>
-				) : null}
+				</div>
 			</div>
 			{!seasonId ? (
 				<p>
@@ -512,93 +512,24 @@ const SignUps: FC<{
 					) : null}
 				</div>
 			</SlideIn>
-			<SlideIn
-				header="Meldung"
+			<SignupEdit
 				isOpen={Boolean(edit) && !confirmSubmit}
-				cancel={() => setEdit(null)}
-				confirm={() => saveEdit()}
-				confirmText="Speichern"
-				size="large"
-			>
-				{edit ? (
-					<div className="flex col a-st gap-sm">
-						<p>
-							{edit.title} ·{" "}
-							{divisionLabel(edit.division, divisions)}
-						</p>
-						<Select
-							id="signup-captain"
-							label="Spielführer:in"
-							options={clubPeople
-								.filter((person) =>
-									players.includes(person.objectId)
-								)
-								.map((person) => ({
-									value: person.objectId,
-									label: person.name || person.label
-								}))}
-							value={
-								clubPeople
-									.filter((person) =>
-										players.includes(person.objectId)
-									)
-									.map((person) => ({
-										value: person.objectId,
-										label: person.name || person.label
-									}))
-									.find(
-										(option) => option.value === captain
-									) || null
-							}
-							onChange={(option) =>
-								setCaptain(selectString(option))
-							}
-						/>
-						<h3>Spieler:innen</h3>
-						<ElementSelectInterface
-							elements={personElements(players)}
-							selectedElements={personElements(players).filter(
-								(item) => players.includes(String(item.value))
-							)}
-							onSelect={(selected) =>
-								setPlayers(
-									selected.map((item) => String(item.value))
-								)
-							}
-							isSearchable
-							title="Spieler:innen"
-							max={10}
-							setSelectedToTop
-						/>
-						<h3>Betreuer</h3>
-						<ElementSelectInterface
-							elements={personElements(coaches)}
-							selectedElements={personElements(coaches).filter(
-								(item) => coaches.includes(String(item.value))
-							)}
-							onSelect={(selected) =>
-								setCoaches(
-									selected.map((item) => String(item.value))
-								)
-							}
-							isSearchable
-						/>
-						<h3>Schiedsrichter</h3>
-						<ElementSelectInterface
-							elements={personElements(referees)}
-							selectedElements={personElements(referees).filter(
-								(item) => referees.includes(String(item.value))
-							)}
-							onSelect={(selected) =>
-								setReferees(
-									selected.map((item) => String(item.value))
-								)
-							}
-							isSearchable
-						/>
-					</div>
-				) : null}
-			</SlideIn>
+				title={edit?.title || ""}
+				division={edit?.division || ""}
+				divisions={divisions}
+				people={clubPeople}
+				players={players}
+				coaches={coaches}
+				referees={referees}
+				captain={captain}
+				refereeClass={editChampionship?.settings?.referees_class}
+				onPlayers={setPlayers}
+				onCoaches={setCoaches}
+				onReferees={setReferees}
+				onCaptain={setCaptain}
+				onClose={() => setEdit(null)}
+				onSave={() => saveEdit()}
+			/>
 			<Modal
 				isOpen={confirmSubmit}
 				header="Mannschaft melden"

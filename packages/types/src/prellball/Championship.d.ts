@@ -17,7 +17,8 @@ export type ChampionshipSettings = {
 	open_signup: boolean;
 	/** Most passes a team may play back to back before the schedule warns. */
 	max_consecutive_passes?: number;
-	referees_class?: string;
+	/** Referee category objectIds. */
+	referees_class?: string[];
 };
 
 export type ChampionshipMatchDayBreak = {

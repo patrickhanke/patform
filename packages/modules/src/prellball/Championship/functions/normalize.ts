@@ -42,6 +42,12 @@ const asStringArray = (value: unknown): string[] => {
 const asArray = <T>(value: unknown): T[] =>
 	Array.isArray(value) ? (value as T[]) : [];
 
+const asRefereeClasses = (value: unknown): string[] => {
+	if (Array.isArray(value)) return asStringArray(value);
+	if (typeof value === "string" && value) return [value];
+	return [];
+};
+
 export const emptySettings = (): ChampionshipSettings => ({
 	deadline: "",
 	show_division: false,
@@ -109,7 +115,8 @@ export const normalizeChampionship = (
 			max_consecutive_passes:
 				typeof settings.max_consecutive_passes === "number"
 					? settings.max_consecutive_passes
-					: undefined
+					: undefined,
+			referees_class: asRefereeClasses(settings.referees_class)
 		},
 		data: {
 			match_days: asArray(data.match_days),
