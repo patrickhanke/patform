@@ -1,128 +1,126 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { useCallback, useId, useState } from "react";
+import {
+	APIProvider,
+	AdvancedMarker,
+	Map as GoogleMap,
+	useMap,
+	useMapsLibrary
+} from "@vis.gl/react-google-maps";
 
 import "./styles.scss";
 import { LatLng, MapProps } from "./types";
 import { Divider } from "../../Layout";
 import { IconButton } from "../../Buttons";
-const containerStyle = {
-	width: "400px",
-	height: "400px"
-};
 
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
+const CLOUD_MAP_ID = "DEMO_MAP_ID";
 
-const defaultPlace = { lat: 52.51226761820683, lng: 13.379393221148042 };
+const defaultPlace: LatLng = {
+	lat: 52.51226761820683,
+	lng: 13.379393221148042
+};
 
-const MAP_LIBRARIES = ["places"] as ["places"];
+const Map = ({ initialPlace, onChange, height = 400 }: MapProps) => {
+	const startPlace = initialPlace || defaultPlace;
 
-const Map = ({ initialPlace = defaultPlace, onChange }: MapProps) => {
-	const [selectedPlace, setSelectedPlace] = useState<LatLng>(
-		initialPlace || defaultPlace
+	return (
+		<APIProvider apiKey={API_KEY}>
+			<LocationMap
+				startPlace={startPlace}
+				onChange={onChange}
+				height={height}
+			/>
+		</APIProvider>
 	);
+};
+
+const LocationMap = ({
+	startPlace,
+	onChange,
+	height
+}: {
+	startPlace: LatLng;
+	onChange: MapProps["onChange"];
+	height: number;
+}) => {
+	const mapId = useId();
+	const map = useMap(mapId);
+	const places = useMapsLibrary("places");
+	const [selectedPlace, setSelectedPlace] = useState<LatLng>(startPlace);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [loading, setLoading] = useState(false);
 
-	const { isLoaded } = useJsApiLoader({
-		id: "google-map-script",
-		googleMapsApiKey: API_KEY,
-		libraries: MAP_LIBRARIES
-	});
+	const handleSearch = useCallback(async () => {
+		if (!map || !places || !searchQuery) return;
 
-	const [map, setMap] = useState<google.maps.Map | null>(null);
-
-	const onLoad = useCallback(
-		function callback(map: google.maps.Map) {
-			map.setCenter(selectedPlace);
-			map.setZoom(10);
-			setMap(map);
-		},
-		[selectedPlace]
-	);
-
-	const onUnmount = useCallback(function callback() {
-		setMap(null);
-	}, []);
-
-	const handleSearch = async () => {
-		if (!map || !searchQuery) return;
 		setLoading(true);
-		const request = {
-			query: searchQuery,
-			fields: ["geometry"]
-		};
+		try {
+			const { places: found } = await places.Place.searchByText({
+				textQuery: searchQuery,
+				fields: ["location", "viewport"],
+				maxResultCount: 1,
+				language: "de",
+				region: "DE"
+			});
+			const place = found[0];
+			const location = place?.location;
+			if (!location) return;
 
-		const placesService = new window.google.maps.places.PlacesService(map);
-		const results: google.maps.places.PlaceResult[] = await new Promise(
-			(resolve, reject) => {
-				placesService.findPlaceFromQuery(request, (results, status) => {
-					if (
-						status ===
-							window.google.maps.places.PlacesServiceStatus.OK &&
-						results
-					) {
-						resolve(results);
-					} else {
-						reject(status);
-					}
-				});
-			}
-		);
-
-		if (results && results[0]?.geometry?.location) {
-			const location = results[0].geometry.location;
-			const newPlace: LatLng = {
+			const nextPlace: LatLng = {
 				lat: location.lat(),
 				lng: location.lng()
 			};
-			setSelectedPlace(newPlace);
-			map.panTo(newPlace);
-
-			if (onChange) onChange(newPlace);
+			setSelectedPlace(nextPlace);
+			if (place.viewport) {
+				map.fitBounds(place.viewport);
+			} else {
+				map.panTo(nextPlace);
+			}
+			onChange(nextPlace);
+		} catch (error) {
+			console.error("Place search failed", error);
+		} finally {
+			setLoading(false);
 		}
-		setLoading(false);
-	};
+	}, [map, onChange, places, searchQuery]);
 
-	return isLoaded ? (
+	return (
 		<div>
 			<div className="flex row a-ce j-sb w-100">
 				<input
 					type="text"
 					placeholder="Nach einem Ort suchen"
 					value={searchQuery}
-					onChange={(e) => setSearchQuery(e.target.value)}
+					onChange={(event) => setSearchQuery(event.target.value)}
+					onKeyDown={(event) => {
+						if (event.key !== "Enter") return;
+						event.preventDefault();
+						void handleSearch();
+					}}
 				/>
 				<IconButton
 					icon="search"
 					text="Suchen"
-					onClick={handleSearch}
-					disabled={loading || !searchQuery}
+					onClick={() => {
+						void handleSearch();
+					}}
+					disabled={loading || !searchQuery || !map || !places}
 					loading={loading}
 				/>
 			</div>
 			<Divider showLine={false} size="small" />
 			<GoogleMap
-				mapContainerStyle={containerStyle}
-				center={selectedPlace}
-				zoom={10}
-				onLoad={onLoad}
-				onUnmount={onUnmount}
+				id={mapId}
+				mapId={CLOUD_MAP_ID}
+				defaultCenter={startPlace}
+				defaultZoom={10}
+				style={{ width: "100%", height }}
 			>
-				{/* Add markers based on latitude and longitude */}
-				{selectedPlace && (
-					<Marker
-						position={{
-							lat: selectedPlace.lat,
-							lng: selectedPlace.lng
-						}}
-					/>
-				)}
+				<AdvancedMarker position={selectedPlace} />
 			</GoogleMap>
 		</div>
-	) : (
-		<></>
 	);
 };
 
