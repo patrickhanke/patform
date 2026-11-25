@@ -4,6 +4,18 @@ import { PatstoreRoleClass } from "@repo/types";
 import { axiosclient, useAppContext, useRoleForUser } from "@repo/provider";
 import { SelectUserRoleProps } from "../types";
 
+const isAbortError = (error: unknown) =>
+	error instanceof Error && error.name === "AbortError";
+
+const refreshAfterSave = async (request: Promise<unknown>) => {
+	try {
+		await request;
+	} catch (error) {
+		if (isAbortError(error)) return;
+		console.error(error);
+	}
+};
+
 const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 	const { project } = useAppContext<"patstore">();
 	const { role, refetch: refetchRole } = useRoleForUser(
@@ -14,7 +26,7 @@ const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 	const [selectedRole, setSelectedRole] = useState<string | undefined>();
 
 	useEffect(() => {
-		if (role?.objectId && initialRole !== role.objectId) {
+		if (role?.objectId && !initialRole) {
 			setInitialRole(role.objectId);
 			setSelectedRole(role.objectId);
 		}
@@ -43,26 +55,20 @@ const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 		() => (
 			<ElementSelectInterface
 				elements={elements}
-				selectedElements={elements.filter(
-					(element) => selectedRole === element.id
+				selectedElements={elements.filter((element) =>
+					selectedRole
+						? selectedRole === element.id
+						: initialRole === element.id
 				)}
 				onSelect={(selectValue) => {
-					if (!selectValue || selectValue.length === 0) {
-						setSelectedRole(undefined);
-					} else if (selectValue.length > 0) {
-						if (!initialRole) {
-							setInitialRole(selectValue[0]?.id);
-							setSelectedRole(selectValue[0]?.id);
-						} else {
-							setSelectedRole(selectValue[0]?.id);
-						}
-					}
+					const nextRole = selectValue?.[0]?.value;
+					setSelectedRole(nextRole || undefined);
 				}}
-				max={6}
+				max={1}
 				isSearchable
 			/>
 		),
-		[elements, selectedRole, roles]
+		[elements, selectedRole, initialRole]
 	);
 
 	return (
@@ -84,14 +90,21 @@ const SelectUserRole: FC<SelectUserRoleProps> = ({ user, roles, refetch }) => {
 				cancel={() => setIsOpen(false)}
 				confirm={async () => {
 					setLoading(true);
-					await axiosclient().post("functions/update_user_role", {
-						user_id: user.objectId,
-						former_role_id: initialRole,
-						new_role_id: selectedRole
-					});
-					await Promise.all([refetch(), refetchRole()]);
-					setIsOpen(false);
-					setLoading(false);
+					try {
+						await axiosclient().post("functions/update_user_role", {
+							user_id: user.objectId,
+							former_role_id: initialRole,
+							new_role_id: selectedRole
+						});
+						setInitialRole(selectedRole);
+						setIsOpen(false);
+					} finally {
+						setLoading(false);
+					}
+					await Promise.all([
+						refreshAfterSave(refetch()),
+						refreshAfterSave(refetchRole())
+					]);
 				}}
 				disabled={[loading, loading]}
 				header="Rolle auswählen"

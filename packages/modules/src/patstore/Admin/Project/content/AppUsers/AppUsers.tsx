@@ -34,11 +34,7 @@ const AppUsers: FC<AppUsersProps> = ({
 
 	const { data: roleData, refetch: refetchRoles } = useFindData({
 		objectName: "Role",
-		fields: [
-			"objectId",
-			"name",
-			"default"
-		],
+		fields: ["objectId", "name", "default"],
 		projectId
 	});
 

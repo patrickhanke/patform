@@ -60,7 +60,12 @@ const useFindData = <T extends Classes = Classes>({
 	);
 
 	const refetch = useCallback(async () => {
-		return await apolloRefetch();
+		// Apollo cancels a refetch when the watch query drops its last subscriber.
+		// retain() keeps that request alive until the promise settles.
+		const pending = apolloRefetch() as Promise<unknown> & {
+			retain?: () => Promise<unknown>;
+		};
+		return await (pending.retain?.() ?? pending);
 	}, [apolloRefetch]);
 
 	return {

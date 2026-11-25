@@ -81,7 +81,7 @@ export type UseFindDataParams = {
 export type UseFindDataResult<T extends Classes = Classes> = {
 	loading: boolean;
 	data: T[];
-	refetch: ApolloRefetch;
+	refetch: () => Promise<{ data: unknown; error?: ErrorLike }>;
 	count: number;
 	error: ApolloError | undefined;
 };

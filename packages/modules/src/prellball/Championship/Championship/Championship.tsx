@@ -54,7 +54,8 @@ const Championship = ({
 	const { data, refetch, error } = useGetData<ChampionshipClass>({
 		objectName: "Championship",
 		fields: championshipDetailFields,
-		id: championshipId
+		id: championshipId,
+		polling: 10000
 	});
 
 	const championship = useMemo(

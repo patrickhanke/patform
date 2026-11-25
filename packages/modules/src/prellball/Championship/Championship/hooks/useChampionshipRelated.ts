@@ -36,6 +36,7 @@ const useChampionshipRelated = (
 		limit: 1500,
 		skipQuery
 	});
+
 	const { data: articles } = useFindData<ArticleClass>({
 		objectName: "Article",
 		fields: ["objectId", "title", "date"],
@@ -43,6 +44,7 @@ const useChampionshipRelated = (
 		limit: 500,
 		skipQuery
 	});
+
 	const { data: downloads } = useFindData<DownloadClass>({
 		objectName: "Download",
 		fields: ["objectId", "title"],
@@ -50,10 +52,13 @@ const useChampionshipRelated = (
 		limit: 500,
 		skipQuery
 	});
+
 	const { data: users } = useFindData({
 		objectName: "User",
-		fields: ["objectId", "username", "email"],
-		projectId,
+		fields: ["objectId", "username", "email", "name", "label"],
+		filters: [
+			{ key: "projects", value: projectId || "", operator: "contains" }
+		],
 		limit: 500,
 		skipQuery
 	});

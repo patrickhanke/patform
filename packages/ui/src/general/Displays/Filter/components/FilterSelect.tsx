@@ -2,7 +2,7 @@ import { Loader, Select } from "@repo/ui";
 import filterChangeHandler from "../functions/filterChangeHandler";
 import { FilterSelectProps } from "../types";
 import { get } from "lodash-es";
-import {useFindData} from "@repo/provider";
+import { useFindData } from "@repo/provider";
 import { Classes } from "@repo/types";
 
 const FilterSelect = ({ category, filters, setFilters }: FilterSelectProps) => {

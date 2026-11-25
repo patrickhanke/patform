@@ -1,12 +1,6 @@
 "use client";
 
-import {
-	ReactNode,
-	useCallback,
-	useContext,
-	useEffect,
-	useMemo
-} from "react";
+import { ReactNode, useCallback, useContext, useEffect, useMemo } from "react";
 import { PatflowProject, PatstoreProject } from "@repo/types";
 import { AppContext } from "./AppContext";
 import {
@@ -43,11 +37,7 @@ type AppContextProviderProps<
 
 function ProjectContextProvider<
 	TProject extends PatstoreProject | PatflowProject
->({
-	project,
-	roles = [],
-	children
-}: AppContextProviderProps<TProject>) {
+>({ project, roles = [], children }: AppContextProviderProps<TProject>) {
 	// patflow: cookie keys come from next.config (`PROJECT_ID` / `PROJECT_PATH`).
 	// patstore: falls back to `${APP_NAME}_project_id` / `_project_path`, which
 	// matches layout.tsx and proxy.ts.

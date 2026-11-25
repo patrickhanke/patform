@@ -12,7 +12,6 @@ import {
 } from "@repo/ui";
 import { ChampionshipPageModel, ChampionshipTabProps } from "@repo/modules";
 import {
-	selectString,
 	selectStrings,
 	selectedDivisionIds,
 	withDivisionCategories,
@@ -21,20 +20,33 @@ import {
 	useRefereeCategories,
 	toDateInput
 } from "@repo/provider";
+import SelectStaffLead from "./components/SelectStaffLead";
+
+const ROLES = ["lVLJsMzfp6", "T3lnYiKGwF"];
 
 const Settings: FC<ChampionshipTabProps> = ({ related }) => {
-	const { project } = useAppContext<"patstore">();
+	const { project, roles } = useAppContext<"patstore">();
 	const divisions = useDivisionCategories(project?.objectId);
 	const referees = useRefereeCategories(project?.objectId);
 	const { data: page, setData } = usePageData<ChampionshipPageModel>();
 
+	console.log("users", related.users);
+	console.log("roles", ROLES);
+
 	console.log("page", page);
 	if (!page) return null;
 
-	const userOptions = related.users.map((user) => ({
-		value: user.objectId,
-		label: user.username || user.email
-	}));
+	const staff_roles = roles.filter((role) => ROLES.includes(role.objectId));
+	const staff_user_ids = staff_roles.flatMap((role) =>
+		role.users.edges.map((user) => user?.node?.objectId)
+	);
+
+	console.log("staff_user_ids", staff_user_ids);
+
+
+	const staffUsers = related.users.filter((user) =>
+		staff_user_ids.includes(user.objectId)
+	);
 	const divisionOptions = divisions.map((item) => ({
 		value: item.objectId,
 		label: item.title || item.label || item.objectId
@@ -108,22 +120,11 @@ const Settings: FC<ChampionshipTabProps> = ({ related }) => {
 						<label>Staffelleitung</label>
 						<p>Legt fest, wer die Staffelleitung ist.</p>
 					</div>
-					<Select
-						id="championship-staff"
-						isClearable
-						options={userOptions}
-						value={
-							userOptions.find(
-								(option) =>
-									option.value ===
-									page.settings?.staff_lead_id
-							) || null
-						}
-						onChange={(option) =>
-							setData(
-								"settings?.staff_lead_id",
-								selectString(option)
-							)
+					<SelectStaffLead
+						users={staffUsers}
+						value={page.settings?.staff_lead_id}
+						onChange={(userId) =>
+							setData("settings.staff_lead_id", userId)
 						}
 					/>
 				</div>

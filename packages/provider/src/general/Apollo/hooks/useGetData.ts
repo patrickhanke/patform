@@ -13,7 +13,8 @@ const useGetData = <T extends Classes = Classes>({
 	fields,
 	id,
 	skip,
-	afterSaveHandler
+	afterSaveHandler,
+	polling = 0
 }: UseGetDataParams<T>): UseGetDataResult<T> => {
 	const cleanObjectName = objectName.replace(/_/g, "");
 	const { data, refetch, error, loading } = useQuery(
@@ -27,7 +28,8 @@ const useGetData = <T extends Classes = Classes>({
 			variables: {
 				id
 			},
-			skip: skip || !id
+			skip: skip || !id,
+			pollInterval: polling
 		}
 	);
 

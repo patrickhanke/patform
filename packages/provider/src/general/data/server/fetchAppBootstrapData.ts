@@ -64,6 +64,7 @@ const ROLE_FIELDS: Record<string, string> = {
 		modules { ...on Element { value } }
 		color
 		title
+		users { edges { node { objectId  } } }
 	`,
 	patflow: `
 		objectId
