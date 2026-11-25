@@ -97,6 +97,7 @@ export type UseGetDataParams<T extends Classes = Classes> = {
 	skip?: boolean;
 	afterSaveHandler?: (data: T) => void;
 	useMasterKey?: boolean;
+	polling?: number;
 };
 
 export type UseGetDataResult<T extends Classes = Classes> = {

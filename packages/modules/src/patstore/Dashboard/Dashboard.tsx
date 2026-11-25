@@ -5,6 +5,7 @@ import { Divider, HtmlContent, Page } from "@repo/ui";
 import { PatstoreAppContext, useAppContext } from "@repo/provider";
 import UserAccessLink from "./components/UserAccessLink";
 import { userModulePermissions } from "./functions/userModulePermissions";
+import PrellballContent from "./components/PrellballContent";
 
 const Dashboard = () => {
 	const { project } = useAppContext<"patstore">();
@@ -33,6 +34,7 @@ const Dashboard = () => {
 					</div>
 				</>
 			)}
+			{project.path === "prellball" && <PrellballContent />}
 		</Page>
 	);
 };

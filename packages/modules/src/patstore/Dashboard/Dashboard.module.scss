@@ -1,0 +1,21 @@
+.prellball_list {
+	h3 {
+		margin-bottom: 2rem;
+	}
+	ul {
+		list-style: dot;
+		max-width: 600px;
+	}
+	li {
+		margin-bottom: 1rem;
+		padding-left: 1rem;
+		font-size: 0.9rem;
+		line-height: 1.5;	
+	}
+	img {
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+		border-radius: 10px;
+		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+	}
+}
